@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyTitle>OWLSharp</AssemblyTitle>
+    <AssemblyName>OWLSharp</AssemblyName>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <Version>3.6.2</Version>
+    <Authors>Marco De Salvo</Authors>
+    <Copyright>Marco De Salvo</Copyright>
+    <Description>Lightweight and friendly .NET library for realizing Semantic Web applications</Description>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <SignAssembly>false</SignAssembly>
+    <Product>OWLSharp</Product>
+    <PackageId>OWLSharp</PackageId>
+    <PackageVersion>$(Version)</PackageVersion>
+    <PackageTags>rdfs owl owl-dl owl2 skos skos-xl geosparql time ontology reasoner swrl semantic-web</PackageTags>
+    <PackageProjectUrl>https://github.com/mdesalvo/OWLSharp</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/mdesalvo/OWLSharp.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\$(TargetFramework)\OWLSharp.xml</DocumentationFile>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\$(TargetFramework)\OWLSharp.xml</DocumentationFile>
+    <WarningLevel>0</WarningLevel>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NetTopologySuite" Version="2.5.0" />
+    <PackageReference Include="ProjNet" Version="2.0.0" />
+    <PackageReference Include="RDFSharp" Version="3.6.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+</Project>
