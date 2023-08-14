@@ -14,7 +14,7 @@ A clear and concise description of what the bug is.
 A clear and concise description of what you expected to happen.
 
 **Library Version**
-Report the version of OWLSharp (e.g: 3.X.Y)
+Report the version of the library you are using.
 
 **Additional context**
 Add any other context about the problem here.
