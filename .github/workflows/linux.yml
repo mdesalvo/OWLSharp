@@ -1,0 +1,31 @@
+name: linux
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+ 
+    - name: Build
+      run: dotnet build -c Release
+    
+    - name: Test
+      run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" -c Release
+      
+    - name: Codecov
+      uses: codecov/codecov-action@v3.1.1
+      with:
+        fail_ci_if_error: true
+        verbose: true
+        token: ${{ secrets.CODECOV_TOKEN }}
