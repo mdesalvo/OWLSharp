@@ -1,6 +1,6 @@
 # OWLSharp [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![NuGet Badge](https://buildstats.info/nuget/OWLSharp?includePreReleases=true)](https://www.nuget.org/packages/OWLSharp) [![codecov](https://codecov.io/gh/mdesalvo/OWLSharp/branch/main/graph/badge.svg?token=VQ8M9QP81S)](https://codecov.io/gh/mdesalvo/OWLSharp)
 
-OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> in order to provide native support for:
+OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> in order to provide native expressivity for:
 <ul>
     <li>Creating <b>OWL-DL ontologies</b> (classes, restrictions, properties, individuals, assertions, annotations, ...)</li>
     <li>Validating them against an extensible set of intelligent semantic rules analyzing <b>T-BOX</b> and <b>A-BOX</b></li>
