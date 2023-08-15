@@ -287,3 +287,12 @@ OWLSharp.Test/obj/Release/net6.0/OWLSharp.Test.genruntimeconfig.cache
 OWLSharp.Test/obj/Release/net6.0/OWLSharp.Test.pdb
 OWLSharp.Test/obj/Release/net6.0/ref/OWLSharp.Test.dll
 OWLSharp.Test/obj/Release/net6.0/refint/OWLSharp.Test.dll
+OWLSharp/bin/Debug/OWLSharp.3.7.0.nupkg
+OWLSharp/bin/Debug/OWLSharp.3.7.0.snupkg
+OWLSharp/obj/Debug/OWLSharp.3.7.0.nuspec
+OWLSharp/obj/Debug/OWLSharp.3.7.0.symbols.nuspec
+OWLSharp/obj/Release/OWLSharp.3.7.0.symbols.nuspec
+OWLSharp/bin/Release/OWLSharp.3.7.0.nupkg
+OWLSharp/bin/Release/OWLSharp.3.7.0.snupkg
+OWLSharp/obj/Release/OWLSharp.3.7.0.nuspec
+.gitignore
