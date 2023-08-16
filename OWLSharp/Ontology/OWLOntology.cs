@@ -15,6 +15,7 @@
 */
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using RDFSharp.Model;
 
@@ -163,6 +164,38 @@ namespace OWLSharp
         /// </summary>
         public Task<RDFGraph> ToRDFGraphAsync()
             => Task.Run(() => ToRDFGraph());
+
+        /// <summary>
+        /// Writes the ontology into a file in the given OWL format
+        /// </summary>
+        public void ToFile(OWLEnums.OWLFormats owlFormat, string filepath)
+        {
+            if (string.IsNullOrEmpty(filepath))
+                throw new OWLException("Cannot write OWL ontology to file because given \"filepath\" parameter is null or empty.");
+
+            switch (owlFormat)
+            {
+                case OWLEnums.OWLFormats.OwlXml:
+                    OWLXml.Serialize(this, filepath);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Writes the ontology into a stream in the given OWL format (at the end the stream is closed)
+        /// </summary>
+        public void ToStream(OWLEnums.OWLFormats owlFormat, Stream outputStream)
+        {
+            if (outputStream == null)
+                throw new OWLException("Cannot write OWL ontology to stream because given \"outputStream\" parameter is null.");
+
+            switch (owlFormat)
+            {
+                case OWLEnums.OWLFormats.OwlXml:
+                    OWLXml.Serialize(this, outputStream);
+                    break;
+            }
+        }
 
         /// <summary>
         /// Gets an ontology representation from the given graph
