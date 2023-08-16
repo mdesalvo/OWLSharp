@@ -239,5 +239,16 @@ namespace OWLSharp
             /// </summary>
             Object = 3
         }
+
+        /// <summary>
+        /// Represents an enumeration for supported OWL ontology serialization formats
+        /// </summary>
+        public enum OWLFormats
+        {
+            /// <summary>
+            /// XML serialization
+            /// </summary>
+            OwlXml = 0
+        };
     }
 }
