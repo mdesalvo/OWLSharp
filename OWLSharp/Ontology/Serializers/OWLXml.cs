@@ -98,11 +98,12 @@ namespace OWLSharp
                     basePrefixNodeNameAttr.AppendChild(owlDoc.CreateTextNode(string.Empty));
                     XmlAttribute basePrefixNodeIRIAttr = owlDoc.CreateAttribute("IRI");
                     basePrefixNodeIRIAttr.AppendChild(owlDoc.CreateTextNode(ontology.URI.ToString()));
-                    basePrefixNode.Attributes.Append(basePrefixNodeNameAttr);
+                    basePrefixNode.Attributes.Append(basePrefixNodeIRIAttr);
+                    ontologyNode.AppendChild(basePrefixNode);
                     #endregion                    
 
                     //TODO
-                    
+
 
                     owlDoc.AppendChild(ontologyNode);
                     #endregion
