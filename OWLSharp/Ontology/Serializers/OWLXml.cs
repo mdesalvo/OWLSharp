@@ -105,7 +105,8 @@ namespace OWLSharp
 
                     #region annotations
                     //Write the ontology annotations
-                    foreach (RDFTriple ontAnn in ontology.OBoxGraph)
+                    foreach (RDFTriple ontAnn in ontology.OBoxGraph.Where(t => !t.Predicate.Equals(RDFVocabulary.RDF.TYPE) && 
+                                                                                !t.Object.Equals(RDFVocabulary.OWL.ONTOLOGY)))
                     {
                         //Write the corresponding element "Annotation"
                         XmlNode ontologyAnnotationNode = owlDoc.CreateNode(XmlNodeType.Element, "Annotation", RDFVocabulary.OWL.BASE_URI);
@@ -144,6 +145,7 @@ namespace OWLSharp
                                 XmlText ontologyAnnotationPropertyAbbreviatedIRINodeText = owlDoc.CreateTextNode(abbreviatedOntAnnObj.Item2);
                                 ontologyAnnotationPropertyAbbreviatedIRINode.AppendChild(ontologyAnnotationPropertyAbbreviatedIRINodeText);
                                 ontologyAnnotationPropertyNode.AppendChild(ontologyAnnotationPropertyAbbreviatedIRINode);
+                                ontologyAnnotationNode.AppendChild(ontologyAnnotationPropertyAbbreviatedIRINode);
                             }
                             else
                             {
@@ -152,8 +154,8 @@ namespace OWLSharp
                                 XmlText ontologyAnnotationPropertyIRINodeText = owlDoc.CreateTextNode(abbreviatedOntAnnObj.Item2);
                                 ontologyAnnotationPropertyIRINode.AppendChild(ontologyAnnotationPropertyIRINodeText);
                                 ontologyAnnotationPropertyNode.AppendChild(ontologyAnnotationPropertyIRINode);
+                                ontologyAnnotationNode.AppendChild(ontologyAnnotationPropertyIRINode);
                             }
-                            ontologyAnnotationNode.AppendChild(ontologyAnnotationPropertyNode);
                         }
                         #endregion
 
