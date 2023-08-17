@@ -87,8 +87,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix IRI=""http://example.com/"" />
   <Annotation>
-    <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso"">
-    </AnnotationProperty>
+    <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso""></AnnotationProperty>
     <IRI>http://ex.com/</IRI>
   </Annotation>
 </Ontology>";

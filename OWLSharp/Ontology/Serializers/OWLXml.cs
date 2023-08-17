@@ -49,10 +49,9 @@ namespace OWLSharp
             try
             {
                 #region serialize
-                using (XmlTextWriter owlxmlWriter = new XmlTextWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
+                using (XmlWriter owlxmlWriter = XmlWriter.Create(outputStream, new XmlWriterSettings() {
+                    Encoding = RDFModelUtilities.UTF8_NoBOM, Indent = true}))
                 {
-                    owlxmlWriter.Formatting = Formatting.Indented;
-
                     #region xml
                     XmlDocument owlDoc = new XmlDocument();
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
