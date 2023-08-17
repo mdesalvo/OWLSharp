@@ -107,9 +107,11 @@ namespace OWLSharp
                     //Write the ontology annotations
                     foreach (RDFTriple ontAnn in ontology.OBoxGraph)
                     {
+                        //Write the corresponding element "Annotation"
                         XmlNode ontologyAnnotationNode = owlDoc.CreateNode(XmlNodeType.Element, "Annotation", RDFVocabulary.OWL.BASE_URI);
 
                         #region AnnotationProperty
+                        //Write the corresponding element "AnnotationProperty"
                         XmlNode ontologyAnnotationPropertyNode = owlDoc.CreateNode(XmlNodeType.Element, "AnnotationProperty", RDFVocabulary.OWL.BASE_URI);
                         (bool, string) abbreviatedOntAnnProp = RDFQueryUtilities.AbbreviateRDFPatternMember(ontAnn.Predicate, ontologyGraphNamespaces);
                         if (abbreviatedOntAnnProp.Item1)
