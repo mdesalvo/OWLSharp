@@ -52,6 +52,24 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeEmptyNamedOntology()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEmptyNamedOntology.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEmptyNamedOntology.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEmptyNamedOntology.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix IRI=""http://example.com/"" />
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {

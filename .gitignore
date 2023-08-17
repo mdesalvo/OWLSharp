@@ -295,4 +295,4 @@ OWLSharp/obj/Release/OWLSharp.3.7.0.symbols.nuspec
 OWLSharp/bin/Release/OWLSharp.3.7.0.nupkg
 OWLSharp/bin/Release/OWLSharp.3.7.0.snupkg
 OWLSharp/obj/Release/OWLSharp.3.7.0.nuspec
-.gitignore
+OWLSharp.Test/obj/Debug/net6.0/OWLSharp.Test.AssemblyInfo.cs
