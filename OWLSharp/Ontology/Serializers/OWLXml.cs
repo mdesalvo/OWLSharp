@@ -52,20 +52,28 @@ namespace OWLSharp
                 using (XmlWriter owlxmlWriter = XmlWriter.Create(outputStream, new XmlWriterSettings() {
                     Encoding = RDFModelUtilities.UTF8_NoBOM, Indent = true}))
                 {
-                    #region xml
+                    #region Xml
                     XmlDocument owlDoc = new XmlDocument();
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
                     #endregion
 
-                    #region ontology
+                    #region Ontology
                     XmlNode ontologyNode = owlDoc.CreateNode(XmlNodeType.Element, "Ontology", RDFVocabulary.OWL.BASE_URI);
                     XmlAttribute ontologyNodeIRIAttr = owlDoc.CreateAttribute("ontologyIRI");
                     XmlText ontologyNodeIRIAttrText = owlDoc.CreateTextNode(ontology.URI.ToString());
                     ontologyNodeIRIAttr.AppendChild(ontologyNodeIRIAttrText);
                     ontologyNode.Attributes.Append(ontologyNodeIRIAttr);
+                    RDFPatternMember versionIRI = ontology.OBoxGraph[ontology, RDFVocabulary.OWL.VERSION_IRI, null, null].FirstOrDefault()?.Object;
+                    if (versionIRI != null)
+                    {
+                        XmlAttribute ontologyNodeVIRIAttr = owlDoc.CreateAttribute("versionIRI");
+                        XmlText ontologyNodeVIRIAttrText = owlDoc.CreateTextNode(versionIRI.ToString());
+                        ontologyNodeVIRIAttr.AppendChild(ontologyNodeVIRIAttrText);
+                        ontologyNode.Attributes.Append(ontologyNodeVIRIAttr);
+                    }
 
-                    #region prefixes
-                    //Write the prefixes (except for "base")
+                    #region Prefix
+                    //Write the ontology prefixes
                     RDFGraph ontologyGraph = ontology.ToRDFGraph();
                     List<RDFNamespace> ontologyGraphNamespaces = RDFModelUtilities.GetGraphNamespaces(ontologyGraph);
                     RDFNamespace xmlNamespace = RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX);
@@ -105,10 +113,23 @@ namespace OWLSharp
                     ontologyNode.AppendChild(basePrefixNode);
                     #endregion                    
 
-                    #region annotations
-                    //Write the ontology annotations
+                    #region Import
+                    //Write the ontology imports
+                    foreach (RDFTriple impAnn in ontology.OBoxGraph.Where(t => t.Predicate.Equals(RDFVocabulary.OWL.IMPORTS)))
+                    {
+                        //Write the corresponding element "Import"
+                        XmlNode ontologyImportNode = owlDoc.CreateNode(XmlNodeType.Element, "Import", RDFVocabulary.OWL.BASE_URI);
+                        XmlText ontologyImportNodeAbbreviatedText = owlDoc.CreateTextNode(impAnn.Object.ToString());
+                        ontologyImportNode.AppendChild(ontologyImportNodeAbbreviatedText);
+                        ontologyNode.AppendChild(ontologyImportNode);
+                    }
+                    #endregion
+
+                    #region Annotation
+                    //Write the annotations (except "imports" and "versionIRI")
                     foreach (RDFTriple ontAnn in ontology.OBoxGraph.Where(t => !t.Predicate.Equals(RDFVocabulary.RDF.TYPE) && 
-                                                                                !t.Object.Equals(RDFVocabulary.OWL.ONTOLOGY)))
+                                                                                !t.Predicate.Equals(RDFVocabulary.OWL.IMPORTS) &&
+                                                                                 !t.Predicate.Equals(RDFVocabulary.OWL.VERSION_IRI)))
                     {
                         //Write the corresponding element "Annotation"
                         XmlNode ontologyAnnotationNode = owlDoc.CreateNode(XmlNodeType.Element, "Annotation", RDFVocabulary.OWL.BASE_URI);
@@ -191,7 +212,6 @@ namespace OWLSharp
                         ontologyNode.AppendChild(ontologyAnnotationNode);
                     }
                     #endregion
-
 
                     owlDoc.AppendChild(ontologyNode);
                     #endregion
