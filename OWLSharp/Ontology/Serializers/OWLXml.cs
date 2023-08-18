@@ -68,6 +68,9 @@ namespace OWLSharp
                     //Write the prefixes (except for "base")
                     RDFGraph ontologyGraph = ontology.ToRDFGraph();
                     List<RDFNamespace> ontologyGraphNamespaces = RDFModelUtilities.GetGraphNamespaces(ontologyGraph);
+                    RDFNamespace xmlNamespace = RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX);
+                    if (!ontologyGraphNamespaces.Any(ns => ns.Equals(xmlNamespace)))
+                        ontologyGraphNamespaces.Add(xmlNamespace);
                     ontologyGraphNamespaces.ForEach(p =>
                     {
                         if (!p.NamespacePrefix.Equals("base", StringComparison.OrdinalIgnoreCase))
@@ -163,12 +166,12 @@ namespace OWLSharp
                         {
                             //Write the corresponding element "Literal"
                             XmlNode ontologyAnnotationPropertyLiteralNode = owlDoc.CreateNode(XmlNodeType.Element, "Literal", RDFVocabulary.OWL.BASE_URI);
-                            XmlText ontologyAnnotationPropertyLiteralNodeText = owlDoc.CreateTextNode(ontAnn.Object.ToString());
+                            XmlText ontologyAnnotationPropertyLiteralNodeText = owlDoc.CreateTextNode(((RDFLiteral)ontAnn.Object).Value.ToString());
                             ontologyAnnotationPropertyLiteralNode.AppendChild(ontologyAnnotationPropertyLiteralNodeText);
                             if (ontAnn.Object is RDFPlainLiteral ontAnnPLit && ontAnnPLit.HasLanguage())
                             {
                                 //Write the corresponding attribute "xml:lang='...'"
-                                XmlAttribute ontologyAnnotationPropertyLiteralLanguageAttr = owlDoc.CreateAttribute("xml:lang", RDFVocabulary.XML.BASE_URI);
+                                XmlAttribute ontologyAnnotationPropertyLiteralLanguageAttr = owlDoc.CreateAttribute("xml:lang");
                                 XmlText ontologyAnnotationPropertyLiteralLanguageAttrText = owlDoc.CreateTextNode(ontAnnPLit.Language);
                                 ontologyAnnotationPropertyLiteralLanguageAttr.AppendChild(ontologyAnnotationPropertyLiteralLanguageAttrText);
                                 ontologyAnnotationPropertyLiteralNode.Attributes.Append(ontologyAnnotationPropertyLiteralLanguageAttr);
@@ -176,7 +179,7 @@ namespace OWLSharp
                             else if (ontAnn.Object is RDFTypedLiteral ontAnnTLit)
                             {
                                 //Write the corresponding attribute "datatypeIRI='...'"
-                                XmlAttribute ontologyAnnotationPropertyLiteralDatatypeAttr = owlDoc.CreateAttribute("datatypeIRI", RDFVocabulary.OWL.BASE_URI);
+                                XmlAttribute ontologyAnnotationPropertyLiteralDatatypeAttr = owlDoc.CreateAttribute("datatypeIRI");
                                 XmlText ontologyAnnotationPropertyLiteralLanguageAttrText = owlDoc.CreateTextNode(RDFModelUtilities.GetDatatypeFromEnum(ontAnnTLit.Datatype));
                                 ontologyAnnotationPropertyLiteralDatatypeAttr.AppendChild(ontologyAnnotationPropertyLiteralLanguageAttrText);
                                 ontologyAnnotationPropertyLiteralNode.Attributes.Append(ontologyAnnotationPropertyLiteralDatatypeAttr);
