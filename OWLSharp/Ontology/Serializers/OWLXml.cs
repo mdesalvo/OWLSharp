@@ -45,6 +45,8 @@ namespace OWLSharp
         {
             try
             {
+                List<RDFNamespace> ontologyGraphNamespaces = GetGraphNamespaces(ontology);
+
                 #region serialize
                 using (XmlWriter owlxmlWriter = XmlWriter.Create(outputStream, new XmlWriterSettings() {
                     Encoding = RDFModelUtilities.UTF8_NoBOM, Indent = true}))
@@ -60,19 +62,15 @@ namespace OWLSharp
                         ontologyNode.AppendAttribute(owlDoc, "versionIRI", versionIRI.ToString());
 
                     #region Prefixes
-                    List<RDFNamespace> ontologyGraphNamespaces = GetGraphNamespaces(ontology);
-                    ontologyGraphNamespaces.ForEach(p =>
+                    foreach (RDFNamespace ontologyGraphNamespace in ontologyGraphNamespaces)
                     {
-                        if (!p.NamespacePrefix.Equals("base", StringComparison.OrdinalIgnoreCase))
-                        {
-                            ontologyNode.AppendAttribute(owlDoc, string.Concat("xmlns:", p.NamespacePrefix), p.ToString());
-                            //Also write the corresponding element "<Prefix name='...' IRI='...'>"
-                            XmlNode prefixNode = owlDoc.CreateNode(XmlNodeType.Element, "Prefix", RDFVocabulary.OWL.BASE_URI);
-                            prefixNode.AppendAttribute(owlDoc, "name", p.NamespacePrefix);
-                            prefixNode.AppendAttribute(owlDoc, "IRI", p.NamespaceUri.ToString());
-                            ontologyNode.AppendChild(prefixNode);
-                        }
-                    });
+                        ontologyNode.AppendAttribute(owlDoc, string.Concat("xmlns:", ontologyGraphNamespace.NamespacePrefix), ontologyGraphNamespace.ToString());
+                        //Also write the corresponding element "<Prefix name='...' IRI='...'>"
+                        XmlNode prefixNode = owlDoc.CreateNode(XmlNodeType.Element, "Prefix", RDFVocabulary.OWL.BASE_URI);
+                        prefixNode.AppendAttribute(owlDoc, "name", ontologyGraphNamespace.NamespacePrefix);
+                        prefixNode.AppendAttribute(owlDoc, "IRI", ontologyGraphNamespace.NamespaceUri.ToString());
+                        ontologyNode.AppendChild(prefixNode);
+                    }
                     //Write the ontology's base uri to resolve eventual relative #IDs
                     ontologyNode.AppendAttribute(owlDoc, "xml:base", ontology.URI.ToString());
                     //Also write the corresponding element "<Prefix name='' IRI='...'>"
@@ -85,7 +83,7 @@ namespace OWLSharp
                     #region Imports
                     foreach (RDFTriple impAnn in ontology.OBoxGraph.Where(t => t.Predicate.Equals(RDFVocabulary.OWL.IMPORTS)))
                     {
-                        //Write the corresponding element "<Import>"
+                        //Write the corresponding element "Import"
                         XmlNode ontologyImportNode = owlDoc.CreateNode(XmlNodeType.Element, "Import", RDFVocabulary.OWL.BASE_URI);
                         XmlText ontologyImportNodeAbbreviatedText = owlDoc.CreateTextNode(impAnn.Object.ToString());
                         ontologyImportNode.AppendChild(ontologyImportNodeAbbreviatedText);
