@@ -52,13 +52,11 @@ namespace OWLSharp
                 using (XmlWriter owlxmlWriter = XmlWriter.Create(outputStream, new XmlWriterSettings() {
                     Encoding = RDFModelUtilities.UTF8_NoBOM, Indent = true}))
                 {
-                    #region Xml
                     XmlDocument owlDoc = new XmlDocument();
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
-                    #endregion
+                    XmlNode ontologyNode = owlDoc.CreateNode(XmlNodeType.Element, "Ontology", RDFVocabulary.OWL.BASE_URI);
 
                     #region Ontology
-                    XmlNode ontologyNode = owlDoc.CreateNode(XmlNodeType.Element, "Ontology", RDFVocabulary.OWL.BASE_URI);
                     XmlAttribute ontologyNodeIRIAttr = owlDoc.CreateAttribute("ontologyIRI");
                     XmlText ontologyNodeIRIAttrText = owlDoc.CreateTextNode(ontology.URI.ToString());
                     ontologyNodeIRIAttr.AppendChild(ontologyNodeIRIAttrText);
@@ -211,11 +209,50 @@ namespace OWLSharp
 
                         ontologyNode.AppendChild(ontologyAnnotationNode);
                     }
+                    #endregion                   
+                    #endregion
+
+                    #region ClassModel
+                    //This kind of syntax only supports simple classes into "Declaration" nodes
+                    //(restrictions, composites and enumerates will be written separately in specific forms)
+                    IEnumerator<RDFResource> simpleClassesEnumerator = ontology.Model.ClassModel.SimpleClassesEnumerator;
+                    while (simpleClassesEnumerator.MoveNext())
+                    {
+                        //Write the corresponding element "Declaration"
+                        XmlNode declarationNode = owlDoc.CreateNode(XmlNodeType.Element, "Declaration", RDFVocabulary.OWL.BASE_URI);
+                        //Write the corresponding element "Class"
+                        XmlNode classNode = owlDoc.CreateNode(XmlNodeType.Element, "Class", RDFVocabulary.OWL.BASE_URI);
+                        (bool, string) abbreviatedIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(simpleClassesEnumerator.Current, ontologyGraphNamespaces);
+                        if (abbreviatedIRI.Item1)
+                        {
+                            //Write the corresponding attribute "abbreviatedIRI='...'"
+                            XmlAttribute classNodeAbbreviatedIRIAttr = owlDoc.CreateAttribute("abbreviatedIRI");
+                            XmlText classNodeAbbreviatedIRIAttrText = owlDoc.CreateTextNode(abbreviatedIRI.Item2);
+                            classNodeAbbreviatedIRIAttr.AppendChild(classNodeAbbreviatedIRIAttrText);
+                            classNode.Attributes.Append(classNodeAbbreviatedIRIAttr);
+                        }
+                        else
+                        {
+                            //Write the corresponding attribute "IRI='...'"
+                            XmlAttribute classNodeIRIAttr = owlDoc.CreateAttribute("IRI");
+                            XmlText classNodeIRIAttrText = owlDoc.CreateTextNode(abbreviatedIRI.Item2);
+                            classNodeIRIAttr.AppendChild(classNodeIRIAttrText);
+                            classNode.Attributes.Append(classNodeIRIAttr);
+                        }
+                        declarationNode.AppendChild(classNode);
+                        ontologyNode.AppendChild(declarationNode);
+                    }
+                    #endregion
+
+                    #region PropertyModel
+                    
+                    #endregion
+
+                    #region Data
+                    
                     #endregion
 
                     owlDoc.AppendChild(ontologyNode);
-                    #endregion
-
                     owlDoc.Save(owlxmlWriter);
                 }
                 #endregion
