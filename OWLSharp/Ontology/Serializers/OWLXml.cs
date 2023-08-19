@@ -15,12 +15,9 @@
 */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
 using System.Xml;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -54,60 +51,36 @@ namespace OWLSharp
                 {
                     XmlDocument owlDoc = new XmlDocument();
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
-                    XmlNode ontologyNode = owlDoc.CreateNode(XmlNodeType.Element, "Ontology", RDFVocabulary.OWL.BASE_URI);
-
+                    
                     #region Ontology
-                    XmlAttribute ontologyNodeIRIAttr = owlDoc.CreateAttribute("ontologyIRI");
-                    XmlText ontologyNodeIRIAttrText = owlDoc.CreateTextNode(ontology.URI.ToString());
-                    ontologyNodeIRIAttr.AppendChild(ontologyNodeIRIAttrText);
-                    ontologyNode.Attributes.Append(ontologyNodeIRIAttr);
+                    //Write the ontology document
+                    XmlNode ontologyNode = owlDoc.CreateNode(XmlNodeType.Element, "Ontology", RDFVocabulary.OWL.BASE_URI);
+                    ontologyNode.AppendAttribute(owlDoc, "ontologyIRI", ontology.URI.ToString());
                     RDFPatternMember versionIRI = ontology.OBoxGraph[ontology, RDFVocabulary.OWL.VERSION_IRI, null, null].FirstOrDefault()?.Object;
                     if (versionIRI != null)
-                    {
-                        XmlAttribute ontologyNodeVIRIAttr = owlDoc.CreateAttribute("versionIRI");
-                        XmlText ontologyNodeVIRIAttrText = owlDoc.CreateTextNode(versionIRI.ToString());
-                        ontologyNodeVIRIAttr.AppendChild(ontologyNodeVIRIAttrText);
-                        ontologyNode.Attributes.Append(ontologyNodeVIRIAttr);
-                    }
+                        ontologyNode.AppendAttribute(owlDoc, "versionIRI", versionIRI.ToString());
 
                     #region Prefix
                     //Write the ontology prefixes
-                    RDFGraph ontologyGraph = ontology.ToRDFGraph();
-                    List<RDFNamespace> ontologyGraphNamespaces = RDFModelUtilities.GetGraphNamespaces(ontologyGraph);
-                    RDFNamespace xmlNamespace = RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX);
-                    if (!ontologyGraphNamespaces.Any(ns => ns.Equals(xmlNamespace)))
-                        ontologyGraphNamespaces.Add(xmlNamespace);
+                    List<RDFNamespace> ontologyGraphNamespaces = GetGraphNamespaces(ontology);
                     ontologyGraphNamespaces.ForEach(p =>
                     {
                         if (!p.NamespacePrefix.Equals("base", StringComparison.OrdinalIgnoreCase))
                         {
-                            XmlAttribute ontologyNodePrefixAttr = owlDoc.CreateAttribute(string.Concat("xmlns:", p.NamespacePrefix));
-                            XmlText ontologyNodePrefixAttrText = owlDoc.CreateTextNode(p.ToString());
-                            ontologyNodePrefixAttr.AppendChild(ontologyNodePrefixAttrText);
-                            ontologyNode.Attributes.Append(ontologyNodePrefixAttr);
+                            ontologyNode.AppendAttribute(owlDoc, string.Concat("xmlns:", p.NamespacePrefix), p.ToString());
                             //Also write the corresponding element "<Prefix name='...' IRI='...'>"
                             XmlNode prefixNode = owlDoc.CreateNode(XmlNodeType.Element, "Prefix", RDFVocabulary.OWL.BASE_URI);
-                            XmlAttribute prefixNodeNameAttr = owlDoc.CreateAttribute("name");
-                            prefixNodeNameAttr.AppendChild(owlDoc.CreateTextNode(p.NamespacePrefix));
-                            prefixNode.Attributes.Append(prefixNodeNameAttr);
-                            XmlAttribute prefixNodeIRIAttr = owlDoc.CreateAttribute("IRI");
-                            prefixNodeIRIAttr.AppendChild(owlDoc.CreateTextNode(p.NamespaceUri.ToString()));
-                            prefixNode.Attributes.Append(prefixNodeIRIAttr);
+                            prefixNode.AppendAttribute(owlDoc, "name", p.NamespacePrefix);
+                            prefixNode.AppendAttribute(owlDoc, "IRI", p.NamespaceUri.ToString());
                             ontologyNode.AppendChild(prefixNode);
                         }
                     });
                     //Write the ontology's base uri to resolve eventual relative #IDs
-                    XmlAttribute ontologyNodeBaseAttr = owlDoc.CreateAttribute("xml:base");
-                    XmlText ontologyNodeBaseAttrText = owlDoc.CreateTextNode(ontology.URI.ToString());
-                    ontologyNodeBaseAttr.AppendChild(ontologyNodeBaseAttrText);
-                    ontologyNode.Attributes.Append(ontologyNodeBaseAttr);
+                    ontologyNode.AppendAttribute(owlDoc, "xml:base", ontology.URI.ToString());
                     //Also write the corresponding element "<Prefix name='' IRI='...'>"
                     XmlNode basePrefixNode = owlDoc.CreateNode(XmlNodeType.Element, "Prefix", RDFVocabulary.OWL.BASE_URI);
-                    XmlAttribute basePrefixNodeNameAttr = owlDoc.CreateAttribute("name");
-                    basePrefixNodeNameAttr.AppendChild(owlDoc.CreateTextNode(string.Empty));
-                    XmlAttribute basePrefixNodeIRIAttr = owlDoc.CreateAttribute("IRI");
-                    basePrefixNodeIRIAttr.AppendChild(owlDoc.CreateTextNode(ontology.URI.ToString()));
-                    basePrefixNode.Attributes.Append(basePrefixNodeIRIAttr);
+                    basePrefixNode.AppendAttribute(owlDoc, "name", string.Empty);
+                    basePrefixNode.AppendAttribute(owlDoc, "IRI", ontology.URI.ToString());
                     ontologyNode.AppendChild(basePrefixNode);
                     #endregion                    
 
@@ -226,30 +199,18 @@ namespace OWLSharp
                         if (abbreviatedIRI.Item1)
                         {
                             //Write the corresponding attribute "abbreviatedIRI='...'"
-                            XmlAttribute classNodeAbbreviatedIRIAttr = owlDoc.CreateAttribute("abbreviatedIRI");
-                            XmlText classNodeAbbreviatedIRIAttrText = owlDoc.CreateTextNode(abbreviatedIRI.Item2);
-                            classNodeAbbreviatedIRIAttr.AppendChild(classNodeAbbreviatedIRIAttrText);
-                            classNode.Attributes.Append(classNodeAbbreviatedIRIAttr);
+                            classNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedIRI.Item2);
                         }
                         else
                         {
                             //Write the corresponding attribute "IRI='...'"
-                            XmlAttribute classNodeIRIAttr = owlDoc.CreateAttribute("IRI");
-                            XmlText classNodeIRIAttrText = owlDoc.CreateTextNode(abbreviatedIRI.Item2);
-                            classNodeIRIAttr.AppendChild(classNodeIRIAttrText);
-                            classNode.Attributes.Append(classNodeIRIAttr);
+                            classNode.AppendAttribute(owlDoc, "IRI", abbreviatedIRI.Item2);
                         }
                         declarationNode.AppendChild(classNode);
                         ontologyNode.AppendChild(declarationNode);
                     }
-                    #endregion
+                    //TODO: other types of class and relations
 
-                    #region PropertyModel
-                    
-                    #endregion
-
-                    #region Data
-                    
                     #endregion
 
                     owlDoc.AppendChild(ontologyNode);
@@ -261,6 +222,32 @@ namespace OWLSharp
             {
                 throw new OWLException("Cannot serialize OWL/Xml because: " + ex.Message, ex);
             }
+        }
+        #endregion
+
+        #region Utilities
+        /// <summary>
+        /// Gets the RDF namespaces occurring within the ontology T-BOX/A-BOX
+        /// </summary>
+        internal static List<RDFNamespace> GetGraphNamespaces(OWLOntology ontology)
+        {
+            RDFGraph ontologyGraph = ontology.ToRDFGraph();
+            List<RDFNamespace> ontologyGraphNamespaces = RDFModelUtilities.GetGraphNamespaces(ontologyGraph);
+            RDFNamespace xmlNamespace = RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX);
+            if (!ontologyGraphNamespaces.Any(ns => ns.Equals(xmlNamespace)))
+                ontologyGraphNamespaces.Add(xmlNamespace);
+            return ontologyGraphNamespaces;
+        }
+
+        /// <summary>
+        /// Appends an attribute with the given name and value to the given node
+        /// </summary>
+        internal static void AppendAttribute(this XmlNode xmlNode, XmlDocument xmlDoc, string attrName, string attrValue)
+        {
+            XmlAttribute attr = xmlDoc.CreateAttribute(attrName);
+            XmlText attrText = xmlDoc.CreateTextNode(attrValue);
+            attr.AppendChild(attrText);
+            xmlNode.Attributes.Append(attr);
         }
         #endregion
 

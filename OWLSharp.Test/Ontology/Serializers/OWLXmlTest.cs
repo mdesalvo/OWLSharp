@@ -40,7 +40,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""https://rdfsharp.codeplex.com/"" />
+  <Prefix name="""" IRI=""https://rdfsharp.codeplex.com/"" />
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -59,7 +59,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -79,7 +79,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -99,7 +99,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Import>http://example.com/v1/</Import>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
@@ -121,7 +121,7 @@ namespace OWLSharp.Test
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso""></AnnotationProperty>
     <AbbreviatedIRI>rdfs:Class</AbbreviatedIRI>
@@ -146,7 +146,7 @@ namespace OWLSharp.Test
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso""></AnnotationProperty>
     <IRI>http://ex.com/</IRI>
@@ -171,7 +171,7 @@ namespace OWLSharp.Test
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty IRI=""http://ann.prop/""></AnnotationProperty>
     <AbbreviatedIRI>rdfs:Class</AbbreviatedIRI>
@@ -195,7 +195,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty IRI=""http://ann.prop/""></AnnotationProperty>
     <IRI>http://ann.obj/</IRI>
@@ -220,7 +220,7 @@ namespace OWLSharp.Test
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso"" />
     <Literal>hello!</Literal>
@@ -245,7 +245,7 @@ namespace OWLSharp.Test
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso"" />
     <Literal xml:lang=""EN-US"">hello!</Literal>
@@ -271,7 +271,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix name=""geosparql"" IRI=""http://www.opengis.net/ont/geosparql#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso"" />
     <Literal datatypeIRI=""http://www.opengis.net/ont/geosparql#wktLiteral"">POINT(45 15)</Literal>
@@ -295,7 +295,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty IRI=""http://ann.prop/"" />
     <Literal>hello!</Literal>
@@ -319,7 +319,7 @@ namespace OWLSharp.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty IRI=""http://ann.prop/"" />
     <Literal xml:lang=""EN-US"">hello!</Literal>
@@ -344,7 +344,7 @@ namespace OWLSharp.Test
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""geosparql"" IRI=""http://www.opengis.net/ont/geosparql#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Annotation>
     <AnnotationProperty IRI=""http://ann.prop/"" />
     <Literal datatypeIRI=""http://www.opengis.net/ont/geosparql#wktLiteral"">POINT(45 15)</Literal>
@@ -370,7 +370,7 @@ namespace OWLSharp.Test
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix IRI=""http://example.com/"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Declaration>
     <Class IRI=""http://example.com/C1"" />
   </Declaration>
