@@ -154,7 +154,7 @@ namespace OWLSharp
 
                     #region ClassModel
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontologyGraphNamespaces);
-                    //TODO: restrictions, composites, enumerates and relations
+                    //TODO: restrictions, composites, enumerates, annotations and relations
 
                     #endregion
 
@@ -162,14 +162,13 @@ namespace OWLSharp
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "DataProperty", ontology.Model.PropertyModel.DatatypePropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "AnnotationProperty", ontology.Model.PropertyModel.AnnotationPropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontologyGraphNamespaces);                    
-                    //TODO: object property behaviors, data property behaviors and relations
+                    //TODO: object property behaviors, data property behaviors, annotations and relations
 
                     #endregion
 
                     #region Data
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontologyGraphNamespaces);
-                    //TODO: relations
+                    //TODO: anonymous individuals, annotations and relations
                     
                     #endregion
 
