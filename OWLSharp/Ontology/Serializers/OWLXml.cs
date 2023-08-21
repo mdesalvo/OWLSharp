@@ -152,7 +152,7 @@ namespace OWLSharp
 
                     #region ClassModel
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontologyGraphNamespaces);
-                    //TODO: restrictions, composites, enumerates, annotations and relations
+                    //TODO: deprecated, restrictions, composites, enumerates, annotations and relations
 
                     #endregion
 
@@ -160,13 +160,21 @@ namespace OWLSharp
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "DataProperty", ontology.Model.PropertyModel.DatatypePropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "AnnotationProperty", ontology.Model.PropertyModel.AnnotationPropertiesEnumerator, ontologyGraphNamespaces);
-                    //TODO: object property behaviors, data property behaviors, annotations and relations
-
+                    WriteDeclarations(ontologyNode, owlDoc, "FunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.FunctionalObjectPropertiesEnumerator, ontologyGraphNamespaces);
+                    WriteDeclarations(ontologyNode, owlDoc, "InverseFunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.InverseFunctionalPropertiesEnumerator, ontologyGraphNamespaces);
+                    WriteDeclarations(ontologyNode, owlDoc, "SymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.SymmetricPropertiesEnumerator, ontologyGraphNamespaces);
+                    WriteDeclarations(ontologyNode, owlDoc, "AsymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.AsymmetricPropertiesEnumerator, ontologyGraphNamespaces);
+                    WriteDeclarations(ontologyNode, owlDoc, "TransitiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.TransitivePropertiesEnumerator, ontologyGraphNamespaces);
+                    WriteDeclarations(ontologyNode, owlDoc, "ReflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.ReflexivePropertiesEnumerator, ontologyGraphNamespaces);
+                    WriteDeclarations(ontologyNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontologyGraphNamespaces);
+                    WriteDeclarations(ontologyNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontologyGraphNamespaces);
+                    //TODO: deprecated, domain, range, annotations and relations
+                    
                     #endregion
 
                     #region Data
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontologyGraphNamespaces);
-                    //TODO: anonymous individuals, annotations and relations
+                    //TODO: anonymous individuals, domain, range, annotations and relations
                     
                     #endregion
 
@@ -208,7 +216,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Writes the "Declaration" nodes describing classes, properties and individuals of the ontology
+        /// Writes the "Declaration" (and similar) nodes
         /// </summary>
         internal static void WriteDeclarations(XmlNode xmlNode, XmlDocument owlDoc, string declarationCategory, string declarationType, IEnumerator<RDFResource> entitiesEnumerator, List<RDFNamespace> ontologyGraphNamespaces)
         {
@@ -216,7 +224,7 @@ namespace OWLSharp
             {
                 //Write the corresponding element "Declaration"
                 XmlNode declarationCategoryNode = owlDoc.CreateNode(XmlNodeType.Element, declarationCategory, RDFVocabulary.OWL.BASE_URI);
-                //Write the corresponding element "ObjectProperty"
+                //Write the corresponding element "Class/ObjectProperty/..."
                 XmlNode declarationTypeNode = owlDoc.CreateNode(XmlNodeType.Element, declarationType, RDFVocabulary.OWL.BASE_URI);
                 (bool, string) abbreviatedIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(entitiesEnumerator.Current, ontologyGraphNamespaces);
                 if (abbreviatedIRI.Item1)

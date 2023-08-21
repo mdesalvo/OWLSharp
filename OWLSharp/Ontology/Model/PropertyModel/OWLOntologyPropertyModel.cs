@@ -111,6 +111,36 @@ namespace OWLSharp
         }
 
         /// <summary>
+        /// Count of the functional object properties
+        /// </summary>
+        public long FunctionalObjectPropertiesCount
+        {
+            get
+            {
+                long count = 0;
+                IEnumerator<RDFResource> functionalObjectProperties = FunctionalObjectPropertiesEnumerator;
+                while (functionalObjectProperties.MoveNext())
+                    count++;
+                return count;
+            }
+        }
+
+        /// <summary>
+        /// Count of the functional datatype properties
+        /// </summary>
+        public long FunctionalDatatypePropertiesCount
+        {
+            get
+            {
+                long count = 0;
+                IEnumerator<RDFResource> functionalDatatypeProperties = FunctionalDatatypePropertiesEnumerator;
+                while (functionalDatatypeProperties.MoveNext())
+                    count++;
+                return count;
+            }
+        }
+
+        /// <summary>
         /// Count of the inverse functional properties
         /// </summary>
         public long InverseFunctionalPropertiesCount
@@ -293,6 +323,38 @@ namespace OWLSharp
             get
             {
                 IEnumerator<RDFResource> properties = PropertiesEnumerator;
+                while (properties.MoveNext())
+                {
+                    if (TBoxGraph[properties.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].Any())
+                        yield return properties.Current;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumerator on the functional object properties for iteration
+        /// </summary>
+        public IEnumerator<RDFResource> FunctionalObjectPropertiesEnumerator
+        {
+            get
+            {
+                IEnumerator<RDFResource> properties = ObjectPropertiesEnumerator;
+                while (properties.MoveNext())
+                {
+                    if (TBoxGraph[properties.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].Any())
+                        yield return properties.Current;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumerator on the functional datatype properties for iteration
+        /// </summary>
+        public IEnumerator<RDFResource> FunctionalDatatypePropertiesEnumerator
+        {
+            get
+            {
+                IEnumerator<RDFResource> properties = DatatypePropertiesEnumerator;
                 while (properties.MoveNext())
                 {
                     if (TBoxGraph[properties.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].Any())

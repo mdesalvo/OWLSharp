@@ -410,6 +410,244 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeObjectFunctionalPropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/OP1"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyObjectPropertyBehavior() { Functional = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectFunctionalPropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectFunctionalPropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectFunctionalPropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <FunctionalObjectProperty>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </FunctionalObjectProperty>
+  <FunctionalObjectProperty>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </FunctionalObjectProperty>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectInverseFunctionalPropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/OP1"), new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectInverseFunctionalPropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectInverseFunctionalPropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectInverseFunctionalPropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <InverseFunctionalObjectProperty>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </InverseFunctionalObjectProperty>
+  <InverseFunctionalObjectProperty>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </InverseFunctionalObjectProperty>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectSymmetricPropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/OP1"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectSymmetricPropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectSymmetricPropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectSymmetricPropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <SymmetricObjectProperty>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </SymmetricObjectProperty>
+  <SymmetricObjectProperty>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </SymmetricObjectProperty>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectAsymmetricPropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/OP1"), new OWLOntologyObjectPropertyBehavior() { Asymmetric = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyObjectPropertyBehavior() { Asymmetric = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectAsymmetricPropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectAsymmetricPropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectAsymmetricPropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <AsymmetricObjectProperty>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </AsymmetricObjectProperty>
+  <AsymmetricObjectProperty>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </AsymmetricObjectProperty>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectTransitivePropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/OP1"), new OWLOntologyObjectPropertyBehavior() { Transitive = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyObjectPropertyBehavior() { Transitive = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectTransitivePropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectTransitivePropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectTransitivePropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <TransitiveObjectProperty>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </TransitiveObjectProperty>
+  <TransitiveObjectProperty>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </TransitiveObjectProperty>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectReflexivePropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/OP1"), new OWLOntologyObjectPropertyBehavior() { Reflexive = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyObjectPropertyBehavior() { Reflexive = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectReflexivePropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectReflexivePropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectReflexivePropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <ReflexiveObjectProperty>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </ReflexiveObjectProperty>
+  <ReflexiveObjectProperty>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </ReflexiveObjectProperty>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectIrreflexivePropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/OP1"), new OWLOntologyObjectPropertyBehavior() { Irreflexive = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyObjectPropertyBehavior() { Irreflexive = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIrreflexivePropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIrreflexivePropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIrreflexivePropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <IrreflexiveObjectProperty>
+    <ObjectProperty IRI=""http://example.com/OP1"" />
+  </IrreflexiveObjectProperty>
+  <IrreflexiveObjectProperty>
+    <ObjectProperty abbreviatedIRI=""geo:location"" />
+  </IrreflexiveObjectProperty>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataPropertyDeclarations()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
@@ -433,6 +671,40 @@ namespace OWLSharp.Test
   <Declaration>
     <DataProperty abbreviatedIRI=""geo:location"" />
   </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeDataFunctionalPropertyDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/DP1"), new OWLOntologyDatatypePropertyBehavior() { Functional = true });
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(RDFVocabulary.GEO.LOCATION, new OWLOntologyDatatypePropertyBehavior() { Functional = true });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataFunctionalPropertyDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataFunctionalPropertyDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataFunctionalPropertyDeclarations.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/DP1"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <FunctionalDataProperty>
+    <DataProperty IRI=""http://example.com/DP1"" />
+  </FunctionalDataProperty>
+  <FunctionalDataProperty>
+    <DataProperty abbreviatedIRI=""geo:location"" />
+  </FunctionalDataProperty>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
