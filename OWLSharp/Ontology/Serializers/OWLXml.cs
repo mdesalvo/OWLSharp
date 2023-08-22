@@ -152,8 +152,8 @@ namespace OWLSharp
 
                     #region ClassModel
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontologyGraphNamespaces);
-                    //TODO: deprecated, restrictions, composites, enumerates, annotations and relations
-
+                    //TODO: composites, enumerates, annotations(+owl:deprecated=true) and relations
+                    WriteRestrictions(ontologyNode, owlDoc, ontology, ontologyGraphNamespaces);
                     #endregion
 
                     #region PropertyModel
@@ -168,13 +168,13 @@ namespace OWLSharp
                     WriteDeclarations(ontologyNode, owlDoc, "ReflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.ReflexivePropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontologyGraphNamespaces);
-                    //TODO: deprecated, domain, range, annotations and relations
+                    //TODO: domain, range, annotations(+owl:deprecated=true) and relations
                     
                     #endregion
 
                     #region Data
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontologyGraphNamespaces);
-                    //TODO: anonymous individuals, domain, range, annotations and relations
+                    //TODO: anonymous individuals, domain, range, annotations(+owl:deprecated=true) and relations
                     
                     #endregion
 
@@ -191,9 +191,6 @@ namespace OWLSharp
         #endregion
 
         #region Utilities
-        /// <summary>
-        /// Gets the RDF namespaces occurring within the ontology T-BOX/A-BOX
-        /// </summary>
         internal static List<RDFNamespace> GetGraphNamespaces(OWLOntology ontology)
         {
             RDFGraph ontologyGraph = ontology.ToRDFGraph();
@@ -204,9 +201,6 @@ namespace OWLSharp
             return ontologyGraphNamespaces;
         }
 
-        /// <summary>
-        /// Appends an attribute with the given name and value to the given node
-        /// </summary>
         internal static void AppendAttribute(this XmlNode xmlNode, XmlDocument owlDoc, string attrName, string attrValue)
         {
             XmlAttribute attr = owlDoc.CreateAttribute(attrName);
@@ -215,9 +209,6 @@ namespace OWLSharp
             xmlNode.Attributes.Append(attr);
         }
 
-        /// <summary>
-        /// Writes the "Declaration" (and similar) nodes
-        /// </summary>
         internal static void WriteDeclarations(XmlNode xmlNode, XmlDocument owlDoc, string declarationCategory, string declarationType, IEnumerator<RDFResource> entitiesEnumerator, List<RDFNamespace> ontologyGraphNamespaces)
         {
             while (entitiesEnumerator.MoveNext())
@@ -239,6 +230,88 @@ namespace OWLSharp
                 }
                 declarationCategoryNode.AppendChild(declarationTypeNode);
                 xmlNode.AppendChild(declarationCategoryNode);
+            }
+        }
+        
+        internal static void WriteRestrictions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontologyGraphNamespaces)
+        {
+            IEnumerator<RDFResource> restrictionsEnumerator = ontology.Model.ClassModel.RestrictionsEnumerator;
+            while (restrictionsEnumerator.MoveNext())
+            {
+                //Grab restricted property
+                RDFResource onProperty = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current, RDFVocabulary.OWL.ON_PROPERTY, null, null]
+                                           .FirstOrDefault()?.Object as RDFResource;
+                bool onObjectProperty = ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty);
+                bool onDatatypeProperty = ontology.Model.PropertyModel.CheckHasDatatypeProperty(onProperty);
+                if (!onObjectProperty && !onDatatypeProperty)
+                    continue;
+
+                //Write the corresponding element "EquivalentClasses"
+                XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
+                
+                //Write the corresponding element "Class"
+                XmlNode classNode = owlDoc.CreateNode(XmlNodeType.Element, "Class", RDFVocabulary.OWL.BASE_URI);
+                (bool, string) abbreviatedIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(restrictionsEnumerator.Current, ontologyGraphNamespaces);
+                if (abbreviatedIRI.Item1)
+                {
+                    //Write the corresponding attribute "abbreviatedIRI='...'"
+                    classNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedIRI.Item2);
+                }
+                else
+                {
+                    //Write the corresponding attribute "IRI='...'" (in case of blank name switch to "bnode://" fake protocol)
+                    classNode.AppendAttribute(owlDoc, "IRI", abbreviatedIRI.Item2.Replace("bnode:","bnode://"));
+                }
+                equivalentClassesNode.AppendChild(classNode);
+
+                //Determine type of restriction
+                #region [Object|Data][Some|All]ValuesFrom
+                bool isSomeValuesFromRestriction = ontology.Model.ClassModel.CheckHasSomeValuesFromRestrictionClass(restrictionsEnumerator.Current);
+                bool isAllValuesFromRestriction = ontology.Model.ClassModel.CheckHasAllValuesFromRestrictionClass(restrictionsEnumerator.Current);
+                if (isSomeValuesFromRestriction || isAllValuesFromRestriction)
+                {
+                    //Write the corresponding element "[Object|Data][Some|All]ValuesFrom"
+                    string objectOrData = onObjectProperty ? "Object" : "Data";
+                    string someOrAll = isSomeValuesFromRestriction ? "Some" : "All";
+                    XmlNode valuesFromNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}{someOrAll}ValuesFrom", RDFVocabulary.OWL.BASE_URI);
+
+                    //Write the corresponding element "[Object|Data]Property"
+                    XmlNode propertyNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}Property", RDFVocabulary.OWL.BASE_URI);
+                    (bool, string) abbreviatedPropertyIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(onProperty, ontologyGraphNamespaces);
+                    if (abbreviatedPropertyIRI.Item1)
+                    {
+                        //Write the corresponding attribute "abbreviatedIRI='...'"
+                        propertyNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedPropertyIRI.Item2);
+                    }
+                    else
+                    {
+                        //Write the corresponding attribute "IRI='...'"
+                        propertyNode.AppendAttribute(owlDoc, "IRI", abbreviatedPropertyIRI.Item2);
+                    }
+                    valuesFromNode.AppendChild(propertyNode);
+
+                    //Write the corresponding element "Class"
+                    RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current, 
+                        isSomeValuesFromRestriction ? RDFVocabulary.OWL.SOME_VALUES_FROM : RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object as RDFResource;
+                    XmlNode onClassNode = owlDoc.CreateNode(XmlNodeType.Element, "Class", RDFVocabulary.OWL.BASE_URI);
+                    (bool, string) abbreviatedOnClassIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(onClass, ontologyGraphNamespaces);
+                    if (abbreviatedOnClassIRI.Item1)
+                    {
+                        //Write the corresponding attribute "abbreviatedIRI='...'"
+                        onClassNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedOnClassIRI.Item2);
+                    }
+                    else
+                    {
+                        //Write the corresponding attribute "IRI='...'" (in case of blank name switch to "bnode://" fake protocol)
+                        onClassNode.AppendAttribute(owlDoc, "IRI", abbreviatedOnClassIRI.Item2.Replace("bnode:","bnode://"));
+                    }
+                    valuesFromNode.AppendChild(onClassNode);
+
+                    equivalentClassesNode.AppendChild(valuesFromNode);
+                }
+                #endregion
+
+                xmlNode.AppendChild(equivalentClassesNode);
             }
         }
         #endregion
