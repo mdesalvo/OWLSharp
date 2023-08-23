@@ -738,6 +738,335 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeSomeValuesFromObjectRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareSomeValuesFromRestriction(new RDFResource("http://example.com/someValuesFromRestriction"), 
+              new RDFResource("http://example.com/objectProperty"), new RDFResource("http://example.com/SimpleClass"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSomeValuesFromObjectRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSomeValuesFromObjectRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSomeValuesFromObjectRestriction.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/someValuesFromRestriction"" />
+    <ObjectSomeValuesFrom>
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class IRI=""http://example.com/SimpleClass"" />
+    </ObjectSomeValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeSomeValuesFromDatatypeRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/datatypeProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareSomeValuesFromRestriction(new RDFResource("http://example.com/someValuesFromRestriction"), 
+              new RDFResource("http://example.com/datatypeProperty"), new RDFResource("http://example.com/SimpleClass"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSomeValuesFromDatatypeRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSomeValuesFromDatatypeRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSomeValuesFromDatatypeRestriction.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/someValuesFromRestriction"" />
+    <DataSomeValuesFrom>
+      <DataProperty IRI=""http://example.com/datatypeProperty"" />
+      <Class IRI=""http://example.com/SimpleClass"" />
+    </DataSomeValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAllValuesFromObjectRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(new RDFResource("http://example.com/allValuesFromRestriction"), 
+              new RDFResource("http://example.com/objectProperty"), new RDFResource("http://example.com/SimpleClass"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllValuesFromObjectRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllValuesFromObjectRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllValuesFromObjectRestriction.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/allValuesFromRestriction"" />
+    <ObjectAllValuesFrom>
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class IRI=""http://example.com/SimpleClass"" />
+    </ObjectAllValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAllValuesFromDatatypeRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/datatypeProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(new RDFResource("http://example.com/allValuesFromRestriction"), 
+              new RDFResource("http://example.com/datatypeProperty"), new RDFResource("http://example.com/SimpleClass"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllValuesFromDatatypeRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllValuesFromDatatypeRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllValuesFromDatatypeRestriction.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/allValuesFromRestriction"" />
+    <DataAllValuesFrom>
+      <DataProperty IRI=""http://example.com/datatypeProperty"" />
+      <Class IRI=""http://example.com/SimpleClass"" />
+    </DataAllValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeValuesFromRestrictionWithAbbreviatedName()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(RDFVocabulary.GEO.SPATIAL_THING, 
+              new RDFResource("http://example.com/objectProperty"), new RDFResource("http://example.com/SimpleClass"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedName.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedName.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedName.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class abbreviatedIRI=""geo:SpatialThing"" />
+    <ObjectAllValuesFrom>
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class IRI=""http://example.com/SimpleClass"" />
+    </ObjectAllValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeValuesFromRestrictionWithBlankName()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(new RDFResource("bnode:12345"), 
+              new RDFResource("http://example.com/objectProperty"), new RDFResource("http://example.com/SimpleClass"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithBlankName.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithBlankName.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithBlankName.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""bnode://12345"" />
+    <ObjectAllValuesFrom>
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class IRI=""http://example.com/SimpleClass"" />
+    </ObjectAllValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeValuesFromRestrictionWithAbbreviatedClass()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(new RDFResource("http://example.com/allValuesFromRestriction"), 
+              new RDFResource("http://example.com/objectProperty"), RDFVocabulary.GEO.SPATIAL_THING);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedClass.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedClass.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedClass.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/allValuesFromRestriction"" />
+    <ObjectAllValuesFrom>
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class abbreviatedIRI=""geo:SpatialThing"" />
+    </ObjectAllValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeValuesFromRestrictionWithBlankClass()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(new RDFResource("http://example.com/allValuesFromRestriction"), 
+              new RDFResource("http://example.com/objectProperty"), new RDFResource("bnode:12345"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithBlankClass.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithBlankClass.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithBlankClass.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/allValuesFromRestriction"" />
+    <ObjectAllValuesFrom>
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class IRI=""bnode://12345"" />
+    </ObjectAllValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeValuesFromRestrictionWithAbbreviatedProperty()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(RDFVocabulary.GEO.LAT_LONG);
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(new RDFResource("http://example.com/allValuesFromRestriction"), 
+              RDFVocabulary.GEO.LAT_LONG, new RDFResource("http://example.com/SimpleClass"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedProperty.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedProperty.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeValuesFromRestrictionWithAbbreviatedProperty.owx"));
+            const string expectedFileContent=
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/SimpleClass"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/allValuesFromRestriction"" />
+    <DataAllValuesFrom>
+      <DataProperty abbreviatedIRI=""geo:lat_long"" />
+      <Class IRI=""http://example.com/SimpleClass"" />
+    </DataAllValuesFrom>
+  </EquivalentClasses>
+  <Declaration>
+    <DataProperty abbreviatedIRI=""geo:lat_long"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnSerializingValuesFromRestrictionBecauseUndeclaredProperty()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/SimpleClass"));
+            ontology.Model.ClassModel.DeclareAllValuesFromRestriction(new RDFResource("http://example.com/allValuesFromRestriction"), 
+              new RDFResource("http://example.com/undeclaredProperty"), new RDFResource("http://example.com/SimpleClass"));
+            Assert.ThrowsException<OWLException>(() => 
+              OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldThrowExceptionOnSerializingValuesFromRestrictionBecauseUndeclaredProperty.owx")));
+        }
+
+        [TestMethod]
         public void ShouldSerializeNamedIndividualDeclarations()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");

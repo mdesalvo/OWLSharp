@@ -244,7 +244,7 @@ namespace OWLSharp
                 bool onObjectProperty = ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty);
                 bool onDatatypeProperty = ontology.Model.PropertyModel.CheckHasDatatypeProperty(onProperty);
                 if (!onObjectProperty && !onDatatypeProperty)
-                    continue;
+                    throw new OWLException($"cannot find a declaration for object or data property '{onProperty}'");
 
                 //Write the corresponding element "EquivalentClasses"
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
