@@ -49,7 +49,7 @@ namespace OWLSharp
 
                 #region serialize
                 using (XmlWriter owlxmlWriter = XmlWriter.Create(outputStream, new XmlWriterSettings() {
-                    Encoding = RDFModelUtilities.UTF8_NoBOM, Indent = true}))
+                    Encoding = RDFModelUtilities.UTF8_NoBOM, Indent = true, CloseOutput = true }))
                 {
                     XmlDocument owlDoc = new XmlDocument();
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
@@ -198,13 +198,7 @@ namespace OWLSharp
             while (entitiesEnumerator.MoveNext())
             {
                 XmlNode declarationCategoryNode = owlDoc.CreateNode(XmlNodeType.Element, declarationCategory, RDFVocabulary.OWL.BASE_URI);
-                XmlNode declarationTypeNode = owlDoc.CreateNode(XmlNodeType.Element, declarationType, RDFVocabulary.OWL.BASE_URI);
-                (bool, string) abbreviatedIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(entitiesEnumerator.Current, ontologyGraphNamespaces);
-                if (abbreviatedIRI.Item1)
-                    declarationTypeNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedIRI.Item2);
-                else
-                    declarationTypeNode.AppendAttribute(owlDoc, "IRI", abbreviatedIRI.Item2);
-                declarationCategoryNode.AppendChild(declarationTypeNode);
+                WriteResourceElement(declarationCategoryNode, owlDoc, declarationType, entitiesEnumerator.Current, ontologyGraphNamespaces);
                 xmlNode.AppendChild(declarationCategoryNode);
             }
         }
@@ -219,47 +213,24 @@ namespace OWLSharp
                 bool onObjectProperty = ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty);
                 bool onDatatypeProperty = ontology.Model.PropertyModel.CheckHasDatatypeProperty(onProperty);
                 if (!onObjectProperty && !onDatatypeProperty)
-                    throw new OWLException($"cannot find a declaration for object or data property '{onProperty}'");
+                    throw new OWLException($"PropertModel does not contain a declaration for object or data property '{onProperty}'");
 
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
-                XmlNode classNode = owlDoc.CreateNode(XmlNodeType.Element, "Class", RDFVocabulary.OWL.BASE_URI);
-                (bool, string) abbreviatedIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(restrictionsEnumerator.Current, ontologyGraphNamespaces);
-                if (abbreviatedIRI.Item1)
-                    classNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedIRI.Item2);
-                else
-                    classNode.AppendAttribute(owlDoc, "IRI", abbreviatedIRI.Item2.Replace("bnode:","bnode://"));
-                equivalentClassesNode.AppendChild(classNode);
+                WriteResourceElement(equivalentClassesNode, owlDoc, "Class", restrictionsEnumerator.Current, ontologyGraphNamespaces);
 
                 #region [Object|Data][Some|All]ValuesFrom
                 bool isSomeValuesFromRestriction = ontology.Model.ClassModel.CheckHasSomeValuesFromRestrictionClass(restrictionsEnumerator.Current);
                 bool isAllValuesFromRestriction = ontology.Model.ClassModel.CheckHasAllValuesFromRestrictionClass(restrictionsEnumerator.Current);
                 if (isSomeValuesFromRestriction || isAllValuesFromRestriction)
                 {
-                    //Write the corresponding element "[Object|Data][Some|All]ValuesFrom"
                     string objectOrData = onObjectProperty ? "Object" : "Data";
                     string someOrAll = isSomeValuesFromRestriction ? "Some" : "All";
-                    XmlNode valuesFromNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}{someOrAll}ValuesFrom", RDFVocabulary.OWL.BASE_URI);
-
-                    //Write the corresponding element "[Object|Data]Property"
-                    XmlNode propertyNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}Property", RDFVocabulary.OWL.BASE_URI);
-                    (bool, string) abbreviatedPropertyIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(onProperty, ontologyGraphNamespaces);
-                    if (abbreviatedPropertyIRI.Item1)
-                        propertyNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedPropertyIRI.Item2);
-                    else
-                        propertyNode.AppendAttribute(owlDoc, "IRI", abbreviatedPropertyIRI.Item2);
-                    valuesFromNode.AppendChild(propertyNode);
-
-                    //Write the corresponding element "Class"
-                    RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current, 
+                    RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
                         isSomeValuesFromRestriction ? RDFVocabulary.OWL.SOME_VALUES_FROM : RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object as RDFResource;
-                    XmlNode onClassNode = owlDoc.CreateNode(XmlNodeType.Element, "Class", RDFVocabulary.OWL.BASE_URI);
-                    (bool, string) abbreviatedOnClassIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(onClass, ontologyGraphNamespaces);
-                    if (abbreviatedOnClassIRI.Item1)
-                        onClassNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedOnClassIRI.Item2);
-                    else
-                        onClassNode.AppendAttribute(owlDoc, "IRI", abbreviatedOnClassIRI.Item2.Replace("bnode:","bnode://"));
-                    valuesFromNode.AppendChild(onClassNode);
 
+                    XmlNode valuesFromNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}{someOrAll}ValuesFrom", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(valuesFromNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                    WriteResourceElement(valuesFromNode, owlDoc, "Class", onClass, ontologyGraphNamespaces);
                     equivalentClassesNode.AppendChild(valuesFromNode);
                 }
                 #endregion
@@ -269,34 +240,32 @@ namespace OWLSharp
                 if (isHasValueRestriction)
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
-                    XmlNode hasValueNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}HasValue", RDFVocabulary.OWL.BASE_URI);
-                    XmlNode propertyNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}Property", RDFVocabulary.OWL.BASE_URI);
-                    (bool, string) abbreviatedPropertyIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(onProperty, ontologyGraphNamespaces);
-                    if (abbreviatedPropertyIRI.Item1)
-                        propertyNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedPropertyIRI.Item2);
-                    else
-                        propertyNode.AppendAttribute(owlDoc, "IRI", abbreviatedPropertyIRI.Item2);
-                    hasValueNode.AppendChild(propertyNode);
-
-                    RDFPatternMember hasValuePMember = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember value = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
                         RDFVocabulary.OWL.HAS_VALUE, null, null].FirstOrDefault()?.Object;
-                    if (hasValuePMember is RDFResource hasValueResource)
-                    {
-                        XmlNode individualNode = owlDoc.CreateNode(XmlNodeType.Element, $"NamedIndividual", RDFVocabulary.OWL.BASE_URI);
-                        (bool, string) abbreviatedIndividualIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(hasValueResource, ontologyGraphNamespaces);
-                        if (abbreviatedIndividualIRI.Item1)
-                            individualNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedIndividualIRI.Item2);
-                        else
-                            individualNode.AppendAttribute(owlDoc, "IRI", abbreviatedIndividualIRI.Item2);
-                        hasValueNode.AppendChild(propertyNode);
-                    }
-                    else if (hasValuePMember is RDFLiteral hasValueLiteral)
+
+                    XmlNode hasValueNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}HasValue", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(hasValueNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                    if (value is RDFResource hasValueResource)
+                        WriteResourceElement(hasValueNode, owlDoc, "NamedIndividual", hasValueResource, ontologyGraphNamespaces);
+                    else if (value is RDFLiteral hasValueLiteral)
                         WriteLiteralElement(hasValueNode, owlDoc, hasValueLiteral);
+                    equivalentClassesNode.AppendChild(hasValueNode);
                 }
                 #endregion
 
                 xmlNode.AppendChild(equivalentClassesNode);
             }
+        }
+
+        internal static void WriteResourceElement(XmlNode xmlnode, XmlDocument owlDoc, string resourceNodeName, RDFResource resourceURI, List<RDFNamespace> ontologyGraphNamespaces)
+        {
+            XmlNode resourceNode = owlDoc.CreateNode(XmlNodeType.Element, resourceNodeName, RDFVocabulary.OWL.BASE_URI);
+            (bool, string) abbreviatedIndividualIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(resourceURI, ontologyGraphNamespaces);
+            if (abbreviatedIndividualIRI.Item1)
+                resourceNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedIndividualIRI.Item2);
+            else
+                resourceNode.AppendAttribute(owlDoc, "IRI", abbreviatedIndividualIRI.Item2.Replace("bnode:","bnode://"));
+            xmlnode.AppendChild(resourceNode);
         }
 
         internal static void WriteLiteralElement(XmlNode xmlNode, XmlDocument owlDoc, RDFLiteral literal)
