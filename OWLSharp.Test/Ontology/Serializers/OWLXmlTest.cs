@@ -758,6 +758,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""http://example.com/someValuesFromRestriction"" />
     <ObjectSomeValuesFrom>
@@ -765,9 +768,6 @@ namespace OWLSharp.Test
       <Class IRI=""http://example.com/SimpleClass"" />
     </ObjectSomeValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <ObjectProperty IRI=""http://example.com/objectProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -793,6 +793,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""http://example.com/someValuesFromRestriction"" />
     <DataSomeValuesFrom>
@@ -800,9 +803,6 @@ namespace OWLSharp.Test
       <Class IRI=""http://example.com/SimpleClass"" />
     </DataSomeValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <DataProperty IRI=""http://example.com/datatypeProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -828,6 +828,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""http://example.com/allValuesFromRestriction"" />
     <ObjectAllValuesFrom>
@@ -835,9 +838,6 @@ namespace OWLSharp.Test
       <Class IRI=""http://example.com/SimpleClass"" />
     </ObjectAllValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <ObjectProperty IRI=""http://example.com/objectProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -863,6 +863,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""http://example.com/allValuesFromRestriction"" />
     <DataAllValuesFrom>
@@ -870,9 +873,6 @@ namespace OWLSharp.Test
       <Class IRI=""http://example.com/SimpleClass"" />
     </DataAllValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <DataProperty IRI=""http://example.com/datatypeProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -899,6 +899,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class abbreviatedIRI=""geo:SpatialThing"" />
     <ObjectAllValuesFrom>
@@ -906,9 +909,6 @@ namespace OWLSharp.Test
       <Class IRI=""http://example.com/SimpleClass"" />
     </ObjectAllValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <ObjectProperty IRI=""http://example.com/objectProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -934,6 +934,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""bnode://12345"" />
     <ObjectAllValuesFrom>
@@ -941,9 +944,6 @@ namespace OWLSharp.Test
       <Class IRI=""http://example.com/SimpleClass"" />
     </ObjectAllValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <ObjectProperty IRI=""http://example.com/objectProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -970,6 +970,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""http://example.com/allValuesFromRestriction"" />
     <ObjectAllValuesFrom>
@@ -977,9 +980,6 @@ namespace OWLSharp.Test
       <Class abbreviatedIRI=""geo:SpatialThing"" />
     </ObjectAllValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <ObjectProperty IRI=""http://example.com/objectProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -1005,6 +1005,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""http://example.com/allValuesFromRestriction"" />
     <ObjectAllValuesFrom>
@@ -1012,9 +1015,6 @@ namespace OWLSharp.Test
       <Class IRI=""bnode://12345"" />
     </ObjectAllValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <ObjectProperty IRI=""http://example.com/objectProperty"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
@@ -1041,6 +1041,9 @@ namespace OWLSharp.Test
   <Declaration>
     <Class IRI=""http://example.com/SimpleClass"" />
   </Declaration>
+  <Declaration>
+    <DataProperty abbreviatedIRI=""geo:lat_long"" />
+  </Declaration>
   <EquivalentClasses>
     <Class IRI=""http://example.com/allValuesFromRestriction"" />
     <DataAllValuesFrom>
@@ -1048,9 +1051,6 @@ namespace OWLSharp.Test
       <Class IRI=""http://example.com/SimpleClass"" />
     </DataAllValuesFrom>
   </EquivalentClasses>
-  <Declaration>
-    <DataProperty abbreviatedIRI=""geo:lat_long"" />
-  </Declaration>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
