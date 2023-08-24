@@ -242,6 +242,15 @@ namespace OWLSharp
                 }
                 #endregion
 
+                #region ObjectHasSelf
+                bool isSelfRestriction = ontology.Model.ClassModel.CheckHasSelfRestrictionClass(restrictionsEnumerator.Current);
+                if (isSelfRestriction)
+                {
+                    //TODO
+
+                }
+                #endregion
+
                 xmlNode.AppendChild(equivalentClassesNode);
             }
         }
