@@ -221,6 +221,7 @@ namespace OWLSharp
                     WriteResourceElement(valuesFromNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
                     WriteResourceElement(valuesFromNode, owlDoc, "Class", onClass, ontologyGraphNamespaces);
                     equivalentClassesNode.AppendChild(valuesFromNode);
+                    continue;
                 }
                 #endregion
 
@@ -239,6 +240,7 @@ namespace OWLSharp
                     else if (value is RDFLiteral valueLiteral)
                         WriteLiteralElement(hasValueNode, owlDoc, valueLiteral);
                     equivalentClassesNode.AppendChild(hasValueNode);
+                    continue;
                 }
                 #endregion
 
@@ -248,6 +250,7 @@ namespace OWLSharp
                 {
                     //TODO
 
+                    continue;
                 }
                 #endregion
 
