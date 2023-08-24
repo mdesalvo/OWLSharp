@@ -738,6 +738,34 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeNamedIndividualDeclarations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
+            ontology.Data.DeclareIndividual(RDFVocabulary.GEO.LOCATION);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeNamedIndividualDeclarations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeNamedIndividualDeclarations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeNamedIndividualDeclarations.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+  </Declaration>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
         public void ShouldSerializeSomeValuesFromObjectRestriction()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
@@ -1067,29 +1095,126 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldSerializeNamedIndividualDeclarations()
+        public void ShouldSerializeHasValueObjectRestriction()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
-            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
-            ontology.Data.DeclareIndividual(RDFVocabulary.GEO.LOCATION);
-            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeNamedIndividualDeclarations.owx"));
-
-            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeNamedIndividualDeclarations.owx")));
-            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeNamedIndividualDeclarations.owx"));
-            string expectedFileContent=
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareHasValueRestriction(new RDFResource("http://example.com/hasValueRestriction"),
+              new RDFResource("http://example.com/objectProperty"), new RDFResource("http://example.com/individual"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueObjectRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueObjectRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueObjectRestriction.owx"));
+            string expectedFileContent =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <Prefix name="""" IRI=""http://example.com/"" />
   <Declaration>
-    <NamedIndividual IRI=""http://example.com/ID1"" />
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
   </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/hasValueRestriction"" />
+    <ObjectHasValue>
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <NamedIndividual IRI=""http://example.com/individual"" />
+    </ObjectHasValue>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeHasValueDatatypePlainLiteralRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/datatypeProperty"));
+            ontology.Model.ClassModel.DeclareHasValueRestriction(new RDFResource("http://example.com/hasValueRestriction"),
+              new RDFResource("http://example.com/datatypeProperty"), new RDFPlainLiteral("value!"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypePlainLiteralRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypePlainLiteralRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypePlainLiteralRestriction.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
   <Declaration>
-    <NamedIndividual abbreviatedIRI=""geo:location"" />
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
   </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/hasValueRestriction"" />
+    <DataHasValue>
+      <DataProperty IRI=""http://example.com/datatypeProperty"" />
+      <Literal>value!</Literal>
+    </DataHasValue>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeHasValueDatatypePlainLanguagedLiteralRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/datatypeProperty"));
+            ontology.Model.ClassModel.DeclareHasValueRestriction(new RDFResource("http://example.com/hasValueRestriction"),
+              new RDFResource("http://example.com/datatypeProperty"), new RDFPlainLiteral("value!", "en-US"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypePlainLanguagedLiteralRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypePlainLanguagedLiteralRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypePlainLanguagedLiteralRestriction.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/hasValueRestriction"" />
+    <DataHasValue>
+      <DataProperty IRI=""http://example.com/datatypeProperty"" />
+      <Literal xml:lang=""EN-US"">value!</Literal>
+    </DataHasValue>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeHasValueDatatypeTypedLiteralRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/datatypeProperty"));
+            ontology.Model.ClassModel.DeclareHasValueRestriction(new RDFResource("http://example.com/hasValueRestriction"),
+              new RDFResource("http://example.com/datatypeProperty"), new RDFTypedLiteral("value!", RDFModelEnums.RDFDatatypes.XSD_STRING));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypeTypedLiteralRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypeTypedLiteralRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasValueDatatypeTypedLiteralRestriction.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/hasValueRestriction"" />
+    <DataHasValue>
+      <DataProperty IRI=""http://example.com/datatypeProperty"" />
+      <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">value!</Literal>
+    </DataHasValue>
+  </EquivalentClasses>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
