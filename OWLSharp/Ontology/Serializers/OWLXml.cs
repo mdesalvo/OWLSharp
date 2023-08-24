@@ -64,21 +64,18 @@ namespace OWLSharp
                     #region Prefixes
                     foreach (RDFNamespace ontologyGraphNamespace in ontologyGraphNamespaces)
                     {
-                        ontologyNode.AppendAttribute(owlDoc, string.Concat("xmlns:", ontologyGraphNamespace.NamespacePrefix), ontologyGraphNamespace.ToString());
-                        //Also write the corresponding element "<Prefix name='...' IRI='...'>"
                         XmlNode prefixNode = owlDoc.CreateNode(XmlNodeType.Element, "Prefix", RDFVocabulary.OWL.BASE_URI);
                         prefixNode.AppendAttribute(owlDoc, "name", ontologyGraphNamespace.NamespacePrefix);
                         prefixNode.AppendAttribute(owlDoc, "IRI", ontologyGraphNamespace.NamespaceUri.ToString());
                         ontologyNode.AppendChild(prefixNode);
+                        ontologyNode.AppendAttribute(owlDoc, string.Concat("xmlns:", ontologyGraphNamespace.NamespacePrefix), ontologyGraphNamespace.ToString());
                     }
-                    //Write the ontology's base uri to resolve eventual relative #IDs
-                    ontologyNode.AppendAttribute(owlDoc, "xml:base", ontology.URI.ToString());
-                    //Also write the corresponding element "<Prefix name='' IRI='...'>"
                     XmlNode basePrefixNode = owlDoc.CreateNode(XmlNodeType.Element, "Prefix", RDFVocabulary.OWL.BASE_URI);
                     basePrefixNode.AppendAttribute(owlDoc, "name", string.Empty);
                     basePrefixNode.AppendAttribute(owlDoc, "IRI", ontology.URI.ToString());
                     ontologyNode.AppendChild(basePrefixNode);
-                    #endregion                    
+                    ontologyNode.AppendAttribute(owlDoc, "xml:base", ontology.URI.ToString());
+                    #endregion
 
                     #region Imports
                     foreach (RDFTriple impAnn in ontology.OBoxGraph.Where(t => t.Predicate.Equals(RDFVocabulary.OWL.IMPORTS)))
@@ -129,16 +126,7 @@ namespace OWLSharp
 
                         #region Literal
                         else
-                        {
-                            XmlNode ontologyAnnotationPropertyLiteralNode = owlDoc.CreateNode(XmlNodeType.Element, "Literal", RDFVocabulary.OWL.BASE_URI);
-                            XmlText ontologyAnnotationPropertyLiteralNodeText = owlDoc.CreateTextNode(((RDFLiteral)ontAnn.Object).Value.ToString());
-                            ontologyAnnotationPropertyLiteralNode.AppendChild(ontologyAnnotationPropertyLiteralNodeText);
-                            if (ontAnn.Object is RDFPlainLiteral ontAnnPLit && ontAnnPLit.HasLanguage())
-                                ontologyAnnotationPropertyLiteralNode.AppendAttribute(owlDoc, "xml:lang", ontAnnPLit.Language);
-                            else if (ontAnn.Object is RDFTypedLiteral ontAnnTLit)
-                                ontologyAnnotationPropertyLiteralNode.AppendAttribute(owlDoc, "datatypeIRI", RDFModelUtilities.GetDatatypeFromEnum(ontAnnTLit.Datatype));
-                            ontologyAnnotationNode.AppendChild(ontologyAnnotationPropertyLiteralNode); 
-                        }
+                            WriteLiteralElement(ontologyAnnotationNode, owlDoc, (RDFLiteral)ontAnn.Object);
                         #endregion
 
                         ontologyNode.AppendChild(ontologyAnnotationNode);
@@ -256,15 +244,9 @@ namespace OWLSharp
                     XmlNode propertyNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}Property", RDFVocabulary.OWL.BASE_URI);
                     (bool, string) abbreviatedPropertyIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(onProperty, ontologyGraphNamespaces);
                     if (abbreviatedPropertyIRI.Item1)
-                    {
-                        //Write the corresponding attribute "abbreviatedIRI='...'"
                         propertyNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedPropertyIRI.Item2);
-                    }
                     else
-                    {
-                        //Write the corresponding attribute "IRI='...'"
                         propertyNode.AppendAttribute(owlDoc, "IRI", abbreviatedPropertyIRI.Item2);
-                    }
                     valuesFromNode.AppendChild(propertyNode);
 
                     //Write the corresponding element "Class"
@@ -273,15 +255,9 @@ namespace OWLSharp
                     XmlNode onClassNode = owlDoc.CreateNode(XmlNodeType.Element, "Class", RDFVocabulary.OWL.BASE_URI);
                     (bool, string) abbreviatedOnClassIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(onClass, ontologyGraphNamespaces);
                     if (abbreviatedOnClassIRI.Item1)
-                    {
-                        //Write the corresponding attribute "abbreviatedIRI='...'"
                         onClassNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedOnClassIRI.Item2);
-                    }
                     else
-                    {
-                        //Write the corresponding attribute "IRI='...'" (in case of blank name switch to "bnode://" fake protocol)
                         onClassNode.AppendAttribute(owlDoc, "IRI", abbreviatedOnClassIRI.Item2.Replace("bnode:","bnode://"));
-                    }
                     valuesFromNode.AppendChild(onClassNode);
 
                     equivalentClassesNode.AppendChild(valuesFromNode);
@@ -315,21 +291,24 @@ namespace OWLSharp
                         hasValueNode.AppendChild(propertyNode);
                     }
                     else if (hasValuePMember is RDFLiteral hasValueLiteral)
-                    {
-                        XmlNode literalNode = owlDoc.CreateNode(XmlNodeType.Element, "Literal", RDFVocabulary.OWL.BASE_URI);
-                        XmlText literalNodeText = owlDoc.CreateTextNode(hasValueLiteral.Value);
-                        literalNode.AppendChild(literalNodeText);
-                        if (hasValueLiteral is RDFPlainLiteral hasValuePLit && hasValuePLit.HasLanguage())
-                            literalNode.AppendAttribute(owlDoc, "xml:lang", hasValuePLit.Language);
-                        else if (hasValueLiteral is RDFTypedLiteral hasValueTLit)
-                            literalNode.AppendAttribute(owlDoc, "datatypeIRI", RDFModelUtilities.GetDatatypeFromEnum(hasValueTLit.Datatype));
-                        hasValueNode.AppendChild(literalNode);
-                    }
+                        WriteLiteralElement(hasValueNode, owlDoc, hasValueLiteral);
                 }
                 #endregion
 
                 xmlNode.AppendChild(equivalentClassesNode);
             }
+        }
+
+        internal static void WriteLiteralElement(XmlNode xmlNode, XmlDocument owlDoc, RDFLiteral literal)
+        {
+            XmlNode literalNode = owlDoc.CreateNode(XmlNodeType.Element, "Literal", RDFVocabulary.OWL.BASE_URI);
+            XmlText literalNodeText = owlDoc.CreateTextNode(literal.Value);
+            literalNode.AppendChild(literalNodeText);
+            if (literal is RDFPlainLiteral hasValuePLit && hasValuePLit.HasLanguage())
+                literalNode.AppendAttribute(owlDoc, "xml:lang", hasValuePLit.Language);
+            else if (literal is RDFTypedLiteral hasValueTLit)
+                literalNode.AppendAttribute(owlDoc, "datatypeIRI", RDFModelUtilities.GetDatatypeFromEnum(hasValueTLit.Datatype));
+            xmlNode.AppendChild(literalNode);
         }
         #endregion
 
