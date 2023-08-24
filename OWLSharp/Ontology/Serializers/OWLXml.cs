@@ -199,7 +199,7 @@ namespace OWLSharp
                 bool onObjectProperty = ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty);
                 bool onDatatypeProperty = ontology.Model.PropertyModel.CheckHasDatatypeProperty(onProperty);
                 if (!onObjectProperty && !onDatatypeProperty)
-                    throw new OWLException($"PropertModel does not contain a declaration for object or data property '{onProperty}'");
+                    throw new OWLException($"PropertyModel does not contain a declaration for object or data property '{onProperty}'");
                 #endregion
 
                 //Restrictions are serialized as classes equivalent to...themselves OWL/XML-ified:
@@ -221,7 +221,6 @@ namespace OWLSharp
                     WriteResourceElement(valuesFromNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
                     WriteResourceElement(valuesFromNode, owlDoc, "Class", onClass, ontologyGraphNamespaces);
                     equivalentClassesNode.AppendChild(valuesFromNode);
-                    continue;
                 }
                 #endregion
 
@@ -240,17 +239,21 @@ namespace OWLSharp
                     else if (value is RDFLiteral valueLiteral)
                         WriteLiteralElement(hasValueNode, owlDoc, valueLiteral);
                     equivalentClassesNode.AppendChild(hasValueNode);
-                    continue;
                 }
                 #endregion
 
                 #region ObjectHasSelf
                 bool isSelfRestriction = ontology.Model.ClassModel.CheckHasSelfRestrictionClass(restrictionsEnumerator.Current);
-                if (isSelfRestriction)
+                if (isSelfRestriction && onObjectProperty)
                 {
-                    //TODO
-
-                    continue;
+                    RDFPatternMember hasSelf = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                        RDFVocabulary.OWL.HAS_SELF, null, null].FirstOrDefault()?.Object;
+                    if (hasSelf is RDFTypedLiteral hasSelfLiteral && hasSelfLiteral.Equals(RDFTypedLiteral.True))
+                    {
+                        XmlNode hasSelfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectHasSelf", RDFVocabulary.OWL.BASE_URI);
+                        WriteResourceElement(hasSelfNode, owlDoc, "ObjectProperty", onProperty, ontologyGraphNamespaces);
+                        equivalentClassesNode.AppendChild(hasSelfNode);
+                    }
                 }
                 #endregion
 
