@@ -203,7 +203,7 @@ namespace OWLSharp
                 #endregion
 
                 //Restrictions are serialized as classes equivalent to...themselves OWL/XML-ified:
-                //this is due to OWL/XML lacking support for a syntax expressing named or standalone restrictions
+                //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                 WriteResourceElement(equivalentClassesNode, owlDoc, "Class", restrictionsEnumerator.Current, ontologyGraphNamespaces);
 
