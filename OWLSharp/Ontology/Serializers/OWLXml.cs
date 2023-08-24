@@ -257,6 +257,18 @@ namespace OWLSharp
                 }
                 #endregion
 
+                #region [Object|Data]MinCardinality
+                //TODO
+                #endregion
+
+                #region [Object|Data]MaxCardinality
+                //TODO                
+                #endregion
+
+                #region [Object|Data]ExactCardinality
+                //TODO                
+                #endregion
+
                 xmlNode.AppendChild(equivalentClassesNode);
             }
         }
