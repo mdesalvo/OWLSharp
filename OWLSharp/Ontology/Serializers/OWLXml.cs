@@ -285,7 +285,29 @@ namespace OWLSharp
                 #endregion
 
                 #region [Object|Data]MaxCardinality
-                //TODO                
+                bool isMaxCardinality = ontology.Model.ClassModel.CheckHasMaxCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isMaxQCardinality = ontology.Model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                if (isMaxCardinality || isMaxQCardinality)
+                {
+                    string objectOrData = onObjectProperty ? "Object" : "Data";
+                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                        isMaxCardinality ? RDFVocabulary.OWL.MAX_CARDINALITY : RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
+                    if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral
+                         && cardinalityValueLiteral.HasDecimalDatatype()
+                          && uint.TryParse(cardinalityValueLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint cardinalityValueInteger))
+                    {
+                        XmlNode cardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MaxCardinality", RDFVocabulary.OWL.BASE_URI);
+                        cardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{cardinalityValueInteger}");
+                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        if (isMaxQCardinality)
+                        {
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                                RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
+                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                        }
+                        equivalentClassesNode.AppendChild(cardinalityNode);
+                    }
+                }
                 #endregion
 
                 #region [Object|Data]ExactCardinality
