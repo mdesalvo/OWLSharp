@@ -469,7 +469,6 @@ namespace OWLSharp
             }
         }
 
-
         internal static void WriteResourceElement(XmlNode xmlNode, XmlDocument owlDoc, string resourceNodeName, RDFResource resourceURI, List<RDFNamespace> ontGraphNamespaces)
         {
             XmlNode resourceNode = owlDoc.CreateNode(XmlNodeType.Element, resourceNodeName, RDFVocabulary.OWL.BASE_URI);
