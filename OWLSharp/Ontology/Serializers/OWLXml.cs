@@ -311,7 +311,29 @@ namespace OWLSharp
                 #endregion
 
                 #region [Object|Data]ExactCardinality
-                //TODO                
+                bool isExactCardinality = ontology.Model.ClassModel.CheckHasCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isExactQCardinality = ontology.Model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                if (isExactCardinality || isExactQCardinality)
+                {
+                    string objectOrData = onObjectProperty ? "Object" : "Data";
+                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                        isExactCardinality ? RDFVocabulary.OWL.CARDINALITY : RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
+                    if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral
+                         && cardinalityValueLiteral.HasDecimalDatatype()
+                          && uint.TryParse(cardinalityValueLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint cardinalityValueInteger))
+                    {
+                        XmlNode cardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}ExactCardinality", RDFVocabulary.OWL.BASE_URI);
+                        cardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{cardinalityValueInteger}");
+                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        if (isExactQCardinality)
+                        {
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                                RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
+                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                        }
+                        equivalentClassesNode.AppendChild(cardinalityNode);
+                    }
+                }
                 #endregion
 
                 xmlNode.AppendChild(equivalentClassesNode);
