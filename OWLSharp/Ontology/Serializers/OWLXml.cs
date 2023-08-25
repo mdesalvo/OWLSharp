@@ -214,12 +214,12 @@ namespace OWLSharp
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
                     string someOrAll = isSVFromRestriction ? "Some" : "All";
-                    RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFResource valuesFromClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
                         isSVFromRestriction ? RDFVocabulary.OWL.SOME_VALUES_FROM : RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object as RDFResource;
 
                     XmlNode valuesFromNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}{someOrAll}ValuesFrom", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(valuesFromNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
-                    WriteResourceElement(valuesFromNode, owlDoc, "Class", onClass, ontologyGraphNamespaces);
+                    WriteResourceElement(valuesFromNode, owlDoc, "Class", valuesFromClass, ontologyGraphNamespaces);
                     equivalentClassesNode.AppendChild(valuesFromNode);
                 }
                 #endregion
@@ -258,7 +258,27 @@ namespace OWLSharp
                 #endregion
 
                 #region [Object|Data]MinCardinality
-                //TODO
+                bool isMinCardinality = ontology.Model.ClassModel.CheckHasMinCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isMinQCardinality = ontology.Model.ClassModel.CheckHasMinQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                if (isMinCardinality || isMinQCardinality)
+                {
+                    string objectOrData = onObjectProperty ? "Object" : "Data";
+                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                        isMinCardinality ? RDFVocabulary.OWL.MIN_CARDINALITY : RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
+                    if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral && cardinalityValueLiteral.HasDecimalDatatype())
+                    {
+                        XmlNode cardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MinCardinality", RDFVocabulary.OWL.BASE_URI);
+                        cardinalityNode.AppendAttribute(owlDoc, "cardinality", cardinalityValueLiteral.Value);
+                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        if (isMinQCardinality)
+                        {
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                                RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
+                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                        }   
+                        equivalentClassesNode.AppendChild(cardinalityNode);
+                    }
+                }
                 #endregion
 
                 #region [Object|Data]MaxCardinality
