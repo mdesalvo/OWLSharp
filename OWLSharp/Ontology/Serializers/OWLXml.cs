@@ -310,6 +310,49 @@ namespace OWLSharp
                 }
                 #endregion
 
+                #region [Object|Data]MinMaxCardinality
+                bool isMinMaxCardinality = ontology.Model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isMinMaxQCardinality = ontology.Model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                if (isMinMaxCardinality || isMinMaxQCardinality)
+                {
+                    string objectOrData = onObjectProperty ? "Object" : "Data";
+                    RDFPatternMember minCardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                        isMinMaxCardinality ? RDFVocabulary.OWL.MIN_CARDINALITY : RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
+                    RDFPatternMember maxCardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                        isMinMaxCardinality ? RDFVocabulary.OWL.MAX_CARDINALITY : RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
+                    if (minCardinalityValue is RDFTypedLiteral minCardinalityValueLiteral
+                         && minCardinalityValueLiteral.HasDecimalDatatype()
+                          && uint.TryParse(minCardinalityValueLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint minCardinalityValueInteger))
+                    {
+                        XmlNode minCardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MinCardinality", RDFVocabulary.OWL.BASE_URI);
+                        minCardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{minCardinalityValueInteger}");
+                        WriteResourceElement(minCardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        if (isMinMaxQCardinality)
+                        {
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                                RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
+                            WriteResourceElement(minCardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                        }
+                        equivalentClassesNode.AppendChild(minCardinalityNode);
+                    }
+                    if (maxCardinalityValue is RDFTypedLiteral maxCardinalityValueLiteral
+                         && maxCardinalityValueLiteral.HasDecimalDatatype()
+                          && uint.TryParse(maxCardinalityValueLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint maxCardinalityValueInteger))
+                    {
+                        XmlNode maxCardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MaxCardinality", RDFVocabulary.OWL.BASE_URI);
+                        maxCardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{maxCardinalityValueInteger}");
+                        WriteResourceElement(maxCardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        if (isMinMaxQCardinality)
+                        {
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                                RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
+                            WriteResourceElement(maxCardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                        }
+                        equivalentClassesNode.AppendChild(maxCardinalityNode);
+                    }
+                }
+                #endregion
+
                 #region [Object|Data]ExactCardinality
                 bool isExactCardinality = ontology.Model.ClassModel.CheckHasCardinalityRestrictionClass(restrictionsEnumerator.Current);
                 bool isExactQCardinality = ontology.Model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);

@@ -1640,6 +1640,150 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeObjectMinMaxCardinalityRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareMinMaxCardinalityRestriction(new RDFResource("http://example.com/minmaxcRestriction"),
+              new RDFResource("http://example.com/objectProperty"), 1, 2);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectMinMaxCardinalityRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectMinMaxCardinalityRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectMinMaxCardinalityRestriction.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/minmaxcRestriction"" />
+    <ObjectMinCardinality cardinality=""1"">
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+    </ObjectMinCardinality>
+    <ObjectMaxCardinality cardinality=""2"">
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+    </ObjectMaxCardinality>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectMinMaxQualifiedCardinalityRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Class1"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objectProperty"));
+            ontology.Model.ClassModel.DeclareMinMaxQualifiedCardinalityRestriction(new RDFResource("http://example.com/minmaxqcRestriction"),
+              new RDFResource("http://example.com/objectProperty"), 1, 2, new RDFResource("http://example.com/Class1"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectMinMaxQualifiedCardinalityRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectMinMaxQualifiedCardinalityRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectMinMaxQualifiedCardinalityRestriction.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/Class1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objectProperty"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/minmaxqcRestriction"" />
+    <ObjectMinCardinality cardinality=""1"">
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class IRI=""http://example.com/Class1"" />
+    </ObjectMinCardinality>
+    <ObjectMaxCardinality cardinality=""2"">
+      <ObjectProperty IRI=""http://example.com/objectProperty"" />
+      <Class IRI=""http://example.com/Class1"" />
+    </ObjectMaxCardinality>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeDataMinMaxCardinalityRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dataProperty"));
+            ontology.Model.ClassModel.DeclareMinMaxCardinalityRestriction(new RDFResource("http://example.com/minmaxcRestriction"),
+              new RDFResource("http://example.com/dataProperty"), 1, 2);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataMinMaxCardinalityRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataMinMaxCardinalityRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataMinMaxCardinalityRestriction.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dataProperty"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/minmaxcRestriction"" />
+    <DataMinCardinality cardinality=""1"">
+      <DataProperty IRI=""http://example.com/dataProperty"" />
+    </DataMinCardinality>
+    <DataMaxCardinality cardinality=""2"">
+      <DataProperty IRI=""http://example.com/dataProperty"" />
+    </DataMaxCardinality>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeDataMinMaxQualifiedCardinalityRestriction()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dataProperty"));
+            ontology.Model.ClassModel.DeclareMinMaxQualifiedCardinalityRestriction(new RDFResource("http://example.com/minmaxqcRestriction"),
+              new RDFResource("http://example.com/dataProperty"), 1, 2, RDFVocabulary.XSD.INTEGER);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataMinMaxQualifiedCardinalityRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataMinMaxQualifiedCardinalityRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDataMinMaxQualifiedCardinalityRestriction.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dataProperty"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/minmaxqcRestriction"" />
+    <DataMinCardinality cardinality=""1"">
+      <DataProperty IRI=""http://example.com/dataProperty"" />
+      <Class abbreviatedIRI=""xsd:integer"" />
+    </DataMinCardinality>
+    <DataMaxCardinality cardinality=""2"">
+      <DataProperty IRI=""http://example.com/dataProperty"" />
+      <Class abbreviatedIRI=""xsd:integer"" />
+    </DataMaxCardinality>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
