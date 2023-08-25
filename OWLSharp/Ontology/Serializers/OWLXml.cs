@@ -70,8 +70,6 @@ namespace OWLSharp
                     WriteDeclarations(ontNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontGraphNamespaces);
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces);
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
-
-                    //InProgress..
                     WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
                     //TODO: composites, annotations(+owl:deprecated=true) and relations
