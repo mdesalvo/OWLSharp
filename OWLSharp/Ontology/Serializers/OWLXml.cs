@@ -72,7 +72,7 @@ namespace OWLSharp
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
                     //InProgress..
-                    //enumerates
+                    WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
                     //TODO: composites, annotations(+owl:deprecated=true) and relations
                     //TODO: domain, range, annotations(+owl:deprecated=true) and relations
@@ -90,7 +90,7 @@ namespace OWLSharp
         }
         #endregion
 
-        #region Utilities
+        #region Write
         internal static List<RDFNamespace> GetGraphNamespaces(OWLOntology ontology)
         {
             RDFGraph ontologyGraph = ontology.ToRDFGraph();
@@ -378,6 +378,27 @@ namespace OWLSharp
                         equivalentClassesNode.AppendChild(cardinalityNode);
                     }
                 }
+                #endregion
+
+                xmlNode.AppendChild(equivalentClassesNode);
+            }
+        }
+
+        internal static void WriteEnumerates(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        {
+            IEnumerator<RDFResource> enumerates = ontology.Model.ClassModel.EnumeratesEnumerator;
+            while (enumerates.MoveNext())
+            {
+                //Enumerates are serialized as classes equivalent to...themselves OWL/XML-reified:
+                //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
+                XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
+                WriteResourceElement(equivalentClassesNode, owlDoc, "Class", enumerates.Current, ontGraphNamespaces);
+
+                #region ObjectOneOf
+                XmlNode oneOfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectOneOf", RDFVocabulary.OWL.BASE_URI);
+                foreach (RDFResource enumIndividual in ontology.Data.GetIndividualsOf(ontology.Model, enumerates.Current))
+                    WriteResourceElement(oneOfNode, owlDoc, "NamedIndividual", enumIndividual, ontGraphNamespaces);
+                equivalentClassesNode.AppendChild(oneOfNode);
                 #endregion
 
                 xmlNode.AppendChild(equivalentClassesNode);
