@@ -46,7 +46,7 @@ namespace OWLSharp
         {
             try
             {
-                List<RDFNamespace> ontologyGraphNamespaces = GetGraphNamespaces(ontology);
+                List<RDFNamespace> ontGraphNamespaces = GetGraphNamespaces(ontology);
 
                 #region serialize
                 using (XmlWriter owlxmlWriter = XmlWriter.Create(outputStream, new XmlWriterSettings() {
@@ -55,21 +55,21 @@ namespace OWLSharp
                     XmlDocument owlDoc = new XmlDocument();
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
 
-                    XmlNode ontologyNode = WriteOntologyNode(owlDoc, ontology, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "Declaration", "DataProperty", ontology.Model.PropertyModel.DatatypePropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "Declaration", "AnnotationProperty", ontology.Model.PropertyModel.AnnotationPropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "FunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.FunctionalObjectPropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "InverseFunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.InverseFunctionalPropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "SymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.SymmetricPropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "AsymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.AsymmetricPropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "TransitiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.TransitivePropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "ReflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.ReflexivePropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontologyGraphNamespaces);
-                    WriteDeclarations(ontologyNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontologyGraphNamespaces);
-                    WriteRestrictions(ontologyNode, owlDoc, ontology, ontologyGraphNamespaces);
+                    XmlNode ontNode = WriteOntologyNode(owlDoc, ontology, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "DataProperty", ontology.Model.PropertyModel.DatatypePropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "AnnotationProperty", ontology.Model.PropertyModel.AnnotationPropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "FunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.FunctionalObjectPropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "InverseFunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.InverseFunctionalPropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "SymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.SymmetricPropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "AsymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.AsymmetricPropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "TransitiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.TransitivePropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "ReflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.ReflexivePropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontGraphNamespaces);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces);
+                    WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
                     //InProgress..
                     //enumerates
@@ -78,7 +78,7 @@ namespace OWLSharp
                     //TODO: domain, range, annotations(+owl:deprecated=true) and relations
                     //TODO: anonymous individuals, domain, range, annotations(+owl:deprecated=true) and relations
 
-                    owlDoc.AppendChild(ontologyNode);
+                    owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
                 }
                 #endregion
@@ -101,7 +101,7 @@ namespace OWLSharp
             return ontologyGraphNamespaces;
         }
 
-        internal static XmlNode WriteOntologyNode(XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontologyGraphNamespaces)
+        internal static XmlNode WriteOntologyNode(XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
         {
             //Ontology
             XmlNode ontologyNode = owlDoc.CreateNode(XmlNodeType.Element, "Ontology", RDFVocabulary.OWL.BASE_URI);
@@ -111,7 +111,7 @@ namespace OWLSharp
                 ontologyNode.AppendAttribute(owlDoc, "versionIRI", versionIRI.ToString());
 
             //Prefixes
-            foreach (RDFNamespace ontologyGraphNamespace in ontologyGraphNamespaces)
+            foreach (RDFNamespace ontologyGraphNamespace in ontGraphNamespaces)
             {
                 XmlNode prefixNode = owlDoc.CreateNode(XmlNodeType.Element, "Prefix", RDFVocabulary.OWL.BASE_URI);
                 prefixNode.AppendAttribute(owlDoc, "name", ontologyGraphNamespace.NamespacePrefix);
@@ -141,14 +141,14 @@ namespace OWLSharp
             {
                 XmlNode ontologyAnnotationNode = owlDoc.CreateNode(XmlNodeType.Element, "Annotation", RDFVocabulary.OWL.BASE_URI);
 
-                (bool, string) abbreviatedOntAnnProp = RDFQueryUtilities.AbbreviateRDFPatternMember(ontAnn.Predicate, ontologyGraphNamespaces);
+                (bool, string) abbreviatedOntAnnProp = RDFQueryUtilities.AbbreviateRDFPatternMember(ontAnn.Predicate, ontGraphNamespaces);
                 XmlNode ontologyAnnotationPropertyNode = owlDoc.CreateNode(XmlNodeType.Element, "AnnotationProperty", RDFVocabulary.OWL.BASE_URI);
                 ontologyAnnotationPropertyNode.AppendAttribute(owlDoc, abbreviatedOntAnnProp.Item1 ? "abbreviatedIRI" : "IRI", abbreviatedOntAnnProp.Item2);
                 ontologyAnnotationNode.AppendChild(ontologyAnnotationPropertyNode);
 
                 if (ontAnn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
                 {
-                    (bool, string) abbreviatedOntAnnObj = RDFQueryUtilities.AbbreviateRDFPatternMember(ontAnn.Object, ontologyGraphNamespaces);
+                    (bool, string) abbreviatedOntAnnObj = RDFQueryUtilities.AbbreviateRDFPatternMember(ontAnn.Object, ontGraphNamespaces);
                     if (abbreviatedOntAnnObj.Item1)
                     {
                         XmlNode ontologyAnnotationPropertyAbbreviatedIRINode = owlDoc.CreateNode(XmlNodeType.Element, "AbbreviatedIRI", RDFVocabulary.OWL.BASE_URI);
@@ -180,64 +180,64 @@ namespace OWLSharp
             xmlNode.Attributes.Append(attr);
         }
 
-        internal static void WriteDeclarations(XmlNode xmlNode, XmlDocument owlDoc, string declarationOuterType, string declarationInnerType, IEnumerator<RDFResource> entitiesEnumerator, List<RDFNamespace> ontologyGraphNamespaces)
+        internal static void WriteDeclarations(XmlNode xmlNode, XmlDocument owlDoc, string declarationOuterType, string declarationInnerType, IEnumerator<RDFResource> entitiesEnumerator, List<RDFNamespace> ontGraphNamespaces)
         {
             while (entitiesEnumerator.MoveNext())
             {
-                XmlNode declarationCategoryNode = owlDoc.CreateNode(XmlNodeType.Element, declarationOuterType, RDFVocabulary.OWL.BASE_URI);
-                WriteResourceElement(declarationCategoryNode, owlDoc, declarationInnerType, entitiesEnumerator.Current, ontologyGraphNamespaces);
-                xmlNode.AppendChild(declarationCategoryNode);
+                XmlNode declarationOuterNode = owlDoc.CreateNode(XmlNodeType.Element, declarationOuterType, RDFVocabulary.OWL.BASE_URI);
+                WriteResourceElement(declarationOuterNode, owlDoc, declarationInnerType, entitiesEnumerator.Current, ontGraphNamespaces);
+                xmlNode.AppendChild(declarationOuterNode);
             }
         }
         
-        internal static void WriteRestrictions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontologyGraphNamespaces)
+        internal static void WriteRestrictions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
         {
-            IEnumerator<RDFResource> restrictionsEnumerator = ontology.Model.ClassModel.RestrictionsEnumerator;
-            while (restrictionsEnumerator.MoveNext())
+            IEnumerator<RDFResource> restrictions = ontology.Model.ClassModel.RestrictionsEnumerator;
+            while (restrictions.MoveNext())
             {
                 #region Guards
-                RDFResource onProperty = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current, RDFVocabulary.OWL.ON_PROPERTY, null, null]
+                RDFResource onProperty = ontology.Model.ClassModel.TBoxGraph[restrictions.Current, RDFVocabulary.OWL.ON_PROPERTY, null, null]
                                            .FirstOrDefault()?.Object as RDFResource;
                 bool onObjectProperty = ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty);
                 bool onDatatypeProperty = ontology.Model.PropertyModel.CheckHasDatatypeProperty(onProperty);
                 if (!onObjectProperty && !onDatatypeProperty)
-                    throw new OWLException($"PropertyModel does not contain a declaration for object or data property '{onProperty}'");
+                    throw new OWLException($"PropertyModel does not contain a declaration for object or datatype property '{onProperty}'");
                 #endregion
 
                 //Restrictions are serialized as classes equivalent to...themselves OWL/XML-reified:
                 //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
-                WriteResourceElement(equivalentClassesNode, owlDoc, "Class", restrictionsEnumerator.Current, ontologyGraphNamespaces);
+                WriteResourceElement(equivalentClassesNode, owlDoc, "Class", restrictions.Current, ontGraphNamespaces);
 
                 #region [Object|Data][Some|All]ValuesFrom
-                bool isSVFromRestriction = ontology.Model.ClassModel.CheckHasSomeValuesFromRestrictionClass(restrictionsEnumerator.Current);
-                bool isAVFromRestriction = ontology.Model.ClassModel.CheckHasAllValuesFromRestrictionClass(restrictionsEnumerator.Current);
+                bool isSVFromRestriction = ontology.Model.ClassModel.CheckHasSomeValuesFromRestrictionClass(restrictions.Current);
+                bool isAVFromRestriction = ontology.Model.ClassModel.CheckHasAllValuesFromRestrictionClass(restrictions.Current);
                 if (isSVFromRestriction || isAVFromRestriction)
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
                     string someOrAll = isSVFromRestriction ? "Some" : "All";
-                    RDFResource valuesFromClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFResource valuesFromClass = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         isSVFromRestriction ? RDFVocabulary.OWL.SOME_VALUES_FROM : RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object as RDFResource;
 
                     XmlNode valuesFromNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}{someOrAll}ValuesFrom", RDFVocabulary.OWL.BASE_URI);
-                    WriteResourceElement(valuesFromNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
-                    WriteResourceElement(valuesFromNode, owlDoc, "Class", valuesFromClass, ontologyGraphNamespaces);
+                    WriteResourceElement(valuesFromNode, owlDoc, $"{objectOrData}Property", onProperty, ontGraphNamespaces);
+                    WriteResourceElement(valuesFromNode, owlDoc, "Class", valuesFromClass, ontGraphNamespaces);
                     equivalentClassesNode.AppendChild(valuesFromNode);
                 }
                 #endregion
 
                 #region [Object|Data]HasValue
-                bool isHVRestriction = ontology.Model.ClassModel.CheckHasValueRestrictionClass(restrictionsEnumerator.Current);
+                bool isHVRestriction = ontology.Model.ClassModel.CheckHasValueRestrictionClass(restrictions.Current);
                 if (isHVRestriction)
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
-                    RDFPatternMember value = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember value = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         RDFVocabulary.OWL.HAS_VALUE, null, null].FirstOrDefault()?.Object;
 
                     XmlNode hasValueNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}HasValue", RDFVocabulary.OWL.BASE_URI);
-                    WriteResourceElement(hasValueNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                    WriteResourceElement(hasValueNode, owlDoc, $"{objectOrData}Property", onProperty, ontGraphNamespaces);
                     if (value is RDFResource valueResource)
-                        WriteResourceElement(hasValueNode, owlDoc, "NamedIndividual", valueResource, ontologyGraphNamespaces);
+                        WriteResourceElement(hasValueNode, owlDoc, "NamedIndividual", valueResource, ontGraphNamespaces);
                     else if (value is RDFLiteral valueLiteral)
                         WriteLiteralElement(hasValueNode, owlDoc, valueLiteral);
                     equivalentClassesNode.AppendChild(hasValueNode);
@@ -245,27 +245,27 @@ namespace OWLSharp
                 #endregion
 
                 #region ObjectHasSelf
-                bool isSelfRestriction = ontology.Model.ClassModel.CheckHasSelfRestrictionClass(restrictionsEnumerator.Current);
+                bool isSelfRestriction = ontology.Model.ClassModel.CheckHasSelfRestrictionClass(restrictions.Current);
                 if (isSelfRestriction && onObjectProperty)
                 {
-                    RDFPatternMember hasSelf = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember hasSelf = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         RDFVocabulary.OWL.HAS_SELF, null, null].FirstOrDefault()?.Object;
                     if (hasSelf is RDFTypedLiteral hasSelfLiteral && hasSelfLiteral.Equals(RDFTypedLiteral.True))
                     {
                         XmlNode hasSelfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectHasSelf", RDFVocabulary.OWL.BASE_URI);
-                        WriteResourceElement(hasSelfNode, owlDoc, "ObjectProperty", onProperty, ontologyGraphNamespaces);
+                        WriteResourceElement(hasSelfNode, owlDoc, "ObjectProperty", onProperty, ontGraphNamespaces);
                         equivalentClassesNode.AppendChild(hasSelfNode);
                     }
                 }
                 #endregion
 
                 #region [Object|Data]MinCardinality
-                bool isMinCardinality = ontology.Model.ClassModel.CheckHasMinCardinalityRestrictionClass(restrictionsEnumerator.Current);
-                bool isMinQCardinality = ontology.Model.ClassModel.CheckHasMinQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isMinCardinality = ontology.Model.ClassModel.CheckHasMinCardinalityRestrictionClass(restrictions.Current);
+                bool isMinQCardinality = ontology.Model.ClassModel.CheckHasMinQualifiedCardinalityRestrictionClass(restrictions.Current);
                 if (isMinCardinality || isMinQCardinality)
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
-                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         isMinCardinality ? RDFVocabulary.OWL.MIN_CARDINALITY : RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
                     if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral 
                          && cardinalityValueLiteral.HasDecimalDatatype()
@@ -273,12 +273,12 @@ namespace OWLSharp
                     {
                         XmlNode cardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MinCardinality", RDFVocabulary.OWL.BASE_URI);
                         cardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{cardinalityValueInteger}");
-                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontGraphNamespaces);
                         if (isMinQCardinality)
                         {
-                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                                 RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
-                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontGraphNamespaces);
                         }
                         equivalentClassesNode.AppendChild(cardinalityNode);
                     }
@@ -286,12 +286,12 @@ namespace OWLSharp
                 #endregion
 
                 #region [Object|Data]MaxCardinality
-                bool isMaxCardinality = ontology.Model.ClassModel.CheckHasMaxCardinalityRestrictionClass(restrictionsEnumerator.Current);
-                bool isMaxQCardinality = ontology.Model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isMaxCardinality = ontology.Model.ClassModel.CheckHasMaxCardinalityRestrictionClass(restrictions.Current);
+                bool isMaxQCardinality = ontology.Model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(restrictions.Current);
                 if (isMaxCardinality || isMaxQCardinality)
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
-                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         isMaxCardinality ? RDFVocabulary.OWL.MAX_CARDINALITY : RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
                     if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral
                          && cardinalityValueLiteral.HasDecimalDatatype()
@@ -299,12 +299,12 @@ namespace OWLSharp
                     {
                         XmlNode cardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MaxCardinality", RDFVocabulary.OWL.BASE_URI);
                         cardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{cardinalityValueInteger}");
-                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontGraphNamespaces);
                         if (isMaxQCardinality)
                         {
-                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                                 RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
-                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontGraphNamespaces);
                         }
                         equivalentClassesNode.AppendChild(cardinalityNode);
                     }
@@ -312,14 +312,14 @@ namespace OWLSharp
                 #endregion
 
                 #region [Object|Data]MinMaxCardinality
-                bool isMinMaxCardinality = ontology.Model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(restrictionsEnumerator.Current);
-                bool isMinMaxQCardinality = ontology.Model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isMinMaxCardinality = ontology.Model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(restrictions.Current);
+                bool isMinMaxQCardinality = ontology.Model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(restrictions.Current);
                 if (isMinMaxCardinality || isMinMaxQCardinality)
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
-                    RDFPatternMember minCardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember minCardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         isMinMaxCardinality ? RDFVocabulary.OWL.MIN_CARDINALITY : RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
-                    RDFPatternMember maxCardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember maxCardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         isMinMaxCardinality ? RDFVocabulary.OWL.MAX_CARDINALITY : RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
                     if (minCardinalityValue is RDFTypedLiteral minCardinalityValueLiteral
                          && minCardinalityValueLiteral.HasDecimalDatatype()
@@ -327,12 +327,12 @@ namespace OWLSharp
                     {
                         XmlNode minCardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MinCardinality", RDFVocabulary.OWL.BASE_URI);
                         minCardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{minCardinalityValueInteger}");
-                        WriteResourceElement(minCardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        WriteResourceElement(minCardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontGraphNamespaces);
                         if (isMinMaxQCardinality)
                         {
-                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                                 RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
-                            WriteResourceElement(minCardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                            WriteResourceElement(minCardinalityNode, owlDoc, $"Class", onClass, ontGraphNamespaces);
                         }
                         equivalentClassesNode.AppendChild(minCardinalityNode);
                     }
@@ -342,12 +342,12 @@ namespace OWLSharp
                     {
                         XmlNode maxCardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MaxCardinality", RDFVocabulary.OWL.BASE_URI);
                         maxCardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{maxCardinalityValueInteger}");
-                        WriteResourceElement(maxCardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        WriteResourceElement(maxCardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontGraphNamespaces);
                         if (isMinMaxQCardinality)
                         {
-                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                                 RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
-                            WriteResourceElement(maxCardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                            WriteResourceElement(maxCardinalityNode, owlDoc, $"Class", onClass, ontGraphNamespaces);
                         }
                         equivalentClassesNode.AppendChild(maxCardinalityNode);
                     }
@@ -355,12 +355,12 @@ namespace OWLSharp
                 #endregion
 
                 #region [Object|Data]ExactCardinality
-                bool isExactCardinality = ontology.Model.ClassModel.CheckHasCardinalityRestrictionClass(restrictionsEnumerator.Current);
-                bool isExactQCardinality = ontology.Model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current);
+                bool isExactCardinality = ontology.Model.ClassModel.CheckHasCardinalityRestrictionClass(restrictions.Current);
+                bool isExactQCardinality = ontology.Model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(restrictions.Current);
                 if (isExactCardinality || isExactQCardinality)
                 {
                     string objectOrData = onObjectProperty ? "Object" : "Data";
-                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                    RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                         isExactCardinality ? RDFVocabulary.OWL.CARDINALITY : RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
                     if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral
                          && cardinalityValueLiteral.HasDecimalDatatype()
@@ -368,12 +368,12 @@ namespace OWLSharp
                     {
                         XmlNode cardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}ExactCardinality", RDFVocabulary.OWL.BASE_URI);
                         cardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{cardinalityValueInteger}");
-                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
+                        WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontGraphNamespaces);
                         if (isExactQCardinality)
                         {
-                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
+                            RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictions.Current,
                                 RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
-                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
+                            WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontGraphNamespaces);
                         }
                         equivalentClassesNode.AppendChild(cardinalityNode);
                     }
@@ -384,10 +384,10 @@ namespace OWLSharp
             }
         }
 
-        internal static void WriteResourceElement(XmlNode xmlNode, XmlDocument owlDoc, string resourceNodeName, RDFResource resourceURI, List<RDFNamespace> ontologyGraphNamespaces)
+        internal static void WriteResourceElement(XmlNode xmlNode, XmlDocument owlDoc, string resourceNodeName, RDFResource resourceURI, List<RDFNamespace> ontGraphNamespaces)
         {
             XmlNode resourceNode = owlDoc.CreateNode(XmlNodeType.Element, resourceNodeName, RDFVocabulary.OWL.BASE_URI);
-            (bool, string) abbreviatedIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(resourceURI, ontologyGraphNamespaces);
+            (bool, string) abbreviatedIRI = RDFQueryUtilities.AbbreviateRDFPatternMember(resourceURI, ontGraphNamespaces);
             if (abbreviatedIRI.Item1)
                 resourceNode.AppendAttribute(owlDoc, "abbreviatedIRI", abbreviatedIRI.Item2);
             else
