@@ -71,9 +71,7 @@ namespace OWLSharp
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces);
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces);
-
-                    //InProgress...
-                    //composites
+                    WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
                     //TODO: annotations(+owl:deprecated=true) and relations (SubClassOf, EquivalentClasses, DisjointWith, DisjointUnionOf, AllDisjointClasses, HasKey)
                     //TODO: domain, range, annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, PropertyDisjointWith, InverseOf, AllDisjointProperties, PropertyChain, Domain, Range)
@@ -416,6 +414,61 @@ namespace OWLSharp
                 xmlNode.AppendChild(equivalentClassesNode);
             }
         }
+
+        internal static void WriteComposites(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        {
+            IEnumerator<RDFResource> composites = ontology.Model.ClassModel.CompositesEnumerator;
+            while (composites.MoveNext())
+            {
+                //Composites are serialized as classes equivalent to...themselves OWL/XML-reified:
+                //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
+                XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
+                WriteResourceElement(equivalentClassesNode, owlDoc, "Class", composites.Current, ontGraphNamespaces);
+
+                #region ObjectUnionOf
+                if (ontology.Model.ClassModel.CheckHasCompositeUnionClass(composites.Current))
+                {
+                    RDFResource objectUnionRepresentative = ontology.Model.ClassModel.TBoxGraph[composites.Current, RDFVocabulary.OWL.UNION_OF, null, null]
+                                                              .FirstOrDefault()?.Object as RDFResource;           
+                    RDFCollection objectUnionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, objectUnionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+                    
+                    XmlNode unionOfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectUnionOf", RDFVocabulary.OWL.BASE_URI);
+                    foreach (RDFResource objectUnionMember in objectUnionMembers)
+                        WriteResourceElement(unionOfNode, owlDoc, "Class", objectUnionMember, ontGraphNamespaces);
+                    equivalentClassesNode.AppendChild(unionOfNode);
+                }
+                #endregion
+
+                #region ObjectIntersectionOf
+                if (ontology.Model.ClassModel.CheckHasCompositeIntersectionClass(composites.Current))
+                {
+                    RDFResource objectIntersectionRepresentative = ontology.Model.ClassModel.TBoxGraph[composites.Current, RDFVocabulary.OWL.INTERSECTION_OF, null, null]
+                                                                     .FirstOrDefault()?.Object as RDFResource;           
+                    RDFCollection objectIntersectionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, objectIntersectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+                    
+                    XmlNode intersectionOfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectIntersectionOf", RDFVocabulary.OWL.BASE_URI);
+                    foreach (RDFResource objectIntersectionMember in objectIntersectionMembers)
+                        WriteResourceElement(intersectionOfNode, owlDoc, "Class", objectIntersectionMember, ontGraphNamespaces);
+                    equivalentClassesNode.AppendChild(intersectionOfNode);
+                }
+                #endregion
+
+                #region ObjectComplementOf
+                if (ontology.Model.ClassModel.CheckHasCompositeComplementClass(composites.Current))
+                {
+                    RDFResource complementClass = ontology.Model.ClassModel.TBoxGraph[composites.Current, RDFVocabulary.OWL.COMPLEMENT_OF, null, null]
+                                                    .FirstOrDefault()?.Object as RDFResource;           
+
+                    XmlNode complementOfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectComplementOf", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(complementOfNode, owlDoc, "Class", complementClass, ontGraphNamespaces);
+                    equivalentClassesNode.AppendChild(complementOfNode);
+                }
+                #endregion
+
+                xmlNode.AppendChild(equivalentClassesNode);
+            }
+        }
+
 
         internal static void WriteResourceElement(XmlNode xmlNode, XmlDocument owlDoc, string resourceNodeName, RDFResource resourceURI, List<RDFNamespace> ontGraphNamespaces)
         {

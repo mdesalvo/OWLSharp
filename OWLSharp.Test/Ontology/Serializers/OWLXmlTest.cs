@@ -1848,6 +1848,85 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeObjectUnionOf()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("http://example.com/UnionClass"),
+              new List<RDFResource>() { new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2") });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectUnionOf.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectUnionOf.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectUnionOf.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/UnionClass"" />
+    <ObjectUnionOf>
+      <Class IRI=""http://example.com/Cls1"" />
+      <Class IRI=""http://example.com/Cls2"" />
+    </ObjectUnionOf>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectIntersectionOf()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareIntersectionClass(new RDFResource("http://example.com/IntersectionClass"),
+              new List<RDFResource>() { new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2") });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIntersectionOf.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIntersectionOf.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIntersectionOf.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/IntersectionClass"" />
+    <ObjectIntersectionOf>
+      <Class IRI=""http://example.com/Cls1"" />
+      <Class IRI=""http://example.com/Cls2"" />
+    </ObjectIntersectionOf>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectComplementOf()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareComplementClass(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectComplementOf.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectComplementOf.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectComplementOf.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <ObjectComplementOf>
+      <Class IRI=""http://example.com/Cls2"" />
+    </ObjectComplementOf>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
