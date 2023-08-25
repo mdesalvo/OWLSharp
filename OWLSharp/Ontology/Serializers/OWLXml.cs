@@ -203,7 +203,7 @@ namespace OWLSharp
                     throw new OWLException($"PropertyModel does not contain a declaration for object or data property '{onProperty}'");
                 #endregion
 
-                //Restrictions are serialized as classes equivalent to...themselves OWL/XML-ified:
+                //Restrictions are serialized as classes equivalent to...themselves OWL/XML-reified:
                 //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                 WriteResourceElement(equivalentClassesNode, owlDoc, "Class", restrictionsEnumerator.Current, ontologyGraphNamespaces);
