@@ -69,11 +69,12 @@ namespace OWLSharp
                     WriteDeclarations(ontologyNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontologyGraphNamespaces);
                     WriteDeclarations(ontologyNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontologyGraphNamespaces);
-
-                    //InProgress...
                     WriteRestrictions(ontologyNode, owlDoc, ontology, ontologyGraphNamespaces);
-                    
-                    //TODO: composites, enumerates, annotations(+owl:deprecated=true) and relations
+
+                    //InProgress..
+                    //enumerates
+
+                    //TODO: composites, annotations(+owl:deprecated=true) and relations
                     //TODO: domain, range, annotations(+owl:deprecated=true) and relations
                     //TODO: anonymous individuals, domain, range, annotations(+owl:deprecated=true) and relations
 
