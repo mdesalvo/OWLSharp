@@ -90,6 +90,14 @@ namespace OWLSharp.Test
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumMembers2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumMembers2"), RDFVocabulary.RDF.FIRST, new RDFResource("ex:indiv2")));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumMembers2"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:enumlitclass"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:enumlitclass"), RDFVocabulary.OWL.ONE_OF, new RDFResource("bnode:enumlitMembers")));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers"), RDFVocabulary.RDF.FIRST, new RDFPlainLiteral("val1","en-US")));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers"), RDFVocabulary.RDF.REST, new RDFResource("bnode:enumlitMembers2")));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers2"), RDFVocabulary.RDF.FIRST, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers2"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:unionclass"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:unionclass"), RDFVocabulary.OWL.UNION_OF, new RDFResource("bnode:unionMembers")));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:unionMembers"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
@@ -201,6 +209,7 @@ namespace OWLSharp.Test
         public void ShouldLoadEnumerateDeclarations()
         {
             Assert.IsTrue(Ontology.Model.ClassModel.CheckHasEnumerateClass(new RDFResource("ex:enumclass")));
+            Assert.IsTrue(Ontology.Model.ClassModel.CheckHasEnumerateClass(new RDFResource("ex:enumlitclass")));
         }
 
         [TestMethod]

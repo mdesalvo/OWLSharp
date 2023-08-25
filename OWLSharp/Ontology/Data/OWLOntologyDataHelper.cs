@@ -646,7 +646,8 @@ namespace OWLSharp
             RDFGraph oneOfGraph = model.ClassModel.TBoxGraph[owlEnumerate, RDFVocabulary.OWL.ONE_OF, null, null];
 
             //Compute answered individuals
-            RDFCollection enumerateIndividualsCollection = RDFModelUtilities.DeserializeCollectionFromGraph(model.ClassModel.TBoxGraph, (RDFResource)oneOfGraph.First().Object, RDFModelEnums.RDFTripleFlavors.SPO);
+            RDFCollection enumerateIndividualsCollection = RDFModelUtilities.DeserializeCollectionFromGraph(model.ClassModel.TBoxGraph, 
+                (RDFResource)oneOfGraph.First().Object, RDFModelEnums.RDFTripleFlavors.SPO);
             foreach (RDFResource enumerateIndividual in enumerateIndividualsCollection)
                 enumerateIndividuals.Add(enumerateIndividual);
 

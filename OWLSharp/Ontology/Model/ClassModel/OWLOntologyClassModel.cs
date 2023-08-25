@@ -604,6 +604,32 @@ namespace OWLSharp
             return this;
         }
 
+        /// <summary>
+        /// Declares the existence of the given owl:oneOf enumerate class to the model
+        /// </summary>
+        public OWLOntologyClassModel DeclareEnumerateClass(RDFResource owlClass, List<RDFLiteral> literals)
+        {
+            #region Guards
+            if (owlClass == null)
+                throw new OWLException("Cannot declare owl:oneOf class to the model because given \"owlClass\" parameter is null");
+            if (literals == null)
+                throw new OWLException("Cannot declare owl:oneOf class to the model because given \"literals\" parameter is null");
+            if (literals.Count == 0)
+                throw new OWLException("Cannot declare owl:oneOf class to the model because given \"literals\" parameter is an empty list");
+            #endregion
+
+            //Declare class to the model
+            DeclareClass(owlClass);
+
+            //Add knowledge to the T-BOX
+            RDFCollection literalsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Literal);
+            literals.ForEach(literal => literalsCollection.AddItem(literal));
+            TBoxGraph.AddCollection(literalsCollection);
+            TBoxGraph.AddTriple(new RDFTriple(owlClass, RDFVocabulary.OWL.ONE_OF, literalsCollection.ReificationSubject));
+
+            return this;
+        }
+
         //COMPOSITES
 
         /// <summary>

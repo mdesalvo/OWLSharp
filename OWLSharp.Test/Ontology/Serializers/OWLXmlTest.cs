@@ -1816,6 +1816,38 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeLiteralEnumerate()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/datatypeProperty"));
+            ontology.Model.ClassModel.DeclareEnumerateClass(new RDFResource("http://example.com/enumClass"),
+              new List<RDFLiteral>() { new RDFPlainLiteral("hello","en-US"), new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INT) });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeLiteralEnumerate.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeLiteralEnumerate.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeLiteralEnumerate.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/datatypeProperty"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/enumClass"" />
+    <DataOneOf>
+      <Literal xml:lang=""EN-US"">hello</Literal>
+      <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">25</Literal>
+    </DataOneOf>
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {

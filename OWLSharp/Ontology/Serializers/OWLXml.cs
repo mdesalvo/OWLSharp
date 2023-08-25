@@ -392,10 +392,21 @@ namespace OWLSharp
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                 WriteResourceElement(equivalentClassesNode, owlDoc, "Class", enumerates.Current, ontGraphNamespaces);
 
-                #region ObjectOneOf
-                XmlNode oneOfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectOneOf", RDFVocabulary.OWL.BASE_URI);
-                foreach (RDFResource enumIndividual in ontology.Data.GetIndividualsOf(ontology.Model, enumerates.Current))
-                    WriteResourceElement(oneOfNode, owlDoc, "NamedIndividual", enumIndividual, ontGraphNamespaces);
+                #region [Object|Data]OneOf
+                RDFResource enumRepresentative = ontology.Model.ClassModel.TBoxGraph[enumerates.Current, RDFVocabulary.OWL.ONE_OF, null, null]
+                                                    .FirstOrDefault()?.Object as RDFResource;           
+                RDFModelEnums.RDFTripleFlavors enumFlavor = RDFModelUtilities.DetectCollectionFlavorFromGraph(ontology.Model.ClassModel.TBoxGraph, enumRepresentative);
+                RDFCollection enumMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, enumRepresentative, enumFlavor);
+                string objectOrData = enumFlavor == RDFModelEnums.RDFTripleFlavors.SPO ? "Object" : "Data"; 
+
+                XmlNode oneOfNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}OneOf", RDFVocabulary.OWL.BASE_URI);
+                foreach (RDFPatternMember enumMember in enumMembers)
+                {
+                    if (enumMember is RDFResource individualMember)
+                        WriteResourceElement(oneOfNode, owlDoc, "NamedIndividual", individualMember, ontGraphNamespaces);
+                    else if (enumMember is RDFLiteral literalMember)
+                        WriteLiteralElement(oneOfNode, owlDoc, literalMember);
+                }   
                 equivalentClassesNode.AppendChild(oneOfNode);
                 #endregion
 
