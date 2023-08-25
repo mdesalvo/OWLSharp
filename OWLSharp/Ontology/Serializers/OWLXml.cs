@@ -72,9 +72,12 @@ namespace OWLSharp
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
-                    //TODO: composites, annotations(+owl:deprecated=true) and relations
-                    //TODO: domain, range, annotations(+owl:deprecated=true) and relations
-                    //TODO: anonymous individuals, domain, range, annotations(+owl:deprecated=true) and relations
+                    //InProgress...
+                    //composites
+
+                    //TODO: annotations(+owl:deprecated=true) and relations (SubClassOf, EquivalentClasses, DisjointWith, DisjointUnionOf, AllDisjointClasses, HasKey)
+                    //TODO: domain, range, annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, PropertyDisjointWith, InverseOf, AllDisjointProperties, PropertyChain, Domain, Range)
+                    //TODO: anonymous individuals, domain, range, annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
