@@ -509,7 +509,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Declares the existence of the given owl:minQUalifiedCardinality restriction to the model [OWL2]
+        /// Declares the existence of the given owl:minQualifiedCardinality restriction to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareMinQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, RDFResource onClass)
         {

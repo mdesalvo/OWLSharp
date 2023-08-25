@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -265,17 +266,19 @@ namespace OWLSharp
                     string objectOrData = onObjectProperty ? "Object" : "Data";
                     RDFPatternMember cardinalityValue = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
                         isMinCardinality ? RDFVocabulary.OWL.MIN_CARDINALITY : RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object;
-                    if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral && cardinalityValueLiteral.HasDecimalDatatype())
+                    if (cardinalityValue is RDFTypedLiteral cardinalityValueLiteral 
+                         && cardinalityValueLiteral.HasDecimalDatatype()
+                          && uint.TryParse(cardinalityValueLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint cardinalityValueInteger))
                     {
                         XmlNode cardinalityNode = owlDoc.CreateNode(XmlNodeType.Element, $"{objectOrData}MinCardinality", RDFVocabulary.OWL.BASE_URI);
-                        cardinalityNode.AppendAttribute(owlDoc, "cardinality", cardinalityValueLiteral.Value);
+                        cardinalityNode.AppendAttribute(owlDoc, "cardinality", $"{cardinalityValueInteger}");
                         WriteResourceElement(cardinalityNode, owlDoc, $"{objectOrData}Property", onProperty, ontologyGraphNamespaces);
                         if (isMinQCardinality)
                         {
                             RDFResource onClass = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current,
                                 RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object as RDFResource;
                             WriteResourceElement(cardinalityNode, owlDoc, $"Class", onClass, ontologyGraphNamespaces);
-                        }   
+                        }
                         equivalentClassesNode.AppendChild(cardinalityNode);
                     }
                 }
