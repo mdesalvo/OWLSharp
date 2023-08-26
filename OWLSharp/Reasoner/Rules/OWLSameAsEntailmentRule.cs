@@ -39,8 +39,8 @@ namespace OWLSharp
                         {
                             //Create the inferences
                             OWLReasonerEvidence evidence = currentIndividualSubjectTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                ? new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLSameAsEntailmentRule), new RDFTriple(sameIndividual, (RDFResource)currentIndividualSubjectTriple.Predicate, (RDFResource)currentIndividualSubjectTriple.Object))
-                                : new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLSameAsEntailmentRule), new RDFTriple(sameIndividual, (RDFResource)currentIndividualSubjectTriple.Predicate, (RDFLiteral)currentIndividualSubjectTriple.Object));
+                                ? new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLSameAsEntailmentRule), new RDFTriple(sameIndividual, (RDFResource)currentIndividualSubjectTriple.Predicate, (RDFResource)currentIndividualSubjectTriple.Object).SetInference())
+                                : new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLSameAsEntailmentRule), new RDFTriple(sameIndividual, (RDFResource)currentIndividualSubjectTriple.Predicate, (RDFLiteral)currentIndividualSubjectTriple.Object).SetInference());
 
                             //Add the inference to the report
                             if (!ontology.Data.ABoxGraph.ContainsTriple(evidence.EvidenceContent))
@@ -56,7 +56,7 @@ namespace OWLSharp
                         {
                             //Create the inferences
                             OWLReasonerEvidence evidence = new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, 
-                                nameof(OWLSameAsEntailmentRule), new RDFTriple((RDFResource)currentIndividualObjectTriple.Subject, (RDFResource)currentIndividualObjectTriple.Predicate, sameIndividual));
+                                nameof(OWLSameAsEntailmentRule), new RDFTriple((RDFResource)currentIndividualObjectTriple.Subject, (RDFResource)currentIndividualObjectTriple.Predicate, sameIndividual).SetInference());
 
                             //Add the inference to the report
                             if (!ontology.Data.ABoxGraph.ContainsTriple(evidence.EvidenceContent))

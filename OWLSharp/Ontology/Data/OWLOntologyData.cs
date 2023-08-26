@@ -267,7 +267,7 @@ namespace OWLSharp
                 ABoxGraph.AddTriple(new RDFTriple(leftIndividual, RDFVocabulary.OWL.SAME_AS, rightIndividual));
 
                 //Also add an automatic A-BOX inference exploiting symmetry of owl:sameAs relation
-                ABoxGraph.AddTriple(new RDFTriple(rightIndividual, RDFVocabulary.OWL.SAME_AS, leftIndividual));
+                ABoxGraph.AddTriple(new RDFTriple(rightIndividual, RDFVocabulary.OWL.SAME_AS, leftIndividual).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("SameAs relation between individual '{0}' and individual '{1}' cannot be declared to the data because it would violate OWL-DL integrity", leftIndividual, rightIndividual));
@@ -300,7 +300,7 @@ namespace OWLSharp
                 ABoxGraph.AddTriple(new RDFTriple(leftIndividual, RDFVocabulary.OWL.DIFFERENT_FROM, rightIndividual));
 
                 //Also add an automatic A-BOX inference exploiting symmetry of owl:differentFrom relation
-                ABoxGraph.AddTriple(new RDFTriple(rightIndividual, RDFVocabulary.OWL.DIFFERENT_FROM, leftIndividual));
+                ABoxGraph.AddTriple(new RDFTriple(rightIndividual, RDFVocabulary.OWL.DIFFERENT_FROM, leftIndividual).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("DifferentFrom relation between individual '{0}' and individual '{1}' cannot be declared to the data because it would violate OWL-DL integrity", leftIndividual, rightIndividual));

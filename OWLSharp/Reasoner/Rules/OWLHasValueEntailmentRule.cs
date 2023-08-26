@@ -45,8 +45,8 @@ namespace OWLSharp
                         {
                             //Create the inference
                             OWLReasonerEvidence evidence = currentHVRestrictionValue is RDFResource
-                                ? new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLHasValueEntailmentRule), new RDFTriple(subClassOfHVRestrictionMember, currentHVRestrictionOnProperty, (RDFResource)currentHVRestrictionValue))
-                                : new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLHasValueEntailmentRule), new RDFTriple(subClassOfHVRestrictionMember, currentHVRestrictionOnProperty, (RDFLiteral)currentHVRestrictionValue));
+                                ? new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLHasValueEntailmentRule), new RDFTriple(subClassOfHVRestrictionMember, currentHVRestrictionOnProperty, (RDFResource)currentHVRestrictionValue).SetInference())
+                                : new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data, nameof(OWLHasValueEntailmentRule), new RDFTriple(subClassOfHVRestrictionMember, currentHVRestrictionOnProperty, (RDFLiteral)currentHVRestrictionValue).SetInference());
 
                             //Add the inference to the report
                             if (!ontology.Data.ABoxGraph.ContainsTriple(evidence.EvidenceContent))

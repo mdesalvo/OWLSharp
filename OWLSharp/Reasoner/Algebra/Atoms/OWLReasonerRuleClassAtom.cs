@@ -98,7 +98,7 @@ namespace OWLSharp
                 if (leftArgumentValue is RDFResource leftArgumentValueResource)
                 {
                     //Create the inference
-                    RDFTriple atomInference = new RDFTriple(leftArgumentValueResource, RDFVocabulary.RDF.TYPE, Predicate);
+                    RDFTriple atomInference = new RDFTriple(leftArgumentValueResource, RDFVocabulary.RDF.TYPE, Predicate).SetInference();
 
                     //Add the inference to the report
                     if (!ontology.Data.ABoxGraph.ContainsTriple(atomInference))

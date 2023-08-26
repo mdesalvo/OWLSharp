@@ -755,7 +755,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, rightProperty));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:equivalentProperty relation
-                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, leftProperty));
+                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, leftProperty).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("EquivalentProperty relation between property '{0}' and property '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftProperty, rightProperty));
@@ -790,7 +790,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftProperty, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, rightProperty));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:propertyDisjointWith relation
-                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, leftProperty));
+                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, leftProperty).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("PropertyDisjointWith relation between property '{0}' and property '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftProperty, rightProperty));
@@ -849,7 +849,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftProperty, RDFVocabulary.OWL.INVERSE_OF, rightProperty));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:inverseProperty relation
-                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.INVERSE_OF, leftProperty));
+                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.INVERSE_OF, leftProperty).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("Inverse relation between property '{0}' and property '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftProperty, rightProperty));

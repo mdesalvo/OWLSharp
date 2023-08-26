@@ -69,12 +69,14 @@ namespace OWLSharp
                     WriteDeclarations(ontNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontGraphNamespaces);
                     WriteDeclarations(ontNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontGraphNamespaces);
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces);
+                    //ClassModel
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteSubClassOfRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
+                    WriteSubClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
+                    WriteEquivalentClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
-                    //TODO: annotations(+owl:deprecated=true) and relations (SubClassOf, EquivalentClasses, DisjointClasses, DisjointUnion, AllDisjointClasses, HasKey)
+                    //TODO: annotations(+owl:deprecated=true) and relations (EquivalentClasses, DisjointClasses, DisjointUnion, AllDisjointClasses, HasKey)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
@@ -470,7 +472,7 @@ namespace OWLSharp
             }
         }
 
-        internal static void WriteSubClassOfRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        internal static void WriteSubClassRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
         {
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
@@ -482,6 +484,23 @@ namespace OWLSharp
                     XmlNode subClassOfNode = owlDoc.CreateNode(XmlNodeType.Element, "SubClassOf", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(subClassOfNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
                     WriteResourceElement(subClassOfNode, owlDoc, "Class", superClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(subClassOfNode);
+                }
+            }
+        }
+
+        internal static void WriteEquivalentClassRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        {
+            IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
+            while (classes.MoveNext())
+            {
+                foreach (RDFResource equivalentClass in ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
+                                                         .Select(t => t.Object)
+                                                         .OfType<RDFResource>())
+                {
+                    XmlNode subClassOfNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(subClassOfNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
+                    WriteResourceElement(subClassOfNode, owlDoc, "Class", equivalentClass, ontGraphNamespaces);
                     xmlNode.AppendChild(subClassOfNode);
                 }
             }

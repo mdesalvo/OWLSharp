@@ -871,7 +871,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftClass, RDFVocabulary.OWL.EQUIVALENT_CLASS, rightClass));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:equivalentClass relation
-                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.EQUIVALENT_CLASS, leftClass));
+                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.EQUIVALENT_CLASS, leftClass).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("EquivalentClass relation between class '{0}' and class '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftClass, rightClass));
@@ -906,7 +906,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftClass, RDFVocabulary.OWL.DISJOINT_WITH, rightClass));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:disjointWith relation
-                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.DISJOINT_WITH, leftClass));
+                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.DISJOINT_WITH, leftClass).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("DisjointWith relation between class '{0}' and class '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftClass, rightClass));

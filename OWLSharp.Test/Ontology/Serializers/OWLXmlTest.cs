@@ -1928,7 +1928,7 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldSerializeSubClassOfRelation()
+        public void ShouldSerializeSubClassRelation()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls1"));
@@ -1936,9 +1936,9 @@ namespace OWLSharp.Test
             ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls3"));
             ontology.Model.ClassModel.DeclareSubClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"));
             ontology.Model.ClassModel.DeclareSubClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls3"));
-            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassOfRelation.owx"));
-            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassOfRelation.owx")));
-            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassOfRelation.owx"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassRelation.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassRelation.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassRelation.owx"));
             string expectedFileContent =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
@@ -1969,7 +1969,7 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldSerializeSubClassOfRelationHavingRestriction()
+        public void ShouldSerializeSubClassRelationHavingRestriction()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls1"));
@@ -1978,9 +1978,9 @@ namespace OWLSharp.Test
               new RDFResource("http://example.com/objProp"), new RDFResource("http://example.com/Cls2"));
             ontology.Model.ClassModel.DeclareSubClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/AVFRestr"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp"));
-            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassOfRelationHavingRestriction.owx"));
-            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassOfRelationHavingRestriction.owx")));
-            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassOfRelationHavingRestriction.owx"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassRelationHavingRestriction.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassRelationHavingRestriction.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubClassRelationHavingRestriction.owx"));
             string expectedFileContent =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
@@ -2009,6 +2009,54 @@ namespace OWLSharp.Test
     <Class IRI=""http://example.com/Cls1"" />
     <Class IRI=""http://example.com/AVFRestr"" />
   </SubClassOf>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeEquivalentClassRelation()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls1"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls3"));
+            ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentClassRelation.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentClassRelation.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentClassRelation.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/Cls1"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls2"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls3"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <Class IRI=""http://example.com/Cls2"" />
+  </EquivalentClasses>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <Class IRI=""http://example.com/Cls3"" />
+  </EquivalentClasses>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls2"" />
+    <Class IRI=""http://example.com/Cls1"" />
+  </EquivalentClasses>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls3"" />
+    <Class IRI=""http://example.com/Cls1"" />
+  </EquivalentClasses>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
