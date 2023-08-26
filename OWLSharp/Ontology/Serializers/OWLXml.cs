@@ -72,10 +72,11 @@ namespace OWLSharp
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces);
+                    WriteSubClassOfRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
-                    //TODO: annotations(+owl:deprecated=true) and relations (SubClassOf, EquivalentClasses, DisjointWith, DisjointUnionOf, AllDisjointClasses, HasKey)
-                    //TODO: domain, range, annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, PropertyDisjointWith, InverseOf, AllDisjointProperties, PropertyChain, Domain, Range)
-                    //TODO: anonymous individuals, domain, range, annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
+                    //TODO: annotations(+owl:deprecated=true) and relations (SubClassOf, EquivalentClasses, DisjointClasses, DisjointUnion, AllDisjointClasses, HasKey)
+                    //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
+                    //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
@@ -466,6 +467,23 @@ namespace OWLSharp
                 #endregion
 
                 xmlNode.AppendChild(equivalentClassesNode);
+            }
+        }
+
+        internal static void WriteSubClassOfRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        {
+            IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
+            while (classes.MoveNext())
+            {
+                foreach (RDFResource superClass in ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.RDFS.SUB_CLASS_OF, null, null]
+                                                    .Select(t => t.Object)
+                                                    .OfType<RDFResource>())
+                {
+                    XmlNode subClassOfNode = owlDoc.CreateNode(XmlNodeType.Element, "SubClassOf", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(subClassOfNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
+                    WriteResourceElement(subClassOfNode, owlDoc, "Class", superClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(subClassOfNode);
+                }
             }
         }
 
