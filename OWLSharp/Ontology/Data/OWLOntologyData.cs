@@ -473,14 +473,15 @@ namespace OWLSharp
         /// <summary>
         /// Gets a graph representation of the data
         /// </summary>
-        public RDFGraph ToRDFGraph()
-            => ABoxGraph.UnionWith(OBoxGraph);
+        public RDFGraph ToRDFGraph(bool includeInferences=true)
+            => includeInferences ? ABoxGraph.UnionWith(OBoxGraph)
+                                 : new RDFGraph(ABoxGraph.Where(t => !t.IsInference).ToList()).UnionWith(OBoxGraph);
 
         /// <summary>
         /// Asynchronously gets a graph representation of the data
         /// </summary>
-        public Task<RDFGraph> ToRDFGraphAsync()
-            => Task.Run(() => ToRDFGraph());
+        public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
+            => Task.Run(() => ToRDFGraph(includeInferences));
         #endregion
     }
 }

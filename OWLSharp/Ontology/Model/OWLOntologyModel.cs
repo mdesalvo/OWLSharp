@@ -101,15 +101,15 @@ namespace OWLSharp
         /// <summary>
         /// Gets a graph representation of the model
         /// </summary>
-        public RDFGraph ToRDFGraph()
-            => ClassModel.ToRDFGraph()
-                  .UnionWith(PropertyModel.ToRDFGraph());
+        public RDFGraph ToRDFGraph(bool includeInferences=true)
+            => ClassModel.ToRDFGraph(includeInferences)
+                  .UnionWith(PropertyModel.ToRDFGraph(includeInferences));
 
         /// <summary>
         /// Asynchronously gets a graph representation of the model
         /// </summary>
-        public Task<RDFGraph> ToRDFGraphAsync()
-            => Task.Run(() => ToRDFGraph());
+        public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
+            => Task.Run(() => ToRDFGraph(includeInferences));
         #endregion
     }
 }

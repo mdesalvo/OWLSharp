@@ -1293,6 +1293,29 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldExportToGraphWithoutInferences()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareClass(new RDFResource("ex:classA"));
+            classModel.DeclareClass(new RDFResource("ex:classB"));
+            classModel.DeclareClass(new RDFResource("ex:classC"));
+            classModel.DeclareClass(new RDFResource("ex:classD"));
+            classModel.DeclareClass(new RDFResource("ex:classE"), new OWLOntologyClassBehavior() { Deprecated = true });
+            classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
+            classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
+            classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
+            classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
+            RDFGraph graph = classModel.ToRDFGraph(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 32);
+        }
+
+        [TestMethod]
         public async Task ShouldExportToGraphAsync()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
@@ -1310,6 +1333,26 @@ namespace OWLSharp.Test
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 15);
+        }
+
+        [TestMethod]
+        public async Task ShouldExportToGraphAsyncWithoutInferences()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareClass(new RDFResource("ex:classA"));
+            classModel.DeclareClass(new RDFResource("ex:classB"));
+            classModel.DeclareClass(new RDFResource("ex:classC"));
+            classModel.DeclareClass(new RDFResource("ex:classD"));
+            classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
+            classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
+            classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
+            classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
+            classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
+            RDFGraph graph = await classModel.ToRDFGraphAsync(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 13);
         }
         #endregion
     }

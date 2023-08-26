@@ -36,13 +36,13 @@ namespace OWLSharp
         /// <summary>
         /// Serializes the given ontology to the given filepath using XML data format.
         /// </summary>
-        internal static void Serialize(OWLOntology ontology, string filepath)
-            => Serialize(ontology, new FileStream(filepath, FileMode.Create));
+        internal static void Serialize(OWLOntology ontology, string filepath, bool includeInferences=true)
+            => Serialize(ontology, new FileStream(filepath, FileMode.Create), includeInferences);
 
         /// <summary>
         /// Serializes the given ontology to the given stream using XML data format.
         /// </summary>
-        internal static void Serialize(OWLOntology ontology, Stream outputStream)
+        internal static void Serialize(OWLOntology ontology, Stream outputStream, bool includeInferences=true)
         {
             try
             {
