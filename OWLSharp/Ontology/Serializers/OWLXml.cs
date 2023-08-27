@@ -78,7 +78,7 @@ namespace OWLSharp
                     WriteDisjointClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteDisjointUnionClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
-                    //TODO: annotations(+owl:deprecated=true) and relations (AllDisjointClasses, HasKey)
+                    //TODO: annotations(+owl:deprecated=true) and relations (HasKey)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
@@ -528,6 +528,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
             {
+                //owl:disjointUnionOf
                 RDFResource disjointUnionRepresentative = ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null]
                                                             .FirstOrDefault()?.Object as RDFResource;
                 if (disjointUnionRepresentative != null)
@@ -540,6 +541,24 @@ namespace OWLSharp
                         foreach (RDFResource disjointUnionClass in disjointUnionClasses)
                             WriteResourceElement(disjointClassesNode, owlDoc, "Class", disjointUnionClass, ontGraphNamespaces);
                         xmlNode.AppendChild(disjointClassesNode);
+                    }
+                }
+
+                //owl:AllDisjointClasses (OWL/XML lacks support for this construct, so it fallbacks to DisjointClasses)
+                if (ontology.Model.ClassModel.TBoxGraph.ContainsTriple(new RDFTriple(classes.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES)))
+                {
+                    RDFResource disjointMembersRepresentative = ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.MEMBERS, null, null]
+                                                                  .FirstOrDefault()?.Object as RDFResource;
+                    if (disjointMembersRepresentative != null)
+                    {
+                        RDFCollection disjointMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, disjointMembersRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+                        if (disjointMembers.ItemsCount > 0)
+                        {
+                            XmlNode disjointMembersNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointClasses", RDFVocabulary.OWL.BASE_URI);
+                            foreach (RDFResource disjointMember in disjointMembers)
+                                WriteResourceElement(disjointMembersNode, owlDoc, "Class", disjointMember, ontGraphNamespaces);
+                            xmlNode.AppendChild(disjointMembersNode);
+                        }
                     }
                 }
             }
