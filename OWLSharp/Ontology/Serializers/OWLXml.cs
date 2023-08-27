@@ -77,8 +77,9 @@ namespace OWLSharp
                     WriteEquivalentClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteDisjointClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteDisjointUnionClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
+                    WriteHasKeyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
-                    //TODO: annotations(+owl:deprecated=true) and relations (HasKey)
+                    //TODO: annotations(+owl:deprecated=true)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
@@ -560,6 +561,26 @@ namespace OWLSharp
                             xmlNode.AppendChild(disjointMembersNode);
                         }
                     }
+                }
+            }
+        }
+
+        internal static void WriteHasKeyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
+        {
+            IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
+            while (classes.MoveNext())
+            {
+                List<RDFResource> keyProperties = ontology.Model.ClassModel.GetKeyPropertiesOf(classes.Current);
+                if (keyProperties.Count > 0)
+                {
+                    XmlNode hasKeyNode = owlDoc.CreateNode(XmlNodeType.Element, "HasKey", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(hasKeyNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
+                    foreach (RDFResource keyProperty in keyProperties)
+                    {
+                        string objectOrData = ontology.Model.PropertyModel.CheckHasObjectProperty(keyProperty) ? "Object" : "Data";
+                        WriteResourceElement(hasKeyNode, owlDoc, $"{objectOrData}Property", keyProperty, ontGraphNamespaces);
+                    }                            
+                    xmlNode.AppendChild(hasKeyNode);
                 }
             }
         }
