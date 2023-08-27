@@ -135,9 +135,7 @@ namespace OWLSharp
         {
             List<RDFTriple> result = new List<RDFTriple>();
 
-            result.AddRange(Ontology.Model.PropertyModel.OBoxGraph.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                                                                    && Ontology.Model.PropertyModel.CheckHasAnnotationProperty((RDFResource)ann.Predicate)
-                                                                                        && ann.Subject.Equals(Property)));
+            result.AddRange(Ontology.Model.PropertyModel.OBoxGraph.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO && ann.Subject.Equals(Property)));
 
             return result;
         }
@@ -155,9 +153,7 @@ namespace OWLSharp
         {
             List<RDFTriple> result = new List<RDFTriple>();
 
-            result.AddRange(Ontology.Model.PropertyModel.OBoxGraph.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL
-                                                                                    && Ontology.Model.PropertyModel.CheckHasAnnotationProperty((RDFResource)ann.Predicate)
-                                                                                        && ann.Subject.Equals(Property)));
+            result.AddRange(Ontology.Model.PropertyModel.OBoxGraph.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL && ann.Subject.Equals(Property)));
 
             return result;
         }
