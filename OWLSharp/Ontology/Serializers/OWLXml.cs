@@ -75,8 +75,9 @@ namespace OWLSharp
                     WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteSubClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteEquivalentClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
+                    WriteDisjointClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
-                    //TODO: annotations(+owl:deprecated=true) and relations (DisjointClasses, DisjointUnion, AllDisjointClasses, HasKey)
+                    //TODO: annotations(+owl:deprecated=true) and relations (DisjointUnion, AllDisjointClasses, HasKey)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
@@ -103,7 +104,7 @@ namespace OWLSharp
             return ontologyGraphNamespaces;
         }
 
-        internal static XmlNode WriteOntologyNode(XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        internal static XmlNode WriteOntologyNode(XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             //Ontology
             XmlNode ontologyNode = owlDoc.CreateNode(XmlNodeType.Element, "Ontology", RDFVocabulary.OWL.BASE_URI);
@@ -174,15 +175,7 @@ namespace OWLSharp
             return ontologyNode;
         }
 
-        internal static void AppendAttribute(this XmlNode xmlNode, XmlDocument owlDoc, string attrName, string attrValue)
-        {
-            XmlAttribute attr = owlDoc.CreateAttribute(attrName);
-            XmlText attrText = owlDoc.CreateTextNode(attrValue);
-            attr.AppendChild(attrText);
-            xmlNode.Attributes.Append(attr);
-        }
-
-        internal static void WriteDeclarations(XmlNode xmlNode, XmlDocument owlDoc, string declarationOuterType, string declarationInnerType, IEnumerator<RDFResource> entitiesEnumerator, List<RDFNamespace> ontGraphNamespaces)
+        internal static void WriteDeclarations(XmlNode xmlNode, XmlDocument owlDoc, string declarationOuterType, string declarationInnerType, IEnumerator<RDFResource> entitiesEnumerator, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             while (entitiesEnumerator.MoveNext())
             {
@@ -192,7 +185,7 @@ namespace OWLSharp
             }
         }
         
-        internal static void WriteRestrictions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        internal static void WriteRestrictions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> restrictions = ontology.Model.ClassModel.RestrictionsEnumerator;
             while (restrictions.MoveNext())
@@ -386,7 +379,7 @@ namespace OWLSharp
             }
         }
 
-        internal static void WriteEnumerates(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        internal static void WriteEnumerates(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> enumerates = ontology.Model.ClassModel.EnumeratesEnumerator;
             while (enumerates.MoveNext())
@@ -418,7 +411,7 @@ namespace OWLSharp
             }
         }
 
-        internal static void WriteComposites(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        internal static void WriteComposites(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> composites = ontology.Model.ClassModel.CompositesEnumerator;
             while (composites.MoveNext())
@@ -472,7 +465,7 @@ namespace OWLSharp
             }
         }
 
-        internal static void WriteSubClassRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        internal static void WriteSubClassRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
@@ -489,7 +482,7 @@ namespace OWLSharp
             }
         }
 
-        internal static void WriteEquivalentClassRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces)
+        internal static void WriteEquivalentClassRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
@@ -500,13 +493,41 @@ namespace OWLSharp
                                                         .ToList();
                 if (equivalentClasses.Count > 0)
                 {
-                    XmlNode subClassOfNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
-                    WriteResourceElement(subClassOfNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
+                    XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(equivalentClassesNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
                     foreach (RDFResource equivalentClass in equivalentClasses)
-                        WriteResourceElement(subClassOfNode, owlDoc, "Class", equivalentClass, ontGraphNamespaces);
-                    xmlNode.AppendChild(subClassOfNode);
+                        WriteResourceElement(equivalentClassesNode, owlDoc, "Class", equivalentClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(equivalentClassesNode);
                 }
             }
+        }
+
+        internal static void WriteDisjointClassRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
+        {
+            IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
+            while (classes.MoveNext())
+            {
+                List<RDFResource> disjointClasses = ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.DISJOINT_WITH, null, null]
+                                                       .Select(t => t.Object)
+                                                       .OfType<RDFResource>()
+                                                       .ToList();
+                if (disjointClasses.Count > 0)
+                {
+                    XmlNode disjointClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointClasses", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(disjointClassesNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
+                    foreach (RDFResource disjointClass in disjointClasses)
+                        WriteResourceElement(disjointClassesNode, owlDoc, "Class", disjointClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(disjointClassesNode);
+                }
+            }
+        }
+
+        internal static void AppendAttribute(this XmlNode xmlNode, XmlDocument owlDoc, string attrName, string attrValue)
+        {
+            XmlAttribute attr = owlDoc.CreateAttribute(attrName);
+            XmlText attrText = owlDoc.CreateTextNode(attrValue);
+            attr.AppendChild(attrText);
+            xmlNode.Attributes.Append(attr);
         }
 
         internal static void WriteResourceElement(XmlNode xmlNode, XmlDocument owlDoc, string resourceNodeName, RDFResource resourceURI, List<RDFNamespace> ontGraphNamespaces)

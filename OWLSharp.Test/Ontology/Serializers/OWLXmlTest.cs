@@ -2058,6 +2058,51 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeDisjointClassRelation()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls1"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls3"));
+            ontology.Model.ClassModel.DeclareDisjointClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareDisjointClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointClassRelation.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointClassRelation.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointClassRelation.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/Cls1"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls2"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls3"" />
+  </Declaration>
+  <DisjointClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <Class IRI=""http://example.com/Cls2"" />
+    <Class IRI=""http://example.com/Cls3"" />
+  </DisjointClasses>
+  <DisjointClasses>
+    <Class IRI=""http://example.com/Cls2"" />
+    <Class IRI=""http://example.com/Cls1"" />
+  </DisjointClasses>
+  <DisjointClasses>
+    <Class IRI=""http://example.com/Cls3"" />
+    <Class IRI=""http://example.com/Cls1"" />
+  </DisjointClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
