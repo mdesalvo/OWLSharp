@@ -55,30 +55,30 @@ namespace OWLSharp
                     XmlDocument owlDoc = new XmlDocument();
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
 
-                    XmlNode ontNode = WriteOntologyNode(owlDoc, ontology, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "Declaration", "DataProperty", ontology.Model.PropertyModel.DatatypePropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "Declaration", "AnnotationProperty", ontology.Model.PropertyModel.AnnotationPropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "FunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.FunctionalObjectPropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "InverseFunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.InverseFunctionalPropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "SymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.SymmetricPropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "AsymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.AsymmetricPropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "TransitiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.TransitivePropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "ReflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.ReflexivePropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontGraphNamespaces);
-                    WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces);
+                    XmlNode ontNode = WriteOntologyNode(owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "DataProperty", ontology.Model.PropertyModel.DatatypePropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "AnnotationProperty", ontology.Model.PropertyModel.AnnotationPropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "FunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.FunctionalObjectPropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "InverseFunctionalObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.InverseFunctionalPropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "SymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.SymmetricPropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "AsymmetricObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.AsymmetricPropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "TransitiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.TransitivePropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "ReflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.ReflexivePropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontGraphNamespaces, includeInferences);
+                    WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces, includeInferences);
                     //ClassModel
-                    WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteSubClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteEquivalentClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteDisjointClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteAllDisjointClassesRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteDisjointUnionClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
-                    WriteHasKeyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
+                    WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteSubClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteEquivalentClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteDisjointClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteAllDisjointClassesRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteDisjointUnionClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteHasKeyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
 
                     //TODO: annotations(+owl:deprecated=true)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
@@ -97,16 +97,6 @@ namespace OWLSharp
         #endregion
 
         #region Write
-        internal static List<RDFNamespace> GetGraphNamespaces(OWLOntology ontology)
-        {
-            RDFGraph ontologyGraph = ontology.ToRDFGraph();
-            List<RDFNamespace> ontologyGraphNamespaces = RDFModelUtilities.GetGraphNamespaces(ontologyGraph);
-            RDFNamespace xmlNamespace = RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX);
-            if (!ontologyGraphNamespaces.Any(ns => ns.Equals(xmlNamespace)))
-                ontologyGraphNamespaces.Add(xmlNamespace);
-            return ontologyGraphNamespaces;
-        }
-
         internal static XmlNode WriteOntologyNode(XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             //Ontology
@@ -621,6 +611,16 @@ namespace OWLSharp
             else if (literal is RDFTypedLiteral hasValueTLit)
                 literalNode.AppendAttribute(owlDoc, "datatypeIRI", RDFModelUtilities.GetDatatypeFromEnum(hasValueTLit.Datatype));
             xmlNode.AppendChild(literalNode);
+        }
+
+        internal static List<RDFNamespace> GetGraphNamespaces(OWLOntology ontology)
+        {
+            RDFGraph ontologyGraph = ontology.ToRDFGraph();
+            List<RDFNamespace> ontologyGraphNamespaces = RDFModelUtilities.GetGraphNamespaces(ontologyGraph);
+            RDFNamespace xmlNamespace = RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX);
+            if (!ontologyGraphNamespaces.Any(ns => ns.Equals(xmlNamespace)))
+                ontologyGraphNamespaces.Add(xmlNamespace);
+            return ontologyGraphNamespaces;
         }
         #endregion
 
