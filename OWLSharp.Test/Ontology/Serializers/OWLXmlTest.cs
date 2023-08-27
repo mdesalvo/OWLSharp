@@ -2247,6 +2247,46 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeClassAnnotations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls"));
+            ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
+              new RDFResource("http://example.com/annProp"), new RDFResource("http://example.com/"));
+            ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
+              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/ClsAbout")); //TODO: non viene riconosciuta in automatico l'annotazione rdfs:seeAlso
+            ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
+              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is a class", "en"));  //TODO: non viene riconosciuta in automatico l'annotazione rdfs:comment
+            ontology.Model.PropertyModel.DeclareAnnotationProperty(new RDFResource("http://example.com/annProp"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAnnotations.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAnnotations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAnnotations.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/Cls"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </Declaration>
+  <HasKey>
+    <Class IRI=""http://example.com/Cls"" />
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </HasKey>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {

@@ -79,6 +79,7 @@ namespace OWLSharp
                     WriteAllDisjointClassesRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteDisjointUnionClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteHasKeyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteAnnotations(ontNode, owlDoc, "ClassModel", ontology, ontGraphNamespaces, includeInferences);
 
                     //TODO: annotations(+owl:deprecated=true)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
@@ -581,6 +582,83 @@ namespace OWLSharp
                 }
             }
         }
+
+        internal static void WriteAnnotations(XmlNode xmlNode, XmlDocument owlDoc, string annotationType, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
+        {
+            #region Utility
+            void WriteAnnotation(RDFTriple annotation)
+            {
+                XmlNode annotationAssertionNode = owlDoc.CreateNode(XmlNodeType.Element, "AnnotationAssertion", RDFVocabulary.OWL.BASE_URI);
+
+                //The property of the annotation
+                (bool, string) abbreviatedAnnotationProperty = RDFQueryUtilities.AbbreviateRDFPatternMember(annotation.Predicate, ontGraphNamespaces);
+                XmlNode annotationPropertyNode = owlDoc.CreateNode(XmlNodeType.Element, "AnnotationProperty", RDFVocabulary.OWL.BASE_URI);
+                annotationPropertyNode.AppendAttribute(owlDoc, abbreviatedAnnotationProperty.Item1 ? "abbreviatedIRI" : "IRI", abbreviatedAnnotationProperty.Item2);
+                annotationAssertionNode.AppendChild(annotationPropertyNode);
+
+                //The subject of the annotation
+                (bool, string) abbreviatedAnnotationSubject = RDFQueryUtilities.AbbreviateRDFPatternMember(annotation.Subject, ontGraphNamespaces);
+                if (abbreviatedAnnotationSubject.Item1)
+                {
+                    XmlNode annotationSubjectAbbreviatedIRINode = owlDoc.CreateNode(XmlNodeType.Element, "AbbreviatedIRI", RDFVocabulary.OWL.BASE_URI);
+                    XmlText annotationSubjectAbbreviatedIRINodeText = owlDoc.CreateTextNode(abbreviatedAnnotationSubject.Item2);
+                    annotationSubjectAbbreviatedIRINode.AppendChild(annotationSubjectAbbreviatedIRINodeText);
+                    annotationAssertionNode.AppendChild(annotationSubjectAbbreviatedIRINode);
+                }
+                else
+                {
+                    XmlNode annotationSubjectIRINode = owlDoc.CreateNode(XmlNodeType.Element, "IRI", RDFVocabulary.OWL.BASE_URI);
+                    XmlText annotationSubjectIRINodeText = owlDoc.CreateTextNode(abbreviatedAnnotationSubject.Item2);
+                    annotationSubjectIRINode.AppendChild(annotationSubjectIRINodeText);
+                    annotationAssertionNode.AppendChild(annotationSubjectIRINode);
+                }
+
+                //The object of the annotation
+                if (annotation.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                {
+                    (bool, string) abbreviatedAnnotationValue = RDFQueryUtilities.AbbreviateRDFPatternMember(annotation.Object, ontGraphNamespaces);
+                    if (abbreviatedAnnotationValue.Item1)
+                    {
+                        XmlNode annotationValueAbbreviatedIRINode = owlDoc.CreateNode(XmlNodeType.Element, "AbbreviatedIRI", RDFVocabulary.OWL.BASE_URI);
+                        XmlText annotationValueAbbreviatedIRINodeText = owlDoc.CreateTextNode(abbreviatedAnnotationValue.Item2);
+                        annotationValueAbbreviatedIRINode.AppendChild(annotationValueAbbreviatedIRINodeText);
+                        annotationAssertionNode.AppendChild(annotationValueAbbreviatedIRINode);
+                    }
+                    else
+                    {
+                        XmlNode annotationValueIRINode = owlDoc.CreateNode(XmlNodeType.Element, "IRI", RDFVocabulary.OWL.BASE_URI);
+                        XmlText annotationValueIRINodeText = owlDoc.CreateTextNode(abbreviatedAnnotationValue.Item2);
+                        annotationValueIRINode.AppendChild(annotationValueIRINodeText);
+                        annotationAssertionNode.AppendChild(annotationValueIRINode);
+                    }
+                }
+                else
+                    WriteLiteralElement(annotationAssertionNode, owlDoc, (RDFLiteral)annotation.Object);
+
+                xmlNode.AppendChild(annotationAssertionNode);
+            }
+            #endregion
+
+            switch (annotationType)
+            {
+                case "ClassModel":
+                    OWLOntologyClassModelLens classLens = new OWLOntologyClassModelLens(new RDFResource("ex:FakeLens"), ontology);
+                    foreach (RDFResource ontologyClass in ontology.Model.ClassModel)
+                    {
+                        classLens.Class = ontologyClass;
+                        foreach (RDFTriple objectAnnotation in classLens.ObjectAnnotations())
+                            WriteAnnotation(objectAnnotation);
+                        foreach (RDFTriple dataAnnotation in classLens.DataAnnotations())
+                            WriteAnnotation(dataAnnotation);
+                    }
+                    break;
+                case "PropertyModel":
+                    break;
+                case "Data":
+                    break;
+            }
+        }
+
 
         internal static void AppendAttribute(this XmlNode xmlNode, XmlDocument owlDoc, string attrName, string attrValue)
         {
