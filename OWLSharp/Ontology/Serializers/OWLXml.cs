@@ -76,7 +76,7 @@ namespace OWLSharp
                     WriteSubClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
                     WriteEquivalentClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces);
 
-                    //TODO: annotations(+owl:deprecated=true) and relations (EquivalentClasses, DisjointClasses, DisjointUnion, AllDisjointClasses, HasKey)
+                    //TODO: annotations(+owl:deprecated=true) and relations (DisjointClasses, DisjointUnion, AllDisjointClasses, HasKey)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
