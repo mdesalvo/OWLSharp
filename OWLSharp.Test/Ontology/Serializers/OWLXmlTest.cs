@@ -2044,9 +2044,6 @@ namespace OWLSharp.Test
   <EquivalentClasses>
     <Class IRI=""http://example.com/Cls1"" />
     <Class IRI=""http://example.com/Cls2"" />
-  </EquivalentClasses>
-  <EquivalentClasses>
-    <Class IRI=""http://example.com/Cls1"" />
     <Class IRI=""http://example.com/Cls3"" />
   </EquivalentClasses>
   <EquivalentClasses>

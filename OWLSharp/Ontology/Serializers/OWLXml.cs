@@ -494,13 +494,16 @@ namespace OWLSharp
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
             {
-                foreach (RDFResource equivalentClass in ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
-                                                         .Select(t => t.Object)
-                                                         .OfType<RDFResource>())
+                List<RDFResource> equivalentClasses = ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
+                                                        .Select(t => t.Object)
+                                                        .OfType<RDFResource>()
+                                                        .ToList();
+                if (equivalentClasses.Count > 0)
                 {
                     XmlNode subClassOfNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(subClassOfNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
-                    WriteResourceElement(subClassOfNode, owlDoc, "Class", equivalentClass, ontGraphNamespaces);
+                    foreach (RDFResource equivalentClass in equivalentClasses)
+                        WriteResourceElement(subClassOfNode, owlDoc, "Class", equivalentClass, ontGraphNamespaces);
                     xmlNode.AppendChild(subClassOfNode);
                 }
             }
