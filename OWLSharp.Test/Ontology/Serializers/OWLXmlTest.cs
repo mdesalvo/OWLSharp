@@ -2264,25 +2264,33 @@ namespace OWLSharp.Test
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAnnotations.owx"));
             string expectedFileContent =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <Prefix name="""" IRI=""http://example.com/"" />
   <Declaration>
     <Class IRI=""http://example.com/Cls"" />
   </Declaration>
   <Declaration>
-    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <AnnotationProperty IRI=""http://example.com/annProp"" />
   </Declaration>
-  <Declaration>
-    <DataProperty IRI=""http://example.com/dtProp2"" />
-  </Declaration>
-  <HasKey>
-    <Class IRI=""http://example.com/Cls"" />
-    <DataProperty IRI=""http://example.com/dtProp1"" />
-    <DataProperty IRI=""http://example.com/dtProp2"" />
-  </HasKey>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI=""http://example.com/annProp"" />
+    <IRI>http://example.com/Cls</IRI>
+    <IRI>http://example.com/</IRI>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso"" />
+    <IRI>http://example.com/Cls</IRI>
+    <IRI>http://example.com/ClsAbout</IRI>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
+    <IRI>http://example.com/Cls</IRI>
+    <Literal xml:lang=""EN"">this is a class</Literal>
+  </AnnotationAssertion>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }

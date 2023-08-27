@@ -642,13 +642,12 @@ namespace OWLSharp
             switch (annotationType)
             {
                 case "ClassModel":
-                    OWLOntologyClassModelLens classLens = new OWLOntologyClassModelLens(new RDFResource("ex:FakeLens"), ontology);
                     foreach (RDFResource ontologyClass in ontology.Model.ClassModel)
                     {
-                        classLens.Class = ontologyClass;
-                        foreach (RDFTriple objectAnnotation in classLens.ObjectAnnotations())
+                        RDFGraph ontologyClassAnnotations = ontology.Model.ClassModel.OBoxGraph[ontologyClass, null, null, null];
+                        foreach (RDFTriple objectAnnotation in ontologyClassAnnotations.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
                             WriteAnnotation(objectAnnotation);
-                        foreach (RDFTriple dataAnnotation in classLens.DataAnnotations())
+                        foreach (RDFTriple dataAnnotation in ontologyClassAnnotations.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL))
                             WriteAnnotation(dataAnnotation);
                     }
                     break;
