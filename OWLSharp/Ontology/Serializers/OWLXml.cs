@@ -58,6 +58,7 @@ namespace OWLSharp
                     owlDoc.AppendChild(owlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
 
                     XmlNode ontNode = WriteOntologyNode(owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //Declarations (ClassModel, PropertyModel, Data)
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "Class", ontology.Model.ClassModel.SimpleClassesEnumerator, ontGraphNamespaces, includeInferences);
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "ObjectProperty", ontology.Model.PropertyModel.ObjectPropertiesEnumerator, ontGraphNamespaces, includeInferences);
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "DataProperty", ontology.Model.PropertyModel.DatatypePropertiesEnumerator, ontGraphNamespaces, includeInferences);
@@ -71,10 +72,10 @@ namespace OWLSharp
                     WriteDeclarations(ontNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontGraphNamespaces, includeInferences);
                     WriteDeclarations(ontNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontGraphNamespaces, includeInferences);
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces, includeInferences);
-                    //ClassModel
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //ClassModel
                     WriteSubClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteEquivalentClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteDisjointClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
