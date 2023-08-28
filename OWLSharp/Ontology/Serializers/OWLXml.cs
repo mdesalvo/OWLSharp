@@ -82,8 +82,9 @@ namespace OWLSharp
                     WriteDisjointUnionClassRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteHasKeyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteAnnotations(ontNode, owlDoc, "ClassModel", ontology, ontGraphNamespaces, includeInferences);
-
+                    //PropertyModel
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
+                    //Data
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
                     owlDoc.AppendChild(ontNode);
