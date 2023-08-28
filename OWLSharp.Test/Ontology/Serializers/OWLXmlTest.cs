@@ -2301,6 +2301,88 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeSubObjectPropertyRelation()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp1"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp3"));
+            ontology.Model.PropertyModel.DeclareSubProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareSubProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubObjectPropertyRelation.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubObjectPropertyRelation.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubObjectPropertyRelation.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </Declaration>
+  <SubObjectPropertyOf>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </SubObjectPropertyOf>
+  <SubObjectPropertyOf>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </SubObjectPropertyOf>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeSubDatatypePropertyRelation()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp1"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp3"));
+            ontology.Model.PropertyModel.DeclareSubProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareSubProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubDatatypePropertyRelation.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubDatatypePropertyRelation.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSubDatatypePropertyRelation.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp3"" />
+  </Declaration>
+  <SubDataPropertyOf>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </SubDataPropertyOf>
+  <SubDataPropertyOf>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp3"" />
+  </SubDataPropertyOf>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
