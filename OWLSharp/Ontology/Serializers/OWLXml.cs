@@ -86,7 +86,8 @@ namespace OWLSharp
                     //PropertyModel
                     WriteSubPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteEquivalentPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
+                    WriteDisjointPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true) and relations (InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
 
                     //Data
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
@@ -589,7 +590,7 @@ namespace OWLSharp
             }
         }
 
-        internal static void WriteSubPropertyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        internal static void WriteSubPropertyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
@@ -616,7 +617,7 @@ namespace OWLSharp
                 }
         }
 
-        internal static void WriteEquivalentPropertyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        internal static void WriteEquivalentPropertyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
@@ -649,6 +650,43 @@ namespace OWLSharp
                     foreach (RDFResource equivalentProperty in equivalentProperties)
                         WriteResourceElement(equivalentPropertiesNode, owlDoc, "DataProperty", equivalentProperty, ontGraphNamespaces);
                     xmlNode.AppendChild(equivalentPropertiesNode);
+                }
+            }
+        }
+
+        internal static void WriteDisjointPropertyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
+        {
+            IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
+            while (objectProperties.MoveNext())
+            {
+                List<RDFResource> disjointProperties = ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null]
+                                                        .Select(t => t.Object)
+                                                        .OfType<RDFResource>()
+                                                        .ToList();
+                if (disjointProperties.Count > 0)
+                {
+                    XmlNode disjointPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointObjectProperties", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(disjointPropertiesNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
+                    foreach (RDFResource disjointProperty in disjointProperties)
+                        WriteResourceElement(disjointPropertiesNode, owlDoc, "ObjectProperty", disjointProperty, ontGraphNamespaces);
+                    xmlNode.AppendChild(disjointPropertiesNode);
+                }
+            }
+
+            IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
+            while (datatypeProperties.MoveNext())
+            {
+                List<RDFResource> disjointProperties = ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null]
+                                                        .Select(t => t.Object)
+                                                        .OfType<RDFResource>()
+                                                        .ToList();
+                if (disjointProperties.Count > 0)
+                {
+                    XmlNode disjointPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointDataProperties", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(disjointPropertiesNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
+                    foreach (RDFResource disjointProperty in disjointProperties)
+                        WriteResourceElement(disjointPropertiesNode, owlDoc, "DataProperty", disjointProperty, ontGraphNamespaces);
+                    xmlNode.AppendChild(disjointPropertiesNode);
                 }
             }
         }

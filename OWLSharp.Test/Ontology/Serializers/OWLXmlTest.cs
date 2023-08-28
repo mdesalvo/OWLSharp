@@ -2473,6 +2473,96 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeDisjointObjectPropertyRelation()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp1"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp3"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointObjectPropertyRelation.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointObjectPropertyRelation.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointObjectPropertyRelation.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </Declaration>
+  <DisjointObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </DisjointObjectProperties>
+  <DisjointObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </DisjointObjectProperties>
+  <DisjointObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </DisjointObjectProperties>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeDisjointDatatypePropertyRelation()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp1"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp3"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointDatatypePropertyRelation.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointDatatypePropertyRelation.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointDatatypePropertyRelation.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp3"" />
+  </Declaration>
+  <DisjointDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+    <DataProperty IRI=""http://example.com/dtProp3"" />
+  </DisjointDataProperties>
+  <DisjointDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+  </DisjointDataProperties>
+  <DisjointDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp3"" />
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+  </DisjointDataProperties>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
