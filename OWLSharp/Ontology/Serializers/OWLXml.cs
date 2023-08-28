@@ -84,8 +84,9 @@ namespace OWLSharp
                     WriteAnnotations(ontNode, owlDoc, "ClassModel", ontology, ontGraphNamespaces, includeInferences);
                     //PropertyModel
                     WriteSubPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
-                    
+                    WriteEquivalentPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true) and relations (DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
+
                     //Data
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
@@ -612,6 +613,43 @@ namespace OWLSharp
                     WriteResourceElement(subPropertyOfNode, owlDoc, "DataProperty", superProperty, ontGraphNamespaces);
                     xmlNode.AppendChild(subPropertyOfNode);
                 }
+        }
+
+        internal static void WriteEquivalentPropertyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
+            while (objectProperties.MoveNext())
+            {
+                List<RDFResource> equivalentProperties = ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null]
+                                                            .Select(t => t.Object)
+                                                            .OfType<RDFResource>()
+                                                            .ToList();
+                if (equivalentProperties.Count > 0)
+                {
+                    XmlNode equivalentPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentObjectProperties", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(equivalentPropertiesNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
+                    foreach (RDFResource equivalentProperty in equivalentProperties)
+                        WriteResourceElement(equivalentPropertiesNode, owlDoc, "ObjectProperty", equivalentProperty, ontGraphNamespaces);
+                    xmlNode.AppendChild(equivalentPropertiesNode);
+                }
+            }
+
+            IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
+            while (datatypeProperties.MoveNext())
+            {
+                List<RDFResource> equivalentProperties = ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null]
+                                                            .Select(t => t.Object)
+                                                            .OfType<RDFResource>()
+                                                            .ToList();
+                if (equivalentProperties.Count > 0)
+                {
+                    XmlNode equivalentPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentDataProperties", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(equivalentPropertiesNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
+                    foreach (RDFResource equivalentProperty in equivalentProperties)
+                        WriteResourceElement(equivalentPropertiesNode, owlDoc, "DataProperty", equivalentProperty, ontGraphNamespaces);
+                    xmlNode.AppendChild(equivalentPropertiesNode);
+                }
+            }
         }
 
         internal static void WriteAnnotations(XmlNode xmlNode, XmlDocument owlDoc, string annotationType, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
