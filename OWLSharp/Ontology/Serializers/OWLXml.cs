@@ -30,6 +30,8 @@ namespace OWLSharp
     /// </summary>
     internal static class OWLXml
     {
+        internal static readonly RDFResource OWLDeprecatedAnnotation = new RDFResource("http://www.w3.org/2002/07/owl#deprecated");
+
         #region Methods
 
         #region Write
@@ -649,6 +651,9 @@ namespace OWLSharp
                             WriteAnnotation(objectAnnotation);
                         foreach (RDFTriple dataAnnotation in ontologyClassAnnotations.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL))
                             WriteAnnotation(dataAnnotation);
+                        //OWL/XML uses "owl:deprecated" annotation instead of "rdf:type owl:DeprecatedClass"
+                        if (ontology.Model.ClassModel.CheckHasDeprecatedClass(ontologyClass))
+                            WriteAnnotation(new RDFTriple(ontologyClass, OWLDeprecatedAnnotation, RDFTypedLiteral.True));
                     }
                     break;
                 case "PropertyModel":
@@ -657,7 +662,6 @@ namespace OWLSharp
                     break;
             }
         }
-
 
         internal static void AppendAttribute(this XmlNode xmlNode, XmlDocument owlDoc, string attrName, string attrValue)
         {

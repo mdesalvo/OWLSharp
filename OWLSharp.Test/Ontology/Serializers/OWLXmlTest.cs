@@ -2251,7 +2251,8 @@ namespace OWLSharp.Test
         public void ShouldSerializeClassAnnotations()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
-            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls"), 
+                new OWLOntologyClassBehavior() { Deprecated = true });
             ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
               new RDFResource("http://example.com/annProp"), new RDFResource("http://example.com/"));
             ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
@@ -2290,6 +2291,11 @@ namespace OWLSharp.Test
     <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
     <IRI>http://example.com/Cls</IRI>
     <Literal xml:lang=""EN"">this is a class</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""owl:deprecated"" />
+    <IRI>http://example.com/Cls</IRI>
+    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#boolean"">true</Literal>
   </AnnotationAssertion>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
