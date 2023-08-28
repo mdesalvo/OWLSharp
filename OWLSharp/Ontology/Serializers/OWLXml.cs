@@ -87,7 +87,8 @@ namespace OWLSharp
                     WriteSubPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteEquivalentPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteDisjointPropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
+                    WriteInversePropertyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true) and relations (AllDisjointProperties, ObjectPropertyChain, Domain, Range)
 
                     //Data
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
@@ -687,6 +688,25 @@ namespace OWLSharp
                     foreach (RDFResource disjointProperty in disjointProperties)
                         WriteResourceElement(disjointPropertiesNode, owlDoc, "DataProperty", disjointProperty, ontGraphNamespaces);
                     xmlNode.AppendChild(disjointPropertiesNode);
+                }
+            }
+        }
+
+        internal static void WriteInversePropertyRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
+            while (objectProperties.MoveNext())
+            {
+                List<RDFResource> inverseProperties = ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.INVERSE_OF, null, null]
+                                                        .Select(t => t.Object)
+                                                        .OfType<RDFResource>()
+                                                        .ToList();
+                foreach (RDFResource inverseProperty in inverseProperties)
+                {
+                    XmlNode inversePropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "InverseObjectProperties", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(inversePropertiesNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
+                    WriteResourceElement(inversePropertiesNode, owlDoc, "ObjectProperty", inverseProperty, ontGraphNamespaces);
+                    xmlNode.AppendChild(inversePropertiesNode);
                 }
             }
         }
