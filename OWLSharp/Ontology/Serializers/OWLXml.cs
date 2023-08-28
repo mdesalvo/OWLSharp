@@ -83,7 +83,6 @@ namespace OWLSharp
                     WriteHasKeyRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteAnnotations(ontNode, owlDoc, "ClassModel", ontology, ontGraphNamespaces, includeInferences);
 
-                    //TODO: annotations(+owl:deprecated=true)
                     //TODO: annotations(+owl:deprecated=true) and relations (SubPropertyOf, EquivalentProperty, DisjointProperties, InverseProperties, AllDisjointProperties, ObjectPropertyChain, Domain, Range)
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
