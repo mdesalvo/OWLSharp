@@ -90,7 +90,9 @@ namespace OWLSharp
                     WriteAllDisjointPropertiesRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteInversePropertiesRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WritePropertyChainRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (Domain, Range)
+                    WriteDomainRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteRangeRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true)
 
                     //Data
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
@@ -749,6 +751,60 @@ namespace OWLSharp
                     }
                 }
             }
+        }
+
+        internal static void WriteDomainRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
+        {
+            IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
+            while (objectProperties.MoveNext())
+                foreach (RDFResource domainClass in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.RDFS.DOMAIN, null, null]
+                                                      .Select(t => t.Object)
+                                                      .OfType<RDFResource>())
+                {
+                    XmlNode domainNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectPropertyDomain", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(domainNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
+                    WriteResourceElement(domainNode, owlDoc, "Class", domainClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(domainNode);
+                }
+
+            IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
+            while (datatypeProperties.MoveNext())
+                foreach (RDFResource domainClass in ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.RDFS.DOMAIN, null, null]
+                                                      .Select(t => t.Object)
+                                                      .OfType<RDFResource>())
+                {
+                    XmlNode domainNode = owlDoc.CreateNode(XmlNodeType.Element, "DataPropertyDomain", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(domainNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
+                    WriteResourceElement(domainNode, owlDoc, "Class", domainClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(domainNode);
+                }
+        }
+
+        internal static void WriteRangeRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
+        {
+            IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
+            while (objectProperties.MoveNext())
+                foreach (RDFResource rangeClass in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.RDFS.RANGE, null, null]
+                                                    .Select(t => t.Object)
+                                                    .OfType<RDFResource>())
+                {
+                    XmlNode rangeNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectPropertyRange", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(rangeNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
+                    WriteResourceElement(rangeNode, owlDoc, "Class", rangeClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(rangeNode);
+                }
+
+            IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
+            while (datatypeProperties.MoveNext())
+                foreach (RDFResource rangeClass in ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.RDFS.RANGE, null, null]
+                                                    .Select(t => t.Object)
+                                                    .OfType<RDFResource>())
+                {
+                    XmlNode rangeNode = owlDoc.CreateNode(XmlNodeType.Element, "DataPropertyRange", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(rangeNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
+                    WriteResourceElement(rangeNode, owlDoc, "Class", rangeClass, ontGraphNamespaces);
+                    xmlNode.AppendChild(rangeNode);
+                }
         }
 
         internal static void WriteAnnotations(XmlNode xmlNode, XmlDocument owlDoc, string annotationType, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
