@@ -2044,6 +2044,9 @@ namespace OWLSharp.Test
   <EquivalentClasses>
     <Class IRI=""http://example.com/Cls1"" />
     <Class IRI=""http://example.com/Cls2"" />
+  </EquivalentClasses>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls1"" />
     <Class IRI=""http://example.com/Cls3"" />
   </EquivalentClasses>
   <EquivalentClasses>
@@ -2089,6 +2092,9 @@ namespace OWLSharp.Test
   <DisjointClasses>
     <Class IRI=""http://example.com/Cls1"" />
     <Class IRI=""http://example.com/Cls2"" />
+  </DisjointClasses>
+  <DisjointClasses>
+    <Class IRI=""http://example.com/Cls1"" />
     <Class IRI=""http://example.com/Cls3"" />
   </DisjointClasses>
   <DisjointClasses>
@@ -2414,6 +2420,9 @@ namespace OWLSharp.Test
   <EquivalentObjectProperties>
     <ObjectProperty IRI=""http://example.com/objProp1"" />
     <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </EquivalentObjectProperties>
+  <EquivalentObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
     <ObjectProperty IRI=""http://example.com/objProp3"" />
   </EquivalentObjectProperties>
   <EquivalentObjectProperties>
@@ -2459,6 +2468,9 @@ namespace OWLSharp.Test
   <EquivalentDataProperties>
     <DataProperty IRI=""http://example.com/dtProp1"" />
     <DataProperty IRI=""http://example.com/dtProp2"" />
+  </EquivalentDataProperties>
+  <EquivalentDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
     <DataProperty IRI=""http://example.com/dtProp3"" />
   </EquivalentDataProperties>
   <EquivalentDataProperties>
@@ -2504,6 +2516,9 @@ namespace OWLSharp.Test
   <DisjointObjectProperties>
     <ObjectProperty IRI=""http://example.com/objProp1"" />
     <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </DisjointObjectProperties>
+  <DisjointObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
     <ObjectProperty IRI=""http://example.com/objProp3"" />
   </DisjointObjectProperties>
   <DisjointObjectProperties>
@@ -2549,6 +2564,9 @@ namespace OWLSharp.Test
   <DisjointDataProperties>
     <DataProperty IRI=""http://example.com/dtProp1"" />
     <DataProperty IRI=""http://example.com/dtProp2"" />
+  </DisjointDataProperties>
+  <DisjointDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
     <DataProperty IRI=""http://example.com/dtProp3"" />
   </DisjointDataProperties>
   <DisjointDataProperties>

@@ -493,12 +493,11 @@ namespace OWLSharp
                                                         .Select(t => t.Object)
                                                         .OfType<RDFResource>()
                                                         .ToList();
-                if (equivalentClasses.Count > 0)
+                foreach (RDFResource equivalentClass in equivalentClasses)
                 {
                     XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(equivalentClassesNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
-                    foreach (RDFResource equivalentClass in equivalentClasses)
-                        WriteResourceElement(equivalentClassesNode, owlDoc, "Class", equivalentClass, ontGraphNamespaces);
+                    WriteResourceElement(equivalentClassesNode, owlDoc, "Class", equivalentClass, ontGraphNamespaces);
                     xmlNode.AppendChild(equivalentClassesNode);
                 }
             }
@@ -513,12 +512,11 @@ namespace OWLSharp
                                                        .Select(t => t.Object)
                                                        .OfType<RDFResource>()
                                                        .ToList();
-                if (disjointClasses.Count > 0)
+                foreach (RDFResource disjointClass in disjointClasses)
                 {
                     XmlNode disjointClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointClasses", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(disjointClassesNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
-                    foreach (RDFResource disjointClass in disjointClasses)
-                        WriteResourceElement(disjointClassesNode, owlDoc, "Class", disjointClass, ontGraphNamespaces);
+                    WriteResourceElement(disjointClassesNode, owlDoc, "Class", disjointClass, ontGraphNamespaces);
                     xmlNode.AppendChild(disjointClassesNode);
                 }
             }
@@ -529,7 +527,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
             {
-                //OWL/XML lacks syntax for owl:AllDisjointClasses, so it fallbacks to owl:disjointWith
+                //OWL/XML lacks syntax for AllDisjointClasses, so it fallbacks to DisjointClasses
                 if (ontology.Model.ClassModel.TBoxGraph.ContainsTriple(new RDFTriple(classes.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES)))
                 {
                     RDFResource disjointMembersRepresentative = ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.MEMBERS, null, null]
@@ -627,12 +625,11 @@ namespace OWLSharp
                                                             .Select(t => t.Object)
                                                             .OfType<RDFResource>()
                                                             .ToList();
-                if (equivalentProperties.Count > 0)
+                foreach (RDFResource equivalentProperty in equivalentProperties)
                 {
                     XmlNode equivalentPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentObjectProperties", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(equivalentPropertiesNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
-                    foreach (RDFResource equivalentProperty in equivalentProperties)
-                        WriteResourceElement(equivalentPropertiesNode, owlDoc, "ObjectProperty", equivalentProperty, ontGraphNamespaces);
+                    WriteResourceElement(equivalentPropertiesNode, owlDoc, "ObjectProperty", equivalentProperty, ontGraphNamespaces);
                     xmlNode.AppendChild(equivalentPropertiesNode);
                 }
             }
@@ -644,12 +641,11 @@ namespace OWLSharp
                                                             .Select(t => t.Object)
                                                             .OfType<RDFResource>()
                                                             .ToList();
-                if (equivalentProperties.Count > 0)
+                foreach (RDFResource equivalentProperty in equivalentProperties)
                 {
                     XmlNode equivalentPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentDataProperties", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(equivalentPropertiesNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
-                    foreach (RDFResource equivalentProperty in equivalentProperties)
-                        WriteResourceElement(equivalentPropertiesNode, owlDoc, "DataProperty", equivalentProperty, ontGraphNamespaces);
+                    WriteResourceElement(equivalentPropertiesNode, owlDoc, "DataProperty", equivalentProperty, ontGraphNamespaces);
                     xmlNode.AppendChild(equivalentPropertiesNode);
                 }
             }
@@ -664,12 +660,11 @@ namespace OWLSharp
                                                         .Select(t => t.Object)
                                                         .OfType<RDFResource>()
                                                         .ToList();
-                if (disjointProperties.Count > 0)
+                foreach (RDFResource disjointProperty in disjointProperties)
                 {
                     XmlNode disjointPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointObjectProperties", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(disjointPropertiesNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
-                    foreach (RDFResource disjointProperty in disjointProperties)
-                        WriteResourceElement(disjointPropertiesNode, owlDoc, "ObjectProperty", disjointProperty, ontGraphNamespaces);
+                    WriteResourceElement(disjointPropertiesNode, owlDoc, "ObjectProperty", disjointProperty, ontGraphNamespaces);
                     xmlNode.AppendChild(disjointPropertiesNode);
                 }
             }
@@ -681,12 +676,11 @@ namespace OWLSharp
                                                         .Select(t => t.Object)
                                                         .OfType<RDFResource>()
                                                         .ToList();
-                if (disjointProperties.Count > 0)
+                foreach (RDFResource disjointProperty in disjointProperties)
                 {
                     XmlNode disjointPropertiesNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointDataProperties", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(disjointPropertiesNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
-                    foreach (RDFResource disjointProperty in disjointProperties)
-                        WriteResourceElement(disjointPropertiesNode, owlDoc, "DataProperty", disjointProperty, ontGraphNamespaces);
+                    WriteResourceElement(disjointPropertiesNode, owlDoc, "DataProperty", disjointProperty, ontGraphNamespaces);
                     xmlNode.AppendChild(disjointPropertiesNode);
                 }
             }
