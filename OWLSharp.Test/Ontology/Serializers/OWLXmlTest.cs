@@ -2859,6 +2859,79 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializePropertyAnnotations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp"), 
+                new OWLOntologyObjectPropertyBehavior() { Deprecated = true });
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp"));
+            ontology.Model.PropertyModel.DeclareAnnotationProperty(new RDFResource("http://example.com/annProp"), new OWLOntologyAnnotationPropertyBehavior() {
+               Deprecated = true });
+            ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/objProp"), 
+              new RDFResource("http://example.com/annProp"), new RDFResource("http://example.com/"));
+            ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/dtProp"), 
+              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/DtPropAbout")); //TODO: non viene riconosciuta in automatico l'annotazione rdfs:seeAlso
+            ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/dtProp"), 
+              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is a property", "en"));  //TODO: non viene riconosciuta in automatico l'annotazione rdfs:comment
+            ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/annProp"),
+              RDFVocabulary.SKOS.CHANGE_NOTE, new RDFTypedLiteral("http://changenote/", RDFModelEnums.RDFDatatypes.XSD_ANYURI));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializePropertyAnnotations.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializePropertyAnnotations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializePropertyAnnotations.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:skos=""http://www.w3.org/2004/02/skos/core#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""skos"" IRI=""http://www.w3.org/2004/02/skos/core#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp"" />
+  </Declaration>
+  <Declaration>
+    <AnnotationProperty IRI=""http://example.com/annProp"" />
+  </Declaration>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI=""http://example.com/annProp"" />
+    <IRI>http://example.com/objProp</IRI>
+    <IRI>http://example.com/</IRI>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""owl:deprecated"" />
+    <IRI>http://example.com/objProp</IRI>
+    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#boolean"">true</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso"" />
+    <IRI>http://example.com/dtProp</IRI>
+    <IRI>http://example.com/DtPropAbout</IRI>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
+    <IRI>http://example.com/dtProp</IRI>
+    <Literal xml:lang=""EN"">this is a property</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""skos:changeNote"" />
+    <IRI>http://example.com/annProp</IRI>
+    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#anyURI"">http://changenote/</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""owl:deprecated"" />
+    <IRI>http://example.com/annProp</IRI>
+    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#boolean"">true</Literal>
+  </AnnotationAssertion>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {

@@ -92,8 +92,7 @@ namespace OWLSharp
                     WritePropertyChainRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteDomainRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteRangeRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true)
-
+                    WriteAnnotations(ontNode, owlDoc, "PropertyModel", ontology, ontGraphNamespaces, includeInferences);
                     //Data
                     //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
@@ -879,6 +878,17 @@ namespace OWLSharp
                     }
                     break;
                 case "PropertyModel":
+                    foreach (RDFResource ontologyProperty in ontology.Model.PropertyModel)
+                    {
+                        RDFGraph ontologyPropertyAnnotations = ontology.Model.PropertyModel.OBoxGraph[ontologyProperty, null, null, null];
+                        foreach (RDFTriple objectAnnotation in ontologyPropertyAnnotations.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+                            WriteAnnotation(objectAnnotation);
+                        foreach (RDFTriple dataAnnotation in ontologyPropertyAnnotations.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL))
+                            WriteAnnotation(dataAnnotation);
+                        //OWL/XML uses "owl:deprecated" annotation instead of "rdf:type owl:DeprecatedProperty"
+                        if (ontology.Model.PropertyModel.CheckHasDeprecatedProperty(ontologyProperty))
+                            WriteAnnotation(new RDFTriple(ontologyProperty, OWLDeprecatedAnnotation, RDFTypedLiteral.True));
+                    }
                     break;
                 case "Data":
                     break;
