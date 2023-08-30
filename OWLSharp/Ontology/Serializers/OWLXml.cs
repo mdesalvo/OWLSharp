@@ -100,7 +100,7 @@ namespace OWLSharp
                     WriteAllDifferentRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteNegativeAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true)
+                    WriteAnnotations(ontNode, owlDoc, "Data", ontology, ontGraphNamespaces, includeInferences);
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
@@ -1046,6 +1046,14 @@ namespace OWLSharp
                     }
                     break;
                 case "Data":
+                    foreach (RDFResource ontologyIndividual in ontology.Data)
+                    {
+                        RDFGraph ontologyIndividualAnnotations = ontology.Data.OBoxGraph[ontologyIndividual, null, null, null];
+                        foreach (RDFTriple objectAnnotation in ontologyIndividualAnnotations.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+                            WriteAnnotation(objectAnnotation);
+                        foreach (RDFTriple dataAnnotation in ontologyIndividualAnnotations.Where(ann => ann.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL))
+                            WriteAnnotation(dataAnnotation);
+                    }
                     break;
             }
         }

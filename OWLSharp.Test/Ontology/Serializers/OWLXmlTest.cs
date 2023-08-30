@@ -3195,6 +3195,67 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeIndividualAnnotations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/IDV1"));
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/IDV2"));
+            ontology.Model.PropertyModel.DeclareAnnotationProperty(new RDFResource("http://example.com/annProp"));
+            ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV1"),
+              new RDFResource("http://example.com/annProp"), new RDFResource("http://example.com/IDV2"));
+            ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV1"),
+              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/IdvAbout")); //TODO: non viene riconosciuta in automatico l'annotazione rdfs:seeAlso
+            ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV2"),
+              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is an individual", "en"));  //TODO: non viene riconosciuta in automatico l'annotazione rdfs:comment
+            ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV2"),
+              RDFVocabulary.SKOS.CHANGE_NOTE, new RDFTypedLiteral("http://changenote/", RDFModelEnums.RDFDatatypes.XSD_ANYURI));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeIndividualAnnotations.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeIndividualAnnotations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeIndividualAnnotations.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:skos=""http://www.w3.org/2004/02/skos/core#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""skos"" IRI=""http://www.w3.org/2004/02/skos/core#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <AnnotationProperty IRI=""http://example.com/annProp"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/IDV1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/IDV2"" />
+  </Declaration>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI=""http://example.com/annProp"" />
+    <IRI>http://example.com/IDV1</IRI>
+    <IRI>http://example.com/IDV2</IRI>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""rdfs:seeAlso"" />
+    <IRI>http://example.com/IDV1</IRI>
+    <IRI>http://example.com/IdvAbout</IRI>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
+    <IRI>http://example.com/IDV2</IRI>
+    <Literal xml:lang=""EN"">this is an individual</Literal>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty abbreviatedIRI=""skos:changeNote"" />
+    <IRI>http://example.com/IDV2</IRI>
+    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#anyURI"">http://changenote/</Literal>
+  </AnnotationAssertion>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
