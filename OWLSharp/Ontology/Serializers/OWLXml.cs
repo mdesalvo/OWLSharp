@@ -99,7 +99,8 @@ namespace OWLSharp
                     WriteDifferentIndividualsRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteAllDifferentRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (NegativeAssertion)
+                    WriteNegativeAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true)
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
@@ -924,6 +925,37 @@ namespace OWLSharp
                         WriteLiteralElement(assertionNode, owlDoc, asnTarget);
                         xmlNode.AppendChild(assertionNode);
                     }
+            }
+        }
+
+        internal static void WriteNegativeAssertions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            foreach (RDFTriple negativeAsn in ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION, null])
+            {
+                RDFResource negativeAsnSourceIdv = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, null, null]
+                                                    .FirstOrDefault()?.Object as RDFResource;
+                RDFResource negativeAsnProperty = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.ASSERTION_PROPERTY, null, null]
+                                                    .FirstOrDefault()?.Object as RDFResource;
+                RDFResource negativeAsnTargetIdv = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.TARGET_INDIVIDUAL, null, null]
+                                                    .FirstOrDefault()?.Object as RDFResource;
+                RDFLiteral negativeAsnTargetVal = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.TARGET_VALUE, null, null]
+                                                    .FirstOrDefault()?.Object as RDFLiteral;
+                if (negativeAsnTargetIdv != null)
+                {
+                    XmlNode negativeAssertionNode = owlDoc.CreateNode(XmlNodeType.Element, "NegativeObjectPropertyAssertion", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(negativeAssertionNode, owlDoc, "ObjectProperty", negativeAsnProperty, ontGraphNamespaces);
+                    WriteResourceElement(negativeAssertionNode, owlDoc, "NamedIndividual", negativeAsnSourceIdv, ontGraphNamespaces);
+                    WriteResourceElement(negativeAssertionNode, owlDoc, "NamedIndividual", negativeAsnTargetIdv, ontGraphNamespaces);
+                    xmlNode.AppendChild(negativeAssertionNode);
+                }
+                else if (negativeAsnTargetVal != null)
+                {
+                    XmlNode negativeAssertionNode = owlDoc.CreateNode(XmlNodeType.Element, "NegativeDataPropertyAssertion", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(negativeAssertionNode, owlDoc, "DataProperty", negativeAsnProperty, ontGraphNamespaces);
+                    WriteResourceElement(negativeAssertionNode, owlDoc, "NamedIndividual", negativeAsnSourceIdv, ontGraphNamespaces);
+                    WriteLiteralElement(negativeAssertionNode, owlDoc, negativeAsnTargetVal);
+                    xmlNode.AppendChild(negativeAssertionNode);
+                }
             }
         }
 
