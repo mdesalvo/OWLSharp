@@ -162,6 +162,10 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldRaiseExceptionOnExportingToNullOrEmptyFilepath()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").ToFile(OWLEnums.OWLFormats.OwlXml, null));
+
+        [TestMethod]
         public void ShouldExportToStream()
         {
             MemoryStream stream = new MemoryStream();
@@ -182,6 +186,10 @@ namespace OWLSharp.Test
 
             Assert.IsTrue(stream.ToArray().Length > 100);
         }
+
+        [TestMethod]
+        public void ShouldRaiseExceptionOnExportingToNullStream()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").ToStream(OWLEnums.OWLFormats.OwlXml, null));
 
         [TestMethod]
         public void ShouldCreateFromGraph()
