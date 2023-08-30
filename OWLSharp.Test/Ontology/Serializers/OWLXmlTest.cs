@@ -2064,6 +2064,46 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeEquivalentClassRelationWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls1"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls3"));
+            ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentClassRelationWithoutInference.owx"), false);
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentClassRelationWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentClassRelationWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/Cls1"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls2"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls3"" />
+  </Declaration>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <Class IRI=""http://example.com/Cls2"" />
+  </EquivalentClasses>
+  <EquivalentClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <Class IRI=""http://example.com/Cls3"" />
+  </EquivalentClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDisjointClassRelation()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
@@ -2106,6 +2146,46 @@ namespace OWLSharp.Test
   <DisjointClasses>
     <Class IRI=""http://example.com/Cls3"" />
     <Class IRI=""http://example.com/Cls1"" />
+  </DisjointClasses>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeDisjointClassRelationWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls1"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls3"));
+            ontology.Model.ClassModel.DeclareDisjointClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"));
+            ontology.Model.ClassModel.DeclareDisjointClasses(new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointClassRelationWithoutInference.owx"), false);
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointClassRelationWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointClassRelationWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <Class IRI=""http://example.com/Cls1"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls2"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.com/Cls3"" />
+  </Declaration>
+  <DisjointClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <Class IRI=""http://example.com/Cls2"" />
+  </DisjointClasses>
+  <DisjointClasses>
+    <Class IRI=""http://example.com/Cls1"" />
+    <Class IRI=""http://example.com/Cls3"" />
   </DisjointClasses>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
@@ -2442,6 +2522,46 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeEquivalentObjectPropertyRelationWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp1"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp3"));
+            ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentObjectPropertyRelationWithoutInference.owx"), false);
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentObjectPropertyRelationWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentObjectPropertyRelationWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </Declaration>
+  <EquivalentObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </EquivalentObjectProperties>
+  <EquivalentObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </EquivalentObjectProperties>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
         public void ShouldSerializeEquivalentDatatypePropertyRelation()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
@@ -2484,6 +2604,46 @@ namespace OWLSharp.Test
   <EquivalentDataProperties>
     <DataProperty IRI=""http://example.com/dtProp3"" />
     <DataProperty IRI=""http://example.com/dtProp1"" />
+  </EquivalentDataProperties>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeEquivalentDatatypePropertyRelationWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp1"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp3"));
+            ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentDatatypePropertyRelationWithoutInference.owx"), false);
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentDatatypePropertyRelationWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeEquivalentDatatypePropertyRelationWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp3"" />
+  </Declaration>
+  <EquivalentDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </EquivalentDataProperties>
+  <EquivalentDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp3"" />
   </EquivalentDataProperties>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
@@ -2538,6 +2698,46 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeDisjointObjectPropertyRelationWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp1"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp3"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointObjectPropertyRelationWithoutInference.owx"), false);
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointObjectPropertyRelationWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointObjectPropertyRelationWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </Declaration>
+  <DisjointObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </DisjointObjectProperties>
+  <DisjointObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </DisjointObjectProperties>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDisjointDatatypePropertyRelation()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
@@ -2580,6 +2780,46 @@ namespace OWLSharp.Test
   <DisjointDataProperties>
     <DataProperty IRI=""http://example.com/dtProp3"" />
     <DataProperty IRI=""http://example.com/dtProp1"" />
+  </DisjointDataProperties>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeDisjointDatatypePropertyRelationWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp1"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp3"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2"));
+            ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointDatatypePropertyRelationWithoutInference.owx"), false);
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointDatatypePropertyRelationWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointDatatypePropertyRelationWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp3"" />
+  </Declaration>
+  <DisjointDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp2"" />
+  </DisjointDataProperties>
+  <DisjointDataProperties>
+    <DataProperty IRI=""http://example.com/dtProp1"" />
+    <DataProperty IRI=""http://example.com/dtProp3"" />
   </DisjointDataProperties>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
@@ -2702,6 +2942,46 @@ namespace OWLSharp.Test
   <InverseObjectProperties>
     <ObjectProperty IRI=""http://example.com/objProp3"" />
     <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </InverseObjectProperties>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeInversePropertyRelationWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp1"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp3"));
+            ontology.Model.PropertyModel.DeclareInverseProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"));
+            ontology.Model.PropertyModel.DeclareInverseProperties(new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp3"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeInversePropertyRelationWithoutInference.owx"), false);
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeInversePropertyRelationWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeInversePropertyRelationWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
+  </Declaration>
+  <InverseObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp2"" />
+  </InverseObjectProperties>
+  <InverseObjectProperties>
+    <ObjectProperty IRI=""http://example.com/objProp1"" />
+    <ObjectProperty IRI=""http://example.com/objProp3"" />
   </InverseObjectProperties>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
@@ -3014,6 +3294,39 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeSameIndividualRelationsWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
+            ontology.Data.DeclareIndividual(RDFVocabulary.GEO.LOCATION);
+            ontology.Data.DeclareSameIndividuals(new RDFResource("http://example.com/ID1"), RDFVocabulary.GEO.LOCATION);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSameIndividualRelationsWithoutInference.owx"), false);
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSameIndividualRelationsWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeSameIndividualRelationsWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <SameIndividual>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+  </SameIndividual>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDifferentIndividualRelations()
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
@@ -3045,6 +3358,39 @@ namespace OWLSharp.Test
   <DifferentIndividuals>
     <NamedIndividual abbreviatedIRI=""geo:location"" />
     <NamedIndividual IRI=""http://example.com/ID1"" />
+  </DifferentIndividuals>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeDifferentIndividualRelationsWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
+            ontology.Data.DeclareIndividual(RDFVocabulary.GEO.LOCATION);
+            ontology.Data.DeclareDifferentIndividuals(new RDFResource("http://example.com/ID1"), RDFVocabulary.GEO.LOCATION);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDifferentIndividualRelationsWithoutInference.owx"), false);
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDifferentIndividualRelationsWithoutInference.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDifferentIndividualRelationsWithoutInference.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <DifferentIndividuals>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
   </DifferentIndividuals>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
@@ -3138,6 +3484,49 @@ namespace OWLSharp.Test
     <NamedIndividual IRI=""http://example.com/ID1"" />
     <Literal xml:lang=""EN-UK"">hello!</Literal>
   </DataPropertyAssertion>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAssertionsWithoutInference()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp"));
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID2"));
+            ontology.Data.ABoxGraph.AddTriple(new RDFTriple(new RDFResource("http://example.com/ID1"), new RDFResource("http://example.com/objProp"), new RDFResource("http://example.com/ID2")).SetInference());
+            ontology.Data.ABoxGraph.AddTriple(new RDFTriple(new RDFResource("http://example.com/ID1"), new RDFResource("http://example.com/dtProp"), new RDFPlainLiteral("hello!", "en-UK")).SetInference());
+            ontology.Data.DeclareObjectAssertion(new RDFResource("http://example.com/ID2"), new RDFResource("http://example.com/objProp"), new RDFResource("http://example.com/ID1"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAssertions.owx"), false);
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAssertions.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAssertions.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID2"" />
+  </Declaration>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI=""http://example.com/objProp"" />
+    <NamedIndividual IRI=""http://example.com/ID2"" />
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </ObjectPropertyAssertion>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
