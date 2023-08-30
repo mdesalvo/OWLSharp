@@ -95,7 +95,9 @@ namespace OWLSharp
                     WriteAnnotations(ontNode, owlDoc, "PropertyModel", ontology, ontGraphNamespaces, includeInferences);
                     //Data
                     WriteClassAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
+                    WriteSameIndividualsRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    WriteDifferentIndividualsRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true) and relations (AllDifferent, Assertion, NegativeAssertion)
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
@@ -827,6 +829,38 @@ namespace OWLSharp
                     WriteResourceElement(classAssertionNode, owlDoc, "Class", idvClass, ontGraphNamespaces);
                     WriteResourceElement(classAssertionNode, owlDoc, "NamedIndividual", individuals.Current, ontGraphNamespaces);
                     xmlNode.AppendChild(classAssertionNode);
+                }
+        }
+
+        internal static void WriteSameIndividualsRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            RDFGraph aboxSameAsGraph = ontology.Data.ABoxGraph[null, RDFVocabulary.OWL.SAME_AS, null, null];
+            IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
+            while (individuals.MoveNext())
+                foreach (RDFResource sameIdv in aboxSameAsGraph[individuals.Current, null, null, null]
+                                                  .Select(t => t.Object)
+                                                  .OfType<RDFResource>())
+                {
+                    XmlNode sameIndividualsNode = owlDoc.CreateNode(XmlNodeType.Element, "SameIndividual", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(sameIndividualsNode, owlDoc, "NamedIndividual", individuals.Current, ontGraphNamespaces);
+                    WriteResourceElement(sameIndividualsNode, owlDoc, "NamedIndividual", sameIdv, ontGraphNamespaces);
+                    xmlNode.AppendChild(sameIndividualsNode);
+                }
+        }
+
+        internal static void WriteDifferentIndividualsRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            RDFGraph aboxDifferentFromGraph = ontology.Data.ABoxGraph[null, RDFVocabulary.OWL.DIFFERENT_FROM, null, null];
+            IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
+            while (individuals.MoveNext())
+                foreach (RDFResource differentIdv in aboxDifferentFromGraph[individuals.Current, null, null, null]
+                                                      .Select(t => t.Object)
+                                                      .OfType<RDFResource>())
+                {
+                    XmlNode diffreentIndividualsNode = owlDoc.CreateNode(XmlNodeType.Element, "DifferentIndividuals", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(diffreentIndividualsNode, owlDoc, "NamedIndividual", individuals.Current, ontGraphNamespaces);
+                    WriteResourceElement(diffreentIndividualsNode, owlDoc, "NamedIndividual", differentIdv, ontGraphNamespaces);
+                    xmlNode.AppendChild(diffreentIndividualsNode);
                 }
         }
 
