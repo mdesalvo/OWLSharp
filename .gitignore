@@ -1,7 +1,0 @@
-.gitignore
-.vscode/settings.json
-/.vs
-/OWLSharp/bin
-/OWLSharp/obj
-/OWLSharp.Test/bin
-/OWLSharp.Test/obj
