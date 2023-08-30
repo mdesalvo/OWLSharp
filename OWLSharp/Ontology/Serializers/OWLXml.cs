@@ -114,7 +114,7 @@ namespace OWLSharp
         }
         #endregion
 
-        #region Write
+        #region Utilities
         internal static XmlNode WriteOntologyNode(XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             //Ontology

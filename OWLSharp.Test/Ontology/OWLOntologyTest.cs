@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -139,6 +140,50 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldExportToFile()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
+            ontology.ToFile(OWLEnums.OWLFormats.OwlXml, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldExportToFile.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldExportToFile.owx")));
+            Assert.IsTrue(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldExportToFile.owx")).Length > 0);
+        }
+
+        [TestMethod]
+        public async Task ShouldExportToFileAsync()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
+            await ontology.ToFileAsync(OWLEnums.OWLFormats.OwlXml, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldExportToFileAsync.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldExportToFileAsync.owx")));
+            Assert.IsTrue(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldExportToFileAsync.owx")).Length > 0);
+        }
+
+        [TestMethod]
+        public void ShouldExportToStream()
+        {
+            MemoryStream stream = new MemoryStream();
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
+            ontology.ToStream(OWLEnums.OWLFormats.OwlXml, stream);
+
+            Assert.IsTrue(stream.ToArray().Length > 100);
+        }
+
+        [TestMethod]
+        public async Task ShouldExportToStreamAsync()
+        {
+            MemoryStream stream = new MemoryStream();
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
+            await ontology.ToStreamAsync(OWLEnums.OWLFormats.OwlXml, stream);
+
+            Assert.IsTrue(stream.ToArray().Length > 100);
+        }
+
+        [TestMethod]
         public void ShouldCreateFromGraph()
         {
             RDFGraph graph = new RDFGraph().SetContext(new Uri("ex:ont"));
@@ -172,6 +217,13 @@ namespace OWLSharp.Test
             Assert.IsTrue(ontology.OBoxGraph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
             Assert.IsNotNull(ontology.Model);
             Assert.IsNotNull(ontology.Data);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            foreach (string file in Directory.EnumerateFiles(Environment.CurrentDirectory, "OWLOntologyTest_Should*"))
+                File.Delete(file);
         }
         #endregion
     }
