@@ -121,6 +121,25 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldCheckHasEnumerateLiteralClass()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareEnumerateClass(new RDFResource("ex:enumlitClass"), new List<RDFLiteral>() { new RDFPlainLiteral("hello") });
+
+            Assert.IsTrue(classModel.CheckHasEnumerateClass(new RDFResource("ex:enumlitClass")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotEnumerateLiteralClass()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareEnumerateClass(new RDFResource("ex:enumlitClass"), new List<RDFLiteral>() { new RDFPlainLiteral("hello") });
+
+            Assert.IsFalse(classModel.CheckHasEnumerateClass(new RDFResource("ex:enumlitClass2")));
+            Assert.IsFalse(classModel.CheckHasEnumerateClass(null));
+        }
+
+        [TestMethod]
         public void ShouldCheckHasCompositeClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();

@@ -31,7 +31,7 @@ namespace OWLSharp
                 {
                     //Create the inference
                     OWLReasonerEvidence evidence = new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.ClassModel,
-                        nameof(OWLSubClassTransitivityRule), new RDFTriple(currentClass, RDFVocabulary.RDFS.SUB_CLASS_OF, superClass));
+                        nameof(OWLSubClassTransitivityRule), new RDFTriple(currentClass, RDFVocabulary.RDFS.SUB_CLASS_OF, superClass).SetInference());
 
                     //Add the inference to the report
                     if (!ontology.Model.ClassModel.TBoxGraph.ContainsTriple(evidence.EvidenceContent))

@@ -694,11 +694,55 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEnumerateClassBecauseNullIndividuals()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareEnumerateClass(new RDFResource("ex:enumClass"), null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareEnumerateClass(new RDFResource("ex:enumClass"), null as List<RDFResource>));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEnumerateClassBecauseEmptyIndividuals()
             => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareEnumerateClass(new RDFResource("ex:enumClass"), new List<RDFResource>()));
+
+        [TestMethod]
+        public void ShouldDeclareEnumerateLiteralClass()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareEnumerateClass(new RDFResource("ex:enumlitClass"), new List<RDFLiteral>() { new RDFPlainLiteral("lit1"), new RDFPlainLiteral("lit2") });
+
+            Assert.IsTrue(classModel.ClassesCount == 1);
+            Assert.IsTrue(classModel.AllDisjointClassesCount == 0);
+            Assert.IsTrue(classModel.CompositesCount == 0);
+            Assert.IsTrue(classModel.DeprecatedClassesCount == 0);
+            Assert.IsTrue(classModel.SimpleClassesCount == 0);
+            Assert.IsTrue(classModel.EnumeratesCount == 1);
+            Assert.IsTrue(classModel.RestrictionsCount == 0);
+            Assert.IsTrue(classModel.TBoxGraph.TriplesCount == 8);
+            Assert.IsTrue(classModel.TBoxGraph[new RDFResource("ex:enumlitClass"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(classModel.TBoxGraph[new RDFResource("ex:enumlitClass"), RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount == 1);
+            Assert.IsTrue(classModel.TBoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(classModel.TBoxGraph[null, RDFVocabulary.RDF.FIRST, null, new RDFPlainLiteral("lit1")].TriplesCount == 1);
+            Assert.IsTrue(classModel.TBoxGraph[null, RDFVocabulary.RDF.FIRST, null, new RDFPlainLiteral("lit2")].TriplesCount == 1);
+            Assert.IsTrue(classModel.TBoxGraph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(classModel.OBoxGraph.TriplesCount == 0);
+
+            int i = 0;
+            IEnumerator<RDFResource> enumeratesEnumerator = classModel.EnumeratesEnumerator;
+            while (enumeratesEnumerator.MoveNext())
+            {
+                Assert.IsTrue(enumeratesEnumerator.Current.Equals(new RDFResource("ex:enumlitClass")));
+                i++;
+            }
+            Assert.IsTrue(i == 1);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringEnumerateLiteralClassBecauseNullClass()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareEnumerateClass(null, new List<RDFLiteral>() { new RDFPlainLiteral("lit1") }));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringEnumerateLiteralClassBecauseNullIndividuals()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareEnumerateClass(new RDFResource("ex:enumlitClass"), null as List<RDFLiteral>));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringEnumerateLiteralClassBecauseEmptyIndividuals()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareEnumerateClass(new RDFResource("ex:enumlitClass"), new List<RDFLiteral>()));
 
         [TestMethod]
         public void ShouldDeclareUnionClass()
@@ -1249,6 +1293,29 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldExportToGraphWithoutInferences()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareClass(new RDFResource("ex:classA"));
+            classModel.DeclareClass(new RDFResource("ex:classB"));
+            classModel.DeclareClass(new RDFResource("ex:classC"));
+            classModel.DeclareClass(new RDFResource("ex:classD"));
+            classModel.DeclareClass(new RDFResource("ex:classE"), new OWLOntologyClassBehavior() { Deprecated = true });
+            classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
+            classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
+            classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
+            classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
+            RDFGraph graph = classModel.ToRDFGraph(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 32);
+        }
+
+        [TestMethod]
         public async Task ShouldExportToGraphAsync()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
@@ -1266,6 +1333,26 @@ namespace OWLSharp.Test
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 15);
+        }
+
+        [TestMethod]
+        public async Task ShouldExportToGraphAsyncWithoutInferences()
+        {
+            OWLOntologyClassModel classModel = new OWLOntologyClassModel();
+            classModel.DeclareClass(new RDFResource("ex:classA"));
+            classModel.DeclareClass(new RDFResource("ex:classB"));
+            classModel.DeclareClass(new RDFResource("ex:classC"));
+            classModel.DeclareClass(new RDFResource("ex:classD"));
+            classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
+            classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
+            classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
+            classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
+            classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
+            RDFGraph graph = await classModel.ToRDFGraphAsync(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 13);
         }
         #endregion
     }

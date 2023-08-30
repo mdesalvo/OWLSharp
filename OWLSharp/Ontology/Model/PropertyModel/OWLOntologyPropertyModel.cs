@@ -111,6 +111,36 @@ namespace OWLSharp
         }
 
         /// <summary>
+        /// Count of the functional object properties
+        /// </summary>
+        public long FunctionalObjectPropertiesCount
+        {
+            get
+            {
+                long count = 0;
+                IEnumerator<RDFResource> functionalObjectProperties = FunctionalObjectPropertiesEnumerator;
+                while (functionalObjectProperties.MoveNext())
+                    count++;
+                return count;
+            }
+        }
+
+        /// <summary>
+        /// Count of the functional datatype properties
+        /// </summary>
+        public long FunctionalDatatypePropertiesCount
+        {
+            get
+            {
+                long count = 0;
+                IEnumerator<RDFResource> functionalDatatypeProperties = FunctionalDatatypePropertiesEnumerator;
+                while (functionalDatatypeProperties.MoveNext())
+                    count++;
+                return count;
+            }
+        }
+
+        /// <summary>
         /// Count of the inverse functional properties
         /// </summary>
         public long InverseFunctionalPropertiesCount
@@ -293,6 +323,38 @@ namespace OWLSharp
             get
             {
                 IEnumerator<RDFResource> properties = PropertiesEnumerator;
+                while (properties.MoveNext())
+                {
+                    if (TBoxGraph[properties.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].Any())
+                        yield return properties.Current;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumerator on the functional object properties for iteration
+        /// </summary>
+        public IEnumerator<RDFResource> FunctionalObjectPropertiesEnumerator
+        {
+            get
+            {
+                IEnumerator<RDFResource> properties = ObjectPropertiesEnumerator;
+                while (properties.MoveNext())
+                {
+                    if (TBoxGraph[properties.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].Any())
+                        yield return properties.Current;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the enumerator on the functional datatype properties for iteration
+        /// </summary>
+        public IEnumerator<RDFResource> FunctionalDatatypePropertiesEnumerator
+        {
+            get
+            {
+                IEnumerator<RDFResource> properties = DatatypePropertiesEnumerator;
                 while (properties.MoveNext())
                 {
                     if (TBoxGraph[properties.Current, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].Any())
@@ -693,7 +755,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, rightProperty));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:equivalentProperty relation
-                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, leftProperty));
+                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, leftProperty).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("EquivalentProperty relation between property '{0}' and property '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftProperty, rightProperty));
@@ -728,7 +790,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftProperty, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, rightProperty));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:propertyDisjointWith relation
-                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, leftProperty));
+                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, leftProperty).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("PropertyDisjointWith relation between property '{0}' and property '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftProperty, rightProperty));
@@ -787,7 +849,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftProperty, RDFVocabulary.OWL.INVERSE_OF, rightProperty));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:inverseProperty relation
-                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.INVERSE_OF, leftProperty));
+                TBoxGraph.AddTriple(new RDFTriple(rightProperty, RDFVocabulary.OWL.INVERSE_OF, leftProperty).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("Inverse relation between property '{0}' and property '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftProperty, rightProperty));
@@ -838,14 +900,15 @@ namespace OWLSharp
         /// <summary>
         /// Gets a graph representation of the model
         /// </summary>
-        public RDFGraph ToRDFGraph()
-            => TBoxGraph.UnionWith(OBoxGraph);
+        public RDFGraph ToRDFGraph(bool includeInferences=true)
+            => includeInferences ? TBoxGraph.UnionWith(OBoxGraph)
+                                 : new RDFGraph(TBoxGraph.Where(t => !t.IsInference).ToList()).UnionWith(OBoxGraph);
 
         /// <summary>
         /// Asynchronously gets a graph representation of the model
         /// </summary>
-        public Task<RDFGraph> ToRDFGraphAsync()
-            => Task.Run(() => ToRDFGraph());
+        public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
+            => Task.Run(() => ToRDFGraph(includeInferences));
         #endregion
     }
 

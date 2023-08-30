@@ -509,7 +509,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Declares the existence of the given owl:minQUalifiedCardinality restriction to the model [OWL2]
+        /// Declares the existence of the given owl:minQualifiedCardinality restriction to the model [OWL2]
         /// </summary>
         public OWLOntologyClassModel DeclareMinQualifiedCardinalityRestriction(RDFResource owlRestriction, RDFResource onProperty, uint minCardinality, RDFResource onClass)
         {
@@ -600,6 +600,32 @@ namespace OWLSharp
             individuals.ForEach(individual => enumeratesCollection.AddItem(individual));
             TBoxGraph.AddCollection(enumeratesCollection);
             TBoxGraph.AddTriple(new RDFTriple(owlClass, RDFVocabulary.OWL.ONE_OF, enumeratesCollection.ReificationSubject));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Declares the existence of the given owl:oneOf enumerate class to the model
+        /// </summary>
+        public OWLOntologyClassModel DeclareEnumerateClass(RDFResource owlClass, List<RDFLiteral> literals)
+        {
+            #region Guards
+            if (owlClass == null)
+                throw new OWLException("Cannot declare owl:oneOf class to the model because given \"owlClass\" parameter is null");
+            if (literals == null)
+                throw new OWLException("Cannot declare owl:oneOf class to the model because given \"literals\" parameter is null");
+            if (literals.Count == 0)
+                throw new OWLException("Cannot declare owl:oneOf class to the model because given \"literals\" parameter is an empty list");
+            #endregion
+
+            //Declare class to the model
+            DeclareClass(owlClass);
+
+            //Add knowledge to the T-BOX
+            RDFCollection literalsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Literal);
+            literals.ForEach(literal => literalsCollection.AddItem(literal));
+            TBoxGraph.AddCollection(literalsCollection);
+            TBoxGraph.AddTriple(new RDFTriple(owlClass, RDFVocabulary.OWL.ONE_OF, literalsCollection.ReificationSubject));
 
             return this;
         }
@@ -845,7 +871,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftClass, RDFVocabulary.OWL.EQUIVALENT_CLASS, rightClass));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:equivalentClass relation
-                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.EQUIVALENT_CLASS, leftClass));
+                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.EQUIVALENT_CLASS, leftClass).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("EquivalentClass relation between class '{0}' and class '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftClass, rightClass));
@@ -880,7 +906,7 @@ namespace OWLSharp
                 TBoxGraph.AddTriple(new RDFTriple(leftClass, RDFVocabulary.OWL.DISJOINT_WITH, rightClass));
 
                 //Also add an automatic T-BOX inference exploiting symmetry of owl:disjointWith relation
-                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.DISJOINT_WITH, leftClass));
+                TBoxGraph.AddTriple(new RDFTriple(rightClass, RDFVocabulary.OWL.DISJOINT_WITH, leftClass).SetInference());
             }
             else
                 OWLEvents.RaiseWarning(string.Format("DisjointWith relation between class '{0}' and class '{1}' cannot be declared to the model because it would violate OWL-DL integrity", leftClass, rightClass));
@@ -938,14 +964,15 @@ namespace OWLSharp
         /// <summary>
         /// Gets a graph representation of the model
         /// </summary>
-        public RDFGraph ToRDFGraph()
-            => TBoxGraph.UnionWith(OBoxGraph);
+        public RDFGraph ToRDFGraph(bool includeInferences=true)
+            => includeInferences ? TBoxGraph.UnionWith(OBoxGraph)
+                                 : new RDFGraph(TBoxGraph.Where(t => !t.IsInference).ToList()).UnionWith(OBoxGraph);
 
         /// <summary>
         /// Asynchronously gets a graph representation of the model
         /// </summary>
-        public Task<RDFGraph> ToRDFGraphAsync()
-            => Task.Run(() => ToRDFGraph());
+        public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
+            => Task.Run(() => ToRDFGraph(includeInferences));
         #endregion
     }
 

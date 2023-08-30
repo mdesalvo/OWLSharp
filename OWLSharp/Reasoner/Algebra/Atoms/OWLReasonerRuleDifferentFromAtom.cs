@@ -155,8 +155,8 @@ namespace OWLSharp
                     if (ontology.Data.CheckDifferentFromCompatibility(leftArgumentValueResource, rightArgumentValueResource))
                     {
                         //Create the inferences
-                        RDFTriple atomInference = new RDFTriple(leftArgumentValueResource, Predicate, rightArgumentValueResource);
-                        RDFTriple symmetricAtomInference = new RDFTriple(rightArgumentValueResource, Predicate, leftArgumentValueResource);
+                        RDFTriple atomInference = new RDFTriple(leftArgumentValueResource, Predicate, rightArgumentValueResource).SetInference();
+                        RDFTriple symmetricAtomInference = new RDFTriple(rightArgumentValueResource, Predicate, leftArgumentValueResource).SetInference();
 
                         //Add the inferences to the report
                         if (!ontology.Data.ABoxGraph.ContainsTriple(atomInference))

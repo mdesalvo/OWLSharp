@@ -39,6 +39,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 0);
@@ -91,6 +93,18 @@ namespace OWLSharp.Test
             while (functionalPropertiesEnumerator.MoveNext())
                 fp++;
             Assert.IsTrue(fp == 0);
+
+            int fop = 0;
+            IEnumerator<RDFResource> functionalObjectPropertiesEnumerator = propertyModel.FunctionalObjectPropertiesEnumerator;
+            while (functionalObjectPropertiesEnumerator.MoveNext())
+                fop++;
+            Assert.IsTrue(fop == 0);
+
+            int fdp = 0;
+            IEnumerator<RDFResource> functionalDatatypePropertiesEnumerator = propertyModel.FunctionalDatatypePropertiesEnumerator;
+            while (functionalDatatypePropertiesEnumerator.MoveNext())
+                fdp++;
+            Assert.IsTrue(fdp == 0);
 
             int ifp = 0;
             IEnumerator<RDFResource> inverseFunctionaPropertiesEnumerator = propertyModel.InverseFunctionalPropertiesEnumerator;
@@ -159,6 +173,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 0);
@@ -201,6 +217,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -243,6 +261,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -295,6 +315,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 1);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 1);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -332,6 +354,78 @@ namespace OWLSharp.Test
                 fp++;
             }
             Assert.IsTrue(fp == 1);
+
+            int fop = 0;
+            IEnumerator<RDFResource> functionalObjectPropertiesEnumerator = propertyModel.FunctionalObjectPropertiesEnumerator;
+            while (functionalObjectPropertiesEnumerator.MoveNext())
+            {
+                Assert.IsTrue(functionalObjectPropertiesEnumerator.Current.Equals(new RDFResource("ex:objprop")));
+                fop++;
+            }
+            Assert.IsTrue(fop == 1);
+        }
+
+        [TestMethod]
+        public void ShouldDeclareFunctionalDataProperty()
+        {
+            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
+            propertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop"), new OWLOntologyDatatypePropertyBehavior() { Functional = true });
+
+            Assert.IsTrue(propertyModel.PropertiesCount == 1);
+            Assert.IsTrue(propertyModel.AllDisjointPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.AnnotationPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.AsymmetricPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.DatatypePropertiesCount == 1);
+            Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 1);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 1);
+            Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
+            Assert.IsTrue(propertyModel.ObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.ReflexivePropertiesCount == 0);
+            Assert.IsTrue(propertyModel.SymmetricPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.TransitivePropertiesCount == 0);
+            Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 2);
+            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:dtprop"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY)));
+            Assert.IsTrue(propertyModel.TBoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:dtprop"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY)));
+            Assert.IsTrue(propertyModel.OBoxGraph.TriplesCount == 0);
+
+            int p = 0;
+            IEnumerator<RDFResource> propertiesEnumerator = propertyModel.PropertiesEnumerator;
+            while (propertiesEnumerator.MoveNext())
+            {
+                Assert.IsTrue(propertiesEnumerator.Current.Equals(new RDFResource("ex:dtprop")));
+                p++;
+            }
+            Assert.IsTrue(p == 1);
+
+            int dtp = 0;
+            IEnumerator<RDFResource> datatypePropertiesEnumerator = propertyModel.DatatypePropertiesEnumerator;
+            while (datatypePropertiesEnumerator.MoveNext())
+            {
+                Assert.IsTrue(datatypePropertiesEnumerator.Current.Equals(new RDFResource("ex:dtprop")));
+                dtp++;
+            }
+            Assert.IsTrue(dtp == 1);
+
+            int fp = 0;
+            IEnumerator<RDFResource> functionalPropertiesEnumerator = propertyModel.FunctionalPropertiesEnumerator;
+            while (functionalPropertiesEnumerator.MoveNext())
+            {
+                Assert.IsTrue(functionalPropertiesEnumerator.Current.Equals(new RDFResource("ex:dtprop")));
+                fp++;
+            }
+            Assert.IsTrue(fp == 1);
+
+            int fdp = 0;
+            IEnumerator<RDFResource> functionalDatatypePropertiesEnumerator = propertyModel.FunctionalDatatypePropertiesEnumerator;
+            while (functionalDatatypePropertiesEnumerator.MoveNext())
+            {
+                Assert.IsTrue(functionalDatatypePropertiesEnumerator.Current.Equals(new RDFResource("ex:dtprop")));
+                fdp++;
+            }
+            Assert.IsTrue(fdp == 1);
         }
 
         [TestMethod]
@@ -347,6 +441,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 1);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -399,6 +495,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 1);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -451,6 +549,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -503,6 +603,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -555,6 +657,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 1);
@@ -607,6 +711,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(propertyModel.DatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.DeprecatedPropertiesCount == 0);
             Assert.IsTrue(propertyModel.FunctionalPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalObjectPropertiesCount == 0);
+            Assert.IsTrue(propertyModel.FunctionalDatatypePropertiesCount == 0);
             Assert.IsTrue(propertyModel.InverseFunctionalPropertiesCount == 0);
             Assert.IsTrue(propertyModel.IrreflexivePropertiesCount == 0);
             Assert.IsTrue(propertyModel.ObjectPropertiesCount == 0);
@@ -1122,6 +1228,33 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldExportToGraphWithoutInferences()
+        {
+            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyA"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyB"), new OWLOntologyObjectPropertyBehavior() { Asymmetric = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyC"), new OWLOntologyObjectPropertyBehavior() { Transitive = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyD"), new OWLOntologyObjectPropertyBehavior() {  Reflexive = true });
+            propertyModel.DeclareDatatypeProperty(new RDFResource("ex:propertyE"), new OWLOntologyObjectPropertyBehavior() { Domain = RDFVocabulary.RDFS.RESOURCE, Range = RDFVocabulary.RDFS.RESOURCE });
+            propertyModel.DeclareAnnotationProperty(new RDFResource("ex:propertyF"));
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyG"), new OWLOntologyObjectPropertyBehavior() { Deprecated = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyH"), new OWLOntologyObjectPropertyBehavior() { Irreflexive = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyI"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyJ"), new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
+            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
+            propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
+            propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
+            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            propertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
+            propertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
+            RDFGraph graph = propertyModel.ToRDFGraph(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 38);
+        }
+
+        [TestMethod]
         public async Task ShouldExportToGraphAsync()
         {
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
@@ -1146,6 +1279,33 @@ namespace OWLSharp.Test
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 40);
+        }
+
+        [TestMethod]
+        public async Task ShouldExportToGraphAsyncWithoutInferences()
+        {
+            OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyA"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyB"), new OWLOntologyObjectPropertyBehavior() { Asymmetric = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyC"), new OWLOntologyObjectPropertyBehavior() { Transitive = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyD"), new OWLOntologyObjectPropertyBehavior() { Reflexive = true });
+            propertyModel.DeclareDatatypeProperty(new RDFResource("ex:propertyE"), new OWLOntologyObjectPropertyBehavior() { Domain = RDFVocabulary.RDFS.RESOURCE, Range = RDFVocabulary.RDFS.RESOURCE });
+            propertyModel.DeclareAnnotationProperty(new RDFResource("ex:propertyF"));
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyG"), new OWLOntologyObjectPropertyBehavior() { Deprecated = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyH"), new OWLOntologyObjectPropertyBehavior() { Irreflexive = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyI"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
+            propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyJ"), new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
+            propertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
+            propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
+            propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
+            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            propertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
+            propertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
+            RDFGraph graph = await propertyModel.ToRDFGraphAsync(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 38);
         }
         #endregion
     }

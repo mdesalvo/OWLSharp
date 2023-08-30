@@ -537,11 +537,17 @@ namespace OWLSharp
             RDFResource oneOfRepresentative = graph[owlEnumerate, RDFVocabulary.OWL.ONE_OF, null, null].FirstOrDefault()?.Object as RDFResource;
             if (oneOfRepresentative != null)
             {
-                List<RDFResource> oneOfMembers = new List<RDFResource>();
-                RDFCollection oneOfMembersCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOfRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+                List<RDFPatternMember> oneOfMembers = new List<RDFPatternMember>();
+
+                RDFModelEnums.RDFTripleFlavors collectionFlavor = RDFModelUtilities.DetectCollectionFlavorFromGraph(graph, oneOfRepresentative);
+                RDFCollection oneOfMembersCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOfRepresentative, collectionFlavor);
                 foreach (RDFPatternMember oneOfMember in oneOfMembersCollection)
-                    oneOfMembers.Add((RDFResource)oneOfMember);
-                ontology.Model.ClassModel.DeclareEnumerateClass(owlEnumerate, oneOfMembers);
+                    oneOfMembers.Add(oneOfMember);
+
+                if (collectionFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                    ontology.Model.ClassModel.DeclareEnumerateClass(owlEnumerate, oneOfMembers.OfType<RDFResource>().ToList());
+                else
+                    ontology.Model.ClassModel.DeclareEnumerateClass(owlEnumerate, oneOfMembers.OfType<RDFLiteral>().ToList());
             }
         }
 

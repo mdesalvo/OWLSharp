@@ -102,6 +102,23 @@ namespace OWLSharp.Validator.Test
         }
 
         [TestMethod]
+        public void ShouldValidateTermDeclaration_OneOfLiteral()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(new RDFResource("ex:enumeratelitClass"), RDFVocabulary.OWL.ONE_OF, new RDFResource("bnode:representative")));
+            ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(new RDFResource("bnode:representative"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+            ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(new RDFResource("bnode:representative"), RDFVocabulary.RDF.FIRST, new RDFPlainLiteral("hello")));
+            ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(new RDFResource("bnode:representative"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
+
+            OWLValidatorReport validatorReport = OWLTermDeclarationRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 0);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 1);
+        }
+
+        [TestMethod]
         public void ShouldValidateTermDeclaration_UnionOf()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");

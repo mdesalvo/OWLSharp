@@ -380,6 +380,19 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldCheckIsNotIndividualOfLiteralEnumerate()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareEnumerateClass(new RDFResource("ex:enumlitClass"), new List<RDFLiteral>() {
+                new RDFPlainLiteral("hello"), new RDFPlainLiteral("hello","en-US") });
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
+
+            Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv1"), new RDFResource("ex:enumlitClass")));
+            Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv2"), new RDFResource("ex:enumlitClass")));
+        }
+
+        [TestMethod]
         public void ShouldCheckNoIndividualsOfCardinalityRestriction()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");

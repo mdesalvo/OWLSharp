@@ -31,9 +31,9 @@ namespace OWLSharp
                 {
                     //Create the inferences
                     OWLReasonerEvidence evidenceA = new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.PropertyModel,
-                        nameof(OWLEquivalentPropertyTransitivityRule), new RDFTriple(currentProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, equivalentProperty));
+                        nameof(OWLEquivalentPropertyTransitivityRule), new RDFTriple(currentProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, equivalentProperty).SetInference());
                     OWLReasonerEvidence evidenceB = new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.PropertyModel,
-                        nameof(OWLEquivalentPropertyTransitivityRule), new RDFTriple(equivalentProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, currentProperty));
+                        nameof(OWLEquivalentPropertyTransitivityRule), new RDFTriple(equivalentProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, currentProperty).SetInference());
 
                     //Add the inferences to the report
                     if (!ontology.Model.PropertyModel.TBoxGraph.ContainsTriple(evidenceA.EvidenceContent))

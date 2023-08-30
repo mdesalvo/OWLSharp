@@ -96,6 +96,14 @@ namespace OWLSharp.Test
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumMembers2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumMembers2"), RDFVocabulary.RDF.FIRST, new RDFResource("ex:indiv2")));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumMembers2"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:enumlitclass"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:enumlitclass"), RDFVocabulary.OWL.ONE_OF, new RDFResource("bnode:enumlitMembers")));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers"), RDFVocabulary.RDF.FIRST, new RDFPlainLiteral("hello")));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers"), RDFVocabulary.RDF.REST, new RDFResource("bnode:enumlitMembers2")));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers2"), RDFVocabulary.RDF.FIRST, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_LONG)));
+            graph.AddTriple(new RDFTriple(new RDFResource("bnode:enumlitMembers2"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:unionclass"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:unionclass"), RDFVocabulary.OWL.UNION_OF, new RDFResource("bnode:unionMembers")));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:unionMembers"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
@@ -307,6 +315,7 @@ namespace OWLSharp.Test
         public void ShouldLoadEnumerateDeclarations()
         {
             Assert.IsTrue(Ontology.Model.ClassModel.CheckHasEnumerateClass(new RDFResource("ex:enumclass")));
+            Assert.IsTrue(Ontology.Model.ClassModel.CheckHasEnumerateClass(new RDFResource("ex:enumlitclass")));
         }
 
         [TestMethod]
@@ -974,7 +983,7 @@ namespace OWLSharp.Test
                             Assert.IsTrue(ontology.Model.PropertyModel.TransitivePropertiesCount == 1);
                             Assert.IsTrue(ontology.Model.PropertyModel.OBoxGraph.TriplesCount == 0);
                             Assert.IsNotNull(ontology.Data);
-                            Assert.IsTrue(ontology.Data.IndividualsCount == 4); //Before Bug13 fix this was 3 because Jack was not detected
+                            Assert.IsTrue(ontology.Data.IndividualsCount == 4);
                             Assert.IsTrue(ontology.Data.OBoxGraph.TriplesCount == 0);
                         }
                     }

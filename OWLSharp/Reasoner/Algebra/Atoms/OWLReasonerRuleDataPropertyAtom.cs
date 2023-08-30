@@ -136,7 +136,7 @@ namespace OWLSharp
                     if (ontology.Data.CheckDatatypeAssertionCompatibility(leftArgumentValueResource, Predicate, rightArgumentValueLiteral))
                     {
                         //Create the inference
-                        RDFTriple atomInference = new RDFTriple(leftArgumentValueResource, Predicate, rightArgumentValueLiteral);
+                        RDFTriple atomInference = new RDFTriple(leftArgumentValueResource, Predicate, rightArgumentValueLiteral).SetInference();
 
                         //Add the inference to the report
                         if (!ontology.Data.ABoxGraph.ContainsTriple(atomInference))

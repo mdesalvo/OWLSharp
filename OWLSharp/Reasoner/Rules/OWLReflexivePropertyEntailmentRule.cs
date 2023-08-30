@@ -32,7 +32,7 @@ namespace OWLSharp
                 {                    
                     //Create the inferences
                     OWLReasonerEvidence evidence = new OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory.Data,
-                        nameof(OWLReflexivePropertyEntailmentRule), new RDFTriple((RDFResource)propertyObjectAssertion.Subject, currentProperty, (RDFResource)propertyObjectAssertion.Subject));
+                        nameof(OWLReflexivePropertyEntailmentRule), new RDFTriple((RDFResource)propertyObjectAssertion.Subject, currentProperty, (RDFResource)propertyObjectAssertion.Subject).SetInference());
 
                     //Add the inferences to the report
                     if (!ontology.Data.ABoxGraph.ContainsTriple(evidence.EvidenceContent))
