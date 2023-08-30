@@ -72,10 +72,10 @@ namespace OWLSharp
                     WriteDeclarations(ontNode, owlDoc, "IrreflexiveObjectProperty", "ObjectProperty", ontology.Model.PropertyModel.IrreflexivePropertiesEnumerator, ontGraphNamespaces, includeInferences);
                     WriteDeclarations(ontNode, owlDoc, "FunctionalDataProperty", "DataProperty", ontology.Model.PropertyModel.FunctionalDatatypePropertiesEnumerator, ontGraphNamespaces, includeInferences);
                     WriteDeclarations(ontNode, owlDoc, "Declaration", "NamedIndividual", ontology.Data.IndividualsEnumerator, ontGraphNamespaces, includeInferences);
+                    //ClassModel
                     WriteRestrictions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteEnumerates(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteComposites(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //ClassModel
                     WriteSubClassOfRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteEquivalentClassesRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteDisjointClassesRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
