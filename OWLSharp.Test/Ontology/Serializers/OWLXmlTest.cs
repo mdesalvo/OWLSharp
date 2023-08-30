@@ -2344,9 +2344,9 @@ namespace OWLSharp.Test
             ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
               new RDFResource("http://example.com/annProp"), new RDFResource("http://example.com/"));
             ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
-              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/ClsAbout")); //TODO: non viene riconosciuta in automatico l'annotazione rdfs:seeAlso
+              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/ClsAbout"));
             ontology.Model.ClassModel.AnnotateClass(new RDFResource("http://example.com/Cls"), 
-              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is a class", "en"));  //TODO: non viene riconosciuta in automatico l'annotazione rdfs:comment
+              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is a class", "en"));
             ontology.Model.PropertyModel.DeclareAnnotationProperty(new RDFResource("http://example.com/annProp"));
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAnnotations.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAnnotations.owx")));
@@ -3155,9 +3155,9 @@ namespace OWLSharp.Test
             ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/objProp"), 
               new RDFResource("http://example.com/annProp"), new RDFResource("http://example.com/"));
             ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/dtProp"), 
-              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/DtPropAbout")); //TODO: non viene riconosciuta in automatico l'annotazione rdfs:seeAlso
+              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/DtPropAbout"));
             ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/dtProp"), 
-              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is a property", "en"));  //TODO: non viene riconosciuta in automatico l'annotazione rdfs:comment
+              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is a property", "en"));
             ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("http://example.com/annProp"),
               RDFVocabulary.SKOS.CHANGE_NOTE, new RDFTypedLiteral("http://changenote/", RDFModelEnums.RDFDatatypes.XSD_ANYURI));
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializePropertyAnnotations.owx"));
@@ -3594,9 +3594,9 @@ namespace OWLSharp.Test
             ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV1"),
               new RDFResource("http://example.com/annProp"), new RDFResource("http://example.com/IDV2"));
             ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV1"),
-              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/IdvAbout")); //TODO: non viene riconosciuta in automatico l'annotazione rdfs:seeAlso
+              RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("http://example.com/IdvAbout"));
             ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV2"),
-              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is an individual", "en"));  //TODO: non viene riconosciuta in automatico l'annotazione rdfs:comment
+              RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("this is an individual", "en"));
             ontology.Data.AnnotateIndividual(new RDFResource("http://example.com/IDV2"),
               RDFVocabulary.SKOS.CHANGE_NOTE, new RDFTypedLiteral("http://changenote/", RDFModelEnums.RDFDatatypes.XSD_ANYURI));
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeIndividualAnnotations.owx"));
