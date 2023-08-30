@@ -3050,6 +3050,45 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeAllDifferentRelations()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
+            ontology.Data.DeclareIndividual(RDFVocabulary.GEO.LOCATION);
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID2"));
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("http://example.com/AllDifferent"),
+                new List<RDFResource>() { new RDFResource("http://example.com/ID1"), RDFVocabulary.GEO.LOCATION, new RDFResource("http://example.com/ID2") });
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDifferentRelations.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDifferentRelations.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDifferentRelations.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID2"" />
+  </Declaration>
+  <DifferentIndividuals>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+    <NamedIndividual IRI=""http://example.com/ID2"" />
+  </DifferentIndividuals>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {

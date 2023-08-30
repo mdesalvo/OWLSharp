@@ -97,7 +97,8 @@ namespace OWLSharp
                     WriteClassAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteSameIndividualsRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteDifferentIndividualsRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (AllDifferent, Assertion, NegativeAssertion)
+                    WriteAllDifferentRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true) and relations (Assertion, NegativeAssertion)
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
@@ -862,6 +863,28 @@ namespace OWLSharp
                     WriteResourceElement(diffreentIndividualsNode, owlDoc, "NamedIndividual", differentIdv, ontGraphNamespaces);
                     xmlNode.AppendChild(diffreentIndividualsNode);
                 }
+        }
+
+        internal static void WriteAllDifferentRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            IEnumerator<RDFResource> allDifferent = ontology.Data.AllDifferentEnumerator;
+            while (allDifferent.MoveNext())
+            {
+                //OWL/XML lacks syntax for AllDifferent, so it fallbacks to DifferentIndividuals (n-ary)
+                RDFResource allDifferentMembersRepresentative = ontology.Data.ABoxGraph[allDifferent.Current, RDFVocabulary.OWL.DISTINCT_MEMBERS, null, null]
+                                                                    .FirstOrDefault()?.Object as RDFResource;
+                if (allDifferentMembersRepresentative != null)
+                {
+                    RDFCollection allDifferentMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Data.ABoxGraph, allDifferentMembersRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+                    if (allDifferentMembers.ItemsCount > 0)
+                    {
+                        XmlNode allDifferentMembersNode = owlDoc.CreateNode(XmlNodeType.Element, "DifferentIndividuals", RDFVocabulary.OWL.BASE_URI);
+                        foreach (RDFResource allDifferentMember in allDifferentMembers)
+                            WriteResourceElement(allDifferentMembersNode, owlDoc, "NamedIndividual", allDifferentMember, ontGraphNamespaces);
+                        xmlNode.AppendChild(allDifferentMembersNode);
+                    }
+                }
+            }
         }
 
         //Common
