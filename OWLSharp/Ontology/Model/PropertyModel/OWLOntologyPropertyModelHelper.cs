@@ -444,7 +444,7 @@ namespace OWLSharp
 
             if (propertyModel != null && owlProperty != null)
             {
-                inverseProperties.AddRange(propertyModel.FindInversePropertiesOf(owlProperty));
+                inverseProperties.AddRange(FindInversePropertiesOf(propertyModel.TBoxGraph, owlProperty));
 
                 //We don't want to also enlist the given owl:Property
                 inverseProperties.RemoveAll(prop => prop.Equals(owlProperty));
@@ -456,16 +456,16 @@ namespace OWLSharp
         /// <summary>
         /// Finds "InverseOf(owlProperty, X)" relations to enlist the inverse properties of the given owl:Property
         /// </summary>
-        internal static List<RDFResource> FindInversePropertiesOf(this OWLOntologyPropertyModel propertyModel, RDFResource owlProperty)
+        internal static List<RDFResource> FindInversePropertiesOf(RDFGraph graph, RDFResource owlProperty)
         {
             List<RDFResource> inverseProperties = new List<RDFResource>();
 
             //DIRECT
-            foreach (RDFTriple inversePropertyRelation in propertyModel.TBoxGraph[owlProperty, RDFVocabulary.OWL.INVERSE_OF, null, null])
+            foreach (RDFTriple inversePropertyRelation in graph[owlProperty, RDFVocabulary.OWL.INVERSE_OF, null, null])
                 inverseProperties.Add((RDFResource)inversePropertyRelation.Object);
 
             //INDIRECT (SYMMETRIC)
-            foreach (RDFTriple inversePropertyRelation in propertyModel.TBoxGraph[null, RDFVocabulary.OWL.INVERSE_OF, owlProperty, null])
+            foreach (RDFTriple inversePropertyRelation in graph[null, RDFVocabulary.OWL.INVERSE_OF, owlProperty, null])
                 inverseProperties.Add((RDFResource)inversePropertyRelation.Subject);
 
             return inverseProperties;

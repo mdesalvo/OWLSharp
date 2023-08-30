@@ -168,8 +168,28 @@ namespace OWLSharp
         /// Gets the owl:onProperty declaration of the given owl:Restriction
         /// </summary>
         internal static RDFResource GetRestrictionProperty(RDFGraph graph, RDFResource owlRestriction)
-            => graph[owlRestriction, RDFVocabulary.OWL.ON_PROPERTY, null, null]
-                  .FirstOrDefault()?.Object as RDFResource;
+        {
+            //Get owl:onProperty of the given owl:Restriction
+            RDFResource onProperty = graph[owlRestriction, RDFVocabulary.OWL.ON_PROPERTY, null, null].FirstOrDefault()?.Object as RDFResource;
+
+            if (onProperty?.IsBlank ?? false)
+            {
+                //Try handling OWL2-Full anonymous inline property expressions (https://www.w3.org/2007/OWL/wiki/FullSemanticsInversePropertyExpressions)
+                //ex:svfRest rdf:type owl:Restriction ;
+                //           owl:onProperty [ owl:inverseOf ex:propB ] ;
+                //           owl:someValuesFrom  ex:class .
+                //:propB owl:inverseOf :propA .
+                RDFResource inverseOfAnonymousInlineProperty = OWLOntologyPropertyModelHelper.FindInversePropertiesOf(graph, onProperty).FirstOrDefault(); //ex:propB
+                if (inverseOfAnonymousInlineProperty != null)
+                {
+                    RDFResource effectiveOnProperty = OWLOntologyPropertyModelHelper.FindInversePropertiesOf(graph, inverseOfAnonymousInlineProperty).FirstOrDefault(); //ex:propA
+                    if (effectiveOnProperty != null)
+                        onProperty = effectiveOnProperty;
+                }
+            }
+
+            return onProperty;
+        }
 
         /// <summary>
         /// Gets the owl:allValuesFrom declaration of the given owl:Restriction

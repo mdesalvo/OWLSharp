@@ -329,10 +329,10 @@ namespace OWLSharp
             //:propB owl:inverseOf :propA .
             if (onProperty.IsBlank)
             {
-                RDFResource inverseOfAnonymousInlineProperty = model.PropertyModel.GetInversePropertiesOf(onProperty).FirstOrDefault(); //ex:propB
+                RDFResource inverseOfAnonymousInlineProperty = OWLOntologyPropertyModelHelper.FindInversePropertiesOf(model.PropertyModel.TBoxGraph, onProperty).FirstOrDefault(); //ex:propB
                 if (inverseOfAnonymousInlineProperty != null)
                 {
-                    RDFResource effectiveOnProperty = model.PropertyModel.GetInversePropertiesOf(inverseOfAnonymousInlineProperty).FirstOrDefault(); //ex:propA
+                    RDFResource effectiveOnProperty = OWLOntologyPropertyModelHelper.FindInversePropertiesOf(model.PropertyModel.TBoxGraph, inverseOfAnonymousInlineProperty).FirstOrDefault(); //ex:propA
                     if (effectiveOnProperty != null)
                         onProperty = effectiveOnProperty;
                 }

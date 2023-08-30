@@ -992,6 +992,106 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldLoadOntologyWithAnonymousRelation()
+        {
+            string ontString =
+@"<!DOCTYPE rdf:RDF [
+    <!ENTITY owl ""http://www.w3.org/2002/07/owl#"" >
+    <!ENTITY xsd ""http://www.w3.org/2001/XMLSchema#"" >
+    <!ENTITY rdfs ""http://www.w3.org/2000/01/rdf-schema#"" >
+    <!ENTITY otherOnt ""http://example.org/otherOntologies/families/"" >
+]>
+ 
+ <rdf:RDF xml:base=""http://example.com/owl/families/""
+          xmlns=""http://example.com/owl/families/""
+          xmlns:otherOnt=""http://example.org/otherOntologies/families/""
+          xmlns:owl=""http://www.w3.org/2002/07/owl#""
+          xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""
+          xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""
+          xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
+ 
+   <owl:Ontology rdf:about=""http://example.com/owl/families"">
+     <owl:imports rdf:resource=""http://example.org/otherOntologies/families.owl"" />
+   </owl:Ontology>
+
+   <owl:ObjectProperty rdf:about=""hasChild"" />
+
+   <owl:ObjectProperty rdf:about=""hasParent"">
+     <owl:inverseOf rdf:resource=""hasChild""/>
+   </owl:ObjectProperty>
+ 
+   <owl:Class rdf:about=""Orphan"">
+     <owl:equivalentClass>
+       <owl:Restriction>
+         <owl:onProperty>
+
+           <!-- ENTIRE NODE SHOULD GIVE hasParent -->
+           <owl:ObjectProperty>
+             <owl:inverseOf rdf:resource=""hasChild""/>
+           </owl:ObjectProperty>
+
+         </owl:onProperty>
+         <owl:allValuesFrom rdf:resource=""Dead""/>
+       </owl:Restriction>
+     </owl:equivalentClass>
+   </owl:Class>
+ </rdf:RDF>";
+
+            using (MemoryStream stream = new MemoryStream())
+            { 
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.Write(ontString);
+                    writer.Flush();
+                    stream.Position = 0;
+
+                    using (RDFGraph graph = RDFGraph.FromStream(RDFModelEnums.RDFFormats.RdfXml, stream))
+                    {
+                        using (OWLOntology ontology = OWLOntology.FromRDFGraph(graph))
+                        {
+                            Assert.IsNotNull(ontology);
+                            Assert.IsTrue(ontology.URI.Equals(new Uri("http://example.com/owl/families")));
+                            Assert.IsTrue(ontology.OBoxGraph.TriplesCount == 2);
+                            Assert.IsNotNull(ontology.Model);
+                            Assert.IsNotNull(ontology.Model.ClassModel);
+                            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 2);
+                            Assert.IsTrue(ontology.Model.ClassModel.AllDisjointClassesCount == 0);
+                            Assert.IsTrue(ontology.Model.ClassModel.CompositesCount == 0);
+                            Assert.IsTrue(ontology.Model.ClassModel.DeprecatedClassesCount == 0);
+                            Assert.IsTrue(ontology.Model.ClassModel.EnumeratesCount == 0);
+                            Assert.IsTrue(ontology.Model.ClassModel.RestrictionsCount == 1);
+                            Assert.IsTrue(ontology.Model.ClassModel.SimpleClassesCount == 1);
+                            Assert.IsTrue(ontology.Model.ClassModel.OBoxGraph.TriplesCount == 0);
+                            Assert.IsNotNull(ontology.Model.PropertyModel);
+                            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 3); //TODO: analyze why there is 1 blank node property
+                            Assert.IsTrue(ontology.Model.PropertyModel.AllDisjointPropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.AnnotationPropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.AsymmetricPropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.DatatypePropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.DeprecatedPropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.FunctionalPropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.InverseFunctionalPropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.IrreflexivePropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.ObjectPropertiesCount == 3);
+                            Assert.IsTrue(ontology.Model.PropertyModel.ReflexivePropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.SymmetricPropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.TransitivePropertiesCount == 0);
+                            Assert.IsTrue(ontology.Model.PropertyModel.OBoxGraph.TriplesCount == 0);
+                            Assert.IsNotNull(ontology.Data);
+                            Assert.IsTrue(ontology.Data.IndividualsCount == 0);
+                            Assert.IsTrue(ontology.Data.OBoxGraph.TriplesCount == 0);
+
+                            RDFResource equivalentToOrphan = ontology.Model.ClassModel.GetEquivalentClassesOf(new RDFResource("http://example.com/owl/families/Orphan")).Single();
+                            Assert.IsNotNull(equivalentToOrphan);
+                            Assert.IsTrue(ontology.Model.ClassModel.CheckHasAllValuesFromRestrictionClass(equivalentToOrphan));
+                            Assert.IsTrue(ontology.Model.ClassModel.TBoxGraph[equivalentToOrphan, RDFVocabulary.OWL.ON_PROPERTY, new RDFResource("http://example.com/owl/families/hasParent"), null].TriplesCount > 0);
+                        }
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
         public void ShouldLoadOntologyWithAnonymousProperty()
         {
             string ontString =
