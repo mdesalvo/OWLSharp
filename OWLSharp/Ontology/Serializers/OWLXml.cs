@@ -98,7 +98,8 @@ namespace OWLSharp
                     WriteSameIndividualsRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteDifferentIndividualsRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteAllDifferentRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
-                    //TODO: annotations(+owl:deprecated=true) and relations (Assertion, NegativeAssertion)
+                    WriteAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true) and relations (NegativeAssertion)
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
@@ -884,6 +885,45 @@ namespace OWLSharp
                         xmlNode.AppendChild(allDifferentMembersNode);
                     }
                 }
+            }
+        }
+
+        internal static void WriteAssertions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
+            while (objectProperties.MoveNext())
+            {
+                RDFGraph aboxAssertionGraph = ontology.Data.ABoxGraph[null, objectProperties.Current, null, null];
+                IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
+                while (individuals.MoveNext())
+                    foreach (RDFResource asnTarget in aboxAssertionGraph[individuals.Current, null, null, null]
+                                                        .Select(t => t.Object)
+                                                        .OfType<RDFResource>())
+                    {
+                        XmlNode assertionNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectPropertyAssertion", RDFVocabulary.OWL.BASE_URI);
+                        WriteResourceElement(assertionNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
+                        WriteResourceElement(assertionNode, owlDoc, "NamedIndividual", individuals.Current, ontGraphNamespaces);
+                        WriteResourceElement(assertionNode, owlDoc, "NamedIndividual", asnTarget, ontGraphNamespaces);
+                        xmlNode.AppendChild(assertionNode);
+                    }
+            }
+
+            IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
+            while (datatypeProperties.MoveNext())
+            {
+                RDFGraph aboxAssertionGraph = ontology.Data.ABoxGraph[null, datatypeProperties.Current, null, null];
+                IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
+                while (individuals.MoveNext())
+                    foreach (RDFLiteral asnTarget in aboxAssertionGraph[individuals.Current, null, null, null]
+                                                        .Select(t => t.Object)
+                                                        .OfType<RDFLiteral>())
+                    {
+                        XmlNode assertionNode = owlDoc.CreateNode(XmlNodeType.Element, "DataPropertyAssertion", RDFVocabulary.OWL.BASE_URI);
+                        WriteResourceElement(assertionNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
+                        WriteResourceElement(assertionNode, owlDoc, "NamedIndividual", individuals.Current, ontGraphNamespaces);
+                        WriteLiteralElement(assertionNode, owlDoc, asnTarget);
+                        xmlNode.AppendChild(assertionNode);
+                    }
             }
         }
 

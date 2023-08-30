@@ -3089,6 +3089,59 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        [TestMethod]
+        public void ShouldSerializeAssertions()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp"));
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp"));
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID2"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("http://example.com/ID1"), new RDFResource("http://example.com/objProp"), new RDFResource("http://example.com/ID2"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("http://example.com/ID1"), new RDFResource("http://example.com/dtProp"), new RDFPlainLiteral("hello!", "en-UK"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("http://example.com/ID2"), new RDFResource("http://example.com/objProp"), new RDFResource("http://example.com/ID1"));
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAssertions.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAssertions.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAssertions.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <ObjectProperty IRI=""http://example.com/objProp"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://example.com/dtProp"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID2"" />
+  </Declaration>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI=""http://example.com/objProp"" />
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+    <NamedIndividual IRI=""http://example.com/ID2"" />
+  </ObjectPropertyAssertion>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI=""http://example.com/objProp"" />
+    <NamedIndividual IRI=""http://example.com/ID2"" />
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </ObjectPropertyAssertion>
+  <DataPropertyAssertion>
+    <DataProperty IRI=""http://example.com/dtProp"" />
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+    <Literal xml:lang=""EN-UK"">hello!</Literal>
+  </DataPropertyAssertion>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
         [TestCleanup]
         public void Cleanup()
         {
