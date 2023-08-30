@@ -94,7 +94,8 @@ namespace OWLSharp
                     WriteRangeRelations(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
                     WriteAnnotations(ontNode, owlDoc, "PropertyModel", ontology, ontGraphNamespaces, includeInferences);
                     //Data
-                    //TODO: annotations(+owl:deprecated=true) and relations (Type, SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
+                    WriteClassAssertions(ontNode, owlDoc, ontology, ontGraphNamespaces, includeInferences);
+                    //TODO: annotations(+owl:deprecated=true) and relations (SameAs, DifferentFrom, AllDifferent, Assertion, NegativeAssertion)
 
                     owlDoc.AppendChild(ontNode);
                     owlDoc.Save(owlxmlWriter);
@@ -190,6 +191,8 @@ namespace OWLSharp
             }
         }
         
+        //ClassModel
+
         internal static void WriteRestrictions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
             IEnumerator<RDFResource> restrictions = ontology.Model.ClassModel.RestrictionsEnumerator;
@@ -204,7 +207,7 @@ namespace OWLSharp
                     throw new OWLException($"PropertyModel does not contain a declaration for object or datatype property '{onProperty}'");
                 #endregion
 
-                //Restrictions are serialized as objectProperties equivalent to...themselves OWL/XML-reified:
+                //Restrictions are serialized as individuals equivalent to...themselves OWL/XML-reified:
                 //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                 WriteResourceElement(equivalentClassesNode, owlDoc, "Class", restrictions.Current, ontGraphNamespaces);
@@ -389,7 +392,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> enumerates = ontology.Model.ClassModel.EnumeratesEnumerator;
             while (enumerates.MoveNext())
             {
-                //Enumerates are serialized as objectProperties equivalent to...themselves OWL/XML-reified:
+                //Enumerates are serialized as individuals equivalent to...themselves OWL/XML-reified:
                 //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                 WriteResourceElement(equivalentClassesNode, owlDoc, "Class", enumerates.Current, ontGraphNamespaces);
@@ -421,7 +424,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> composites = ontology.Model.ClassModel.CompositesEnumerator;
             while (composites.MoveNext())
             {
-                //Composites are serialized as objectProperties equivalent to...themselves OWL/XML-reified:
+                //Composites are serialized as individuals equivalent to...themselves OWL/XML-reified:
                 //this is due to OWL/XML lacking a syntax for expressing named or standalone restrictions
                 XmlNode equivalentClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "EquivalentClasses", RDFVocabulary.OWL.BASE_URI);
                 WriteResourceElement(equivalentClassesNode, owlDoc, "Class", composites.Current, ontGraphNamespaces);
@@ -588,6 +591,8 @@ namespace OWLSharp
                 }
             }
         }
+
+        //PropertyModel
 
         internal static void WriteSubPropertyOfRelations(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {
@@ -805,6 +810,27 @@ namespace OWLSharp
                     xmlNode.AppendChild(rangeNode);
                 }
         }
+
+        //Data
+
+        internal static void WriteClassAssertions(XmlNode xmlNode, XmlDocument owlDoc, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences = true)
+        {
+            RDFGraph aboxTypeGraph = ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, null, null];
+            IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
+            while (individuals.MoveNext())
+                foreach (RDFResource idvClass in aboxTypeGraph[individuals.Current, null, null, null]
+                                                    .Where(t => !t.Object.Equals(RDFVocabulary.OWL.NAMED_INDIVIDUAL))
+                                                    .Select(t => t.Object)
+                                                    .OfType<RDFResource>())
+                {
+                    XmlNode classAssertionNode = owlDoc.CreateNode(XmlNodeType.Element, "ClassAssertion", RDFVocabulary.OWL.BASE_URI);
+                    WriteResourceElement(classAssertionNode, owlDoc, "Class", idvClass, ontGraphNamespaces);
+                    WriteResourceElement(classAssertionNode, owlDoc, "NamedIndividual", individuals.Current, ontGraphNamespaces);
+                    xmlNode.AppendChild(classAssertionNode);
+                }
+        }
+
+        //Common
 
         internal static void WriteAnnotations(XmlNode xmlNode, XmlDocument owlDoc, string annotationType, OWLOntology ontology, List<RDFNamespace> ontGraphNamespaces, bool includeInferences=true)
         {

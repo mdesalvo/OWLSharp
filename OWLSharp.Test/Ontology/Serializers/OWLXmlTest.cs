@@ -766,6 +766,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        //ClassModel
+
         [TestMethod]
         public void ShouldSerializeSomeValuesFromObjectRestriction()
         {
@@ -2307,6 +2309,8 @@ namespace OWLSharp.Test
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
 
+        //PropertyModel
+
         [TestMethod]
         public void ShouldSerializeSubObjectPropertyRelation()
         {
@@ -2928,6 +2932,46 @@ namespace OWLSharp.Test
     <IRI>http://example.com/annProp</IRI>
     <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#boolean"">true</Literal>
   </AnnotationAssertion>
+</Ontology>";
+            Assert.IsTrue(fileContent.Equals(expectedFileContent));
+        }
+
+        //Data
+
+        [TestMethod]
+        public void ShouldSerializeClassAssertions()
+        {
+            OWLOntology ontology = new OWLOntology("http://example.com/");
+            ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID1"));
+            ontology.Data.DeclareIndividual(RDFVocabulary.GEO.LOCATION);
+            ontology.Data.DeclareIndividualType(new RDFResource("http://example.com/ID1"), new RDFResource("http://example.com/Cls1"));
+            ontology.Data.DeclareIndividualType(RDFVocabulary.GEO.LOCATION, RDFVocabulary.GEO.SPATIAL_THING);
+            OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAssertions.owx"));
+
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAssertions.owx")));
+            string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeClassAssertions.owx"));
+            string expectedFileContent =
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology ontologyIRI=""http://example.com/"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:geo=""http://www.w3.org/2003/01/geo/wgs84_pos#"" xmlns:xml=""http://www.w3.org/XML/1998/namespace"" xml:base=""http://example.com/"" xmlns=""http://www.w3.org/2002/07/owl#"">
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""geo"" IRI=""http://www.w3.org/2003/01/geo/wgs84_pos#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name="""" IRI=""http://example.com/"" />
+  <Declaration>
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+  </Declaration>
+  <ClassAssertion>
+    <Class IRI=""http://example.com/Cls1"" />
+    <NamedIndividual IRI=""http://example.com/ID1"" />
+  </ClassAssertion>
+  <ClassAssertion>
+    <Class abbreviatedIRI=""geo:SpatialThing"" />
+    <NamedIndividual abbreviatedIRI=""geo:location"" />
+  </ClassAssertion>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));
         }
