@@ -3137,7 +3137,7 @@ namespace OWLSharp.Test
   </Declaration>
   <DataPropertyRange>
     <DataProperty IRI=""http://example.com/dtProp"" />
-    <Class abbreviatedIRI=""xsd:integer"" />
+    <Datatype abbreviatedIRI=""xsd:integer"" />
   </DataPropertyRange>
 </Ontology>";
             Assert.IsTrue(fileContent.Equals(expectedFileContent));

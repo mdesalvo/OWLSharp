@@ -808,7 +808,7 @@ namespace OWLSharp
                 {
                     XmlNode rangeNode = owlDoc.CreateNode(XmlNodeType.Element, "DataPropertyRange", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(rangeNode, owlDoc, "DataProperty", datatypeProperties.Current, ontGraphNamespaces);
-                    WriteResourceElement(rangeNode, owlDoc, "Class", rangeClass, ontGraphNamespaces);
+                    WriteResourceElement(rangeNode, owlDoc, "Datatype", rangeClass, ontGraphNamespaces);
                     xmlNode.AppendChild(rangeNode);
                 }
         }

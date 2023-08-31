@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 
@@ -954,6 +955,12 @@ namespace OWLSharp.Test
                     {
                         using (OWLOntology ontology = OWLOntology.FromRDFGraph(graph))
                         {
+                            //using (MemoryStream stream2 = new MemoryStream())
+                            //{
+                            //ontology.ToStream(OWLEnums.OWLFormats.OwlXml, stream2);
+                            //string owlxml = Encoding.UTF8.GetString(stream2.ToArray());
+                            //}
+
                             Assert.IsNotNull(ontology);
                             Assert.IsTrue(ontology.URI.Equals(new Uri("http://example.com/owl/families")));
                             Assert.IsTrue(ontology.OBoxGraph.TriplesCount == 2);
