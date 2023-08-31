@@ -204,12 +204,25 @@ namespace OWLSharp
             while (restrictions.MoveNext())
             {
                 #region Guards
+                //We require the restricted property to be declared to the model, since
+                //we must serialize it explicitly as "ObjectProperty" or "DataProperty"
                 RDFResource onProperty = ontology.Model.ClassModel.TBoxGraph[restrictions.Current, RDFVocabulary.OWL.ON_PROPERTY, null, null]
                                            .FirstOrDefault()?.Object as RDFResource;
                 bool onObjectProperty = ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty);
                 bool onDatatypeProperty = ontology.Model.PropertyModel.CheckHasDatatypeProperty(onProperty);
                 if (!onObjectProperty && !onDatatypeProperty)
-                    throw new OWLException($"PropertyModel does not contain a declaration for object or datatype property '{onProperty}'");
+                {
+                    //The restricted property is *not* declared to the model, so we cannot
+                    //determine at first sight its type (Object vs Datatype). In order to
+                    //recover from this situation we can try a set of quick heuristics by
+                    //checking the context in which it is used:
+                    //1.HasSelf => ObjectProperty
+                    if (ontology.Model.ClassModel.TBoxGraph[restrictions.Current, RDFVocabulary.OWL.HAS_SELF, null, RDFTypedLiteral.True].TriplesCount > 0)
+                        onObjectProperty = true;
+
+                    if (!onObjectProperty && !onDatatypeProperty)
+                        throw new OWLException($"PropertyModel does not contain a declaration for object or datatype property '{onProperty}'");
+                }   
                 #endregion
 
                 //Restrictions are serialized as individuals equivalent to...themselves OWL/XML-reified:
