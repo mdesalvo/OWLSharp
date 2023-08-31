@@ -1023,14 +1023,14 @@ namespace OWLSharp.Extensions.SKOS
         /// <summary>
         /// Gets a graph representation of the concept scheme
         /// </summary>
-        public RDFGraph ToRDFGraph()
-            => Ontology.ToRDFGraph();
+        public RDFGraph ToRDFGraph(bool includeInferences=true)
+            => Ontology.ToRDFGraph(includeInferences);
 
         /// <summary>
         /// Asynchronously gets a graph representation of the concept scheme
         /// </summary>
-        public Task<RDFGraph> ToRDFGraphAsync()
-            => Task.Run(() => ToRDFGraph());
+        public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
+            => Task.Run(() => ToRDFGraph(includeInferences));
 
         //IMPORT
 
