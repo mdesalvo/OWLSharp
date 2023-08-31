@@ -171,7 +171,7 @@ namespace OWLSharp
         //ANNOTATIONS
 
         /// <summary>
-        /// Annotates the given individual with the given "annotationProperty -> annotationValue"
+        /// Annotates the given individual with the given URI value (e.g: rdfs:seeAlso "http://example.org/individualX")
         /// </summary>
         public OWLOntologyData AnnotateIndividual(RDFResource owlIndividual, RDFResource annotationProperty, RDFResource annotationValue)
         {
@@ -193,7 +193,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Annotates the given individual with the given "annotationProperty -> annotationValue"
+        /// Annotates the given individual with the given literal value (e.g: rdfs:comment "individual is...")
         /// </summary>
         public OWLOntologyData AnnotateIndividual(RDFResource owlIndividual, RDFResource annotationProperty, RDFLiteral annotationValue)
         {

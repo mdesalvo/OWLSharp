@@ -653,7 +653,7 @@ namespace OWLSharp
         //ANNOTATIONS
 
         /// <summary>
-        /// Annotates the given property with the given "annotationProperty -> annotationValue"
+        /// Annotates the given property with the given URI value (e.g: rdfs:seeAlso "http://example.org/property")
         /// </summary>
         public OWLOntologyPropertyModel AnnotateProperty(RDFResource owlProperty, RDFResource annotationProperty, RDFResource annotationValue)
         {
@@ -675,7 +675,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Annotates the given property with the given "annotationProperty -> annotationValue"
+        /// Annotates the given property with the given literal value (e.g: rdfs:comment "property for...")
         /// </summary>
         public OWLOntologyPropertyModel AnnotateProperty(RDFResource owlProperty, RDFResource annotationProperty, RDFLiteral annotationValue)
         {

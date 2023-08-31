@@ -769,7 +769,7 @@ namespace OWLSharp
         //ANNOTATIONS
 
         /// <summary>
-        /// Annotates the given class with the given "annotationProperty -> annotationValue"
+        /// Annotates the given class with the given URI value (e.g: rdfs:seeAlso "http://example.org/class")
         /// </summary>
         public OWLOntologyClassModel AnnotateClass(RDFResource owlClass, RDFResource annotationProperty, RDFResource annotationValue)
         {
@@ -791,7 +791,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Annotates the given class with the given "annotationProperty -> annotationValue"
+        /// Annotates the given class with the given literal value (e.g: rdfs:comment "class for...")
         /// </summary>
         public OWLOntologyClassModel AnnotateClass(RDFResource owlClass, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
