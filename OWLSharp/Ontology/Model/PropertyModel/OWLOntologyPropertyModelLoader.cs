@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using RDFSharp.Model;
@@ -111,6 +112,24 @@ namespace OWLSharp
                         disjointProperties.Add((RDFResource)disjointProperty);
                     ontology.Model.PropertyModel.DeclareAllDisjointProperties(allDisjointProperties, disjointProperties);
                 }
+            #endregion
+
+            #region Cleanup
+            //There may be spurios pieces of T-BOX due to weird modeling constructs
+            //(such as OWL2-Full anonymous inline property expressions), so we need to
+            //detect and remove boilerplate specifically describing blank object properties
+            IEnumerator<RDFResource> objProps = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
+            while (objProps.MoveNext())
+            {
+                if (objProps.Current.IsBlank)
+                {
+                    ontology.Model.PropertyModel.OBoxGraph.RemoveTriplesBySubject(objProps.Current);
+                    ontology.Model.PropertyModel.OBoxGraph.RemoveTriplesByObject(objProps.Current);
+                    ontology.Model.PropertyModel.TBoxGraph.RemoveTriplesBySubject(objProps.Current);
+                    ontology.Model.PropertyModel.TBoxGraph.RemoveTriplesByObject(objProps.Current);
+                    ontology.Model.PropertyModel.Properties.Remove(objProps.Current.PatternMemberID);
+                }
+            }
             #endregion
 
             OWLEvents.RaiseInfo(string.Format("Graph '{0}' has been parsed as PropertyModel", graph.Context));

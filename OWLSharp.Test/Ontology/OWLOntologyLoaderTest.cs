@@ -968,7 +968,7 @@ namespace OWLSharp.Test
                             Assert.IsTrue(ontology.Model.ClassModel.SimpleClassesCount == 16);
                             Assert.IsTrue(ontology.Model.ClassModel.OBoxGraph.TriplesCount == 1);
                             Assert.IsNotNull(ontology.Model.PropertyModel);
-                            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 16); //TODO: analyze why there are 2 blank node properties
+                            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 14);
                             Assert.IsTrue(ontology.Model.PropertyModel.AllDisjointPropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.AnnotationPropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.AsymmetricPropertiesCount == 1);
@@ -977,7 +977,7 @@ namespace OWLSharp.Test
                             Assert.IsTrue(ontology.Model.PropertyModel.FunctionalPropertiesCount == 2);
                             Assert.IsTrue(ontology.Model.PropertyModel.InverseFunctionalPropertiesCount == 1);
                             Assert.IsTrue(ontology.Model.PropertyModel.IrreflexivePropertiesCount == 1);
-                            Assert.IsTrue(ontology.Model.PropertyModel.ObjectPropertiesCount == 15);
+                            Assert.IsTrue(ontology.Model.PropertyModel.ObjectPropertiesCount == 13);
                             Assert.IsTrue(ontology.Model.PropertyModel.ReflexivePropertiesCount == 1);
                             Assert.IsTrue(ontology.Model.PropertyModel.SymmetricPropertiesCount == 1);
                             Assert.IsTrue(ontology.Model.PropertyModel.TransitivePropertiesCount == 1);
@@ -1063,7 +1063,7 @@ namespace OWLSharp.Test
                             Assert.IsTrue(ontology.Model.ClassModel.SimpleClassesCount == 1);
                             Assert.IsTrue(ontology.Model.ClassModel.OBoxGraph.TriplesCount == 0);
                             Assert.IsNotNull(ontology.Model.PropertyModel);
-                            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 3); //TODO: analyze why there is 1 blank node property
+                            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 2);
                             Assert.IsTrue(ontology.Model.PropertyModel.AllDisjointPropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.AnnotationPropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.AsymmetricPropertiesCount == 0);
@@ -1072,7 +1072,7 @@ namespace OWLSharp.Test
                             Assert.IsTrue(ontology.Model.PropertyModel.FunctionalPropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.InverseFunctionalPropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.IrreflexivePropertiesCount == 0);
-                            Assert.IsTrue(ontology.Model.PropertyModel.ObjectPropertiesCount == 3);
+                            Assert.IsTrue(ontology.Model.PropertyModel.ObjectPropertiesCount == 2);
                             Assert.IsTrue(ontology.Model.PropertyModel.ReflexivePropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.SymmetricPropertiesCount == 0);
                             Assert.IsTrue(ontology.Model.PropertyModel.TransitivePropertiesCount == 0);
