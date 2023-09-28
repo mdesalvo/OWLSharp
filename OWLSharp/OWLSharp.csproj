@@ -6,13 +6,13 @@
     <Version>3.7.1</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
-    <Description>Lightweight and friendly .NET library for realizing Semantic Web applications</Description>
+    <Description>Lightweight and friendly .NET library for realizing intelligent Semantic Web applications</Description>
     <TargetFramework>netstandard2.0</TargetFramework>
     <SignAssembly>false</SignAssembly>
     <Product>OWLSharp</Product>
     <PackageId>OWLSharp</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
-    <PackageTags>rdfs owl owl-dl owl2 skos skos-xl geosparql time ontology reasoner swrl semantic-web</PackageTags>
+    <PackageTags>rdfs owl owl-dl owl2 skos skos-xl geosparql owl-time ontology reasoner swrl semantic-web</PackageTags>
     <PackageProjectUrl>https://github.com/mdesalvo/OWLSharp</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mdesalvo/OWLSharp.git</RepositoryUrl>
