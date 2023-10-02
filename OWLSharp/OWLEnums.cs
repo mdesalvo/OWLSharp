@@ -218,7 +218,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL2 rule targets data knowledge (A-BOX) to infer assertions from owl:propertyChainAxiom relations
             /// </summary>
-            PropertyChainEntailment = 21
+            PropertyChainEntailment = 21,
+            /// <summary>
+            /// This OWL-DL rule targets data knowledge (A-BOX) to infer owl:sameAs relations from assertions having functional properties
+            /// </summary>
+            FunctionalEntailment = 22
         };
 
         /// <summary>

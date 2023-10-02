@@ -60,8 +60,10 @@ namespace OWLSharp
         /// </summary>
         public OWLReasoner AddCustomRule(OWLReasonerRule swrlRule)
         {
+            #region Guards
             if (swrlRule == null)
                 throw new OWLException("Cannot add SWRL rule to reasoner because given \"swrlRule\" parameter is null");
+            #endregion
 
             CustomRules.Add(swrlRule);
             return this;
@@ -155,6 +157,9 @@ namespace OWLSharp
                                 break;
                             case OWLEnums.OWLReasonerStandardRules.PropertyChainEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerStandardRules.PropertyChainEntailment.ToString()] = OWLPropertyChainEntailmentRule.ExecuteRule(ontology);
+                                break;
+                             case OWLEnums.OWLReasonerStandardRules.FunctionalEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerStandardRules.FunctionalEntailment.ToString()] = OWLFunctionalEntailmentRule.ExecuteRule(ontology);
                                 break;
                         }
 
