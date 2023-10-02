@@ -63,8 +63,14 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivB"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivC"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivD"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indivE"));
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffBE"), new List<RDFResource>() {
+                new RDFResource("ex:indivB"),new RDFResource("ex:indivE")});
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffCE"), new List<RDFResource>() {
+                new RDFResource("ex:indivC"),new RDFResource("ex:indivE")});
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivB"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivC"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivE"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop2"), new RDFResource("ex:indivD"));
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:functdtprop"), new RDFPlainLiteral("value"));
 
