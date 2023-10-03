@@ -46,7 +46,7 @@ namespace OWLSharp
         /// <summary>
         /// Default-ctor to build an empty reasoner report
         /// </summary>
-        internal OWLReasonerReport()
+        public OWLReasonerReport()
             => Evidences = new Dictionary<long, OWLReasonerEvidence>();
         #endregion
 
