@@ -24,7 +24,7 @@ namespace OWLSharp.Validator.Test
     {
         #region Tests
         [TestMethod]
-        public void ShouldValidateGlobalCardinalityOnFunctionalProperty()
+        public void ShouldValidateGlobalCardinalityOnFunctionalObjectProperty()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:fobjprop"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
@@ -34,6 +34,46 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:fobjprop"), new RDFResource("ex:indiv2"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:fobjprop"), new RDFResource("ex:indiv3")); //clash on fp occurrency counter
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv2"), new RDFResource("ex:fobjprop"), new RDFResource("ex:indiv3"));
+
+            OWLValidatorReport validatorReport = OWLGlobalCardinalityRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateGlobalCardinalityOnFunctionalObjectPropertyAndNotComplainBecauseSameAsConstraint()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:fobjprop"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv3"));
+            ontology.Data.DeclareSameIndividuals(new RDFResource("ex:indiv2"),new RDFResource("ex:indiv3"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:fobjprop"), new RDFResource("ex:indiv2"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:fobjprop"), new RDFResource("ex:indiv3"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv2"), new RDFResource("ex:fobjprop"), new RDFResource("ex:indiv3"));
+
+            OWLValidatorReport validatorReport = OWLGlobalCardinalityRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 0);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 0);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateGlobalCardinalityOnFunctionalDatatypeProperty()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:fdtprop"), new OWLOntologyDatatypePropertyBehavior() { Functional = true });
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:fdtprop"), new RDFPlainLiteral("hello1"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:fdtprop"), new RDFPlainLiteral("hello2")); //clash on fp occurrency counter
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indiv2"), new RDFResource("ex:fdtprop"), new RDFPlainLiteral("hello1"));
 
             OWLValidatorReport validatorReport = OWLGlobalCardinalityRule.ExecuteRule(ontology);
 
@@ -63,7 +103,7 @@ namespace OWLSharp.Validator.Test
         }
 
         [TestMethod]
-        public void ShouldValidateGlobalCardinalityOnSuperPropertiesOfFunctionalProperty()
+        public void ShouldValidateGlobalCardinalityOnSuperPropertiesOfFunctionalObjectProperty()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:fobjprop"), new OWLOntologyObjectPropertyBehavior() { Functional = true });

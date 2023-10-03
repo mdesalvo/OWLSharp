@@ -32,15 +32,36 @@ namespace OWLSharp
             while (fpEnumerator.MoveNext())
             {
                 //owl:FunctionalProperty can only occur once per subject individual within assertions
-                bool fpViolatesRule = ontology.Data.ABoxGraph[null, fpEnumerator.Current, null, null]
-                                                   .GroupBy(t => t.Subject)
-                                                   .Any(grp => grp.Count() > 1);
-                if (fpViolatesRule)
-                    validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
-                        OWLEnums.OWLValidatorEvidenceCategory.Error,
-                        nameof(OWLGlobalCardinalityRule),
-                        $"Violation of OWL-DL integrity caused by functional property '{fpEnumerator.Current}' occurring more than once per subject individual",
-                        "Revise your data: it is not allowed multiple usage of a functional property by the same subject individual"));
+                IEnumerable<IGrouping<RDFPatternMember,RDFTriple>> groupedMultiFunctionalAssertions = ontology.Data.ABoxGraph[null, fpEnumerator.Current, null, null]
+                                                                                                                   .GroupBy(t => t.Subject)
+                                                                                                                   .Where(grp => grp.Count() > 1);
+                if (ontology.Model.PropertyModel.CheckHasDatatypeProperty(fpEnumerator.Current))
+                {
+                    //In case it is a datatype property, we simply signal an evidence when violations are detected
+                    if (groupedMultiFunctionalAssertions.Any())
+                        validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
+                            OWLEnums.OWLValidatorEvidenceCategory.Error,
+                            nameof(OWLGlobalCardinalityRule),
+                            $"Violation of OWL-DL integrity caused by functional datatype property '{fpEnumerator.Current}' occurring more than once per subject individual",
+                            "Revise your data: it is not allowed multiple usage of a functional datatype property by the same subject individual"));
+                }
+                else
+                {
+                    //Otherwise we focus on the analysis of target individuals: the goal is to avoid complaining for 
+                    //situations in which the property is used against individuals explicitly related by owl:sameAs
+                    foreach (IGrouping<RDFPatternMember,RDFTriple> groupedMultiFunctionalAssertion in groupedMultiFunctionalAssertions)
+                    {
+                        List<RDFResource> targetIndividuals = groupedMultiFunctionalAssertion.Select(t => t.Object)
+                                                                                             .OfType<RDFResource>()
+                                                                                             .ToList();
+                        if (targetIndividuals.Any(outerIdv => targetIndividuals.Any(innerIdv => !outerIdv.Equals(innerIdv) && !ontology.Data.CheckIsSameIndividual(outerIdv,innerIdv))))
+                            validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
+                                OWLEnums.OWLValidatorEvidenceCategory.Error,
+                                nameof(OWLGlobalCardinalityRule),
+                                $"Violation of OWL-DL integrity caused by functional object property '{fpEnumerator.Current}' occurring more than once per subject individual",
+                                "Revise your data: it is not allowed multiple usage of a functional object property by the same subject individual (except when linked to owl:sameAs individuals)"));
+                    }
+                }
 
                 //owl:FunctionalProperty cannot be directly or indirectly owl:TransitiveProperty
                 bool fpIsTransitiveProperty = ontology.Model.PropertyModel.CheckHasTransitiveProperty(fpEnumerator.Current);
