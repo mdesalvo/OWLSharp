@@ -44,7 +44,7 @@ namespace OWLSharp
         /// <summary>
         /// Default-ctor to build an empty validator report
         /// </summary>
-        internal OWLValidatorReport()
+        public OWLValidatorReport()
             => Evidences = new List<OWLValidatorEvidence>();
         #endregion
 
