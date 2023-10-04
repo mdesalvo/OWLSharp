@@ -10,4 +10,4 @@ OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</
     <li>Modeling ontology features having a <b>geospatial (GeoSPARQL)</b> and <b>temporal (OWL-TIME)</b> extension</li>
 </ul>
 
-Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.7.1/OWLSharp-3.7.1.pdf">here</a>
+Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.8.0/OWLSharp-3.8.0.pdf">here</a>
