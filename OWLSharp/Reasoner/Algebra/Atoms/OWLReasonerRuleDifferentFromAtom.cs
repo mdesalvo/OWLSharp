@@ -32,21 +32,13 @@ namespace OWLSharp
         /// Default-ctor to build an owl:differentFrom atom with the given arguments
         /// </summary>
         public OWLReasonerRuleDifferentFromAtom(RDFVariable leftArgument, RDFVariable rightArgument)
-            : base(RDFVocabulary.OWL.DIFFERENT_FROM, leftArgument, rightArgument)
-        {
-            if (rightArgument == null)
-                throw new OWLException("Cannot create atom because given \"rightArgument\" parameter is null");
-        }
+            : base(RDFVocabulary.OWL.DIFFERENT_FROM, leftArgument, rightArgument) { }
 
         /// <summary>
         /// Default-ctor to build an owl:differentFrom atom with the given arguments
         /// </summary>
         public OWLReasonerRuleDifferentFromAtom(RDFVariable leftArgument, RDFResource rightArgument)
-            : base(RDFVocabulary.OWL.DIFFERENT_FROM, leftArgument, rightArgument)
-        {
-            if (rightArgument == null)
-                throw new OWLException("Cannot create atom because given \"rightArgument\" parameter is null");
-        }
+            : base(RDFVocabulary.OWL.DIFFERENT_FROM, leftArgument, rightArgument) { }
         #endregion
 
         #region Methods
