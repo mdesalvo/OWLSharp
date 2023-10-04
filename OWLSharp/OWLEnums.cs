@@ -220,9 +220,13 @@ namespace OWLSharp
             /// </summary>
             PropertyChainEntailment = 21,
             /// <summary>
-            /// This OWL-DL rule targets data knowledge (A-BOX) to infer owl:sameAs relations from assertions having functional properties
+            /// This OWL-DL rule targets data knowledge (A-BOX) to infer owl:sameAs relations from assertions having functional object properties
             /// </summary>
-            FunctionalEntailment = 22
+            FunctionalEntailment = 22,
+            /// <summary>
+            /// This OWL-DL rule targets data knowledge (A-BOX) to infer owl:sameAs relations from assertions having inverse functional properties
+            /// </summary>
+            InverseFunctionalEntailment = 23
         };
 
         /// <summary>

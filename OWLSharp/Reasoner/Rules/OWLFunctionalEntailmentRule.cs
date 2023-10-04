@@ -19,7 +19,7 @@ using System.Linq;
 namespace OWLSharp
 {
     /// <summary>
-    /// OWL-DL rule targeting data knowledge (A-BOX) to infer owl:sameAs relations from assertions having functional properties
+    /// OWL-DL rule targeting data knowledge (A-BOX) to infer owl:sameAs relations from assertions having functional object properties
     /// </summary>
     internal static class OWLFunctionalEntailmentRule
     {

@@ -21,58 +21,60 @@ using System.Collections.Generic;
 namespace OWLSharp.Reasoner.Test
 {
     [TestClass]
-    public class OWLFunctionalEntailmentRuleTest
+    public class OWLInverseInverseFunctionalEntailmentRuleTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldExecuteFunctionalEntailment()
+        public void ShouldExecuteInverseFunctionalEntailment()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:funcobjprop1"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
-            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:funcobjprop2"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:invfuncobjprop1"), new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:invfuncobjprop2"), new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:functdtprop"), new OWLOntologyDatatypePropertyBehavior() { Functional = true });
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivA"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivB"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivC"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivD"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivE"));
+            ontology.Data.DeclareDifferentIndividuals(new RDFResource("ex:indivA"),new RDFResource("ex:indivE"));
             ontology.Data.DeclareDifferentIndividuals(new RDFResource("ex:indivB"),new RDFResource("ex:indivE"));
-            ontology.Data.DeclareDifferentIndividuals(new RDFResource("ex:indivC"),new RDFResource("ex:indivE"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivB"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivC"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivE"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop2"), new RDFResource("ex:indivD"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivB"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivE"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:invfuncobjprop2"), new RDFResource("ex:indivE"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivB"), new RDFResource("ex:invfuncobjprop2"), new RDFResource("ex:indivD"));
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:functdtprop"), new RDFPlainLiteral("value"));
 
-            OWLReasonerReport reasonerReport = OWLFunctionalEntailmentRule.ExecuteRule(ontology);
+            OWLReasonerReport reasonerReport = OWLInverseFunctionalEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(reasonerReport);
             Assert.IsTrue(reasonerReport.EvidencesCount == 2);
         }
 
         [TestMethod]
-        public void ShouldExecuteFunctionalEntailmentViaReasoner()
+        public void ShouldExecuteInverseFunctionalEntailmentViaReasoner()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:funcobjprop1"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
-            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:funcobjprop2"), new OWLOntologyObjectPropertyBehavior() { Functional = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:invfuncobjprop1"), new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:invfuncobjprop2"), new OWLOntologyObjectPropertyBehavior() { InverseFunctional = true });
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:functdtprop"), new OWLOntologyDatatypePropertyBehavior() { Functional = true });
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivA"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivB"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivC"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivD"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivE"));
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffAE"), new List<RDFResource>() {
+                new RDFResource("ex:indivA"),new RDFResource("ex:indivE")});
             ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffBE"), new List<RDFResource>() {
                 new RDFResource("ex:indivB"),new RDFResource("ex:indivE")});
-            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffCE"), new List<RDFResource>() {
-                new RDFResource("ex:indivC"),new RDFResource("ex:indivE")});
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivB"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivC"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop1"), new RDFResource("ex:indivE"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:funcobjprop2"), new RDFResource("ex:indivD"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivB"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivE"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:invfuncobjprop2"), new RDFResource("ex:indivE"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivB"), new RDFResource("ex:invfuncobjprop2"), new RDFResource("ex:indivD"));
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:functdtprop"), new RDFPlainLiteral("value"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.FunctionalEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.InverseFunctionalEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);

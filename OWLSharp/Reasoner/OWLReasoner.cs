@@ -161,6 +161,9 @@ namespace OWLSharp
                              case OWLEnums.OWLReasonerStandardRules.FunctionalEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerStandardRules.FunctionalEntailment.ToString()] = OWLFunctionalEntailmentRule.ExecuteRule(ontology);
                                 break;
+                            case OWLEnums.OWLReasonerStandardRules.InverseFunctionalEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerStandardRules.InverseFunctionalEntailment.ToString()] = OWLInverseFunctionalEntailmentRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': found {inferenceRegistry[standardRule.ToString()].EvidencesCount} evidences");
