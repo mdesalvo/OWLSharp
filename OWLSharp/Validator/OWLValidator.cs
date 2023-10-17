@@ -60,8 +60,10 @@ namespace OWLSharp
         /// </summary>
         public OWLValidator AddCustomRule(OWLValidatorRule customRule)
         {
+            #region Guards
             if (customRule == null)
                 throw new OWLException("Cannot add custom rule to validator because given \"customRule\" parameter is null");
+            #endregion
 
             CustomRules.Add(customRule);
             return this;
@@ -143,6 +145,9 @@ namespace OWLSharp
                                 break;
                             case OWLEnums.OWLValidatorStandardRules.DisjointUnion:
                                 validatorRegistry[OWLEnums.OWLValidatorStandardRules.DisjointUnion.ToString()] = OWLDisjointUnionRule.ExecuteRule(ontology);
+                                break;
+                            case OWLEnums.OWLValidatorStandardRules.ThingNothing:
+                                validatorRegistry[OWLEnums.OWLValidatorStandardRules.ThingNothing.ToString()] = OWLThingNothingRule.ExecuteRule(ontology);
                                 break;
                         }
 

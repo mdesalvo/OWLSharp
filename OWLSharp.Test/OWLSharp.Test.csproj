@@ -3,7 +3,7 @@
 		<AssemblyTitle>OWLSharp.Test</AssemblyTitle>
 		<AssemblyName>OWLSharp.Test</AssemblyName>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
-		<Version>3.8.0</Version>
+		<Version>3.8.1</Version>
 		<Authors>Marco De Salvo</Authors>
 		<Copyright>Marco De Salvo</Copyright>
 		<TargetFramework>net6.0</TargetFramework>

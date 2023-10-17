@@ -108,7 +108,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL2 rule checks for consistency of owl:disjointUnionOf knowledge
             /// </summary>
-            DisjointUnion = 17
+            DisjointUnion = 17,
+            /// <summary>
+            /// This OWL-DL rule check for consistency of owl:Thing (as root) and owl:Nothing (as bottom) 
+            /// </summary>
+            ThingNothing = 18
         };
 
         /// <summary>
