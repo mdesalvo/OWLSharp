@@ -149,6 +149,9 @@ namespace OWLSharp
                             case OWLEnums.OWLValidatorStandardRules.ThingNothing:
                                 validatorRegistry[OWLEnums.OWLValidatorStandardRules.ThingNothing.ToString()] = OWLThingNothingRule.ExecuteRule(ontology);
                                 break;
+                            case OWLEnums.OWLValidatorStandardRules.TopBottom:
+                                validatorRegistry[OWLEnums.OWLValidatorStandardRules.TopBottom.ToString()] = OWLTopBottomRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard validator rule '{standardRule}': found {validatorRegistry[standardRule.ToString()].EvidencesCount} evidences");

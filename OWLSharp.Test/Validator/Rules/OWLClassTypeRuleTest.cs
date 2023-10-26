@@ -78,10 +78,11 @@ namespace OWLSharp.Validator.Test
             ontology.Model.ClassModel.DeclareDisjointClasses(class1, class2);            
             for (int i = 0; i < 30000; i++)
             {
-                var individual = new RDFResource($"ex:indiv{i}");
-                ontology.Data.DeclareIndividual(individual);
-                ontology.Data.DeclareIndividualType(individual, class1);
-                ontology.Data.DeclareIndividualType(individual, class2);
+                RDFResource individual = new RDFResource($"ex:indiv{i}");
+                ontology.Data.Individuals.Add(individual.PatternMemberID, individual);
+                ontology.Data.ABoxGraph.AddTriple(new RDFTriple(individual, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
+                ontology.Data.ABoxGraph.AddTriple(new RDFTriple(individual, RDFVocabulary.RDF.TYPE, class1));
+                ontology.Data.ABoxGraph.AddTriple(new RDFTriple(individual, RDFVocabulary.RDF.TYPE, class2));
             }
 
             OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);

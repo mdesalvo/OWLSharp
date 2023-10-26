@@ -112,7 +112,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL-DL rule check for consistency of owl:Thing (as root) and owl:Nothing (as bottom) 
             /// </summary>
-            ThingNothing = 18
+            ThingNothing = 18,
+            /// <summary>
+            /// This OWL2 rule check for consistency of owl:TobObjectProperty (as root) and owl:BottomObjectProperty (as bottom) 
+            /// </summary>
+            TopBottom = 19
         };
 
         /// <summary>
