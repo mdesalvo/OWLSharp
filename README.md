@@ -1,5 +1,4 @@
-# OWLSharp [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![codecov](https://codecov.io/gh/mdesalvo/OWLSharp/branch/main/graph/badge.svg?token=VQ8M9QP81S)](https://codecov.io/gh/mdesalvo/OWLSharp)
-<!--[![NuGet Badge](https://buildstats.info/nuget/OWLSharp?includePreReleases=true)](https://www.nuget.org/packages/OWLSharp) -->
+# OWLSharp [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![NuGet Badge](https://buildstats.info/nuget/OWLSharp?includePreReleases=true)](https://www.nuget.org/packages/OWLSharp) [![codecov](https://codecov.io/gh/mdesalvo/OWLSharp/branch/main/graph/badge.svg?token=VQ8M9QP81S)](https://codecov.io/gh/mdesalvo/OWLSharp)
 
 OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of providing native expressiveness for:
 <ul>
