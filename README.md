@@ -7,7 +7,7 @@ OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</
     <li>Validating them against an extensible set of intelligent semantic rules analyzing <b>T-BOX</b> and <b>A-BOX</b></li>
     <li>Creating <b>SWRL reasoners</b> with <b>forward-chaining</b> inference materialization capabilities</li>
     <li>Creating <b>SKOS schemes</b> describing organized vocabularies of concepts</li>
-    <li>Modeling ontology features having a <b>geospatial (GeoSPARQL)</b> and <b>temporal (OWL-TIME)</b> extension</li>
+    <li>Representing features having a <b>geospatial (GeoSPARQL)</b> and <b>temporal (OWL-TIME)</b> extension</li>
 </ul>
 
 Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.8.0/OWLSharp-3.8.0.pdf">here</a>
