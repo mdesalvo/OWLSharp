@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 
@@ -26,7 +27,7 @@ namespace OWLSharp.Extensions.TIME.Test
         [TestMethod]
         public void ShouldInitializeTIME()
         {
-            OWLOntology ontology = new OWLOntology("ex:geoOnt");
+            OWLOntology ontology = new OWLOntology("ex:timeOnt");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:MyClass"));
 
             Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:MyClass")));
@@ -35,7 +36,11 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.InitializeTIME();
 
             Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:MyClass")));
+            Assert.IsFalse(ontology.Model.ClassModel.TBoxGraph[new RDFResource("ex:MyClass"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Single().TripleMetadata.HasValue);
+                        
             Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(RDFVocabulary.TIME.INSTANT));
+            Assert.IsTrue(ontology.Model.ClassModel.TBoxGraph[RDFVocabulary.TIME.INSTANT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Single().TripleMetadata.HasValue
+                && ontology.Model.ClassModel.TBoxGraph[RDFVocabulary.TIME.INSTANT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Single().IsImport());
         }
 
         [TestMethod]

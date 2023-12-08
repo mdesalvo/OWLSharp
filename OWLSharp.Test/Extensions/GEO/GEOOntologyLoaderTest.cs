@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 
@@ -35,7 +36,11 @@ namespace OWLSharp.Extensions.GEO.Test
             ontology.InitializeGEO();
 
             Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:MyClass")));
+            Assert.IsFalse(ontology.Model.ClassModel.TBoxGraph[new RDFResource("ex:MyClass"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Single().TripleMetadata.HasValue);
+                        
             Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+            Assert.IsTrue(ontology.Model.ClassModel.TBoxGraph[RDFVocabulary.GEOSPARQL.SF.POINT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Single().TripleMetadata.HasValue
+                && ontology.Model.ClassModel.TBoxGraph[RDFVocabulary.GEOSPARQL.SF.POINT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Single().IsImport());
         }
 
         [TestMethod]
