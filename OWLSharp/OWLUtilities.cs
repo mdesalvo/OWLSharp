@@ -266,5 +266,25 @@ namespace OWLSharp
             };
         }
         #endregion
+    
+        #region Extensions
+        internal static bool IsInference(this RDFTriple triple)
+            => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsInference;
+
+        internal static RDFTriple SetInference(this RDFTriple triple)
+        { 
+            triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsInference);
+            return triple;
+        }
+
+        internal static bool IsImport(this RDFTriple triple)
+            => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsImport;
+
+        internal static RDFTriple SetImport(this RDFTriple triple)
+        { 
+            triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsImport);
+            return triple;
+        }
+        #endregion
     }
 }

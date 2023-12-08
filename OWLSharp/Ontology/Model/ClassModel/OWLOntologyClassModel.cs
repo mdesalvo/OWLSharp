@@ -966,7 +966,7 @@ namespace OWLSharp
         /// </summary>
         public RDFGraph ToRDFGraph(bool includeInferences=true)
             => includeInferences ? TBoxGraph.UnionWith(OBoxGraph)
-                                 : new RDFGraph(TBoxGraph.Where(t => !t.IsInference).ToList()).UnionWith(OBoxGraph);
+                                 : new RDFGraph(TBoxGraph.Where(t => !t.IsInference() && !t.IsImport()).ToList()).UnionWith(OBoxGraph);
 
         /// <summary>
         /// Asynchronously gets a graph representation of the model

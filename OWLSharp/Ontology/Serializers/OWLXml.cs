@@ -496,7 +496,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
                 foreach (RDFResource superClass in ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.RDFS.SUB_CLASS_OF, null, null]
-                                                    .Where(t => includeInferences || !t.IsInference)
+                                                    .Where(t => includeInferences || !t.IsInference())
                                                     .Select(t => t.Object)
                                                     .OfType<RDFResource>())
                 {
@@ -512,7 +512,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
                 foreach (RDFResource equivalentClass in ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
-                                                         .Where(t => includeInferences || !t.IsInference)
+                                                         .Where(t => includeInferences || !t.IsInference())
                                                          .Select(t => t.Object)
                                                          .OfType<RDFResource>())
                 {
@@ -528,7 +528,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
                 foreach (RDFResource disjointClass in ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.DISJOINT_WITH, null, null]
-                                                       .Where(t => includeInferences || !t.IsInference)
+                                                       .Where(t => includeInferences || !t.IsInference())
                                                        .Select(t => t.Object)
                                                        .OfType<RDFResource>())
                 {
@@ -610,7 +610,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
                 foreach (RDFResource superProperty in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null]
-                                                       .Where(t => includeInferences || !t.IsInference)
+                                                       .Where(t => includeInferences || !t.IsInference())
                                                        .Select(t => t.Object)
                                                        .OfType<RDFResource>())
                 {
@@ -623,7 +623,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
             while (datatypeProperties.MoveNext())
                 foreach (RDFResource superProperty in ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null]
-                                                       .Where(t => includeInferences || !t.IsInference)
+                                                       .Where(t => includeInferences || !t.IsInference())
                                                        .Select(t => t.Object)
                                                        .OfType<RDFResource>())
                 {
@@ -639,7 +639,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
                 foreach (RDFResource equivalentProperty in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null]
-                                                            .Where(t => includeInferences || !t.IsInference)
+                                                            .Where(t => includeInferences || !t.IsInference())
                                                             .Select(t => t.Object)
                                                             .OfType<RDFResource>())
                 {
@@ -652,7 +652,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
             while (datatypeProperties.MoveNext())
                 foreach (RDFResource equivalentProperty in ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null]
-                                                            .Where(t => includeInferences || !t.IsInference)
+                                                            .Where(t => includeInferences || !t.IsInference())
                                                             .Select(t => t.Object)
                                                             .OfType<RDFResource>())
                 {
@@ -668,7 +668,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
                 foreach (RDFResource disjointProperty in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null]
-                                                          .Where(t => includeInferences || !t.IsInference)
+                                                          .Where(t => includeInferences || !t.IsInference())
                                                           .Select(t => t.Object)
                                                           .OfType<RDFResource>())
                 {
@@ -681,7 +681,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
             while (datatypeProperties.MoveNext())
                 foreach (RDFResource disjointProperty in ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null]
-                                                          .Where(t => includeInferences || !t.IsInference)
+                                                          .Where(t => includeInferences || !t.IsInference())
                                                           .Select(t => t.Object)
                                                           .OfType<RDFResource>())
                 {
@@ -720,7 +720,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
                 foreach (RDFResource inverseProperty in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.INVERSE_OF, null, null]
-                                                         .Where(t => includeInferences || !t.IsInference)
+                                                         .Where(t => includeInferences || !t.IsInference())
                                                          .Select(t => t.Object)
                                                          .OfType<RDFResource>())
                 {
@@ -760,7 +760,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
                 foreach (RDFResource domainClass in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.RDFS.DOMAIN, null, null]
-                                                     .Where(t => includeInferences || !t.IsInference)
+                                                     .Where(t => includeInferences || !t.IsInference())
                                                      .Select(t => t.Object)
                                                      .OfType<RDFResource>())
                 {
@@ -773,7 +773,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
             while (datatypeProperties.MoveNext())
                 foreach (RDFResource domainClass in ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.RDFS.DOMAIN, null, null]
-                                                     .Where(t => includeInferences || !t.IsInference)
+                                                     .Where(t => includeInferences || !t.IsInference())
                                                      .Select(t => t.Object)
                                                      .OfType<RDFResource>())
                 {
@@ -789,7 +789,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
                 foreach (RDFResource rangeClass in ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.RDFS.RANGE, null, null]
-                                                    .Where(t => includeInferences || !t.IsInference)
+                                                    .Where(t => includeInferences || !t.IsInference())
                                                     .Select(t => t.Object)
                                                     .OfType<RDFResource>())
                 {
@@ -802,7 +802,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> datatypeProperties = ontology.Model.PropertyModel.DatatypePropertiesEnumerator;
             while (datatypeProperties.MoveNext())
                 foreach (RDFResource rangeClass in ontology.Model.PropertyModel.TBoxGraph[datatypeProperties.Current, RDFVocabulary.RDFS.RANGE, null, null]
-                                                    .Where(t => includeInferences || !t.IsInference)
+                                                    .Where(t => includeInferences || !t.IsInference())
                                                     .Select(t => t.Object)
                                                     .OfType<RDFResource>())
                 {
@@ -822,7 +822,7 @@ namespace OWLSharp
             while (individuals.MoveNext())
                 foreach (RDFResource idvClass in aboxTypeGraph[individuals.Current, null, null, null]
                                                     .Where(t => !t.Object.Equals(RDFVocabulary.OWL.NAMED_INDIVIDUAL))
-                                                    .Where(t => includeInferences || !t.IsInference)
+                                                    .Where(t => includeInferences || !t.IsInference())
                                                     .Select(t => t.Object)
                                                     .OfType<RDFResource>())
                 {
@@ -839,7 +839,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
             while (individuals.MoveNext())
                 foreach (RDFResource sameIdv in aboxSameAsGraph[individuals.Current, null, null, null]
-                                                  .Where(t => includeInferences || !t.IsInference)
+                                                  .Where(t => includeInferences || !t.IsInference())
                                                   .Select(t => t.Object)
                                                   .OfType<RDFResource>())
                 {
@@ -856,7 +856,7 @@ namespace OWLSharp
             IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
             while (individuals.MoveNext())
                 foreach (RDFResource differentIdv in aboxDifferentFromGraph[individuals.Current, null, null, null]
-                                                      .Where(t => includeInferences || !t.IsInference)
+                                                      .Where(t => includeInferences || !t.IsInference())
                                                       .Select(t => t.Object)
                                                       .OfType<RDFResource>())
                 {
@@ -898,7 +898,7 @@ namespace OWLSharp
                 IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
                 while (individuals.MoveNext())
                     foreach (RDFResource asnTarget in aboxAssertionGraph[individuals.Current, null, null, null]
-                                                        .Where(t => includeInferences || !t.IsInference)
+                                                        .Where(t => includeInferences || !t.IsInference())
                                                         .Select(t => t.Object)
                                                         .OfType<RDFResource>())
                     {
@@ -917,7 +917,7 @@ namespace OWLSharp
                 IEnumerator<RDFResource> individuals = ontology.Data.IndividualsEnumerator;
                 while (individuals.MoveNext())
                     foreach (RDFLiteral asnTarget in aboxAssertionGraph[individuals.Current, null, null, null]
-                                                        .Where(t => includeInferences || !t.IsInference)
+                                                        .Where(t => includeInferences || !t.IsInference())
                                                         .Select(t => t.Object)
                                                         .OfType<RDFLiteral>())
                     {
