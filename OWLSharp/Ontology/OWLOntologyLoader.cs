@@ -47,11 +47,11 @@ namespace OWLSharp
             LoadOntology(graph, out OWLOntology ontology);
 
             //Extension points (GEO, TIME, SKOS)
-            if (loaderOptions.EnableGEOSupport  || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.BASE_URI), null].TriplesCount > 0)
+            if (loaderOptions.EnableGEOSupport)
                 ontology.InitializeGEO();
-            if (loaderOptions.EnableTIMESupport || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.BASE_URI), null].TriplesCount > 0)
+            if (loaderOptions.EnableTIMESupport)
                 ontology.InitializeTIME();
-            if (loaderOptions.EnableSKOSSupport || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.BASE_URI), null].TriplesCount > 0)
+            if (loaderOptions.EnableSKOSSupport)
                 ontology.InitializeSKOS();
 
             //Ontology loading
