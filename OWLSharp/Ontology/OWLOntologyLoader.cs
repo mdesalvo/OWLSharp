@@ -30,7 +30,7 @@ namespace OWLSharp
     {
         #region Methods
         /// <summary>
-        /// Gets an ontology representation of the given graph
+        /// Gets an ontology representation of the given graph, eventually supporting extension ontologies (GEO, TIME, SKOS)
         /// </summary>
         internal static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
         {
@@ -47,11 +47,11 @@ namespace OWLSharp
             LoadOntology(graph, out OWLOntology ontology);
 
             //Extension points (GEO, TIME, SKOS)
-            if (loaderOptions.EnableGEOSupport)
+            if (loaderOptions.EnableGEOSupport  || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.BASE_URI), null].TriplesCount > 0)
                 ontology.InitializeGEO();
-            if (loaderOptions.EnableTIMESupport)
+            if (loaderOptions.EnableTIMESupport || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.BASE_URI), null].TriplesCount > 0)
                 ontology.InitializeTIME();
-            if (loaderOptions.EnableSKOSSupport)
+            if (loaderOptions.EnableSKOSSupport || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.BASE_URI), null].TriplesCount > 0)
                 ontology.InitializeSKOS();
 
             //Ontology loading
