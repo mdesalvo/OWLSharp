@@ -20,6 +20,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.GEO;
+using OWLSharp.Extensions.SKOS;
+using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 
 namespace OWLSharp.Test
@@ -125,6 +128,57 @@ namespace OWLSharp.Test
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
             Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
+        }
+
+        [TestMethod]
+        public void ShouldExportToGraphWithoutGEOInferences()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
+            ontology.InitializeGEO();
+            RDFGraph graph = ontology.ToRDFGraph(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
+            
+            //Having exported as false, we dont expect any GEO knowledge than the import annotation
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.BASE_URI), null].Any());
+            Assert.IsFalse(graph[RDFVocabulary.GEOSPARQL.SF.POINT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Any());
+        }
+
+        [TestMethod]
+        public void ShouldExportToGraphWithoutTIMEInferences()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
+            ontology.InitializeTIME();
+            RDFGraph graph = ontology.ToRDFGraph(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
+            
+            //Having exported as false, we dont expect any TIME knowledge than the import annotation
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.BASE_URI), null].Any());
+            Assert.IsFalse(graph[RDFVocabulary.TIME.INSTANT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Any());
+        }
+
+        [TestMethod]
+        public void ShouldExportToGraphWithoutSKOSInferences()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
+            ontology.InitializeSKOS();
+            RDFGraph graph = ontology.ToRDFGraph(false);
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
+            
+            //Having exported as false, we dont expect any SKOS knowledge than the import annotation
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.BASE_URI), null].Any());
+            Assert.IsFalse(graph[RDFVocabulary.SKOS.CONCEPT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Any());
         }
 
         [TestMethod]
