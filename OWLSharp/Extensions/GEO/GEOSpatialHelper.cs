@@ -1,5 +1,5 @@
 ﻿/*
-   Copyright 2012-2024 Marco De Salvo
+   Copyright 2014-2024 Marco De Salvo
 
 
    Licensed under the Apache License, Version 2.0 (the "License");
