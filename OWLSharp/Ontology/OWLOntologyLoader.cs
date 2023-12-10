@@ -46,13 +46,28 @@ namespace OWLSharp
             //Ontology creation
             LoadOntology(graph, out OWLOntology ontology);
 
-            //Extension points (GEO, TIME, SKOS)
-            if (loaderOptions.EnableGEOSupport)
+            #region Extensions
+            //GeoSPARQL
+            if (loaderOptions.EnableGEOSupport 
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.BASE_URI), null].TriplesCount > 0
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.GEOF.BASE_URI), null].TriplesCount > 0
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.SF.BASE_URI), null].TriplesCount > 0
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEO.BASE_URI), null].TriplesCount > 0)
                 ontology.InitializeGEO();
-            if (loaderOptions.EnableTIMESupport)
+
+            //OWL-TIME
+            if (loaderOptions.EnableTIMESupport
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.BASE_URI), null].TriplesCount > 0
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.GREG.BASE_URI), null].TriplesCount > 0
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.THORS.BASE_URI), null].TriplesCount > 0)
                 ontology.InitializeTIME();
-            if (loaderOptions.EnableSKOSSupport)
+
+            //SKOS
+            if (loaderOptions.EnableSKOSSupport
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.BASE_URI), null].TriplesCount > 0
+                 || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.SKOSXL.BASE_URI), null].TriplesCount > 0)
                 ontology.InitializeSKOS();
+            #endregion
 
             //Ontology loading
             ontology.LoadModel(graph);

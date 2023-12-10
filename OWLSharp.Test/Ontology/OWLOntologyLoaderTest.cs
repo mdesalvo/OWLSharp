@@ -1223,5 +1223,27 @@ ibx:TheItem rdf:type owl:NamedIndividual ,
                 }
             }
         }
+
+        [TestMethod]
+        public void ShouldAutomaticallyLoadWithAllExtensions()
+        {
+          RDFGraph graph = new RDFGraph();
+          graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+          graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.BASE_URI)));
+          graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.BASE_URI)));
+          graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.BASE_URI)));
+          OWLOntology allextOnt = OWLOntology.FromRDFGraph(graph);
+
+          Assert.IsNotNull(allextOnt);
+          Assert.IsTrue(allextOnt.Model.ClassModel.ClassesCount >= 105);
+          Assert.IsTrue(allextOnt.Model.ClassModel.CheckHasClass(RDFVocabulary.GEOSPARQL.FEATURE));
+          Assert.IsTrue(allextOnt.Model.ClassModel.CheckHasClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+          Assert.IsTrue(allextOnt.Model.ClassModel.CheckHasClass(RDFVocabulary.TIME.INSTANT));
+          Assert.IsTrue(allextOnt.Model.ClassModel.CheckHasClass(RDFVocabulary.TIME.THORS.ERA));
+          Assert.IsTrue(allextOnt.Model.ClassModel.CheckHasClass(RDFVocabulary.SKOS.CONCEPT));
+          Assert.IsTrue(allextOnt.Model.ClassModel.CheckHasClass(RDFVocabulary.SKOS.SKOSXL.LABEL));
+          Assert.IsTrue(allextOnt.Model.PropertyModel.PropertiesCount >= 141);
+          Assert.IsTrue(allextOnt.Data.IndividualsCount >= 33);
+        }
     }
 }
