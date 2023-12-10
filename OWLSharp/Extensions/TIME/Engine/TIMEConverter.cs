@@ -20,7 +20,7 @@ using System;
 namespace OWLSharp.Extensions.TIME
 {
     /// <summary>
-    /// Represents an engine for conversion of coordinates and temporal extents beween different forms of representation
+    /// Represents an engine for conversion of coordinates and temporal extents between different forms of representation.
     /// </summary>
     public static class TIMEConverter
     {
