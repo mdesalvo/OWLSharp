@@ -55,7 +55,7 @@ namespace OWLSharp
         /// <summary>
         /// Builds an ontology model having the given T-BOX knowledge
         /// </summary>
-        public OWLOntologyModel(OWLOntologyClassModel classModel, OWLOntologyPropertyModel propertyModel) : this()
+        public OWLOntologyModel(OWLOntologyClassModel classModel, OWLOntologyPropertyModel propertyModel)
         {
             ClassModel = classModel ?? new OWLOntologyClassModel();
             PropertyModel = propertyModel ?? new OWLOntologyPropertyModel();
