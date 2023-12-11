@@ -139,7 +139,7 @@ namespace OWLSharp
         };
 
         /// <summary>
-        /// Represents an enumeration for the set of built-in standard RDFS/OWL-DL/OWL2 reasoner rules
+        /// Represents an enumeration for the set of built-in standard reasoner rules (RDFS, OWL, OWL2)
         /// </summary>
         public enum OWLReasonerStandardRules
         {
@@ -236,6 +236,17 @@ namespace OWLSharp
             /// </summary>
             InverseFunctionalEntailment = 23
         };
+
+        /// <summary>
+        /// Represents an enumeration for the set of built-in extension reasoner rules (GeoSPARQL, OWL-TIME, SKOS)
+        /// </summary>
+        public enum OWLReasonerExtensionRules
+        {
+            /// <summary>
+            /// This OWL-TIME rule infers that, given temporal intervals I1 and I2: STARTS(I1,I2) AND FINISHES(I1,I2) => EQUALS(I1,I2)
+            /// </summary>
+            TIME_EquivalentIntervals = 0
+        }
 
         /// <summary>
         /// Represents an enumeration for supported types of ontology property

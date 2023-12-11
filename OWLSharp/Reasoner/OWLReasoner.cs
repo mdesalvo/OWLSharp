@@ -23,12 +23,17 @@ namespace OWLSharp
     {
         #region Properties
         /// <summary>
-        /// List of standard rules applied by the reasoner
+        /// List of standard rules applied by the reasoner (RDFS, OWL, OWL2)
         /// </summary>
         internal List<OWLEnums.OWLReasonerStandardRules> StandardRules { get; set; }
 
         /// <summary>
-        /// List of custom (SWRL) rules applied by the reasoner
+        /// List of extension rules applied by the reasoner (GeoSPARQL, OWL-TIME, SKOS)
+        /// </summary>
+        internal List<OWLEnums.OWLReasonerExtensionRules> ExtensionRules { get; set; }
+
+        /// <summary>
+        /// List of custom (SWRL) rules applied by the reasoner (SWRL)
         /// </summary>
         internal List<OWLReasonerRule> CustomRules { get; set; }
         #endregion
@@ -40,13 +45,14 @@ namespace OWLSharp
         public OWLReasoner()
         {
             StandardRules = new List<OWLEnums.OWLReasonerStandardRules>();
+            ExtensionRules = new List<OWLEnums.OWLReasonerExtensionRules>();
             CustomRules = new List<OWLReasonerRule>();
         }
         #endregion
 
         #region Methods
         /// <summary>
-        /// Adds the given standard rule to the reasoner
+        /// Adds the given standard rule (RDFS, OWL, OWL2) to the reasoner
         /// </summary>
         public OWLReasoner AddStandardRule(OWLEnums.OWLReasonerStandardRules standardRule)
         {
@@ -56,7 +62,17 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Adds the given custom (SWRL) rule to the reasoner
+        /// Adds the given extension rule (GeoSPARQL, OWL-TIME, SKOS) to the reasoner
+        /// </summary>
+        public OWLReasoner AddExtensionRule(OWLEnums.OWLReasonerExtensionRules extensionRule)
+        {
+            if (!ExtensionRules.Contains(extensionRule))
+                ExtensionRules.Add(extensionRule);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the given custom rule (SWRL) to the reasoner
         /// </summary>
         public OWLReasoner AddCustomRule(OWLReasonerRule swrlRule)
         {
@@ -84,6 +100,8 @@ namespace OWLSharp
                 Dictionary<string, OWLReasonerReport> inferenceRegistry = new Dictionary<string, OWLReasonerReport>();
                 foreach (OWLEnums.OWLReasonerStandardRules standardRule in StandardRules)
                     inferenceRegistry.Add(standardRule.ToString(), null);
+                foreach (OWLEnums.OWLReasonerExtensionRules extensionRule in ExtensionRules)
+                    inferenceRegistry.Add(extensionRule.ToString(), null);
                 foreach (OWLReasonerRule customRule in CustomRules)
                     inferenceRegistry.Add(customRule.RuleName, null);
 
@@ -167,6 +185,22 @@ namespace OWLSharp
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': found {inferenceRegistry[standardRule.ToString()].EvidencesCount} evidences");
+                    });
+
+                //Execute extension rules
+                Parallel.ForEach(ExtensionRules, 
+                    extensionRule =>
+                    {
+                        OWLEvents.RaiseInfo($"Launching extension reasoner rule '{extensionRule}'");
+
+                        switch (extensionRule)
+                        {
+                            case OWLEnums.OWLReasonerExtensionRules.TIME_EquivalentIntervals:
+                                inferenceRegistry[OWLEnums.OWLReasonerExtensionRules.TIME_EquivalentIntervals.ToString()] = TIMEEquivalentIntervalsRule.ExecuteRule(ontology);
+                                break;
+                        }
+
+                        OWLEvents.RaiseInfo($"Completed extension reasoner rule '{extensionRule}': found {inferenceRegistry[extensionRule.ToString()].EvidencesCount} evidences");
                     });
 
                 //Execute custom rules
