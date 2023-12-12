@@ -238,21 +238,6 @@ namespace OWLSharp
         };
 
         /// <summary>
-        /// Represents an enumeration for the set of built-in extension reasoner rules (GeoSPARQL, OWL-TIME, SKOS)
-        /// </summary>
-        public enum OWLReasonerExtensionRules
-        {
-            /// <summary>
-            /// Given temporal intervals I1, I2: STARTS(?I1,?I2) ^ FINISHES(?I1,?I2) -> EQUALS(?I1,?I2)
-            /// </summary>
-            TIME_EqualsEntailment = 0,
-            /// <summary>
-            /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
-            /// </summary>
-            TIME_MeetsEntailment = 1
-        }
-
-        /// <summary>
         /// Represents an enumeration for supported types of ontology property
         /// </summary>
         public enum OWLPropertyType

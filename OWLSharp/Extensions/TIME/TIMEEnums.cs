@@ -145,5 +145,20 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             StartedBy = 17
         }
+    
+        /// <summary>
+        /// Represents an enumeration for the set of built-in OWL-TIME reasoner rules
+        /// </summary>
+        public enum TIMEReasonerExtensionRules
+        {
+            /// <summary>
+            /// Given temporal intervals I1, I2: STARTS(?I1,?I2) ^ FINISHES(?I1,?I2) -> EQUALS(?I1,?I2)
+            /// </summary>
+            TIME_EqualsEntailment = 0,
+            /// <summary>
+            /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
+            /// </summary>
+            TIME_MeetsEntailment = 1
+        }
     }
 }

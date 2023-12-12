@@ -30,9 +30,9 @@ namespace OWLSharp
         internal List<OWLEnums.OWLReasonerStandardRules> StandardRules { get; set; }
 
         /// <summary>
-        /// List of extension rules applied by the reasoner (GeoSPARQL, OWL-TIME, SKOS)
+        /// List of OWL-TIME extension rules applied by the reasoner
         /// </summary>
-        internal List<OWLEnums.OWLReasonerExtensionRules> ExtensionRules { get; set; }
+        internal List<TIMEEnums.TIMEReasonerExtensionRules> TIMEExtensionRules { get; set; }
 
         /// <summary>
         /// List of custom rules applied by the reasoner (SWRL)
@@ -47,8 +47,9 @@ namespace OWLSharp
         public OWLReasoner()
         {
             StandardRules = new List<OWLEnums.OWLReasonerStandardRules>();
-            ExtensionRules = new List<OWLEnums.OWLReasonerExtensionRules>();
             CustomRules = new List<OWLReasonerRule>();
+            //Extensions (OWL-TIME)
+            TIMEExtensionRules = new List<TIMEEnums.TIMEReasonerExtensionRules>();
         }
         #endregion
 
@@ -60,16 +61,6 @@ namespace OWLSharp
         {
             if (!StandardRules.Contains(standardRule))
                 StandardRules.Add(standardRule);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the given extension rule (GeoSPARQL, OWL-TIME, SKOS) to the reasoner
-        /// </summary>
-        public OWLReasoner AddExtensionRule(OWLEnums.OWLReasonerExtensionRules extensionRule)
-        {
-            if (!ExtensionRules.Contains(extensionRule))
-                ExtensionRules.Add(extensionRule);
             return this;
         }
 
@@ -102,12 +93,10 @@ namespace OWLSharp
                 Dictionary<string, OWLReasonerReport> inferenceRegistry = new Dictionary<string, OWLReasonerReport>();
                 foreach (OWLEnums.OWLReasonerStandardRules standardRule in StandardRules)
                     inferenceRegistry.Add(standardRule.ToString(), null);
-                foreach (OWLEnums.OWLReasonerExtensionRules extensionRule in ExtensionRules)
-                    inferenceRegistry.Add(extensionRule.ToString(), null);
                 foreach (OWLReasonerRule customRule in CustomRules)
                     inferenceRegistry.Add(customRule.RuleName, null);
 
-                //Execute standard rules
+                //Execute standard rules (RDFS, OWL, OWL2)
                 Parallel.ForEach(StandardRules, 
                     standardRule =>
                     {
@@ -189,28 +178,10 @@ namespace OWLSharp
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': found {inferenceRegistry[standardRule.ToString()].EvidencesCount} evidences");
                     });
 
-                //Execute extension rules
-                Parallel.ForEach(ExtensionRules, 
-                    extensionRule =>
-                    {
-                        OWLEvents.RaiseInfo($"Launching extension reasoner rule '{extensionRule}'");
+                //Execute extension rules (OWL-TIME)
+                TIMEReasoner.ApplyToOntology(this, ontology, inferenceRegistry);
 
-                        switch (extensionRule)
-                        {
-                            #region OWL-TIME
-                            case OWLEnums.OWLReasonerExtensionRules.TIME_EqualsEntailment:
-                                inferenceRegistry[OWLEnums.OWLReasonerExtensionRules.TIME_EqualsEntailment.ToString()] = TIMEEqualsEntailmentRule.ExecuteRule(ontology);
-                                break;
-                            case OWLEnums.OWLReasonerExtensionRules.TIME_MeetsEntailment:
-                                inferenceRegistry[OWLEnums.OWLReasonerExtensionRules.TIME_MeetsEntailment.ToString()] = TIMEMeetsEntailmentRule.ExecuteRule(ontology);
-                                break;
-                            #endregion
-                        }
-
-                        OWLEvents.RaiseInfo($"Completed extension reasoner rule '{extensionRule}': found {inferenceRegistry[extensionRule.ToString()].EvidencesCount} evidences");
-                    });
-
-                //Execute custom rules
+                //Execute custom rules (SWRL)
                 Parallel.ForEach(CustomRules, 
                     customRule =>
                     {

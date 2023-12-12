@@ -50,7 +50,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareTimeIntervalRelation(new TIMEInterval(new RDFResource("ex:Interval1Name")), new TIMEInterval(new RDFResource("ex:Interval2Name")), TIMEEnums.TIMEIntervalRelation.Meets);
             ontology.DeclareTimeIntervalRelation(new TIMEInterval(new RDFResource("ex:Interval2Name")), new TIMEInterval(new RDFResource("ex:Interval3Name")), TIMEEnums.TIMEIntervalRelation.Starts);
 
-            OWLReasoner reasoner = new OWLReasoner().AddExtensionRule(OWLEnums.OWLReasonerExtensionRules.TIME_MeetsEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddTIMEExtensionRule(TIMEEnums.TIMEReasonerExtensionRules.TIME_MeetsEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);
