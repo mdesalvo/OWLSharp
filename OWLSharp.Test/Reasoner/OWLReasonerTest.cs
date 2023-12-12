@@ -56,8 +56,8 @@ namespace OWLSharp.Reasoner.Test
         public void ShouldAddCustomReasonerRule()
         {
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddCustomRule(new OWLReasonerRule("testRule", "description",
-                new OWLReasonerRuleAntecedent(), new OWLReasonerRuleConsequent()));
+            reasoner.AddCustomRule(new SWRLRule("testRule", "description",
+                new SWRLAntecedent(), new SWRLConsequent()));
 
             Assert.IsNotNull(reasoner);
             Assert.IsNotNull(reasoner.StandardRules);
@@ -122,9 +122,9 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv"), new RDFResource("ex:class"));
 
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddCustomRule(new OWLReasonerRule("testRule", "this is test rule",
-                new OWLReasonerRuleAntecedent().AddAtom(new OWLReasonerRuleClassAtom(new RDFResource("ex:class"), new RDFVariable("?C"))),
-                new OWLReasonerRuleConsequent().AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
+            reasoner.AddCustomRule(new SWRLRule("testRule", "this is test rule",
+                new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:class"), new RDFVariable("?C"))),
+                new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
 
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
@@ -141,9 +141,9 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv"), new RDFResource("ex:class"));
 
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddCustomRule(new OWLReasonerRule("testRule", "this is test rule",
-                new OWLReasonerRuleAntecedent().AddAtom(new OWLReasonerRuleClassAtom(new RDFResource("ex:class"), new RDFVariable("?C"))),
-                new OWLReasonerRuleConsequent().AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
+            reasoner.AddCustomRule(new SWRLRule("testRule", "this is test rule",
+                new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:class"), new RDFVariable("?C"))),
+                new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
 
             string warningMsg = null;
             OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };
@@ -170,9 +170,9 @@ namespace OWLSharp.Reasoner.Test
 
             OWLReasoner reasoner = new OWLReasoner();
             reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity);
-            reasoner.AddCustomRule(new OWLReasonerRule("testRule", "this is test rule",
-                new OWLReasonerRuleAntecedent().AddAtom(new OWLReasonerRuleClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
-                new OWLReasonerRuleConsequent().AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
+            reasoner.AddCustomRule(new SWRLRule("testRule", "this is test rule",
+                new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
+                new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
 
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
@@ -194,9 +194,9 @@ namespace OWLSharp.Reasoner.Test
 
             OWLReasoner reasoner = new OWLReasoner();
             reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity);
-            reasoner.AddCustomRule(new OWLReasonerRule("testRule", "this is test rule",
-                new OWLReasonerRuleAntecedent().AddAtom(new OWLReasonerRuleClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
-                new OWLReasonerRuleConsequent().AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
+            reasoner.AddCustomRule(new SWRLRule("testRule", "this is test rule",
+                new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
+                new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
 
             OWLReasonerReport reasonerReport = await reasoner.ApplyToOntologyAsync(ontology);
 

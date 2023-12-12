@@ -24,20 +24,20 @@ namespace OWLSharp.Extensions.TIME
     {
         internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
         {
-            OWLReasonerRule swrlRule = new OWLReasonerRule(
+            SWRLRule swrlRule = new SWRLRule(
                 nameof(TIMEMeetsEntailmentRule),
                 "MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)",
-                new OWLReasonerRuleAntecedent()
-                    .AddAtom(new OWLReasonerRuleClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I1")))
-                    .AddAtom(new OWLReasonerRuleClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I2")))
-                    .AddAtom(new OWLReasonerRuleClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I3")))
-                    .AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_MEETS, new RDFVariable("?I1"), new RDFVariable("?I2")))
-                    .AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_STARTS, new RDFVariable("?I2"), new RDFVariable("?I3")))
-                    .AddBuiltIn(new OWLReasonerRuleNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I2")))
-                    .AddBuiltIn(new OWLReasonerRuleNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I3")))
-                    .AddBuiltIn(new OWLReasonerRuleNotEqualBuiltIn(new RDFVariable("?I2"), new RDFVariable("?I3"))),
-                new OWLReasonerRuleConsequent()
-                    .AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_MEETS, new RDFVariable("?I1"), new RDFVariable("?I3"))));
+                new SWRLAntecedent()
+                    .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I1")))
+                    .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I2")))
+                    .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I3")))
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_MEETS, new RDFVariable("?I1"), new RDFVariable("?I2")))
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_STARTS, new RDFVariable("?I2"), new RDFVariable("?I3")))
+                    .AddBuiltIn(new SWRLNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I2")))
+                    .AddBuiltIn(new SWRLNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I3")))
+                    .AddBuiltIn(new SWRLNotEqualBuiltIn(new RDFVariable("?I2"), new RDFVariable("?I3"))),
+                new SWRLConsequent()
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_MEETS, new RDFVariable("?I1"), new RDFVariable("?I3"))));
 
             OWLReasonerReport reasonerRuleReport = swrlRule.ApplyToOntology(ontology);
             return reasonerRuleReport;

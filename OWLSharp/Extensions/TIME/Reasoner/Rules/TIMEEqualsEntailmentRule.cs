@@ -24,18 +24,18 @@ namespace OWLSharp.Extensions.TIME
     {
         internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
         {
-            OWLReasonerRule swrlRule = new OWLReasonerRule(
+            SWRLRule swrlRule = new SWRLRule(
                 nameof(TIMEEqualsEntailmentRule),
                 "STARTS(?I1,?I2) ^ FINISHES(?I1,?I2) -> EQUALS(?I1,?I2)",
-                new OWLReasonerRuleAntecedent()
-                    .AddAtom(new OWLReasonerRuleClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I1")))
-                    .AddAtom(new OWLReasonerRuleClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I2")))
-                    .AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_STARTS, new RDFVariable("?I1"), new RDFVariable("?I2")))
-                    .AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_FINISHES, new RDFVariable("?I1"), new RDFVariable("?I2")))
-                    .AddBuiltIn(new OWLReasonerRuleNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I2"))),
-                new OWLReasonerRuleConsequent()
-                    .AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_EQUALS, new RDFVariable("?I1"), new RDFVariable("?I2")))
-                    .AddAtom(new OWLReasonerRuleObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_EQUALS, new RDFVariable("?I2"), new RDFVariable("?I1"))));
+                new SWRLAntecedent()
+                    .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I1")))
+                    .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I2")))
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_STARTS, new RDFVariable("?I1"), new RDFVariable("?I2")))
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_FINISHES, new RDFVariable("?I1"), new RDFVariable("?I2")))
+                    .AddBuiltIn(new SWRLNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I2"))),
+                new SWRLConsequent()
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_EQUALS, new RDFVariable("?I1"), new RDFVariable("?I2")))
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_EQUALS, new RDFVariable("?I2"), new RDFVariable("?I1"))));
 
             OWLReasonerReport reasonerRuleReport = swrlRule.ApplyToOntology(ontology);
             return reasonerRuleReport;

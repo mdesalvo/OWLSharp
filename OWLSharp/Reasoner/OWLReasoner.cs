@@ -37,7 +37,7 @@ namespace OWLSharp
         /// <summary>
         /// List of custom rules applied by the reasoner (SWRL)
         /// </summary>
-        internal List<OWLReasonerRule> CustomRules { get; set; }
+        internal List<SWRLRule> CustomRules { get; set; }
         #endregion
 
         #region Ctors
@@ -47,7 +47,7 @@ namespace OWLSharp
         public OWLReasoner()
         {
             StandardRules = new List<OWLEnums.OWLReasonerStandardRules>();
-            CustomRules = new List<OWLReasonerRule>();
+            CustomRules = new List<SWRLRule>();
             //Extensions (OWL-TIME)
             TIMEExtensionRules = new List<TIMEEnums.TIMEReasonerExtensionRules>();
         }
@@ -67,7 +67,7 @@ namespace OWLSharp
         /// <summary>
         /// Adds the given custom rule (SWRL) to the reasoner
         /// </summary>
-        public OWLReasoner AddCustomRule(OWLReasonerRule swrlRule)
+        public OWLReasoner AddCustomRule(SWRLRule swrlRule)
         {
             #region Guards
             if (swrlRule == null)
@@ -93,7 +93,7 @@ namespace OWLSharp
                 Dictionary<string, OWLReasonerReport> inferenceRegistry = new Dictionary<string, OWLReasonerReport>();
                 foreach (OWLEnums.OWLReasonerStandardRules standardRule in StandardRules)
                     inferenceRegistry.Add(standardRule.ToString(), null);
-                foreach (OWLReasonerRule customRule in CustomRules)
+                foreach (SWRLRule customRule in CustomRules)
                     inferenceRegistry.Add(customRule.RuleName, null);
 
                 //Execute standard rules (RDFS, OWL, OWL2)
