@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.SWRL;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Threading.Tasks;

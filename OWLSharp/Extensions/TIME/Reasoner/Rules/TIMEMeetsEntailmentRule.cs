@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Extensions.SWRL;
 using RDFSharp.Model;
 using RDFSharp.Query;
 

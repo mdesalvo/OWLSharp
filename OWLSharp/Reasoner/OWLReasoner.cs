@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Extensions.SWRL;
 using OWLSharp.Extensions.TIME;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ namespace OWLSharp
         internal List<OWLEnums.OWLReasonerExtensionRules> ExtensionRules { get; set; }
 
         /// <summary>
-        /// List of custom (SWRL) rules applied by the reasoner (SWRL)
+        /// List of custom rules applied by the reasoner (SWRL)
         /// </summary>
         internal List<OWLReasonerRule> CustomRules { get; set; }
         #endregion

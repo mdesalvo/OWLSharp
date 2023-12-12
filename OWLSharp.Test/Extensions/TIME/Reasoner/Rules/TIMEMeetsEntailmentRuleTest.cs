@@ -15,10 +15,9 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 
-namespace OWLSharp.Reasoner.Test
+namespace OWLSharp.Extensions.TIME.Test
 {
     [TestClass]
     public class TIMEMeetsEntailmentRuleTest
