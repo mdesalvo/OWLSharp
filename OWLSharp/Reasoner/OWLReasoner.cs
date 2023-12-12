@@ -178,9 +178,6 @@ namespace OWLSharp
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': found {inferenceRegistry[standardRule.ToString()].EvidencesCount} evidences");
                     });
 
-                //Execute extension rules (OWL-TIME)
-                TIMEReasoner.ApplyToOntology(this, ontology, inferenceRegistry);
-
                 //Execute custom rules (SWRL)
                 Parallel.ForEach(CustomRules, 
                     customRule =>
@@ -191,6 +188,9 @@ namespace OWLSharp
 
                         OWLEvents.RaiseInfo($"Completed custom (SWRL) reasoner rule '{customRule.RuleName}': found {inferenceRegistry[customRule.RuleName].EvidencesCount} evidences");
                     });
+
+                //Execute extension rules (OWL-TIME)
+                TIMEReasoner.ApplyToOntology(this, ontology, inferenceRegistry);
 
                 //Process inference registry
                 foreach (OWLReasonerReport inferenceRegistryReport in inferenceRegistry.Values)
