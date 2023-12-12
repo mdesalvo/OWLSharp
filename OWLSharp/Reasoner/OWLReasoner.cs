@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Extensions.TIME;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -195,9 +196,14 @@ namespace OWLSharp
 
                         switch (extensionRule)
                         {
-                            case OWLEnums.OWLReasonerExtensionRules.TIME_EquivalentIntervals:
-                                inferenceRegistry[OWLEnums.OWLReasonerExtensionRules.TIME_EquivalentIntervals.ToString()] = TIMEEquivalentIntervalsRule.ExecuteRule(ontology);
+                            #region OWL-TIME
+                            case OWLEnums.OWLReasonerExtensionRules.TIME_EqualsEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerExtensionRules.TIME_EqualsEntailment.ToString()] = TIMEEqualsEntailmentRule.ExecuteRule(ontology);
                                 break;
+                            case OWLEnums.OWLReasonerExtensionRules.TIME_MeetsEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerExtensionRules.TIME_MeetsEntailment.ToString()] = TIMEMeetsEntailmentRule.ExecuteRule(ontology);
+                                break;
+                            #endregion
                         }
 
                         OWLEvents.RaiseInfo($"Completed extension reasoner rule '{extensionRule}': found {inferenceRegistry[extensionRule.ToString()].EvidencesCount} evidences");

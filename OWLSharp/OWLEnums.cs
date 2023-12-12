@@ -243,9 +243,13 @@ namespace OWLSharp
         public enum OWLReasonerExtensionRules
         {
             /// <summary>
-            /// This OWL-TIME rule infers that, given temporal intervals I1 and I2: STARTS(I1,I2) AND FINISHES(I1,I2) => EQUALS(I1,I2)
+            /// Given temporal intervals I1, I2: STARTS(?I1,?I2) ^ FINISHES(?I1,?I2) -> EQUALS(?I1,?I2)
             /// </summary>
-            TIME_EquivalentIntervals = 0
+            TIME_EqualsEntailment = 0,
+            /// <summary>
+            /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
+            /// </summary>
+            TIME_MeetsEntailment = 1
         }
 
         /// <summary>
