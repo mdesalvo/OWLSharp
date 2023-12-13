@@ -51,7 +51,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             conceptScheme.DeclareLiteralFormOfLabel(new RDFResource("ex:label1"), new RDFPlainLiteral("label", "en-US"));
             conceptScheme.DeclareLiteralFormOfLabel(new RDFResource("ex:label1"), new RDFPlainLiteral("etichetta", "it-IT")); //clash on cardinality restrictions on skosxl:literalForm
 
-            SKOSValidator validator = new SKOSValidator().AddStandardRule(SKOSEnums.SKOSValidatorStandardRules.LiteralForm);
+            SKOSValidator validator = new SKOSValidator().AddRule(SKOSEnums.SKOSValidatorRules.LiteralForm);
             OWLValidatorReport validatorReport = validator.ApplyToConceptScheme(conceptScheme);
 
             Assert.IsNotNull(validatorReport);

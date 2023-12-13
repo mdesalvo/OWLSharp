@@ -29,20 +29,20 @@ namespace OWLSharp.Extensions.SKOS.Test
             SKOSValidator validator = new SKOSValidator();
 
             Assert.IsNotNull(validator);
-            Assert.IsNotNull(validator.StandardRules);
-            Assert.IsTrue(validator.StandardRules.Count == 0);
+            Assert.IsNotNull(validator.Rules);
+            Assert.IsTrue(validator.Rules.Count == 0);
         }
 
         [TestMethod]
         public void ShouldAddStandardValidatorRule()
         {
             SKOSValidator validator = new SKOSValidator();
-            validator.AddStandardRule(SKOSEnums.SKOSValidatorStandardRules.TopConcept);
-            validator.AddStandardRule(SKOSEnums.SKOSValidatorStandardRules.TopConcept); //Will be discarded, since duplicate standard rules are not allowed
+            validator.AddRule(SKOSEnums.SKOSValidatorRules.TopConcept);
+            validator.AddRule(SKOSEnums.SKOSValidatorRules.TopConcept); //Will be discarded, since duplicate standard rules are not allowed
 
             Assert.IsNotNull(validator);
-            Assert.IsNotNull(validator.StandardRules);
-            Assert.IsTrue(validator.StandardRules.Count == 1);
+            Assert.IsNotNull(validator.Rules);
+            Assert.IsTrue(validator.Rules.Count == 1);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             conceptScheme.DeclareBroaderConcepts(new RDFResource("ex:concept"), new RDFResource("ex:rootConcept"));
             conceptScheme.DeclareTopConcept(new RDFResource("ex:concept")); //clash on skos:broader taxonomy
 
-            SKOSValidator validator = new SKOSValidator().AddStandardRule(SKOSEnums.SKOSValidatorStandardRules.TopConcept);
+            SKOSValidator validator = new SKOSValidator().AddRule(SKOSEnums.SKOSValidatorRules.TopConcept);
             OWLValidatorReport validatorReport = validator.ApplyToConceptScheme(conceptScheme);
 
             Assert.IsNotNull(validatorReport);
@@ -72,7 +72,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             conceptScheme.DeclareBroaderConcepts(new RDFResource("ex:concept"), new RDFResource("ex:rootConcept"));
             conceptScheme.DeclareTopConcept(new RDFResource("ex:concept")); //clash on skos:broader taxonomy
 
-            SKOSValidator validator = new SKOSValidator().AddStandardRule(SKOSEnums.SKOSValidatorStandardRules.TopConcept);            
+            SKOSValidator validator = new SKOSValidator().AddRule(SKOSEnums.SKOSValidatorRules.TopConcept);            
 
             string warningMsg = null;
             OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };

@@ -51,7 +51,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:objprop"), new RDFResource("ex:indiv1"));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDeprecation);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.TermDeprecation);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

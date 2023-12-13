@@ -43,7 +43,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(RDFVocabulary.OWL.THING, RDFVocabulary.RDFS.SUB_CLASS_OF, new RDFResource("ex:SuperThing")));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.ThingNothing);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.ThingNothing);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -72,7 +72,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(new RDFResource("ex:SubNothing"), RDFVocabulary.RDFS.SUB_CLASS_OF, RDFVocabulary.OWL.NOTHING));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.ThingNothing);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.ThingNothing);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -103,7 +103,7 @@ namespace OWLSharp.Validator.Test
             ontology.Model.ClassModel.Classes.Add(RDFVocabulary.OWL.NOTHING.PatternMemberID, RDFVocabulary.OWL.NOTHING);
             ontology.Data.ABoxGraph.AddTriple(new RDFTriple(new RDFResource("ex:NothingIDV"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NOTHING));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.ThingNothing);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.ThingNothing);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

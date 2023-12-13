@@ -67,7 +67,7 @@ namespace OWLSharp.Validator.Test
             ontology.Model.ClassModel.DeclareHasSelfRestriction(new RDFResource("ex:selfrestr"), new RDFResource("ex:pchainaxiom"), true); //clash on self restriction
 
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.PropertyChainAxiom);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.PropertyChainAxiom);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

@@ -194,7 +194,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:marco"), new RDFResource("ex:hates"), new RDFResource("ex:marta"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:marco"), new RDFResource("ex:hates"), new RDFResource("ex:valentina")); //exact violation with ex:loves
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.PropertyDisjoint);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.PropertyDisjoint);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -294,7 +294,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:marco"), new RDFResource("ex:hates"), new RDFPlainLiteral("marta"));
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:marco"), new RDFResource("ex:hates"), new RDFPlainLiteral("valentina"));  //exact violation with ex:loves
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.PropertyDisjoint);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.PropertyDisjoint);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

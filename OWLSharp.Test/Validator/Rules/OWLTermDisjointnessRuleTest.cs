@@ -48,7 +48,7 @@ namespace OWLSharp.Validator.Test
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:entity"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

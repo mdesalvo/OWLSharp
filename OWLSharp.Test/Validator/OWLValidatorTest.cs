@@ -40,8 +40,8 @@ namespace OWLSharp.Validator.Test
         public void ShouldAddStandardValidatorRule()
         {
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness); //Will be discarded, since duplicate standard rules are not allowed
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness); //Will be discarded, since duplicate standard rules are not allowed
 
             Assert.IsNotNull(validator);
             Assert.IsNotNull(validator.StandardRules);
@@ -57,7 +57,7 @@ namespace OWLSharp.Validator.Test
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddCustomRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             Assert.IsNotNull(validator);
             Assert.IsNotNull(validator.StandardRules);
@@ -68,7 +68,7 @@ namespace OWLSharp.Validator.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingCustomValidatorRuleBecauseNull()
-            => Assert.ThrowsException<OWLException>(() => new OWLValidator().AddCustomRule(null));
+            => Assert.ThrowsException<OWLException>(() => new OWLValidator().AddRule(null));
 
         [TestMethod]
         public void ShouldValidateWithStandardRule()
@@ -79,7 +79,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
 
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
@@ -98,7 +98,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
 
             string warningMsg = null;
             OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };
@@ -122,7 +122,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
 
             OWLValidator validator = new OWLValidator();
-            validator.AddCustomRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
@@ -144,8 +144,8 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
-            validator.AddCustomRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
@@ -167,8 +167,8 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
-            validator.AddCustomRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             string warningMsg = null;
             OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };
@@ -192,7 +192,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
 
             OWLValidatorReport validatorReport = await validator.ApplyToOntologyAsync(ontology);
 
@@ -211,7 +211,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
 
             string warningMsg = null;
             OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };
@@ -235,7 +235,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
 
             OWLValidator validator = new OWLValidator();
-            validator.AddCustomRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             OWLValidatorReport validatorReport = await validator.ApplyToOntologyAsync(ontology);
 
@@ -257,8 +257,8 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
-            validator.AddCustomRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             OWLValidatorReport validatorReport = await validator.ApplyToOntologyAsync(ontology);
 
@@ -280,8 +280,8 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:entity"));
 
             OWLValidator validator = new OWLValidator();
-            validator.AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDisjointness);
-            validator.AddCustomRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             string warningMsg = null;
             OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };

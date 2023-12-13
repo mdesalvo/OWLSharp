@@ -47,7 +47,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareSubClasses(new RDFResource("ex:class1"), new RDFResource("ex:class2"));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.TermDeclaration);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.TermDeclaration);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

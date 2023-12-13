@@ -22,9 +22,9 @@ namespace OWLSharp.Extensions.SKOS
     public static class SKOSEnums
     {
         /// <summary>
-        /// Represents an enumeration for the set of built-in standard SKOS/SKOS-XL validator rules
+        /// Represents an enumeration for the set of built-in SKOS validator rules
         /// </summary>
-        public enum SKOSValidatorStandardRules
+        public enum SKOSValidatorRules
         {
             /// <summary>
             /// This SKOS rule checks for consistency of skos:hasTopConcept knowledge

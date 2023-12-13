@@ -80,7 +80,7 @@ namespace OWLSharp.Validator.Test
             ontology.Model.ClassModel.DeclareCardinalityRestriction(new RDFResource("ex:crestr"), new RDFResource("ex:objprop"), 2); //clash on direct transitivity
 
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.LocalCardinality);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.LocalCardinality);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

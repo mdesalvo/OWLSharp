@@ -37,9 +37,9 @@ namespace OWLSharp
         };
 
         /// <summary>
-        /// Represents an enumeration for the set of built-in standard RDFS/OWL-DL/OWL2 validator rules
+        /// Represents an enumeration for the set of built-in validator rules
         /// </summary>
-        public enum OWLValidatorStandardRules
+        public enum OWLValidatorRules
         {
             /// <summary>
             /// This OWL-DL rule checks for vocabulary disjointness of classes, properties and individuals

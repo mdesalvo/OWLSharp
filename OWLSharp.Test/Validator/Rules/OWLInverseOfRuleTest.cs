@@ -107,7 +107,7 @@ namespace OWLSharp.Validator.Test
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:hasHusband"), new OWLOntologyObjectPropertyBehavior() { Domain = new RDFResource("ex:woman"), Range = new RDFResource("ex:father") }); //clash on hierarchy against ex:man
             ontology.Model.PropertyModel.DeclareInverseProperties(new RDFResource("ex:hasWife"), new RDFResource("ex:hasHusband"));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.InverseOf);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.InverseOf);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

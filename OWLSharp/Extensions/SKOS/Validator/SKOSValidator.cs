@@ -23,9 +23,9 @@ namespace OWLSharp.Extensions.SKOS
     {
         #region Properties
         /// <summary>
-        /// List of standard rules applied by the SKOS validator
+        /// List of rules applied by the SKOS validator
         /// </summary>
-        internal List<SKOSEnums.SKOSValidatorStandardRules> StandardRules { get; set; }
+        internal List<SKOSEnums.SKOSValidatorRules> Rules { get; set; }
         #endregion
 
         #region Ctors
@@ -33,17 +33,17 @@ namespace OWLSharp.Extensions.SKOS
         /// Default-ctor to build an empty SKOS validator
         /// </summary>
         public SKOSValidator()
-            => StandardRules = new List<SKOSEnums.SKOSValidatorStandardRules>();
+            => Rules = new List<SKOSEnums.SKOSValidatorRules>();
         #endregion
 
         #region Methods
         /// <summary>
-        /// Adds the given standard rule to the SKOS validator
+        /// Adds the given rule to the SKOS validator
         /// </summary>
-        public SKOSValidator AddStandardRule(SKOSEnums.SKOSValidatorStandardRules standardRule)
+        public SKOSValidator AddRule(SKOSEnums.SKOSValidatorRules validatorRule)
         {
-            if (!StandardRules.Contains(standardRule))
-                StandardRules.Add(standardRule);
+            if (!Rules.Contains(validatorRule))
+                Rules.Add(validatorRule);
             return this;
         }
 
@@ -60,26 +60,26 @@ namespace OWLSharp.Extensions.SKOS
 
                 //Initialize validator registry
                 Dictionary<string, OWLValidatorReport> validatorRegistry = new Dictionary<string, OWLValidatorReport>();
-                foreach (SKOSEnums.SKOSValidatorStandardRules standardRule in StandardRules)
+                foreach (SKOSEnums.SKOSValidatorRules standardRule in Rules)
                     validatorRegistry.Add(standardRule.ToString(), null);
 
-                //Execute standard rules
-                Parallel.ForEach(StandardRules,
+                //Execute rules
+                Parallel.ForEach(Rules,
                     standardRule =>
                     {
-                        OWLEvents.RaiseInfo($"Launching standard SKOS validator rule '{standardRule}'");
+                        OWLEvents.RaiseInfo($"Launching SKOS validator rule '{standardRule}'");
 
                         switch (standardRule)
                         {
-                            case SKOSEnums.SKOSValidatorStandardRules.TopConcept:
-                                validatorRegistry[SKOSEnums.SKOSValidatorStandardRules.TopConcept.ToString()] = SKOSTopConceptRule.ExecuteRule(conceptScheme);
+                            case SKOSEnums.SKOSValidatorRules.TopConcept:
+                                validatorRegistry[SKOSEnums.SKOSValidatorRules.TopConcept.ToString()] = SKOSTopConceptRule.ExecuteRule(conceptScheme);
                                 break;
-                            case SKOSEnums.SKOSValidatorStandardRules.LiteralForm:
-                                validatorRegistry[SKOSEnums.SKOSValidatorStandardRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(conceptScheme);
+                            case SKOSEnums.SKOSValidatorRules.LiteralForm:
+                                validatorRegistry[SKOSEnums.SKOSValidatorRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(conceptScheme);
                                 break;
                         }
 
-                        OWLEvents.RaiseInfo($"Completed standard SKOS validator rule '{standardRule}': found {validatorRegistry[standardRule.ToString()].EvidencesCount} evidences");
+                        OWLEvents.RaiseInfo($"Completed SKOS validator rule '{standardRule}': found {validatorRegistry[standardRule.ToString()].EvidencesCount} evidences");
                     });
 
                 //Process validator registry

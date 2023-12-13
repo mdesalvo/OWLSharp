@@ -60,7 +60,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv2"), new RDFResource("ex:class1"));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.DisjointUnion);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.DisjointUnion);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

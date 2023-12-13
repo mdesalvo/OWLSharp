@@ -135,7 +135,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareNegativeObjectAssertion(new RDFResource("ex:marco"), new RDFResource("ex:loves"), new RDFResource("ex:valentina"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:marco"), new RDFResource("ex:fallInLoveWith"), new RDFResource("ex:valentina")); //clash on negated ex:loves
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.NegativeAssertions);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.NegativeAssertions);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -220,7 +220,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareNegativeDatatypeAssertion(new RDFResource("ex:marco"), new RDFResource("ex:loves"), new RDFPlainLiteral("valentina"));
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:mark"), new RDFResource("ex:loves"), new RDFPlainLiteral("valentina")); //clash on subject synonim
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.NegativeAssertions);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.NegativeAssertions);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

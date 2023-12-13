@@ -186,7 +186,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv2"), new RDFResource("ex:fobjprop"), new RDFResource("ex:indiv3"));
 
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.GlobalCardinality);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.GlobalCardinality);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

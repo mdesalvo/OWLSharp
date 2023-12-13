@@ -49,7 +49,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             conceptScheme.DeclareBroaderConcepts(new RDFResource("ex:concept"), new RDFResource("ex:rootConcept"));
             conceptScheme.DeclareTopConcept(new RDFResource("ex:concept")); //clash on skos:broader taxonomy
 
-            SKOSValidator validator = new SKOSValidator().AddStandardRule(SKOSEnums.SKOSValidatorStandardRules.TopConcept);
+            SKOSValidator validator = new SKOSValidator().AddRule(SKOSEnums.SKOSValidatorRules.TopConcept);
             OWLValidatorReport validatorReport = validator.ApplyToConceptScheme(conceptScheme);
 
             Assert.IsNotNull(validatorReport);

@@ -43,7 +43,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.TBoxGraph.AddTriple(new RDFTriple(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY, RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:SuperObjectProperty")));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.TopBottom);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.TopBottom);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -72,7 +72,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.TBoxGraph.AddTriple(new RDFTriple(RDFVocabulary.OWL.TOP_DATA_PROPERTY, RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:SuperDataProperty")));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.TopBottom);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.TopBottom);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -101,7 +101,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.TBoxGraph.AddTriple(new RDFTriple(new RDFResource("ex:SubBottomObject"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.TopBottom);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.TopBottom);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -130,7 +130,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.TBoxGraph.AddTriple(new RDFTriple(new RDFResource("ex:SubBottomData"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.TopBottom);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.TopBottom);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

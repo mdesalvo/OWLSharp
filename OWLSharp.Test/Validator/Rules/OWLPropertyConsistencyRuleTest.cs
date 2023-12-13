@@ -75,7 +75,7 @@ namespace OWLSharp.Validator.Test
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:prop"));
             ontology.Model.PropertyModel.DeclareAnnotationProperty(new RDFResource("ex:prop"));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.PropertyConsistency);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.PropertyConsistency);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);

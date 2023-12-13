@@ -181,7 +181,7 @@ namespace OWLSharp.Validator.Test
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indiv6"), new RDFResource("ex:dtprop1"), new RDFPlainLiteral("val1"));
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:indiv6"), new RDFResource("ex:dtprop2"), new RDFPlainLiteral("val1"));
 
-            OWLValidator validator = new OWLValidator().AddStandardRule(OWLEnums.OWLValidatorStandardRules.ClassKey);
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.ClassKey);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
