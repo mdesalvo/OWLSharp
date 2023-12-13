@@ -15,7 +15,6 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;

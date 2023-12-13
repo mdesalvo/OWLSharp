@@ -15,7 +15,6 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Extensions.SWRL;
 using System.Collections.Generic;
 
 namespace OWLSharp.Extensions.TIME.Test

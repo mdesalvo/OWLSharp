@@ -50,7 +50,7 @@ namespace OWLSharp
 
         #region Methods
         /// <summary>
-        /// Adds the given RDFS/OWL/OWL2 rule to the reasoner
+        /// Adds the given rule to the reasoner
         /// </summary>
         public OWLReasoner AddRule(OWLEnums.OWLReasonerRules standardRule)
         {

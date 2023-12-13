@@ -118,6 +118,7 @@ namespace OWLSharp.Reasoner.Test
             reasoner.AddSWRLRule(new SWRLRule("testRule", "this is test rule",
                 new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
                 new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
+            reasoner.AddSWRLRule(null); //Will be discarded, since null is not allowed
 
             Assert.IsNotNull(reasoner.Rules);
             Assert.IsTrue(reasoner.Rules.Count == 2);

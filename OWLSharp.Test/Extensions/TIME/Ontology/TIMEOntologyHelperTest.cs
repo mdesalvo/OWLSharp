@@ -1919,7 +1919,7 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             MemoryStream memoryStream = new MemoryStream();
             using (Stream resourceStream = Assembly.GetExecutingAssembly()
-                                                   .GetManifestResourceStream("OWLSharp.Test.Extensions.TIME.Resources.GeologicTimeExample.ttl"))
+                                                   .GetManifestResourceStream("OWLSharp.Test.Extensions.TIME.GeologicTimeExample.ttl"))
             {
                 using (StreamReader resourceReader = new StreamReader(resourceStream))
                 {
@@ -1962,7 +1962,7 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             MemoryStream memoryStream = new MemoryStream();
             using (Stream resourceStream = Assembly.GetExecutingAssembly()
-                                                   .GetManifestResourceStream("OWLSharp.Test.Extensions.TIME.Resources.GeologicTimeExample.ttl"))
+                                                   .GetManifestResourceStream("OWLSharp.Test.Extensions.TIME.GeologicTimeExample.ttl"))
             {
                 using (StreamReader resourceReader = new StreamReader(resourceStream))
                 {
@@ -1994,7 +1994,7 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             MemoryStream memoryStream = new MemoryStream();
             using (Stream resourceStream = Assembly.GetExecutingAssembly()
-                                                   .GetManifestResourceStream("OWLSharp.Test.Extensions.TIME.Resources.GeologicTimeExample.ttl"))
+                                                   .GetManifestResourceStream("OWLSharp.Test.Extensions.TIME.GeologicTimeExample.ttl"))
             {
                 using (StreamReader resourceReader = new StreamReader(resourceStream))
                 {
