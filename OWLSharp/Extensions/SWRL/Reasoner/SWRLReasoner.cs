@@ -28,7 +28,16 @@ namespace OWLSharp.Extensions.SWRL
         public static OWLReasoner AddSWRLRule(this OWLReasoner reasoner, SWRLRule swrlRule)
         {
             if (reasoner != null && swrlRule != null)
+            {
+                //Activate SWRL extension on the reasoner
+                if (!reasoner.Extensions.ContainsKey("SWRL"))
+                    reasoner.Extensions.Add("SWRL", ApplyToOntology);
+
+                //Add SWRL rule to the reasoner
+                if (!reasoner.Rules.ContainsKey("SWRL"))
+                    reasoner.Rules.Add("SWRL", new List<SWRLRule>());
                 ((List<SWRLRule>)reasoner.Rules["SWRL"]).Add(swrlRule);
+            }
             return reasoner;
         }
 

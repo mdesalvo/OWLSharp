@@ -11,8 +11,7 @@
    limitations under the License.
 */
 
-using OWLSharp.Extensions.SWRL;
-using OWLSharp.Extensions.TIME;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -28,6 +27,11 @@ namespace OWLSharp
         /// Dictionary of rules applied by the reasoner, categorized by reserved keys
         /// </summary>
         internal Dictionary<string, object> Rules { get; set; }
+
+        /// <summary>
+        /// Dictionary of extensions activated on the reasoner, categorized by reserved keys
+        /// </summary>
+        internal Dictionary<string, Action<OWLReasoner, OWLOntology, Dictionary<string, OWLReasonerReport>>> Extensions { get; set; }
         #endregion
 
         #region Ctors
@@ -35,13 +39,13 @@ namespace OWLSharp
         /// Default-ctor to build an empty reasoner
         /// </summary>
         public OWLReasoner()
-            => Rules = new Dictionary<string, object>()
-               {
-                   { "STD", new List<OWLEnums.OWLReasonerRules>() },
-                   //Extensions
-                   { "SWRL", new List<SWRLRule>() },
-                   { "TIME", new List<TIMEEnums.TIMEReasonerRules>() }
-               };
+        {
+            Rules = new Dictionary<string, object>() 
+            { 
+                { "STD", new List<OWLEnums.OWLReasonerRules>() } 
+            };
+            Extensions = new Dictionary<string, Action<OWLReasoner, OWLOntology, Dictionary<string, OWLReasonerReport>>>();
+        } 
         #endregion
 
         #region Methods
@@ -71,7 +75,7 @@ namespace OWLSharp
                 foreach (OWLEnums.OWLReasonerRules stdRule in ((List<OWLEnums.OWLReasonerRules>)Rules["STD"]))
                     inferenceRegistry.Add(stdRule.ToString(), null);
 
-                //Execute standard rules (RDFS, OWL, OWL2)
+                //Execute rules
                 Parallel.ForEach(((List<OWLEnums.OWLReasonerRules>)Rules["STD"]), 
                     stdRule =>
                     {
@@ -153,9 +157,9 @@ namespace OWLSharp
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{stdRule}': found {inferenceRegistry[stdRule.ToString()].EvidencesCount} evidences");
                     });
 
-                //Execute extension rules (SWRL, TIME)
-                SWRLReasoner.ApplyToOntology(this, ontology, inferenceRegistry);
-                TIMEReasoner.ApplyToOntology(this, ontology, inferenceRegistry);
+                //Execute registered extensions
+                foreach (var extension in Extensions)
+                    extension.Value.Invoke(this, ontology, inferenceRegistry);
 
                 //Process inference registry
                 foreach (OWLReasonerReport inferenceRegistryReport in inferenceRegistry.Values)

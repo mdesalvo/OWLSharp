@@ -35,13 +35,11 @@ namespace OWLSharp.Reasoner.Test
 
             Assert.IsNotNull(reasoner);
             Assert.IsNotNull(reasoner.Rules);
-            Assert.IsTrue(reasoner.Rules.Count == 3);
+            Assert.IsTrue(reasoner.Rules.Count == 1);
             Assert.IsTrue(reasoner.Rules.ContainsKey("STD"));
             Assert.IsTrue(reasoner.Rules["STD"] is List<OWLEnums.OWLReasonerRules> stdRules && stdRules.Count == 0);
-            Assert.IsTrue(reasoner.Rules.ContainsKey("SWRL"));
-            Assert.IsTrue(reasoner.Rules["SWRL"] is List<SWRLRule> swrlRules && swrlRules.Count == 0);
-            Assert.IsTrue(reasoner.Rules.ContainsKey("TIME"));
-            Assert.IsTrue(reasoner.Rules["TIME"] is List<TIMEEnums.TIMEReasonerRules> timeRules && timeRules.Count == 0);
+            Assert.IsNotNull(reasoner.Extensions);
+            Assert.IsTrue(reasoner.Extensions.Count == 0);
         }
 
         [TestMethod]
@@ -53,13 +51,11 @@ namespace OWLSharp.Reasoner.Test
 
             Assert.IsNotNull(reasoner);
             Assert.IsNotNull(reasoner.Rules);
-            Assert.IsTrue(reasoner.Rules.Count == 3);
+            Assert.IsTrue(reasoner.Rules.Count == 1);
             Assert.IsTrue(reasoner.Rules.ContainsKey("STD"));
             Assert.IsTrue(reasoner.Rules["STD"] is List<OWLEnums.OWLReasonerRules> stdRules && stdRules.Count == 1);
-            Assert.IsTrue(reasoner.Rules.ContainsKey("SWRL"));
-            Assert.IsTrue(reasoner.Rules["SWRL"] is List<SWRLRule> swrlRules && swrlRules.Count == 0);
-            Assert.IsTrue(reasoner.Rules.ContainsKey("TIME"));
-            Assert.IsTrue(reasoner.Rules["TIME"] is List<TIMEEnums.TIMEReasonerRules> timeRules && timeRules.Count == 0);
+            Assert.IsNotNull(reasoner.Extensions);
+            Assert.IsTrue(reasoner.Extensions.Count == 0);
         }
 
         [TestMethod]
@@ -122,6 +118,16 @@ namespace OWLSharp.Reasoner.Test
             reasoner.AddSWRLRule(new SWRLRule("testRule", "this is test rule",
                 new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
                 new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
+
+            Assert.IsNotNull(reasoner.Rules);
+            Assert.IsTrue(reasoner.Rules.Count == 2);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("STD"));
+            Assert.IsTrue(reasoner.Rules["STD"] is List<OWLEnums.OWLReasonerRules> stdRules && stdRules.Count == 1);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("SWRL"));
+            Assert.IsTrue(reasoner.Rules["SWRL"] is List<SWRLRule> swrlRules && swrlRules.Count == 1);
+            Assert.IsNotNull(reasoner.Extensions);
+            Assert.IsTrue(reasoner.Extensions.Count == 1);
+            Assert.IsTrue(reasoner.Extensions.ContainsKey("SWRL"));
 
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 

@@ -36,13 +36,14 @@ namespace OWLSharp.Extensions.SWRL.Test
 
             Assert.IsNotNull(reasoner);
             Assert.IsNotNull(reasoner.Rules);
-            Assert.IsTrue(reasoner.Rules.Count == 3);
+            Assert.IsTrue(reasoner.Rules.Count == 2);
             Assert.IsTrue(reasoner.Rules.ContainsKey("STD"));
             Assert.IsTrue(reasoner.Rules["STD"] is List<OWLEnums.OWLReasonerRules> stdRules && stdRules.Count == 0);
             Assert.IsTrue(reasoner.Rules.ContainsKey("SWRL"));
             Assert.IsTrue(reasoner.Rules["SWRL"] is List<SWRLRule> swrlRules && swrlRules.Count == 1);
-            Assert.IsTrue(reasoner.Rules.ContainsKey("TIME"));
-            Assert.IsTrue(reasoner.Rules["TIME"] is List<TIMEEnums.TIMEReasonerRules> timeRules && timeRules.Count == 0);
+            Assert.IsNotNull(reasoner.Extensions);
+            Assert.IsTrue(reasoner.Extensions.Count == 1);
+            Assert.IsTrue(reasoner.Extensions.ContainsKey("SWRL"));
         }
 
         [TestMethod]

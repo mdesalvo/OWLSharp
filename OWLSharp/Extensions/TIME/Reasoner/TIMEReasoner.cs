@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Extensions.SWRL;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,10 +26,20 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Adds the given OWL-TIME rule to the reasoner
         /// </summary>
-        public static OWLReasoner AddTIMERule(this OWLReasoner reasoner, TIMEEnums.TIMEReasonerRules extensionRule)
+        public static OWLReasoner AddTIMERule(this OWLReasoner reasoner, TIMEEnums.TIMEReasonerRules timeRule)
         {
-            if (reasoner != null && !((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Contains(extensionRule))
-                ((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Add(extensionRule);
+            if (reasoner != null)
+            {
+                //Activate OWL-TIME extension on the reasoner
+                if (!reasoner.Extensions.ContainsKey("TIME"))
+                    reasoner.Extensions.Add("TIME", ApplyToOntology);
+
+                //Add OWL-TIME rule to the reasoner
+                if (!reasoner.Rules.ContainsKey("TIME"))
+                    reasoner.Rules.Add("TIME", new List<TIMEEnums.TIMEReasonerRules>());
+                if (!((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Contains(timeRule))
+                    ((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Add(timeRule);
+            }
             return reasoner;
         }
 
