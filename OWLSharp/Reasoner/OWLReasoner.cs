@@ -157,9 +157,9 @@ namespace OWLSharp
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{stdRule}': found {inferenceRegistry[stdRule.ToString()].EvidencesCount} evidences");
                     });
 
-                //Execute registered extensions
+                //Execute extensions
                 foreach (var extension in Extensions)
-                    extension.Value.Invoke(this, ontology, inferenceRegistry);
+                    extension.Value?.Invoke(this, ontology, inferenceRegistry);
 
                 //Process inference registry
                 foreach (OWLReasonerReport inferenceRegistryReport in inferenceRegistry.Values)

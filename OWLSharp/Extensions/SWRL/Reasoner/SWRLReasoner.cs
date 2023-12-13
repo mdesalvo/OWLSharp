@@ -50,7 +50,7 @@ namespace OWLSharp.Extensions.SWRL
             foreach (SWRLRule swrlRule in (List<SWRLRule>)reasoner.Rules["SWRL"])
                 inferenceRegistry.Add(swrlRule.RuleName, null);
 
-            //Execute extension rules (SWRL)
+            //Execute rules
             Parallel.ForEach((List<SWRLRule>)reasoner.Rules["SWRL"], 
                 swrlRule =>
                 {

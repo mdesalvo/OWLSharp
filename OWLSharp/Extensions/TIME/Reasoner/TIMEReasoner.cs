@@ -52,7 +52,7 @@ namespace OWLSharp.Extensions.TIME
             foreach (TIMEEnums.TIMEReasonerRules timeRule in (List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"])
                 inferenceRegistry.Add(timeRule.ToString(), null);
 
-            //Execute extension rules (OWL-TIME)
+            //Execute rules
             Parallel.ForEach((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"], 
                 timeRule =>
                 {
