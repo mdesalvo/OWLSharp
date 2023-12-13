@@ -149,7 +149,7 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Represents an enumeration for the set of built-in OWL-TIME reasoner rules
         /// </summary>
-        public enum TIMEReasonerExtensionRules
+        public enum TIMEReasonerRules
         {
             /// <summary>
             /// Given temporal intervals I1, I2: STARTS(?I1,?I2) ^ FINISHES(?I1,?I2) -> EQUALS(?I1,?I2)

@@ -105,7 +105,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv"), new RDFResource("ex:class3"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.IndividualTypeEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.IndividualTypeEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);
@@ -158,7 +158,7 @@ ibx:theItem a owl:NamedIndividual, ibx:Item. ";
                     {
                         using (OWLOntology ontology = OWLOntology.FromRDFGraph(graph)) 
                         {
-                            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.IndividualTypeEntailment);
+                            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.IndividualTypeEntailment);
                             OWLReasonerReport report = reasoner.ApplyToOntology(ontology);
 
                             Assert.IsNotNull(report);

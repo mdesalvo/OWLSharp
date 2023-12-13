@@ -56,7 +56,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:mark"), new RDFResource("ex:loves"), new RDFResource("ex:valentine"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:objprop"), new RDFResource("ex:indiv2"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.PropertyEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.PropertyEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);
@@ -93,7 +93,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:mark"));
             ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:mark"), new RDFResource("ex:loves"), new RDFPlainLiteral("valentine", "en-US"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.PropertyEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.PropertyEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);

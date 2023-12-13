@@ -63,7 +63,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv4"), new RDFResource("ex:objprop"), new RDFResource("ex:indiv5"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv5"), new RDFResource("ex:objprop"), new RDFResource("ex:indiv6"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.TransitivePropertyEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.TransitivePropertyEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);

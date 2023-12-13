@@ -66,7 +66,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:father"), new RDFResource("ex:hasFather"), new RDFResource("ex:grandFather"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:grandFather"), new RDFResource("ex:hasBrother"), new RDFResource("ex:grandUncle"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.PropertyChainEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.PropertyChainEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);

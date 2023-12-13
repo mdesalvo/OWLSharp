@@ -16,8 +16,10 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SWRL;
+using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OWLSharp.Reasoner.Test
@@ -32,42 +34,36 @@ namespace OWLSharp.Reasoner.Test
             OWLReasoner reasoner = new OWLReasoner();
 
             Assert.IsNotNull(reasoner);
-            Assert.IsNotNull(reasoner.StandardRules);
-            Assert.IsTrue(reasoner.StandardRules.Count == 0);
-            Assert.IsNotNull(reasoner.SWRLExtensionRules);
-            Assert.IsTrue(reasoner.SWRLExtensionRules.Count == 0);
+            Assert.IsNotNull(reasoner.Rules);
+            Assert.IsTrue(reasoner.Rules.Count == 3);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("STD"));
+            Assert.IsTrue(reasoner.Rules["STD"] is List<OWLEnums.OWLReasonerRules> stdRules && stdRules.Count == 0);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("SWRL"));
+            Assert.IsTrue(reasoner.Rules["SWRL"] is List<SWRLRule> swrlRules && swrlRules.Count == 0);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("TIME"));
+            Assert.IsTrue(reasoner.Rules["TIME"] is List<TIMEEnums.TIMEReasonerRules> timeRules && timeRules.Count == 0);
         }
 
         [TestMethod]
-        public void ShouldAddStandarReasonerRule()
+        public void ShouldAddRule()
         {
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity);
-            reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity); //Will be discarded, since duplicate standard rules are not allowed
+            reasoner.AddRule(OWLEnums.OWLReasonerRules.SubClassTransitivity)
+                    .AddRule(OWLEnums.OWLReasonerRules.SubClassTransitivity); //Will be discarded, since duplicate standard rules are not allowed
 
             Assert.IsNotNull(reasoner);
-            Assert.IsNotNull(reasoner.StandardRules);
-            Assert.IsTrue(reasoner.StandardRules.Count == 1);
-            Assert.IsNotNull(reasoner.SWRLExtensionRules);
-            Assert.IsTrue(reasoner.SWRLExtensionRules.Count == 0);
+            Assert.IsNotNull(reasoner.Rules);
+            Assert.IsTrue(reasoner.Rules.Count == 3);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("STD"));
+            Assert.IsTrue(reasoner.Rules["STD"] is List<OWLEnums.OWLReasonerRules> stdRules && stdRules.Count == 1);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("SWRL"));
+            Assert.IsTrue(reasoner.Rules["SWRL"] is List<SWRLRule> swrlRules && swrlRules.Count == 0);
+            Assert.IsTrue(reasoner.Rules.ContainsKey("TIME"));
+            Assert.IsTrue(reasoner.Rules["TIME"] is List<TIMEEnums.TIMEReasonerRules> timeRules && timeRules.Count == 0);
         }
 
         [TestMethod]
-        public void ShouldAddCustomReasonerRule()
-        {
-            OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddSWRLExtensionRule(new SWRLRule("testRule", "description",
-                new SWRLAntecedent(), new SWRLConsequent()));
-
-            Assert.IsNotNull(reasoner);
-            Assert.IsNotNull(reasoner.StandardRules);
-            Assert.IsTrue(reasoner.StandardRules.Count == 0);
-            Assert.IsNotNull(reasoner.SWRLExtensionRules);
-            Assert.IsTrue(reasoner.SWRLExtensionRules.Count == 1);
-        }
-
-        [TestMethod]
-        public void ShouldReasonWithStandardRule()
+        public void ShouldReasonWithRule()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:classA"));
@@ -77,7 +73,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.ClassModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classC"));
 
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity);
+            reasoner.AddRule(OWLEnums.OWLReasonerRules.SubClassTransitivity);
 
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
@@ -86,7 +82,7 @@ namespace OWLSharp.Reasoner.Test
         }
 
         [TestMethod]
-        public void ShouldReasonWithStandardRuleAndSubscribedEvents()
+        public void ShouldReasonWithRuleAndSubscribedEvents()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:classA"));
@@ -96,7 +92,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.ClassModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classC"));
 
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity);
+            reasoner.AddRule(OWLEnums.OWLReasonerRules.SubClassTransitivity);
 
             string warningMsg = null;
             OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };
@@ -110,50 +106,7 @@ namespace OWLSharp.Reasoner.Test
         }
 
         [TestMethod]
-        public void ShouldReasonWithCustomRule()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv"));
-            ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv"), new RDFResource("ex:class"));
-
-            OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddSWRLExtensionRule(new SWRLRule("testRule", "this is test rule",
-                new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:class"), new RDFVariable("?C"))),
-                new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
-
-            OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
-
-            Assert.IsNotNull(reasonerReport);
-            Assert.IsTrue(reasonerReport.EvidencesCount == 1);
-        }
-
-        [TestMethod]
-        public void ShouldReasonWithCustomRuleAndSubscribedEvents()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Data.DeclareIndividual(new RDFResource("ex:indiv"));
-            ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv"), new RDFResource("ex:class"));
-
-            OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddSWRLExtensionRule(new SWRLRule("testRule", "this is test rule",
-                new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:class"), new RDFVariable("?C"))),
-                new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
-
-            string warningMsg = null;
-            OWLEvents.OnInfo += (string msg) => { warningMsg += msg; };
-
-            OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
-
-            Assert.IsNotNull(reasonerReport);
-            Assert.IsTrue(reasonerReport.EvidencesCount == 1);
-            Assert.IsNotNull(warningMsg);
-            Assert.IsTrue(warningMsg.IndexOf("found 1 evidences") > -1);
-        }
-
-        [TestMethod]
-        public void ShouldReasonWithStandardAndCustomRules()
+        public void ShouldReasonWithMixedRules()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:classA"));
@@ -165,8 +118,8 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv"), new RDFResource("ex:classA"));
 
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity);
-            reasoner.AddSWRLExtensionRule(new SWRLRule("testRule", "this is test rule",
+            reasoner.AddRule(OWLEnums.OWLReasonerRules.SubClassTransitivity);
+            reasoner.AddSWRLRule(new SWRLRule("testRule", "this is test rule",
                 new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
                 new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
 
@@ -177,7 +130,7 @@ namespace OWLSharp.Reasoner.Test
         }
 
         [TestMethod]
-        public async Task ShouldReasonWithStandardAndCustomRulesAsync()
+        public async Task ShouldReasonWithMixedRulesAsync()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:classA"));
@@ -189,8 +142,8 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv"), new RDFResource("ex:classA"));
 
             OWLReasoner reasoner = new OWLReasoner();
-            reasoner.AddStandardRule(OWLEnums.OWLReasonerStandardRules.SubClassTransitivity);
-            reasoner.AddSWRLExtensionRule(new SWRLRule("testRule", "this is test rule",
+            reasoner.AddRule(OWLEnums.OWLReasonerRules.SubClassTransitivity);
+            reasoner.AddSWRLRule(new SWRLRule("testRule", "this is test rule",
                 new SWRLAntecedent().AddAtom(new SWRLClassAtom(new RDFResource("ex:classA"), new RDFVariable("?C"))),
                 new SWRLConsequent().AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.RDF.TYPE, new RDFVariable("?C"), RDFVocabulary.OWL.INDIVIDUAL))));
 

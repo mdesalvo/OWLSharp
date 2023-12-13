@@ -23,12 +23,12 @@ namespace OWLSharp.Extensions.SWRL
     {
         #region Methods
         /// <summary>
-        /// Adds the given SWRL extension rule to the reasoner
+        /// Adds the given SWRL rule to the reasoner
         /// </summary>
-        public static OWLReasoner AddSWRLExtensionRule(this OWLReasoner reasoner, SWRLRule swrlRule)
+        public static OWLReasoner AddSWRLRule(this OWLReasoner reasoner, SWRLRule swrlRule)
         {
             if (reasoner != null && swrlRule != null)
-                reasoner.SWRLExtensionRules.Add(swrlRule);
+                ((List<SWRLRule>)reasoner.Rules["SWRL"]).Add(swrlRule);
             return reasoner;
         }
 
@@ -38,18 +38,18 @@ namespace OWLSharp.Extensions.SWRL
         internal static void ApplyToOntology(this OWLReasoner reasoner, OWLOntology ontology, Dictionary<string, OWLReasonerReport> inferenceRegistry)
         {
             //Initialize inference registry
-            foreach (SWRLRule extensionRule in reasoner.SWRLExtensionRules)
-                inferenceRegistry.Add(extensionRule.RuleName, null);
+            foreach (SWRLRule swrlRule in (List<SWRLRule>)reasoner.Rules["SWRL"])
+                inferenceRegistry.Add(swrlRule.RuleName, null);
 
-            //Execute custom rules (SWRL)
-            Parallel.ForEach(reasoner.SWRLExtensionRules, 
-                extensionRule =>
+            //Execute extension rules (SWRL)
+            Parallel.ForEach((List<SWRLRule>)reasoner.Rules["SWRL"], 
+                swrlRule =>
                 {
-                    OWLEvents.RaiseInfo($"Launching SWRL extension reasoner rule '{extensionRule.RuleName}'");
+                    OWLEvents.RaiseInfo($"Launching SWRL reasoner rule '{swrlRule.RuleName}'");
 
-                    inferenceRegistry[extensionRule.RuleName] = extensionRule.ApplyToOntology(ontology);
+                    inferenceRegistry[swrlRule.RuleName] = swrlRule.ApplyToOntology(ontology);
 
-                    OWLEvents.RaiseInfo($"Completed SWRL extension reasoner rule '{extensionRule.RuleName}': found {inferenceRegistry[extensionRule.RuleName].EvidencesCount} evidences");
+                    OWLEvents.RaiseInfo($"Completed SWRL reasoner rule '{swrlRule.RuleName}': found {inferenceRegistry[swrlRule.RuleName].EvidencesCount} evidences");
                 });
         }
         #endregion

@@ -73,7 +73,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:objpropB"), new RDFResource("ex:objpropC"));
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:objpropC"), new RDFResource("ex:objpropD"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.DisjointPropertyEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.DisjointPropertyEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);
@@ -129,7 +129,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:dtpropB"), new RDFResource("ex:dtpropC"));
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:dtpropC"), new RDFResource("ex:dtpropD"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.DisjointPropertyEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.DisjointPropertyEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);

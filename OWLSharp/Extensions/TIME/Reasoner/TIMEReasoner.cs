@@ -23,12 +23,12 @@ namespace OWLSharp.Extensions.TIME
     {
         #region Methods
         /// <summary>
-        /// Adds the given OWL-TIME extension rule to the reasoner
+        /// Adds the given OWL-TIME rule to the reasoner
         /// </summary>
-        public static OWLReasoner AddTIMEExtensionRule(this OWLReasoner reasoner, TIMEEnums.TIMEReasonerExtensionRules extensionRule)
+        public static OWLReasoner AddTIMERule(this OWLReasoner reasoner, TIMEEnums.TIMEReasonerRules extensionRule)
         {
-            if (reasoner != null && !reasoner.TIMEExtensionRules.Contains(extensionRule))
-                reasoner.TIMEExtensionRules.Add(extensionRule);
+            if (reasoner != null && !((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Contains(extensionRule))
+                ((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Add(extensionRule);
             return reasoner;
         }
 
@@ -38,26 +38,26 @@ namespace OWLSharp.Extensions.TIME
         internal static void ApplyToOntology(this OWLReasoner reasoner, OWLOntology ontology, Dictionary<string, OWLReasonerReport> inferenceRegistry)
         {
             //Initialize inference registry
-            foreach (TIMEEnums.TIMEReasonerExtensionRules extensionRule in reasoner.TIMEExtensionRules)
-                inferenceRegistry.Add(extensionRule.ToString(), null);
+            foreach (TIMEEnums.TIMEReasonerRules timeRule in (List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"])
+                inferenceRegistry.Add(timeRule.ToString(), null);
 
             //Execute extension rules (OWL-TIME)
-            Parallel.ForEach(reasoner.TIMEExtensionRules, 
-                extensionRule =>
+            Parallel.ForEach((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"], 
+                timeRule =>
                 {
-                    OWLEvents.RaiseInfo($"Launching OWL-TIME extension reasoner rule '{extensionRule}'");
+                    OWLEvents.RaiseInfo($"Launching OWL-TIME reasoner rule '{timeRule}'");
 
-                    switch (extensionRule)
+                    switch (timeRule)
                     {
-                        case TIMEEnums.TIMEReasonerExtensionRules.TIME_EqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerExtensionRules.TIME_EqualsEntailment.ToString()] = TIMEEqualsEntailmentRule.ExecuteRule(ontology);
+                        case TIMEEnums.TIMEReasonerRules.TIME_EqualsEntailment:
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_EqualsEntailment.ToString()] = TIMEEqualsEntailmentRule.ExecuteRule(ontology);
                             break;
-                        case TIMEEnums.TIMEReasonerExtensionRules.TIME_MeetsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerExtensionRules.TIME_MeetsEntailment.ToString()] = TIMEMeetsEntailmentRule.ExecuteRule(ontology);
+                        case TIMEEnums.TIMEReasonerRules.TIME_MeetsEntailment:
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_MeetsEntailment.ToString()] = TIMEMeetsEntailmentRule.ExecuteRule(ontology);
                             break;
                     }
 
-                    OWLEvents.RaiseInfo($"Completed OWL-TIME extension reasoner rule '{extensionRule}': found {inferenceRegistry[extensionRule.ToString()].EvidencesCount} evidences");
+                    OWLEvents.RaiseInfo($"Completed OWL-TIME reasoner rule '{timeRule}': found {inferenceRegistry[timeRule.ToString()].EvidencesCount} evidences");
                 });
         }
         #endregion

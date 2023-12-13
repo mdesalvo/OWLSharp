@@ -73,7 +73,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classB"), new RDFResource("ex:classC"));
             ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
 
-            OWLReasoner reasoner = new OWLReasoner().AddStandardRule(OWLEnums.OWLReasonerStandardRules.DisjointClassEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddRule(OWLEnums.OWLReasonerRules.DisjointClassEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);

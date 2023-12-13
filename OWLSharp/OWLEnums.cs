@@ -141,7 +141,7 @@ namespace OWLSharp
         /// <summary>
         /// Represents an enumeration for the set of built-in standard reasoner rules (RDFS, OWL, OWL2)
         /// </summary>
-        public enum OWLReasonerStandardRules
+        public enum OWLReasonerRules
         {
             /// <summary>
             /// This OWL-DL rule targets class model knowledge (T-BOX) to reason over rdfs:subClassOf hierarchy
