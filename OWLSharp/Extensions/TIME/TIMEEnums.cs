@@ -166,7 +166,7 @@ namespace OWLSharp.Extensions.TIME
             /// <summary>
             /// Given temporal intervals I1, I2, I3: DURING(?I1,?I2) ^ EQUALS(?I2,?I3) -> DURING(?I1,?I3)
             /// </summary>
-            TIME_DuringEntailment = 3,
+            TIME_DuringEqualsEntailment = 3,
             /// <summary>
             /// Given temporal intervals I1, I2: STARTS(?I1,?I2) ^ FINISHES(?I1,?I2) -> EQUALS(?I1,?I2)
             /// </summary>

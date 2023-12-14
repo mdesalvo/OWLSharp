@@ -20,12 +20,12 @@ namespace OWLSharp.Extensions.TIME
     /// <summary>
     /// Given temporal intervals I1, I2 and I3: DURING(?I1,?I2) ^ EQUALS(?I2,?I3) -> DURING(?I1,?I3)
     /// </summary>
-    internal static class TIMEDuringEntailmentRule
+    internal static class TIMEDuringEqualsEntailmentRule
     {
         internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
         {
             SWRLRule swrlRule = new SWRLRule(
-                nameof(TIMEDuringEntailmentRule),
+                nameof(TIMEDuringEqualsEntailmentRule),
                 "DURING(?I1,?I2) ^ EQUALS(?I2,?I3) -> DURING(?I1,?I3)",
                 new SWRLAntecedent()
                     .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I1")))

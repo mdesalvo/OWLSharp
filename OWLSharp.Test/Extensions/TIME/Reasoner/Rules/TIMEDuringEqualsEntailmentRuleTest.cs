@@ -20,11 +20,11 @@ using RDFSharp.Model;
 namespace OWLSharp.Extensions.TIME.Test
 {
     [TestClass]
-    public class TIMEDuringEntailmentRuleTest
+    public class TIMEDuringEqualsEntailmentRuleTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldExecuteDuringEntailment()
+        public void ShouldExecuteDuringEqualsEntailment()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.InitializeTIME();
@@ -33,14 +33,14 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareTimeInterval(new RDFResource("ex:Interval3"), new TIMEInterval(new RDFResource("ex:Interval3Name")));
             ontology.DeclareTimeIntervalRelation(new TIMEInterval(new RDFResource("ex:Interval1Name")), new TIMEInterval(new RDFResource("ex:Interval2Name")), TIMEEnums.TIMEIntervalRelation.During);
             ontology.DeclareTimeIntervalRelation(new TIMEInterval(new RDFResource("ex:Interval2Name")), new TIMEInterval(new RDFResource("ex:Interval3Name")), TIMEEnums.TIMEIntervalRelation.Equals);
-            OWLReasonerReport reasonerReport = TIMEDuringEntailmentRule.ExecuteRule(ontology);
+            OWLReasonerReport reasonerReport = TIMEDuringEqualsEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(reasonerReport);
             Assert.IsTrue(reasonerReport.EvidencesCount == 1);
         }
 
         [TestMethod]
-        public void ShouldExecuteDuringEntailmentViaReasoner()
+        public void ShouldExecuteDuringEqualsEntailmentViaReasoner()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.InitializeTIME();
@@ -50,7 +50,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareTimeIntervalRelation(new TIMEInterval(new RDFResource("ex:Interval1Name")), new TIMEInterval(new RDFResource("ex:Interval2Name")), TIMEEnums.TIMEIntervalRelation.During);
             ontology.DeclareTimeIntervalRelation(new TIMEInterval(new RDFResource("ex:Interval2Name")), new TIMEInterval(new RDFResource("ex:Interval3Name")), TIMEEnums.TIMEIntervalRelation.Equals);
 
-            OWLReasoner reasoner = new OWLReasoner().AddTIMERule(TIMEEnums.TIMEReasonerRules.TIME_DuringEntailment);
+            OWLReasoner reasoner = new OWLReasoner().AddTIMERule(TIMEEnums.TIMEReasonerRules.TIME_DuringEqualsEntailment);
             OWLReasonerReport reasonerReport = reasoner.ApplyToOntology(ontology);
 
             Assert.IsNotNull(reasonerReport);

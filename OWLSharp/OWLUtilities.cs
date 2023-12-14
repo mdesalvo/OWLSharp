@@ -272,19 +272,13 @@ namespace OWLSharp
             => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsInference;
 
         internal static RDFTriple SetInference(this RDFTriple triple)
-        { 
-            triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsInference);
-            return triple;
-        }
+            => triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsInference);
 
         internal static bool IsImport(this RDFTriple triple)
             => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsImport;
 
         internal static RDFTriple SetImport(this RDFTriple triple)
-        { 
-            triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsImport);
-            return triple;
-        }
+            => triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsImport);
         #endregion
     }
 }
