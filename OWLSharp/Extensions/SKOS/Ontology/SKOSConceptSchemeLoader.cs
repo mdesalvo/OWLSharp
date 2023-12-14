@@ -27,7 +27,7 @@ namespace OWLSharp.Extensions.SKOS
     {
         #region Methods
         /// <summary>
-        /// Prepares the given ontology for SKOS support, making it suitable for conceptual modeling
+        /// Prepares the given ontology for SKOS support, making it suitable for conceptual modeling and analysis
         /// </summary>
         public static void InitializeSKOS(this OWLOntology ontology)
         {

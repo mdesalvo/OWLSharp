@@ -25,7 +25,7 @@ namespace OWLSharp.Extensions.GEO
     {
         #region Methods
         /// <summary>
-        /// Prepares the given ontology for GeoSPARQL support, making it suitable for geospatial analysis
+        /// Prepares the given ontology for GeoSPARQL support, making it suitable for geospatial modeling and analysis
         /// </summary>
         public static void InitializeGEO(this OWLOntology ontology)
         {

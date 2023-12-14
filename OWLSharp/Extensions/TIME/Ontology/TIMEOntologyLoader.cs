@@ -27,7 +27,7 @@ namespace OWLSharp.Extensions.TIME
     {
         #region Methods
         /// <summary>
-        /// Prepares the given ontology for OWL-TIME support, making it suitable for temporal analysis
+        /// Prepares the given ontology for OWL-TIME support, making it suitable for temporal modeling and analysis
         /// </summary>
         public static void InitializeTIME(this OWLOntology ontology)
         {
