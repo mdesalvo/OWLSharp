@@ -18,21 +18,21 @@ using RDFSharp.Query;
 namespace OWLSharp.Extensions.TIME
 {
     /// <summary>
-    /// Given temporal intervals I1, I2 and I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
+    /// Given temporal intervals I1, I2 and I3: MEETS(?I1,?I2) ^ EQUALS(?I2,?I3) -> MEETS(?I1,?I3)
     /// </summary>
-    internal static class TIMEMeetsEntailmentRule
+    internal static class TIMEMeetsEqualsEntailmentRule
     {
         internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
         {
             SWRLRule swrlRule = new SWRLRule(
-                nameof(TIMEMeetsEntailmentRule),
-                "MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)",
+                nameof(TIMEMeetsEqualsEntailmentRule),
+                "MEETS(?I1,?I2) ^ EQUALS(?I2,?I3) -> MEETS(?I1,?I3)",
                 new SWRLAntecedent()
                     .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I1")))
                     .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I2")))
                     .AddAtom(new SWRLClassAtom(RDFVocabulary.TIME.INTERVAL, new RDFVariable("?I3")))
                     .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_MEETS, new RDFVariable("?I1"), new RDFVariable("?I2")))
-                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_STARTS, new RDFVariable("?I2"), new RDFVariable("?I3")))
+                    .AddAtom(new SWRLObjectPropertyAtom(RDFVocabulary.TIME.INTERVAL_EQUALS, new RDFVariable("?I2"), new RDFVariable("?I3")))
                     .AddBuiltIn(new SWRLNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I2")))
                     .AddBuiltIn(new SWRLNotEqualBuiltIn(new RDFVariable("?I1"), new RDFVariable("?I3")))
                     .AddBuiltIn(new SWRLNotEqualBuiltIn(new RDFVariable("?I2"), new RDFVariable("?I3"))),

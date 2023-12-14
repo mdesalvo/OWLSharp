@@ -168,10 +168,13 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_EqualsEntailment = 3,
             /// <summary>
+            /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ EQUALS(?I2,?I3) -> MEETS(?I1,?I3)
+            /// </summary>
+            TIME_MeetsEqualsEntailment = 4,
+            /// <summary>
             /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
             /// </summary>
-            TIME_MeetsEntailment = 4
-            
+            TIME_MeetsStartsEntailment = 5            
         }
     }
 }
