@@ -11,7 +11,6 @@
    limitations under the License.
 */
 
-using OWLSharp.Extensions.SWRL;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
