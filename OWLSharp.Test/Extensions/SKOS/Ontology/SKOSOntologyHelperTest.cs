@@ -24,7 +24,7 @@ namespace OWLSharp.Extensions.SKOS.Test
     [TestClass]
     public class SKOSOntologyHelperTest
     {
-        #region Tests
+        #region Tests (Faceter)
         [TestMethod]
         public void ShouldCreateOntology()
         {
@@ -69,38 +69,127 @@ namespace OWLSharp.Extensions.SKOS.Test
             Assert.IsTrue(l == 0);
         }
 
-        /*
+        [TestMethod]
+        public void ShouldDeclareConceptScheme()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConceptScheme(new RDFResource("ex:conceptScheme"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:conceptScheme"), RDFVocabulary.SKOS.CONCEPT_SCHEME));
+
+            //Test counters and enumerators
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 0);
+            int i1 = 0;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
+            while (conceptsEnumerator.MoveNext()) i1++;
+            Assert.IsTrue(i1 == 0);
+
+            Assert.IsTrue(ontology.GetCollectionsCount() == 0);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 0);
+
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 0);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 0);
+
+            Assert.IsTrue(ontology.GetLabelsCount() == 0);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 0);
+        }
+
         [TestMethod]
         public void ShouldDeclareConcept()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareConcept(new RDFResource("ex:concept"));
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 2);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:concept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:concept"), RDFVocabulary.SKOS.CONCEPT));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:concept")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:concept"), RDFVocabulary.SKOS.CONCEPT));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
 
             //Test counters and enumerators
-            Assert.IsTrue(ontology.ConceptsCount == 1);
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 1);
             int i1 = 0;
-            IEnumerator<RDFResource> conceptsEnumerator = ontology.ConceptsEnumerator;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
             while (conceptsEnumerator.MoveNext()) i1++;
             Assert.IsTrue(i1 == 1);
 
-            int i2 = 0;
-            foreach (RDFResource skosConcept in ontology) i2++;
-            Assert.IsTrue(i2 == 1);
+            Assert.IsTrue(ontology.GetCollectionsCount() == 0);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 0);
+
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 0);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 0);
+
+            Assert.IsTrue(ontology.GetLabelsCount() == 0);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 0);
         }
+        #endregion
+
+        #region Tests (Declarer)
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptSchemeBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareConceptScheme(new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringConceptBecauseNull()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareConcept(null));
+        public void ShouldThrowExceptionOnDeclaringConceptSchemeBecauseNullConceptScheme()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareConceptScheme(null));
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme")));
 
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptBecauseNullConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareConcept(null, new RDFResource("ex:conceptScheme")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptBecauseNullConceptScheme()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareConcept(new RDFResource("ex:concept"), null));
+        #endregion
+
+        #region Tests (Analyzer)
+        
+
+        /*
         [TestMethod]
         public void ShouldDeclareCollection()
         {

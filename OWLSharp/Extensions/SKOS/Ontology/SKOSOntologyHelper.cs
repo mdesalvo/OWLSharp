@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.SKOS
     /// </summary>
     public static class SKOSOntologyHelper
     {
-        #region Facets
+        #region Faceter
         /// <summary>
         /// Count of the SKOS concept schemes
         /// </summary>
