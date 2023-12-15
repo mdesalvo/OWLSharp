@@ -204,33 +204,37 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_EqualsEntailment = 13,
             /// <summary>
+            /// Given temporal intervals I1, I2: STARTEDBY(?I1,?I2) ^ FINISHEDBY(?I1,?I2) -> EQUALS(?I1,?I2)
+            /// </summary>
+            TIME_EqualsInverseEntailment = 14,
+            /// <summary>
             /// Given temporal intervals I1, I2: EQUALS(?I1,?I2) ^ EQUALS(?I2,?I3) -> EQUALS(?I1,?I3)
             /// </summary>
-            TIME_EqualsTransitiveEntailment = 14,
+            TIME_EqualsTransitiveEntailment = 15,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: FINISHEDBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> FINISHEDBY(?I1,?I3)
             /// </summary>
-            TIME_FinishedByEqualsEntailment = 15,
+            TIME_FinishedByEqualsEntailment = 16,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: FINISHES(?I1,?I2) ^ EQUALS(?I2,?I3) -> FINISHES(?I1,?I3)
             /// </summary>
-            TIME_FinishesEqualsEntailment = 16,
+            TIME_FinishesEqualsEntailment = 17,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ EQUALS(?I2,?I3) -> MEETS(?I1,?I3)
             /// </summary>
-            TIME_MeetsEqualsEntailment = 17,
+            TIME_MeetsEqualsEntailment = 18,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
             /// </summary>
-            TIME_MeetsStartsEntailment = 18,
+            TIME_MeetsStartsEntailment = 19,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTS(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTS(?I1,?I3)
             /// </summary>
-            TIME_StartsEqualsEntailment = 19,
+            TIME_StartsEqualsEntailment = 20,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTEDBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTEDBY(?I1,?I3)
             /// </summary>
-            TIME_StartedByEqualsEntailment = 20
+            TIME_StartedByEqualsEntailment = 21
         }
     }
 }
