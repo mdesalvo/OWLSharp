@@ -16,17 +16,18 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
+using System;
 
 namespace OWLSharp.Extensions.SKOS.Test
 {
     [TestClass]
-    public class SKOSConceptSchemeLoaderTest
+    public class SKOSOntologyLoaderTest
     {
         #region Tests
         [TestMethod]
         public void ShouldLoadFromGraph()
         {
-            RDFGraph graph = new RDFGraph();
+            RDFGraph graph = new RDFGraph().SetContext(new Uri("ex:ont"));
 
             //OWL knowledge
             graph.AddTriple(new RDFTriple(new RDFResource("ex:class1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
@@ -72,48 +73,46 @@ namespace OWLSharp.Extensions.SKOS.Test
             graph.AddTriple(new RDFTriple(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label1")));
 
             //LOAD OWL+SKOS
-            SKOSConceptScheme conceptScheme = SKOSConceptSchemeLoader.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableSKOSSupport=true });
+            OWLOntology ontology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableSKOSSupport=true });
 
             //Test persistence of OWL+SKOS knowledge
-            Assert.IsNotNull(conceptScheme);
-            Assert.IsNotNull(conceptScheme.Ontology);
-            Assert.IsTrue(conceptScheme.Ontology.URI.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
-            Assert.IsTrue(conceptScheme.Ontology.Model.ClassModel.ClassesCount == 9);
-            Assert.IsTrue(conceptScheme.Ontology.Model.PropertyModel.PropertiesCount == 35);
-            Assert.IsTrue(conceptScheme.Ontology.Data.IndividualsCount == 8);
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:objprop1"), new RDFResource("ex:indiv1")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:dtprop1"), new RDFPlainLiteral("indiv1")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:indiv1"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("this is an individual")));
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(ontology.URI.Equals(new Uri("ex:ont")));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 9);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 35);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 8);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:objprop1"), new RDFResource("ex:indiv1")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:dtprop1"), new RDFPlainLiteral("indiv1")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:indiv1"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("this is an individual")));
 
             //Test persistence of user sentences
-            Assert.IsTrue(conceptScheme.Equals(new RDFResource("ex:conceptScheme")));
-            Assert.IsTrue(conceptScheme.ConceptsCount == 2);
-            Assert.IsTrue(conceptScheme.CollectionsCount == 2);
-            Assert.IsTrue(conceptScheme.OrderedCollectionsCount == 1);
-            Assert.IsTrue(conceptScheme.LabelsCount == 1);
-            Assert.IsTrue(conceptScheme.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test concept")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept1", "en-US")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("collection1")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:orderedCollection")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.ABoxGraph[new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].TriplesCount > 0);
-            Assert.IsTrue(conceptScheme.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3"), null].TriplesCount > 0);
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label1")));
-            Assert.IsTrue(conceptScheme.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label1")));
+            Assert.IsTrue(ontology.Equals(new RDFResource("ex:ont")));
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            Assert.IsTrue(ontology.GetConceptsCount() == 2);
+            Assert.IsTrue(ontology.GetCollectionsCount() == 2);
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 1);
+            Assert.IsTrue(ontology.GetLabelsCount() == 1);
+            Assert.IsTrue(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test concept")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept1", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("collection1")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:orderedCollection")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label1")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label1")));
 
             //Test reconstruction of nested collections
-            Assert.IsTrue(conceptScheme.GetCollectionMembers(new RDFResource("ex:collection1")).Count == 3);
-            Assert.IsTrue(conceptScheme.GetCollectionMembers(new RDFResource("ex:collection2")).Count == 2);
-            Assert.IsTrue(conceptScheme.GetOrderedCollectionMembers(new RDFResource("ex:orderedCollection")).Count == 1);
+            Assert.IsTrue(ontology.GetCollectionMembers(new RDFResource("ex:collection1")).Count == 3);
+            Assert.IsTrue(ontology.GetCollectionMembers(new RDFResource("ex:collection2")).Count == 2);
+            Assert.IsTrue(ontology.GetOrderedCollectionMembers(new RDFResource("ex:orderedCollection")).Count == 1);
         }
         #endregion
     }

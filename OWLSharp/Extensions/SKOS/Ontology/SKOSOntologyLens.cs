@@ -21,9 +21,9 @@ using System.Threading.Tasks;
 namespace OWLSharp.Extensions.SKOS
 {
     /// <summary>
-    /// SKOSConceptSchemeLens represents a magnifying glass on the knowledge available for a SKOS concept within a SKOS concept scheme
+    /// SKOSOntologyLens represents a magnifying glass on the knowledge available for a SKOS concept within an ontology
     /// </summary>
-    public class SKOSConceptSchemeLens
+    public class SKOSOntologyLens
     {
         #region Properties
         /// <summary>
@@ -32,45 +32,45 @@ namespace OWLSharp.Extensions.SKOS
         public RDFResource Concept { get; internal set; }
 
         /// <summary>
-        /// Scheme observed by the lens
+        /// Ontology observed by the lens
         /// </summary>
-        public SKOSConceptScheme Scheme { get; internal set; }
+        public OWLOntology Ontology { get; internal set; }
         #endregion
 
         #region Ctors
         /// <summary>
         /// Builds a concept scheme lens for the given skos:Concept instance on the given skos:ConceptScheme
         /// </summary>
-        public SKOSConceptSchemeLens(RDFResource skosConcept, SKOSConceptScheme skosConceptScheme)
+        public SKOSOntologyLens(RDFResource skosConcept, OWLOntology ontology)
         {
             if (skosConcept == null)
-                throw new OWLException("Cannot create data lens because given \"skosConcept\" parameter is null");
-            if (skosConceptScheme == null)
-                throw new OWLException("Cannot create data lens because given \"skosConceptScheme\" parameter is null");
+                throw new OWLException("Cannot create SKOS lens because given \"skosConcept\" parameter is null");
+            if (ontology == null)
+                throw new OWLException("Cannot create SKOS lens because given \"ontology\" parameter is null");
 
             Concept = skosConcept;
-            Scheme = skosConceptScheme;
+            Ontology = ontology;
         }
         #endregion
 
         #region Methods
         /// <summary>
-        /// Checks if the lens concept is the top concept of the lens scheme
+        /// Checks if the lens concept is the top concept of the given concept scheme
         /// </summary>
-        public bool IsTopConcept()
-            => Scheme.CheckHasTopConcept(Concept);
+        public bool IsTopConceptOf(RDFResource skosConceptScheme)
+            => Ontology.CheckHasTopConcept(skosConceptScheme, Concept);
 
         /// <summary>
-        /// Asynchronously checks if the lens concept is the top concept of the lens scheme
+        /// Asynchronously checks if the lens concept is the top concept of the given concept scheme
         /// </summary>
-        public Task<bool> IsTopConceptAsync()
-            => Task.Run(() => IsTopConcept());
+        public Task<bool> IsTopConceptOfAsync(RDFResource skosConceptScheme)
+            => Task.Run(() => IsTopConceptOf(skosConceptScheme));
 
         /// <summary>
         /// Enlists the concept which are related with the lens concept by skos:[broader|broaderTransitive]
         /// </summary>
         public List<RDFResource> BroaderConcepts()
-            => Scheme.GetBroaderConcepts(Concept);
+            => Ontology.GetBroaderConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:[broader|broaderTransitive]
@@ -82,7 +82,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concept which are related with the lens concept by skos:broadMatch
         /// </summary>
         public List<RDFResource> BroadMatchConcepts()
-            => Scheme.GetBroadMatchConcepts(Concept);
+            => Ontology.GetBroadMatchConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:broadMatch
@@ -94,7 +94,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concept which are related with the lens concept by skos:[narrower|narrowerTransitive]
         /// </summary>
         public List<RDFResource> NarrowerConcepts()
-            => Scheme.GetNarrowerConcepts(Concept);
+            => Ontology.GetNarrowerConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:[broader|broaderTransitive]
@@ -106,7 +106,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concept which are related with the lens concept by skos:narrowMatch
         /// </summary>
         public List<RDFResource> NarrowMatchConcepts()
-            => Scheme.GetNarrowMatchConcepts(Concept);
+            => Ontology.GetNarrowMatchConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:narrowMatch
@@ -118,7 +118,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concept which are related with the lens concept by skos:closeMatch
         /// </summary>
         public List<RDFResource> CloseMatchConcepts()
-            => Scheme.GetCloseMatchConcepts(Concept);
+            => Ontology.GetCloseMatchConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:closeMatch
@@ -130,7 +130,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concept which are related with the lens concept by skos:exactMatch
         /// </summary>
         public List<RDFResource> ExactMatchConcepts()
-            => Scheme.GetExactMatchConcepts(Concept);
+            => Ontology.GetExactMatchConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:exactMatch
@@ -142,7 +142,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concept which are related with the lens concept by skos:related
         /// </summary>
         public List<RDFResource> RelatedConcepts()
-            => Scheme.GetRelatedConcepts(Concept);
+            => Ontology.GetRelatedConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:related
@@ -154,7 +154,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concept which are related with the lens concept by skos:relatedMatch
         /// </summary>
         public List<RDFResource> RelatedMatchConcepts()
-            => Scheme.GetRelatedMatchConcepts(Concept);
+            => Ontology.GetRelatedMatchConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concept which are related with the lens concept by skos:relatedMatch
@@ -166,7 +166,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concepts which are related with the lens concept by skos:mappingRelation
         /// </summary>
         public List<RDFResource> MappingRelatedConcepts()
-            => Scheme.GetMappingRelatedConcepts(Concept);
+            => Ontology.GetMappingRelatedConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concepts which are related with the lens concept by skos:mappingRelation
@@ -178,7 +178,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the concepts which are related with the lens concept by skos:semanticRelation
         /// </summary>
         public List<RDFResource> SemanticRelatedConcepts()
-            => Scheme.GetSemanticRelatedConcepts(Concept);
+            => Ontology.GetSemanticRelatedConcepts(Concept);
 
         /// <summary>
         /// Asynchronously enlists the concepts which are related with the lens concept by skos:semanticRelation
@@ -190,7 +190,7 @@ namespace OWLSharp.Extensions.SKOS
         /// Enlists the skos:notation attributions of the lens concept
         /// </summary>
         public List<RDFLiteral> Notations()
-            => Scheme.GetConceptNotations(Concept);
+            => Ontology.GetConceptNotations(Concept);
 
         /// <summary>
         /// Asynchronously enlists the skos:notation attributions of the lens concept
@@ -206,15 +206,15 @@ namespace OWLSharp.Extensions.SKOS
             List<(RDFResource, RDFResource)> result = new List<(RDFResource, RDFResource)>();
 
             //skosxl:PrefLabel
-            foreach (RDFTriple prefLabelTriple in Scheme.Ontology.Data.ABoxGraph[Concept, RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, null, null])
+            foreach (RDFTriple prefLabelTriple in Ontology.Data.ABoxGraph[Concept, RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, null, null])
                 result.Add((RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, (RDFResource)prefLabelTriple.Object));
 
             //skosxl:AltLabel
-            foreach (RDFTriple altLabelTriple in Scheme.Ontology.Data.ABoxGraph[Concept, RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, null, null])
+            foreach (RDFTriple altLabelTriple in Ontology.Data.ABoxGraph[Concept, RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, null, null])
                 result.Add((RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, (RDFResource)altLabelTriple.Object));
 
             //skosxl:HiddenLabel
-            foreach (RDFTriple hiddenLabelTriple in Scheme.Ontology.Data.ABoxGraph[Concept, RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, null, null])
+            foreach (RDFTriple hiddenLabelTriple in Ontology.Data.ABoxGraph[Concept, RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, null, null])
                 result.Add((RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, (RDFResource)hiddenLabelTriple.Object));
 
             return result;
@@ -234,15 +234,15 @@ namespace OWLSharp.Extensions.SKOS
             List<(RDFResource, RDFLiteral)> result = new List<(RDFResource, RDFLiteral)>();
 
             //skos:PrefLabel
-            foreach (RDFTriple prefLabelTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.PREF_LABEL, null, null])
+            foreach (RDFTriple prefLabelTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.PREF_LABEL, null, null])
                 result.Add((RDFVocabulary.SKOS.PREF_LABEL, (RDFLiteral)prefLabelTriple.Object));
 
             //skos:AltLabel
-            foreach (RDFTriple altLabelTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.ALT_LABEL, null, null])
+            foreach (RDFTriple altLabelTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.ALT_LABEL, null, null])
                 result.Add((RDFVocabulary.SKOS.ALT_LABEL, (RDFLiteral)altLabelTriple.Object));
 
             //skos:HiddenLabel
-            foreach (RDFTriple hiddenLabelTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.HIDDEN_LABEL, null, null])
+            foreach (RDFTriple hiddenLabelTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.HIDDEN_LABEL, null, null])
                 result.Add((RDFVocabulary.SKOS.HIDDEN_LABEL, (RDFLiteral)hiddenLabelTriple.Object));
 
             return result;
@@ -262,31 +262,31 @@ namespace OWLSharp.Extensions.SKOS
             List<(RDFResource, RDFLiteral)> result = new List<(RDFResource, RDFLiteral)>();
 
             //skos:Note
-            foreach (RDFTriple noteTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.NOTE, null, null])
+            foreach (RDFTriple noteTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.NOTE, null, null])
                 result.Add((RDFVocabulary.SKOS.NOTE, (RDFLiteral)noteTriple.Object));
 
             //skos:ChangeNote
-            foreach (RDFTriple changeNoteTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.CHANGE_NOTE, null, null])
+            foreach (RDFTriple changeNoteTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.CHANGE_NOTE, null, null])
                 result.Add((RDFVocabulary.SKOS.CHANGE_NOTE, (RDFLiteral)changeNoteTriple.Object));
 
             //skos:EditorialNote
-            foreach (RDFTriple editorialNoteTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.EDITORIAL_NOTE, null, null])
+            foreach (RDFTriple editorialNoteTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.EDITORIAL_NOTE, null, null])
                 result.Add((RDFVocabulary.SKOS.EDITORIAL_NOTE, (RDFLiteral)editorialNoteTriple.Object));
 
             //skos:HistoryNote
-            foreach (RDFTriple historyNoteTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.HISTORY_NOTE, null, null])
+            foreach (RDFTriple historyNoteTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.HISTORY_NOTE, null, null])
                 result.Add((RDFVocabulary.SKOS.HISTORY_NOTE, (RDFLiteral)historyNoteTriple.Object));
 
             //skos:ScopeNote
-            foreach (RDFTriple scopeNoteTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.SCOPE_NOTE, null, null])
+            foreach (RDFTriple scopeNoteTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.SCOPE_NOTE, null, null])
                 result.Add((RDFVocabulary.SKOS.SCOPE_NOTE, (RDFLiteral)scopeNoteTriple.Object));
 
             //skos:Definition
-            foreach (RDFTriple definitionTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.DEFINITION, null, null])
+            foreach (RDFTriple definitionTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.DEFINITION, null, null])
                 result.Add((RDFVocabulary.SKOS.DEFINITION, (RDFLiteral)definitionTriple.Object));
 
             //skos:Example
-            foreach (RDFTriple exampleTriple in Scheme.Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.EXAMPLE, null, null])
+            foreach (RDFTriple exampleTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.EXAMPLE, null, null])
                 result.Add((RDFVocabulary.SKOS.EXAMPLE, (RDFLiteral)exampleTriple.Object));
 
             return result;

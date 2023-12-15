@@ -16,7 +16,6 @@
 
 using RDFSharp.Model;
 using System.Collections.Generic;
-using System.Data.Common;
 
 namespace OWLSharp.Extensions.TIME
 {
@@ -33,7 +32,7 @@ namespace OWLSharp.Extensions.TIME
         {
             #region Guards
             if (ontology == null)
-                throw new OWLException("Cannot initialize temporal ontology because given \"ontology\" parameter is null");
+                throw new OWLException("Cannot initialize TIME ontology because given \"ontology\" parameter is null");
             #endregion
 
             ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.TIME.BASE_URI));

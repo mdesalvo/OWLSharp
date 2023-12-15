@@ -31,7 +31,7 @@ namespace OWLSharp.Extensions.GEO
         {
             #region Guards
             if (ontology == null)
-                throw new OWLException("Cannot initialize geospatial ontology because given \"ontology\" parameter is null");
+                throw new OWLException("Cannot initialize GEO ontology because given \"ontology\" parameter is null");
             #endregion
 
             ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.GEOSPARQL.BASE_URI));

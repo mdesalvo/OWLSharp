@@ -73,13 +73,13 @@ namespace OWLSharp.Extensions.TIME
             Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.SYSTEM, this); //inference
 
             //Add knowledge to the A-BOX (begin)
-            Ontology.DeclareTimeInstantInternal(eraBeginning);
+            Ontology.DeclareInstantInternal(eraBeginning);
             Ontology.Data.DeclareIndividualType(eraBeginning, RDFVocabulary.TIME.THORS.ERA_BOUNDARY);
             Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.BEGIN, eraBeginning);
             Ontology.Data.DeclareObjectAssertion(eraBeginning, RDFVocabulary.TIME.THORS.NEXT_ERA, era); //inference
 
             //Add knowledge to the A-BOX (end)
-            Ontology.DeclareTimeInstantInternal(eraEnd);
+            Ontology.DeclareInstantInternal(eraEnd);
             Ontology.Data.DeclareIndividualType(eraEnd, RDFVocabulary.TIME.THORS.ERA_BOUNDARY);
             Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.END, eraEnd);
             Ontology.Data.DeclareObjectAssertion(eraEnd, RDFVocabulary.TIME.THORS.PREVIOUS_ERA, era); //inference
@@ -118,7 +118,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX (referencePoint)
-            Ontology.DeclareTimeInstantInternal(referencePoint);
+            Ontology.DeclareInstantInternal(referencePoint);
             Ontology.Data.DeclareIndividualType(referencePoint, RDFVocabulary.TIME.THORS.ERA_BOUNDARY);
             Ontology.Data.DeclareObjectAssertion(this, RDFVocabulary.TIME.THORS.REFERENCE_POINT, referencePoint);
 
@@ -304,7 +304,7 @@ namespace OWLSharp.Extensions.TIME
                                              ?.FirstOrDefault()
                                              ?.Object as RDFResource;
             if (eraBeginBoundary != null && CheckHasEraBoundary(eraBeginBoundary))
-                eraBeginBoundaryCoordinate = Ontology.GetInstantCoordinate(eraBeginBoundary, calendarTRS);
+                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfInstant(eraBeginBoundary, calendarTRS);
 
             //Get end boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraEndBoundaryCoordinate = null;
@@ -313,7 +313,7 @@ namespace OWLSharp.Extensions.TIME
                                            ?.FirstOrDefault()
                                            ?.Object as RDFResource;
             if (eraEndBoundary != null && CheckHasEraBoundary(eraEndBoundary))
-                eraEndBoundaryCoordinate = Ontology.GetInstantCoordinate(eraEndBoundary, calendarTRS);
+                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfInstant(eraEndBoundary, calendarTRS);
 
             return (eraBeginBoundaryCoordinate, eraEndBoundaryCoordinate);
         }

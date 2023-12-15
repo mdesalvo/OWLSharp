@@ -31,7 +31,7 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal instant and makes it the temporal extent of the given A-BOX feature individual
         /// </summary>
-        public static OWLOntology DeclareTimeInstant(this OWLOntology timeOntology, RDFResource featureUri, TIMEInstant timeInstant)
+        public static OWLOntology DeclareInstant(this OWLOntology timeOntology, RDFResource featureUri, TIMEInstant timeInstant)
         {
             #region Guards
             if (featureUri == null)
@@ -43,11 +43,11 @@ namespace OWLSharp.Extensions.TIME
             //Add knowledge to the A-BOX
             timeOntology.Data.DeclareIndividual(featureUri);
             timeOntology.Data.DeclareObjectAssertion(featureUri, RDFVocabulary.TIME.HAS_TIME, timeInstant);
-            timeOntology.DeclareTimeInstantInternal(timeInstant);
+            timeOntology.DeclareInstantInternal(timeInstant);
 
             return timeOntology;
         }
-        internal static OWLOntology DeclareTimeInstantInternal(this OWLOntology timeOntology, TIMEInstant timeInstant)
+        internal static OWLOntology DeclareInstantInternal(this OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             //Add knowledge to the A-BOX
             timeOntology.Data.DeclareIndividual(timeInstant);
@@ -112,7 +112,7 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal relation between the given instants
         /// </summary>
-        public static OWLOntology DeclareTimeInstantRelation(this OWLOntology timeOntology, TIMEInstant aTimeInstant, TIMEInstant bTimeInstant, TIMEEnums.TIMEInstantRelation timeInstantRelation)
+        public static OWLOntology DeclareInstantRelation(this OWLOntology timeOntology, TIMEInstant aTimeInstant, TIMEInstant bTimeInstant, TIMEEnums.TIMEInstantRelation timeInstantRelation)
         {
             #region Guards
             if (aTimeInstant == null)
@@ -122,8 +122,8 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX
-            timeOntology.DeclareTimeInstantInternal(aTimeInstant);
-            timeOntology.DeclareTimeInstantInternal(bTimeInstant);
+            timeOntology.DeclareInstantInternal(aTimeInstant);
+            timeOntology.DeclareInstantInternal(bTimeInstant);
             switch (timeInstantRelation)
             {
                 case TIMEEnums.TIMEInstantRelation.After:
@@ -140,7 +140,7 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal interval and makes it the temporal extent of the given A-BOX feature individual
         /// </summary>
-        public static OWLOntology DeclareTimeInterval(this OWLOntology timeOntology, RDFResource featureUri, TIMEInterval timeInterval)
+        public static OWLOntology DeclareInterval(this OWLOntology timeOntology, RDFResource featureUri, TIMEInterval timeInterval)
         {
             #region Guards
             if (featureUri == null)
@@ -152,11 +152,11 @@ namespace OWLSharp.Extensions.TIME
             //Add knowledge to the A-BOX
             timeOntology.Data.DeclareIndividual(featureUri);
             timeOntology.Data.DeclareObjectAssertion(featureUri, RDFVocabulary.TIME.HAS_TIME, timeInterval);
-            timeOntology.DeclareTimeIntervalInternal(timeInterval);
+            timeOntology.DeclareIntervalInternal(timeInterval);
 
             return timeOntology;
         }
-        internal static OWLOntology DeclareTimeIntervalInternal(this OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static OWLOntology DeclareIntervalInternal(this OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //Add knowledge to the A-BOX
             timeOntology.Data.DeclareIndividual(timeInterval);
@@ -170,14 +170,14 @@ namespace OWLSharp.Extensions.TIME
             if (timeInterval.Beginning != null)
             {
                 timeOntology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_BEGINNING, timeInterval.Beginning);
-                timeOntology.DeclareTimeInstantInternal(timeInterval.Beginning);
+                timeOntology.DeclareInstantInternal(timeInterval.Beginning);
             }
 
             //Add knowledge to the A-BOX (time:hasEnd)
             if (timeInterval.End != null)
             {
                 timeOntology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_END, timeInterval.End);
-                timeOntology.DeclareTimeInstantInternal(timeInterval.End);
+                timeOntology.DeclareInstantInternal(timeInterval.End);
             }
 
             //Add knowledge to the A-BOX (time:hasDurationDescription)
@@ -219,7 +219,7 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Declares the existence of the given temporal relation between the given intervals
         /// </summary>
-        public static OWLOntology DeclareTimeIntervalRelation(this OWLOntology timeOntology, TIMEInterval aTimeInterval, TIMEInterval bTimeInterval, TIMEEnums.TIMEIntervalRelation timeIntervalRelation)
+        public static OWLOntology DeclareIntervalRelation(this OWLOntology timeOntology, TIMEInterval aTimeInterval, TIMEInterval bTimeInterval, TIMEEnums.TIMEIntervalRelation timeIntervalRelation)
         {
             #region Guards
             if (aTimeInterval == null)
@@ -229,8 +229,8 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX
-            timeOntology.DeclareTimeIntervalInternal(aTimeInterval);
-            timeOntology.DeclareTimeIntervalInternal(bTimeInterval);
+            timeOntology.DeclareIntervalInternal(aTimeInterval);
+            timeOntology.DeclareIntervalInternal(bTimeInterval);
             switch (timeIntervalRelation)
             {
                 case TIMEEnums.TIMEIntervalRelation.After:
@@ -316,9 +316,9 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant timeInstant = new TIMEInstant((RDFResource)hasTimeAssertion.Object);
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfTimeInstant(timeOntology, timeInstant);
-                    FillDescriptionOfTimeInstant(timeOntology, timeInstant);
-                    FillPositionOfTimeInstant(timeOntology, timeInstant);
+                    FillValueOfInstant(timeOntology, timeInstant);
+                    FillDescriptionOfInstant(timeOntology, timeInstant);
+                    FillPositionOfInstant(timeOntology, timeInstant);
 
                     //Collect the time instant into temporal extent of feature
                     temporalExtentOfFeature.Add(timeInstant);
@@ -331,11 +331,11 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInterval timeInterval = new TIMEInterval((RDFResource)hasTimeAssertion.Object);
 
                     //Analyze ontology to extract knowledge of the time interval
-                    FillValueOfTimeInterval(timeOntology, timeInterval);
-                    FillDescriptionOfTimeInterval(timeOntology, timeInterval);
-                    FillDurationOfTimeInterval(timeOntology, timeInterval);
-                    FillBeginningOfTimeInterval(timeOntology, timeInterval);
-                    FillEndOfTimeInterval(timeOntology, timeInterval);
+                    FillValueOfInterval(timeOntology, timeInterval);
+                    FillDescriptionOfInterval(timeOntology, timeInterval);
+                    FillDurationOfInterval(timeOntology, timeInterval);
+                    FillBeginningOfInterval(timeOntology, timeInterval);
+                    FillEndOfInterval(timeOntology, timeInterval);
 
                     //Collect the time interval into temporal extent of feature
                     temporalExtentOfFeature.Add(timeInterval);
@@ -344,7 +344,7 @@ namespace OWLSharp.Extensions.TIME
 
             return temporalExtentOfFeature;
         }
-        internal static void FillValueOfTimeInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillValueOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             //time:inXSDDateTimeStamp
             RDFPatternMember inXSDDateTimeStampLiteral = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, null, null]
@@ -393,7 +393,7 @@ namespace OWLSharp.Extensions.TIME
                  && inXSDGYearTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearTLiteral.Value, XmlDateTimeSerializationMode.Utc);
         }
-        internal static void FillDescriptionOfTimeInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillDescriptionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             #region Utilities
             RDFResource GetTRSOfInstantDescription(RDFResource dateTimeDescriptionURI)
@@ -560,7 +560,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInstant.Description = descriptionsOfTimeInstant.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillPositionOfTimeInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillPositionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
         {
             #region Utilities
             RDFResource GetTRSOfPosition(RDFResource temporalExtentURI)
@@ -637,7 +637,7 @@ namespace OWLSharp.Extensions.TIME
                             if (positionalUncertainty != null)
                             {
                                 TIMEInterval positionalUncertaintyInterval = new TIMEInterval(positionalUncertainty);
-                                FillDurationOfTimeInterval(timeOntology, positionalUncertaintyInterval);
+                                FillDurationOfInterval(timeOntology, positionalUncertaintyInterval);
                                 if (positionalUncertaintyInterval.Duration != null)
                                     timeInstantPosition.SetPositionalUncertainty(positionalUncertaintyInterval.Duration);
                             }
@@ -649,7 +649,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInstant.Position = positionsOfTimeInstant.FirstOrDefault(); //We currently support one position, but this may evolve in future
         }
-        internal static void FillValueOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillValueOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //time:hasXSDDuration
             RDFPatternMember hasXSDDurationLiteral = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_XSD_DURATION, null, null]
@@ -658,7 +658,7 @@ namespace OWLSharp.Extensions.TIME
                  && hasXSDDurationTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
                 timeInterval.TimeSpan = XmlConvert.ToTimeSpan(hasXSDDurationTLiteral.Value);
         }
-        internal static void FillDescriptionOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillDescriptionOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             #region Utilities
             RDFResource GetTRSOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -762,7 +762,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Description = descriptionsOfTimeInterval.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillDurationOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillDurationOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             #region Utilities
             RDFResource GetUnitTypeOfDuration(RDFResource temporalExtentURI)
@@ -812,7 +812,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Duration = durationsOfTimeInterval.FirstOrDefault(); //We currently support one duration, but this may evolve in future
         }
-        internal static void FillBeginningOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillBeginningOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //We need first to determine assertions having "time:hasBeginning" compatible predicates for the given time interval
             List<RDFResource> hasBeginningProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)
@@ -832,9 +832,9 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant beginningTimeInstant = new TIMEInstant((RDFResource)hasBeginningAssertion.Object);
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfTimeInstant(timeOntology, beginningTimeInstant);
-                    FillDescriptionOfTimeInstant(timeOntology, beginningTimeInstant);
-                    FillPositionOfTimeInstant(timeOntology, beginningTimeInstant);
+                    FillValueOfInstant(timeOntology, beginningTimeInstant);
+                    FillDescriptionOfInstant(timeOntology, beginningTimeInstant);
+                    FillPositionOfInstant(timeOntology, beginningTimeInstant);
 
                     //Collect the time instant into temporal extent of the time interval
                     beginningsOfTimeInterval.Add(beginningTimeInstant);
@@ -842,7 +842,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Beginning = beginningsOfTimeInterval.FirstOrDefault(); //We currently support one beginning instant, but this may evolve in future
         }
-        internal static void FillEndOfTimeInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillEndOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
         {
             //We need first to determine assertions having "time:hasEnd" compatible predicates for the given time interval
             List<RDFResource> hasEndProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_END)
@@ -862,9 +862,9 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant endTimeInstant = new TIMEInstant((RDFResource)hasEndAssertion.Object);
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfTimeInstant(timeOntology, endTimeInstant);
-                    FillDescriptionOfTimeInstant(timeOntology, endTimeInstant);
-                    FillPositionOfTimeInstant(timeOntology, endTimeInstant);
+                    FillValueOfInstant(timeOntology, endTimeInstant);
+                    FillDescriptionOfInstant(timeOntology, endTimeInstant);
+                    FillPositionOfInstant(timeOntology, endTimeInstant);
 
                     //Collect the time instant into temporal extent of the time interval
                     endsOfTimeInterval.Add(endTimeInstant);
@@ -914,7 +914,7 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Gets the temporal coordinate expressing the given instant, normalized according to the metrics of the given calendar TRS (Gregorian, if not provided)
         /// </summary>
-        public static TIMECoordinate GetInstantCoordinate(this OWLOntology timeOntology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetCoordinateOfInstant(this OWLOntology timeOntology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeInstantURI == null)
@@ -927,9 +927,9 @@ namespace OWLSharp.Extensions.TIME
             TIMEInstant timeInstant = new TIMEInstant(timeInstantURI);
 
             //Analyze ontology to extract knowledge of the time instant
-            FillValueOfTimeInstant(timeOntology, timeInstant);
-            FillDescriptionOfTimeInstant(timeOntology, timeInstant);
-            FillPositionOfTimeInstant(timeOntology, timeInstant);
+            FillValueOfInstant(timeOntology, timeInstant);
+            FillDescriptionOfInstant(timeOntology, timeInstant);
+            FillPositionOfInstant(timeOntology, timeInstant);
 
             //The time instant has been encoded in DateTime
             if (timeInstant.DateTime.HasValue)
@@ -974,7 +974,7 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Gets the temporal extent expressing the given interval, normalized according to the metrics of the given calendar TRS (Gregorian, if not provided)
         /// </summary>
-        public static TIMEExtent GetIntervalExtent(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMEExtent GetExtentOfInterval(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -987,11 +987,11 @@ namespace OWLSharp.Extensions.TIME
             TIMEInterval timeInterval = new TIMEInterval(timeIntervalURI);
 
             //Analyze ontology to extract knowledge of the time interval
-            FillValueOfTimeInterval(timeOntology, timeInterval);
-            FillDescriptionOfTimeInterval(timeOntology, timeInterval);
-            FillDurationOfTimeInterval(timeOntology, timeInterval);
-            FillBeginningOfTimeInterval(timeOntology, timeInterval);
-            FillEndOfTimeInterval(timeOntology, timeInterval);
+            FillValueOfInterval(timeOntology, timeInterval);
+            FillDescriptionOfInterval(timeOntology, timeInterval);
+            FillDurationOfInterval(timeOntology, timeInterval);
+            FillBeginningOfInterval(timeOntology, timeInterval);
+            FillEndOfInterval(timeOntology, timeInterval);
 
             //The time interval has been encoded in TimeSpan
             if (timeInterval.TimeSpan.HasValue)
@@ -1018,8 +1018,8 @@ namespace OWLSharp.Extensions.TIME
             //The time interval has been encoded in Beginning/End time instants
             if (timeInterval.Beginning != null && timeInterval.End != null)
             {
-                TIMECoordinate timeIntervalBeginning = GetInstantCoordinate(timeOntology, timeInterval.Beginning, calendarTRS);
-                TIMECoordinate timeIntervalEnd = GetInstantCoordinate(timeOntology, timeInterval.End, calendarTRS);
+                TIMECoordinate timeIntervalBeginning = GetCoordinateOfInstant(timeOntology, timeInterval.Beginning, calendarTRS);
+                TIMECoordinate timeIntervalEnd = GetCoordinateOfInstant(timeOntology, timeInterval.End, calendarTRS);
                 if (timeIntervalBeginning != null && timeIntervalEnd != null)
                     return TIMEConverter.CalculateExtent(timeIntervalBeginning, timeIntervalEnd, calendarTRS);
             }
@@ -1056,11 +1056,11 @@ namespace OWLSharp.Extensions.TIME
             TIMEInterval timeInterval = new TIMEInterval(timeIntervalURI);
 
             //Analyze ontology to extract knowledge of the time interval
-            FillBeginningOfTimeInterval(timeOntology, timeInterval);
+            FillBeginningOfInterval(timeOntology, timeInterval);
 
             //Get the coordinate of the time interval's beginning instant
             if (timeInterval.Beginning != null)
-                return GetInstantCoordinate(timeOntology, timeInterval.Beginning, calendarTRS);
+                return GetCoordinateOfInstant(timeOntology, timeInterval.Beginning, calendarTRS);
 
             #region Allen
             //There's no direct representation of the time interval's beginning instant:
@@ -1123,11 +1123,11 @@ namespace OWLSharp.Extensions.TIME
             TIMEInterval timeInterval = new TIMEInterval(timeIntervalURI);
 
             //Analyze ontology to extract knowledge of the time interval
-            FillEndOfTimeInterval(timeOntology, timeInterval);
+            FillEndOfInterval(timeOntology, timeInterval);
 
             //Get the coordinate of the time interval's end instant
             if (timeInterval.End != null)
-                return GetInstantCoordinate(timeOntology, timeInterval.End, calendarTRS);
+                return GetCoordinateOfInstant(timeOntology, timeInterval.End, calendarTRS);
 
             #region Allen
             //There's no direct representation of the time interval's end instant:
