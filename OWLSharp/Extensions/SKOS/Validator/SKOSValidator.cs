@@ -36,8 +36,8 @@ namespace OWLSharp.Extensions.SKOS
                 //Add SKOS rule to the validator
                 if (!validator.Rules.ContainsKey("SKOS"))
                     validator.Rules.Add("SKOS", new List<SKOSEnums.SKOSValidatorRules>());
-                if (!((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["TIME"]).Contains(skosRule))
-                    ((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["TIME"]).Add(skosRule);
+                if (!((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"]).Contains(skosRule))
+                    ((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"]).Add(skosRule);
             }
             return validator;
         }
