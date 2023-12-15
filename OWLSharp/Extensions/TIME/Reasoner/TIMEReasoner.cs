@@ -62,6 +62,9 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEReasonerRules.TIME_AfterEqualsEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_AfterEqualsEntailment.ToString()] = TIMEAfterEqualsEntailmentRule.ExecuteRule(ontology);
                             break;
+                        case TIMEEnums.TIMEReasonerRules.TIME_AfterFinishesEntailment:
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_AfterFinishesEntailment.ToString()] = TIMEAfterFinishesEntailmentRule.ExecuteRule(ontology);
+                            break;
                         case TIMEEnums.TIMEReasonerRules.TIME_AfterTransitiveEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_AfterTransitiveEntailment.ToString()] = TIMEAfterTransitiveEntailmentRule.ExecuteRule(ontology);
                             break;
