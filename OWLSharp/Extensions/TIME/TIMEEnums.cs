@@ -164,45 +164,49 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_BeforeStartsEntailment = 2,
             /// <summary>
+            /// Given temporal intervals I1, I2, I3: BEFORE(?I1,?I2) ^ BEFORE(?I3,?I1) -> BEFORE(?I3,?I2)
+            /// </summary>
+            TIME_BeforeTransitiveEntailment = 3,
+            /// <summary>
             /// Given temporal intervals I1, I2, I3: CONTAINS(?I1,?I2) ^ EQUALS(?I2,?I3) -> CONTAINS(?I1,?I3)
             /// </summary>
-            TIME_ContainsEqualsEntailment = 3,
+            TIME_ContainsEqualsEntailment = 4,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: CONTAINS(?I1,?I2) ^ CONTAINS(?I2,?I3) -> CONTAINS(?I1,?I3)
             /// </summary>
-            TIME_ContainsTransitiveEntailment = 4,
+            TIME_ContainsTransitiveEntailment = 5,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: DURING(?I1,?I2) ^ EQUALS(?I2,?I3) -> DURING(?I1,?I3)
             /// </summary>
-            TIME_DuringEqualsEntailment = 5,
+            TIME_DuringEqualsEntailment = 6,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: DURING(?I1,?I2) ^ DURING(?I2,?I3) -> DURING(?I1,?I3)
             /// </summary>
-            TIME_DuringTransitiveEntailment = 6,
+            TIME_DuringTransitiveEntailment = 7,
             /// <summary>
             /// Given temporal intervals I1, I2: STARTS(?I1,?I2) ^ FINISHES(?I1,?I2) -> EQUALS(?I1,?I2)
             /// </summary>
-            TIME_EqualsEntailment = 7,
+            TIME_EqualsEntailment = 8,
             /// <summary>
             /// Given temporal intervals I1, I2: EQUALS(?I1,?I2) ^ EQUALS(?I2,?I3) -> EQUALS(?I1,?I3)
             /// </summary>
-            TIME_EqualsTransitiveEntailment = 8,
+            TIME_EqualsTransitiveEntailment = 9,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: FINISHES(?I1,?I2) ^ EQUALS(?I2,?I3) -> FINISHES(?I1,?I3)
             /// </summary>
-            TIME_FinishesEqualsEntailment = 9,
+            TIME_FinishesEqualsEntailment = 10,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ EQUALS(?I2,?I3) -> MEETS(?I1,?I3)
             /// </summary>
-            TIME_MeetsEqualsEntailment = 10,
+            TIME_MeetsEqualsEntailment = 11,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
             /// </summary>
-            TIME_MeetsStartsEntailment = 11,
+            TIME_MeetsStartsEntailment = 12,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTS(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTS(?I1,?I3)
             /// </summary>
-            TIME_StartsEqualsEntailment = 12
+            TIME_StartsEqualsEntailment = 13
         }
     }
 }
