@@ -113,6 +113,9 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEReasonerRules.TIME_StartsEqualsEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_StartsEqualsEntailment.ToString()] = TIMEStartsEqualsEntailmentRule.ExecuteRule(ontology);
                             break;
+                        case TIMEEnums.TIMEReasonerRules.TIME_StartedByEqualsEntailment:
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_StartedByEqualsEntailment.ToString()] = TIMEStartedByEqualsEntailmentRule.ExecuteRule(ontology);
+                            break;
                     }
 
                     OWLEvents.RaiseInfo($"Completed OWL-TIME reasoner rule '{timeRule}': found {inferenceRegistry[timeRule.ToString()].EvidencesCount} evidences");
