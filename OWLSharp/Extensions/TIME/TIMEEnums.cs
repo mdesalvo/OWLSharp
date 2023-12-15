@@ -232,13 +232,21 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_MetByEqualsEntailment = 20,
             /// <summary>
+            /// Given temporal intervals I1, I2, I3: OVERLAPPEDBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> OVERLAPPEDBY(?I1,?I3)
+            /// </summary>
+            TIME_OverlappedByEqualsEntailment = 21,
+            /// <summary>
+            /// Given temporal intervals I1, I2, I3: OVERLAPS(?I1,?I2) ^ EQUALS(?I2,?I3) -> OVERLAPS(?I1,?I3)
+            /// </summary>
+            TIME_OverlapsEqualsEntailment = 22,
+            /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTS(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTS(?I1,?I3)
             /// </summary>
-            TIME_StartsEqualsEntailment = 21,
+            TIME_StartsEqualsEntailment = 23,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTEDBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTEDBY(?I1,?I3)
             /// </summary>
-            TIME_StartedByEqualsEntailment = 22
+            TIME_StartedByEqualsEntailment = 24
         }
     }
 }
