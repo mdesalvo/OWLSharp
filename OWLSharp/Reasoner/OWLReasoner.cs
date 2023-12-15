@@ -52,10 +52,10 @@ namespace OWLSharp
         /// <summary>
         /// Adds the given rule to the reasoner
         /// </summary>
-        public OWLReasoner AddRule(OWLEnums.OWLReasonerRules standardRule)
+        public OWLReasoner AddRule(OWLEnums.OWLReasonerRules reasonerRule)
         {
-            if (!((List<OWLEnums.OWLReasonerRules>)Rules["STD"]).Contains(standardRule))
-                ((List<OWLEnums.OWLReasonerRules>)Rules["STD"]).Add(standardRule);
+            if (!((List<OWLEnums.OWLReasonerRules>)Rules["STD"]).Contains(reasonerRule))
+                ((List<OWLEnums.OWLReasonerRules>)Rules["STD"]).Add(reasonerRule);
             return this;
         }
 
@@ -72,7 +72,7 @@ namespace OWLSharp
 
                 //Initialize inference registry
                 Dictionary<string, OWLReasonerReport> inferenceRegistry = new Dictionary<string, OWLReasonerReport>();
-                foreach (OWLEnums.OWLReasonerRules stdRule in ((List<OWLEnums.OWLReasonerRules>)Rules["STD"]))
+                foreach (OWLEnums.OWLReasonerRules stdRule in (List<OWLEnums.OWLReasonerRules>)Rules["STD"])
                     inferenceRegistry.Add(stdRule.ToString(), null);
 
                 //Execute rules
