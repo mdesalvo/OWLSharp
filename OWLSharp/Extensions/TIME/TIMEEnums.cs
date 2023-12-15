@@ -208,25 +208,29 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_EqualsTransitiveEntailment = 14,
             /// <summary>
+            /// Given temporal intervals I1, I2, I3: FINISHEDBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> FINISHEDBY(?I1,?I3)
+            /// </summary>
+            TIME_FinishedByEqualsEntailment = 15,
+            /// <summary>
             /// Given temporal intervals I1, I2, I3: FINISHES(?I1,?I2) ^ EQUALS(?I2,?I3) -> FINISHES(?I1,?I3)
             /// </summary>
-            TIME_FinishesEqualsEntailment = 15,
+            TIME_FinishesEqualsEntailment = 16,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ EQUALS(?I2,?I3) -> MEETS(?I1,?I3)
             /// </summary>
-            TIME_MeetsEqualsEntailment = 16,
+            TIME_MeetsEqualsEntailment = 17,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: MEETS(?I1,?I2) ^ STARTS(?I2,?I3) -> MEETS(?I1,?I3)
             /// </summary>
-            TIME_MeetsStartsEntailment = 17,
+            TIME_MeetsStartsEntailment = 18,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTS(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTS(?I1,?I3)
             /// </summary>
-            TIME_StartsEqualsEntailment = 18,
+            TIME_StartsEqualsEntailment = 19,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTEDBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTEDBY(?I1,?I3)
             /// </summary>
-            TIME_StartedByEqualsEntailment = 19
+            TIME_StartedByEqualsEntailment = 20
         }
     }
 }
