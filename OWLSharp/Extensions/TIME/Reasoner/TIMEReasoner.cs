@@ -116,6 +116,9 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEReasonerRules.TIME_MeetsStartsEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_MeetsStartsEntailment.ToString()] = TIMEMeetsStartsEntailmentRule.ExecuteRule(ontology);
                             break;
+                        case TIMEEnums.TIMEReasonerRules.TIME_MetByEqualsEntailment:
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_MetByEqualsEntailment.ToString()] = TIMEMetByEqualsEntailmentRule.ExecuteRule(ontology);
+                            break;
                         case TIMEEnums.TIMEReasonerRules.TIME_StartsEqualsEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.TIME_StartsEqualsEntailment.ToString()] = TIMEStartsEqualsEntailmentRule.ExecuteRule(ontology);
                             break;

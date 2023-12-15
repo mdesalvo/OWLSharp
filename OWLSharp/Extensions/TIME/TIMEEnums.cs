@@ -228,13 +228,17 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_MeetsStartsEntailment = 19,
             /// <summary>
+            /// Given temporal intervals I1, I2, I3: METBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> METBY(?I1,?I3)
+            /// </summary>
+            TIME_MetByEqualsEntailment = 20,
+            /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTS(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTS(?I1,?I3)
             /// </summary>
-            TIME_StartsEqualsEntailment = 20,
+            TIME_StartsEqualsEntailment = 21,
             /// <summary>
             /// Given temporal intervals I1, I2, I3: STARTEDBY(?I1,?I2) ^ EQUALS(?I2,?I3) -> STARTEDBY(?I1,?I3)
             /// </summary>
-            TIME_StartedByEqualsEntailment = 21
+            TIME_StartedByEqualsEntailment = 22
         }
     }
 }
