@@ -16,6 +16,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,7 +25,7 @@ namespace OWLSharp.Extensions.SKOS.Test
     [TestClass]
     public class SKOSOntologyHelperTest
     {
-        #region Tests (Faceter)
+        #region Tests (Declarer)
         [TestMethod]
         public void ShouldCreateOntology()
         {
@@ -32,7 +33,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.InitializeSKOS();
 
             //Test initialization of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.URI.Equals(new Uri("ex:ontology")));
             Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
             Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
             Assert.IsTrue(ontology.Data.IndividualsCount == 0);
@@ -77,7 +78,6 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareConceptScheme(new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
             Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
             Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
             Assert.IsTrue(ontology.Data.IndividualsCount == 1);
@@ -117,6 +117,14 @@ namespace OWLSharp.Extensions.SKOS.Test
         }
 
         [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptSchemeBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareConceptScheme(new RDFResource("ex:conceptScheme")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptSchemeBecauseNullConceptScheme()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareConceptScheme(null));
+
+        [TestMethod]
         public void ShouldDeclareConcept()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
@@ -124,7 +132,6 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
             Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
             Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
             Assert.IsTrue(ontology.Data.IndividualsCount == 2);
@@ -163,16 +170,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             while (labelsEnumerator.MoveNext()) l++;
             Assert.IsTrue(l == 0);
         }
-        #endregion
-
-        #region Tests (Declarer)
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringConceptSchemeBecauseNullOntology()
-            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareConceptScheme(new RDFResource("ex:conceptScheme")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringConceptSchemeBecauseNullConceptScheme()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareConceptScheme(null));
+        
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringConceptBecauseNullOntology()
             => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme")));
@@ -184,248 +182,393 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringConceptBecauseNullConceptScheme()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareConcept(new RDFResource("ex:concept"), null));
-        #endregion
-
-        #region Tests (Analyzer)
         
-
-        /*
         [TestMethod]
         public void ShouldDeclareCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
             ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:concept2") });
+                { new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
             Assert.IsTrue(ontology.CheckHasCollection(new RDFResource("ex:collection")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:collection")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:collection"), RDFVocabulary.SKOS.COLLECTION));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:collection")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:collection"), RDFVocabulary.SKOS.COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
 
             //Test counters and enumerators
-            Assert.IsTrue(ontology.ConceptsCount == 0);
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 0);
             int i1 = 0;
-            IEnumerator<RDFResource> conceptsEnumerator = ontology.ConceptsEnumerator;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
             while (conceptsEnumerator.MoveNext()) i1++;
             Assert.IsTrue(i1 == 0);
 
-            int i2 = 0;
-            foreach (RDFResource skosConcept in ontology) i2++;
-            Assert.IsTrue(i2 == 0);
+            Assert.IsTrue(ontology.GetCollectionsCount() == 1);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 1);
 
-            Assert.IsTrue(ontology.CollectionsCount == 1);
-            int j1 = 0;
-            IEnumerator<RDFResource> collectionsEnumerator = ontology.CollectionsEnumerator;
-            while (collectionsEnumerator.MoveNext()) j1++;
-            Assert.IsTrue(j1 == 1);
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 0);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 0);
+
+            Assert.IsTrue(ontology.GetLabelsCount() == 0);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 0);
         }
 
         [TestMethod]
         public void ShouldDeclareCollectionWithSubcollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
             ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") });
+                { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
             ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>()
-                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") });
+                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 3);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:collection1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:collection1"), RDFVocabulary.SKOS.COLLECTION));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:collection2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:collection2"), RDFVocabulary.SKOS.COLLECTION));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept3")));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:collection1")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:collection1"), RDFVocabulary.SKOS.COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:collection2")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:collection2"), RDFVocabulary.SKOS.COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept3")));
 
             //Test counters and enumerators
-            Assert.IsTrue(ontology.ConceptsCount == 0);
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 0);
             int i1 = 0;
-            IEnumerator<RDFResource> conceptsEnumerator = ontology.ConceptsEnumerator;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
             while (conceptsEnumerator.MoveNext()) i1++;
             Assert.IsTrue(i1 == 0);
 
-            int i2 = 0;
-            foreach (RDFResource skosConcept in ontology) i2++;
-            Assert.IsTrue(i2 == 0);
+            Assert.IsTrue(ontology.GetCollectionsCount() == 2);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 2);
 
-            Assert.IsTrue(ontology.CollectionsCount == 2);
-            int j1 = 0;
-            IEnumerator<RDFResource> collectionsEnumerator = ontology.CollectionsEnumerator;
-            while (collectionsEnumerator.MoveNext()) j1++;
-            Assert.IsTrue(j1 == 2);
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 0);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 0);
+
+            Assert.IsTrue(ontology.GetLabelsCount() == 0);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 0);
         }
 
         [TestMethod]
         public void ShouldDeclareCollectionWithSubOrderedcollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
             ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") });
+                { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
             ontology.DeclareOrderedCollection(new RDFResource("ex:collection2"), new List<RDFResource>()
-                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") });
+                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
             Assert.IsTrue(ontology.CheckHasCollection(new RDFResource("ex:collection1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:collection1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:collection1"), RDFVocabulary.SKOS.COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:collection1")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:collection1"), RDFVocabulary.SKOS.COLLECTION));
             Assert.IsTrue(ontology.CheckHasOrderedCollection(new RDFResource("ex:collection2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:collection2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:collection2"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].Any());
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept2"), null].Any());
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3"), null].Any());
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:collection2")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:collection2"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
+            Assert.IsTrue(ontology.Data.ABoxGraph[new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].Any());
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept2"), null].Any());
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3"), null].Any());
 
             //Test counters and enumerators
-            Assert.IsTrue(ontology.ConceptsCount == 0);
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 0);
             int i1 = 0;
-            IEnumerator<RDFResource> conceptsEnumerator = ontology.ConceptsEnumerator;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
             while (conceptsEnumerator.MoveNext()) i1++;
             Assert.IsTrue(i1 == 0);
 
-            int i2 = 0;
-            foreach (RDFResource skosConcept in ontology) i2++;
-            Assert.IsTrue(i2 == 0);
+            Assert.IsTrue(ontology.GetCollectionsCount() == 1);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 1);
 
-            Assert.IsTrue(ontology.CollectionsCount == 1);
-            int j1 = 0;
-            IEnumerator<RDFResource> collectionsEnumerator = ontology.CollectionsEnumerator;
-            while (collectionsEnumerator.MoveNext()) j1++;
-            Assert.IsTrue(j1 == 1);
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 1);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 1);
 
-            Assert.IsTrue(ontology.OrderedCollectionsCount == 1);
-            int j2 = 0;
-            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.OrderedCollectionsEnumerator;
-            while (orderedCollectionsEnumerator.MoveNext()) j2++;
-            Assert.IsTrue(j2 == 1);
+            Assert.IsTrue(ontology.GetLabelsCount() == 0);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 0);
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringCollectionBecauseNull()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareCollection(null, new List<RDFResource>() { new RDFResource("ex:concept") }));
+        public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareCollection(new RDFResource("ex:collection"), 
+                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullList()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareCollection(new RDFResource("ex:collection"), null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareCollection(new RDFResource("ex:collection"), 
+                    null, new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseEmptyList()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareCollection(new RDFResource("ex:collection"), 
+                    new List<RDFResource>(), new RDFResource("ex:conceptScheme")));
 
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullConceptScheme()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareCollection(new RDFResource("ex:collection"), 
+                    new List<RDFResource>() { new RDFResource("ex:concept") }, null));
+        
         [TestMethod]
         public void ShouldDeclareOrderedCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
             ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:concept2") });
+                { new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 2);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:orderedCollection")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].Any());
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept1"), null].Any());
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept2"), null].Any());
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:orderedCollection")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.ABoxGraph[new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].Any());
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept1"), null].Any());
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept2"), null].Any());
 
             //Test counters and enumerators
-            Assert.IsTrue(ontology.ConceptsCount == 0);
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 0);
             int i1 = 0;
-            IEnumerator<RDFResource> conceptsEnumerator = ontology.ConceptsEnumerator;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
             while (conceptsEnumerator.MoveNext()) i1++;
             Assert.IsTrue(i1 == 0);
 
-            int i2 = 0;
-            foreach (RDFResource skosConcept in ontology) i2++;
-            Assert.IsTrue(i2 == 0);
+            Assert.IsTrue(ontology.GetCollectionsCount() == 0);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 0);
 
-            Assert.IsTrue(ontology.OrderedCollectionsCount == 1);
-            int j1 = 0;
-            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.OrderedCollectionsEnumerator;
-            while (orderedCollectionsEnumerator.MoveNext()) j1++;
-            Assert.IsTrue(j1 == 1);
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 1);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 1);
+
+            Assert.IsTrue(ontology.GetLabelsCount() == 0);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 0);
         }
 
         [TestMethod]
         public void ShouldDeclareOrderedCollectionWithSubOrderedCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
             ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection1"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:orderedCollection2") });
+                { new RDFResource("ex:concept1"), new RDFResource("ex:orderedCollection2") }, new RDFResource("ex:conceptScheme"));
             ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection2"), new List<RDFResource>()
-                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") });
+                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 3);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:orderedCollection1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:orderedCollection1"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[new RDFResource("ex:orderedCollection1"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].Any());
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept1"), null].Any());
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:orderedCollection2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:orderedCollection2"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept2"), null].Any());
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3"), null].Any());
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:orderedCollection1")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:orderedCollection1"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.ABoxGraph[new RDFResource("ex:orderedCollection1"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].Any());
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept1"), null].Any());
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:orderedCollection2")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:orderedCollection2"), RDFVocabulary.SKOS.ORDERED_COLLECTION));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept2"), null].Any());
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3"), null].Any());
 
             //Test counters and enumerators
-            Assert.IsTrue(ontology.ConceptsCount == 0);
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 0);
             int i1 = 0;
-            IEnumerator<RDFResource> conceptsEnumerator = ontology.ConceptsEnumerator;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
             while (conceptsEnumerator.MoveNext()) i1++;
             Assert.IsTrue(i1 == 0);
 
-            int i2 = 0;
-            foreach (RDFResource skosConcept in ontology) i2++;
-            Assert.IsTrue(i2 == 0);
+            Assert.IsTrue(ontology.GetCollectionsCount() == 0);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 0);
 
-            Assert.IsTrue(ontology.OrderedCollectionsCount == 2);
-            int j1 = 0;
-            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.OrderedCollectionsEnumerator;
-            while (orderedCollectionsEnumerator.MoveNext()) j1++;
-            Assert.IsTrue(j1 == 2);
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 2);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 2);
+
+            Assert.IsTrue(ontology.GetLabelsCount() == 0);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 0);
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNull()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareOrderedCollection(null, new List<RDFResource>() { new RDFResource("ex:concept") }));
+        public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
+                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullList()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
+                    null, new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseEmptyList()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
+                    new List<RDFResource>(), new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullConceptScheme()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
+                    new List<RDFResource>() { new RDFResource("ex:concept") }, null));
+        
+        [TestMethod]
+        public void ShouldDeclareLabel()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareLabel(new RDFResource("ex:label"), new RDFResource("ex:conceptScheme"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LABEL));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme")));
+
+            //Test counters and enumerators
+            Assert.IsTrue(ontology.GetConceptSchemesCount() == 1);
+            int i0 = 0;
+            IEnumerator<RDFResource> conceptSchemesEnumerator = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemesEnumerator.MoveNext()) i0++;
+            Assert.IsTrue(i0 == 1);
+
+            Assert.IsTrue(ontology.GetConceptsCount() == 0);
+            int i1 = 0;
+            IEnumerator<RDFResource> conceptsEnumerator = ontology.GetConceptsEnumerator();
+            while (conceptsEnumerator.MoveNext()) i1++;
+            Assert.IsTrue(i1 == 0);
+
+            Assert.IsTrue(ontology.GetCollectionsCount() == 0);
+            int j = 0;
+            IEnumerator<RDFResource> collectionsEnumerator = ontology.GetCollectionsEnumerator();
+            while (collectionsEnumerator.MoveNext()) j++;
+            Assert.IsTrue(j == 0);
+
+            Assert.IsTrue(ontology.GetOrderedCollectionsCount() == 0);
+            int k = 0;
+            IEnumerator<RDFResource> orderedCollectionsEnumerator = ontology.GetOrderedCollectionsEnumerator();
+            while (orderedCollectionsEnumerator.MoveNext()) k++;
+            Assert.IsTrue(k == 0);
+
+            Assert.IsTrue(ontology.GetLabelsCount() == 1);
+            int l = 0;
+            IEnumerator<RDFResource> labelsEnumerator = ontology.GetLabelsEnumerator();
+            while (labelsEnumerator.MoveNext()) l++;
+            Assert.IsTrue(l == 1);
+        }
+        
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringLabelBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareLabel(new RDFResource("ex:label"), new RDFResource("ex:conceptScheme")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringLabelBecauseNullLabel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareLabel(null, new RDFResource("ex:conceptScheme")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringLabelBecauseNullConceptScheme()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareLabel(new RDFResource("ex:label"), null));
+        #endregion
+
+        #region Tests (Analyzer)
+        
+
+        /*
+        
+        
+       [TestMethod]
         public void ShouldCheckHasLabel()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
@@ -489,13 +632,13 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareLabel(new RDFResource("ex:label"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 2);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasIndividual(new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckIsIndividualOf(ontology.Ontology.Model, new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LABEL));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LABEL));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
 
             //Test counters and enumerators
             Assert.IsTrue(ontology.LabelsCount == 1);
@@ -518,11 +661,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Label!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Label!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Label!")));
         }
 
         [TestMethod]
@@ -548,11 +691,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
         }
 
         [TestMethod]
@@ -582,14 +725,14 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("etichetta", "it-IT"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("etichetta", "it-IT")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("etichetta", "it-IT")));
         }
 
         [TestMethod]
@@ -603,11 +746,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label2")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label2' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -623,11 +766,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label2", "en-US")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label", "en-US")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label2@EN-US' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -643,11 +786,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -663,12 +806,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -697,14 +840,14 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("etichetta", "it-IT"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("etichetta", "it-IT")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("etichetta", "it-IT")));
         }
 
         [TestMethod]
@@ -718,11 +861,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -738,12 +881,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -759,11 +902,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -779,12 +922,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -813,14 +956,14 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("etichetta", "it-IT"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("etichetta", "it-IT")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("etichetta", "it-IT")));
         }
 
         [TestMethod]
@@ -834,11 +977,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -854,12 +997,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -875,11 +1018,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -895,12 +1038,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and label 'ex:label' with value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -927,12 +1070,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareRelatedLabels(new RDFResource("ex:label1"), new RDFResource("ex:label2"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label2"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label1")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label2"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label1")));
         }
 
         [TestMethod]
@@ -957,11 +1100,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareLiteralFormOfLabel(new RDFResource("ex:label"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
 
         [TestMethod]
@@ -983,11 +1126,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:ontology!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:ontology"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:ontology!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:ontology"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:ontology!")));
         }
 
         [TestMethod]
@@ -1009,11 +1152,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.Annotate(RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:ontology"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:ontology"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
         }
 
         [TestMethod]
@@ -1035,11 +1178,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:concept!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:concept!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:concept!")));
         }
 
         [TestMethod]
@@ -1065,11 +1208,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
         }
 
         [TestMethod]
@@ -1095,11 +1238,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!")));
         }
 
         [TestMethod]
@@ -1125,11 +1268,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
         }
 
         [TestMethod]
@@ -1155,11 +1298,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
         }
 
         [TestMethod]
@@ -1185,11 +1328,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
         }
 
         [TestMethod]
@@ -1215,11 +1358,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DocumentConceptWithNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTE, new RDFPlainLiteral("This is a note!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTE, new RDFPlainLiteral("This is a note!")));
         }
 
         [TestMethod]
@@ -1237,11 +1380,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DocumentConceptWithChangeNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.CHANGE_NOTE, new RDFPlainLiteral("This is a note!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.CHANGE_NOTE, new RDFPlainLiteral("This is a note!")));
         }
 
         [TestMethod]
@@ -1259,11 +1402,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DocumentConceptWithEditorialNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EDITORIAL_NOTE, new RDFPlainLiteral("This is a note!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EDITORIAL_NOTE, new RDFPlainLiteral("This is a note!")));
         }
 
         [TestMethod]
@@ -1281,11 +1424,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DocumentConceptWithHistoryNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HISTORY_NOTE, new RDFPlainLiteral("This is a note!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HISTORY_NOTE, new RDFPlainLiteral("This is a note!")));
         }
 
         [TestMethod]
@@ -1303,11 +1446,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DocumentConceptWithScopeNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SCOPE_NOTE, new RDFPlainLiteral("This is a note!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SCOPE_NOTE, new RDFPlainLiteral("This is a note!")));
         }
 
         [TestMethod]
@@ -1325,11 +1468,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DocumentConceptWithExample(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EXAMPLE, new RDFPlainLiteral("This is a note!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EXAMPLE, new RDFPlainLiteral("This is a note!")));
         }
 
         [TestMethod]
@@ -1347,11 +1490,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DocumentConceptWithDefinition(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.DEFINITION, new RDFPlainLiteral("This is a note!")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.DEFINITION, new RDFPlainLiteral("This is a note!")));
         }
 
         [TestMethod]
@@ -1371,12 +1514,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareTopConcept(new RDFResource("ex:concept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:ontology"), RDFVocabulary.SKOS.HAS_TOP_CONCEPT, new RDFResource("ex:concept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.TOP_CONCEPT_OF, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:ontology"), RDFVocabulary.SKOS.HAS_TOP_CONCEPT, new RDFResource("ex:concept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.TOP_CONCEPT_OF, new RDFResource("ex:ontology")));
         }
 
         [TestMethod]
@@ -1390,11 +1533,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareSemanticRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SEMANTIC_RELATION, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SEMANTIC_RELATION, new RDFResource("ex:concept2")));
         }
 
         [TestMethod]
@@ -1412,11 +1555,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareMappingRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.MAPPING_RELATION, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.MAPPING_RELATION, new RDFResource("ex:concept2")));
         }
 
         [TestMethod]
@@ -1434,12 +1577,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept1")));
         }
 
         [TestMethod]
@@ -1457,12 +1600,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:motherConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:childConcept")));
         }
 
         [TestMethod]
@@ -1476,11 +1619,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1496,11 +1639,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1516,11 +1659,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1547,12 +1690,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER_TRANSITIVE, new RDFResource("ex:motherConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER_TRANSITIVE, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:childConcept")));
         }
 
         [TestMethod]
@@ -1566,11 +1709,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("BroaderTransitive relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1586,11 +1729,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("BroaderTransitive relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1606,11 +1749,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("BroaderTransitive relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1637,12 +1780,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:childConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:motherConcept")));
         }
 
         [TestMethod]
@@ -1656,11 +1799,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("Narrower relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1676,11 +1819,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("Narrower relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1696,11 +1839,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("Narrower relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1727,12 +1870,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:childConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER_TRANSITIVE, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER_TRANSITIVE, new RDFResource("ex:motherConcept")));
         }
 
         [TestMethod]
@@ -1746,11 +1889,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.BROADER_TRANSITIVE, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.BROADER_TRANSITIVE, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("NarrowerTransitive relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1766,11 +1909,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("NarrowerTransitive relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1786,11 +1929,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("NarrowerTransitive relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1817,12 +1960,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareCloseMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:rightConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:rightConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:leftConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:rightConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:leftConcept")));
         }
 
         [TestMethod]
@@ -1836,11 +1979,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareCloseMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:rightConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("CloseMatch relation between concept 'ex:leftConcept' and concept 'ex:rightConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1856,11 +1999,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareCloseMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:rightConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("CloseMatch relation between concept 'ex:leftConcept' and concept 'ex:rightConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1887,12 +2030,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareExactMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:rightConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:rightConcept"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:leftConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:rightConcept"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:leftConcept")));
         }
 
         [TestMethod]
@@ -1906,11 +2049,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareExactMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:rightConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("ExactMatch relation between concept 'ex:leftConcept' and concept 'ex:rightConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1926,11 +2069,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareExactMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.RELATED_MATCH, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.RELATED_MATCH, new RDFResource("ex:rightConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("ExactMatch relation between concept 'ex:leftConcept' and concept 'ex:rightConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1957,12 +2100,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroadMatchConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:motherConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROW_MATCH, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROW_MATCH, new RDFResource("ex:childConcept")));
         }
 
         [TestMethod]
@@ -1976,11 +2119,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroadMatchConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("BroadMatch relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -1996,11 +2139,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroadMatchConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("BroadMatch relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2016,11 +2159,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroadMatchConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("BroadMatch relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2047,12 +2190,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROW_MATCH, new RDFResource("ex:childConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROW_MATCH, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:motherConcept")));
         }
 
         [TestMethod]
@@ -2066,11 +2209,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.BROAD_MATCH, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("NarrowMatch relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2086,11 +2229,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("NarrowMatch relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2106,11 +2249,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:motherConcept"), new RDFResource("ex:childConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:childConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:childConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("NarrowMatch relation between concept 'ex:motherConcept' and concept 'ex:childConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2137,12 +2280,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.RELATED_MATCH, new RDFResource("ex:rightConcept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:rightConcept"), RDFVocabulary.SKOS.RELATED_MATCH, new RDFResource("ex:leftConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.RELATED_MATCH, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:rightConcept"), RDFVocabulary.SKOS.RELATED_MATCH, new RDFResource("ex:leftConcept")));
         }
 
         [TestMethod]
@@ -2156,11 +2299,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.NARROWER_TRANSITIVE, new RDFResource("ex:rightConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("RelatedMatch relation between concept 'ex:leftConcept' and concept 'ex:rightConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2176,11 +2319,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:rightConcept")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:rightConcept")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:leftConcept"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:rightConcept")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("RelatedMatch relation between concept 'ex:leftConcept' and concept 'ex:rightConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2209,13 +2352,13 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("etichetta", "it-IT"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label", "en-US")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("etichetta", "it-IT")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("etichetta", "it-IT")));
         }
 
         [TestMethod]
@@ -2229,11 +2372,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label2")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and value 'label2' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2249,11 +2392,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label2", "en-US")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label", "en-US")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and value 'label2@EN-US' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2269,11 +2412,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2289,12 +2432,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclarePreferredLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("PrefLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2318,13 +2461,13 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("etichetta", "it-IT"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label", "en-US")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("etichetta", "it-IT")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("etichetta", "it-IT")));
         }
 
         [TestMethod]
@@ -2338,11 +2481,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2358,12 +2501,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2379,11 +2522,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2399,12 +2542,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareAlternativeLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("AltLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2428,13 +2571,13 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("etichetta", "it-IT"));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label", "en-US")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("etichetta", "it-IT")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("label", "en-US")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("etichetta", "it-IT")));
         }
 
         [TestMethod]
@@ -2448,11 +2591,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2468,12 +2611,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2489,11 +2632,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2509,12 +2652,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareHiddenLabel(new RDFResource("ex:concept"), new RDFPlainLiteral("label")); //SKOS violation
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label")));
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("label")));
             Assert.IsNotNull(warningMsg);
             Assert.IsTrue(warningMsg.IndexOf("HiddenLabel relation between concept 'ex:concept' and value 'label' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
         }
@@ -2536,11 +2679,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNotation(new RDFResource("ex:concept"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING));
 
             //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.Ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTATION, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTATION, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
 
         [TestMethod]
@@ -2685,11 +2828,11 @@ namespace OWLSharp.Extensions.SKOS.Test
 
             //Test persistence of SKOS knowledge
             Assert.IsNotNull(ontology);
-            Assert.IsNotNull(ontology.Ontology);
-            Assert.IsTrue(ontology.Ontology.URI.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 6);
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(ontology.URI.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 6);
 
             //Test persistence of user sentences
             Assert.IsTrue(ontology.Equals(new RDFResource("ex:ontology")));
@@ -2699,19 +2842,19 @@ namespace OWLSharp.Extensions.SKOS.Test
             Assert.IsTrue(ontology.LabelsCount == 0);
             Assert.IsTrue(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
             Assert.IsTrue(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test concept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:orderedCollection")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].TriplesCount > 0);
-            Assert.IsTrue(ontology.Ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3"), null].TriplesCount > 0);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test concept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:orderedCollection")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.ABoxGraph[new RDFResource("ex:orderedCollection"), RDFVocabulary.SKOS.MEMBER_LIST, null, null].TriplesCount > 0);
+            Assert.IsTrue(ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3"), null].TriplesCount > 0);
 
             //Test reconstruction of nested collections
             Assert.IsTrue(ontology.GetCollectionMembers(new RDFResource("ex:collection1")).Count == 3);
@@ -2740,11 +2883,11 @@ namespace OWLSharp.Extensions.SKOS.Test
 
             //Test persistence of SKOS knowledge
             Assert.IsNotNull(ontology);
-            Assert.IsNotNull(ontology.Ontology);
-            Assert.IsTrue(ontology.Ontology.URI.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
-            Assert.IsTrue(ontology.Ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Ontology.Data.IndividualsCount == 4);
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(ontology.URI.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 4);
 
             //Test persistence of user sentences
             Assert.IsTrue(ontology.Equals(new RDFResource("ex:ontology")));
@@ -2752,12 +2895,12 @@ namespace OWLSharp.Extensions.SKOS.Test
             Assert.IsTrue(ontology.CollectionsCount == 1);
             Assert.IsTrue(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
             Assert.IsTrue(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test concept")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
-            Assert.IsTrue(ontology.Ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test concept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:ontology")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:collection"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection")));
         }
 
         [TestMethod]
