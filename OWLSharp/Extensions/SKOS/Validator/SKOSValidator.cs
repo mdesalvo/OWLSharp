@@ -30,12 +30,9 @@ namespace OWLSharp.Extensions.SKOS
             if (validator != null)
             {
                 //Activate SKOS extension on the validator
-                if (!validator.Extensions.ContainsKey("SKOS"))
-                    validator.Extensions.Add("SKOS", ApplyToOntology);
+                validator.ActivateExtension<SKOSEnums.SKOSValidatorRules>("SKOS", ApplyToOntology);
 
                 //Add SKOS rule to the validator
-                if (!validator.Rules.ContainsKey("SKOS"))
-                    validator.Rules.Add("SKOS", new List<SKOSEnums.SKOSValidatorRules>());
                 if (!((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"]).Contains(skosRule))
                     ((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"]).Add(skosRule);
             }

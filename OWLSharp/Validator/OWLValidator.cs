@@ -89,7 +89,7 @@ namespace OWLSharp
                     evidenceRegistry.Add(ctmRule.RuleName, null);
 
                 //Execute rules
-                Parallel.ForEach(((List<OWLEnums.OWLValidatorRules>)Rules["STD"]),
+                Parallel.ForEach((List<OWLEnums.OWLValidatorRules>)Rules["STD"],
                     stdRule =>
                     {
                         OWLEvents.RaiseInfo($"Launching standard validator rule '{stdRule}'");
@@ -157,7 +157,7 @@ namespace OWLSharp
 
                         OWLEvents.RaiseInfo($"Completed standard validator rule '{stdRule}': found {evidenceRegistry[stdRule.ToString()].EvidencesCount} evidences");
                     });
-                Parallel.ForEach(((List<OWLValidatorRule>)Rules["CTM"]),
+                Parallel.ForEach((List<OWLValidatorRule>)Rules["CTM"],
                     ctmRule =>
                     {
                         OWLEvents.RaiseInfo($"Launching custom validator rule '{ctmRule.RuleName}'");
@@ -186,6 +186,17 @@ namespace OWLSharp
         /// </summary>
         public Task<OWLValidatorReport> ApplyToOntologyAsync(OWLOntology ontology)
             => Task.Run(() => ApplyToOntology(ontology));
+
+        /// <summary>
+        /// Activates the given extension into the validator
+        /// </summary>
+        internal void ActivateExtension<T>(string extKey, Action<OWLValidator, OWLOntology, Dictionary<string, OWLValidatorReport>> extRuleExecutor)
+        {
+            if (!Extensions.ContainsKey(extKey))
+                Extensions.Add(extKey, extRuleExecutor);
+            if (!Rules.ContainsKey(extKey))
+                Rules.Add(extKey, new List<T>());
+        }
         #endregion
     }
 }
