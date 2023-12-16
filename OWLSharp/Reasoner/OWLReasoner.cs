@@ -176,6 +176,17 @@ namespace OWLSharp
         /// </summary>
         public Task<OWLReasonerReport> ApplyToOntologyAsync(OWLOntology ontology)
             => Task.Run(() => ApplyToOntology(ontology));
+        
+        /// <summary>
+        /// Activates the given extension into the reasoner
+        /// </summary>
+        internal void ActivateExtension<T>(string extKey, Action<OWLReasoner, OWLOntology, Dictionary<string, OWLReasonerReport>> extRuleExecutor)
+        {
+            if (!Extensions.ContainsKey(extKey))
+                Extensions.Add(extKey, extRuleExecutor);
+            if (!Rules.ContainsKey(extKey))
+                Rules.Add(extKey, new List<T>());
+        }
         #endregion
     }
 }
