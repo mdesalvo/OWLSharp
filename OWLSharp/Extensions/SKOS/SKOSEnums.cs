@@ -35,5 +35,40 @@ namespace OWLSharp.Extensions.SKOS
             /// </summary>
             LiteralForm = 2
         };
+
+        /// <summary>
+        /// Represents an enumeration for supported types of SKOS concept documentation
+        /// </summary>
+        public enum SKOSDocumentationTypes
+        {
+            /// <summary>
+            /// skos:changeNote
+            /// </summary>
+            ChangeNote = 1,
+            /// <summary>
+            /// skos:definition
+            /// </summary>
+            Definition = 2,
+            /// <summary>
+            /// skos:editorialNote
+            /// </summary>
+            EditorialNote = 3,
+            /// <summary>
+            /// skos:example
+            /// </summary>
+            Example = 4,
+            /// <summary>
+            /// skos:historyNote
+            /// </summary>
+            HistoryNote = 5,
+            /// <summary>
+            /// skos:note
+            /// </summary>
+            Note = 6,
+            /// <summary>
+            /// skos:scopeNote
+            /// </summary>
+            ScopeNote = 7
+        }
     }
 }

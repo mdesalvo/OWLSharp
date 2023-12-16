@@ -926,6 +926,64 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullValue()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
+        
+        [DataTestMethod]
+        [DataRow(SKOSEnums.SKOSDocumentationTypes.ChangeNote)]
+        [DataRow(SKOSEnums.SKOSDocumentationTypes.Definition)]
+        [DataRow(SKOSEnums.SKOSDocumentationTypes.EditorialNote)]
+        [DataRow(SKOSEnums.SKOSDocumentationTypes.Example)]
+        [DataRow(SKOSEnums.SKOSDocumentationTypes.HistoryNote)]
+        [DataRow(SKOSEnums.SKOSDocumentationTypes.Note)]
+        [DataRow(SKOSEnums.SKOSDocumentationTypes.ScopeNote)]
+        public void ShouldDocumentConcept(SKOSEnums.SKOSDocumentationTypes skosDocumentationType)
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.DocumentConcept(new RDFResource("ex:concept"), skosDocumentationType, new RDFPlainLiteral("This is a skos documentation!"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            switch (skosDocumentationType)
+            {
+                case SKOSEnums.SKOSDocumentationTypes.ChangeNote:
+                    Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.CHANGE_NOTE, new RDFPlainLiteral("This is a skos documentation!")));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.Definition:
+                    Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.DEFINITION, new RDFPlainLiteral("This is a skos documentation!")));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.EditorialNote:
+                    Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EDITORIAL_NOTE, new RDFPlainLiteral("This is a skos documentation!")));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.Example:
+                    Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EXAMPLE, new RDFPlainLiteral("This is a skos documentation!")));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.HistoryNote:
+                    Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HISTORY_NOTE, new RDFPlainLiteral("This is a skos documentation!")));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.Note:
+                    Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTE, new RDFPlainLiteral("This is a skos documentation!")));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.ScopeNote:
+                    Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SCOPE_NOTE, new RDFPlainLiteral("This is a skos documentation!")));
+                    break;
+            }
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDocumentingConceptBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DocumentConcept(new RDFResource("ex:concept"), SKOSEnums.SKOSDocumentationTypes.ChangeNote, new RDFPlainLiteral("This is a note!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDocumentingConceptBecauseNullConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConcept(null, SKOSEnums.SKOSDocumentationTypes.ChangeNote, new RDFPlainLiteral("This is a note!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDocumentingConceptNoteBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConcept(new RDFResource("ex:concept"), SKOSEnums.SKOSDocumentationTypes.ChangeNote, null));
         #endregion
 
         #region Tests (Analyzer)
@@ -1420,162 +1478,6 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldThrowExceptionOnDeclaringLiteralFormOfLabelBecauseNullValue()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
                         .DeclareRelatedLabels(new RDFResource("ex:label"), null));
-
-        //ANNOTATIONS
-
-        [TestMethod]
-        public void ShouldDocumentConceptNote()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DocumentConceptWithNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTE, new RDFPlainLiteral("This is a note!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptNoteBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithNote(null, new RDFPlainLiteral("This is a note!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptNoteBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithNote(new RDFResource("ex:concept"), null));
-
-        [TestMethod]
-        public void ShouldDocumentConceptChangeNote()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DocumentConceptWithChangeNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.CHANGE_NOTE, new RDFPlainLiteral("This is a note!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptChangeNoteBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithChangeNote(null, new RDFPlainLiteral("This is a note!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptChangeNoteBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithChangeNote(new RDFResource("ex:concept"), null));
-
-        [TestMethod]
-        public void ShouldDocumentConceptEditorialNote()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DocumentConceptWithEditorialNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EDITORIAL_NOTE, new RDFPlainLiteral("This is a note!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionODocumentingConceptEditorialNoteBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithEditorialNote(null, new RDFPlainLiteral("This is a note!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptEditorialNoteBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithEditorialNote(new RDFResource("ex:concept"), null));
-
-        [TestMethod]
-        public void ShouldDocumentConceptHistoryNote()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DocumentConceptWithHistoryNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.HISTORY_NOTE, new RDFPlainLiteral("This is a note!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptHistoryNoteBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithHistoryNote(null, new RDFPlainLiteral("This is a note!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptHistoryNoteBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithHistoryNote(new RDFResource("ex:concept"), null));
-
-        [TestMethod]
-        public void ShouldDocumentConceptScopeNote()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DocumentConceptWithScopeNote(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.SCOPE_NOTE, new RDFPlainLiteral("This is a note!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptScopeNoteBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithScopeNote(null, new RDFPlainLiteral("This is a note!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptScopeNoteBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithScopeNote(new RDFResource("ex:concept"), null));
-
-        [TestMethod]
-        public void ShouldDocumentConceptExample()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DocumentConceptWithExample(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.EXAMPLE, new RDFPlainLiteral("This is a note!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptExampleBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithExample(null, new RDFPlainLiteral("This is a note!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptExampleBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithExample(new RDFResource("ex:concept"), null));
-
-        [TestMethod]
-        public void ShouldDocumentConceptDefinition()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DocumentConceptWithDefinition(new RDFResource("ex:concept"), new RDFPlainLiteral("This is a note!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.SKOS.DEFINITION, new RDFPlainLiteral("This is a note!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDocumentingConceptDefinitionBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithDefinition(null, new RDFPlainLiteral("This is a note!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionODocumentingConceptDefinitionBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DocumentConceptWithDefinition(new RDFResource("ex:concept"), null));
 
         //RELATIONS
 

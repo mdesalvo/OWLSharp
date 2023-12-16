@@ -503,141 +503,44 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the existence of the given "Note(skosConcept,noteValue)" documentation annotation
+        /// Annotates the given concept with the given documentation property
         /// </summary>
-        public static OWLOntology DocumentConceptWithNote(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral noteValue)
+        public static OWLOntology DocumentConcept(this OWLOntology ontology, RDFResource skosConcept, SKOSEnums.SKOSDocumentationTypes skosDocumentationType, RDFLiteral noteValue)
         {
             #region Guards
             if (ontology == null)
-                throw new OWLException("Cannot declare skos:note annotation because given \"ontology\" parameter is null");
+                throw new OWLException("Cannot document concept because given \"ontology\" parameter is null");
             if (skosConcept == null)
-                throw new OWLException("Cannot declare skos:note annotation because given \"skosConcept\" parameter is null");
+                throw new OWLException("Cannot document concept because given \"skosConcept\" parameter is null");
             if (noteValue == null)
-                throw new OWLException("Cannot declare skos:note annotation because given \"noteValue\" parameter is null");
+                throw new OWLException("Cannot document concept because given \"noteValue\" parameter is null");
             #endregion
 
             //Add knowledge to the O-BOX
-            ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.NOTE, noteValue));
-
-            return ontology;
-        }
-
-        /// <summary>
-        /// Declares the existence of the given "ChangeNote(skosConcept,changeNoteValue)" documentation annotation
-        /// </summary>
-        public static OWLOntology DocumentConceptWithChangeNote(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral changeNoteValue)
-        {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot declare skos:changeNote annotation because given \"ontology\" parameter is null");
-            if (skosConcept == null)
-                throw new OWLException("Cannot declare skos:changeNote annotation because given \"skosConcept\" parameter is null");
-            if (changeNoteValue == null)
-                throw new OWLException("Cannot declare skos:changeNote annotation because given \"changeNoteValue\" parameter is null");
-            #endregion
-
-            //Add knowledge to the O-BOX
-            ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.CHANGE_NOTE, changeNoteValue));
-
-            return ontology;
-        }
-
-        /// <summary>
-        /// Declares the existence of the given "EditorialNote(skosConcept,editorialNoteValue)" documentation annotation
-        /// </summary>
-        public static OWLOntology DocumentConceptWithEditorialNote(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral editorialNoteValue)
-        {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot declare skos:editorialNote annotation because given \"ontology\" parameter is null");
-            if (skosConcept == null)
-                throw new OWLException("Cannot declare skos:editorialNote annotation because given \"skosConcept\" parameter is null");
-            if (editorialNoteValue == null)
-                throw new OWLException("Cannot declare skos:editorialNote annotation because given \"editorialNoteValue\" parameter is null");
-            #endregion
-
-            //Add knowledge to the O-BOX
-            ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.EDITORIAL_NOTE, editorialNoteValue));
-
-            return ontology;
-        }
-
-        /// <summary>
-        /// Declares the existence of the given "HistoryNote(skosConcept,historyNoteValue)" documentation annotation
-        /// </summary>
-        public static OWLOntology DocumentConceptWithHistoryNote(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral historyNoteValue)
-        {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot declare skos:historyNote annotation because given \"ontology\" parameter is null");
-            if (skosConcept == null)
-                throw new OWLException("Cannot declare skos:historyNote annotation because given \"skosConcept\" parameter is null");
-            if (historyNoteValue == null)
-                throw new OWLException("Cannot declare skos:historyNote annotation because given \"historyNoteValue\" parameter is null");
-            #endregion
-
-            //Add knowledge to the O-BOX
-            ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.HISTORY_NOTE, historyNoteValue));
-
-            return ontology;
-        }
-
-        /// <summary>
-        /// Declares the existence of the given "ScopeNote(skosConcept,scopeNoteValue)" documentation annotation
-        /// </summary>
-        public static OWLOntology DocumentConceptWithScopeNote(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral scopeNoteValue)
-        {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot declare skos:scopeNote annotation because given \"ontology\" parameter is null");
-            if (skosConcept == null)
-                throw new OWLException("Cannot declare skos:scopeNote annotation because given \"skosConcept\" parameter is null");
-            if (scopeNoteValue == null)
-                throw new OWLException("Cannot declare skos:scopeNote annotation because given \"scopeNoteValue\" parameter is null");
-            #endregion
-
-            //Add knowledge to the O-BOX
-            ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.SCOPE_NOTE, scopeNoteValue));
-
-            return ontology;
-        }
-
-        /// <summary>
-        /// Declares the existence of the given "Definition(skosConcept,definitionValue)" documentation annotation
-        /// </summary>
-        public static OWLOntology DocumentConceptWithDefinition(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral definitionValue)
-        {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot declare skos:definition annotation because given \"ontology\" parameter is null");
-            if (skosConcept == null)
-                throw new OWLException("Cannot declare skos:definition annotation because given \"skosConcept\" parameter is null");
-            if (definitionValue == null)
-                throw new OWLException("Cannot declare skos:definition annotation because given \"definitionValue\" parameter is null");
-            #endregion
-
-            //Add knowledge to the O-BOX
-            ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.DEFINITION, definitionValue));
-
-            return ontology;
-        }
-
-        /// <summary>
-        /// Declares the existence of the given "Example(skosConcept,exampleValue)" documentation annotation
-        /// </summary>
-        public static OWLOntology DocumentConceptWithExample(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral exampleValue)
-        {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot declare skos:example annotation because given \"ontology\" parameter is null");
-            if (skosConcept == null)
-                throw new OWLException("Cannot declare skos:example annotation because given \"skosConcept\" parameter is null");
-            if (exampleValue == null)
-                throw new OWLException("Cannot declare skos:example annotation because given \"exampleValue\" parameter is null");
-            #endregion
-
-            //Add knowledge to the O-BOX
-            ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.EXAMPLE, exampleValue));
+            switch (skosDocumentationType)
+            {
+                case SKOSEnums.SKOSDocumentationTypes.ChangeNote:
+                    ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.CHANGE_NOTE, noteValue));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.Definition:
+                    ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.DEFINITION, noteValue));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.EditorialNote:
+                    ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.EDITORIAL_NOTE, noteValue));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.Example:
+                    ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.EXAMPLE, noteValue));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.HistoryNote:
+                    ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.HISTORY_NOTE, noteValue));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.Note:
+                    ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.NOTE, noteValue));
+                    break;
+                case SKOSEnums.SKOSDocumentationTypes.ScopeNote:
+                    ontology.Data.OBoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.SCOPE_NOTE, noteValue));
+                    break;
+            }
 
             return ontology;
         }
