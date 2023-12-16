@@ -634,6 +634,298 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnResourceAnnotatingConceptSchemeBecauseNullValue()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConceptScheme(new RDFResource("ex:conceptScheme"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
+        
+        [TestMethod]
+        public void ShouldLiteralAnnotateConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Concept!"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Concept!")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Concept!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseNullConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Concept!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), null, new RDFPlainLiteral("This is a skos:Concept!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), new RDFResource(), new RDFPlainLiteral("This is a skos:Concept!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
+
+        [TestMethod]
+        public void ShouldResourceAnnotateConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseNullConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(null, RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), null, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), new RDFResource(), new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
+        
+        [TestMethod]
+        public void ShouldLiteralAnnotateCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareCollection(new RDFResource("ex:collection"), 
+                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseNullCollection()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), null, new RDFPlainLiteral("This is a skos:Collection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), new RDFResource(), new RDFPlainLiteral("This is a skos:Collection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
+
+        [TestMethod]
+        public void ShouldResourceAnnotateCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareCollection(new RDFResource("ex:collection"), 
+                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseNullCollection()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(null, RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), null, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), new RDFResource(), new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
+        
+        [TestMethod]
+        public void ShouldLiteralAnnotateOrderedCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
+                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseNullOrderedCollection()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), null, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), new RDFResource(), new RDFPlainLiteral("This is a skos:OrderedCollection!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
+
+        [TestMethod]
+        public void ShouldResourceAnnotateOrderedCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
+                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseNullOrderedCollection()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(null, RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), null, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), new RDFResource(), new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
+        
+        [TestMethod]
+        public void ShouldLiteralAnnotateLabel()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareLabel(new RDFResource("ex:label"), new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skosxl:Label!"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skosxl:Label!")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skosxl:Label!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseNullLabel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skosxl:Label!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), null, new RDFPlainLiteral("This is a skosxl:Label!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), new RDFResource(), new RDFPlainLiteral("This is a skosxl:Label!")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
+
+        [TestMethod]
+        public void ShouldResourceAnnotateLabel()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareLabel(new RDFResource("ex:label"), new RDFResource("ex:conceptScheme"));
+            ontology.AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullLabel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(null, RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), null, new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseBlankProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), new RDFResource(), new RDFResource("ex:seeAlso")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
         #endregion
 
         #region Tests (Analyzer)
@@ -725,68 +1017,6 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringLabelBecauseNullLabel()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareLabel(null));
-
-        //ANNOTATIONS
-
-        [TestMethod]
-        public void ShouldLiteralAnnotateLabel()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Label!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Label!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseNullLabel()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Label!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), null, new RDFPlainLiteral("This is a skos:Label!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), new RDFResource(), new RDFPlainLiteral("This is a skos:Label!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingLabelBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
-
-        [TestMethod]
-        public void ShouldResourceAnnotateLabel()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:label"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullLabel()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(null, RDFVocabulary.RDFS.COMMENT, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), null, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), new RDFResource(), new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingLabelBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateLabel(new RDFResource("ex:label"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
 
         //RELATIONS
 
@@ -1192,186 +1422,6 @@ namespace OWLSharp.Extensions.SKOS.Test
                         .DeclareRelatedLabels(new RDFResource("ex:label"), null));
 
         //ANNOTATIONS
-
-        [TestMethod]
-        public void ShouldLiteralAnnotateConcept()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:concept!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:concept!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:concept!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), null, new RDFPlainLiteral("This is a skos:concept!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), new RDFResource(), new RDFPlainLiteral("This is a skos:concept!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingConceptBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
-
-        [TestMethod]
-        public void ShouldResourceAnnotateConcept()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:concept"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(null, RDFVocabulary.RDFS.COMMENT, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), null, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), new RDFResource(), new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingConceptBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateConcept(new RDFResource("ex:concept"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
-
-        [TestMethod]
-        public void ShouldLiteralAnnotateCollection()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseNullCollection()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), null, new RDFPlainLiteral("This is a skos:Collection!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), new RDFResource(), new RDFPlainLiteral("This is a skos:Collection!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingCollectionBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
-
-        [TestMethod]
-        public void ShouldResourceAnnotateCollection()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseNullCollection()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(null, RDFVocabulary.RDFS.COMMENT, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), null, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), new RDFResource(), new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingCollectionBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
-
-        [TestMethod]
-        public void ShouldLiteralAnnotateOrderedCollection()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseNullOrderedCollection()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(null, RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), null, new RDFPlainLiteral("This is a skos:OrderedCollection!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), new RDFResource(), new RDFPlainLiteral("This is a skos:OrderedCollection!")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnLiteralAnnotatingOrderedCollectionBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, null as RDFLiteral));
-
-        [TestMethod]
-        public void ShouldResourceAnnotateOrderedCollection()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasAnnotation(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseNullOrderedCollection()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(null, RDFVocabulary.RDFS.COMMENT, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), null, new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseBlankProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), new RDFResource(), new RDFResource("ex:seeAlso")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnResourceAnnotatingOrderedCollectionBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, null as RDFResource));
 
         [TestMethod]
         public void ShouldDocumentConceptNote()

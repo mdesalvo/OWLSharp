@@ -318,6 +318,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate concept because given \"ontology\" parameter is null");
+            if (skosConcept == null)
+                throw new OWLException("Cannot annotate concept because given \"skosConcept\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate concept because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -340,6 +342,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate concept because given \"ontology\" parameter is null");
+            if (skosConcept == null)
+                throw new OWLException("Cannot annotate concept because given \"skosConcept\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate concept because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -362,6 +366,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate collection because given \"ontology\" parameter is null");
+            if (skosCollection == null)
+                throw new OWLException("Cannot annotate collection because given \"skosCollection\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate collection because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -384,6 +390,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate collection because given \"ontology\" parameter is null");
+            if (skosCollection == null)
+                throw new OWLException("Cannot annotate collection because given \"skosCollection\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate collection because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -406,6 +414,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate ordered collection because given \"ontology\" parameter is null");
+            if (skosOrderedCollection == null)
+                throw new OWLException("Cannot annotate ordered collection because given \"skosOrderedCollection\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate ordered collection because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -428,6 +438,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate ordered collection because given \"ontology\" parameter is null");
+            if (skosOrderedCollection == null)
+                throw new OWLException("Cannot annotate ordered collection because given \"skosOrderedCollection\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate ordered collection because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -450,6 +462,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate label because given \"ontology\" parameter is null");
+            if (skosLabel == null)
+                throw new OWLException("Cannot annotate label because given \"skosLabel\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate label because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -472,6 +486,8 @@ namespace OWLSharp.Extensions.SKOS
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate label because given \"ontology\" parameter is null");
+            if (skosLabel == null)
+                throw new OWLException("Cannot annotate label because given \"skosLabel\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate label because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
