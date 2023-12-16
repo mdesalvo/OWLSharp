@@ -263,13 +263,15 @@ namespace OWLSharp.Extensions.SKOS
         //ANNOTATIONS
 
         /// <summary>
-        /// Annotates the given concept scheme with the given generic annotation
+        /// Annotates the given concept scheme with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateConceptScheme(this OWLOntology ontology, RDFResource skosConceptScheme, RDFResource annotationProperty, RDFResource annotationValue)
         {
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate concept scheme because given \"ontology\" parameter is null");
+            if (skosConceptScheme == null)
+                throw new OWLException("Cannot annotate concept scheme because given \"skosConceptScheme\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate concept scheme because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -285,13 +287,15 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given concept scheme with the given generic annotation
+        /// Annotates the given concept scheme with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateConceptScheme(this OWLOntology ontology, RDFResource skosConceptScheme, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
             #region Guards
             if (ontology == null)
                 throw new OWLException("Cannot annotate concept scheme because given \"ontology\" parameter is null");
+            if (skosConceptScheme == null)
+                throw new OWLException("Cannot annotate concept scheme because given \"skosConceptScheme\" parameter is null");
             if (annotationProperty == null)
                 throw new OWLException("Cannot annotate concept scheme because given \"annotationProperty\" parameter is null");
             if (annotationProperty.IsBlank)
@@ -307,7 +311,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given concept with the given generic annotation
+        /// Annotates the given concept with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateConcept(this OWLOntology ontology, RDFResource skosConcept, RDFResource annotationProperty, RDFResource annotationValue)
         {
@@ -329,7 +333,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given concept with the given generic annotation
+        /// Annotates the given concept with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateConcept(this OWLOntology ontology, RDFResource skosConcept, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
@@ -351,7 +355,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given collection with the given generic annotation
+        /// Annotates the given collection with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateCollection(this OWLOntology ontology, RDFResource skosCollection, RDFResource annotationProperty, RDFResource annotationValue)
         {
@@ -373,7 +377,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given collection with the given generic annotation
+        /// Annotates the given collection with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateCollection(this OWLOntology ontology, RDFResource skosCollection, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
@@ -395,7 +399,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given ordered collection with the given generic annotation
+        /// Annotates the given ordered collection with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateOrderedCollection(this OWLOntology ontology, RDFResource skosOrderedCollection, RDFResource annotationProperty, RDFResource annotationValue)
         {
@@ -417,7 +421,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given ordered collection with the given generic annotation
+        /// Annotates the given ordered collection with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateOrderedCollection(this OWLOntology ontology, RDFResource skosOrderedCollection, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
@@ -439,7 +443,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given label with the given generic annotation
+        /// Annotates the given label with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateLabel(this OWLOntology ontology, RDFResource skosLabel, RDFResource annotationProperty, RDFResource annotationValue)
         {
@@ -461,7 +465,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given label with the given generic annotation
+        /// Annotates the given label with the given generic annotation property
         /// </summary>
         public static OWLOntology AnnotateLabel(this OWLOntology ontology, RDFResource skosLabel, RDFResource annotationProperty, RDFLiteral annotationValue)
         {
