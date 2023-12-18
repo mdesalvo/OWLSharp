@@ -1476,6 +1476,108 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringRelatedConceptsBecauseNullRightConcept()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareRelatedConcepts(new RDFResource("ex:concept1"), null));
+        
+        [TestMethod]
+        public void ShouldDeclareBroaderConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:childConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:motherConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:motherConcept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:childConcept")));
+        }
+
+        [TestMethod]
+        public void ShouldEmitWarningOnDeclaringBroaderConceptsBecauseHierarchicallyRelatedConcepts()
+        {
+            string warningMsg = null;
+            OWLEvents.OnWarning += (string msg) => { warningMsg = msg; };
+
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:childConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:motherConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareNarrowerConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:motherConcept")));
+            Assert.IsNotNull(warningMsg);
+            Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept'") > -1);
+        }
+
+        [TestMethod]
+        public void ShouldEmitWarningOnDeclaringBroaderConceptsBecauseAssociativeRelatedConcepts()
+        {
+            string warningMsg = null;
+            OWLEvents.OnWarning += (string msg) => { warningMsg = msg; };
+
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:childConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:motherConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
+            Assert.IsNotNull(warningMsg);
+            Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept'") > -1);
+        }
+
+        [TestMethod]
+        public void ShouldEmitWarningOnDeclaringBroaderConceptsBecauseMappingRelatedConcepts()
+        {
+            string warningMsg = null;
+            OWLEvents.OnWarning += (string msg) => { warningMsg = msg; };
+
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:childConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:motherConcept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCloseMatchConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
+            Assert.IsNotNull(warningMsg);
+            Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept'") > -1);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringBroaderConceptsBecauseNullChildConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareBroaderConcepts(null, new RDFResource("ex:motherConcept")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringBroaderConceptsBecauseNullMotherConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareBroaderConcepts(new RDFResource("ex:childConcept"), null));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringBroaderConceptsBecauseSelfConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:childConcept")));
         #endregion
 
         #region Tests (Analyzer)
@@ -1972,96 +2074,6 @@ namespace OWLSharp.Extensions.SKOS.Test
                         .DeclareRelatedLabels(new RDFResource("ex:label"), null));
 
         //RELATIONS
-
-        [TestMethod]
-        public void ShouldDeclareBroaderConcepts()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.BROADER, new RDFResource("ex:motherConcept")));
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:motherConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:childConcept")));
-        }
-
-        [TestMethod]
-        public void ShouldEmitWarningOnDeclaringBroaderConceptsBecauseHierarchicallyRelatedConcepts()
-        {
-            string warningMsg = null;
-            OWLEvents.OnWarning += (string msg) => { warningMsg = msg; };
-
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareNarrowerConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
-            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.NARROWER, new RDFResource("ex:motherConcept")));
-            Assert.IsNotNull(warningMsg);
-            Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
-        }
-
-        [TestMethod]
-        public void ShouldEmitWarningOnDeclaringBroaderConceptsBecauseAssociativeRelatedConcepts()
-        {
-            string warningMsg = null;
-            OWLEvents.OnWarning += (string msg) => { warningMsg = msg; };
-
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareRelatedConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
-            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:motherConcept")));
-            Assert.IsNotNull(warningMsg);
-            Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
-        }
-
-        [TestMethod]
-        public void ShouldEmitWarningOnDeclaringBroaderConceptsBecauseMappingRelatedConcepts()
-        {
-            string warningMsg = null;
-            OWLEvents.OnWarning += (string msg) => { warningMsg = msg; };
-
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCloseMatchConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept"));
-            ontology.DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:motherConcept")); //SKOS violation
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:childConcept"), RDFVocabulary.SKOS.CLOSE_MATCH, new RDFResource("ex:motherConcept")));
-            Assert.IsNotNull(warningMsg);
-            Assert.IsTrue(warningMsg.IndexOf("Broader relation between concept 'ex:childConcept' and concept 'ex:motherConcept' cannot be declared to the concept scheme because it would violate SKOS integrity") > -1);
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringBroaderConceptsBecauseNullChildConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareBroaderConcepts(null, new RDFResource("ex:motherConcept")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringBroaderConceptsBecauseNullMotherConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareBroaderConcepts(new RDFResource("ex:childConcept"), null));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringBroaderConceptsBecauseSelfConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareBroaderConcepts(new RDFResource("ex:childConcept"), new RDFResource("ex:childConcept")));
 
         [TestMethod]
         public void ShouldDeclareBroaderTransitiveConcepts()
