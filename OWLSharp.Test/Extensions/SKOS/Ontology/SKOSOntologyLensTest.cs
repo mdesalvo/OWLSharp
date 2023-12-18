@@ -56,7 +56,7 @@ namespace OWLSharp.Extensions.SKOS.Test
                 .AnnotateConceptWithPreferredLabel(new RDFResource("ex:concept1"), new RDFPlainLiteral("concept1"))
                 .AnnotateConceptWithAlternativeLabel(new RDFResource("ex:concept1"), new RDFPlainLiteral("konzept1"))
                 .AnnotateConceptWithHiddenLabel(new RDFResource("ex:concept1"), new RDFPlainLiteral("concetto1"))
-                .DeclareNotation(new RDFResource("ex:concept1"), new RDFTypedLiteral("this is concept 1", RDFModelEnums.RDFDatatypes.RDFS_LITERAL))
+                .DeclareConceptNotation(new RDFResource("ex:concept1"), new RDFTypedLiteral("this is concept 1", RDFModelEnums.RDFDatatypes.RDFS_LITERAL))
                 .DocumentConcept(new RDFResource("ex:concept1"), SKOSEnums.SKOSDocumentationTypes.Note, new RDFPlainLiteral("note"))
                 .DocumentConcept(new RDFResource("ex:concept1"), SKOSEnums.SKOSDocumentationTypes.ChangeNote, new RDFPlainLiteral("note"))
                 .DocumentConcept(new RDFResource("ex:concept1"), SKOSEnums.SKOSDocumentationTypes.EditorialNote, new RDFPlainLiteral("note"))                

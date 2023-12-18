@@ -2370,6 +2370,37 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldThrowExceptionOnDeclaringRelatedMatchConceptsBecauseSelfConcept()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
                         .DeclareRelatedMatchConcepts(new RDFResource("ex:leftConcept"), new RDFResource("ex:leftConcept")));
+        
+        [TestMethod]
+        public void ShouldDeclareConceptNotation()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConceptNotation(new RDFResource("ex:concept"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTATION, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptNotationBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology)
+                        .DeclareConceptNotation(new RDFResource("ex:concept"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptNotationBecauseNullConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareConceptNotation(null, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringConceptNotationBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareConceptNotation(new RDFResource("ex:concept"), null));
         #endregion
 
         #region Tests (Analyzer)
@@ -2864,33 +2895,6 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldThrowExceptionOnDeclaringLiteralFormOfLabelBecauseNullValue()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
                         .DeclareRelatedLabels(new RDFResource("ex:label"), null));
-
-        //RELATIONS
-
-
-        [TestMethod]
-        public void ShouldDeclareNotation()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareNotation(new RDFResource("ex:concept"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.NOTATION, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringNotationBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareNotation(null, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringNotationBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareNotation(new RDFResource("ex:concept"), null));
 
         //EXPORT
 

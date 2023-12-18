@@ -1054,7 +1054,7 @@ namespace OWLSharp.Extensions.SKOS
         /// <summary>
         ///  Declares the existence of the given "Notation(skosConcept,notationValue)" relation
         /// </summary>
-        public static OWLOntology DeclareNotation(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral notationValue)
+        public static OWLOntology DeclareConceptNotation(this OWLOntology ontology, RDFResource skosConcept, RDFLiteral notationValue)
         {
             #region Guards
             if (ontology == null)
