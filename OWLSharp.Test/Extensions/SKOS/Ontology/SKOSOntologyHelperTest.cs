@@ -2808,6 +2808,75 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldThrowExceptionOnDeclaringHiddenLabelBecauseNullValue()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
                         .DeclareConceptHiddenLabel(new RDFResource("ex:concept"), new RDFResource("ex:label"), null));
+        
+        [TestMethod]
+        public void ShouldDeclareRelatedLabels()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedLabels(new RDFResource("ex:label1"), new RDFResource("ex:label2"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label2"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label1")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringRelatedLabelsBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology)
+                        .DeclareRelatedLabels(new RDFResource("ex:leftLabel"), new RDFResource("ex:rightLabel")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringRelatedLabelsBecauseNullLeftLabel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareRelatedLabels(null, new RDFResource("ex:rightLabel")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringRelatedLabelsBecauseNullRightLabel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareRelatedLabels(new RDFResource("ex:leftLabel"), null));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringRelatedLabelsBecauseSelfLabel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareRelatedLabels(new RDFResource("ex:leftLabel"), new RDFResource("ex:leftLabel")));
+
+        [TestMethod]
+        public void ShouldDeclareLiteralFormOfLabel()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareLabel(new RDFResource("ex:label"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLiteralFormOfLabel(new RDFResource("ex:label"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringLiteralFormOfLabelBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology)
+                        .DeclareLiteralFormOfLabel(new RDFResource("ex:label"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringLiteralFormOfLabelBecauseNullLabel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareLiteralFormOfLabel(null, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringLiteralFormOfLabelBecauseNullValue()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
+                        .DeclareRelatedLabels(new RDFResource("ex:label"), null));
         #endregion
 
         #region Tests (Analyzer)
@@ -2899,62 +2968,6 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringLabelBecauseNullLabel()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareLabel(null));
-
-        //RELATIONS
-
-        [TestMethod]
-        public void ShouldDeclareRelatedLabels()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareRelatedLabels(new RDFResource("ex:label1"), new RDFResource("ex:label2"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label1"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label2")));
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:label2"), RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, new RDFResource("ex:label1")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringRelatedLabelsBecauseNullLeftLabel()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareRelatedLabels(null, new RDFResource("ex:rightLabel")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringRelatedLabelsBecauseNullRightLabel()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareRelatedLabels(new RDFResource("ex:leftLabel"), null));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringRelatedLabelsBecauseSelfLabel()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareRelatedLabels(new RDFResource("ex:leftLabel"), new RDFResource("ex:leftLabel")));
-
-        [TestMethod]
-        public void ShouldDeclareLiteralFormOfLabel()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareLiteralFormOfLabel(new RDFResource("ex:label"), new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:label"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringLiteralFormOfLabelBecauseNullLabel()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareLiteralFormOfLabel(null, new RDFTypedLiteral("aabbcc", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringLiteralFormOfLabelBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
-                        .DeclareRelatedLabels(new RDFResource("ex:label"), null));
 
         //EXPORT
 
