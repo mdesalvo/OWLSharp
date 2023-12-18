@@ -1358,6 +1358,36 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldThrowExceptionOnAnnotatingConceptWithHiddenLabelBecauseNullValue()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology")
                 .AnnotateConceptWithHiddenLabel(new RDFResource("ex:concept"), null));
+
+        // RELATIONS
+
+        [TestMethod]
+        public void ShouldDeclareTopConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareTopConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 2);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:conceptScheme"), RDFVocabulary.SKOS.HAS_TOP_CONCEPT, new RDFResource("ex:concept")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.TOP_CONCEPT_OF, new RDFResource("ex:conceptScheme")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringTopConceptBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareTopConcept(null, new RDFResource("ex:conceptScheme")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringTopConceptBecauseNullConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareTopConcept(null, new RDFResource("ex:conceptScheme")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringTopConceptBecauseNullConceptScheme()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareTopConcept(new RDFResource("ex:concept"), null));
         #endregion
 
         #region Tests (Analyzer)
@@ -1854,25 +1884,6 @@ namespace OWLSharp.Extensions.SKOS.Test
                         .DeclareRelatedLabels(new RDFResource("ex:label"), null));
 
         //RELATIONS
-
-        [TestMethod]
-        public void ShouldDeclareTopConcept()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareTopConcept(new RDFResource("ex:concept"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:ontology"), RDFVocabulary.SKOS.HAS_TOP_CONCEPT, new RDFResource("ex:concept")));
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept"), RDFVocabulary.SKOS.TOP_CONCEPT_OF, new RDFResource("ex:ontology")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringTopConceptBecauseNullConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareTopConcept(null));
 
         [TestMethod]
         public void ShouldDeclareSemanticRelatedConcepts()

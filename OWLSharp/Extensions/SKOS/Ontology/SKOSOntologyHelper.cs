@@ -655,6 +655,7 @@ namespace OWLSharp.Extensions.SKOS
             #endregion
 
             //Add knowledge to the A-BOX
+            DeclareConcept(ontology, skosConcept, skosConceptScheme);
             ontology.Data.ABoxGraph.AddTriple(new RDFTriple(skosConcept, RDFVocabulary.SKOS.TOP_CONCEPT_OF, skosConceptScheme));
 
             //Also add an automatic A-BOX inference exploiting owl:inverseOf relation
