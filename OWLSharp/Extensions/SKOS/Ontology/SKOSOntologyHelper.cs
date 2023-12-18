@@ -546,7 +546,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the existence of the given "PrefLabel(skosConcept,preferredLabelValue)" linguistic annotation
+        /// Annotates the given concept with the given preferred linguistic annotation
         /// </summary>
         public static OWLOntology AnnotateConceptWithPreferredLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral preferredLabelValue)
         {
@@ -577,7 +577,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the existence of the given "AltLabel(skosConcept,alternativeLabelValue)" linguistic annotation
+        /// Annotates the given concept with the given alternative linguistic annotation
         /// </summary>
         public static OWLOntology AnnotateConceptWithAlternativeLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral alternativeLabelValue)
         {
@@ -608,7 +608,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the existence of the given "HiddenLabel(skosConcept,hiddenLabelValue)" linguistic annotation
+        /// Annotates the given concept with the given hidden linguistic annotation
         /// </summary>
         public static OWLOntology AnnotateConceptWithHiddenLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral hiddenLabelValue)
         {
