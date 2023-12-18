@@ -1388,6 +1388,94 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringTopConceptBecauseNullConceptScheme()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareTopConcept(new RDFResource("ex:concept"), null));
+        
+        [TestMethod]
+        public void ShouldDeclareSemanticRelatedConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareSemanticRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SEMANTIC_RELATION, new RDFResource("ex:concept2")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringSemanticRelatedConceptsBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareSemanticRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringSemanticRelatedConceptsBecauseNullLeftConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareSemanticRelatedConcepts(null, new RDFResource("ex:concept2")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringSemanticRelatedConceptsBecauseNullRightConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareSemanticRelatedConcepts(new RDFResource("ex:concept1"), null));
+        
+        [TestMethod]
+        public void ShouldDeclareMappingRelatedConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareMappingRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.MAPPING_RELATION, new RDFResource("ex:concept2")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringMappingRelatedConceptsBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareMappingRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringMappingRelatedConceptsBecauseNullLeftConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareMappingRelatedConcepts(null, new RDFResource("ex:concept2")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringMappingRelatedConceptsBecauseNullRightConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareMappingRelatedConcepts(new RDFResource("ex:concept1"), null));
+        
+        [TestMethod]
+        public void ShouldDeclareRelatedConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"),new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+
+            //Test evolution of SKOS knowledge
+            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
+            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
+            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
+            Assert.IsTrue(ontology.Data.IndividualsCount == 3);
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept1")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringRelatedConceptsBecauseNullOntology()
+            => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringRelatedConceptsBecauseNullLeftConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareRelatedConcepts(null, new RDFResource("ex:concept2")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringRelatedConceptsBecauseNullRightConcept()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareRelatedConcepts(new RDFResource("ex:concept1"), null));
         #endregion
 
         #region Tests (Analyzer)
@@ -1884,73 +1972,6 @@ namespace OWLSharp.Extensions.SKOS.Test
                         .DeclareRelatedLabels(new RDFResource("ex:label"), null));
 
         //RELATIONS
-
-        [TestMethod]
-        public void ShouldDeclareSemanticRelatedConcepts()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareSemanticRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SEMANTIC_RELATION, new RDFResource("ex:concept2")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringSemanticRelatedConceptsBecauseNullLeftConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareSemanticRelatedConcepts(null, new RDFResource("ex:concept2")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringSemanticRelatedConceptsBecauseNullRightConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareSemanticRelatedConcepts(new RDFResource("ex:concept1"), null));
-
-        [TestMethod]
-        public void ShouldDeclareMappingRelatedConcepts()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareMappingRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.MAPPING_RELATION, new RDFResource("ex:concept2")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringMappingRelatedConceptsBecauseNullLeftConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareMappingRelatedConcepts(null, new RDFResource("ex:concept2")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringMappingRelatedConceptsBecauseNullRightConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareMappingRelatedConcepts(new RDFResource("ex:concept1"), null));
-
-        [TestMethod]
-        public void ShouldDeclareRelatedConcepts()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
-
-            //Test evolution of SKOS knowledge
-            Assert.IsTrue(ontology.URI.Equals(ontology.URI));
-            Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
-            Assert.IsTrue(ontology.Model.PropertyModel.PropertiesCount == 33);
-            Assert.IsTrue(ontology.Data.IndividualsCount == 1);
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept2")));
-            Assert.IsTrue(ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.RELATED, new RDFResource("ex:concept1")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringRelatedConceptsBecauseNullLeftConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareRelatedConcepts(null, new RDFResource("ex:concept2")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringRelatedConceptsBecauseNullRightConcept()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareRelatedConcepts(new RDFResource("ex:concept1"), null));
 
         [TestMethod]
         public void ShouldDeclareBroaderConcepts()
