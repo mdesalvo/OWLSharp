@@ -16,6 +16,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OWLSharp.Validator.Test
@@ -30,28 +31,36 @@ namespace OWLSharp.Validator.Test
             OWLValidator validator = new OWLValidator();
 
             Assert.IsNotNull(validator);
-            Assert.IsNotNull(validator.StandardRules);
-            Assert.IsTrue(validator.StandardRules.Count == 0);
-            Assert.IsNotNull(validator.CustomRules);
-            Assert.IsTrue(validator.CustomRules.Count == 0);
+            Assert.IsNotNull(validator.Rules);
+            Assert.IsTrue(validator.Rules.Count == 2);
+            Assert.IsTrue(validator.Rules.ContainsKey("STD"));
+            Assert.IsTrue(validator.Rules["STD"] is List<OWLEnums.OWLValidatorRules> stdRules && stdRules.Count == 0);
+            Assert.IsTrue(validator.Rules.ContainsKey("CTM"));
+            Assert.IsTrue(validator.Rules["CTM"] is List<OWLValidatorRule> ctmRules && ctmRules.Count == 0);
+            Assert.IsNotNull(validator.Extensions);
+            Assert.IsTrue(validator.Extensions.Count == 0);
         }
 
         [TestMethod]
-        public void ShouldAddStandardValidatorRule()
+        public void ShouldAddStandardRule()
         {
             OWLValidator validator = new OWLValidator();
             validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
             validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness); //Will be discarded, since duplicate standard rules are not allowed
 
             Assert.IsNotNull(validator);
-            Assert.IsNotNull(validator.StandardRules);
-            Assert.IsTrue(validator.StandardRules.Count == 1);
-            Assert.IsNotNull(validator.CustomRules);
-            Assert.IsTrue(validator.CustomRules.Count == 0);
+            Assert.IsNotNull(validator.Rules);
+            Assert.IsTrue(validator.Rules.Count == 2);
+            Assert.IsTrue(validator.Rules.ContainsKey("STD"));
+            Assert.IsTrue(validator.Rules["STD"] is List<OWLEnums.OWLValidatorRules> stdRules && stdRules.Count == 1);
+            Assert.IsTrue(validator.Rules.ContainsKey("CTM"));
+            Assert.IsTrue(validator.Rules["CTM"] is List<OWLValidatorRule> ctmRules && ctmRules.Count == 0);
+            Assert.IsNotNull(validator.Extensions);
+            Assert.IsTrue(validator.Extensions.Count == 0);
         }
 
         [TestMethod]
-        public void ShouldAddCustomValidatorRule()
+        public void ShouldAddCustomRule()
         {
             OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
                 => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
@@ -60,15 +69,36 @@ namespace OWLSharp.Validator.Test
             validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
 
             Assert.IsNotNull(validator);
-            Assert.IsNotNull(validator.StandardRules);
-            Assert.IsTrue(validator.StandardRules.Count == 0);
-            Assert.IsNotNull(validator.CustomRules);
-            Assert.IsTrue(validator.CustomRules.Count == 1);
+            Assert.IsNotNull(validator.Rules);
+            Assert.IsTrue(validator.Rules.Count == 2);
+            Assert.IsTrue(validator.Rules.ContainsKey("STD"));
+            Assert.IsTrue(validator.Rules["STD"] is List<OWLEnums.OWLValidatorRules> stdRules && stdRules.Count == 0);
+            Assert.IsTrue(validator.Rules.ContainsKey("CTM"));
+            Assert.IsTrue(validator.Rules["CTM"] is List<OWLValidatorRule> ctmRules && ctmRules.Count == 1);
+            Assert.IsNotNull(validator.Extensions);
+            Assert.IsTrue(validator.Extensions.Count == 0);
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingCustomValidatorRuleBecauseNull()
-            => Assert.ThrowsException<OWLException>(() => new OWLValidator().AddRule(null));
+        public void ShouldAddMixedRules()
+        {
+            OWLValidatorReport CustomValidatorRule(OWLOntology ontology)
+                => new OWLValidatorReport().AddEvidence(new OWLValidatorEvidence(OWLEnums.OWLValidatorEvidenceCategory.Warning, nameof(CustomValidatorRule), "test message", "test suggestion"));
+
+            OWLValidator validator = new OWLValidator();
+            validator.AddRule(OWLEnums.OWLValidatorRules.TermDisjointness);
+            validator.AddRule(new OWLValidatorRule("testRule", "this is test rule", CustomValidatorRule));
+
+            Assert.IsNotNull(validator);
+            Assert.IsNotNull(validator.Rules);
+            Assert.IsTrue(validator.Rules.Count == 2);
+            Assert.IsTrue(validator.Rules.ContainsKey("STD"));
+            Assert.IsTrue(validator.Rules["STD"] is List<OWLEnums.OWLValidatorRules> stdRules && stdRules.Count == 1);
+            Assert.IsTrue(validator.Rules.ContainsKey("CTM"));
+            Assert.IsTrue(validator.Rules["CTM"] is List<OWLValidatorRule> ctmRules && ctmRules.Count == 1);
+            Assert.IsNotNull(validator.Extensions);
+            Assert.IsTrue(validator.Extensions.Count == 0);
+        }
 
         [TestMethod]
         public void ShouldValidateWithStandardRule()

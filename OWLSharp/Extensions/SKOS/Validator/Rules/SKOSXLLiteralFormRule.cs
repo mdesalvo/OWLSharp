@@ -21,20 +21,20 @@ namespace OWLSharp.Extensions.SKOS
     /// </summary>
     internal class SKOSXLLiteralFormRule
     {
-        internal static OWLValidatorReport ExecuteRule(SKOSConceptScheme conceptScheme)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
 
             //skosxl:literalForm
-            IEnumerator<RDFResource> labels = conceptScheme.LabelsEnumerator;
+            IEnumerator<RDFResource> labels = ontology.GetLabelsEnumerator();
             while (labels.MoveNext())
             { 
-                if (conceptScheme.Ontology.Data.ABoxGraph[labels.Current, RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, null, null].TriplesCount != 1)
+                if (ontology.Data.ABoxGraph[labels.Current, RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, null, null].TriplesCount != 1)
                     validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                         OWLEnums.OWLValidatorEvidenceCategory.Error,
                         nameof(SKOSXLLiteralFormRule),
                         $"Violation of 'skosxl:literalForm' behavior on label '{labels.Current}'",
-                        "SKOS-XL labels must have *one and only one* literal form!"));
+                        "SKOS-XL labels must have exactly one literal form"));
             }
 
             return validatorRuleReport;

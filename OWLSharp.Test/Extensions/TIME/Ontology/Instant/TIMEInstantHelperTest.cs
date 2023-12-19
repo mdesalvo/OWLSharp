@@ -39,15 +39,15 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft4"),
                 new TIMEInstant(new RDFResource("ex:timeInstD"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft5"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft5"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
@@ -63,13 +63,13 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft4"),
                 new TIMEInstant(new RDFResource("ex:timeInstD"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft5"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft5"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
@@ -85,15 +85,15 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft4"),
                 new TIMEInstant(new RDFResource("ex:timeInstD"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft5"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft5"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
@@ -109,15 +109,15 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft4"),
                 new TIMEInstant(new RDFResource("ex:timeInstD"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft5"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft5"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"))));
@@ -143,13 +143,13 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-04T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstD"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
 
             Assert.IsTrue(TIMEInstantHelper.CheckAfter(timeOntology, new RDFResource("ex:timeInstA"), new RDFResource("ex:timeInstD")));
@@ -162,9 +162,9 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA")));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
 
             Assert.IsFalse(TIMEInstantHelper.CheckAfter(timeOntology, new RDFResource("ex:timeInstA"), new RDFResource("ex:timeInstB")));
@@ -183,13 +183,13 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-04T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft4"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
@@ -204,11 +204,11 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft4"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
@@ -223,13 +223,13 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft4"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"))));
@@ -254,13 +254,13 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-04T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-08T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-05-09T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstD"), DateTime.Parse("2023-05-08T20:47:15Z").ToUniversalTime()));
 
             Assert.IsTrue(TIMEInstantHelper.CheckBefore(timeOntology, new RDFResource("ex:timeInstA"), new RDFResource("ex:timeInstD")));
@@ -273,9 +273,9 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA")));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-08T20:47:15Z").ToUniversalTime()));
 
             Assert.IsFalse(TIMEInstantHelper.CheckBefore(timeOntology, new RDFResource("ex:timeInstA"), new RDFResource("ex:timeInstB")));
@@ -294,13 +294,13 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft4"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
@@ -315,11 +315,11 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft4"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
@@ -334,13 +334,13 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             OWLOntology timeOntology = new OWLOntology("ex:timeOnt");
             timeOntology.InitializeTIME();
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft1"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft1"),
                 new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft2"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft2"),
                 new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInstant(new RDFResource("ex:ft3"),
+            timeOntology.DeclareInstant(new RDFResource("ex:ft3"),
                 new TIMEInstant(new RDFResource("ex:timeInstC"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
-            timeOntology.DeclareTimeInterval(new RDFResource("ex:ft4"),
+            timeOntology.DeclareInterval(new RDFResource("ex:ft4"),
                 new TIMEInterval(new RDFResource("ex:timeIntvA"),
                     new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
                     new TIMEInstant(new RDFResource("ex:timeIntvEndA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime())));

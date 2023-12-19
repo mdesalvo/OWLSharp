@@ -26,13 +26,13 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldValidateTopConcept()
         {
-            SKOSConceptScheme conceptScheme = new SKOSConceptScheme("ex:conceptScheme");
-            conceptScheme.DeclareConcept(new RDFResource("ex:concept"));
-            conceptScheme.DeclareConcept(new RDFResource("ex:rootConcept"));
-            conceptScheme.DeclareBroaderConcepts(new RDFResource("ex:concept"), new RDFResource("ex:rootConcept"));
-            conceptScheme.DeclareTopConcept(new RDFResource("ex:concept")); //clash on skos:broader taxonomy
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:rootConcept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:concept"), new RDFResource("ex:rootConcept"));
+            ontology.DeclareTopConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme")); //clash on skos:broader taxonomy
 
-            OWLValidatorReport validatorReport = SKOSTopConceptRule.ExecuteRule(conceptScheme);
+            OWLValidatorReport validatorReport = SKOSTopConceptRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -43,14 +43,14 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldValidateTopConceptViaValidator()
         {
-            SKOSConceptScheme conceptScheme = new SKOSConceptScheme("ex:conceptScheme");
-            conceptScheme.DeclareConcept(new RDFResource("ex:concept"));
-            conceptScheme.DeclareConcept(new RDFResource("ex:rootConcept"));
-            conceptScheme.DeclareBroaderConcepts(new RDFResource("ex:concept"), new RDFResource("ex:rootConcept"));
-            conceptScheme.DeclareTopConcept(new RDFResource("ex:concept")); //clash on skos:broader taxonomy
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:rootConcept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:concept"), new RDFResource("ex:rootConcept"));
+            ontology.DeclareTopConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme")); //clash on skos:broader taxonomy
 
-            SKOSValidator validator = new SKOSValidator().AddRule(SKOSEnums.SKOSValidatorRules.TopConcept);
-            OWLValidatorReport validatorReport = validator.ApplyToConceptScheme(conceptScheme);
+            OWLValidator validator = new OWLValidator().AddSKOSRule(SKOSEnums.SKOSValidatorRules.TopConcept);
+            OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);

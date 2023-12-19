@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,14 +24,14 @@ namespace OWLSharp
     {
         #region Properties
         /// <summary>
-        /// List of standard rules applied by the validator
+        /// Dictionary of rules applied by the validator, categorized by reserved keys
         /// </summary>
-        internal List<OWLEnums.OWLValidatorRules> StandardRules { get; set; }
+        internal Dictionary<string, object> Rules { get; set; }
 
         /// <summary>
-        /// List of custom rules applied by the validator
+        /// Dictionary of extensions activated on the validator, categorized by reserved keys
         /// </summary>
-        internal List<OWLValidatorRule> CustomRules { get; set; }
+        internal Dictionary<string, Action<OWLValidator, OWLOntology, Dictionary<string, OWLValidatorReport>>> Extensions { get; set; }
         #endregion
 
         #region Ctors
@@ -39,8 +40,12 @@ namespace OWLSharp
         /// </summary>
         public OWLValidator()
         {
-            StandardRules = new List<OWLEnums.OWLValidatorRules>();
-            CustomRules = new List<OWLValidatorRule>();
+            Rules = new Dictionary<string, object>()
+            {
+                { "STD", new List<OWLEnums.OWLValidatorRules>() },
+                { "CTM", new List<OWLValidatorRule>() }
+            };
+            Extensions = new Dictionary<string, Action<OWLValidator, OWLOntology, Dictionary<string, OWLValidatorReport>>>();
         }
         #endregion
 
@@ -50,8 +55,8 @@ namespace OWLSharp
         /// </summary>
         public OWLValidator AddRule(OWLEnums.OWLValidatorRules validatorRule)
         {
-            if (!StandardRules.Contains(validatorRule))
-                StandardRules.Add(validatorRule);
+            if (!((List<OWLEnums.OWLValidatorRules>)Rules["STD"]).Contains(validatorRule))
+                ((List<OWLEnums.OWLValidatorRules>)Rules["STD"]).Add(validatorRule);
             return this;
         }
 
@@ -60,12 +65,8 @@ namespace OWLSharp
         /// </summary>
         public OWLValidator AddRule(OWLValidatorRule validatorRule)
         {
-            #region Guards
-            if (validatorRule == null)
-                throw new OWLException("Cannot add rule to validator because given \"validatorRule\" parameter is null");
-            #endregion
-
-            CustomRules.Add(validatorRule);
+            if (validatorRule != null)
+                ((List<OWLValidatorRule>)Rules["CTM"]).Add(validatorRule);
             return this;
         }
 
@@ -80,96 +81,98 @@ namespace OWLSharp
             {
                 OWLEvents.RaiseInfo($"Validator is going to be applied on Ontology '{ontology.URI}': this may require intensive processing, depending on size and complexity of domain knowledge and rules");
 
-                //Initialize validator registry
-                Dictionary<string, OWLValidatorReport> validatorRegistry = new Dictionary<string, OWLValidatorReport>();
-                foreach (OWLEnums.OWLValidatorRules standardRule in StandardRules)
-                    validatorRegistry.Add(standardRule.ToString(), null);
-                foreach (OWLValidatorRule customRule in CustomRules)
-                    validatorRegistry.Add(customRule.RuleName, null);
+                //Initialize evidence registry
+                Dictionary<string, OWLValidatorReport> evidenceRegistry = new Dictionary<string, OWLValidatorReport>();
+                foreach (OWLEnums.OWLValidatorRules stdRule in (List<OWLEnums.OWLValidatorRules>)Rules["STD"])
+                    evidenceRegistry.Add(stdRule.ToString(), null);
+                foreach (OWLValidatorRule ctmRule in (List<OWLValidatorRule>)Rules["CTM"])
+                    evidenceRegistry.Add(ctmRule.RuleName, null);
 
-                //Execute standard rules
-                Parallel.ForEach(StandardRules, 
-                    standardRule =>
+                //Execute rules
+                Parallel.ForEach((List<OWLEnums.OWLValidatorRules>)Rules["STD"],
+                    stdRule =>
                     {
-                        OWLEvents.RaiseInfo($"Launching standard validator rule '{standardRule}'");
+                        OWLEvents.RaiseInfo($"Launching standard validator rule '{stdRule}'");
 
-                        switch (standardRule)
+                        switch (stdRule)
                         {
                             case OWLEnums.OWLValidatorRules.TermDisjointness:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.TermDisjointness.ToString()] = OWLTermDisjointnessRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.TermDisjointness.ToString()] = OWLTermDisjointnessRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.TermDeclaration:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.TermDeclaration.ToString()] = OWLTermDeclarationRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.TermDeclaration.ToString()] = OWLTermDeclarationRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.TermDeprecation:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.TermDeprecation.ToString()] = OWLTermDeprecationRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.TermDeprecation.ToString()] = OWLTermDeprecationRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.DomainRange:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.DomainRange.ToString()] = OWLDomainRangeRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.DomainRange.ToString()] = OWLDomainRangeRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.InverseOf:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.InverseOf.ToString()] = OWLInverseOfRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.InverseOf.ToString()] = OWLInverseOfRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.SymmetricProperty:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.SymmetricProperty.ToString()] = OWLSymmetricPropertyRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.SymmetricProperty.ToString()] = OWLSymmetricPropertyRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.AsymmetricProperty:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.AsymmetricProperty.ToString()] = OWLAsymmetricPropertyRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.AsymmetricProperty.ToString()] = OWLAsymmetricPropertyRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.IrreflexiveProperty:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.IrreflexiveProperty.ToString()] = OWLIrreflexivePropertyRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.IrreflexiveProperty.ToString()] = OWLIrreflexivePropertyRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.PropertyDisjoint:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.PropertyDisjoint.ToString()] = OWLPropertyDisjointRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.PropertyDisjoint.ToString()] = OWLPropertyDisjointRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.ClassKey:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.ClassKey.ToString()] = OWLClassKeyRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.ClassKey.ToString()] = OWLClassKeyRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.PropertyChainAxiom:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.PropertyChainAxiom.ToString()] = OWLPropertyChainAxiomRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.PropertyChainAxiom.ToString()] = OWLPropertyChainAxiomRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.ClassType:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.ClassType.ToString()] = OWLClassTypeRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.ClassType.ToString()] = OWLClassTypeRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.NegativeAssertions:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.NegativeAssertions.ToString()] = OWLNegativeAssertionsRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.NegativeAssertions.ToString()] = OWLNegativeAssertionsRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.GlobalCardinality:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.GlobalCardinality.ToString()] = OWLGlobalCardinalityRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.GlobalCardinality.ToString()] = OWLGlobalCardinalityRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.LocalCardinality:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.LocalCardinality.ToString()] = OWLLocalCardinalityRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.LocalCardinality.ToString()] = OWLLocalCardinalityRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.PropertyConsistency:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.PropertyConsistency.ToString()] = OWLPropertyConsistencyRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.PropertyConsistency.ToString()] = OWLPropertyConsistencyRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.DisjointUnion:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.DisjointUnion.ToString()] = OWLDisjointUnionRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.DisjointUnion.ToString()] = OWLDisjointUnionRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.ThingNothing:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.ThingNothing.ToString()] = OWLThingNothingRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.ThingNothing.ToString()] = OWLThingNothingRule.ExecuteRule(ontology);
                                 break;
                             case OWLEnums.OWLValidatorRules.TopBottom:
-                                validatorRegistry[OWLEnums.OWLValidatorRules.TopBottom.ToString()] = OWLTopBottomRule.ExecuteRule(ontology);
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.TopBottom.ToString()] = OWLTopBottomRule.ExecuteRule(ontology);
                                 break;
                         }
 
-                        OWLEvents.RaiseInfo($"Completed standard validator rule '{standardRule}': found {validatorRegistry[standardRule.ToString()].EvidencesCount} evidences");
+                        OWLEvents.RaiseInfo($"Completed standard validator rule '{stdRule}': found {evidenceRegistry[stdRule.ToString()].EvidencesCount} evidences");
                     });
-
-                //Execute custom rules
-                Parallel.ForEach(CustomRules, 
-                    customRule =>
+                Parallel.ForEach((List<OWLValidatorRule>)Rules["CTM"],
+                    ctmRule =>
                     {
-                        OWLEvents.RaiseInfo($"Launching custom validator rule '{customRule.RuleName}'");
+                        OWLEvents.RaiseInfo($"Launching custom validator rule '{ctmRule.RuleName}'");
 
-                        validatorRegistry[customRule.RuleName] = customRule.ExecuteRule(ontology);
+                        evidenceRegistry[ctmRule.RuleName] = ctmRule.ExecuteRule(ontology);
 
-                        OWLEvents.RaiseInfo($"Completed custom validator rule '{customRule.RuleName}': found {validatorRegistry[customRule.RuleName].EvidencesCount} evidences");
+                        OWLEvents.RaiseInfo($"Completed custom validator rule '{ctmRule.RuleName}': found {evidenceRegistry[ctmRule.RuleName].EvidencesCount} evidences");
                     });
+
+                //Execute extensions
+                foreach (var extension in Extensions)
+                    extension.Value?.Invoke(this, ontology, evidenceRegistry);
 
                 //Process validator registry
-                foreach (OWLValidatorReport validatorRegistryReport in validatorRegistry.Values)
+                foreach (OWLValidatorReport validatorRegistryReport in evidenceRegistry.Values)
                     validatorReport.MergeEvidences(validatorRegistryReport);
 
                 OWLEvents.RaiseInfo($"Validator has been applied on Ontology '{ontology.URI}': found {validatorReport.EvidencesCount} evidences");
@@ -183,6 +186,17 @@ namespace OWLSharp
         /// </summary>
         public Task<OWLValidatorReport> ApplyToOntologyAsync(OWLOntology ontology)
             => Task.Run(() => ApplyToOntology(ontology));
+
+        /// <summary>
+        /// Activates the given extension into the validator
+        /// </summary>
+        internal void ActivateExtension<T>(string extKey, Action<OWLValidator, OWLOntology, Dictionary<string, OWLValidatorReport>> extRuleExecutor)
+        {
+            if (!Extensions.ContainsKey(extKey))
+                Extensions.Add(extKey, extRuleExecutor);
+            if (!Rules.ContainsKey(extKey))
+                Rules.Add(extKey, new List<T>());
+        }
         #endregion
     }
 }

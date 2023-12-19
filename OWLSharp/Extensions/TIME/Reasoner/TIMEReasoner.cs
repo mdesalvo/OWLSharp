@@ -30,12 +30,9 @@ namespace OWLSharp.Extensions.TIME
             if (reasoner != null)
             {
                 //Activate OWL-TIME extension on the reasoner
-                if (!reasoner.Extensions.ContainsKey("TIME"))
-                    reasoner.Extensions.Add("TIME", ApplyToOntology);
+                reasoner.ActivateExtension<TIMEEnums.TIMEReasonerRules>("TIME", ApplyToOntology);
 
                 //Add OWL-TIME rule to the reasoner
-                if (!reasoner.Rules.ContainsKey("TIME"))
-                    reasoner.Rules.Add("TIME", new List<TIMEEnums.TIMEReasonerRules>());
                 if (!((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Contains(timeRule))
                     ((List<TIMEEnums.TIMEReasonerRules>)reasoner.Rules["TIME"]).Add(timeRule);
             }

@@ -66,7 +66,27 @@ namespace OWLSharp
             if (loaderOptions.EnableSKOSSupport
                  || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.BASE_URI), null].TriplesCount > 0
                  || graph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.SKOSXL.BASE_URI), null].TriplesCount > 0)
+            {
                 ontology.InitializeSKOS();
+
+                #region PostProcessing
+                //Extend skos:Collection individuals to A-BOX
+                foreach (RDFTriple typeCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null])
+                    foreach (RDFTriple memberRelation in graph[(RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, null, null])
+                        ontology.Data.DeclareObjectAssertion((RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, (RDFResource)memberRelation.Object);
+                //Extend skos:OrderedCollection individuals to A-BOX
+                foreach (RDFTriple typeOrderedCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.ORDERED_COLLECTION, null])
+                    foreach (RDFTriple memberListRelation in graph[(RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, null, null])
+                    {
+                        RDFCollection skosOrderedCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)memberListRelation.Object, RDFModelEnums.RDFTripleFlavors.SPO);
+                        if (skosOrderedCollection.ItemsCount > 0)
+                        {
+                            ontology.Data.ABoxGraph.AddCollection(skosOrderedCollection);
+                            ontology.Data.DeclareObjectAssertion((RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, skosOrderedCollection.ReificationSubject);
+                        }
+                    }
+                #endregion
+            }
             #endregion
 
             //Ontology loading

@@ -21,9 +21,9 @@ using System.Linq;
 namespace OWLSharp.Extensions.SKOS
 {
     /// <summary>
-    /// SKOSConceptSchemeLoader is responsible for loading SKOS concept schemes from remote sources or alternative representations
+    /// SKOSOntologyLoader is responsible for loading SKOS concept schemes from remote sources or alternative representations
     /// </summary>
-    public static class SKOSConceptSchemeLoader
+    public static class SKOSOntologyLoader
     {
         #region Methods
         /// <summary>
@@ -40,46 +40,6 @@ namespace OWLSharp.Extensions.SKOS
             ontology.Annotate(RDFVocabulary.OWL.IMPORTS, new RDFResource(RDFVocabulary.SKOS.SKOSXL.BASE_URI));
             BuildSKOSClassModel(ontology.Model.ClassModel);
             BuildSKOSPropertyModel(ontology.Model.PropertyModel);
-        }
-
-        /// <summary>
-        /// Gets a concept scheme representation of the given graph
-        /// </summary>
-        internal static SKOSConceptScheme FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
-        {
-            #region Guards
-            if (graph == null)
-                throw new OWLException("Cannot get concept scheme from RDFGraph because given \"graph\" parameter is null");
-            #endregion
-
-            //Get OWL ontology
-            OWLOntology ontology = OWLOntologyLoader.FromRDFGraph(graph, loaderOptions);
-
-            //Extend skos:Collection individuals to A-BOX
-            foreach (RDFTriple typeCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null])
-                foreach (RDFTriple memberRelation in graph[(RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, null, null])
-                    ontology.Data.DeclareObjectAssertion((RDFResource)typeCollection.Subject, RDFVocabulary.SKOS.MEMBER, (RDFResource)memberRelation.Object);
-
-            //Extend skos:OrderedCollection individuals to A-BOX
-            foreach (RDFTriple typeOrderedCollection in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.ORDERED_COLLECTION, null])
-                foreach (RDFTriple memberListRelation in graph[(RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, null, null])
-                {
-                    RDFCollection skosOrderedCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)memberListRelation.Object, RDFModelEnums.RDFTripleFlavors.SPO);
-                    if (skosOrderedCollection.ItemsCount > 0)
-                    {
-                        ontology.Data.ABoxGraph.AddCollection(skosOrderedCollection);
-                        ontology.Data.DeclareObjectAssertion((RDFResource)typeOrderedCollection.Subject, RDFVocabulary.SKOS.MEMBER_LIST, skosOrderedCollection.ReificationSubject);
-                    }
-                }
-
-            //Build SKOS concept scheme from OWL ontology
-            RDFResource conceptSchemeURI = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT_SCHEME, null]
-                                             .FirstOrDefault()?.Subject as RDFResource ?? ontology;
-            SKOSConceptScheme conceptScheme = new SKOSConceptScheme(conceptSchemeURI.ToString()) { Ontology = ontology };
-            conceptScheme.Ontology.Data.DeclareIndividual(conceptScheme);
-            conceptScheme.Ontology.Data.DeclareIndividualType(conceptScheme, RDFVocabulary.SKOS.CONCEPT_SCHEME);
-
-            return conceptScheme;
         }
         #endregion
 

@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
 using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.SKOS
@@ -20,19 +21,23 @@ namespace OWLSharp.Extensions.SKOS
     /// </summary>
     internal class SKOSTopConceptRule
     {
-        internal static OWLValidatorReport ExecuteRule(SKOSConceptScheme conceptScheme)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
 
             //skos:hasTopConcept
-            foreach (RDFTriple hasTopConceptRelation in conceptScheme.Ontology.Data.ABoxGraph[conceptScheme, RDFVocabulary.SKOS.HAS_TOP_CONCEPT, null, null])
-            { 
-                if (conceptScheme.GetBroaderConcepts((RDFResource)hasTopConceptRelation.Object).Count > 0)
-                    validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
-                        OWLEnums.OWLValidatorEvidenceCategory.Warning,
-                        nameof(SKOSTopConceptRule),
-                        $"Violation of 'skos:hasTopConcept' behavior on concept scheme '{conceptScheme}' for concept '{hasTopConceptRelation.Object}'",
-                        "If you specify a 'skos:Concept' as top concept of a 'skos:ConceptScheme', this concept should not have any broader concepts"));
+            IEnumerator<RDFResource> conceptSchemes = ontology.GetConceptSchemesEnumerator();
+            while (conceptSchemes.MoveNext())
+            {
+                foreach (RDFTriple hasTopConceptRelation in ontology.Data.ABoxGraph[conceptSchemes.Current, RDFVocabulary.SKOS.HAS_TOP_CONCEPT, null, null])
+                { 
+                    if (ontology.GetBroaderConcepts((RDFResource)hasTopConceptRelation.Object).Count > 0)
+                        validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
+                            OWLEnums.OWLValidatorEvidenceCategory.Warning,
+                            nameof(SKOSTopConceptRule),
+                            $"Violation of 'skos:hasTopConcept' behavior for concept '{hasTopConceptRelation.Object}' in concept scheme '{conceptSchemes.Current}'",
+                            "If you specify a 'skos:Concept' as top concept of a 'skos:ConceptScheme', this concept should not have any broader concepts"));
+                }
             }
 
             return validatorRuleReport;

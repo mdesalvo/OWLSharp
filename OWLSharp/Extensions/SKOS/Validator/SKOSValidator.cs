@@ -17,86 +17,56 @@ using System.Threading.Tasks;
 namespace OWLSharp.Extensions.SKOS
 {
     /// <summary>
-    /// SKOSValidator analyzes a skos:ConceptScheme in order to discover errors and inconsistencies affecting its taxonomies
+    /// SKOSValidator gives SKOS validation capabilities to standard validators
     /// </summary>
-    public class SKOSValidator
+    public static class SKOSValidator
     {
-        #region Properties
-        /// <summary>
-        /// List of rules applied by the SKOS validator
-        /// </summary>
-        internal List<SKOSEnums.SKOSValidatorRules> Rules { get; set; }
-        #endregion
-
-        #region Ctors
-        /// <summary>
-        /// Default-ctor to build an empty SKOS validator
-        /// </summary>
-        public SKOSValidator()
-            => Rules = new List<SKOSEnums.SKOSValidatorRules>();
-        #endregion
-
         #region Methods
         /// <summary>
-        /// Adds the given rule to the SKOS validator
+        /// Adds the given SKOS rule to the validator
         /// </summary>
-        public SKOSValidator AddRule(SKOSEnums.SKOSValidatorRules validatorRule)
+        public static OWLValidator AddSKOSRule(this OWLValidator validator, SKOSEnums.SKOSValidatorRules skosRule)
         {
-            if (!Rules.Contains(validatorRule))
-                Rules.Add(validatorRule);
-            return this;
-        }
-
-        /// <summary>
-        /// Applies the SKOS validator on the given skos:ConceptScheme
-        /// </summary>
-        public OWLValidatorReport ApplyToConceptScheme(SKOSConceptScheme conceptScheme)
-        {
-            OWLValidatorReport validatorReport = new OWLValidatorReport();
-
-            if (conceptScheme != null)
+            if (validator != null)
             {
-                OWLEvents.RaiseInfo($"SKOS Validator is going to be applied on skos:ConceptScheme '{conceptScheme.URI}'");
+                //Activate SKOS extension on the validator
+                validator.ActivateExtension<SKOSEnums.SKOSValidatorRules>("SKOS", ApplyToOntology);
 
-                //Initialize validator registry
-                Dictionary<string, OWLValidatorReport> validatorRegistry = new Dictionary<string, OWLValidatorReport>();
-                foreach (SKOSEnums.SKOSValidatorRules standardRule in Rules)
-                    validatorRegistry.Add(standardRule.ToString(), null);
-
-                //Execute rules
-                Parallel.ForEach(Rules,
-                    standardRule =>
-                    {
-                        OWLEvents.RaiseInfo($"Launching SKOS validator rule '{standardRule}'");
-
-                        switch (standardRule)
-                        {
-                            case SKOSEnums.SKOSValidatorRules.TopConcept:
-                                validatorRegistry[SKOSEnums.SKOSValidatorRules.TopConcept.ToString()] = SKOSTopConceptRule.ExecuteRule(conceptScheme);
-                                break;
-                            case SKOSEnums.SKOSValidatorRules.LiteralForm:
-                                validatorRegistry[SKOSEnums.SKOSValidatorRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(conceptScheme);
-                                break;
-                        }
-
-                        OWLEvents.RaiseInfo($"Completed SKOS validator rule '{standardRule}': found {validatorRegistry[standardRule.ToString()].EvidencesCount} evidences");
-                    });
-
-                //Process validator registry
-                foreach (OWLValidatorReport validatorRegistryReport in validatorRegistry.Values)
-                    validatorReport.MergeEvidences(validatorRegistryReport);
-
-                OWLEvents.RaiseInfo($"SKOS Validator has been applied on skos:ConceptScheme '{conceptScheme.URI}': found {validatorReport.EvidencesCount} evidences");
+                //Add SKOS rule to the validator
+                if (!((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"]).Contains(skosRule))
+                    ((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"]).Add(skosRule);
             }
-
-            return validatorReport;
+            return validator;
         }
 
         /// <summary>
-        /// Asynchronously applies the SKOS validator on the given skos:ConceptScheme
+        /// Applies the SKOS validator on the given ontology
         /// </summary>
-        public Task<OWLValidatorReport> ApplyToConceptSchemeAsync(SKOSConceptScheme conceptScheme)
-            => Task.Run(() => ApplyToConceptScheme(conceptScheme));
+        internal static void ApplyToOntology(this OWLValidator validator, OWLOntology ontology, Dictionary<string, OWLValidatorReport> evidenceRegistry)
+        {
+            //Initialize evidence registry
+            foreach (SKOSEnums.SKOSValidatorRules skosRule in (List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"])
+                evidenceRegistry.Add(skosRule.ToString(), null);
+
+            //Execute rules
+            Parallel.ForEach((List<SKOSEnums.SKOSValidatorRules>)validator.Rules["SKOS"],
+                skosRule =>
+                {
+                    OWLEvents.RaiseInfo($"Launching SKOS validator rule '{skosRule}'");
+
+                    switch (skosRule)
+                    {
+                        case SKOSEnums.SKOSValidatorRules.TopConcept:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.TopConcept.ToString()] = SKOSTopConceptRule.ExecuteRule(ontology);
+                            break;
+                        case SKOSEnums.SKOSValidatorRules.LiteralForm:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(ontology);
+                            break;
+                    }
+
+                    OWLEvents.RaiseInfo($"Completed SKOS validator rule '{skosRule}': found {evidenceRegistry[skosRule.ToString()].EvidencesCount} evidences");
+                });
+        }
         #endregion
     }
 }

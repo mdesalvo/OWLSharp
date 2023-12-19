@@ -37,7 +37,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given time instant
-            TIMECoordinate timeInstantCoordinate = timeOntology?.GetInstantCoordinate(timeInstantURI, calendarTRS);
+            TIMECoordinate timeInstantCoordinate = timeOntology?.GetCoordinateOfInstant(timeInstantURI, calendarTRS);
             if (timeInstantCoordinate == null)
                 return false;
 
@@ -72,12 +72,12 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given time aInstant
-            TIMECoordinate aTimeInstantCoordinate = timeOntology?.GetInstantCoordinate(aTimeInstantURI, calendarTRS);
+            TIMECoordinate aTimeInstantCoordinate = timeOntology?.GetCoordinateOfInstant(aTimeInstantURI, calendarTRS);
             if (aTimeInstantCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given time bInstant
-            TIMECoordinate bTimeInstantCoordinate = timeOntology?.GetInstantCoordinate(bTimeInstantURI, calendarTRS);
+            TIMECoordinate bTimeInstantCoordinate = timeOntology?.GetCoordinateOfInstant(bTimeInstantURI, calendarTRS);
             if (bTimeInstantCoordinate == null)
                 return false;
 
@@ -101,7 +101,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given time instant
-            TIMECoordinate timeInstantCoordinate = timeOntology?.GetInstantCoordinate(timeInstantURI, calendarTRS);
+            TIMECoordinate timeInstantCoordinate = timeOntology?.GetCoordinateOfInstant(timeInstantURI, calendarTRS);
             if (timeInstantCoordinate == null)
                 return false;
 
@@ -130,12 +130,12 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given time aInstant
-            TIMECoordinate aTimeInstantCoordinate = timeOntology?.GetInstantCoordinate(aTimeInstantURI, calendarTRS);
+            TIMECoordinate aTimeInstantCoordinate = timeOntology?.GetCoordinateOfInstant(aTimeInstantURI, calendarTRS);
             if (aTimeInstantCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given time bInstant
-            TIMECoordinate bTimeInstantCoordinate = timeOntology?.GetInstantCoordinate(bTimeInstantURI, calendarTRS);
+            TIMECoordinate bTimeInstantCoordinate = timeOntology?.GetCoordinateOfInstant(bTimeInstantURI, calendarTRS);
             if (bTimeInstantCoordinate == null)
                 return false;
 
@@ -159,7 +159,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given time instant
-            TIMECoordinate timeInstantCoordinate = timeOntology?.GetInstantCoordinate(timeInstantURI, calendarTRS);
+            TIMECoordinate timeInstantCoordinate = timeOntology?.GetCoordinateOfInstant(timeInstantURI, calendarTRS);
             if (timeInstantCoordinate == null)
                 return false;
 
