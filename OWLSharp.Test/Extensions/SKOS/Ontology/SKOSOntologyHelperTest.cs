@@ -3190,6 +3190,9 @@ namespace OWLSharp.Extensions.SKOS.Test
 
             Assert.IsFalse(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
             Assert.IsFalse(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasBroaderConcept(null, new RDFResource("ex:concept3")));
+            Assert.IsFalse(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept1"), null));
+            Assert.IsFalse((null as OWLOntology).CheckHasBroaderConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
         }
 
         [TestMethod]
@@ -3243,6 +3246,9 @@ namespace OWLSharp.Extensions.SKOS.Test
 
             Assert.IsFalse(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
             Assert.IsFalse(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasNarrowerConcept(null, new RDFResource("ex:concept3")));
+            Assert.IsFalse(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept1"), null));
+            Assert.IsFalse((null as OWLOntology).CheckHasNarrowerConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
         }
 
         [TestMethod]
@@ -3340,6 +3346,9 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
 
             Assert.IsFalse(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasBroadMatchConcept(null, new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), null));
+            Assert.IsFalse((null as OWLOntology).CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
         }
 
         [TestMethod]
@@ -3392,6 +3401,9 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
 
             Assert.IsFalse(ontology.CheckHasNarrowMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasNarrowMatchConcept(null, new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasNarrowMatchConcept(new RDFResource("ex:concept1"), null));
+            Assert.IsFalse((null as OWLOntology).CheckHasNarrowMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
         }
 
         [TestMethod]
@@ -3450,6 +3462,9 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
 
             Assert.IsFalse(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasRelatedMatchConcept(null, new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), null));
+            Assert.IsFalse((null as OWLOntology).CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
         }
 
         [TestMethod]
@@ -3508,6 +3523,9 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareCloseMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
 
             Assert.IsFalse(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasCloseMatchConcept(null, new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), null));
+            Assert.IsFalse((null as OWLOntology).CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
         }
 
         [TestMethod]
@@ -3570,6 +3588,9 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareCloseMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
 
             Assert.IsFalse(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasExactMatchConcept(null, new RDFResource("ex:concept4")));
+            Assert.IsFalse(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), null));
+            Assert.IsFalse((null as OWLOntology).CheckHasExactMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
         }
 
         [TestMethod]
