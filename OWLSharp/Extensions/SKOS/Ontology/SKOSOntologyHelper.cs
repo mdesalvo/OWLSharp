@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.SKOS
     /// </summary>
     public static class SKOSOntologyHelper
     {
-        #region Faceter
+        #region Declarer
         /// <summary>
         /// Count of the SKOS concept schemes
         /// </summary>
@@ -131,9 +131,7 @@ namespace OWLSharp.Extensions.SKOS
                             .Select(t => t.Subject)
                             .OfType<RDFResource>()
                             .GetEnumerator();
-        #endregion
 
-        #region Declarer
         /// <summary>
         /// Declares the given skos:ConceptScheme instance
         /// </summary>

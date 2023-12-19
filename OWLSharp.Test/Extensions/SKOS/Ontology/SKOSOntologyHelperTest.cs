@@ -2405,7 +2405,284 @@ namespace OWLSharp.Extensions.SKOS.Test
         #endregion
 
         #region Tests (Analyzer)
+        [TestMethod]
+        public void ShouldCheckHasConceptScheme()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareConceptScheme(new RDFResource("ex:conceptScheme1"));
+            ontology.DeclareConceptScheme(new RDFResource("ex:conceptScheme2"));
 
+            Assert.IsTrue(ontology.CheckHasConceptScheme(new RDFResource("ex:conceptScheme1")));
+            Assert.IsTrue(ontology.CheckHasConceptScheme(new RDFResource("ex:conceptScheme2")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotConceptScheme()
+        {
+            OWLOntology ontologyNULL = null;
+            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareConceptScheme(new RDFResource("ex:conceptScheme1"));
+            ontology.DeclareConceptScheme(new RDFResource("ex:conceptScheme2"));
+
+            Assert.IsFalse(ontology.CheckHasConceptScheme(new RDFResource("ex:conceptScheme3")));
+            Assert.IsFalse(ontology.CheckHasConceptScheme(null));
+            Assert.IsFalse(ontologyNULL.CheckHasConceptScheme(new RDFResource("ex:conceptScheme1")));
+            Assert.IsFalse(ontologyEMPTY.CheckHasConceptScheme(new RDFResource("ex:conceptScheme1")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+
+            Assert.IsTrue(ontology.CheckHasConcept(new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.CheckHasConcept(new RDFResource("ex:concept2")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotConcept()
+        {
+            OWLOntology ontologyNULL = null;
+            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+
+            Assert.IsFalse(ontology.CheckHasConcept(new RDFResource("ex:concept3")));
+            Assert.IsFalse(ontology.CheckHasConcept(null));
+            Assert.IsFalse(ontologyNULL.CheckHasConcept(new RDFResource("ex:concept1")));
+            Assert.IsFalse(ontologyEMPTY.CheckHasConcept(new RDFResource("ex:concept1")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+
+            Assert.IsTrue(ontology.CheckHasCollection(new RDFResource("ex:collection")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotCollection()
+        {
+            OWLOntology ontologyNULL = null;
+            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+
+            Assert.IsFalse(ontology.CheckHasCollection(new RDFResource("ex:collection2")));
+            Assert.IsFalse(ontology.CheckHasCollection(null));
+            Assert.IsFalse(ontologyNULL.CheckHasCollection(new RDFResource("ex:collection")));
+            Assert.IsFalse(ontologyEMPTY.CheckHasCollection(new RDFResource("ex:collection")));
+        }
+
+        [TestMethod]
+        public void ShouldGetCollectionMembers()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection"));
+
+            Assert.IsNotNull(collectionMembers);
+            Assert.IsTrue(collectionMembers.Count == 2);
+            Assert.IsTrue(collectionMembers[0].Equals(new RDFResource("ex:concept1")));
+            Assert.IsTrue(collectionMembers[1].Equals(new RDFResource("ex:concept2")));
+        }
+
+        [TestMethod]
+        public void ShouldGetCollectionMembersWithSubCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>() {
+                new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
+            List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
+
+            Assert.IsNotNull(collectionMembers);
+            Assert.IsTrue(collectionMembers.Count == 3);
+            Assert.IsTrue(collectionMembers[0].Equals(new RDFResource("ex:concept1")));
+            Assert.IsTrue(collectionMembers[1].Equals(new RDFResource("ex:concept2")));
+            Assert.IsTrue(collectionMembers[2].Equals(new RDFResource("ex:concept3")));
+        }
+
+        [TestMethod]
+        public void ShouldGetCollectionMembersWithSubOrderedCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:orderedCollection") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
+                new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
+            List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection"));
+
+            Assert.IsNotNull(collectionMembers);
+            Assert.IsTrue(collectionMembers.Count == 3);
+            Assert.IsTrue(collectionMembers[0].Equals(new RDFResource("ex:concept1")));
+            Assert.IsTrue(collectionMembers[1].Equals(new RDFResource("ex:concept2")));
+            Assert.IsTrue(collectionMembers[2].Equals(new RDFResource("ex:concept3")));
+        }
+
+        [TestMethod]
+        public void ShouldGetCollectionMembersWithNestedSubCollections()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>() {
+                new RDFResource("ex:concept2"), new RDFResource("ex:orderedCollection") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
+                new RDFResource("ex:concept3"), new RDFResource("ex:concept4") }, new RDFResource("ex:conceptScheme"));
+            List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
+
+            Assert.IsNotNull(collectionMembers);
+            Assert.IsTrue(collectionMembers.Count == 4);
+            Assert.IsTrue(collectionMembers[0].Equals(new RDFResource("ex:concept1")));
+            Assert.IsTrue(collectionMembers[1].Equals(new RDFResource("ex:concept2")));
+            Assert.IsTrue(collectionMembers[2].Equals(new RDFResource("ex:concept3")));
+            Assert.IsTrue(collectionMembers[3].Equals(new RDFResource("ex:concept4")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasOrderedCollection()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+
+            Assert.IsTrue(ontology.CheckHasOrderedCollection(new RDFResource("ex:orderedCollection")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotOrderedCollection()
+        {
+            OWLOntology ontologyNULL = null;
+            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+
+            Assert.IsFalse(ontology.CheckHasOrderedCollection(new RDFResource("ex:orderedCollection2")));
+            Assert.IsFalse(ontology.CheckHasOrderedCollection(null));
+            Assert.IsFalse(ontologyNULL.CheckHasOrderedCollection(new RDFResource("ex:orderedCollection")));
+            Assert.IsFalse(ontologyEMPTY.CheckHasOrderedCollection(new RDFResource("ex:orderedCollection")));
+        }
+
+        [TestMethod]
+        public void ShouldGetOrderedCollectionMembers()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            List<RDFResource> orderedCollectionMembers = ontology.GetOrderedCollectionMembers(new RDFResource("ex:orderedCollection"));
+
+            Assert.IsNotNull(orderedCollectionMembers);
+            Assert.IsTrue(orderedCollectionMembers.Count == 2);
+            Assert.IsTrue(orderedCollectionMembers[0].Equals(new RDFResource("ex:concept1")));
+            Assert.IsTrue(orderedCollectionMembers[1].Equals(new RDFResource("ex:concept2")));
+        }
+
+        [TestMethod]
+        public void ShouldNotInfiniteLoopInGettingRecursiveCollectionMembers()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>() {
+                new RDFResource("ex:concept2"), new RDFResource("ex:collection1") }, new RDFResource("ex:conceptScheme"));
+            List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
+
+            Assert.IsNotNull(collectionMembers);
+            Assert.IsTrue(collectionMembers.Count == 2);
+            Assert.IsTrue(collectionMembers[0].Equals(new RDFResource("ex:concept1")));
+            Assert.IsTrue(collectionMembers[1].Equals(new RDFResource("ex:concept2")));
+
+            List<RDFResource> collectionMembers2 = ontology.GetCollectionMembers(new RDFResource("ex:collection2"));
+
+            Assert.IsNotNull(collectionMembers2);
+            Assert.IsTrue(collectionMembers2.Count == 2);
+            Assert.IsTrue(collectionMembers2[0].Equals(new RDFResource("ex:concept2")));
+            Assert.IsTrue(collectionMembers2[1].Equals(new RDFResource("ex:concept1")));
+        }
+
+        [TestMethod]
+        public void ShouldNotInfiniteLoopInGettingSelfRecursiveCollectionMembers()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection1") }, new RDFResource("ex:conceptScheme"));
+            List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
+
+            Assert.IsNotNull(collectionMembers);
+            Assert.IsTrue(collectionMembers.Count == 1);
+            Assert.IsTrue(collectionMembers[0].Equals(new RDFResource("ex:concept1")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasLabel()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme"));
+
+            Assert.IsTrue(ontology.CheckHasLabel(new RDFResource("ex:label1")));
+            Assert.IsTrue(ontology.CheckHasLabel(new RDFResource("ex:label2")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotLabel()
+        {
+            OWLOntology ontologyNULL = null;
+            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme"));
+
+            Assert.IsFalse(ontology.CheckHasLabel(new RDFResource("ex:label3")));
+            Assert.IsFalse(ontology.CheckHasLabel(null));
+            Assert.IsFalse(ontologyNULL.CheckHasLabel(new RDFResource("ex:label1")));
+            Assert.IsFalse(ontologyEMPTY.CheckHasLabel(new RDFResource("ex:label1")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasLabelWithLiteralForm()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConceptAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("aabb"));
+            ontology.DeclareConceptAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label2"), new RDFPlainLiteral("bbaa"));
+
+            Assert.IsTrue(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("aabb")));
+            Assert.IsTrue(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label2"), new RDFPlainLiteral("bbaa")));
+            Assert.IsTrue(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), null));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotLabelWithLiteralForm()
+        {
+            OWLOntology ontologyNULL = null;
+            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("aabb"));
+            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label2"), new RDFPlainLiteral("bbaa"));
+
+            Assert.IsFalse(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("sscc")));
+            Assert.IsFalse(ontology.CheckHasLabelWithLiteralForm(null, new RDFPlainLiteral("aabb")));
+            Assert.IsFalse(ontologyNULL.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("aabb")));
+            Assert.IsFalse(ontologyEMPTY.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("aabb")));
+        }
         #endregion
 
         #region Tests (Import/Export)
