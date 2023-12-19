@@ -52,6 +52,7 @@
   <ItemGroup>
     <Folder Include="Extensions\GEO\Reasoner\Rules\" />
     <Folder Include="Extensions\GEO\Validator\Rules\" />
+    <Folder Include="Extensions\SKOS\Reasoner\Rules\" />
     <Folder Include="Extensions\TIME\Validator\Rules\" />
   </ItemGroup>
 </Project>
