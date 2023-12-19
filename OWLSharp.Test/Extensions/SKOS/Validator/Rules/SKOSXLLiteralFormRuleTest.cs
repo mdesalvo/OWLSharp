@@ -26,14 +26,14 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldValidateLiteralForm()
         {
-            OWLOntology conceptScheme = new OWLOntology("ex:ont");
-            conceptScheme.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
-            conceptScheme.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
-            conceptScheme.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme")); //clash on absence of skosxl:literalForm
-            conceptScheme.DeclareLiteralFormOfLabel(new RDFResource("ex:label1"), new RDFPlainLiteral("label", "en-US"));
-            conceptScheme.DeclareLiteralFormOfLabel(new RDFResource("ex:label1"), new RDFPlainLiteral("etichetta", "it-IT")); //clash on cardinality restrictions on skosxl:literalForm
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme")); //clash on absence of skosxl:literalForm
+            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("label", "en-US"));
+            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("etichetta", "it-IT")); //clash on cardinality restrictions on skosxl:literalForm
 
-            OWLValidatorReport validatorReport = SKOSXLLiteralFormRule.ExecuteRule(conceptScheme);
+            OWLValidatorReport validatorReport = SKOSXLLiteralFormRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 2);
@@ -48,8 +48,8 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
             ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
             ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme")); //clash on absence of skosxl:literalForm
-            ontology.DeclareLiteralFormOfLabel(new RDFResource("ex:label1"), new RDFPlainLiteral("label", "en-US"));
-            ontology.DeclareLiteralFormOfLabel(new RDFResource("ex:label1"), new RDFPlainLiteral("etichetta", "it-IT")); //clash on cardinality restrictions on skosxl:literalForm
+            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("label", "en-US"));
+            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("etichetta", "it-IT")); //clash on cardinality restrictions on skosxl:literalForm
 
             OWLValidator validator = new OWLValidator().AddSKOSRule(SKOSEnums.SKOSValidatorRules.LiteralForm);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);

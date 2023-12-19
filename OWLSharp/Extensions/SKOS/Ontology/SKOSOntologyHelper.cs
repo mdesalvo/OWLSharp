@@ -546,9 +546,9 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given concept with the given preferred linguistic annotation
+        /// Annotates the given concept with the given linguistic annotation (preferred)
         /// </summary>
-        public static OWLOntology AnnotateConceptWithPreferredLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral preferredLabelValue)
+        public static OWLOntology AnnotateConceptPreferredLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral preferredLabelValue)
         {
             #region SKOS Integrity Checks
             bool SKOSIntegrityChecks()
@@ -577,9 +577,9 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given concept with the given alternative linguistic annotation
+        /// Annotates the given concept with the given linguistic annotation (alternative)
         /// </summary>
-        public static OWLOntology AnnotateConceptWithAlternativeLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral alternativeLabelValue)
+        public static OWLOntology AnnotateConceptAlternativeLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral alternativeLabelValue)
         {
             #region SKOS Integrity Checks
             bool SKOSIntegrityChecks()
@@ -608,9 +608,9 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Annotates the given concept with the given hidden linguistic annotation
+        /// Annotates the given concept with the given linguistic annotation (hidden)
         /// </summary>
-        public static OWLOntology AnnotateConceptWithHiddenLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral hiddenLabelValue)
+        public static OWLOntology AnnotateConceptHiddenLabel(this OWLOntology ontology, RDFResource skosConcept, RDFPlainLiteral hiddenLabelValue)
         {
             #region SKOS Integrity Checks
             bool SKOSIntegrityChecks()
@@ -1194,26 +1194,6 @@ namespace OWLSharp.Extensions.SKOS
 
             //Also add an automatic A-BOX inference exploiting simmetry of skosxl:labelRelation relation
             ontology.Data.ABoxGraph.AddTriple(new RDFTriple(rightLabel, RDFVocabulary.SKOS.SKOSXL.LABEL_RELATION, leftLabel).SetInference());
-
-            return ontology;
-        }
-
-        /// <summary>
-        /// Declares the existence of the given "LiteralForm(skosxlLabel,literalFormValue)" relation
-        /// </summary>
-        public static OWLOntology DeclareLiteralFormOfLabel(this OWLOntology ontology, RDFResource skosxlLabel, RDFLiteral literalFormValue)
-        {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot declare skosxl:literalForm relation because given \"ontology\" parameter is null");
-            if (skosxlLabel == null)
-                throw new OWLException("Cannot declare skosxl:literalForm relation because given \"skosxlLabel\" parameter is null");
-            if (literalFormValue == null)
-                throw new OWLException("Cannot declare skosxl:literalForm relation because given \"literalFormValue\" parameter is null");
-            #endregion
-
-            //Add knowledge to the A-BOX
-            ontology.Data.ABoxGraph.AddTriple(new RDFTriple(skosxlLabel, RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, literalFormValue));
 
             return ontology;
         }
