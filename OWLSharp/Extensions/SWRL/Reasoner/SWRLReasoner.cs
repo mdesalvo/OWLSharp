@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace OWLSharp.Extensions.SWRL
 {
     /// <summary>
-    /// SWRLReasoner gives SWRL modeling/reasoning capabilities to standard reasoners
+    /// SWRLReasoner gives SWRL reasoning capabilities to standard reasoners
     /// </summary>
     public static class SWRLReasoner
     {
