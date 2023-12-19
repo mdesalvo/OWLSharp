@@ -152,7 +152,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the given skos:Concept instance
+        /// Declares the given skos:Concept instance and relates it to the given skos:ConceptScheme instance
         /// </summary>
         public static OWLOntology DeclareConcept(this OWLOntology ontology, RDFResource skosConcept, RDFResource skosConceptScheme)
         {
@@ -175,7 +175,8 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the given skos:Collection instance (but not its concepts or subcollections, which must be declared apart)
+        /// Declares the given skos:Collection instance and relates it to the given skos:ConceptScheme instance<br/>
+        /// (Note that its concepts or subcollections must be declared apart)
         /// </summary>
         public static OWLOntology DeclareCollection(this OWLOntology ontology, RDFResource skosCollection, List<RDFResource> skosConcepts, RDFResource skosConceptScheme)
         {
@@ -204,7 +205,8 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the given skos:OrderedCollection instance (but not its concepts, which must be declared apart)
+        /// Declares the given skos:OrderedCollection instance and relates it to the given skos:ConceptScheme instance<br/>
+        /// (Note that its concepts or subcollections must be declared apart)
         /// </summary>
         public static OWLOntology DeclareOrderedCollection(this OWLOntology ontology, RDFResource skosOrderedCollection, List<RDFResource> skosConcepts, RDFResource skosConceptScheme)
         {
@@ -236,7 +238,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Declares the given skosxl:Label instance
+        /// Declares the given skosxl:Label instance and relates it to the given skos:ConceptScheme instance
         /// </summary>
         public static OWLOntology DeclareLabel(this OWLOntology ontology, RDFResource skosLabel, RDFResource skosConceptScheme)
         {

@@ -61,6 +61,9 @@ namespace OWLSharp.Extensions.SKOS
                         case SKOSEnums.SKOSReasonerRules.SKOS_BroaderTransitiveEntailment:
                             inferenceRegistry[SKOSEnums.SKOSReasonerRules.SKOS_BroaderTransitiveEntailment.ToString()] = SKOSBroaderTransitiveEntailmentRule.ExecuteRule(ontology);
                             break;
+                        case SKOSEnums.SKOSReasonerRules.SKOS_NarrowerTransitiveEntailment:
+                            inferenceRegistry[SKOSEnums.SKOSReasonerRules.SKOS_NarrowerTransitiveEntailment.ToString()] = SKOSNarrowerTransitiveEntailmentRule.ExecuteRule(ontology);
+                            break;
                     }
 
                     OWLEvents.RaiseInfo($"Completed SKOS reasoner rule '{skosRule}': found {inferenceRegistry[skosRule.ToString()].EvidencesCount} evidences");
