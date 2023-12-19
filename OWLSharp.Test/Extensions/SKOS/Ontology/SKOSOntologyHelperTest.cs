@@ -354,6 +354,11 @@ namespace OWLSharp.Extensions.SKOS.Test
         }
 
         [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullCollection()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareCollection(null,
+                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
+
+        [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullOntology()
             => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareCollection(new RDFResource("ex:collection"), 
                     new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
@@ -482,6 +487,11 @@ namespace OWLSharp.Extensions.SKOS.Test
             while (labelsEnumerator.MoveNext()) l++;
             Assert.IsTrue(l == 0);
         }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullOrderedCollection()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareOrderedCollection(null,
+                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullOntology()
