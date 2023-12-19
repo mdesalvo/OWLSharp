@@ -3097,6 +3097,37 @@ namespace OWLSharp.Extensions.SKOS.Test
             Assert.IsFalse(ontologyNULL.CheckHasLabel(new RDFResource("ex:label1")));
             Assert.IsFalse(ontologyEMPTY.CheckHasLabel(new RDFResource("ex:label1")));
         }
+
+        [TestMethod]
+        public void ShouldCheckHasTopConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareTopConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
+
+            Assert.IsTrue(ontology.CheckHasTopConcept(new RDFResource("ex:conceptScheme"), new RDFResource("ex:concept")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotTopConcept()
+        {
+            OWLOntology ontologyNULL = null;
+            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
+
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme2"));
+            ontology.DeclareTopConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareTopConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme2"));
+
+            Assert.IsFalse(ontology.CheckHasTopConcept(new RDFResource("ex:conceptScheme"), new RDFResource("ex:concept2")));
+            Assert.IsFalse(ontology.CheckHasTopConcept(null, new RDFResource("ex:concept2")));
+            Assert.IsFalse(ontology.CheckHasTopConcept(new RDFResource("ex:conceptScheme"), null));
+            Assert.IsFalse(ontologyNULL.CheckHasTopConcept(new RDFResource("ex:conceptScheme"), new RDFResource("ex:concept1")));
+            Assert.IsFalse(ontologyEMPTY.CheckHasTopConcept(new RDFResource("ex:conceptScheme"), new RDFResource("ex:concept1")));
+        }
         #endregion
 
         #region Tests (Import/Export)
