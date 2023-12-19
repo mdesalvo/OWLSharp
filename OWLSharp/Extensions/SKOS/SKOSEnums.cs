@@ -70,5 +70,16 @@ namespace OWLSharp.Extensions.SKOS
             /// </summary>
             ScopeNote = 7
         }
+
+        /// <summary>
+        /// Represents an enumeration for the set of built-in SKOS reasoner rules
+        /// </summary>
+        public enum SKOSReasonerRules
+        {
+            /// <summary>
+            /// Given SKOS concepts C1, C2, C3: BROADER_TRANSITIVE(?C1,?C2) ^ BROADER_TRANSITIVE(?C2,?C3) -> BROADER_TRANSITIVE(?C1,?C3)
+            /// </summary>
+            SKOS_BroaderTransitiveEntailment = 1,
+        }
     }
 }

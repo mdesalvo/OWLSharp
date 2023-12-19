@@ -13,6 +13,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
@@ -24,11 +25,46 @@ namespace OWLSharp.Extensions.SKOS
     {
         #region Methods
         /// <summary>
+        /// Adds the given SKOS rule to the reasoner
+        /// </summary>
+        public static OWLReasoner AddSKOSRule(this OWLReasoner reasoner, SKOSEnums.SKOSReasonerRules skosRule)
+        {
+            if (reasoner != null)
+            {
+                //Activate SKOS extension on the reasoner
+                reasoner.ActivateExtension<SKOSEnums.SKOSReasonerRules>("SKOS", ApplyToOntology);
+
+                //Add SKOS rule to the reasoner
+                if (!((List<SKOSEnums.SKOSReasonerRules>)reasoner.Rules["SKOS"]).Contains(skosRule))
+                    ((List<SKOSEnums.SKOSReasonerRules>)reasoner.Rules["SKOS"]).Add(skosRule);
+            }
+            return reasoner;
+        }
+
+        /// <summary>
         /// Applies the SKOS reasoner on the given ontology
         /// </summary>
         internal static void ApplyToOntology(this OWLReasoner reasoner, OWLOntology ontology, Dictionary<string, OWLReasonerReport> inferenceRegistry)
         {
-            //TODO
+            //Initialize inference registry
+            foreach (SKOSEnums.SKOSReasonerRules skosRule in (List<SKOSEnums.SKOSReasonerRules>)reasoner.Rules["SKOS"])
+                inferenceRegistry.Add(skosRule.ToString(), null);
+
+            //Execute rules
+            Parallel.ForEach((List<SKOSEnums.SKOSReasonerRules>)reasoner.Rules["SKOS"], 
+                skosRule =>
+                {
+                    OWLEvents.RaiseInfo($"Launching SKOS reasoner rule '{skosRule}'");
+
+                    switch (skosRule)
+                    {
+                        case SKOSEnums.SKOSReasonerRules.SKOS_BroaderTransitiveEntailment:
+                            inferenceRegistry[SKOSEnums.SKOSReasonerRules.SKOS_BroaderTransitiveEntailment.ToString()] = SKOSBroaderTransitiveEntailmentRule.ExecuteRule(ontology);
+                            break;
+                    }
+
+                    OWLEvents.RaiseInfo($"Completed SKOS reasoner rule '{skosRule}': found {inferenceRegistry[skosRule.ToString()].EvidencesCount} evidences");
+                });
         }
         #endregion
     }
