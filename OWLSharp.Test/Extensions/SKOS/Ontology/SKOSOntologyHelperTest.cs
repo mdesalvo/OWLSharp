@@ -2650,39 +2650,6 @@ namespace OWLSharp.Extensions.SKOS.Test
             Assert.IsFalse(ontologyNULL.CheckHasLabel(new RDFResource("ex:label1")));
             Assert.IsFalse(ontologyEMPTY.CheckHasLabel(new RDFResource("ex:label1")));
         }
-
-        [TestMethod]
-        public void ShouldCheckHasLabelWithLiteralForm()
-        {
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
-            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
-            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme"));
-            ontology.DeclareConceptAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("aabb"));
-            ontology.DeclareConceptAlternativeLabel(new RDFResource("ex:concept"), new RDFResource("ex:label2"), new RDFPlainLiteral("bbaa"));
-
-            Assert.IsTrue(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("aabb")));
-            Assert.IsTrue(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label2"), new RDFPlainLiteral("bbaa")));
-            Assert.IsTrue(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), null));
-        }
-
-        [TestMethod]
-        public void ShouldCheckHasNotLabelWithLiteralForm()
-        {
-            OWLOntology ontologyNULL = null;
-            OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
-            OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
-            ontology.DeclareLabel(new RDFResource("ex:label1"), new RDFResource("ex:conceptScheme"));
-            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptScheme"));
-            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label1"), new RDFPlainLiteral("aabb"));
-            ontology.DeclareConceptPreferredLabel(new RDFResource("ex:concept"), new RDFResource("ex:label2"), new RDFPlainLiteral("bbaa"));
-
-            Assert.IsFalse(ontology.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("sscc")));
-            Assert.IsFalse(ontology.CheckHasLabelWithLiteralForm(null, new RDFPlainLiteral("aabb")));
-            Assert.IsFalse(ontologyNULL.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("aabb")));
-            Assert.IsFalse(ontologyEMPTY.CheckHasLabelWithLiteralForm(new RDFResource("ex:label1"), new RDFPlainLiteral("aabb")));
-        }
         #endregion
 
         #region Tests (Import/Export)

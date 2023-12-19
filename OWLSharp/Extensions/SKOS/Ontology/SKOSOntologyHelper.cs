@@ -1274,13 +1274,6 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Checks for the existence of the given skosxl:Label having the given skosxl:literalForm
-        /// </summary>
-        public static bool CheckHasLabelWithLiteralForm(this OWLOntology ontology, RDFResource skosxlLabel, RDFLiteral skosxlLiteralFormValue)
-            => CheckHasLabel(ontology, skosxlLabel)
-                && ontology.Data.ABoxGraph[skosxlLabel, RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, null, skosxlLiteralFormValue].TriplesCount > 0;
-
-        /// <summary>
         /// Gets the direct and indirect skos:Concept instances which are members of the given skos:Collection
         /// </summary>
         public static List<RDFResource> GetCollectionMembers(this OWLOntology ontology, RDFResource skosCollection)
