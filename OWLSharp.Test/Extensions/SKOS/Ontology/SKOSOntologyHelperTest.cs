@@ -3128,6 +3128,319 @@ namespace OWLSharp.Extensions.SKOS.Test
             Assert.IsFalse(ontologyNULL.CheckHasTopConcept(new RDFResource("ex:conceptScheme"), new RDFResource("ex:concept1")));
             Assert.IsFalse(ontologyEMPTY.CheckHasTopConcept(new RDFResource("ex:conceptScheme"), new RDFResource("ex:concept1")));
         }
+
+        [TestMethod]
+        public void ShouldGetBroaderConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.GetBroaderConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept2"))));
+            Assert.IsTrue(ontology.GetBroaderConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept3"))));
+            Assert.IsTrue(ontology.GetBroaderConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept4")))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasBroaderConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:concept2"), new RDFResource("ex:concept3"));
+            ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept3")));
+            Assert.IsTrue(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept4"))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotBroaderConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroaderConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:concept2"), new RDFResource("ex:concept3"));
+            ontology.DeclareBroaderTransitiveConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsFalse(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
+            Assert.IsFalse(ontology.CheckHasBroaderConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+        }
+
+        [TestMethod]
+        public void ShouldGetNarrowerConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareNarrowerConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.GetNarrowerConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept2"))));
+            Assert.IsTrue(ontology.GetNarrowerConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept3"))));
+            Assert.IsTrue(ontology.GetNarrowerConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept4")))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNarrowerConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareNarrowerConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:concept2"), new RDFResource("ex:concept3"));
+            ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept3")));
+            Assert.IsTrue(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept4"))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotNarrowerConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareNarrowerConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:concept2"), new RDFResource("ex:concept3"));
+            ontology.DeclareNarrowerTransitiveConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsFalse(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
+            Assert.IsFalse(ontology.CheckHasNarrowerConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+        }
+
+        [TestMethod]
+        public void ShouldGetRelatedConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+
+            Assert.IsTrue(ontology.GetRelatedConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept2"))));
+            Assert.IsTrue(ontology.GetRelatedConcepts(new RDFResource("ex:concept2")).Any(c => c.Equals(new RDFResource("ex:concept1")))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasRelatedConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareRelatedConcepts(new RDFResource("ex:concept2"), new RDFResource("ex:concept3"));
+
+            Assert.IsTrue(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept1")));
+            Assert.IsTrue(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept3")));
+            Assert.IsTrue(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept3"), new RDFResource("ex:concept2"))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotRelatedConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareRelatedConcepts(new RDFResource("ex:concept2"), new RDFResource("ex:concept3"));
+
+            Assert.IsFalse(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
+            Assert.IsFalse(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept3"), new RDFResource("ex:concept1")));
+        }
+
+        [TestMethod]
+        public void ShouldGetBroadMatchConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.GetBroadMatchConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept2"))));
+            Assert.IsTrue(ontology.GetBroadMatchConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept3"))));
+            Assert.IsTrue(ontology.GetBroadMatchConcepts(new RDFResource("ex:concept3")).Any(c => c.Equals(new RDFResource("ex:concept4"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasBroadMatchConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
+            Assert.IsTrue(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept3"), new RDFResource("ex:concept4")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotBroadMatchConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareBroadMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsFalse(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+        }
+
+        [TestMethod]
+        public void ShouldGetNarrowMatchConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.GetNarrowMatchConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept2"))));
+            Assert.IsTrue(ontology.GetNarrowMatchConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept3"))));
+            Assert.IsTrue(ontology.GetNarrowMatchConcepts(new RDFResource("ex:concept3")).Any(c => c.Equals(new RDFResource("ex:concept4"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNarrowMatchConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.CheckHasNarrowMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasNarrowMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
+            Assert.IsTrue(ontology.CheckHasNarrowMatchConcept(new RDFResource("ex:concept3"), new RDFResource("ex:concept4")));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotNarrowMatchConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareNarrowMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsFalse(ontology.CheckHasNarrowMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+        }
+
+        [TestMethod]
+        public void ShouldGetRelatedMatchConcepts()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.GetRelatedMatchConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept2"))));
+            Assert.IsTrue(ontology.GetRelatedMatchConcepts(new RDFResource("ex:concept2")).Any(c => c.Equals(new RDFResource("ex:concept1")))); //Inference
+            Assert.IsTrue(ontology.GetRelatedMatchConcepts(new RDFResource("ex:concept1")).Any(c => c.Equals(new RDFResource("ex:concept3"))));
+            Assert.IsTrue(ontology.GetRelatedMatchConcepts(new RDFResource("ex:concept3")).Any(c => c.Equals(new RDFResource("ex:concept1")))); //Inference
+            Assert.IsTrue(ontology.GetRelatedMatchConcepts(new RDFResource("ex:concept3")).Any(c => c.Equals(new RDFResource("ex:concept4"))));
+            Assert.IsTrue(ontology.GetRelatedMatchConcepts(new RDFResource("ex:concept4")).Any(c => c.Equals(new RDFResource("ex:concept3")))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasRelatedMatchConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept2"), new RDFResource("ex:concept1"))); //Inference
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3")));
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept3"), new RDFResource("ex:concept1"))); //Inference
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept3"), new RDFResource("ex:concept4")));
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept4"), new RDFResource("ex:concept3"))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasNotRelatedMatchConcept()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ontology");
+            ontology.InitializeSKOS();
+            ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptScheme"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"));
+            ontology.DeclareRelatedMatchConcepts(new RDFResource("ex:concept3"), new RDFResource("ex:concept4"));
+
+            Assert.IsFalse(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept4")));
+        }
         #endregion
 
         #region Tests (Import/Export)
