@@ -152,7 +152,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Gets a graph representation of the ontology
+        /// Gets a graph representation of the ontology (eventually including current inferences)
         /// </summary>
         public RDFGraph ToRDFGraph(bool includeInferences=true)
             => Model.ToRDFGraph(includeInferences)
@@ -160,13 +160,13 @@ namespace OWLSharp
                     .UnionWith(OBoxGraph);
 
         /// <summary>
-        /// Asynchronously gets a graph representation of the ontology
+        /// Asynchronously gets a graph representation of the ontology (eventually including current inferences)
         /// </summary>
         public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
             => Task.Run(() => ToRDFGraph(includeInferences));
 
         /// <summary>
-        /// Writes the ontology into a file in the given OWL format
+        /// Writes the ontology into a file in the given OWL format (eventually including current inferences)
         /// </summary>
         public void ToFile(OWLEnums.OWLFormats owlFormat, string filepath, bool includeInferences=true)
         {
@@ -184,13 +184,13 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Asynchronously writes the ontology into a file in the given OWL format
+        /// Asynchronously writes the ontology into a file in the given OWL format (eventually including current inferences)
         /// </summary>
         public Task ToFileAsync(OWLEnums.OWLFormats owlFormat, string filepath, bool includeInferences=true)
             => Task.Run(() => ToFile(owlFormat, filepath, includeInferences));
 
         /// <summary>
-        /// Writes the ontology into a stream in the given OWL format (at the end the stream is closed)
+        /// Writes the ontology into a stream in the given OWL format (eventually including current inferences)
         /// </summary>
         public void ToStream(OWLEnums.OWLFormats owlFormat, Stream outputStream, bool includeInferences=true)
         {
@@ -208,7 +208,7 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Asynchronously writes the ontology into a stream in the given OWL format (at the end the stream is closed)
+        /// Asynchronously writes the ontology into a stream in the given OWL format (eventually including current inferences)
         /// </summary>
         public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream, bool includeInferences=true)
             => Task.Run(() => ToStream(owlFormat, outputStream, includeInferences));

@@ -471,14 +471,14 @@ namespace OWLSharp
         //EXPORT
 
         /// <summary>
-        /// Gets a graph representation of the data
+        /// Gets a graph representation of the data (eventually including current inferences)
         /// </summary>
         public RDFGraph ToRDFGraph(bool includeInferences=true)
             => includeInferences ? ABoxGraph.UnionWith(OBoxGraph)
                                  : new RDFGraph(ABoxGraph.Where(t => !t.IsInference() && !t.IsImport()).ToList()).UnionWith(OBoxGraph);
 
         /// <summary>
-        /// Asynchronously gets a graph representation of the data
+        /// Asynchronously gets a graph representation of the data (eventually including current inferences)
         /// </summary>
         public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
             => Task.Run(() => ToRDFGraph(includeInferences));

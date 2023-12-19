@@ -962,14 +962,14 @@ namespace OWLSharp
         //EXPORT
 
         /// <summary>
-        /// Gets a graph representation of the model
+        /// Gets a graph representation of the class model (eventually including current inferences)
         /// </summary>
         public RDFGraph ToRDFGraph(bool includeInferences=true)
             => includeInferences ? TBoxGraph.UnionWith(OBoxGraph)
                                  : new RDFGraph(TBoxGraph.Where(t => !t.IsInference() && !t.IsImport()).ToList()).UnionWith(OBoxGraph);
 
         /// <summary>
-        /// Asynchronously gets a graph representation of the model
+        /// Asynchronously gets a graph representation of the class model (eventually including current inferences)
         /// </summary>
         public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
             => Task.Run(() => ToRDFGraph(includeInferences));

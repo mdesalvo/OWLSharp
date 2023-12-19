@@ -47,10 +47,10 @@ namespace OWLSharp
         public OWLValidatorEvidence(OWLEnums.OWLValidatorEvidenceCategory evidenceCategory,
             string evidenceProvenance, string evidenceMessage, string evidenceSuggestion)
         {
-            this.EvidenceCategory = evidenceCategory;
-            this.EvidenceProvenance = evidenceProvenance;
-            this.EvidenceMessage = evidenceMessage;
-            this.EvidenceSuggestion = evidenceSuggestion;
+            EvidenceCategory = evidenceCategory;
+            EvidenceProvenance = evidenceProvenance;
+            EvidenceMessage = evidenceMessage;
+            EvidenceSuggestion = evidenceSuggestion;
         }
         #endregion
     }

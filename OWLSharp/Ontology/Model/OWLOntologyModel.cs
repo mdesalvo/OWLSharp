@@ -99,14 +99,14 @@ namespace OWLSharp
 
         #region Methods
         /// <summary>
-        /// Gets a graph representation of the model
+        /// Gets a graph representation of the model (eventually including current inferences)
         /// </summary>
         public RDFGraph ToRDFGraph(bool includeInferences=true)
             => ClassModel.ToRDFGraph(includeInferences)
                   .UnionWith(PropertyModel.ToRDFGraph(includeInferences));
 
         /// <summary>
-        /// Asynchronously gets a graph representation of the model
+        /// Asynchronously gets a graph representation of the model (eventually including current inferences)
         /// </summary>
         public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
             => Task.Run(() => ToRDFGraph(includeInferences));

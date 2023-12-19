@@ -146,19 +146,19 @@ namespace OWLSharp
         internal static OWLOntologyLoaderOptions DefaultOptions => new OWLOntologyLoaderOptions();
 
         /// <summary>
-        /// Tells the ontology loader to inject GeoSPARQL T-BOX during the loading process<br/>
+        /// Tells the ontology loader to explicitly inject GeoSPARQL T-BOX during the loading process<br/>
         /// [Default: False]
         /// </summary>
         public bool EnableGEOSupport { get; set; } = false;
 
         /// <summary>
-        /// Tells the ontology loader to inject OWL-TIME T-BOX and A-BOX during the loading process<br/>
+        /// Tells the ontology loader to explicitly inject OWL-TIME T-BOX and A-BOX during the loading process<br/>
         /// [Default: False]
         /// </summary>
         public bool EnableTIMESupport { get; set; } = false;
 
         /// <summary>
-        /// Tells the ontology loader to inject SKOS T-BOX and A-BOX during the loading process<br/>
+        /// Tells the ontology loader to explicitly inject SKOS T-BOX and A-BOX during the loading process<br/>
         /// [Default: False]
         /// </summary>
         public bool EnableSKOSSupport { get; set; } = false;

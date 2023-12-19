@@ -43,10 +43,12 @@ namespace OWLSharp
         /// </summary>
         public OWLReasonerEvidence(OWLEnums.OWLReasonerEvidenceCategory evidenceCategory, string evidenceRule, RDFTriple evidenceContent)
         {
+            #region Guards
             if (string.IsNullOrEmpty(evidenceRule))
                 throw new OWLException("Cannot create reasoner evidence because given \"evidenceRule\" parameter is null or empty");
             if (evidenceContent == null)
                 throw new OWLException("Cannot create reasoner evidence because given \"evidenceContent\" parameter is null");
+            #endregion
 
             EvidenceCategory = evidenceCategory;
             EvidenceRule = evidenceRule;
