@@ -3637,9 +3637,9 @@ namespace OWLSharp.Extensions.SKOS.Test
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
             ontology.DeclareConcept(new RDFResource("ex:concept"), new RDFResource("ex:conceptScheme"));
-            ontology.DeclareConceptNotation(new RDFResource("ex:concept"), new RDFPlainLiteral("notation"));
+            ontology.DeclareConceptNotation(new RDFResource("ex:concept"), new RDFTypedLiteral("<notation/>", RDFModelEnums.RDFDatatypes.RDF_XMLLITERAL));
 
-            Assert.IsTrue(ontology.GetConceptNotations(new RDFResource("ex:concept")).Any(c => c.Equals(new RDFPlainLiteral("notation"))));
+            Assert.IsTrue(ontology.GetConceptNotations(new RDFResource("ex:concept")).Any(c => c.Equals(new RDFTypedLiteral("<notation/>", RDFModelEnums.RDFDatatypes.RDF_XMLLITERAL))));
         }
         #endregion
 
