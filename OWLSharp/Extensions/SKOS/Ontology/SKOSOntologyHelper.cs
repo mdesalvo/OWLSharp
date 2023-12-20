@@ -1665,15 +1665,15 @@ namespace OWLSharp.Extensions.SKOS
         /// <summary>
         /// Analyzes "Notation(skosConceptScheme, X)" relations of the concept scheme to answer the notations of the given skos:Concept
         /// </summary>
-        public static List<RDFLiteral> GetConceptNotations(this OWLOntology ontology, RDFResource skosConcept)
+        public static List<RDFTypedLiteral> GetConceptNotations(this OWLOntology ontology, RDFResource skosConcept)
         {
-            List<RDFLiteral> notations = new List<RDFLiteral>();
+            List<RDFTypedLiteral> notations = new List<RDFTypedLiteral>();
 
             if (skosConcept != null && ontology != null)
             {
                 //Get skos:notation values
                 foreach (RDFTriple notationRelation in ontology.Data.ABoxGraph[skosConcept, RDFVocabulary.SKOS.NOTATION, null, null])
-                    notations.Add((RDFLiteral)notationRelation.Object);
+                    notations.Add((RDFTypedLiteral)notationRelation.Object);
             }
 
             return notations;

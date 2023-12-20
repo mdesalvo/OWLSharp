@@ -43,10 +43,12 @@ namespace OWLSharp.Extensions.SKOS
         /// </summary>
         public SKOSOntologyLens(RDFResource skosConcept, OWLOntology ontology)
         {
+            #region Guards
             if (skosConcept == null)
                 throw new OWLException("Cannot create SKOS lens because given \"skosConcept\" parameter is null");
             if (ontology == null)
                 throw new OWLException("Cannot create SKOS lens because given \"ontology\" parameter is null");
+            #endregion
 
             Concept = skosConcept;
             Ontology = ontology;
@@ -189,13 +191,13 @@ namespace OWLSharp.Extensions.SKOS
         /// <summary>
         /// Enlists the skos:notation attributions of the lens concept
         /// </summary>
-        public List<RDFLiteral> Notations()
+        public List<RDFTypedLiteral> Notations()
             => Ontology.GetConceptNotations(Concept);
 
         /// <summary>
         /// Asynchronously enlists the skos:notation attributions of the lens concept
         /// </summary>
-        public Task<List<RDFLiteral>> NotationsAsync()
+        public Task<List<RDFTypedLiteral>> NotationsAsync()
             => Task.Run(() => Notations());
 
         /// <summary>
@@ -229,21 +231,21 @@ namespace OWLSharp.Extensions.SKOS
         /// <summary>
         /// Enlists the label annotations which are assigned to the lens concept
         /// </summary>
-        public List<(RDFResource, RDFLiteral)> LabelAnnotations()
+        public List<(RDFResource, RDFPlainLiteral)> LabelAnnotations()
         {
-            List<(RDFResource, RDFLiteral)> result = new List<(RDFResource, RDFLiteral)>();
+            List<(RDFResource, RDFPlainLiteral)> result = new List<(RDFResource, RDFPlainLiteral)>();
 
             //skos:PrefLabel
             foreach (RDFTriple prefLabelTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.PREF_LABEL, null, null])
-                result.Add((RDFVocabulary.SKOS.PREF_LABEL, (RDFLiteral)prefLabelTriple.Object));
+                result.Add((RDFVocabulary.SKOS.PREF_LABEL, (RDFPlainLiteral)prefLabelTriple.Object));
 
             //skos:AltLabel
             foreach (RDFTriple altLabelTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.ALT_LABEL, null, null])
-                result.Add((RDFVocabulary.SKOS.ALT_LABEL, (RDFLiteral)altLabelTriple.Object));
+                result.Add((RDFVocabulary.SKOS.ALT_LABEL, (RDFPlainLiteral)altLabelTriple.Object));
 
             //skos:HiddenLabel
             foreach (RDFTriple hiddenLabelTriple in Ontology.Data.OBoxGraph[Concept, RDFVocabulary.SKOS.HIDDEN_LABEL, null, null])
-                result.Add((RDFVocabulary.SKOS.HIDDEN_LABEL, (RDFLiteral)hiddenLabelTriple.Object));
+                result.Add((RDFVocabulary.SKOS.HIDDEN_LABEL, (RDFPlainLiteral)hiddenLabelTriple.Object));
 
             return result;
         }
@@ -251,7 +253,7 @@ namespace OWLSharp.Extensions.SKOS
         /// <summary>
         /// Asynchronously enlists the label annotations which are assigned to the lens concept
         /// </summary>
-        public Task<List<(RDFResource, RDFLiteral)>> LabelAnnotationsAsync()
+        public Task<List<(RDFResource, RDFPlainLiteral)>> LabelAnnotationsAsync()
             => Task.Run(() => LabelAnnotations());
 
         /// <summary>
