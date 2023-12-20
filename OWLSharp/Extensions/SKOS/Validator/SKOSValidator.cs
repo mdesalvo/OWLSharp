@@ -56,11 +56,14 @@ namespace OWLSharp.Extensions.SKOS
 
                     switch (skosRule)
                     {
-                        case SKOSEnums.SKOSValidatorRules.TopConcept:
-                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.TopConcept.ToString()] = SKOSTopConceptRule.ExecuteRule(ontology);
-                            break;
                         case SKOSEnums.SKOSValidatorRules.LiteralForm:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(ontology);
+                            break;
+                        case SKOSEnums.SKOSValidatorRules.Notation:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.Notation.ToString()] = SKOSNotationRule.ExecuteRule(ontology);
+                            break;
+                        case SKOSEnums.SKOSValidatorRules.TopConcept:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.TopConcept.ToString()] = SKOSTopConceptRule.ExecuteRule(ontology);
                             break;
                     }
 

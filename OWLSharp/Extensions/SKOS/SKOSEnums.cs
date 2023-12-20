@@ -27,13 +27,18 @@ namespace OWLSharp.Extensions.SKOS
         public enum SKOSValidatorRules
         {
             /// <summary>
-            /// This SKOS rule checks for consistency of skos:hasTopConcept knowledge
-            /// </summary>
-            TopConcept = 1,
-            /// <summary>
             /// This SKOS-XL rule checks for consistency of skosxl:literalForm knowledge
             /// </summary>
-            LiteralForm = 2
+            LiteralForm = 1,
+            /// <summary>
+            /// This SKOS rule checks for consistency of skos:notation knowledge<br/>
+            /// (Ensure to initialize SKOS on your ontology before selecting this rule!)
+            /// </summary>
+            Notation = 2,
+            /// <summary>
+            /// This SKOS rule checks for consistency of skos:hasTopConcept knowledge
+            /// </summary>
+            TopConcept = 3
         };
 
         /// <summary>
