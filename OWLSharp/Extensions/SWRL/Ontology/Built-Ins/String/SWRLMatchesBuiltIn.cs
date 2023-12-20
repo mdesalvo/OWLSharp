@@ -37,8 +37,10 @@ namespace OWLSharp.Extensions.SWRL
         public SWRLMatchesBuiltIn(RDFVariable leftArgument, Regex matchesRegex)
             : base(BuiltInUri, leftArgument, null)
         {
+            #region Guards
             if (matchesRegex == null)
                 throw new OWLException("Cannot create built-in because given \"matchesRegex\" parameter is null");
+            #endregion
 
             StringBuilder regexFlags = new StringBuilder();
             if (matchesRegex.Options.HasFlag(RegexOptions.IgnoreCase))

@@ -35,8 +35,10 @@ namespace OWLSharp.Extensions.SWRL
         public SWRLMultiplyBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument, double multiplyValue)
             : base(BuiltInUri, leftArgument, rightArgument, multiplyValue)
         {
+            #region Guards
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
         }
         #endregion
     }

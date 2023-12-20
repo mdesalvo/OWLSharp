@@ -36,15 +36,17 @@ namespace OWLSharp.Extensions.SWRL
         public SWRLAbsBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument)
             : base(BuiltInUri, leftArgument, rightArgument, double.NaN)
         {
+            #region Guards
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
         }
         #endregion
 
-            #region Interfaces
-            /// <summary>
-            /// Gives the string representation of the built-in
-            /// </summary>
+        #region Interfaces
+        /// <summary>
+        /// Gives the string representation of the built-in
+        /// </summary>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

@@ -35,8 +35,10 @@ namespace OWLSharp.Extensions.SWRL
         public SWRLPowBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument, double expValue)
             : base(BuiltInUri, leftArgument, rightArgument, expValue)
         {
+            #region Guards
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
         }
         #endregion
     }

@@ -36,8 +36,10 @@ namespace OWLSharp.Extensions.SWRL
         public SWRLStartsWithBuiltIn(RDFVariable leftArgument, string startString)
             : base(BuiltInUri, leftArgument, null)
         {
+            #region Guards
             if (startString == null)
                 throw new OWLException("Cannot create built-in because given \"startString\" parameter is null");
+            #endregion
 
             RightArgument = new RDFPlainLiteral(startString);
             BuiltInFilter = new RDFRegexFilter(leftArgument, new Regex($"^{startString}"));

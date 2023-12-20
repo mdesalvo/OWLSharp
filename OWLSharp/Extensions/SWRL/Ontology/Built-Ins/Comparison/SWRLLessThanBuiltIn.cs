@@ -53,8 +53,10 @@ namespace OWLSharp.Extensions.SWRL
         internal SWRLLessThanBuiltIn(RDFVariable leftArgument, RDFPatternMember rightArgument)
             : base(BuiltInUri, leftArgument, rightArgument)
         {
+            #region Guards
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
 
             BuiltInFilter = new RDFComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.LessThan, leftArgument, rightArgument);
         }

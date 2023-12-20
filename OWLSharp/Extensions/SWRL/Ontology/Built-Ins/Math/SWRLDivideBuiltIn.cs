@@ -35,10 +35,12 @@ namespace OWLSharp.Extensions.SWRL
         public SWRLDivideBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument, double divideValue)
             : base(BuiltInUri, leftArgument, rightArgument, divideValue)
         {
+            #region Guards
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             if (divideValue == 0d)
                 throw new OWLException("Cannot create built-in because given \"divideValue\" is zero!");
+            #endregion
         }
         #endregion
     }

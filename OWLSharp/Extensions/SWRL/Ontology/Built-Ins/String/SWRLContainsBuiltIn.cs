@@ -36,8 +36,10 @@ namespace OWLSharp.Extensions.SWRL
         public SWRLContainsBuiltIn(RDFVariable leftArgument, string containString)
             : base(BuiltInUri, leftArgument, null)
         {
+            #region Guards
             if (containString == null)
                 throw new OWLException("Cannot create built-in because given \"containString\" parameter is null");
+            #endregion
 
             RightArgument = new RDFPlainLiteral(containString);
             BuiltInFilter = new RDFRegexFilter(leftArgument, new Regex($"{containString}"));
