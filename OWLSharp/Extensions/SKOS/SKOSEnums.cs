@@ -81,9 +81,13 @@ namespace OWLSharp.Extensions.SKOS
             /// </summary>
             SKOS_BroaderTransitiveEntailment = 1,
             /// <summary>
+            /// Given SKOS concepts C1, C2, C3: EXACT_MATCH(?C1,?C2) ^ EXACT_MATCH(?C2,?C3) -> EXACT_MATCH(?C1,?C3)
+            /// </summary>
+            SKOS_ExactMatchEntailment = 2,
+            /// <summary>
             /// Given SKOS concepts C1, C2, C3: NARROWER_TRANSITIVE(?C1,?C2) ^ NARROWER_TRANSITIVE(?C2,?C3) -> NARROWER_TRANSITIVE(?C1,?C3)
             /// </summary>
-            SKOS_NarrowerTransitiveEntailment = 2
+            SKOS_NarrowerTransitiveEntailment = 3
         }
     }
 }
