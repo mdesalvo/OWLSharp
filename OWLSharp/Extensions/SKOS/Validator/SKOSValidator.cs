@@ -62,6 +62,9 @@ namespace OWLSharp.Extensions.SKOS
                         case SKOSEnums.SKOSValidatorRules.Notation:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.Notation.ToString()] = SKOSNotationRule.ExecuteRule(ontology);
                             break;
+                        case SKOSEnums.SKOSValidatorRules.PreferredLabel:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.PreferredLabel.ToString()] = SKOSPreferredLabelRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.TopConcept:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.TopConcept.ToString()] = SKOSTopConceptRule.ExecuteRule(ontology);
                             break;
