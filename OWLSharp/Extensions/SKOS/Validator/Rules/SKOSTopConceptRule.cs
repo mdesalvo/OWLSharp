@@ -25,10 +25,10 @@ namespace OWLSharp.Extensions.SKOS
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
 
-            //skos:hasTopConcept
             IEnumerator<RDFResource> conceptSchemes = ontology.GetConceptSchemesEnumerator();
             while (conceptSchemes.MoveNext())
             {
+                //skos:hasTopConcept
                 foreach (RDFTriple hasTopConceptRelation in ontology.Data.ABoxGraph[conceptSchemes.Current, RDFVocabulary.SKOS.HAS_TOP_CONCEPT, null, null])
                 { 
                     if (ontology.GetBroaderConcepts((RDFResource)hasTopConceptRelation.Object).Count > 0)

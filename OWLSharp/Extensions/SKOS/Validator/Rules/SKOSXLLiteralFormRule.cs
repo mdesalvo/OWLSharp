@@ -25,15 +25,15 @@ namespace OWLSharp.Extensions.SKOS
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
 
-            //skosxl:literalForm
             IEnumerator<RDFResource> labels = ontology.GetLabelsEnumerator();
             while (labels.MoveNext())
-            { 
+            {
+                //skosxl:literalForm
                 if (ontology.Data.ABoxGraph[labels.Current, RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, null, null].TriplesCount != 1)
                     validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                         OWLEnums.OWLValidatorEvidenceCategory.Error,
                         nameof(SKOSXLLiteralFormRule),
-                        $"Violation of 'skosxl:literalForm' behavior on label '{labels.Current}'",
+                        $"Violation of 'skosxl:literalForm' behavior on skosxl:Label '{labels.Current}'",
                         "SKOS-XL labels must have exactly one literal form"));
             }
 
