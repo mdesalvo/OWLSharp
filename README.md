@@ -7,12 +7,10 @@ OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</
     <li>Validating and Reasoning through extensible sets of intelligent <b>RDFS/OWL-DL/OWL2</b> semantic rules</li>
 </ul>
 
-Besides, it integrates a set of extensions providing domain-tailored expressivity for:
+In addition to the <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.9.0/OWLSharp-3.9.0.pdf">core ontology features</a>, it integrates a set of extensions providing domain-tailored expressivity for:
 <ul>
-    <li>Creating reasoners to build business-logic inference rules in a fluent and natural way (<b>SWRL</b>)</li>
-    <li>Creating schemes describing, documenting and organizing vocabularies of concepts (<b>SKOS</b>)</li>
-    <li>Representing features having a geospatial description (<b>GeoSPARQL</b>)</li>
-    <li>Representing features having a temporal description (<b>OWL-TIME</b>)</li>
+    <li>Creating reasoners to build business-logic inference rules in a fluent and natural way (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.9.0/OWLSharp.Extensions.SWRL-3.9.0.pdf">SWRL</a>)</li>
+    <li>Creating schemes describing, documenting and organizing vocabularies of concepts (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.9.0/OWLSharp.Extensions.SKOS-3.9.0.pdf">SKOS</a>)</li>
+    <li>Representing features having a geospatial description (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.9.0/OWLSharp.Extensions.GEO-3.9.0.pdf">GeoSPARQL</a>)</li>
+    <li>Representing features having a temporal description (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.9.0/OWLSharp.Extensions.TIME-3.9.0.pdf">OWL-TIME</a>)</li>
 </ul>
-
-Documentation of the library architecture and features is available <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.8.0/OWLSharp-3.8.0.pdf">here</a>
