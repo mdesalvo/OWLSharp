@@ -30,8 +30,6 @@ namespace OWLSharp
     /// </summary>
     internal static class OWLXml
     {
-        internal static readonly RDFResource OWLDeprecatedAnnotation = new RDFResource("http://www.w3.org/2002/07/owl#deprecated");
-
         #region Methods
 
         #region Write
@@ -1031,7 +1029,7 @@ namespace OWLSharp
                             WriteAnnotation(dataAnnotation);
                         //OWL/XML uses "owl:deprecated" annotation instead of "rdf:type owl:DeprecatedClass"
                         if (ontology.Model.ClassModel.CheckHasDeprecatedClass(ontologyClass))
-                            WriteAnnotation(new RDFTriple(ontologyClass, OWLDeprecatedAnnotation, RDFTypedLiteral.True));
+                            WriteAnnotation(new RDFTriple(ontologyClass, RDFVocabulary.OWL.DEPRECATED, RDFTypedLiteral.True));
                     }
                     break;
                 case "PropertyModel":
@@ -1044,7 +1042,7 @@ namespace OWLSharp
                             WriteAnnotation(dataAnnotation);
                         //OWL/XML uses "owl:deprecated" annotation instead of "rdf:type owl:DeprecatedProperty"
                         if (ontology.Model.PropertyModel.CheckHasDeprecatedProperty(ontologyProperty))
-                            WriteAnnotation(new RDFTriple(ontologyProperty, OWLDeprecatedAnnotation, RDFTypedLiteral.True));
+                            WriteAnnotation(new RDFTriple(ontologyProperty, RDFVocabulary.OWL.DEPRECATED, RDFTypedLiteral.True));
                     }
                     break;
                 case "Data":
