@@ -62,6 +62,9 @@ namespace OWLSharp.Extensions.SKOS
                         case SKOSEnums.SKOSValidatorRules.LiteralForm:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(ontology);
                             break;
+                        case SKOSEnums.SKOSValidatorRules.Narrower:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.Narrower.ToString()] = SKOSNarrowerRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.Notation:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.Notation.ToString()] = SKOSNotationRule.ExecuteRule(ontology);
                             break;
