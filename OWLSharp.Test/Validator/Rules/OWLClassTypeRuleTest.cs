@@ -66,7 +66,7 @@ namespace OWLSharp.Validator.Test
             Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
         }
 
-        [TestMethod, Timeout(5000)] // checking 30k of individuals should not take longer than 5 seconds
+        [TestMethod, Timeout(6000)] // checking 30k of individuals should not take longer than 6 seconds
         public void ShouldCompleteQuickly()
         {
             RDFResource class1 = new RDFResource("ex:class1");

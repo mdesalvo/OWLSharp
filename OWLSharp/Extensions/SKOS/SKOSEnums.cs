@@ -27,22 +27,26 @@ namespace OWLSharp.Extensions.SKOS
         public enum SKOSValidatorRules
         {
             /// <summary>
+            /// This SKOS rule checks for consistency of skos:[broader|broaderTransitive|broadMatch] relations
+            /// </summary>
+            Broader = 1,
+            /// <summary>
             /// This SKOS-XL rule checks for consistency of skosxl:literalForm relations
             /// </summary>
-            LiteralForm = 1,
+            LiteralForm = 2,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:notation relations<br/>
             /// (Ensure to initialize SKOS on your ontology before selecting this rule!)
             /// </summary>
-            Notation = 2,
+            Notation = 3,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:prefLabel annotations
             /// </summary>
-            PreferredLabel = 3,
+            PreferredLabel = 4,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:hasTopConcept relations
             /// </summary>
-            TopConcept = 4
+            TopConcept = 5
         };
 
         /// <summary>
