@@ -48,9 +48,13 @@ namespace OWLSharp.Extensions.SKOS
             /// </summary>
             PreferredLabel = 5,
             /// <summary>
+            /// This SKOS rule checks for consistency of skos:[related|relatedMatch] relations
+            /// </summary>
+            Related = 6,
+            /// <summary>
             /// This SKOS rule checks for consistency of skos:hasTopConcept relations
             /// </summary>
-            TopConcept = 6
+            TopConcept = 7
         };
 
         /// <summary>

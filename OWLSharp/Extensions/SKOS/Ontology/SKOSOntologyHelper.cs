@@ -1351,7 +1351,7 @@ namespace OWLSharp.Extensions.SKOS
             => childConcept != null && motherConcept != null && ontology != null && ontology.GetBroaderConcepts(childConcept).Any(concept => concept.Equals(motherConcept));
 
         /// <summary>
-        /// Analyzes "Broader(skosConceptScheme, X)" relations of the concept scheme to answer the broader concepts of the given skos:Concept
+        /// Analyzes "Broader(skosConcept, X)" relations to answer the broader concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetBroaderConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1404,7 +1404,7 @@ namespace OWLSharp.Extensions.SKOS
             => childConcept != null && motherConcept != null && ontology != null && ontology.GetNarrowerConcepts(motherConcept).Any(concept => concept.Equals(childConcept));
 
         /// <summary>
-        /// Analyzes "Narrower(skosConceptScheme, X)" relations of the concept scheme to answer the narrower concepts of the given skos:Concept
+        /// Analyzes "Narrower(skosConcept, X)" relations to answer the narrower concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetNarrowerConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1457,7 +1457,7 @@ namespace OWLSharp.Extensions.SKOS
             => rightConcept != null && leftConcept != null && ontology != null && ontology.GetRelatedConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
 
         /// <summary>
-        /// Analyzes "Related(skosConceptScheme, X)" relations of the concept scheme to answer the related concepts of the given skos:Concept
+        /// Analyzes "Related(skosConcept, X)" relations to answer the related concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetRelatedConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1480,7 +1480,7 @@ namespace OWLSharp.Extensions.SKOS
             => childConcept != null && motherConcept != null && ontology != null && ontology.GetBroadMatchConcepts(childConcept).Any(concept => concept.Equals(motherConcept));
 
         /// <summary>
-        /// Analyzes "BroadMatch(skosConceptScheme, X)" relations of the concept scheme to answer the broad match concepts of the given skos:Concept
+        /// Analyzes "BroadMatch(skosConcept, X)" relations to answer the broad match concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetBroadMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1503,7 +1503,7 @@ namespace OWLSharp.Extensions.SKOS
             => childConcept != null && motherConcept != null && ontology != null && ontology.GetNarrowMatchConcepts(motherConcept).Any(concept => concept.Equals(childConcept));
 
         /// <summary>
-        /// Analyzes "NarrowMatch(skosConceptScheme, X)" relations of the concept scheme to answer the narrow match concepts of the given skos:Concept
+        /// Analyzes "NarrowMatch(skosConcept, X)" relations to answer the narrow match concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetNarrowMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1526,7 +1526,7 @@ namespace OWLSharp.Extensions.SKOS
             => rightConcept != null && leftConcept != null && ontology != null && ontology.GetRelatedMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
 
         /// <summary>
-        /// Analyzes "RelatedMatch(skosConceptScheme, X)" relations of the concept scheme to answer the related match concepts of the given skos:Concept
+        /// Analyzes "RelatedMatch(skosConcept, X)" relations to answer the related match concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetRelatedMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1549,7 +1549,7 @@ namespace OWLSharp.Extensions.SKOS
             => rightConcept != null && leftConcept != null && ontology != null && ontology.GetCloseMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
 
         /// <summary>
-        /// Analyzes "CloseMatch(skosConceptScheme, X)" relations of the concept scheme to answer the close match concepts of the given skos:Concept
+        /// Analyzes "CloseMatch(skosConcept, X)" relations to answer the close match concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetCloseMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1572,7 +1572,7 @@ namespace OWLSharp.Extensions.SKOS
             => leftConcept != null && rightConcept != null && ontology != null && ontology.GetExactMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
 
         /// <summary>
-        /// Analyzes "ExactMatch(skosConceptScheme, X)" relations of the concept scheme to answer the exact match concepts of the given skos:Concept
+        /// Analyzes "ExactMatch(skosConcept, X)" relations to answer the exact match concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetExactMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1617,7 +1617,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Analyzes "MappingRelation(skosConceptScheme, X)" relations of the concept scheme to answer the mapping related concepts of the given skos:Concept
+        /// Analyzes "MappingRelation(skosConcept, X)" relations to answer the mapping related concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetMappingRelatedConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1640,7 +1640,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Analyzes "SemanticRelation(skosConceptScheme, X)" relations of the concept scheme to answer the semantic related concepts of the given skos:Concept
+        /// Analyzes "SemanticRelation(skosConcept, X)" relations to answer the semantic related concepts of the given skos:Concept
         /// </summary>
         public static List<RDFResource> GetSemanticRelatedConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
@@ -1663,7 +1663,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         /// <summary>
-        /// Analyzes "Notation(skosConceptScheme, X)" relations of the concept scheme to answer the notations of the given skos:Concept
+        /// Analyzes "Notation(skosConcept, X)" relations to answer the notations of the given skos:Concept
         /// </summary>
         public static List<RDFTypedLiteral> GetConceptNotations(this OWLOntology ontology, RDFResource skosConcept)
         {
