@@ -59,6 +59,9 @@ namespace OWLSharp.Extensions.SKOS
                         case SKOSEnums.SKOSValidatorRules.Broader:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.Broader.ToString()] = SKOSBroaderRule.ExecuteRule(ontology);
                             break;
+                        case SKOSEnums.SKOSValidatorRules.CloseOrExactMatch:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.CloseOrExactMatch.ToString()] = SKOSCloseOrExactMatchRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.LiteralForm:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(ontology);
                             break;

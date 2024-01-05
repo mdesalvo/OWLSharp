@@ -31,30 +31,34 @@ namespace OWLSharp.Extensions.SKOS
             /// </summary>
             Broader = 1,
             /// <summary>
+            /// This SKOS rule checks for consistency of skos:[close|exact]Match relations
+            /// </summary>
+            CloseOrExactMatch = 2,
+            /// <summary>
             /// This SKOS-XL rule checks for consistency of skosxl:literalForm relations
             /// </summary>
-            LiteralForm = 2,
+            LiteralForm = 3,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:[narrower|narrowerTransitive|narrowMatch] relations
             /// </summary>
-            Narrower = 3,
+            Narrower = 4,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:notation relations<br/>
             /// (Ensure to initialize SKOS on your ontology before selecting this rule!)
             /// </summary>
-            Notation = 4,
+            Notation = 5,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:prefLabel annotations
             /// </summary>
-            PreferredLabel = 5,
+            PreferredLabel = 6,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:[related|relatedMatch] relations
             /// </summary>
-            Related = 6,
+            Related = 7,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:hasTopConcept relations
             /// </summary>
-            TopConcept = 7
+            TopConcept = 8
         };
 
         /// <summary>
