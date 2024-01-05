@@ -20,7 +20,6 @@ namespace OWLSharp.Extensions.SKOS
     /// <summary>
     /// SKOSReasoner gives SKOS reasoning capabilities to standard reasoners
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public static class SKOSReasoner
     {
         #region Methods
