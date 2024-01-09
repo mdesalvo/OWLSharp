@@ -248,5 +248,16 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_StartedByEqualsEntailment = 24
         }
+
+        /// <summary>
+        /// Represents an enumeration for the set of built-in OWL-TIME validator rules
+        /// </summary>
+        public enum TIMEValidatorRules
+        {
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalAfter relations between intervals
+            /// </summary>
+            TIME_IntervalAfter = 1
+        }
     }
 }
