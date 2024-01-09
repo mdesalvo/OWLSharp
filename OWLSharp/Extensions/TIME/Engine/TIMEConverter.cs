@@ -27,8 +27,9 @@ namespace OWLSharp.Extensions.TIME
         #region Methods
         /// <summary>
         /// From a numeric instant position encoded in the given positional TRS, it calculates a coordinate compatible with the metrics of the given calendar TRS.<br/><br/>
-        /// If the given positional TRS works at large-scale, only the Year component of the result coordinate will be valorized.<br/>
-        /// If the given calendar TRS ships with a metric configured for supporting the detection of leap years, it will be considered.
+        /// If the given positional TRS works at large-scale, only the Year component of the result will be valorized.<br/>
+        /// If the given calendar TRS ships with a metric configured for supporting leap years, this will be considered.<br/><br/>
+        /// Example: TIMEConverter.PositionToCoordinate(1682520568, TIMEPositionReferenceSystem.UnixTRS, TIMECalendarReferenceSystem.Gregorian) => (2023, 4, 26, 14, 49, 28)
         /// </summary>
         public static TIMECoordinate PositionToCoordinate(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
         {
@@ -98,7 +99,8 @@ namespace OWLSharp.Extensions.TIME
 
         /// <summary>
         /// Gets a coordinate which is the normalization of the given one according to the metrics of the given calendar TRS.<br/><br/>
-        /// If this calendar TRS ships with a metric configured for supporting the detection of leap years, it will be considered.
+        /// If the given calendar TRS ships with a metric configured for supporting leap years, this will be considered.<br/><br/>
+        /// Example: TIMEConverter.NormalizeCoordinate(new TimeCoordinate(1983, 12, 54, 50, 75, 75), TIMECalendarReferenceSystem.Gregorian) => (1984, 1, 25, 3, 16, 15)
         /// </summary>
         public static TIMECoordinate NormalizeCoordinate(TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
         {
@@ -181,7 +183,8 @@ namespace OWLSharp.Extensions.TIME
 
         /// <summary>
         /// From a numeric interval duration encoded in the given unit type, it calculates an extent compatible with the metrics of the given calendar TRS.<br/><br/>
-        /// If the given calendar TRS ships with inexact metric, calendarized components (Months, Years) will be cumulated in Days component.
+        /// If the given calendar TRS ships with inexact metric, calendarized components (Months, Years) will be cumulated into Days component.<br/><br/>
+        /// Example: TIMEConverter.DurationToExtent(745, TIMEUnitType.Hour, TIMECalendarReferenceSystem.Gregorian) => (0, 0, 0, 31, 1, 0, 0)
         /// </summary>
         public static TIMEExtent DurationToExtent(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
         {
@@ -230,7 +233,8 @@ namespace OWLSharp.Extensions.TIME
 
         /// <summary>
         /// Gets an extent which is the normalization of the given one according to the metrics of the given calendar TRS.<br/><br/>
-        /// Normalized time extents cumulate their Months, Weeks and Years components into Days component.
+        /// Normalized time extents cumulate their Months, Weeks and Years components into Days component.<br/><br/>
+        /// Example: TIMEConverter.NormalizeExtent(new TimeExtent(1, 1, 1, 40, 25, 64, 62)) => (0, 0, 0, 443, 2, 5, 2)
         /// </summary>
         public static TIMEExtent NormalizeExtent(TIMEExtent timeExtent, TIMECalendarReferenceSystem calendarTRS)
         {
@@ -261,7 +265,8 @@ namespace OWLSharp.Extensions.TIME
 
         /// <summary>
         /// Calculates the extent between the given coordinates, which is normalized according to the metrics of the given calendar TRS.<br/><br/>
-        /// If this calendar TRS ships with a metric configured for supporting the detection of leap years, it will not be considered.
+        /// If the given calendar TRS ships with a metric configured for supporting leap years, this will NOT be considered.<br/><br/>
+        /// Example: TIMEConverter.CalculateExtent(new TimeCoordinate(1983, 2, 10, 15, 30, 30),new TimeCoordinate(2023, 4, 29, 11, 38, 10)) => (0, 0, 0, 14678, 20, 7, 40)
         /// </summary>
         public static TIMEExtent CalculateExtent(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
         {
