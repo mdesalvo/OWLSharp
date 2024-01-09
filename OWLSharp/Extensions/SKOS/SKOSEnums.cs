@@ -27,38 +27,42 @@ namespace OWLSharp.Extensions.SKOS
         public enum SKOSValidatorRules
         {
             /// <summary>
+            /// This SKOS rule checks for consistency of skos:altLabel annotations
+            /// </summary>
+            AlternativeLabel = 1,
+            /// <summary>
             /// This SKOS rule checks for consistency of skos:[broader|broaderTransitive|broadMatch] relations
             /// </summary>
-            Broader = 1,
+            Broader = 2,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:[close|exact]Match relations
             /// </summary>
-            CloseOrExactMatch = 2,
+            CloseOrExactMatch = 3,
             /// <summary>
             /// This SKOS-XL rule checks for consistency of skosxl:literalForm relations
             /// </summary>
-            LiteralForm = 3,
+            LiteralForm = 4,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:[narrower|narrowerTransitive|narrowMatch] relations
             /// </summary>
-            Narrower = 4,
+            Narrower = 5,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:notation relations<br/>
             /// (Ensure to initialize SKOS on your ontology before selecting this rule!)
             /// </summary>
-            Notation = 5,
+            Notation = 6,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:prefLabel annotations
             /// </summary>
-            PreferredLabel = 6,
+            PreferredLabel = 7,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:[related|relatedMatch] relations
             /// </summary>
-            Related = 7,
+            Related = 8,
             /// <summary>
             /// This SKOS rule checks for consistency of skos:hasTopConcept relations
             /// </summary>
-            TopConcept = 8
+            TopConcept = 9
         };
 
         /// <summary>
