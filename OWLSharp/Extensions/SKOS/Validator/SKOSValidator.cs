@@ -65,6 +65,9 @@ namespace OWLSharp.Extensions.SKOS
                         case SKOSEnums.SKOSValidatorRules.CloseOrExactMatch:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.CloseOrExactMatch.ToString()] = SKOSCloseOrExactMatchRule.ExecuteRule(ontology);
                             break;
+                        case SKOSEnums.SKOSValidatorRules.HiddenLabel:
+                            evidenceRegistry[SKOSEnums.SKOSValidatorRules.HiddenLabel.ToString()] = SKOSHiddenLabelRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.LiteralForm:
                             evidenceRegistry[SKOSEnums.SKOSValidatorRules.LiteralForm.ToString()] = SKOSXLLiteralFormRule.ExecuteRule(ontology);
                             break;
