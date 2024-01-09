@@ -30,19 +30,20 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.InitializeSKOS();
             ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptSchemeA"));
             ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareLabel(new RDFResource("ex:label3"), new RDFResource("ex:conceptSchemeA"));
+            ontology.DeclareLabel(new RDFResource("ex:label1A"), new RDFResource("ex:conceptSchemeA"));
+            ontology.DeclareLabel(new RDFResource("ex:label1B"), new RDFResource("ex:conceptSchemeA"));
             //Since our SKOS API is protected, we are writing this rule to cover low-level OWL modeling use cases...
             ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept1", "en-US"));
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept1", "en-US")); //clash
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept3"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept3", "en"));
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept3"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("concept3", "en")); //clash
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept2"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label2"));
-            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:label2"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("concept2")); //clash
-            
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept1", "en-US")); //annotation clash
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept1", "en"));
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("concept1", "en")); //annotation clash
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label1A"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:label1A"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("concept1"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SKOSXL.PREF_LABEL, new RDFResource("ex:label1B"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:label1B"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("concept1")); //relation clash
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept2", "en-US"));
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept2", "en"));
+
             OWLValidatorReport validatorReport = SKOSAlternativeLabelRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(validatorReport);
@@ -58,18 +59,19 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.InitializeSKOS();
             ontology.DeclareConcept(new RDFResource("ex:concept1"), new RDFResource("ex:conceptSchemeA"));
             ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareConcept(new RDFResource("ex:concept3"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareConcept(new RDFResource("ex:concept4"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareLabel(new RDFResource("ex:label2"), new RDFResource("ex:conceptSchemeA"));
-            ontology.DeclareLabel(new RDFResource("ex:label3"), new RDFResource("ex:conceptSchemeA"));
+            ontology.DeclareLabel(new RDFResource("ex:label1A"), new RDFResource("ex:conceptSchemeA"));
+            ontology.DeclareLabel(new RDFResource("ex:label1B"), new RDFResource("ex:conceptSchemeA"));
             //Since our SKOS API is protected, we are writing this rule to cover low-level OWL modeling use cases...
             ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept1", "en-US"));
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept1", "en-US")); //clash
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept3"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept3", "en"));
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept3"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("concept3", "en")); //clash
-            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept2"));
-            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label2"));
-            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:label2"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("concept2")); //clash
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept1", "en-US")); //annotation clash
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept1", "en"));
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.HIDDEN_LABEL, new RDFPlainLiteral("concept1", "en")); //annotation clash
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SKOSXL.ALT_LABEL, new RDFResource("ex:label1A"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:label1A"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("concept1"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:concept1"), RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL, new RDFResource("ex:label1B"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:label1B"), RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM, new RDFPlainLiteral("concept1")); //relation clash
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.ALT_LABEL, new RDFPlainLiteral("concept2", "en-US"));
+            ontology.Data.AnnotateIndividual(new RDFResource("ex:concept2"), RDFVocabulary.SKOS.PREF_LABEL, new RDFPlainLiteral("concept2", "en"));
 
             OWLValidator validator = new OWLValidator().AddSKOSRule(SKOSEnums.SKOSValidatorRules.AlternativeLabel);
             OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
