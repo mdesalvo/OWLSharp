@@ -259,9 +259,17 @@ namespace OWLSharp.Extensions.TIME
             /// </summary>
             TIME_InstantAfter = 1,
             /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:before relations between instants
+            /// </summary>
+            TIME_InstantBefore = 2,
+            /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalAfter relations between intervals
             /// </summary>
-            TIME_IntervalAfter = 2
+            TIME_IntervalAfter = 3,
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalBefore relations between intervals
+            /// </summary>
+            TIME_IntervalBefore = 4
         }
     }
 }

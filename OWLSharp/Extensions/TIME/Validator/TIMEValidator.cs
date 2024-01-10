@@ -59,8 +59,14 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEValidatorRules.TIME_InstantAfter:
                             evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_InstantAfter.ToString()] = TIMEInstantAfterRule.ExecuteRule(ontology);
                             break;
+                        case TIMEEnums.TIMEValidatorRules.TIME_InstantBefore:
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_InstantBefore.ToString()] = TIMEInstantBeforeRule.ExecuteRule(ontology);
+                            break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalAfter:
                             evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalAfter.ToString()] = TIMEIntervalAfterRule.ExecuteRule(ontology);
+                            break;
+                        case TIMEEnums.TIMEValidatorRules.TIME_IntervalBefore:
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalBefore.ToString()] = TIMEIntervalBeforeRule.ExecuteRule(ontology);
                             break;
                     }
 

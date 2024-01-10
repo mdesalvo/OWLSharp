@@ -29,7 +29,7 @@ namespace OWLSharp.Extensions.TIME
     {
         #region Declarer
         /// <summary>
-        /// Declares the existence of the given temporal instant and makes it the temporal extent of the given A-BOX feature individual
+        /// Declares the existence of the given instant and makes it the temporal extent of the given feature
         /// </summary>
         public static OWLOntology DeclareInstant(this OWLOntology timeOntology, RDFResource featureUri, TIMEInstant timeInstant)
         {
@@ -138,7 +138,7 @@ namespace OWLSharp.Extensions.TIME
         }
 
         /// <summary>
-        /// Declares the existence of the given temporal interval and makes it the temporal extent of the given A-BOX feature individual
+        /// Declares the existence of the given interval and makes it the temporal extent of the given feature
         /// </summary>
         public static OWLOntology DeclareInterval(this OWLOntology timeOntology, RDFResource featureUri, TIMEInterval timeInterval)
         {
@@ -292,7 +292,7 @@ namespace OWLSharp.Extensions.TIME
 
         #region Analyzer
         /// <summary>
-        /// Gets the temporal extent of the given A-BOX feature individual by analyzing its "time:hasTime" relations
+        /// Gets the temporal extent of the given feature by analyzing its "time:hasTime" relations
         /// </summary>
         public static List<TIMEEntity> GetTemporalExtentOfFeature(this OWLOntology timeOntology, RDFResource featureUri)
         {
