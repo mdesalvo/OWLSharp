@@ -255,9 +255,13 @@ namespace OWLSharp.Extensions.TIME
         public enum TIMEValidatorRules
         {
             /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:after relations between instants
+            /// </summary>
+            TIME_InstantAfter = 1,
+            /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalAfter relations between intervals
             /// </summary>
-            TIME_IntervalAfter = 1
+            TIME_IntervalAfter = 2
         }
     }
 }

@@ -1911,6 +1911,38 @@ namespace OWLSharp.Extensions.TIME.Test
         public void ShouldThrowExceptionOnGettingRelatedIntervalsBecauseNullURI()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").GetRelatedIntervals(null, TIMEEnums.TIMEIntervalRelation.Meets));
 
+        [DataTestMethod]
+        [DataRow(TIMEEnums.TIMEInstantRelation.After)]
+        [DataRow(TIMEEnums.TIMEInstantRelation.Before)]
+        public void ShouldGetRelatedInstants(TIMEEnums.TIMEInstantRelation relation)
+        {
+            RDFResource tiRelation = null;
+            switch (relation)
+            {
+                case TIMEEnums.TIMEInstantRelation.After:
+                    tiRelation = RDFVocabulary.TIME.AFTER;
+                    break;
+                case TIMEEnums.TIMEInstantRelation.Before:
+                    tiRelation = RDFVocabulary.TIME.BEFORE;
+                    break;
+            }
+
+            RDFGraph graph = new RDFGraph();
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:Feature"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:InstantA")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:InstantA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:InstantA"), tiRelation, new RDFResource("ex:InstantB")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:InstantB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
+            OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport = true });
+            List<RDFResource> relatedInstants = timeOntology.GetRelatedInstants(new RDFResource("ex:InstantA"), relation);
+
+            Assert.IsNotNull(relatedInstants);
+            Assert.IsTrue(relatedInstants.Single().Equals(new RDFResource("ex:InstantB")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnGettingRelatedInstantsBecauseNullURI()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").GetRelatedInstants(null, TIMEEnums.TIMEInstantRelation.Before));
+
         //E2E Tests
 
         [TestMethod]

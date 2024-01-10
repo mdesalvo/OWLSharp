@@ -1166,6 +1166,35 @@ namespace OWLSharp.Extensions.TIME
         }
 
         /// <summary>
+        /// Gets the instants having the given relation with the given instant 
+        /// </summary>
+        public static List<RDFResource> GetRelatedInstants(this OWLOntology timeOntology, RDFResource timeInstantURI, TIMEEnums.TIMEInstantRelation timeInstantRelation)
+        {
+            #region Guards
+            if (timeInstantURI == null)
+                throw new OWLException("Cannot get related instants because given \"timeInstantURI\" parameter is null");
+            #endregion
+
+            //Fetch instants linked with the given one through the given relation
+            List<RDFResource> relatedInstants = new List<RDFResource>();
+            switch (timeInstantRelation)
+            {
+                case TIMEEnums.TIMEInstantRelation.After:
+                    relatedInstants.AddRange(timeOntology.Data.ABoxGraph[timeInstantURI, RDFVocabulary.TIME.AFTER, null, null]
+                        .Select(t => t.Object)
+                        .OfType<RDFResource>());
+                    break;
+                case TIMEEnums.TIMEInstantRelation.Before:
+                    relatedInstants.AddRange(timeOntology.Data.ABoxGraph[timeInstantURI, RDFVocabulary.TIME.BEFORE, null, null]
+                        .Select(t => t.Object)
+                        .OfType<RDFResource>());
+                    break;
+            }
+            return relatedInstants;
+        }
+
+
+        /// <summary>
         /// Gets the intervals having the given relation with the given interval 
         /// </summary>
         public static List<RDFResource> GetRelatedIntervals(this OWLOntology timeOntology, RDFResource timeIntervalURI, TIMEEnums.TIMEIntervalRelation timeIntervalRelation)
