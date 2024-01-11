@@ -269,7 +269,11 @@ namespace OWLSharp.Extensions.TIME
             /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalBefore relations between intervals
             /// </summary>
-            TIME_IntervalBefore = 4
+            TIME_IntervalBefore = 4,
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalContains relations between intervals
+            /// </summary>
+            TIME_IntervalContains = 5
         }
     }
 }

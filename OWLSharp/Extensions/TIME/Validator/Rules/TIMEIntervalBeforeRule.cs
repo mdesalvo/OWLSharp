@@ -17,7 +17,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Extensions.TIME
 {
     /// <summary>
-    /// OWL-TIME validator rule checking for consistency of time:beforeInterval relations
+    /// OWL-TIME validator rule checking for consistency of time:intervalBefore relations
     /// </summary>
     internal class TIMEIntervalBeforeRule
     {
