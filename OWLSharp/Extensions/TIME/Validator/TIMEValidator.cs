@@ -71,6 +71,9 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalContains:
                             evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalContains.ToString()] = TIMEIntervalContainsRule.ExecuteRule(ontology);
                             break;
+                        case TIMEEnums.TIMEValidatorRules.TIME_IntervalDisjoint:
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalDisjoint.ToString()] = TIMEIntervalDisjointRule.ExecuteRule(ontology);
+                            break;
                     }
 
                     OWLEvents.RaiseInfo($"Completed TIME validator rule '{timeRule}': found {evidenceRegistry[timeRule.ToString()].EvidencesCount} evidences");
