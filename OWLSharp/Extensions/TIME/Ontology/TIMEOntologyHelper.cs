@@ -29,7 +29,7 @@ namespace OWLSharp.Extensions.TIME
     {
         #region Declarer
         /// <summary>
-        /// Declares the existence of the given instant and makes it the temporal extent of the given feature
+        /// Declares the existence of the given instant, making it the temporal extent of the given feature
         /// </summary>
         public static OWLOntology DeclareInstant(this OWLOntology timeOntology, RDFResource featureUri, TIMEInstant timeInstant)
         {
@@ -138,7 +138,7 @@ namespace OWLSharp.Extensions.TIME
         }
 
         /// <summary>
-        /// Declares the existence of the given interval and makes it the temporal extent of the given feature
+        /// Declares the existence of the given interval, making it the temporal extent of the given feature
         /// </summary>
         public static OWLOntology DeclareInterval(this OWLOntology timeOntology, RDFResource featureUri, TIMEInterval timeInterval)
         {
