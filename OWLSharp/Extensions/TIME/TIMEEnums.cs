@@ -289,7 +289,11 @@ namespace OWLSharp.Extensions.TIME
             /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalFinishes relations between intervals
             /// </summary>
-            TIME_IntervalFinishes = 9
+            TIME_IntervalFinishes = 9,
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalFinishedBy relations between intervals
+            /// </summary>
+            TIME_IntervalFinishedBy = 10
         }
     }
 }
