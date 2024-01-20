@@ -155,6 +155,32 @@ namespace OWLSharp.Extensions.TIME.Test
         }
 
         [TestMethod]
+        public void ShouldValidateIntervalInFailingOnHasInside()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.InitializeTIME();
+            ontology.DeclareInterval(new RDFResource("ex:ACentury"),
+                new TIMEInterval(new RDFResource("ex:ACenturyINTV"),
+                new TIMEInstant(new RDFResource("ex:ACenturyINTVBegin"), new DateTime(1992, 01, 01)),
+                new TIMEInstant(new RDFResource("ex:ACenturyINTVEnd"), new DateTime(1999, 12, 31))));
+            ontology.DeclareInterval(new RDFResource("ex:BCentury"),
+                new TIMEInterval(new RDFResource("ex:BCenturyINTV"),
+                new TIMEInstant(new RDFResource("ex:BCenturyINTVBegin"), new DateTime(1990, 01, 01)),
+                new TIMEInstant(new RDFResource("ex:BCenturyINTVEnd"), new DateTime(1999, 12, 31))));
+            ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:ACenturyINTV")),
+                new TIMEInterval(new RDFResource("ex:BCenturyINTV")), TIMEEnums.TIMEIntervalRelation.In);
+            ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:ACenturyINTV")),
+                new TIMEInterval(new RDFResource("ex:BCenturyINTV")), TIMEEnums.TIMEIntervalRelation.HasInside); //clash on time:IntervalIn
+
+            OWLValidatorReport validatorReport = TIMEIntervalInRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldValidateIntervalInFailingOnMeets()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
