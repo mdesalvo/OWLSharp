@@ -301,7 +301,11 @@ namespace OWLSharp.Extensions.TIME
             /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalIn relations between intervals
             /// </summary>
-            TIME_IntervalIn = 12
+            TIME_IntervalIn = 12,
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalMeets relations between intervals
+            /// </summary>
+            TIME_IntervalMeets = 13
         }
     }
 }
