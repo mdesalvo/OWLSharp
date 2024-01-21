@@ -13,6 +13,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.TIME
 {
@@ -49,6 +50,8 @@ namespace OWLSharp.Extensions.TIME
                 evidenceRegistry.Add(timeRule.ToString(), null);
 
             //Execute rules
+            List<RDFResource> timeInstants = ontology.Data.GetIndividualsOf(ontology.Model, RDFVocabulary.TIME.INSTANT);
+            List<RDFResource> timeIntervals = ontology.Data.GetIndividualsOf(ontology.Model, RDFVocabulary.TIME.INTERVAL);
             Parallel.ForEach((List<TIMEEnums.TIMEValidatorRules>)validator.Rules["TIME"],
                 timeRule =>
                 {
@@ -57,43 +60,46 @@ namespace OWLSharp.Extensions.TIME
                     switch (timeRule)
                     {
                         case TIMEEnums.TIMEValidatorRules.TIME_InstantAfter:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_InstantAfter.ToString()] = TIMEInstantAfterRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_InstantAfter.ToString()] = TIMEInstantAfterRule.ExecuteRule(ontology, timeInstants);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_InstantBefore:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_InstantBefore.ToString()] = TIMEInstantBeforeRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_InstantBefore.ToString()] = TIMEInstantBeforeRule.ExecuteRule(ontology, timeInstants);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalAfter:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalAfter.ToString()] = TIMEIntervalAfterRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalAfter.ToString()] = TIMEIntervalAfterRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalBefore:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalBefore.ToString()] = TIMEIntervalBeforeRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalBefore.ToString()] = TIMEIntervalBeforeRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalContains:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalContains.ToString()] = TIMEIntervalContainsRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalContains.ToString()] = TIMEIntervalContainsRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalDisjoint:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalDisjoint.ToString()] = TIMEIntervalDisjointRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalDisjoint.ToString()] = TIMEIntervalDisjointRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalDuring:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalDuring.ToString()] = TIMEIntervalDuringRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalDuring.ToString()] = TIMEIntervalDuringRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalEquals:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalEquals.ToString()] = TIMEIntervalEqualsRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalEquals.ToString()] = TIMEIntervalEqualsRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalFinishes:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalFinishes.ToString()] = TIMEIntervalFinishesRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalFinishes.ToString()] = TIMEIntervalFinishesRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalFinishedBy:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalFinishedBy.ToString()] = TIMEIntervalFinishedByRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalFinishedBy.ToString()] = TIMEIntervalFinishedByRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalHasInside:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalHasInside.ToString()] = TIMEIntervalHasInsideRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalHasInside.ToString()] = TIMEIntervalHasInsideRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalIn:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalIn.ToString()] = TIMEIntervalInRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalIn.ToString()] = TIMEIntervalInRule.ExecuteRule(ontology, timeIntervals);
                             break;
                         case TIMEEnums.TIMEValidatorRules.TIME_IntervalMeets:
-                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalMeets.ToString()] = TIMEIntervalMeetsRule.ExecuteRule(ontology);
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalMeets.ToString()] = TIMEIntervalMeetsRule.ExecuteRule(ontology, timeIntervals);
+                            break;
+                        case TIMEEnums.TIMEValidatorRules.TIME_IntervalMetBy:
+                            evidenceRegistry[TIMEEnums.TIMEValidatorRules.TIME_IntervalMetBy.ToString()] = TIMEIntervalMetByRule.ExecuteRule(ontology, timeIntervals);
                             break;
                     }
 

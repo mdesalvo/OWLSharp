@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
 using System.Linq;
 using RDFSharp.Model;
 
@@ -21,13 +22,11 @@ namespace OWLSharp.Extensions.TIME
     /// </summary>
     internal class TIMEInstantAfterRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology, List<RDFResource> timeInstants)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
 
-            //Get the individuals of type 'time:Instant' declared in the ontology
-            foreach (RDFResource currentInstant in ontology.Data.GetIndividualsOf(ontology.Model, RDFVocabulary.TIME.INSTANT))
-                //Get the list of instants against which the currently analyzed instant is related by 'time:after'
+            foreach (RDFResource currentInstant in timeInstants)
                 foreach (RDFResource precedingInstant in ontology.GetRelatedInstants(currentInstant, TIMEEnums.TIMEInstantRelation.After))
                 {
                     //time:after

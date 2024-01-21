@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
 using System.Linq;
 using RDFSharp.Model;
 
@@ -21,13 +22,11 @@ namespace OWLSharp.Extensions.TIME
     /// </summary>
     internal class TIMEIntervalAfterRule
     {
-        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology)
+        internal static OWLValidatorReport ExecuteRule(OWLOntology ontology, List<RDFResource> timeIntervals)
         {
             OWLValidatorReport validatorRuleReport = new OWLValidatorReport();
 
-            //Get the individuals of type 'time:Interval' declared in the ontology
-            foreach (RDFResource currentInterval in ontology.Data.GetIndividualsOf(ontology.Model, RDFVocabulary.TIME.INTERVAL))
-                //Get the list of intervals against which the currently analyzed interval is related by 'time:intervalAfter'
+            foreach (RDFResource currentInterval in timeIntervals)
                 foreach (RDFResource precedingInterval in ontology.GetRelatedIntervals(currentInterval, TIMEEnums.TIMEIntervalRelation.After))
                 {
                     //time:intervalAfter

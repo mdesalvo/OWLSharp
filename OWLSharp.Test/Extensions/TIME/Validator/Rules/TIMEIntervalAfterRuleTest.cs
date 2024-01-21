@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 using System;
+using System.Collections.Generic;
 
 namespace OWLSharp.Extensions.TIME.Test
 {
@@ -42,7 +43,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW1INTV")),
                 new TIMEInterval(new RDFResource("ex:WW2INTV")), TIMEEnums.TIMEIntervalRelation.After); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 2);
@@ -68,7 +69,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.Before); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -94,7 +95,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.Contains); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -120,7 +121,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.During); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -146,7 +147,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.Equals); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -172,7 +173,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.FinishedBy); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -198,7 +199,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.Finishes); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -224,7 +225,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.HasInside); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -250,7 +251,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.In); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -276,7 +277,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.Meets); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -302,7 +303,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.MetBy); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -328,7 +329,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.NotDisjoint); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -354,7 +355,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.OverlappedBy); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -380,7 +381,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.Overlaps); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -406,7 +407,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.StartedBy); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -432,7 +433,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:WW2INTV")),
                 new TIMEInterval(new RDFResource("ex:WW1INTV")), TIMEEnums.TIMEIntervalRelation.Starts); //clash on time:intervalAfter
 
-            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEIntervalAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INTV"), new RDFResource("ex:WW1INTV") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);

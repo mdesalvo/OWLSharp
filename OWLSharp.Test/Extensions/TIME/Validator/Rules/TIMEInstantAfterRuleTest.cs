@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 using System;
+using System.Collections.Generic;
 
 namespace OWLSharp.Extensions.TIME.Test
 {
@@ -38,7 +39,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareInstantRelation(new TIMEInstant(new RDFResource("ex:WW2INSTBegin")),
                 new TIMEInstant(new RDFResource("ex:WW2INSTEnd")), TIMEEnums.TIMEInstantRelation.After); //clash on time:after
 
-            OWLValidatorReport validatorReport = TIMEInstantAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEInstantAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INSTBegin"), new RDFResource("ex:WW2INSTEnd") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 2);
@@ -60,7 +61,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareInstantRelation(new TIMEInstant(new RDFResource("ex:WW2INSTEnd")),
                 new TIMEInstant(new RDFResource("ex:WW2INSTBegin")), TIMEEnums.TIMEInstantRelation.Before); //clash on time:after
 
-            OWLValidatorReport validatorReport = TIMEInstantAfterRule.ExecuteRule(ontology);
+            OWLValidatorReport validatorReport = TIMEInstantAfterRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:WW2INSTBegin"), new RDFResource("ex:WW2INSTEnd") });
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
