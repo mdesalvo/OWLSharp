@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.TIME.Test
     {
         #region Tests
         [TestMethod]
-        public void ShouldValidateIntervalEqualsFailingOnBefore()
+        public void ShouldValidateIntervalNotDisjointFailingOnBefore()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.InitializeTIME();
@@ -52,7 +52,7 @@ namespace OWLSharp.Extensions.TIME.Test
         }
 
         [TestMethod]
-        public void ShouldValidateIntervalEqualsFailingOnAfter()
+        public void ShouldValidateIntervalNotDisjointFailingOnAfter()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.InitializeTIME();
@@ -78,7 +78,7 @@ namespace OWLSharp.Extensions.TIME.Test
         }
 
         [TestMethod]
-        public void ShouldValidateIntervalEqualsFailingOnDisjoint()
+        public void ShouldValidateIntervalNotDisjointFailingOnDisjoint()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.InitializeTIME();
@@ -104,7 +104,7 @@ namespace OWLSharp.Extensions.TIME.Test
         }
 
         [TestMethod]
-        public void ShouldValidateIntervalEqualsViaValidator()
+        public void ShouldValidateIntervalNotDisjointViaValidator()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.InitializeTIME();
