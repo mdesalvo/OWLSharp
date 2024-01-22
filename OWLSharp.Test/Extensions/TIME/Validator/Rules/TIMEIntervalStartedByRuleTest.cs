@@ -208,6 +208,32 @@ namespace OWLSharp.Extensions.TIME.Test
         }
 
         [TestMethod]
+        public void ShouldValidateIntervalStartedByFailingOnIn()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.InitializeTIME();
+            ontology.DeclareInterval(new RDFResource("ex:ACentury"),
+                new TIMEInterval(new RDFResource("ex:ACenturyINTV"),
+                new TIMEInstant(new RDFResource("ex:ACenturyINTVBegin"), new DateTime(1997, 01, 01)),
+                new TIMEInstant(new RDFResource("ex:ACenturyINTVEnd"), new DateTime(1997, 12, 31))));
+            ontology.DeclareInterval(new RDFResource("ex:BCentury"),
+                new TIMEInterval(new RDFResource("ex:BCenturyINTV"),
+                new TIMEInstant(new RDFResource("ex:BCenturyINTVBegin"), new DateTime(1997, 01, 01)),
+                new TIMEInstant(new RDFResource("ex:BCenturyINTVEnd"), new DateTime(1997, 06, 30))));
+            ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:ACenturyINTV")),
+                new TIMEInterval(new RDFResource("ex:BCenturyINTV")), TIMEEnums.TIMEIntervalRelation.StartedBy);
+            ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:ACenturyINTV")),
+                new TIMEInterval(new RDFResource("ex:BCenturyINTV")), TIMEEnums.TIMEIntervalRelation.In); //clash on time:intervalStartedBy
+
+            OWLValidatorReport validatorReport = TIMEIntervalStartedByRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:ACenturyINTV"), new RDFResource("ex:BCenturyINTV") });
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldValidateIntervalStartedByFailingOnMeets()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
