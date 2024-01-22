@@ -313,7 +313,11 @@ namespace OWLSharp.Extensions.TIME
             /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalNotDisjoint relations between intervals
             /// </summary>
-            TIME_IntervalNotDisjoint = 15
+            TIME_IntervalNotDisjoint = 15,
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalOverlaps relations between intervals
+            /// </summary>
+            TIME_IntervalOverlaps = 16
         }
     }
 }
