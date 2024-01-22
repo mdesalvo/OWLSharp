@@ -112,7 +112,7 @@ namespace OWLSharp
 
         #region Methods
         /// <summary>
-        /// Annotates the ontology with the given URI value (e.g: owl:import "http://example.org/ont.owl")
+        /// Annotates the ontology with the given URI value (e.g: owl:imports "http://example.org/ont.owl")
         /// </summary>
         public OWLOntology Annotate(RDFResource annotationProperty, RDFResource annotationValue)
         {

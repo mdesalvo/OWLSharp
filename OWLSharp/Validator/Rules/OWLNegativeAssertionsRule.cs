@@ -60,7 +60,7 @@ namespace OWLSharp
                         OWLEnums.OWLValidatorEvidenceCategory.Error,
                         nameof(OWLNegativeAssertionsRule),
                         $"Violation of negative object assertion '{negativeObjectAssertion}'",
-                        "Revise your object assertions: there should not be any object assertion conflicting with negative object assertions!"));
+                        "Revise your object assertions: there should not be any object assertions conflicting with negative object assertions!"));
             }
 
             //owl:NegativeDatatypeProperty
@@ -88,7 +88,7 @@ namespace OWLSharp
                         OWLEnums.OWLValidatorEvidenceCategory.Error,
                         nameof(OWLNegativeAssertionsRule),
                         $"Violation of negative datatype assertion '{negativeDatatypeAssertion}'",
-                        "Revise your datatype assertions: there should not be any datatype assertion conflicting with negative datatype assertions!"));
+                        "Revise your datatype assertions: there should not be any datatype assertions conflicting with negative datatype assertions!"));
             }
 
             return validatorRuleReport;
