@@ -309,7 +309,11 @@ namespace OWLSharp.Extensions.TIME
             /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalMetBy relations between intervals
             /// </summary>
-            TIME_IntervalMetBy = 14
+            TIME_IntervalMetBy = 14,
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalNotDisjoint relations between intervals
+            /// </summary>
+            TIME_IntervalNotDisjoint = 15
         }
     }
 }
