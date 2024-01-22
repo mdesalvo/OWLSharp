@@ -317,7 +317,11 @@ namespace OWLSharp.Extensions.TIME
             /// <summary>
             /// This OWL-TIME rule checks for consistency of time:intervalOverlaps relations between intervals
             /// </summary>
-            TIME_IntervalOverlaps = 16
+            TIME_IntervalOverlaps = 16,
+            /// <summary>
+            /// This OWL-TIME rule checks for consistency of time:intervalOverlappedBy relations between intervals
+            /// </summary>
+            TIME_IntervalOverlappedBy = 17
         }
     }
 }
