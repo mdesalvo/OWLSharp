@@ -176,9 +176,13 @@ namespace OWLSharp.Extensions.TIME
             //Normalize year
             double normalizedYear = (timeCoordinate.Year ?? 0) + remainingYears;
 
-            return new TIMECoordinate(Math.Truncate(normalizedYear), Math.Truncate(normalizedMonth), Math.Truncate(normalizedDay),
-                Math.Truncate(normalizedHour), Math.Truncate(normalizedMinute), normalizedSecond) { 
-                Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_SECOND) };
+            return new TIMECoordinate(
+                Math.Truncate(normalizedYear), 
+                Math.Truncate(normalizedMonth), 
+                Math.Truncate(normalizedDay),
+                Math.Truncate(normalizedHour), 
+                Math.Truncate(normalizedMinute), 
+                normalizedSecond) { Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_SECOND) };
         }
 
         /// <summary>
