@@ -180,6 +180,18 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldNotImportOntologyBecauseNullOrBlankUri()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:OCLS"));
+            ontology.Import(null);
+            ontology.Import(new RDFResource());
+
+            Assert.IsTrue(ontology.OBoxGraph[ontology, RDFVocabulary.OWL.IMPORTS, null, null].TriplesCount == 0);
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:OCLS")));
+        }
+
+        [TestMethod]
         public async Task ShouldImportOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
