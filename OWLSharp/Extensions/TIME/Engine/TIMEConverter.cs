@@ -313,12 +313,9 @@ namespace OWLSharp.Extensions.TIME
                                              + (normalizedEnd.Month.Value    * calendarTRS.Metrics.SecondsInMinute * calendarTRS.Metrics.MinutesInHour * calendarTRS.Metrics.HoursInDay * (calendarTRS.Metrics.DaysInYear / calendarTRS.Metrics.MonthsInYear))
                                              + (normalizedEnd.Year.Value     * calendarTRS.Metrics.SecondsInMinute * calendarTRS.Metrics.MinutesInHour * calendarTRS.Metrics.HoursInDay * calendarTRS.Metrics.DaysInYear);
 
-            //Calculate the vector distance of start/end coordinates
-            double vectorDistance = Math.Sqrt(Math.Pow(normalizedEndSeconds - normalizedStartSeconds, 2));
-
-            //Return extent equivalent to the vector distance
-            TIMEExtent vectorDistanceExtent = DurationToExtent(vectorDistance, TIMEUnit.Second, calendarTRS);
-            return vectorDistanceExtent;
+            //Return extent between start/end coordinates
+            TIMEExtent extent = DurationToExtent(normalizedEndSeconds - normalizedStartSeconds, TIMEUnit.Second, calendarTRS);
+            return extent;
         }
         #endregion
 
