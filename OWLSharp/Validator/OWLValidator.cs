@@ -153,6 +153,10 @@ namespace OWLSharp
                             case OWLEnums.OWLValidatorRules.TopBottom:
                                 evidenceRegistry[OWLEnums.OWLValidatorRules.TopBottom.ToString()] = OWLTopBottomRule.ExecuteRule(ontology);
                                 break;
+                            //Rules detecting violations in consequence of Import/Merge actions
+                            case OWLEnums.OWLValidatorRules.SubClassConsistency:
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.SubClassConsistency.ToString()] = OWLSubClassConsistencyRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard validator rule '{stdRule}': found {evidenceRegistry[stdRule.ToString()].EvidencesCount} evidences");

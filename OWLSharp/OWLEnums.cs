@@ -116,7 +116,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL2 rule check for consistency of owl:TobObjectProperty (as root) and owl:BottomObjectProperty (as bottom) 
             /// </summary>
-            TopBottom = 19
+            TopBottom = 19,
+            /// <summary>
+            /// This OWL-DL rule checks for consistency of rdfs:subClassOf knowledge (useful after import/merge scenarios)
+            /// </summary>
+            SubClassConsistency = 20
         };
 
         /// <summary>
