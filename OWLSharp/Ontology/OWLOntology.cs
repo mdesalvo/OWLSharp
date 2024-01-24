@@ -152,6 +152,54 @@ namespace OWLSharp
         }
 
         /// <summary>
+        /// Tries to import the ontology specified at the given URI
+        /// </summary>
+        public void Import(RDFResource ontologyUri, int timeoutMilliseconds=20000)
+        {
+            #region Guards
+            //Cannot proceed if the given URI is not valid
+            if (ontologyUri == null || ontologyUri.IsBlank)
+                return;
+            #endregion
+
+            //Dereference the given URI into a graph
+            RDFGraph ontologyGraph = RDFGraph.FromUri(ontologyUri.URI, timeoutMilliseconds);
+
+            //Gets an ontology from the dereferenced graph
+            OWLOntology ontology = FromRDFGraph(ontologyGraph);
+
+            //Setup owl:imports annotation of the imported ontology into this ontology
+            Annotate(RDFVocabulary.OWL.IMPORTS, ontology);
+
+            //Merge the class model of the imported ontology into this ontology
+            foreach (RDFTriple ontologyTriple in ontology.Model.ClassModel.TBoxGraph)
+                Model.ClassModel.TBoxGraph.AddTriple(ontologyTriple.SetImport());
+            foreach (RDFResource ontologyClass in ontology.Model.ClassModel.Classes.Values)
+                if (!Model.ClassModel.Classes.ContainsKey(ontologyClass.PatternMemberID))
+                    Model.ClassModel.Classes.Add(ontologyClass.PatternMemberID, ontologyClass);
+
+            //Merge the property model of the imported ontology into this ontology
+            foreach (RDFTriple ontologyTriple in ontology.Model.PropertyModel.TBoxGraph)
+                Model.PropertyModel.TBoxGraph.AddTriple(ontologyTriple.SetImport());
+            foreach (RDFResource ontologyProperty in ontology.Model.PropertyModel.Properties.Values)
+                if (!Model.PropertyModel.Properties.ContainsKey(ontologyProperty.PatternMemberID))
+                    Model.PropertyModel.Properties.Add(ontologyProperty.PatternMemberID, ontologyProperty);
+
+            //Merge the data of the imported ontology into this ontology
+            foreach (RDFTriple ontologyTriple in ontology.Data.ABoxGraph)
+                Data.ABoxGraph.AddTriple(ontologyTriple.SetImport());
+            foreach (RDFResource ontologyIndividual in ontology.Data.Individuals.Values)
+                if (!Data.Individuals.ContainsKey(ontologyIndividual.PatternMemberID))
+                    Data.Individuals.Add(ontologyIndividual.PatternMemberID, ontologyIndividual);
+        }
+
+        /// <summary>
+        /// Asynchronously tries to import the ontology specified at the given URI
+        /// </summary>
+        public Task ImportAsync(RDFResource ontologyUri, int timeoutMilliseconds=20000)
+            => Task.Run(() => Import(ontologyUri, timeoutMilliseconds));
+
+        /// <summary>
         /// Gets a graph representation of the ontology (eventually including current inferences)
         /// </summary>
         public RDFGraph ToRDFGraph(bool includeInferences=true)

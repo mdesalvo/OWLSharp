@@ -260,11 +260,9 @@ namespace OWLSharp.Extensions.TIME
             {
                 foreach (RDFTriple timeTriple in timeClassModel.TBoxGraph)
                     existingClassModel.TBoxGraph.AddTriple(timeTriple.SetImport());
-                foreach (RDFResource timeClass in timeClassModel.Classes.Values)    
-                {
+                foreach (RDFResource timeClass in timeClassModel.Classes.Values)
                     if (!existingClassModel.Classes.ContainsKey(timeClass.PatternMemberID))
-                        existingClassModel.Classes.Add(timeClass.PatternMemberID, timeClass);    
-                }
+                        existingClassModel.Classes.Add(timeClass.PatternMemberID, timeClass);
             }
             #endregion
 
@@ -472,11 +470,9 @@ namespace OWLSharp.Extensions.TIME
             {
                 foreach (RDFTriple timeTriple in timePropertyModel.TBoxGraph)
                     existingPropertyModel.TBoxGraph.AddTriple(timeTriple.SetImport());
-                foreach (RDFResource timeProperty in timePropertyModel.Properties.Values)    
-                {
+                foreach (RDFResource timeProperty in timePropertyModel.Properties.Values)
                     if (!existingPropertyModel.Properties.ContainsKey(timeProperty.PatternMemberID))
-                        existingPropertyModel.Properties.Add(timeProperty.PatternMemberID, timeProperty);    
-                }
+                        existingPropertyModel.Properties.Add(timeProperty.PatternMemberID, timeProperty);
             }            
             #endregion
 
@@ -567,11 +563,9 @@ namespace OWLSharp.Extensions.TIME
             {
                 foreach (RDFTriple timeTriple in timeData.ABoxGraph)
                     existingData.ABoxGraph.AddTriple(timeTriple.SetImport());
-                foreach (RDFResource timeIndividual in timeData.Individuals.Values)    
-                {
+                foreach (RDFResource timeIndividual in timeData.Individuals.Values)
                     if (!existingData.Individuals.ContainsKey(timeIndividual.PatternMemberID))
-                        existingData.Individuals.Add(timeIndividual.PatternMemberID, timeIndividual);    
-                }
+                        existingData.Individuals.Add(timeIndividual.PatternMemberID, timeIndividual);
             }            
             #endregion
 

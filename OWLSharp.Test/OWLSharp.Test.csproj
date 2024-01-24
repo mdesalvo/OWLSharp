@@ -21,6 +21,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="WireMock.Net" Version="1.5.46" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\OWLSharp\OWLSharp.csproj" />

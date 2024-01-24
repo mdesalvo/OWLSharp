@@ -15,21 +15,32 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WireMock.RequestBuilders;
+using WireMock.ResponseBuilders;
+using WireMock.Server;
 using OWLSharp.Extensions.GEO;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
+using System.Net;
+using System.Text;
+using WireMock.Types;
+using WireMock.Util;
 
 namespace OWLSharp.Test
 {
     [TestClass]
     public class OWLOntologyTest
     {
+        private WireMockServer server;
+
+        [TestInitialize]
+        public void Initialize() { server = WireMockServer.Start(); }
+
         #region Test
         [TestMethod]
         public void ShouldCreateOntology()
@@ -117,6 +128,106 @@ namespace OWLSharp.Test
         [TestMethod]
         public void ShouldThrowExceptionOnLiteralAnnotatingOntologyBecauseNullValue()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").Annotate(RDFVocabulary.RDFS.LABEL, null as RDFLiteral));
+
+        [TestMethod]
+        public void ShouldImportOntology()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:OCLS"));
+
+            server.Given(
+                      Request.Create()
+                             .WithPath("/OWLOntologyTest/ShouldImportOntology")
+                             .UsingGet())
+                  .RespondWith(
+                      Response.Create()
+                              .WithHeader("Content-Type", "application/turtle")
+                              .WithCallback(req =>
+                              {
+                                  return new WireMock.ResponseMessage()
+                                  {
+                                      BodyData = new BodyData()
+                                      {
+                                          BodyAsString =
+@"@base <ex:org> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<ex:org> a owl:Ontology .
+<ex:org/CLS1> a owl:Class .
+<ex:org/CLS2> a owl:Class .
+<ex:org/CLS1> owl:EquivalentClass <ex:org/CLS2> .
+<ex:org/OBP1> a owl:ObjectProperty .
+<ex:org/OBP2> a owl:ObjectProperty .
+<ex:org/OBP1> owl:EquivalentProperty <ex:org/OBP2> .
+<ex:org/IDV1> a owl:Individual, <ex:org/CLS1>; <ex:org/OBP1> <ex:org/IDV2> .
+<ex:org/IDV2> a owl:Individual, <ex:org/CLS2> .",
+                                          Encoding = Encoding.UTF8,
+                                          DetectedBodyType = BodyType.String
+                                      }
+                                  };
+                              })
+                              .WithStatusCode(HttpStatusCode.OK));
+
+            ontology.Import(new RDFResource(server.Url + "/OWLOntologyTest/ShouldImportOntology"));
+
+            Assert.IsTrue(ontology.OBoxGraph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource("ex:org"), null].TriplesCount == 1);
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:OCLS")));
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:org/CLS1")));
+            Assert.IsTrue(ontology.Model.PropertyModel.CheckHasObjectProperty(new RDFResource("ex:org/OBP1")));
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:org/IDV1")));
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:org/IDV2")));
+        }
+
+        [TestMethod]
+        public async Task ShouldImportOntologyAsync()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:OCLS"));
+
+            server.Given(
+                      Request.Create()
+                             .WithPath("/OWLOntologyTest/ShouldImportOntologyAsync")
+                             .UsingGet())
+                  .RespondWith(
+                      Response.Create()
+                              .WithHeader("Content-Type", "application/turtle")
+                              .WithCallback(req =>
+                              {
+                                  return new WireMock.ResponseMessage()
+                                  {
+                                      BodyData = new BodyData()
+                                      {
+                                          BodyAsString =
+@"@base <ex:org> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<ex:org> a owl:Ontology .
+<ex:org/CLS1> a owl:Class .
+<ex:org/CLS2> a owl:Class .
+<ex:org/CLS1> owl:EquivalentClass <ex:org/CLS2> .
+<ex:org/OBP1> a owl:ObjectProperty .
+<ex:org/OBP2> a owl:ObjectProperty .
+<ex:org/OBP1> owl:EquivalentProperty <ex:org/OBP2> .
+<ex:org/IDV1> a owl:Individual, <ex:org/CLS1>; <ex:org/OBP1> <ex:org/IDV2> .
+<ex:org/IDV2> a owl:Individual, <ex:org/CLS2> .",
+                                          Encoding = Encoding.UTF8,
+                                          DetectedBodyType = BodyType.String
+                                      }
+                                  };
+                              })
+                              .WithStatusCode(HttpStatusCode.OK));
+
+            await ontology.ImportAsync(new RDFResource(server.Url + "/OWLOntologyTest/ShouldImportOntologyAsync"));
+
+            Assert.IsTrue(ontology.OBoxGraph[ontology, RDFVocabulary.OWL.IMPORTS, new RDFResource("ex:org"), null].TriplesCount == 1);
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:OCLS")));
+            Assert.IsTrue(ontology.Model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:org/CLS1")));
+            Assert.IsTrue(ontology.Model.PropertyModel.CheckHasObjectProperty(new RDFResource("ex:org/OBP1")));
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:org/IDV1")));
+            Assert.IsTrue(ontology.Data.CheckHasIndividual(new RDFResource("ex:org/IDV2")));
+        }
 
         [TestMethod]
         public void ShouldExportToGraph()
