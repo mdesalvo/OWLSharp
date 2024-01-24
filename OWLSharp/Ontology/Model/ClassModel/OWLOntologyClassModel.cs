@@ -959,6 +959,20 @@ namespace OWLSharp
             return this;
         }
 
+        //IMPORT
+
+        /// <summary>
+        /// Merges the class definitions and relations from the given class model
+        /// </summary>
+        public void Merge(OWLOntologyClassModel classModel)
+        {
+            foreach (RDFTriple ontologyTriple in classModel?.TBoxGraph ?? Enumerable.Empty<RDFTriple>())
+                TBoxGraph.AddTriple(ontologyTriple.SetImport());
+            foreach (RDFResource ontologyClass in classModel?.Classes.Values ?? Enumerable.Empty<RDFResource>())
+                if (!Classes.ContainsKey(ontologyClass.PatternMemberID))
+                    Classes.Add(ontologyClass.PatternMemberID, ontologyClass);
+        }
+
         //EXPORT
 
         /// <summary>

@@ -468,6 +468,20 @@ namespace OWLSharp
             return this;
         }
 
+        //IMPORT
+
+        /// <summary>
+        /// Merges the individual definitions and relations from the given data
+        /// </summary>
+        public void Merge(OWLOntologyData data)
+        {
+            foreach (RDFTriple ontologyTriple in data?.ABoxGraph ?? Enumerable.Empty<RDFTriple>())
+                ABoxGraph.AddTriple(ontologyTriple.SetImport());
+            foreach (RDFResource ontologyIndividual in data?.Individuals.Values ?? Enumerable.Empty<RDFResource>())
+                if (!Individuals.ContainsKey(ontologyIndividual.PatternMemberID))
+                    Individuals.Add(ontologyIndividual.PatternMemberID, ontologyIndividual);
+        }
+
         //EXPORT
 
         /// <summary>

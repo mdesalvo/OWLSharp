@@ -647,6 +647,31 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldMergeData()
+        {
+            OWLOntologyData data = new OWLOntologyData();
+            data.DeclareIndividual(new RDFResource("ex:idvA"));
+            data.DeclareIndividual(new RDFResource("ex:idvB"));
+            data.DeclareIndividualType(new RDFResource("ex:idvA"), new RDFResource("ex:clsA"));
+            data.DeclareSameIndividuals(new RDFResource("ex:idvB"), new RDFResource("ex:idvA"));
+            
+            OWLOntologyData data2 = new OWLOntologyData();
+            data2.DeclareIndividual(new RDFResource("ex:idvA"));
+            data2.DeclareIndividual(new RDFResource("ex:idvC"));
+            data2.DeclareIndividualType(new RDFResource("ex:idvA"), new RDFResource("ex:clsA2"));
+            data2.DeclareObjectAssertion(new RDFResource("ex:idvC"), RDFVocabulary.FOAF.KNOWS, new RDFResource("ex:idvA"));
+
+            data.Merge(data2);
+            data.Merge(null); //Acts like a no-op
+
+            OWLOntologyModel model = new OWLOntologyModel();
+            model.ClassModel.DeclareClass(new RDFResource("ex:clsA2"));
+            Assert.IsTrue(data.CheckHasIndividual(new RDFResource("ex:idvC")));
+            Assert.IsTrue(data.CheckIsIndividualOf(model, new RDFResource("ex:idvA"), new RDFResource("ex:clsA2")));
+            Assert.IsTrue(data.CheckHasObjectAssertion(new RDFResource("ex:idvC"), RDFVocabulary.FOAF.KNOWS, new RDFResource("ex:idvA")));
+        }
+
+        [TestMethod]
         public void ShouldExportToGraph()
         {
             OWLOntologyData data = new OWLOntologyData();

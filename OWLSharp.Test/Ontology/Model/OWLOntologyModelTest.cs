@@ -61,6 +61,35 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldMergeModel()
+        {
+            OWLOntologyModel model = new OWLOntologyModel();
+            model.ClassModel.DeclareClass(new RDFResource("ex:classA"));
+            model.ClassModel.DeclareClass(new RDFResource("ex:classB"));
+            model.ClassModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
+            model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:propertyA"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:propertyB"), new OWLOntologyObjectPropertyBehavior() { Asymmetric = true });
+            model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:propertyC"), new OWLOntologyObjectPropertyBehavior() { Domain = RDFVocabulary.RDFS.RESOURCE, Range = RDFVocabulary.RDFS.RESOURCE });
+            model.PropertyModel.DeclareAnnotationProperty(new RDFResource("ex:propertyD"));
+
+            OWLOntologyModel model2 = new OWLOntologyModel();
+            model2.ClassModel.DeclareClass(new RDFResource("ex:classA"));
+            model2.ClassModel.DeclareClass(new RDFResource("ex:classC"));
+            model2.ClassModel.DeclareSubClasses(new RDFResource("ex:classC"), new RDFResource("ex:classA"));
+            model2.PropertyModel.DeclareObjectProperty(new RDFResource("ex:propertyA"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            model2.PropertyModel.DeclareObjectProperty(new RDFResource("ex:propertyE"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            model2.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyE"), new RDFResource("ex:propertyA"));
+
+            model.Merge(model2);
+            model.Merge(null); //Acts like a no-op
+
+            Assert.IsTrue(model.ClassModel.CheckHasSimpleClass(new RDFResource("ex:classC")));
+            Assert.IsTrue(model.ClassModel.CheckIsSubClassOf(new RDFResource("ex:classC"), new RDFResource("ex:classA")));
+            Assert.IsTrue(model.PropertyModel.CheckHasObjectProperty(new RDFResource("ex:propertyE")));
+            Assert.IsTrue(model.PropertyModel.CheckIsEquivalentPropertyOf(new RDFResource("ex:propertyE"), new RDFResource("ex:propertyA")));
+        }
+
+        [TestMethod]
         public void ShouldExportToGraph()
         {
             OWLOntologyModel model = new OWLOntologyModel();

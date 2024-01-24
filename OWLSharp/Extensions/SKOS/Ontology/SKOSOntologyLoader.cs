@@ -69,17 +69,7 @@ namespace OWLSharp.Extensions.SKOS
 
             #endregion
 
-            #region IMPORT
-            if (existingClassModel != null)
-            {
-                foreach (RDFTriple skosTriple in skosClassModel.TBoxGraph)
-                    existingClassModel.TBoxGraph.AddTriple(skosTriple.SetImport());
-                foreach (RDFResource skosClass in skosClassModel.Classes.Values)
-                    if (!existingClassModel.Classes.ContainsKey(skosClass.PatternMemberID))
-                        existingClassModel.Classes.Add(skosClass.PatternMemberID, skosClass);
-            }
-            #endregion
-
+            existingClassModel?.Merge(skosClassModel);
             return existingClassModel ?? skosClassModel;
         }
 
@@ -156,17 +146,7 @@ namespace OWLSharp.Extensions.SKOS
 
             #endregion
 
-            #region IMPORT
-            if (existingPropertyModel != null)
-            {
-                foreach (RDFTriple skosTriple in skosPropertyModel.TBoxGraph)
-                    existingPropertyModel.TBoxGraph.AddTriple(skosTriple.SetImport());
-                foreach (RDFResource skosProperty in skosPropertyModel.Properties.Values)
-                    if (!existingPropertyModel.Properties.ContainsKey(skosProperty.PatternMemberID))
-                        existingPropertyModel.Properties.Add(skosProperty.PatternMemberID, skosProperty);
-            }            
-            #endregion
-
+            existingPropertyModel?.Merge(skosPropertyModel);
             return existingPropertyModel ?? skosPropertyModel;
         }
         #endregion

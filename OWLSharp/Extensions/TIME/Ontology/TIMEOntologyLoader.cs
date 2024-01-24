@@ -255,17 +255,7 @@ namespace OWLSharp.Extensions.TIME
 
             #endregion
 
-            #region IMPORT
-            if (existingClassModel != null)
-            {
-                foreach (RDFTriple timeTriple in timeClassModel.TBoxGraph)
-                    existingClassModel.TBoxGraph.AddTriple(timeTriple.SetImport());
-                foreach (RDFResource timeClass in timeClassModel.Classes.Values)
-                    if (!existingClassModel.Classes.ContainsKey(timeClass.PatternMemberID))
-                        existingClassModel.Classes.Add(timeClass.PatternMemberID, timeClass);
-            }
-            #endregion
-
+            existingClassModel?.Merge(timeClassModel);
             return existingClassModel ?? timeClassModel;
         }
 
@@ -465,17 +455,7 @@ namespace OWLSharp.Extensions.TIME
 
             #endregion
 
-            #region IMPORT
-            if (existingPropertyModel != null)
-            {
-                foreach (RDFTriple timeTriple in timePropertyModel.TBoxGraph)
-                    existingPropertyModel.TBoxGraph.AddTriple(timeTriple.SetImport());
-                foreach (RDFResource timeProperty in timePropertyModel.Properties.Values)
-                    if (!existingPropertyModel.Properties.ContainsKey(timeProperty.PatternMemberID))
-                        existingPropertyModel.Properties.Add(timeProperty.PatternMemberID, timeProperty);
-            }            
-            #endregion
-
+            existingPropertyModel?.Merge(timePropertyModel);
             return timePropertyModel;
         }
 
@@ -558,17 +538,7 @@ namespace OWLSharp.Extensions.TIME
 
             #endregion
 
-            #region IMPORT
-            if (existingData != null)
-            {
-                foreach (RDFTriple timeTriple in timeData.ABoxGraph)
-                    existingData.ABoxGraph.AddTriple(timeTriple.SetImport());
-                foreach (RDFResource timeIndividual in timeData.Individuals.Values)
-                    if (!existingData.Individuals.ContainsKey(timeIndividual.PatternMemberID))
-                        existingData.Individuals.Add(timeIndividual.PatternMemberID, timeIndividual);
-            }            
-            #endregion
-
+            existingData?.Merge(timeData);
             return timeData;
         }
         #endregion

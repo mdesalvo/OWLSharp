@@ -895,6 +895,20 @@ namespace OWLSharp
             return this;
         }
 
+        //IMPORT
+
+        /// <summary>
+        /// Merges the property definitions and relations from the given property model
+        /// </summary>
+        public void Merge(OWLOntologyPropertyModel propertyModel)
+        {
+            foreach (RDFTriple ontologyTriple in propertyModel?.TBoxGraph ?? Enumerable.Empty<RDFTriple>())
+                TBoxGraph.AddTriple(ontologyTriple.SetImport());
+            foreach (RDFResource ontologyProperty in propertyModel?.Properties.Values ?? Enumerable.Empty<RDFResource>())
+                if (!Properties.ContainsKey(ontologyProperty.PatternMemberID))
+                    Properties.Add(ontologyProperty.PatternMemberID, ontologyProperty);
+        }
+
         //EXPORT
 
         /// <summary>

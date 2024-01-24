@@ -113,17 +113,7 @@ namespace OWLSharp.Extensions.GEO
 
             #endregion
 
-            #region IMPORT
-            if (existingClassModel != null)
-            {
-                foreach (RDFTriple geoTriple in geoClassModel.TBoxGraph)
-                    existingClassModel.TBoxGraph.AddTriple(geoTriple.SetImport());
-                foreach (RDFResource geoClass in geoClassModel.Classes.Values)
-                    if (!existingClassModel.Classes.ContainsKey(geoClass.PatternMemberID))
-                        existingClassModel.Classes.Add(geoClass.PatternMemberID, geoClass);
-            }
-            #endregion
-
+            existingClassModel?.Merge(geoClassModel);
             return existingClassModel ?? geoClassModel;
         }
 
@@ -183,17 +173,7 @@ namespace OWLSharp.Extensions.GEO
 
             #endregion
 
-            #region IMPORT
-            if (existingPropertyModel != null)
-            {
-                foreach (RDFTriple geoTriple in geoPropertyModel.TBoxGraph)
-                    existingPropertyModel.TBoxGraph.AddTriple(geoTriple.SetImport());
-                foreach (RDFResource geoProperty in geoPropertyModel.Properties.Values)
-                    if (!existingPropertyModel.Properties.ContainsKey(geoProperty.PatternMemberID))
-                        existingPropertyModel.Properties.Add(geoProperty.PatternMemberID, geoProperty);
-            }            
-            #endregion
-
+            existingPropertyModel?.Merge(geoPropertyModel);
             return existingPropertyModel ?? geoPropertyModel;
         }
         #endregion

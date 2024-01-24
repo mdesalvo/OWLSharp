@@ -1201,6 +1201,27 @@ namespace OWLSharp.Test
             => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyChainAxiom") }));
 
         [TestMethod]
+        public void ShouldMergePropertyModel()
+        {
+            OWLOntologyPropertyModel model = new OWLOntologyPropertyModel();
+            model.DeclareObjectProperty(new RDFResource("ex:propertyA"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            model.DeclareObjectProperty(new RDFResource("ex:propertyB"), new OWLOntologyObjectPropertyBehavior() { Asymmetric = true });
+            model.DeclareDatatypeProperty(new RDFResource("ex:propertyC"), new OWLOntologyObjectPropertyBehavior() { Domain = RDFVocabulary.RDFS.RESOURCE, Range = RDFVocabulary.RDFS.RESOURCE });
+            model.DeclareAnnotationProperty(new RDFResource("ex:propertyD"));
+
+            OWLOntologyPropertyModel model2 = new OWLOntologyPropertyModel();
+            model2.DeclareObjectProperty(new RDFResource("ex:propertyA"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            model2.DeclareObjectProperty(new RDFResource("ex:propertyE"), new OWLOntologyObjectPropertyBehavior() { Symmetric = true });
+            model2.DeclareEquivalentProperties(new RDFResource("ex:propertyE"), new RDFResource("ex:propertyA"));
+
+            model.Merge(model2);
+            model.Merge(null); //Acts like a no-op
+
+            Assert.IsTrue(model.CheckHasObjectProperty(new RDFResource("ex:propertyE")));
+            Assert.IsTrue(model.CheckIsEquivalentPropertyOf(new RDFResource("ex:propertyE"), new RDFResource("ex:propertyA")));
+        }
+
+        [TestMethod]
         public void ShouldExportToGraph()
         {
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();

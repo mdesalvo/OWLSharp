@@ -171,26 +171,9 @@ namespace OWLSharp
             //Setup owl:imports annotation of the imported ontology into this ontology
             Annotate(RDFVocabulary.OWL.IMPORTS, ontology);
 
-            //Merge the class model of the imported ontology into this ontology
-            foreach (RDFTriple ontologyTriple in ontology.Model.ClassModel.TBoxGraph)
-                Model.ClassModel.TBoxGraph.AddTriple(ontologyTriple.SetImport());
-            foreach (RDFResource ontologyClass in ontology.Model.ClassModel.Classes.Values)
-                if (!Model.ClassModel.Classes.ContainsKey(ontologyClass.PatternMemberID))
-                    Model.ClassModel.Classes.Add(ontologyClass.PatternMemberID, ontologyClass);
-
-            //Merge the property model of the imported ontology into this ontology
-            foreach (RDFTriple ontologyTriple in ontology.Model.PropertyModel.TBoxGraph)
-                Model.PropertyModel.TBoxGraph.AddTriple(ontologyTriple.SetImport());
-            foreach (RDFResource ontologyProperty in ontology.Model.PropertyModel.Properties.Values)
-                if (!Model.PropertyModel.Properties.ContainsKey(ontologyProperty.PatternMemberID))
-                    Model.PropertyModel.Properties.Add(ontologyProperty.PatternMemberID, ontologyProperty);
-
-            //Merge the data of the imported ontology into this ontology
-            foreach (RDFTriple ontologyTriple in ontology.Data.ABoxGraph)
-                Data.ABoxGraph.AddTriple(ontologyTriple.SetImport());
-            foreach (RDFResource ontologyIndividual in ontology.Data.Individuals.Values)
-                if (!Data.Individuals.ContainsKey(ontologyIndividual.PatternMemberID))
-                    Data.Individuals.Add(ontologyIndividual.PatternMemberID, ontologyIndividual);
+            //Merge the knowledge of the imported ontology into this ontology
+            Model.Merge(ontology.Model);
+            Data.Merge(ontology.Data);
         }
 
         /// <summary>

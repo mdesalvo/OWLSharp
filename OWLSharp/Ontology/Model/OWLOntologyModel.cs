@@ -99,6 +99,15 @@ namespace OWLSharp
 
         #region Methods
         /// <summary>
+        /// Merges the definitions and relations from the given model
+        /// </summary>
+        public void Merge(OWLOntologyModel model)
+        {
+            ClassModel.Merge(model?.ClassModel);
+            PropertyModel.Merge(model?.PropertyModel);
+        }
+
+        /// <summary>
         /// Gets a graph representation of the model (eventually including current inferences)
         /// </summary>
         public RDFGraph ToRDFGraph(bool includeInferences=true)

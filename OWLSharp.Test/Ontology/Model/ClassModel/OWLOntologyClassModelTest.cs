@@ -1270,6 +1270,26 @@ namespace OWLSharp.Test
             => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareRestriction(new RDFResource("ex:restr"), null));
 
         [TestMethod]
+        public void ShouldMergeClassModel()
+        {
+            OWLOntologyClassModel model = new OWLOntologyClassModel();
+            model.DeclareClass(new RDFResource("ex:classA"));
+            model.DeclareClass(new RDFResource("ex:classB"));
+            model.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
+            
+            OWLOntologyClassModel model2 = new OWLOntologyClassModel();
+            model2.DeclareClass(new RDFResource("ex:classA"));
+            model2.DeclareClass(new RDFResource("ex:classC"));
+            model2.DeclareSubClasses(new RDFResource("ex:classC"), new RDFResource("ex:classA"));
+
+            model.Merge(model2);
+            model.Merge(null); //Acts like a no-op
+
+            Assert.IsTrue(model.CheckHasSimpleClass(new RDFResource("ex:classC")));
+            Assert.IsTrue(model.CheckIsSubClassOf(new RDFResource("ex:classC"), new RDFResource("ex:classA")));
+        }
+
+        [TestMethod]
         public void ShouldExportToGraph()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
