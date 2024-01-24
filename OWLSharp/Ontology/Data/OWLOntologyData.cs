@@ -471,7 +471,8 @@ namespace OWLSharp
         //IMPORT
 
         /// <summary>
-        /// Merges the individual definitions and relations from the given data
+        /// Merges the individual definitions and relations from the given data<br/><br/>
+        /// (Be aware that this scenario does not support any real-time taxonomy protection checks)
         /// </summary>
         public void Merge(OWLOntologyData data)
         {

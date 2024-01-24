@@ -962,7 +962,8 @@ namespace OWLSharp
         //IMPORT
 
         /// <summary>
-        /// Merges the class definitions and relations from the given class model
+        /// Merges the class definitions and relations from the given class model<br/><br/>
+        /// (Be aware that this scenario does not support any real-time taxonomy protection checks)
         /// </summary>
         public void Merge(OWLOntologyClassModel classModel)
         {

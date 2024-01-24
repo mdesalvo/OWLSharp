@@ -152,7 +152,8 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Tries to import the ontology specified at the given URI
+        /// Tries to import the ontology specified at the given URI<br/><br/>
+        /// (Be aware that this scenario does not support any real-time taxonomy protection checks)
         /// </summary>
         public void Import(RDFResource ontologyUri, int timeoutMilliseconds=20000)
         {

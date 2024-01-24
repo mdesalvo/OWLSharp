@@ -898,7 +898,8 @@ namespace OWLSharp
         //IMPORT
 
         /// <summary>
-        /// Merges the property definitions and relations from the given property model
+        /// Merges the property definitions and relations from the given property model<br/><br/>
+        /// (Be aware that this scenario does not support any real-time taxonomy protection checks)
         /// </summary>
         public void Merge(OWLOntologyPropertyModel propertyModel)
         {
