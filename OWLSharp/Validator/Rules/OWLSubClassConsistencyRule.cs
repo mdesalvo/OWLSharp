@@ -38,7 +38,7 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLSubClassConsistencyRule),
                             $"Violation of 'rdfs:subClassOf' hierarchy of class '{classesEnumerator.Current}'",
-                            $"Revise you model: after post/merge actions you have '{classesEnumerator.Current}' at the same time subClass and superClass of '{subClass}'"));
+                            $"Revise you model: after import/merge actions you have '{classesEnumerator.Current}' at the same time subClass and superClass of '{subClass}'"));
 
                     //Clash on owl:equivalentClasses
                     if (ontology.Model.ClassModel.CheckIsEquivalentClassOf(classesEnumerator.Current, subClass))
@@ -46,7 +46,7 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLSubClassConsistencyRule),
                             $"Violation of 'rdfs:subClassOf' hierarchy of class '{classesEnumerator.Current}'",
-                            $"Revise you model: after post/merge actions you have '{classesEnumerator.Current}' at the same time subClass and equivalentClass of '{subClass}'"));
+                            $"Revise you model: after import/merge actions you have '{classesEnumerator.Current}' at the same time subClass and equivalentClass of '{subClass}'"));
            
                     //Clash on owl:disjointWith
                     if (ontology.Model.ClassModel.CheckIsDisjointClassWith(classesEnumerator.Current, subClass))
@@ -54,7 +54,7 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLSubClassConsistencyRule),
                             $"Violation of 'rdfs:subClassOf' hierarchy of class '{classesEnumerator.Current}'",
-                            $"Revise you model: after post/merge actions you have '{classesEnumerator.Current}' at the same time subClass and disjointWith of '{subClass}'"));
+                            $"Revise you model: after import/merge actions you have '{classesEnumerator.Current}' at the same time subClass and disjointWith of '{subClass}'"));
                 }
             }
 

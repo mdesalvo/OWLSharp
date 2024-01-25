@@ -124,7 +124,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL-DL rule checks for consistency of owl:equivalentClasses knowledge (useful after import/merge scenarios)
             /// </summary>
-            EquivalentClassConsistency = 21
+            EquivalentClassConsistency = 21,
+            /// <summary>
+            /// This OWL-DL rule checks for consistency of owl:disjointWith knowledge (useful after import/merge scenarios)
+            /// </summary>
+            DisjointClassConsistency = 22
         };
 
         /// <summary>

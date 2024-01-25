@@ -38,13 +38,13 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLEquivalentClassConsistencyRule),
                             $"Violation of 'owl:equivalentClasses' hierarchy of class '{classesEnumerator.Current}'",
-                            $"Revise you model: after post/merge actions you have '{classesEnumerator.Current}' at the same time equivalentClass and subClass of '{equivalentClass}'"));
+                            $"Revise you model: after import/merge actions you have '{classesEnumerator.Current}' at the same time equivalentClass and subClass of '{equivalentClass}'"));
                     if (ontology.Model.ClassModel.CheckIsSubClassOf(equivalentClass, classesEnumerator.Current))
                         validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLEquivalentClassConsistencyRule),
                             $"Violation of 'owl:equivalentClasses' hierarchy of class '{classesEnumerator.Current}'",
-                            $"Revise you model: after post/merge actions you have '{equivalentClass}' at the same time equivalentClass and subClass of '{classesEnumerator.Current}'"));
+                            $"Revise you model: after import/merge actions you have '{equivalentClass}' at the same time equivalentClass and subClass of '{classesEnumerator.Current}'"));
 
                     //Clash on owl:disjointWith
                     if (ontology.Model.ClassModel.CheckIsDisjointClassWith(classesEnumerator.Current, equivalentClass))
@@ -52,7 +52,7 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLEquivalentClassConsistencyRule),
                             $"Violation of 'owl:equivalentClasses' hierarchy of class '{classesEnumerator.Current}'",
-                            $"Revise you model: after post/merge actions you have '{classesEnumerator.Current}' at the same time equivalentClass and disjointWith of '{equivalentClass}'"));
+                            $"Revise you model: after import/merge actions you have '{classesEnumerator.Current}' at the same time equivalentClass and disjointWith of '{equivalentClass}'"));
                 }
             }
 
