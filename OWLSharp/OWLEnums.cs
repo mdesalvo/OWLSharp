@@ -120,7 +120,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL-DL rule checks for consistency of rdfs:subClassOf knowledge (useful after import/merge scenarios)
             /// </summary>
-            SubClassConsistency = 20
+            SubClassConsistency = 20,
+            /// <summary>
+            /// This OWL-DL rule checks for consistency of owl:equivalentClasses knowledge (useful after import/merge scenarios)
+            /// </summary>
+            EquivalentClassConsistency = 21
         };
 
         /// <summary>
