@@ -122,7 +122,7 @@ namespace OWLSharp
             /// </summary>
             SubClassConsistency = 20,
             /// <summary>
-            /// This OWL-DL rule checks for consistency of owl:equivalentClasses knowledge (useful after import/merge scenarios)
+            /// This OWL-DL rule checks for consistency of owl:equivalentClass knowledge (useful after import/merge scenarios)
             /// </summary>
             EquivalentClassConsistency = 21,
             /// <summary>
@@ -132,7 +132,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL-DL rule checks for consistency of rdfs:subPropertyOf knowledge (useful after import/merge scenarios)
             /// </summary>
-            SubPropertyConsistency = 23
+            SubPropertyConsistency = 23,
+            /// <summary>
+            /// This OWL-DL rule checks for consistency of owl:equivalentProperty knowledge (useful after import/merge scenarios)
+            /// </summary>
+            EquivalentPropertyConsistency = 24
         };
 
         /// <summary>

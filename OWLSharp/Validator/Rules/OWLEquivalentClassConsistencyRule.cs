@@ -17,7 +17,7 @@ using System.Collections.Generic;
 namespace OWLSharp
 {
     /// <summary>
-    /// OWL-DL validator rule checking for consistency of owl:equivalentClasses relations (useful after import/merge scenarios)
+    /// OWL-DL validator rule checking for consistency of owl:equivalentClass relations (useful after import/merge scenarios)
     /// </summary>
     internal static class OWLEquivalentClassConsistencyRule
     {
@@ -37,13 +37,13 @@ namespace OWLSharp
                         validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLEquivalentClassConsistencyRule),
-                            $"Violation of 'owl:equivalentClasses' hierarchy of class '{classesEnumerator.Current}'",
+                            $"Violation of 'owl:equivalentClass' hierarchy of class '{classesEnumerator.Current}'",
                             $"Revise you model: after import/merge actions you have '{classesEnumerator.Current}' at the same time equivalentClass and subClass of '{equivalentClass}'"));
                     if (ontology.Model.ClassModel.CheckIsSubClassOf(equivalentClass, classesEnumerator.Current))
                         validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLEquivalentClassConsistencyRule),
-                            $"Violation of 'owl:equivalentClasses' hierarchy of class '{classesEnumerator.Current}'",
+                            $"Violation of 'owl:equivalentClass' hierarchy of class '{classesEnumerator.Current}'",
                             $"Revise you model: after import/merge actions you have '{equivalentClass}' at the same time equivalentClass and subClass of '{classesEnumerator.Current}'"));
 
                     //Clash on owl:disjointWith
@@ -51,7 +51,7 @@ namespace OWLSharp
                         validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLEquivalentClassConsistencyRule),
-                            $"Violation of 'owl:equivalentClasses' hierarchy of class '{classesEnumerator.Current}'",
+                            $"Violation of 'owl:equivalentClass' hierarchy of class '{classesEnumerator.Current}'",
                             $"Revise you model: after import/merge actions you have '{equivalentClass}' at the same time equivalentClass and disjointWith of '{classesEnumerator.Current}'"));
                 }
             }

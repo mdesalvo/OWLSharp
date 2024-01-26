@@ -166,6 +166,9 @@ namespace OWLSharp
                             case OWLEnums.OWLValidatorRules.SubPropertyConsistency:
                                 evidenceRegistry[OWLEnums.OWLValidatorRules.SubPropertyConsistency.ToString()] = OWLSubPropertyConsistencyRule.ExecuteRule(ontology);
                                 break;
+                            case OWLEnums.OWLValidatorRules.EquivalentPropertyConsistency:
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.EquivalentPropertyConsistency.ToString()] = OWLEquivalentPropertyConsistencyRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard validator rule '{stdRule}': found {evidenceRegistry[stdRule.ToString()].EvidencesCount} evidences");
