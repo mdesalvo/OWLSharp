@@ -172,6 +172,12 @@ namespace OWLSharp
                             case OWLEnums.OWLValidatorRules.DisjointPropertyConsistency:
                                 evidenceRegistry[OWLEnums.OWLValidatorRules.DisjointPropertyConsistency.ToString()] = OWLDisjointPropertyConsistencyRule.ExecuteRule(ontology);
                                 break;
+                            case OWLEnums.OWLValidatorRules.SameIndividualConsistency:
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.SameIndividualConsistency.ToString()] = OWLSameIndividualConsistencyRule.ExecuteRule(ontology);
+                                break;
+                            case OWLEnums.OWLValidatorRules.DifferentIndividualConsistency:
+                                evidenceRegistry[OWLEnums.OWLValidatorRules.DifferentIndividualConsistency.ToString()] = OWLDifferentIndividualConsistencyRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard validator rule '{stdRule}': found {evidenceRegistry[stdRule.ToString()].EvidencesCount} evidences");

@@ -140,7 +140,15 @@ namespace OWLSharp
             /// <summary>
             /// This OWL2 rule checks for consistency of owl:propertyDisjointWith knowledge (useful after import/merge scenarios)
             /// </summary>
-            DisjointPropertyConsistency = 25
+            DisjointPropertyConsistency = 25,
+            /// <summary>
+            /// This OWL-DL rule checks for consistency of owl:sameAs knowledge (useful after import/merge scenarios)
+            /// </summary>
+            SameIndividualConsistency = 26,
+            /// <summary>
+            /// This OWL-DL rule checks for consistency of owl:differentFrom knowledge (useful after import/merge scenarios)
+            /// </summary>
+            DifferentIndividualConsistency = 27
         };
 
         /// <summary>
