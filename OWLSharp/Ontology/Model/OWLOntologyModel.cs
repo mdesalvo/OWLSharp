@@ -100,7 +100,8 @@ namespace OWLSharp
         #region Methods
         /// <summary>
         /// Merges the definitions and relations from the given model<br/><br/>
-        /// (Be aware that this scenario does not support any real-time taxonomy protection checks)
+        /// (Be aware that this scenario cannot rely on any of the available real-time protection checks,<br/>
+        ///  so at the end you may want to find model inconsistencies by executing core validator rules)
         /// </summary>
         public void Merge(OWLOntologyModel model)
         {

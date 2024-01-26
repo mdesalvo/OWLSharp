@@ -153,7 +153,8 @@ namespace OWLSharp
 
         /// <summary>
         /// Tries to import the ontology specified at the given URI<br/><br/>
-        /// (Be aware that this scenario does not support any real-time taxonomy protection checks)
+        /// (Be aware that this scenario cannot rely on any of the available real-time protection checks,<br/>
+        ///  so at the end you may want to find ontology inconsistencies by executing core validator rules)
         /// </summary>
         public void Import(RDFResource ontologyUri, int timeoutMilliseconds=20000)
         {
@@ -178,7 +179,9 @@ namespace OWLSharp
         }
 
         /// <summary>
-        /// Asynchronously tries to import the ontology specified at the given URI
+        /// Asynchronously tries to import the ontology specified at the given URI<br/><br/>
+        /// (Be aware that this scenario cannot rely on any of the available real-time protection checks,<br/>
+        ///  so at the end you may want to find ontology inconsistencies by executing core validator rules)
         /// </summary>
         public Task ImportAsync(RDFResource ontologyUri, int timeoutMilliseconds=20000)
             => Task.Run(() => Import(ontologyUri, timeoutMilliseconds));
