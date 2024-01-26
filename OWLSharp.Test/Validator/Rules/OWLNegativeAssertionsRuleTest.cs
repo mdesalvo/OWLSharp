@@ -260,6 +260,33 @@ namespace OWLSharp.Validator.Test
             Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
             Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldValidateNegativeDatatypeAssertionsDisjointViaValidatorAfterMerge()
+        {
+            OWLOntologyModel model = new OWLOntologyModel();
+            model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:loves"));
+            model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:fallInLoveWith"));
+            model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:loves"), new RDFResource("ex:fallInLoveWith"));
+            OWLOntologyData data1 = new OWLOntologyData();
+            data1.DeclareIndividual(new RDFResource("ex:marco"));
+            data1.DeclareIndividual(new RDFResource("ex:mark"));
+            data1.DeclareSameIndividuals(new RDFResource("ex:marco"), new RDFResource("ex:mark"));
+            data1.DeclareNegativeDatatypeAssertion(new RDFResource("ex:marco"), new RDFResource("ex:loves"), new RDFPlainLiteral("valentina"));
+            OWLOntologyData data2 = new OWLOntologyData();
+            data2.DeclareDatatypeAssertion(new RDFResource("ex:mark"), new RDFResource("ex:fallInLoveWith"), new RDFPlainLiteral("valentina")); //clash on subject synonim
+
+            data1.Merge(data2);
+
+            OWLOntology ontology = new OWLOntology("ex:ont") { Model = model, Data = data1 };
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.NegativeAssertions);
+            OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
         #endregion
     }
 }
