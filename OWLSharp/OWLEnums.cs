@@ -128,7 +128,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL-DL rule checks for consistency of owl:disjointWith knowledge (useful after import/merge scenarios)
             /// </summary>
-            DisjointClassConsistency = 22
+            DisjointClassConsistency = 22,
+            /// <summary>
+            /// This OWL-DL rule checks for consistency of rdfs:subPropertyOf knowledge (useful after import/merge scenarios)
+            /// </summary>
+            SubPropertyConsistency = 23
         };
 
         /// <summary>
