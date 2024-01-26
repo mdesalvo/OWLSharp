@@ -136,7 +136,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL-DL rule checks for consistency of owl:equivalentProperty knowledge (useful after import/merge scenarios)
             /// </summary>
-            EquivalentPropertyConsistency = 24
+            EquivalentPropertyConsistency = 24,
+            /// <summary>
+            /// This OWL2 rule checks for consistency of owl:propertyDisjointWith knowledge (useful after import/merge scenarios)
+            /// </summary>
+            DisjointPropertyConsistency = 25
         };
 
         /// <summary>

@@ -1,0 +1,123 @@
+﻿/*
+   Copyright 2014-2024 Marco De Salvo
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RDFSharp.Model;
+using System.Collections.Generic;
+
+namespace OWLSharp.Validator.Test
+{
+    [TestClass]
+    public class OWLDisjointPropertyConsistencyRuleTest
+    {
+        #region Tests
+        [TestMethod]
+        public void ShouldValidateDisjointPropertyConsistencyFailingOnSubPropertyLeft()
+        {
+            OWLOntologyPropertyModel propertymodel1 = new OWLOntologyPropertyModel();
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel1.DeclareDisjointProperties(new RDFResource("ex:objprop1"),new RDFResource("ex:objprop2"));
+            OWLOntologyPropertyModel propertymodel2 = new OWLOntologyPropertyModel();
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel2.DeclareSubProperties(new RDFResource("ex:objprop1"),new RDFResource("ex:objprop2"));
+
+            propertymodel1.Merge(propertymodel2);
+
+            OWLValidatorReport validatorReport = OWLDisjointPropertyConsistencyRule.ExecuteRule(new OWLOntology("ex:org") { 
+                Model = new OWLOntologyModel() { PropertyModel = propertymodel1 } });
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 2);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 2);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateDisjointPropertyConsistencyFailingOnSubPropertyRight()
+        {
+            OWLOntologyPropertyModel propertymodel1 = new OWLOntologyPropertyModel();
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel1.DeclareDisjointProperties(new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2"));
+            OWLOntologyPropertyModel propertymodel2 = new OWLOntologyPropertyModel();
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel2.DeclareSubProperties(new RDFResource("ex:objprop2"), new RDFResource("ex:objprop1"));
+
+            propertymodel1.Merge(propertymodel2);
+
+            OWLValidatorReport validatorReport = OWLDisjointPropertyConsistencyRule.ExecuteRule(new OWLOntology("ex:org")
+            {
+                Model = new OWLOntologyModel() { PropertyModel = propertymodel1 }
+            });
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 2);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 2);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateDisjointPropertyConsistencyFailingOnEquivalentProperty()
+        {
+            OWLOntologyPropertyModel propertymodel1 = new OWLOntologyPropertyModel();
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel1.DeclareDisjointProperties(new RDFResource("ex:objprop1"),new RDFResource("ex:objprop2"));
+            OWLOntologyPropertyModel propertymodel2 = new OWLOntologyPropertyModel();
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel2.DeclareEquivalentProperties(new RDFResource("ex:objprop1"),new RDFResource("ex:objprop2"));
+
+            propertymodel1.Merge(propertymodel2);
+
+            OWLValidatorReport validatorReport = OWLDisjointPropertyConsistencyRule.ExecuteRule(new OWLOntology("ex:org") { 
+                Model = new OWLOntologyModel() { PropertyModel = propertymodel1 } });
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 2);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 2);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateDisjointPropertyConsistencyViaValidator()
+        {
+            OWLOntologyPropertyModel propertymodel1 = new OWLOntologyPropertyModel();
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel1.DeclareDisjointProperties(new RDFResource("ex:objprop1"),new RDFResource("ex:objprop2"));
+            OWLOntologyPropertyModel propertymodel2 = new OWLOntologyPropertyModel();
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel2.DeclareSubProperties(new RDFResource("ex:objprop1"),new RDFResource("ex:objprop2"));
+
+            propertymodel1.Merge(propertymodel2);
+
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.DisjointPropertyConsistency);
+            OWLValidatorReport validatorReport = validator.ApplyToOntology(new OWLOntology("ex:org") { 
+                Model = new OWLOntologyModel() { PropertyModel = propertymodel1 } });
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 2);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 2);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+        #endregion
+    }
+}
