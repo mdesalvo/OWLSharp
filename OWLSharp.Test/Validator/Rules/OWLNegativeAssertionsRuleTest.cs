@@ -145,6 +145,38 @@ namespace OWLSharp.Validator.Test
         }
 
         [TestMethod]
+        public void ShouldValidateNegativeObjectAssertionsDisjointViaValidatorAfterMerge()
+        {
+            OWLOntologyModel model = new OWLOntologyModel();
+            model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:loves"));
+            model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:fallInLoveWith"));
+            model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:loves"), new RDFResource("ex:fallInLoveWith"));
+            OWLOntologyData data1 = new OWLOntologyData();
+            data1.DeclareIndividual(new RDFResource("ex:marco"));
+            data1.DeclareIndividual(new RDFResource("ex:mark"));
+            data1.DeclareIndividual(new RDFResource("ex:valentina"));
+            data1.DeclareIndividual(new RDFResource("ex:valentine"));
+            data1.DeclareSameIndividuals(new RDFResource("ex:marco"), new RDFResource("ex:mark"));
+            data1.DeclareSameIndividuals(new RDFResource("ex:valentina"), new RDFResource("ex:valentine"));
+            data1.DeclareNegativeObjectAssertion(new RDFResource("ex:mark"), new RDFResource("ex:loves"), new RDFResource("ex:valentine"));
+            OWLOntologyData data2 = new OWLOntologyData();
+            data2.DeclareIndividual(new RDFResource("ex:marco"));
+            data2.DeclareIndividual(new RDFResource("ex:valentina"));
+            data2.DeclareObjectAssertion(new RDFResource("ex:marco"), new RDFResource("ex:fallInLoveWith"), new RDFResource("ex:valentina")); //clash on negated ex:loves
+
+            data1.Merge(data2);
+
+            OWLOntology ontology = new OWLOntology("ex:ont") { Model = model, Data = data1 };
+            OWLValidator validator = new OWLValidator().AddRule(OWLEnums.OWLValidatorRules.NegativeAssertions);
+            OWLValidatorReport validatorReport = validator.ApplyToOntology(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldValidateNegativeDatatypeAssertionsOnSubjectSynonim()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
