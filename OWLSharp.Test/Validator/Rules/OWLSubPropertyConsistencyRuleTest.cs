@@ -95,6 +95,33 @@ namespace OWLSharp.Validator.Test
         }
 
         [TestMethod]
+        public void ShouldValidateSubPropertyConsistencyFailingOnChainAxiomProperty()
+        {
+            OWLOntologyPropertyModel propertymodel1 = new OWLOntologyPropertyModel();
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel1.DeclareObjectProperty(new RDFResource("ex:objprop2"));
+            propertymodel1.DeclareSubProperties(new RDFResource("ex:objprop2"), new RDFResource("ex:objprop1"));
+            OWLOntologyPropertyModel propertymodel2 = new OWLOntologyPropertyModel();
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop1"));
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop3"));
+            propertymodel2.DeclareObjectProperty(new RDFResource("ex:objprop4"));
+            propertymodel2.DeclarePropertyChainAxiom(new RDFResource("ex:objprop2"), new List<RDFResource>() { 
+                new RDFResource("ex:objprop3"), new RDFResource("ex:objprop4")});
+            
+            propertymodel1.Merge(propertymodel2);
+
+            OWLValidatorReport validatorReport = OWLSubPropertyConsistencyRule.ExecuteRule(new OWLOntology("ex:org")
+            {
+                Model = new OWLOntologyModel() { PropertyModel = propertymodel1 }
+            });
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldValidateSubPropertyConsistencyViaValidator()
         {
             OWLOntologyPropertyModel propertymodel1 = new OWLOntologyPropertyModel();

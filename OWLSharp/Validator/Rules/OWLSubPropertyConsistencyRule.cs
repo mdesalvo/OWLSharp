@@ -38,23 +38,31 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLSubPropertyConsistencyRule),
                             $"Violation of 'rdfs:subPropertyOf' hierarchy of property '{propertiesEnumerator.Current}'",
-                            $"Revise you model: after import/merge actions you have '{propertiesEnumerator.Current}' at the same time subProperty and superProperty of '{subProperty}'"));
+                            $"Revise you model: after import/merge actions you have '{subProperty}' at the same time subProperty and superProperty of '{propertiesEnumerator.Current}'"));
 
-                    //Clash on owl:equivalentClasses
+                    //Clash on owl:equivalentProperties
                     if (ontology.Model.PropertyModel.CheckIsEquivalentPropertyOf(propertiesEnumerator.Current, subProperty))
                         validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLSubPropertyConsistencyRule),
                             $"Violation of 'rdfs:subPropertyOf' hierarchy of property '{propertiesEnumerator.Current}'",
-                            $"Revise you model: after import/merge actions you have '{propertiesEnumerator.Current}' at the same time subProperty and equivalentProperty of '{subProperty}'"));
+                            $"Revise you model: after import/merge actions you have '{subProperty}' at the same time subProperty and equivalentProperty of '{propertiesEnumerator.Current}'"));
            
-                    //Clash on owl:disjointWith
+                    //Clash on owl:propertyDisjointWith
                     if (ontology.Model.PropertyModel.CheckIsDisjointPropertyWith(propertiesEnumerator.Current, subProperty))
                         validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLSubPropertyConsistencyRule),
                             $"Violation of 'rdfs:subPropertyOf' hierarchy of property '{propertiesEnumerator.Current}'",
-                            $"Revise you model: after import/merge actions you have '{propertiesEnumerator.Current}' at the same time subProperty and propertyDisjointWith of '{subProperty}'"));
+                            $"Revise you model: after import/merge actions you have '{subProperty}' at the same time subProperty and propertyDisjointWith of '{propertiesEnumerator.Current}'"));
+
+                    //Clash on owl:propertyChainAxiom [OWL2]
+                    if (ontology.Model.PropertyModel.CheckHasPropertyChainAxiom(subProperty))
+                        validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
+                            OWLEnums.OWLValidatorEvidenceCategory.Error,
+                            nameof(OWLSubPropertyConsistencyRule),
+                            $"Violation of 'rdfs:subPropertyOf' hierarchy of property '{propertiesEnumerator.Current}'",
+                            $"Revise you model: after import/merge actions you have propertyChainAxiom '{subProperty}' being subProperty of '{propertiesEnumerator.Current}'"));
                 }
             }
 

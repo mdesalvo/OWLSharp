@@ -52,7 +52,7 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLDisjointClassConsistencyRule),
                             $"Violation of 'owl:disjointWith' hierarchy of class '{classesEnumerator.Current}'",
-                            $"Revise you model: after import/merge actions you have '{classesEnumerator.Current}' at the same time disjointWith and equivalentClass of '{disjointClass}'"));
+                            $"Revise you model: after import/merge actions you have '{disjointClass}' at the same time disjointWith and equivalentClass of '{classesEnumerator.Current}'"));
                 }
             }
 
