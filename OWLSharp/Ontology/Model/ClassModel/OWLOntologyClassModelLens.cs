@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -45,10 +46,12 @@ namespace OWLSharp
         /// </summary>
         public OWLOntologyClassModelLens(RDFResource owlClass, OWLOntology ontology)
         {
+            #region Guards
             if (owlClass == null)
                 throw new OWLException("Cannot create class model lens because given \"owlClass\" parameter is null");
             if (ontology == null)
                 throw new OWLException("Cannot create class model lens because given \"ontology\" parameter is null");
+            #endregion
 
             Class = owlClass;
             Ontology = ontology;
@@ -127,6 +130,26 @@ namespace OWLSharp
         /// </summary>
         public Task<List<RDFResource>> IndividualsAsync()
             => Task.Run(() => Individuals());
+
+        /// <summary>
+        /// Enlists the individuals which are related with the lens class by a negative rdf:type [OWL2]
+        /// </summary>
+        public List<RDFResource> NegativeIndividuals()
+        {
+            List<RDFResource> result = new List<RDFResource>();
+
+            foreach (RDFResource individual in Ontology.Data)
+                if (Ontology.Data.CheckIsNegativeIndividualOf(Ontology.Model, individual, Class))
+                    result.Add(individual);
+
+            return RDFQueryUtilities.RemoveDuplicates(result);
+        }
+
+        /// <summary>
+        /// Asynchronously enlists the individuals which are related with the lens class by a negative rdf:type [OWL2]
+        /// </summary>
+        public Task<List<RDFResource>> NegativeIndividualsAsync()
+            => Task.Run(() => NegativeIndividuals());
 
         /// <summary>
         /// Enlists the object annotations to which the lens class is related as subject

@@ -60,10 +60,12 @@ namespace OWLSharp.Test
             ModelLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ModelLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
             ModelLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv3"));
+            ModelLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv4"));
             ModelLens.Ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv0"), new RDFResource("ex:class0S"));
             ModelLens.Ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class1"));
             ModelLens.Ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv2"), new RDFResource("ex:class2"));
             ModelLens.Ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv3"), new RDFResource("ex:class3"));
+            ModelLens.Ontology.Data.DeclareNegativeIndividualType(ModelLens.Ontology.Model, new RDFResource("ex:indiv4"), new RDFResource("ex:class1"));
         }
         #endregion
 
@@ -198,6 +200,26 @@ namespace OWLSharp.Test
             Assert.IsTrue(individuals.Any(idv => idv.Equals(new RDFResource("ex:indiv1"))));
             Assert.IsTrue(individuals.Any(idv => idv.Equals(new RDFResource("ex:indiv2")))); //Inference
             Assert.IsTrue(individuals.Any(idv => idv.Equals(new RDFResource("ex:indiv3")))); //Inference
+        }
+
+        [TestMethod]
+        public void ShouldEnlistNegativeIndividuals()
+        {
+            List<RDFResource> individuals = ModelLens.NegativeIndividuals();
+
+            Assert.IsNotNull(individuals);
+            Assert.IsTrue(individuals.Count == 1);
+            Assert.IsTrue(individuals.Any(idv => idv.Equals(new RDFResource("ex:indiv4"))));
+        }
+
+        [TestMethod]
+        public async Task ShouldEnlistNegativeIndividualsAsync()
+        {
+            List<RDFResource> individuals = await ModelLens.NegativeIndividualsAsync();
+
+            Assert.IsNotNull(individuals);
+            Assert.IsTrue(individuals.Count == 1);
+            Assert.IsTrue(individuals.Any(idv => idv.Equals(new RDFResource("ex:indiv4"))));
         }
 
         [TestMethod]

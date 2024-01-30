@@ -45,10 +45,12 @@ namespace OWLSharp
         /// </summary>
         public OWLOntologyPropertyModelLens(RDFResource owlProperty, OWLOntology ontology)
         {
+            #region Guards
             if (owlProperty == null)
                 throw new OWLException("Cannot create property model lens because given \"owlProperty\" parameter is null");
             if (ontology == null)
                 throw new OWLException("Cannot create property model lens because given \"ontology\" parameter is null");
+            #endregion
 
             Property = owlProperty;
             Ontology = ontology;
