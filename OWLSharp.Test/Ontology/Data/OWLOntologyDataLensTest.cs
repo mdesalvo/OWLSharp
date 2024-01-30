@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
@@ -114,11 +115,12 @@ namespace OWLSharp.Test
             List<RDFResource> classTypes = DataLens.ClassTypes();
 
             Assert.IsNotNull(classTypes);
-            Assert.IsTrue(classTypes.Count == 4);
+            Assert.IsTrue(classTypes.Count == 5);
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:class1"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:enumClass"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:hvRestr"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:unionClass"))));
+            Assert.IsTrue(classTypes.Any(cls => cls.IsBlank)); //the complement class, through negative type
         }
 
         [TestMethod]
@@ -127,9 +129,10 @@ namespace OWLSharp.Test
             List<RDFResource> classTypes = DataLens.ClassTypes(requireDeepDiscovery:false);
 
             Assert.IsNotNull(classTypes);
-            Assert.IsTrue(classTypes.Count == 2);
+            Assert.IsTrue(classTypes.Count == 3);
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:class1"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(RDFVocabulary.OWL.NAMED_INDIVIDUAL)));
+            Assert.IsTrue(classTypes.Any(cls => cls.IsBlank)); //the complement class, through negative type
         }
 
         [TestMethod]
@@ -138,11 +141,12 @@ namespace OWLSharp.Test
             List<RDFResource> classTypes = await DataLens.ClassTypesAsync();
 
             Assert.IsNotNull(classTypes);
-            Assert.IsTrue(classTypes.Count == 4);
+            Assert.IsTrue(classTypes.Count == 5);
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:class1"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:enumClass"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:hvRestr"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:unionClass"))));
+            Assert.IsTrue(classTypes.Any(cls => cls.IsBlank)); //the complement class, through negative type
         }
 
         [TestMethod]
@@ -151,9 +155,10 @@ namespace OWLSharp.Test
             List<RDFResource> classTypes = await DataLens.ClassTypesAsync(requireDeepDiscovery:false);
 
             Assert.IsNotNull(classTypes);
-            Assert.IsTrue(classTypes.Count == 2);
+            Assert.IsTrue(classTypes.Count == 3);
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:class1"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(RDFVocabulary.OWL.NAMED_INDIVIDUAL)));
+            Assert.IsTrue(classTypes.Any(cls => cls.IsBlank)); //the complement class, through negative type
         }
 
         [TestMethod]
