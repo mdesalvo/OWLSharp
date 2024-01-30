@@ -223,6 +223,57 @@ namespace OWLSharp.Test
                         .DeclareIndividualType(new RDFResource("ex:indivA"), null));
 
         [TestMethod]
+        public void ShouldDeclareNegativeIndividualType()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Data.DeclareIndividual(new RDFResource("ex:Idv"));
+            ontology.Data.DeclareNegativeIndividualType(ontology.Model, new RDFResource("ex:Idv"), new RDFResource("ex:Cls"));
+
+            Assert.IsTrue(ontology.Model.ClassModel.TBoxGraph.TriplesCount == 2);
+            Assert.IsTrue(ontology.Model.ClassModel.TBoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(ontology.Model.ClassModel.TBoxGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, new RDFResource("ex:Cls"), null].TriplesCount == 1);
+            Assert.IsTrue(ontology.Model.ClassModel.OBoxGraph.TriplesCount == 0);
+            Assert.IsTrue(ontology.Data.ABoxGraph.TriplesCount == 2);
+            Assert.IsTrue(ontology.Data.ABoxGraph[new RDFResource("ex:Idv"), RDFVocabulary.RDF.TYPE, null, null].TriplesCount == 2);
+            Assert.IsTrue(ontology.Data.OBoxGraph.TriplesCount == 0);
+        }
+
+        [TestMethod]
+        public void ShouldEmitWarningOnDeclaringNegativeIndividualTypeBecauseReservedClass()
+        {
+            string warningMsg = null;
+            OWLEvents.OnWarning += (string msg) => { warningMsg = msg; };
+
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Data.DeclareIndividual(new RDFResource("ex:Idv"));
+            ontology.Data.DeclareNegativeIndividualType(ontology.Model, new RDFResource("ex:Idv"), RDFVocabulary.RDFS.RESOURCE);
+
+            Assert.IsNotNull(warningMsg);
+            Assert.IsTrue(warningMsg.IndexOf("NegativeType relation between individual 'ex:Idv' and class 'http://www.w3.org/2000/01/rdf-schema#Resource' cannot be declared to the data because it would violate OWL2 integrity") > -1);
+            Assert.IsTrue(ontology.Data.ABoxGraph.TriplesCount == 1);
+            Assert.IsTrue(ontology.Data.ABoxGraph.ContainsTriple(new RDFTriple(new RDFResource("ex:Idv"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL)));
+            Assert.IsTrue(ontology.Data.OBoxGraph.TriplesCount == 0);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringNegativeIndividualTypeBecauseNullModel()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyData()
+                .DeclareIndividual(new RDFResource("ex:Idv"))
+                .DeclareNegativeIndividualType(null, new RDFResource("ex:Idv"), new RDFResource("ex:Cls")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringNegativeIndividualTypeBecauseNullIndividual()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyData()
+                .DeclareIndividual(new RDFResource("ex:Idv"))
+                .DeclareNegativeIndividualType(new OWLOntologyModel(), null, new RDFResource("ex:Cls")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnDeclaringNegativeIndividualTypeBecauseNullClass()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyData()
+                        .DeclareIndividual(new RDFResource("ex:Idv"))
+                        .DeclareNegativeIndividualType(new OWLOntologyModel(), new RDFResource("ex:Idv"), null));
+
+        [TestMethod]
         public void ShouldDeclareSameIndividuals()
         {
             OWLOntologyData data = new OWLOntologyData();

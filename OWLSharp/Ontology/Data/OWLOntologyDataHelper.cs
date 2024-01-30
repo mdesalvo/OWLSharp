@@ -269,6 +269,31 @@ namespace OWLSharp
             => owlIndividual != null && owlClass != null && model != null && data != null && data.GetIndividualsOf(model, owlClass).Any(individual => individual.Equals(owlIndividual));
 
         /// <summary>
+        /// Checks for the existence of negative "Type(owlIndividual,owlClass)" relations within the data and model
+        /// </summary>
+        public static bool CheckIsNegativeIndividualOf(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlIndividual, RDFResource owlClass)
+        {
+            #region Guards
+            if (data == null || model == null || owlIndividual == null || owlClass == null)
+                return false;
+            #endregion
+
+            //To answer we need to access T-BOX of the class model (because it contains owl:complementOf relations)
+            RDFGraph workingGraph = model.ClassModel.TBoxGraph.UnionWith(data.ABoxGraph);
+
+            //Now we can ask if the given individual is explicitly typed "on a complement class of the given class"
+            //(because we are interested in checking if this individual is NOT an individual of the given class)
+            RDFAskQuery isNotOfGivenClassQuery = new RDFAskQuery()
+                .AddPatternGroup(new RDFPatternGroup()
+                    .AddPattern(new RDFPattern(owlIndividual, RDFVocabulary.RDF.TYPE, new RDFVariable("?COMPLEMENT_CLASS")))
+                    .AddPattern(new RDFPattern(new RDFVariable("?COMPLEMENT_CLASS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS))
+                    .AddPattern(new RDFPattern(new RDFVariable("?COMPLEMENT_CLASS"), RDFVocabulary.OWL.COMPLEMENT_OF, owlClass)));
+            RDFAskQueryResult isNotOfGivenClassResult = isNotOfGivenClassQuery.ApplyToGraph(workingGraph);
+
+            return isNotOfGivenClassResult.AskResult;
+        }
+
+        /// <summary>
         /// Checks for the existence of "Type(X,owlClass)" relations of the data and model to answer the individuals of the given owl:Class
         /// </summary>
         public static List<RDFResource> GetIndividualsOf(this OWLOntologyData data, OWLOntologyModel model, RDFResource owlClass)

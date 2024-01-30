@@ -243,6 +243,41 @@ namespace OWLSharp
         }
 
         /// <summary>
+        /// Declares the existence of the given negative "Type(owlIndividual,owlClass)" relation to the data<br/>
+        /// (This is just a shortcut to explicitly state that the given individual IS NOT of the given class)
+        /// </summary>
+        public OWLOntologyData DeclareNegativeIndividualType(OWLOntologyModel model, RDFResource owlIndividual, RDFResource owlClass)
+        {
+            #region OWL-DL Integrity Checks
+            bool OWLDLIntegrityChecks()
+                => !owlClass.CheckReservedClass();
+            #endregion
+
+            #region Guards
+            if (model == null)
+                throw new OWLException("Cannot declare negative rdf:type relation to the data because given \"model\" parameter is null");
+            if (owlIndividual == null)
+                throw new OWLException("Cannot declare negative rdf:type relation to the data because given \"owlIndividual\" parameter is null");
+            if (owlClass == null)
+                throw new OWLException("Cannot declare negative rdf:type relation to the data because given \"owlClass\" parameter is null");
+            #endregion
+
+            //Add knowledge to the A-BOX (or raise warning if violations are detected)
+            if (OWLDLIntegrityChecks())
+            {
+                //Declare an anonymous complement class of the given class
+                RDFResource complementClass = new RDFResource();
+                model.ClassModel.DeclareComplementClass(complementClass, owlClass);
+                //Assign this anonymous complement class to the given individual
+                ABoxGraph.AddTriple(new RDFTriple(owlIndividual, RDFVocabulary.RDF.TYPE, complementClass));
+            }   
+            else
+                OWLEvents.RaiseWarning(string.Format("NegativeType relation between individual '{0}' and class '{1}' cannot be declared to the data because it would violate OWL2 integrity", owlIndividual, owlClass));
+
+            return this;
+        }
+
+        /// <summary>
         /// Declares the existence of the given "SameAs(leftIndividual,rightIndividual)" relation to the data
         /// </summary>
         public OWLOntologyData DeclareSameIndividuals(RDFResource leftIndividual, RDFResource rightIndividual)

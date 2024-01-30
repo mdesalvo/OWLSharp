@@ -1030,6 +1030,23 @@ namespace OWLSharp.Test
             Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv3"), new RDFResource("ex:complementClass")));
             Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indivCC"), new RDFResource("ex:complementClass")));
         }
+
+        [TestMethod]
+        public void ShouldCheckIsNegativeIndividualOfClass()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Cls"));
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Cls2"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:Idv"));
+            ontology.Data.DeclareNegativeIndividualType(ontology.Model, new RDFResource("ex:Idv"), new RDFResource("ex:Cls"));
+
+            Assert.IsTrue(ontology.Data.CheckIsNegativeIndividualOf(ontology.Model, new RDFResource("ex:Idv"), new RDFResource("ex:Cls")));
+            Assert.IsFalse((null as OWLOntologyData).CheckIsNegativeIndividualOf(ontology.Model, new RDFResource("ex:Idv"), new RDFResource("ex:Cls")));
+            Assert.IsFalse(ontology.Data.CheckIsNegativeIndividualOf(null, new RDFResource("ex:Idv"), new RDFResource("ex:Cls")));
+            Assert.IsFalse(ontology.Data.CheckIsNegativeIndividualOf(ontology.Model, null, new RDFResource("ex:Cls")));
+            Assert.IsFalse(ontology.Data.CheckIsNegativeIndividualOf(ontology.Model, new RDFResource("ex:Idv"), null));
+            Assert.IsFalse(ontology.Data.CheckIsNegativeIndividualOf(ontology.Model, new RDFResource("ex:Idv"), new RDFResource("ex:Cls2")));
+        }
         #endregion
 
         #region Checker
