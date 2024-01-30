@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
@@ -1029,6 +1030,11 @@ namespace OWLSharp.Test
             Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv2"), new RDFResource("ex:complementClass")));
             Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv3"), new RDFResource("ex:complementClass")));
             Assert.IsTrue(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indivCC"), new RDFResource("ex:complementClass")));
+            //For coverage of corner cases of CheckIsIndividualOf signature
+            Assert.IsFalse((null as OWLOntologyData).CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv1"), new RDFResource("ex:complementClass")));
+            Assert.IsFalse(ontology.Data.CheckIsIndividualOf(null, new RDFResource("ex:indiv1"), new RDFResource("ex:complementClass")));
+            Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, null, new RDFResource("ex:complementClass")));
+            Assert.IsFalse(ontology.Data.CheckIsIndividualOf(ontology.Model, new RDFResource("ex:indiv1"), null));
         }
 
         [TestMethod]
