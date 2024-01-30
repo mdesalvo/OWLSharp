@@ -37,6 +37,7 @@ namespace OWLSharp.Test
             DataLens.Ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objProp"));
             DataLens.Ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtProp"));
             DataLens.Ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
+            DataLens.Ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2"));
             DataLens.Ontology.Model.ClassModel.DeclareEnumerateClass(new RDFResource("ex:enumClass"), new List<RDFResource>() { new RDFResource("ex:indiv1"), new RDFResource("ex:indiv5") });
             DataLens.Ontology.Model.ClassModel.DeclareHasValueRestriction(new RDFResource("ex:hvRestr"), new RDFResource("ex:objProp"), new RDFResource("ex:indiv2"));
             DataLens.Ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:enumClass") });
@@ -46,6 +47,7 @@ namespace OWLSharp.Test
             DataLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv4"));
             DataLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv5"));
             DataLens.Ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class1"));
+            DataLens.Ontology.Data.DeclareNegativeIndividualType(DataLens.Ontology.Model, new RDFResource("ex:indiv1"), new RDFResource("ex:class2"));
             DataLens.Ontology.Data.DeclareSameIndividuals(new RDFResource("ex:indiv1"), new RDFResource("ex:indiv2"));
             DataLens.Ontology.Data.DeclareDifferentIndividuals(new RDFResource("ex:indiv1"), new RDFResource("ex:indiv3"));
             DataLens.Ontology.Data.DeclareSameIndividuals(new RDFResource("ex:indiv2"), new RDFResource("ex:indiv4"));
@@ -152,6 +154,26 @@ namespace OWLSharp.Test
             Assert.IsTrue(classTypes.Count == 2);
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(new RDFResource("ex:class1"))));
             Assert.IsTrue(classTypes.Any(cls => cls.Equals(RDFVocabulary.OWL.NAMED_INDIVIDUAL)));
+        }
+
+        [TestMethod]
+        public void ShouldEnlistNegativeClassTypes()
+        {
+            List<RDFResource> negativeClassTypes = DataLens.NegativeClassTypes();
+
+            Assert.IsNotNull(negativeClassTypes);
+            Assert.IsTrue(negativeClassTypes.Count == 1);
+            Assert.IsTrue(negativeClassTypes.Any(cls => cls.Equals(new RDFResource("ex:class2"))));
+        }
+
+        [TestMethod]
+        public async Task ShouldEnlistNegativeClassTypesAsync()
+        {
+            List<RDFResource> negativeClassTypes = await DataLens.NegativeClassTypesAsync();
+
+            Assert.IsNotNull(negativeClassTypes);
+            Assert.IsTrue(negativeClassTypes.Count == 1);
+            Assert.IsTrue(negativeClassTypes.Any(cls => cls.Equals(new RDFResource("ex:class2"))));
         }
 
         [TestMethod]

@@ -46,10 +46,12 @@ namespace OWLSharp
         /// </summary>
         public OWLOntologyDataLens(RDFResource owlIndividual, OWLOntology ontology)
         {
+            #region Guards
             if (owlIndividual == null)
                 throw new OWLException("Cannot create data lens because given \"owlIndividual\" parameter is null");
             if (ontology == null)
                 throw new OWLException("Cannot create data lens because given \"ontology\" parameter is null");
+            #endregion
 
             Individual = owlIndividual;
             Ontology = ontology;
@@ -114,6 +116,26 @@ namespace OWLSharp
         /// </summary>
         public Task<List<RDFResource>> ClassTypesAsync(bool requireDeepDiscovery=true)
             => Task.Run(() => ClassTypes(requireDeepDiscovery));
+
+        /// <summary>
+        /// Enlists the classes to which the lens individual explicitly does not belong
+        /// </summary>
+        public List<RDFResource> NegativeClassTypes()
+        {
+            List<RDFResource> result = new List<RDFResource>();
+
+            foreach (RDFResource owlClass in Ontology.Model.ClassModel)
+                if (Ontology.Data.CheckIsNegativeIndividualOf(Ontology.Model, Individual, owlClass))
+                    result.Add(owlClass);
+
+            return RDFQueryUtilities.RemoveDuplicates(result);
+        }
+
+        /// <summary>
+        /// Asynchronously enlists the classes to which the lens individual explicitly does not belong
+        /// </summary>
+        public Task<List<RDFResource>> NegativeClassTypesAsync()
+            => Task.Run(() => NegativeClassTypes());
 
         /// <summary>
         /// Enlists the object assertions to which the lens individual is related as subject or object
