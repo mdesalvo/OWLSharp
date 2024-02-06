@@ -1,7 +1,7 @@
 # OWLSharp <a href="https://github.com/mdesalvo/OWLSharp/releases"><img src="https://img.shields.io/nuget/v/OWLSharp?style=flat-square&color=abcdef&logo=nuget&label=version"/></a> <a href="https://www.nuget.org/packages/OWLSharp"><img src="https://img.shields.io/nuget/dt/OWLSharp?style=flat-square&color=abcdef&logo=nuget&label=downloads"/></a> <a href="https://app.codecov.io/gh/mdesalvo/OWLSharp"><img src="https://img.shields.io/codecov/c/github/mdesalvo/OWLSharp?style=flat-square&color=04aa6d&logo=codecov&label=coverage"/></a>
 
 
-OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of providing native expressivity for:
+OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of providing ontology expressivity for:
 <ul>
     <li>Creating <b>OWL2 ontologies</b> (classes, restrictions, properties, individuals, assertions, annotations, ...)</li>
     <li>Exporting them using standard <b>OWL2 formats</b> (OWL2/Xml)</li>
