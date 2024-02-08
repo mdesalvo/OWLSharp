@@ -471,8 +471,9 @@ namespace OWLSharp
             //INDIRECT (OWL2-Full anonymous inline property expressions (https://www.w3.org/2007/OWL/wiki/FullSemanticsInversePropertyExpressions))
             //ex:DescendantOf rdf:type owl:ObjectProperty ;
             //ex:ParentOf rdf:type owl:ObjectProperty ;
-            //            rdfs:subPropertyOf [ owl:inverseOf ex:DescendantOf ] .
+            //            rdfs:subPropertyOf|owl:equivalentProperty [ owl:inverseOf ex:DescendantOf ] .
             foreach (RDFResource blankSuperProperty in graph[owlProperty, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null]
+                                                        .UnionWith(graph[owlProperty, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
                                                         .Select(t => t.Object)
                                                         .OfType<RDFResource>()
                                                         .Where(op => op.IsBlank))
