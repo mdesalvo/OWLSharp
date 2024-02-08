@@ -546,6 +546,25 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldCheckAreInversePropertiesWithInlineBlankProperties()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:DescendantOf"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:ParentOf"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("bnode:inlineOP"));
+            ontology.Model.PropertyModel.DeclareSubProperties(new RDFResource("ex:ParentOf"), new RDFResource("bnode:inlineOP"));
+            ontology.Model.PropertyModel.DeclareInverseProperties(new RDFResource("bnode:inlineOP"), new RDFResource("ex:DescendantOf"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iJunior"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iMajor"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iMajor"), new RDFResource("ex:ParentOf"), new RDFResource("ex:iJunior"));
+
+            Assert.IsTrue(ontology.Model.PropertyModel.CheckIsInversePropertyOf(new RDFResource("ex:ParentOf"), new RDFResource("ex:DescendantOf"))); //Inferred
+            //Cannot "reverse" inline blank properties during computation of owl:inverseOf relations:
+            //(so we'll be able to assert this only after having materialized the above inference)
+            Assert.IsFalse(ontology.Model.PropertyModel.CheckIsInversePropertyOf(new RDFResource("ex:DescendantOf"), new RDFResource("ex:ParentOf")));
+        }
+
+        [TestMethod]
         public void ShouldAnswerDomainOfProperty()
         {
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();

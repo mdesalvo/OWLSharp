@@ -41,6 +41,25 @@ namespace OWLSharp.Reasoner.Test
         }
 
         [TestMethod]
+        public void ShouldExecuteInverseOfEntailmentWithInlineBlankProperties()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:DescendantOf"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:ParentOf"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("bnode:inlineOP"));
+            ontology.Model.PropertyModel.DeclareSubProperties(new RDFResource("ex:ParentOf"), new RDFResource("bnode:inlineOP"));
+            ontology.Model.PropertyModel.DeclareInverseProperties(new RDFResource("bnode:inlineOP"), new RDFResource("ex:DescendantOf"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iJunior"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iMajor"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iMajor"), new RDFResource("ex:ParentOf"), new RDFResource("ex:iJunior"));
+
+            OWLReasonerReport reasonerReport = OWLInverseOfEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(reasonerReport);
+            Assert.IsTrue(reasonerReport.EvidencesCount == 1);
+        }
+
+        [TestMethod]
         public void ShouldExecuteInverseOfEntailmentViaReasoner()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");

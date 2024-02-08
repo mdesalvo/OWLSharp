@@ -34,8 +34,8 @@ namespace OWLSharp
                 List<RDFResource> compatibleProperties = ontology.Model.PropertyModel.GetSuperPropertiesOf(currentProperty)
                                                             .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(currentProperty)).ToList();
 
-                //Extend current property assertions to each of the compatible properties
-                foreach (RDFResource compatibleProperty in compatibleProperties)
+                //Extend current property assertions to each of the compatible properties (exclude blanks)
+                foreach (RDFResource compatibleProperty in compatibleProperties.Where(p => !p.IsBlank))
                     foreach (RDFTriple propertyAssertion in propertyAssertions)
                     {
                         //Create the inferences
