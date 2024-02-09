@@ -266,7 +266,11 @@ namespace OWLSharp
             /// <summary>
             /// This OWL-DL rule targets data knowledge (A-BOX) to infer owl:sameAs relations from assertions having inverse functional properties
             /// </summary>
-            InverseFunctionalEntailment = 23
+            InverseFunctionalEntailment = 23,
+            /// <summary>
+            /// This OWL-DL rule targets model knowledge (T-BOX) to infer relations from complex hierarchies between classes and between properties
+            /// </summary>
+            EnhancedTBoxEntailment = 24
         };
 
         /// <summary>
