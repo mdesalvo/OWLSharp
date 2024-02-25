@@ -113,7 +113,6 @@ namespace OWLSharp
 
                     //Proceed with validation of the current individual
                     if (proceedWithValidation
-                         //These further conditions are just for safatey
                          && onProperty != null
                          && uint.TryParse(maxAllowedCardinality.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint maxAllowedCardinalityValue)
                          && (!isQualifiedRestriction || onClass != null))
@@ -128,7 +127,7 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLClassTypeRule),
                             $"Violation of local cardinality constraint on individual '{individualsEnumerator.Current}'",
-                            $"Revise your data: you have a local cardinaliy constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                            $"Revise your data: you have a local cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
 
                         //Determine if maximum allowed qualified cardinality is violated or not
                         //(we cannot verify qualified cardinalities working on data properties)
@@ -138,7 +137,7 @@ namespace OWLSharp
                             OWLEnums.OWLValidatorEvidenceCategory.Error,
                             nameof(OWLClassTypeRule),
                             $"Violation of local qualified cardinality constraint on individual '{individualsEnumerator.Current}'",
-                            $"Revise your data: you have a local qualified cardinaliy constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                            $"Revise your data: you have a local qualified cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
                     }
                     #endregion
                 }                
