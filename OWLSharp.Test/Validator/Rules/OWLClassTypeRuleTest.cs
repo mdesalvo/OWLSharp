@@ -350,7 +350,7 @@ namespace OWLSharp.Validator.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
-            ontology.Model.ClassModel.DeclareMinCardinalityRestriction(new RDFResource("ex:Min3ItemBox"), new RDFResource("ex:contains"), 3);
+            ontology.Model.ClassModel.DeclareMinCardinalityRestriction(new RDFResource("ex:Min3ItemBox"), new RDFResource("ex:contains"), 3); //min are not validated
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:contains"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
