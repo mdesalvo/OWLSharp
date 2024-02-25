@@ -129,6 +129,244 @@ namespace OWLSharp.Validator.Test
             Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
             Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
         }
+        
+        // BUGFIX #26
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnExactCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareCardinalityRestriction(new RDFResource("ex:EmptyBox"), new RDFResource("ex:contains"), 0);
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:EmptyBox"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item0"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnExactDataCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareCardinalityRestriction(new RDFResource("ex:EmptyBox"), new RDFResource("ex:contains"), 0);
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:EmptyBox"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFPlainLiteral("an item"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnExactQualifiedCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareQualifiedCardinalityRestriction(new RDFResource("ex:EmptyBox"), new RDFResource("ex:contains"), 0, new RDFResource("ex:Item"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:EmptyBox"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item0"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item1")); //no clash (because item1 is not an item)
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnMaxCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMaxCardinalityRestriction(new RDFResource("ex:Max1ItemBox"), new RDFResource("ex:contains"), 1);
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Max1ItemBox"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item0"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item1"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnMaxDataCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMaxCardinalityRestriction(new RDFResource("ex:Max1ItemBox"), new RDFResource("ex:contains"), 1);
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Max1ItemBox"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFPlainLiteral("item 1"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFPlainLiteral("item 2"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnMaxQualifiedCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMaxQualifiedCardinalityRestriction(new RDFResource("ex:Max1ItemBox"), new RDFResource("ex:contains"), 1, new RDFResource("ex:Item"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Max1ItemBox"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item0"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item1"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnMinMaxCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMinMaxCardinalityRestriction(new RDFResource("ex:Min1Max1ItemBox"), new RDFResource("ex:contains"), 1, 1);
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Min1Max1ItemBox"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item0"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item1"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnMinMaxDataCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMinMaxCardinalityRestriction(new RDFResource("ex:Min1Max1ItemBox"), new RDFResource("ex:contains"), 1, 1);
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Min1Max1ItemBox"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFPlainLiteral("item 1"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFPlainLiteral("item 2"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldValidateClassTypeClashingOnMinMaxQualifiedCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMinMaxQualifiedCardinalityRestriction(new RDFResource("ex:Min1Max1ItemBox"), new RDFResource("ex:contains"), 1, 1, new RDFResource("ex:Item"));
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Min1Max1ItemBox"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item0"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item1"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 1);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 1);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+        
+        [TestMethod]
+        public void ShouldValidateClassTypeNotProceedingOnMinCardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMinCardinalityRestriction(new RDFResource("ex:Min3ItemBox"), new RDFResource("ex:contains"), 3);
+            ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Min3ItemBox"));
+            ontology.Data.DeclareDatatypeAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFPlainLiteral("an item"));
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 0);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 0);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
         #endregion
     }
 }

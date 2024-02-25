@@ -3,7 +3,7 @@
     <AssemblyTitle>OWLSharp</AssemblyTitle>
     <AssemblyName>OWLSharp</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Version>3.10.2</Version>
+    <Version>3.10.3</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
     <Description>Lightweight and friendly .NET library for realizing intelligent Semantic Web applications</Description>
