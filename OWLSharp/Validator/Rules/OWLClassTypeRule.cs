@@ -113,6 +113,7 @@ namespace OWLSharp
 
                     //Proceed with validation of the current individual
                     if (proceedWithValidation
+                         //These further conditions are just for safatey
                          && onProperty != null
                          && uint.TryParse(maxAllowedCardinality.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint maxAllowedCardinalityValue)
                          && (!isQualifiedRestriction || onClass != null))
@@ -130,6 +131,7 @@ namespace OWLSharp
                             $"Revise your data: you have a local cardinaliy constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
 
                         //Determine if maximum allowed qualified cardinality is violated or not
+                        //(we cannot verify qualified cardinalities working on data properties)
                         if (isQualifiedRestriction && individualAssertions.Count(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
                                                                                         && ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)t.Object, onClass)) > maxAllowedCardinalityValue)
                             validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
