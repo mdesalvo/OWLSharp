@@ -12,6 +12,7 @@
 */
 
 using RDFSharp.Model;
+using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -120,24 +121,32 @@ namespace OWLSharp
                         //Fetch assertions of the current individual using the restricted property
                         RDFGraph individualAssertions = aboxObjectAssertions[individualsEnumerator.Current, onProperty, null, null]
                                                          .UnionWith(aboxDataAssertions[individualsEnumerator.Current, onProperty, null, null]);
-                        
+
                         //Determine if maximum allowed cardinality is violated or not
-                        if (!isQualifiedRestriction && individualAssertions.TriplesCount > maxAllowedCardinalityValue)
-                            validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
-                            OWLEnums.OWLValidatorEvidenceCategory.Error,
-                            nameof(OWLClassTypeRule),
-                            $"Violation of local cardinality constraint on individual '{individualsEnumerator.Current}'",
-                            $"Revise your data: you have a local cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                        if (!isQualifiedRestriction)
+                        {
+                            bool violatesRestriction = individualAssertions.TriplesCount > maxAllowedCardinalityValue;
+                            if (violatesRestriction)
+                                validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
+                                    OWLEnums.OWLValidatorEvidenceCategory.Error,
+                                    nameof(OWLClassTypeRule),
+                                    $"Violation of local cardinality constraint on individual '{individualsEnumerator.Current}'",
+                                    $"Revise your data: you have a local cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                        }                            
 
                         //Determine if maximum allowed qualified cardinality is violated or not
-                        //(we cannot verify qualified cardinalities working on data properties)
-                        if (isQualifiedRestriction && individualAssertions.Count(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                                                                        && ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)t.Object, onClass)) > maxAllowedCardinalityValue)
-                            validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
-                            OWLEnums.OWLValidatorEvidenceCategory.Error,
-                            nameof(OWLClassTypeRule),
-                            $"Violation of local qualified cardinality constraint on individual '{individualsEnumerator.Current}'",
-                            $"Revise your data: you have a local qualified cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                        //(we cannot verify qualified cardinalities restricting data properties)
+                        else
+                        {
+                            bool violatesQRestriction = individualAssertions.Count(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                                                                          && ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)t.Object, onClass)) > maxAllowedCardinalityValue;
+                            if (violatesQRestriction)
+                                validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
+                                    OWLEnums.OWLValidatorEvidenceCategory.Error,
+                                    nameof(OWLClassTypeRule),
+                                    $"Violation of local qualified cardinality constraint on individual '{individualsEnumerator.Current}'",
+                                    $"Revise your data: you have a local qualified cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                        }
                     }
                     #endregion
                 }                
