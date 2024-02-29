@@ -121,31 +121,64 @@ namespace OWLSharp
                         //Fetch assertions of the current individual using the restricted property
                         RDFGraph individualAssertions = aboxObjectAssertions[individualsEnumerator.Current, onProperty, null, null]
                                                          .UnionWith(aboxDataAssertions[individualsEnumerator.Current, onProperty, null, null]);
-
+                        
                         //Determine if maximum allowed cardinality is violated or not
                         if (!isQualifiedRestriction)
                         {
-                            bool violatesRestriction = individualAssertions.TriplesCount > maxAllowedCardinalityValue;
+                            bool violatesRestriction = default;
+
+                            //Isolate target individuals in order to perform owl:differentFrom analysis (since
+                            //under OWA we must take in consideration only *explicitly different* individuals)
+                            if (ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty))
+                            {
+                                List<RDFResource> targetIndividuals = RDFQueryUtilities.RemoveDuplicates(individualAssertions.Select(t => t.Object)
+                                                                                                                             .OfType<RDFResource>()
+                                                                                                                             .ToList());
+                                violatesRestriction = CountDifferentIndividuals(ontology, targetIndividuals, maxAllowedCardinalityValue) >= maxAllowedCardinalityValue;
+                            }
+
+                            //Isolate target literals in order to perform inequality analysis
+                            else if (ontology.Model.PropertyModel.CheckHasDatatypeProperty(onProperty))
+                            {
+                                List<RDFLiteral> targetLiterals = RDFQueryUtilities.RemoveDuplicates(individualAssertions.Select(t => t.Object)
+                                                                                                                         .OfType<RDFLiteral>()
+                                                                                                                         .ToList());
+                                violatesRestriction = targetLiterals.Count > maxAllowedCardinalityValue;
+                            }
+
+                            //Raise violation error
                             if (violatesRestriction)
                                 validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                                     OWLEnums.OWLValidatorEvidenceCategory.Error,
                                     nameof(OWLClassTypeRule),
                                     $"Violation of local cardinality constraint on individual '{individualsEnumerator.Current}'",
-                                    $"Revise your data: you have a local cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                                    $"Revise your data: you have a local cardinality constraint (valued {maxAllowedCardinalityValue}) violated by the targets of assertion property {onProperty}"));
                         }                            
 
                         //Determine if maximum allowed qualified cardinality is violated or not
-                        //(we cannot verify qualified cardinalities restricting data properties)
+                        //(we cannot verify qualified cardinalities working on data properties)
                         else
                         {
-                            bool violatesQRestriction = individualAssertions.Count(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                                                                          && ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)t.Object, onClass)) > maxAllowedCardinalityValue;
+                            bool violatesQRestriction = default;
+
+                            //Isolate target individuals in order to perform owl:differentFrom analysis (since
+                            //under OWA we must take in consideration only *explicitly different* individuals)
+                            if (ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty))
+                            {
+                                List<RDFResource> targetQIndividuals = RDFQueryUtilities.RemoveDuplicates(individualAssertions.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                                                                                                                        && ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)t.Object, onClass))
+                                                                                                                              .Select(t => t.Object)
+                                                                                                                              .OfType<RDFResource>()
+                                                                                                                              .ToList());
+                                violatesQRestriction = CountDifferentIndividuals(ontology, targetQIndividuals, maxAllowedCardinalityValue) >= maxAllowedCardinalityValue;
+                            }
+                            
                             if (violatesQRestriction)
                                 validatorRuleReport.AddEvidence(new OWLValidatorEvidence(
                                     OWLEnums.OWLValidatorEvidenceCategory.Error,
                                     nameof(OWLClassTypeRule),
                                     $"Violation of local qualified cardinality constraint on individual '{individualsEnumerator.Current}'",
-                                    $"Revise your data: you have a local qualified cardinality constraint {maxAllowedCardinalityValue} violated by the assertions of individual {individualsEnumerator.Current} on property {onProperty}"));
+                                    $"Revise your data: you have a local qualified cardinality constraint (valued {maxAllowedCardinalityValue}) violated by the targets of assertion property {onProperty}"));
                         }
                     }
                     #endregion
@@ -153,6 +186,27 @@ namespace OWLSharp
             }
 
             return validatorRuleReport;
+        }
+
+        //Counts the distinct pairs of individuals related by owl:differentFrom in the given ontology 
+        private static int CountDifferentIndividuals(OWLOntology ontology, List<RDFResource> targetIndividuals, uint maxAllowedCardinalityValue)
+        {
+            //In case the maximum allowed number of occurrences is zero we can safely exit 
+            //by directly reporting the number of target individuals (we are not interested
+            //in computing their owl:differentFrom relations)
+            if (maxAllowedCardinalityValue == 0)
+                return targetIndividuals.Count;
+
+            //Otherwise we must compute the distinct pairs of individuals related by an
+            //owl:differentFrom relation. In fact, under OWA this is the only violation
+            //trigger: having N>threshold explicitly different individuals as targets of
+            //the same [Q][Exact|Max|MinMax] local cardinality constraint 
+            int differentTargetIndividuals = 0;
+            for (int i = 0; i < targetIndividuals.Count - 1; i++)
+                for (int j = i + 1; j < targetIndividuals.Count; j++)
+                    if (ontology.Data.CheckIsDifferentIndividual(targetIndividuals[i], targetIndividuals[j]))
+                        differentTargetIndividuals++;
+            return differentTargetIndividuals;
         }
     }
 }
