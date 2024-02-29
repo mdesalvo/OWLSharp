@@ -251,6 +251,34 @@ namespace OWLSharp.Validator.Test
         }
 
         [TestMethod]
+        public void ShouldValidateClassTypeNotClashingOnMax2Cardinality()
+        {
+            OWLOntology ontology = new OWLOntology("ex:ont");
+            ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:Item"));
+            ontology.Model.ClassModel.DeclareMaxCardinalityRestriction(new RDFResource("ex:Max2ItemBox"), new RDFResource("ex:contains"), 2);
+            ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:contains"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item0"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item0"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item1"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareDifferentIndividuals(new RDFResource("ex:item0"), new RDFResource("ex:item1"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:item2"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:item2"), new RDFResource("ex:Item"));
+            ontology.Data.DeclareIndividual(new RDFResource("ex:iBox"));
+            ontology.Data.DeclareIndividualType(new RDFResource("ex:iBox"), new RDFResource("ex:Max2ItemBox"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item0"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item1"));
+            ontology.Data.DeclareObjectAssertion(new RDFResource("ex:iBox"), new RDFResource("ex:contains"), new RDFResource("ex:item2")); //no clash because we dont know if it is owl:differentFrom against ex:item0 or ex:item1
+
+            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(validatorReport);
+            Assert.IsTrue(validatorReport.EvidencesCount == 0);
+            Assert.IsTrue(validatorReport.SelectErrors().Count == 0);
+            Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldValidateClassTypeClashingOnMaxDataCardinality()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
