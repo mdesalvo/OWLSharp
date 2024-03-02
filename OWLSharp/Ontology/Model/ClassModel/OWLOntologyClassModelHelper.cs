@@ -67,7 +67,7 @@ namespace OWLSharp
             => CheckHasClass(classModel, owlComposite)
                 && classModel.TBoxGraph[owlComposite, null, null, null].Any(t => t.Predicate.Equals(RDFVocabulary.OWL.UNION_OF)
                                                                                   || t.Predicate.Equals(RDFVocabulary.OWL.INTERSECTION_OF)
-                                                                                   || t.Predicate.Equals(RDFVocabulary.OWL.COMPLEMENT_OF));
+                                                                                  || t.Predicate.Equals(RDFVocabulary.OWL.COMPLEMENT_OF));
 
         /// <summary>
         /// Checks for the existence of the given owl:unionOf declaration within the model
@@ -119,6 +119,15 @@ namespace OWLSharp
                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.HAS_SELF, null, null].TriplesCount > 0;
 
         /// <summary>
+        /// Checks for the existence of the given local cardinality restriction declaration within the model
+        /// </summary>
+        internal static bool CheckHasLocalCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
+            => classModel.CheckHasCardinalityRestrictionClass(owlRestriction)
+                || classModel.CheckHasMinCardinalityRestrictionClass(owlRestriction)
+                || classModel.CheckHasMaxCardinalityRestrictionClass(owlRestriction)
+                || classModel.CheckHasMinMaxCardinalityRestrictionClass(owlRestriction);
+
+        /// <summary>
         /// Checks for the existence of the given owl:CardinalityRestriction declaration within the model
         /// </summary>
         internal static bool CheckHasCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
@@ -131,7 +140,7 @@ namespace OWLSharp
         internal static bool CheckHasMinCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
             => CheckHasRestrictionClass(classModel, owlRestriction)
                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].TriplesCount > 0
-                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].TriplesCount == 0;
+                && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].TriplesCount == 0;
 
         /// <summary>
         /// Checks for the existence of the given owl:[Max]CardinalityRestriction declaration within the model
@@ -139,7 +148,7 @@ namespace OWLSharp
         internal static bool CheckHasMaxCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
             => CheckHasRestrictionClass(classModel, owlRestriction)
                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].TriplesCount > 0
-                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].TriplesCount == 0;
+                && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].TriplesCount == 0;
 
         /// <summary>
         /// Checks for the existence of the given owl:[Min|Max]CardinalityRestriction declaration within the model
@@ -147,7 +156,16 @@ namespace OWLSharp
         internal static bool CheckHasMinMaxCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
             => CheckHasRestrictionClass(classModel, owlRestriction)
                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].TriplesCount > 0
-                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].TriplesCount > 0;
+                && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].TriplesCount > 0;
+
+        /// <summary>
+        /// Checks for the existence of the given local qualified cardinality restriction declaration within the model
+        /// </summary>
+        internal static bool CheckHasLocalQualifiedCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
+            => classModel.CheckHasQualifiedCardinalityRestrictionClass(owlRestriction)
+                || classModel.CheckHasMinQualifiedCardinalityRestrictionClass(owlRestriction)
+                || classModel.CheckHasMaxQualifiedCardinalityRestrictionClass(owlRestriction)
+                || classModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(owlRestriction);
 
         /// <summary>
         /// Checks for the existence of the given owl:QualifiedCardinalityRestriction declaration within the model [OWL2]
@@ -162,7 +180,7 @@ namespace OWLSharp
         internal static bool CheckHasMinQualifiedCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
             => CheckHasRestrictionClass(classModel, owlRestriction)
                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0
-                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].TriplesCount == 0;
+                && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].TriplesCount == 0;
 
         /// <summary>
         /// Checks for the existence of the given owl:[Max]QualifiedCardinalityRestriction declaration within the model [OWL2]
@@ -170,7 +188,7 @@ namespace OWLSharp
         internal static bool CheckHasMaxQualifiedCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
             => CheckHasRestrictionClass(classModel, owlRestriction)
                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0
-                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].TriplesCount == 0;
+                && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].TriplesCount == 0;
 
         /// <summary>
         /// Checks for the existence of the given owl:[Min|Max]QualifiedCardinalityRestriction declaration within the model [OWL2]
@@ -178,7 +196,7 @@ namespace OWLSharp
         internal static bool CheckHasMinMaxQualifiedCardinalityRestrictionClass(this OWLOntologyClassModel classModel, RDFResource owlRestriction)
             => CheckHasRestrictionClass(classModel, owlRestriction)
                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0
-                 && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0;
+                && classModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0;
 
         /// <summary>
         /// Checks for the existence of the given owl:disjointUnionOf declaration within the model [OWL2]
@@ -200,10 +218,10 @@ namespace OWLSharp
         public static bool CheckHasSimpleClass(this OWLOntologyClassModel classModel, RDFResource owlClass)
             => CheckHasClass(classModel, owlClass)
                 && !CheckHasRestrictionClass(classModel, owlClass)
-                 && !CheckHasEnumerateClass(classModel, owlClass)
-                  && !CheckHasCompositeClass(classModel, owlClass)
-                   && !CheckHasDisjointUnionClass(classModel, owlClass)
-                    && !CheckHasAllDisjointClasses(classModel, owlClass);
+                && !CheckHasEnumerateClass(classModel, owlClass)
+                && !CheckHasCompositeClass(classModel, owlClass)
+                && !CheckHasDisjointUnionClass(classModel, owlClass)
+                && !CheckHasAllDisjointClasses(classModel, owlClass);
 
         /// <summary>
         /// Checks for the existence of the given owl:Class annotation within the model

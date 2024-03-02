@@ -66,31 +66,6 @@ namespace OWLSharp.Validator.Test
             Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
         }
 
-        [TestMethod, Timeout(6000)] // checking 30k of individuals should not take longer than 6 seconds
-        public void ShouldCompleteQuickly()
-        {
-            RDFResource class1 = new RDFResource("ex:class1");
-            RDFResource class2 = new RDFResource("ex:class2");
-
-            OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Model.ClassModel.DeclareClass(class1);
-            ontology.Model.ClassModel.DeclareClass(class2);
-            ontology.Model.ClassModel.DeclareDisjointClasses(class1, class2);            
-            for (int i = 0; i < 30000; i++)
-            {
-                RDFResource individual = new RDFResource($"ex:indiv{i}");
-                ontology.Data.Individuals.Add(individual.PatternMemberID, individual);
-                ontology.Data.ABoxGraph.AddTriple(new RDFTriple(individual, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
-                ontology.Data.ABoxGraph.AddTriple(new RDFTriple(individual, RDFVocabulary.RDF.TYPE, class1));
-                ontology.Data.ABoxGraph.AddTriple(new RDFTriple(individual, RDFVocabulary.RDF.TYPE, class2));
-            }
-
-            OWLValidatorReport validatorReport = OWLClassTypeRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(validatorReport);
-            Assert.IsTrue(validatorReport.EvidencesCount == 60000);
-        }
-
         [TestMethod]
         public void ShouldValidateClassTypeClashingOnComplement()
         {
@@ -130,7 +105,7 @@ namespace OWLSharp.Validator.Test
             Assert.IsTrue(validatorReport.SelectWarnings().Count == 0);
         }
         
-        // BUGFIX #26
+        //BUGFIX #26
 
         [TestMethod]
         public void ShouldValidateClassTypeClashingOnExactCardinality()

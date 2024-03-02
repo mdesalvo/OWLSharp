@@ -31,14 +31,8 @@ namespace OWLSharp
             while (restrictionsEnumerator.MoveNext())
             {
                 //There should not be cardinality restrictions working on a transitive property, or any super properties or inverse properties being transitive
-                if (ontology.Model.ClassModel.CheckHasCardinalityRestrictionClass(restrictionsEnumerator.Current)
-                     || ontology.Model.ClassModel.CheckHasMinCardinalityRestrictionClass(restrictionsEnumerator.Current)
-                      || ontology.Model.ClassModel.CheckHasMaxCardinalityRestrictionClass(restrictionsEnumerator.Current)
-                       || ontology.Model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(restrictionsEnumerator.Current)
-                        || ontology.Model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current)
-                         || ontology.Model.ClassModel.CheckHasMinQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current)
-                          || ontology.Model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current)
-                           || ontology.Model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current))
+                if (ontology.Model.ClassModel.CheckHasLocalCardinalityRestrictionClass(restrictionsEnumerator.Current)
+                     || ontology.Model.ClassModel.CheckHasLocalQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current))
                 {
                     //Grab owl:onProperty value to check if it is a transitive property
                     RDFResource onProperty = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current, RDFVocabulary.OWL.ON_PROPERTY, null, null]

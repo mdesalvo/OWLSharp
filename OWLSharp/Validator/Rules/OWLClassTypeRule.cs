@@ -87,6 +87,13 @@ namespace OWLSharp
                         maxAllowedCardinality = OWLOntologyClassModelLoader.GetRestrictionCardinality(ontology.Model.ClassModel.TBoxGraph, individualClass);
                         onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, individualClass);
                     }
+                    else if (ontology.Model.ClassModel.CheckHasMaxCardinalityRestrictionClass(individualClass)
+                              || ontology.Model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(individualClass))
+                    {
+                        proceedWithValidation = true;
+                        maxAllowedCardinality = OWLOntologyClassModelLoader.GetRestrictionMaxCardinality(ontology.Model.ClassModel.TBoxGraph, individualClass);
+                        onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, individualClass);
+                    }                        
                     else if (ontology.Model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(individualClass))
                     {
                         proceedWithValidation = true;
@@ -95,15 +102,8 @@ namespace OWLSharp
                         onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, individualClass);
                         onClass = OWLOntologyClassModelLoader.GetRestrictionClass(ontology.Model.ClassModel.TBoxGraph, individualClass);
                     }
-                    else if (ontology.Model.ClassModel.CheckHasMaxCardinalityRestrictionClass(individualClass)
-                              || ontology.Model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(individualClass))
-                    {
-                        proceedWithValidation = true;
-                        maxAllowedCardinality = OWLOntologyClassModelLoader.GetRestrictionMaxCardinality(ontology.Model.ClassModel.TBoxGraph, individualClass);
-                        onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, individualClass);
-                    }                        
                     else if (ontology.Model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(individualClass) 
-                             ||ontology.Model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(individualClass))
+                              ||ontology.Model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(individualClass))
                     {
                         proceedWithValidation = true;
                         isQualifiedRestriction = true;
@@ -166,7 +166,7 @@ namespace OWLSharp
                             if (ontology.Model.PropertyModel.CheckHasObjectProperty(onProperty))
                             {
                                 List<RDFResource> targetQIndividuals = RDFQueryUtilities.RemoveDuplicates(individualAssertions.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                                                                                                                                        && ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)t.Object, onClass))
+                                                                                                                                            && ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)t.Object, onClass))
                                                                                                                               .Select(t => t.Object)
                                                                                                                               .OfType<RDFResource>()
                                                                                                                               .ToList());

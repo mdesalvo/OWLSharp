@@ -71,8 +71,8 @@ namespace OWLSharp
         {
             if (leftIndividual != null && owlProperty != null && rightIndividual != null && data != null)
                 return data.ABoxGraph[null, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, leftIndividual, null].TriplesCount > 0
-                         && data.ABoxGraph[null, RDFVocabulary.OWL.ASSERTION_PROPERTY, owlProperty, null].TriplesCount > 0
-                           && data.ABoxGraph[null, RDFVocabulary.OWL.TARGET_INDIVIDUAL, rightIndividual, null].TriplesCount > 0;
+                        && data.ABoxGraph[null, RDFVocabulary.OWL.ASSERTION_PROPERTY, owlProperty, null].TriplesCount > 0
+                        && data.ABoxGraph[null, RDFVocabulary.OWL.TARGET_INDIVIDUAL, rightIndividual, null].TriplesCount > 0;
             return false;
         }
 
@@ -83,8 +83,8 @@ namespace OWLSharp
         {
             if (individual != null && owlProperty != null && value != null && data != null)
                 return data.ABoxGraph[null, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, individual, null].TriplesCount > 0
-                         && data.ABoxGraph[null, RDFVocabulary.OWL.ASSERTION_PROPERTY, owlProperty, null].TriplesCount > 0
-                           && data.ABoxGraph[null, RDFVocabulary.OWL.TARGET_VALUE, null, value].TriplesCount > 0;
+                        && data.ABoxGraph[null, RDFVocabulary.OWL.ASSERTION_PROPERTY, owlProperty, null].TriplesCount > 0
+                        && data.ABoxGraph[null, RDFVocabulary.OWL.TARGET_VALUE, null, value].TriplesCount > 0;
             return false;
         }
         #endregion
