@@ -38,8 +38,8 @@ namespace OWLSharp
                 if (ontology.Model.ClassModel.CheckHasLocalCardinalityRestrictionClass(restrictionsEnumerator.Current)
                      || ontology.Model.ClassModel.CheckHasLocalQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current))
                 {
-                    RDFResource onProperty = ontology.Model.ClassModel.TBoxGraph[restrictionsEnumerator.Current, RDFVocabulary.OWL.ON_PROPERTY, null, null]
-                                                .FirstOrDefault()?.Object as RDFResource;
+                    RDFResource onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
+                    RDFResource onClass = OWLOntologyClassModelLoader.GetRestrictionClass(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
 
                     #region Transitivity Analysis
                     //There should not be cardinality restrictions working on a transitive property, or any super properties or inverse properties being transitive
@@ -73,28 +73,23 @@ namespace OWLSharp
                     #region Local Cardinality Analysis
                     //There should not be [Q][Exact|Max|MinMax] local cardinality constraints violated by the individual
                     bool proceedWithValidation = default, isQualifiedRestriction = default;
-                    RDFResource onClass = default; 
                     RDFTypedLiteral maxAllowedCardinality = default;
                     if (ontology.Model.ClassModel.CheckHasCardinalityRestrictionClass(restrictionsEnumerator.Current))
                     {
                         proceedWithValidation = true;
                         maxAllowedCardinality = OWLOntologyClassModelLoader.GetRestrictionCardinality(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
-                        onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
                     }
                     else if (ontology.Model.ClassModel.CheckHasMaxCardinalityRestrictionClass(restrictionsEnumerator.Current)
                               || ontology.Model.ClassModel.CheckHasMinMaxCardinalityRestrictionClass(restrictionsEnumerator.Current))
                     {
                         proceedWithValidation = true;
                         maxAllowedCardinality = OWLOntologyClassModelLoader.GetRestrictionMaxCardinality(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
-                        onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
                     }                        
                     else if (ontology.Model.ClassModel.CheckHasQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current))
                     {
                         proceedWithValidation = true;
                         isQualifiedRestriction = true;
                         maxAllowedCardinality = OWLOntologyClassModelLoader.GetRestrictionQualifiedCardinality(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
-                        onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
-                        onClass = OWLOntologyClassModelLoader.GetRestrictionClass(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
                     }
                     else if (ontology.Model.ClassModel.CheckHasMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current) 
                               ||ontology.Model.ClassModel.CheckHasMinMaxQualifiedCardinalityRestrictionClass(restrictionsEnumerator.Current))
@@ -102,8 +97,6 @@ namespace OWLSharp
                         proceedWithValidation = true;
                         isQualifiedRestriction = true;
                         maxAllowedCardinality = OWLOntologyClassModelLoader.GetRestrictionMaxQualifiedCardinality(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
-                        onProperty = OWLOntologyClassModelLoader.GetRestrictionProperty(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
-                        onClass = OWLOntologyClassModelLoader.GetRestrictionClass(ontology.Model.ClassModel.TBoxGraph, restrictionsEnumerator.Current);
                     }
 
                     if (proceedWithValidation
