@@ -12,5 +12,5 @@ In addition to the <a href="https://github.com/mdesalvo/OWLSharp/releases/downlo
 <ul>
     <li>Creating reasoners to build business-logic inference rules in a fluent and natural way (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.SWRL-3.10.0.pdf">SWRL</a>)</li>
     <li>Creating schemes describing, documenting and organizing vocabularies of concepts (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.SKOS-3.10.0.pdf">SKOS</a>)</li>
-    <li>Representing features having a spatiotemporal extension (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.GEO-3.10.0.pdf">GeoSPARQL</a>, <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.TIME-3.10.0.pdf">OWL-TIME</a>)</li>
+    <li>Modeling features having a spatiotemporal representation (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.GEO-3.10.0.pdf">GeoSPARQL</a>, <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.TIME-3.10.0.pdf">OWL-TIME</a>)</li>
 </ul>
