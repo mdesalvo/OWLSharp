@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using RDFSharp.Query;
 using System.Collections.Generic;
 
 namespace OWLSharp
@@ -22,7 +23,7 @@ namespace OWLSharp
     /// <summary>
     /// OWLUtilities is a collector of reusable utility methods for ontology management
     /// </summary>
-    internal static class OWLUtilities
+    public static class OWLUtilities
     {
         #region Properties
         /// <summary>
@@ -279,6 +280,33 @@ namespace OWLSharp
 
         internal static RDFTriple SetImport(this RDFTriple triple)
             => triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsImport);
+
+        /// <summary>
+        /// Applies the given SPARQL SELECT query to the given ontology, along with the (eventually) given OWL reasoner
+        /// </summary>
+        public static RDFSelectQueryResult ApplyToOntology(this RDFSelectQuery query, OWLOntology ontology, OWLReasoner reasoner=null)
+        {
+            RDFSelectQueryResult result = new RDFSelectQueryResult();
+
+            if (query != null && ontology != null)
+            {
+                //Clone the given ontology into a temporary ontology
+                OWLOntology tempOntology = new OWLOntology(ontology.URI.ToString(), ontology.Model, ontology.Data) {
+                    OBoxGraph = ontology.OBoxGraph };
+
+                //Apply the given reasoner to the temporary ontology, which is "enriched" with inferences
+                OWLReasonerReport report = reasoner?.ApplyToOntology(tempOntology);
+                report?.JoinEvidences(tempOntology);
+
+                //Get a graph representation of the "enriched" temporary ontology
+                RDFGraph tempOntologyGraph = tempOntology.ToRDFGraph(true);
+
+                //Apply the given query to the obtained graph
+                result = query.ApplyToGraph(tempOntologyGraph);
+            }
+
+            return result;
+        }
         #endregion
     }
 }
