@@ -389,8 +389,8 @@ namespace OWLSharp.Test
         public void ShouldDeclareAllDifferentIndividuals()
         {
             OWLOntologyData data = new OWLOntologyData();
-            data.DeclareAllDifferentIndividuals(new RDFResource("ex:allDiff"), new List<RDFResource>() {
-                new RDFResource("ex:indivA"), new RDFResource("ex:indivB"), new RDFResource("ex:indivC") });
+            data.DeclareAllDifferentIndividuals(new RDFResource("ex:allDiff"), [
+                new RDFResource("ex:indivA"), new RDFResource("ex:indivB"), new RDFResource("ex:indivC") ]);
 
             Assert.IsTrue(data.IndividualsCount == 0);
             Assert.IsTrue(data.AllDifferentCount == 1);
@@ -415,7 +415,7 @@ namespace OWLSharp.Test
         public void ShouldThrowExceptionOnDeclaringAllDifferentIndividualsBecauseNullClass()
             => Assert.ThrowsException<OWLException>(() => new OWLOntologyData()
                         .DeclareIndividual(new RDFResource("ex:indivA"))
-                        .DeclareAllDifferentIndividuals(null, new List<RDFResource>() { new RDFResource("ex:indivA") }));
+                        .DeclareAllDifferentIndividuals(null, [new RDFResource("ex:indivA")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDifferentIndividualsBecauseNullIndividuals()
@@ -427,7 +427,7 @@ namespace OWLSharp.Test
         public void ShouldThrowExceptionOnDeclaringAllDifferentIndividualsBecauseEmptyIndividuals()
             => Assert.ThrowsException<OWLException>(() => new OWLOntologyData()
                         .DeclareIndividual(new RDFResource("ex:indivA"))
-                        .DeclareAllDifferentIndividuals(new RDFResource("ex:diffClass"), new List<RDFResource>()));
+                        .DeclareAllDifferentIndividuals(new RDFResource("ex:diffClass"), []));
 
         [TestMethod]
         public void ShouldDeclareObjectAssertion()

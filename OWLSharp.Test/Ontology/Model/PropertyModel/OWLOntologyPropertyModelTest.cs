@@ -702,7 +702,7 @@ namespace OWLSharp.Test
         public void ShouldDeclareAllDisjointProperties()
         {
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
-            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2") });
+            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2")]);
 
             Assert.IsTrue(propertyModel.PropertiesCount == 0); //owl:AllDisjointProperties is not considered a property
             Assert.IsTrue(propertyModel.AllDisjointPropertiesCount == 1);
@@ -740,7 +740,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDisjointPropertiesBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclareAllDisjointProperties(null, new List<RDFResource>() { new RDFResource("ex:objprop1") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclareAllDisjointProperties(null, [new RDFResource("ex:objprop1")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDisjointPropertiesBecauseNullProperties()
@@ -748,7 +748,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDisjointPropertiesBecauseEmptyProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), []));
 
         [TestMethod]
         public void ShouldDeclareDeprecatedProperty()
@@ -1172,7 +1172,7 @@ namespace OWLSharp.Test
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
             propertyModel.DeclareObjectProperty(new RDFResource("ex:objprop1"));
             propertyModel.DeclareObjectProperty(new RDFResource("ex:objprop2"));
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2") });
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2")]);
 
             Assert.IsTrue(propertyModel.TBoxGraph.TriplesCount == 10);
             Assert.IsTrue(propertyModel.TBoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 3);
@@ -1186,7 +1186,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringPropertyChainAxiomBecauseNullProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclarePropertyChainAxiom(null, new List<RDFResource>() { new RDFResource("ex:objprop1") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclarePropertyChainAxiom(null, [new RDFResource("ex:objprop1")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringPropertyChainAxiomBecauseNullProperties()
@@ -1194,11 +1194,11 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringPropertyChainAxiomBecauseEmptyProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), []));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringPropertyChainAxiomBecauseSelfProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyChainAxiom") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyPropertyModel().DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyChainAxiom")]));
 
         [TestMethod]
         public void ShouldMergePropertyModel()
@@ -1238,8 +1238,8 @@ namespace OWLSharp.Test
             propertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
             RDFGraph graph = propertyModel.ToRDFGraph();
@@ -1265,8 +1265,8 @@ namespace OWLSharp.Test
             propertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
             RDFGraph graph = propertyModel.ToRDFGraph(false);
@@ -1292,8 +1292,8 @@ namespace OWLSharp.Test
             propertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
             RDFGraph graph = await propertyModel.ToRDFGraphAsync();
@@ -1319,8 +1319,8 @@ namespace OWLSharp.Test
             propertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             propertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             propertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             propertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
             RDFGraph graph = await propertyModel.ToRDFGraphAsync(false);

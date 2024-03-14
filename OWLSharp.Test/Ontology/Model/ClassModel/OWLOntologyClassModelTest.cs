@@ -748,7 +748,7 @@ namespace OWLSharp.Test
         public void ShouldDeclareUnionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:class2") });
+            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [new RDFResource("ex:class1"), new RDFResource("ex:class2")]);
 
             Assert.IsTrue(classModel.ClassesCount == 1);
             Assert.IsTrue(classModel.AllDisjointClassesCount == 0);
@@ -778,7 +778,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringUnionClassBecauseNullClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareUnionClass(null, new List<RDFResource>() { new RDFResource("ex:class1") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareUnionClass(null, [new RDFResource("ex:class1")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringUnionClassBecauseNullClasses()
@@ -786,17 +786,17 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringUnionClassBecauseEmptyClasses()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareUnionClass(new RDFResource("ex:unionClass"), []));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringUnionClassBecauseSelfClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareUnionClass(new RDFResource("ex:class1"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:class2") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareUnionClass(new RDFResource("ex:class1"), [new RDFResource("ex:class1"), new RDFResource("ex:class2")]));
 
         [TestMethod]
         public void ShouldDeclareIntersectionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:class2") });
+            classModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), [new RDFResource("ex:class1"), new RDFResource("ex:class2")]);
 
             Assert.IsTrue(classModel.ClassesCount == 1);
             Assert.IsTrue(classModel.AllDisjointClassesCount == 0);
@@ -826,7 +826,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntersectionClassBecauseNullClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareIntersectionClass(null, new List<RDFResource>() { new RDFResource("ex:class1") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareIntersectionClass(null, [new RDFResource("ex:class1")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntersectionClassBecauseNullClasses()
@@ -834,11 +834,11 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntersectionClassBecauseEmptyClasses()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), []));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntersectionClassBecauseSelfClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareIntersectionClass(new RDFResource("ex:class1"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:class2") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareIntersectionClass(new RDFResource("ex:class1"), [new RDFResource("ex:class1"), new RDFResource("ex:class2")]));
 
         [TestMethod]
         public void ShouldDeclareComplementClass()
@@ -884,7 +884,7 @@ namespace OWLSharp.Test
         public void ShouldDeclareDisjointUnionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:class2") });
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:class1"), new RDFResource("ex:class2")]);
 
             Assert.IsTrue(classModel.ClassesCount == 1);
             Assert.IsTrue(classModel.AllDisjointClassesCount == 0);
@@ -905,7 +905,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringDisjointUnionClassBecauseNullClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareDisjointUnionClass(null, new List<RDFResource>() { new RDFResource("ex:class1") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareDisjointUnionClass(null, [new RDFResource("ex:class1")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringDisjointUnionClassBecauseNullClasses()
@@ -913,13 +913,13 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringDisjointUnionClassBecauseEmptyClasses()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), []));
 
         [TestMethod]
         public void ShouldDeclareAllDisjointClasses()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:class2") });
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:class1"), new RDFResource("ex:class2")]);
 
             Assert.IsTrue(classModel.ClassesCount == 1);
             Assert.IsTrue(classModel.AllDisjointClassesCount == 1);
@@ -951,7 +951,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDisjointClassesBecauseNullClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareAllDisjointClasses(null, new List<RDFResource>() { new RDFResource("ex:class1") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareAllDisjointClasses(null, [new RDFResource("ex:class1")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDisjointClassesBecauseNullClasses()
@@ -959,7 +959,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringAllDisjointClassesBecauseEmptyClasses()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), []));
 
         [TestMethod]
         public void ShouldAnnotateResourceClass()
@@ -1210,7 +1210,7 @@ namespace OWLSharp.Test
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
             classModel.DeclareClass(new RDFResource("ex:classA"));
-            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { new RDFResource("ex:dtProp") });
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), [new RDFResource("ex:dtProp")]);
 
             Assert.IsTrue(classModel.TBoxGraph.TriplesCount == 5);
             Assert.IsTrue(classModel.TBoxGraph[new RDFResource("ex:classA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
@@ -1223,7 +1223,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringHasKeyBecauseNullClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareHasKey(null, new List<RDFResource>() { new RDFResource("ex:dtProp") }));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareHasKey(null, [new RDFResource("ex:dtProp")]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringHasKeyBecauseNullClasses()
@@ -1231,7 +1231,7 @@ namespace OWLSharp.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringHasKeyBecauseEmptyClasses()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>()));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntologyClassModel().DeclareHasKey(new RDFResource("ex:classA"), []));
 
         [TestMethod]
         public void ShouldDeclareRestriction()
@@ -1301,9 +1301,9 @@ namespace OWLSharp.Test
             classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
-            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
-            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
             classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
             RDFGraph graph = classModel.ToRDFGraph();
@@ -1324,9 +1324,9 @@ namespace OWLSharp.Test
             classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
-            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
-            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
             classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
             RDFGraph graph = classModel.ToRDFGraph(false);
@@ -1346,7 +1346,7 @@ namespace OWLSharp.Test
             classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
             classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
             RDFGraph graph = await classModel.ToRDFGraphAsync();
@@ -1366,7 +1366,7 @@ namespace OWLSharp.Test
             classModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             classModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             classModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
             classModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             classModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
             RDFGraph graph = await classModel.ToRDFGraphAsync(false);

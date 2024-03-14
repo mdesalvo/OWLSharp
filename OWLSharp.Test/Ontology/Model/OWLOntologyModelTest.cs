@@ -103,9 +103,9 @@ namespace OWLSharp.Test
             model.ClassModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             model.ClassModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
-            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
-            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
+            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
+            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
             model.ClassModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             model.ClassModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
 
@@ -123,8 +123,8 @@ namespace OWLSharp.Test
             model.PropertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             model.PropertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
 
@@ -148,9 +148,9 @@ namespace OWLSharp.Test
             model.ClassModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             model.ClassModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
-            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
-            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
+            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
+            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
             model.ClassModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             model.ClassModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
 
@@ -168,8 +168,8 @@ namespace OWLSharp.Test
             model.PropertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             model.PropertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
 
@@ -193,9 +193,9 @@ namespace OWLSharp.Test
             model.ClassModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             model.ClassModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
-            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
-            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
+            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
+            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
             model.ClassModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             model.ClassModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
 
@@ -213,8 +213,8 @@ namespace OWLSharp.Test
             model.PropertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             model.PropertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
 
@@ -238,9 +238,9 @@ namespace OWLSharp.Test
             model.ClassModel.DeclareSubClasses(new RDFResource("ex:classB"), new RDFResource("ex:classA"));
             model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classA"), new RDFResource("ex:classC"));
             model.ClassModel.DeclareDisjointClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
-            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { RDFVocabulary.FOAF.ACCOUNT });
-            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
-            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classD"), new RDFResource("ex:classE") });
+            model.ClassModel.DeclareHasKey(new RDFResource("ex:classA"), [RDFVocabulary.FOAF.ACCOUNT]);
+            model.ClassModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
+            model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classD"), new RDFResource("ex:classE")]);
             model.ClassModel.AnnotateClass(new RDFResource("ex:classA"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment"));
             model.ClassModel.AnnotateClass(new RDFResource("ex:classB"), RDFVocabulary.DC.DESCRIPTION, new RDFPlainLiteral("title"));
 
@@ -258,8 +258,8 @@ namespace OWLSharp.Test
             model.PropertyModel.DeclareSubProperties(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA"));
             model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyC"));
             model.PropertyModel.DeclareDisjointProperties(new RDFResource("ex:propertyC"), new RDFResource("ex:propertyD"));
-            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA") });
-            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI") });
+            model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA")]);
+            model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:propertyH"), new RDFResource("ex:propertyI")]);
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("comment"));
             model.PropertyModel.AnnotateProperty(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyF"), new RDFPlainLiteral("title"));
 

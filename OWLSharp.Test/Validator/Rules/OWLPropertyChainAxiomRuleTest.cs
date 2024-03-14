@@ -29,7 +29,7 @@ namespace OWLSharp.Validator.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
-            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:pchainaxiom"), new List<RDFResource>() { new RDFResource("ex:objprop") });
+            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:pchainaxiom"), [new RDFResource("ex:objprop")]);
             ontology.Model.ClassModel.DeclareCardinalityRestriction(new RDFResource("ex:crestr"), new RDFResource("ex:pchainaxiom"), 2); //clash on cardinality restriction
             ontology.Model.ClassModel.DeclareHasSelfRestriction(new RDFResource("ex:selfrestr"), new RDFResource("ex:pchainaxiom"), true); //clash on self restriction
 
@@ -47,7 +47,7 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:pchainaxiom"), new OWLOntologyObjectPropertyBehavior() { Asymmetric = true });
-            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:pchainaxiom"), new List<RDFResource>() { new RDFResource("ex:objprop") }); //clash on definition being asymmetric
+            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:pchainaxiom"), [new RDFResource("ex:objprop")]); //clash on definition being asymmetric
 
             OWLValidatorReport validatorReport = OWLPropertyChainAxiomRule.ExecuteRule(ontology);
 
@@ -62,7 +62,7 @@ namespace OWLSharp.Validator.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
-            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:pchainaxiom"), new List<RDFResource>() { new RDFResource("ex:objprop") });
+            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:pchainaxiom"), [new RDFResource("ex:objprop")]);
             ontology.Model.ClassModel.DeclareCardinalityRestriction(new RDFResource("ex:crestr"), new RDFResource("ex:pchainaxiom"), 2); //clash on cardinality restriction
             ontology.Model.ClassModel.DeclareHasSelfRestriction(new RDFResource("ex:selfrestr"), new RDFResource("ex:pchainaxiom"), true); //clash on self restriction
 

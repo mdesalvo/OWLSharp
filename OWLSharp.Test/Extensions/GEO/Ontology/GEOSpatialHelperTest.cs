@@ -162,12 +162,12 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetLengthOfFeature()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), new List<(double, double)>() {
-                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom1"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom2"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.62118352, 45.65014585), (10.26423284, 45.59758259) }, true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), [
+                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom1"), [
+                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom2"), [
+                (9.16778508, 45.46481222), (9.62118352, 45.65014585), (10.26423284, 45.59758259) ], true);
             geoOntology.DeclarePointFeature(new RDFResource("ex:milanFeat"), new RDFResource("ex:milanGeom"), (9.16778508, 45.46481222), false);
             double? milanCentreLength = GEOSpatialHelper.GetLengthOfFeature(geoOntology, new RDFResource("ex:milanCentreFeat"));
             double? brebemiLength = GEOSpatialHelper.GetLengthOfFeature(geoOntology, new RDFResource("ex:brebemiFeat"));
@@ -221,10 +221,10 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetAreaOfFeature()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), new List<(double, double)>() {
-                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) }, true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), [
+                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), [
+                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) ], true);
             geoOntology.DeclarePointFeature(new RDFResource("ex:milanFeat"), new RDFResource("ex:milanGeom"), (9.16778508, 45.46481222), false);
             double? brebemiArea = GEOSpatialHelper.GetAreaOfFeature(geoOntology, new RDFResource("ex:brebemiFeat"));
             double? milanArea = GEOSpatialHelper.GetAreaOfFeature(geoOntology, new RDFResource("ex:milanFeat"));
@@ -278,10 +278,10 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetCentroidOfFeature()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), new List<(double, double)>() {
-                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) }, false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), [
+                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), [
+                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:milanFeat"), new RDFResource("ex:milanGeom"), 
                 (9.16778508, 45.46481222), false);
             RDFTypedLiteral milanCentreCentroid = GEOSpatialHelper.GetCentroidOfFeature(geoOntology, new RDFResource("ex:milanCentreFeat"));
@@ -342,10 +342,10 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetBoundaryOfFeature()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), new List<(double, double)>() {
-                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) }, false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), [
+                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), [
+                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:milanFeat"), new RDFResource("ex:milanGeom"), (9.16778508, 45.46481222), false);
             RDFTypedLiteral milanCentreBoundary = GEOSpatialHelper.GetBoundaryOfFeature(geoOntology, new RDFResource("ex:milanCentreFeat"));
             RDFTypedLiteral brebemiBoundary = GEOSpatialHelper.GetBoundaryOfFeature(geoOntology, new RDFResource("ex:brebemiFeat"));
@@ -405,10 +405,10 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetBufferAroundFeature()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), new List<(double, double)>() {
-                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) }, false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), [
+                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), [
+                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:milanFeat"), new RDFResource("ex:milanGeom"), (9.16778508, 45.46481222), false);
             RDFTypedLiteral milanCentreBuffer = GEOSpatialHelper.GetBufferAroundFeature(geoOntology, new RDFResource("ex:milanCentreFeat"), 5000);
             RDFTypedLiteral brebemiBuffer = GEOSpatialHelper.GetBufferAroundFeature(geoOntology, new RDFResource("ex:brebemiFeat"), 5000);
@@ -468,10 +468,10 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetConvexHullOfFeature()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), new List<(double, double)>() {
-                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) }, false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), [
+                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), [
+                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:milanFeat"), new RDFResource("ex:milanGeom"), (9.16778508, 45.46481222), false);
             RDFTypedLiteral milanCentreConvexHull = GEOSpatialHelper.GetConvexHullOfFeature(geoOntology, new RDFResource("ex:milanCentreFeat"));
             RDFTypedLiteral brebemiConvexHull = GEOSpatialHelper.GetConvexHullOfFeature(geoOntology, new RDFResource("ex:brebemiFeat"));
@@ -531,10 +531,10 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetEnvelopeOfFeature()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), new List<(double, double)>() {
-                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), new List<(double, double)>() {
-                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) }, false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:milanCentreFeat"), new RDFResource("ex:milanCentreGeom"), [
+                (9.18217536, 45.46819347), (9.19054385, 45.46819347), (9.19054385, 45.46003666), (9.18217536, 45.46003666), (9.18217536, 45.46819347) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:brebemiFeat"), new RDFResource("ex:brebemiGeom"), [
+                (9.16778508, 45.46481222), (9.6118352, 45.68014585), (10.21423284, 45.54758259) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:milanFeat"), new RDFResource("ex:milanGeom"), (9.16778508, 45.46481222), false);
             RDFTypedLiteral milanCentreEnvelope = GEOSpatialHelper.GetEnvelopeOfFeature(geoOntology, new RDFResource("ex:milanCentreFeat"));
             RDFTypedLiteral brebemiEnvelope = GEOSpatialHelper.GetEnvelopeOfFeature(geoOntology, new RDFResource("ex:brebemiFeat"));
@@ -1161,19 +1161,19 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetFeaturesCrossedBy()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:PoFeat"), new RDFResource("ex:PoGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:PoFeat"), new RDFResource("ex:PoGeom"), [
                 (11.001141059265075, 45.06554633935097), (11.058819281921325, 45.036440377586516), (11.127483832702575, 45.05972633195962),
                 (11.262066352233825, 45.05002500301712), (11.421368110046325, 44.960695556664774), (11.605389106140075, 44.89068838827955),
-                (11.814129340515075, 44.97624111890936), (12.069561469421325, 44.98012685115769) } , true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), new List<(double, double)>() {
+                (11.814129340515075, 44.97624111890936), (12.069561469421325, 44.98012685115769) ] , true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), [
                 (11.492779242858825, 45.22633159406854), (11.514751899108825, 45.0539057320877), (11.448833930358825, 44.86538705476387),
-                (11.289532172546325, 44.734811449636325) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:NogaraPortoMaggioreFeat"), new RDFResource("ex:NogaraPortoMaggioreGeom"), new List<(double, double)>() {
+                (11.289532172546325, 44.734811449636325) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:NogaraPortoMaggioreFeat"), new RDFResource("ex:NogaraPortoMaggioreGeom"), [
                 (11.067059028015075, 45.17020515864295), (11.794903266296325, 45.06554633935097), (11.778423774108825, 44.68015498753276),
-                (10.710003363952575, 44.97818401794916), (11.067059028015075, 45.17020515864295) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (10.710003363952575, 44.97818401794916), (11.067059028015075, 45.17020515864295) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresCrossedBy = GEOSpatialHelper.GetFeaturesCrossedBy(geoOntology, new RDFResource("ex:PoFeat"));
 
             Assert.IsNotNull(featuresCrossedBy);
@@ -1186,19 +1186,19 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesCrossedBy()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:BresciaSuzzaraFeat"), new RDFResource("ex:BresciaSuzzaraGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:BresciaSuzzaraFeat"), new RDFResource("ex:BresciaSuzzaraGeom"), [
                 (10.177166449890075, 45.53692325390463), (10.144207465515075, 45.33648772403282), (10.388653266296325, 45.201178314133756),
-                (10.740215766296325, 44.987897525678754) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:BresciaSuzzaraFeat"), new RDFResource("ex:BresciaSuzzaraGeom"), new List<(double, double)>() {
+                (10.740215766296325, 44.987897525678754) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:BresciaSuzzaraFeat"), new RDFResource("ex:BresciaSuzzaraGeom"), [
                 (10.177166449890075, 45.53692325390463), (10.210125434265075, 45.42330201702671), (10.144207465515075, 45.33648772403282),
                 (10.2499508737182, 45.21472377036376), (10.421612250671325, 45.14502706082907), (10.589153754577575, 45.07233559914505),
-                (10.740215766296325, 44.987897525678754) }, false);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), new List<(double, double)>() {
+                (10.740215766296325, 44.987897525678754) ], false);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), [
                 (11.492779242858825, 45.22633159406854), (11.514751899108825, 45.0539057320877), (11.448833930358825, 44.86538705476387),
-                (11.289532172546325, 44.734811449636325) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (11.289532172546325, 44.734811449636325) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresCrossedBy = GEOSpatialHelper.GetFeaturesCrossedBy(geoOntology, new RDFResource("ex:BresciaSuzzaraFeat"));
 
             Assert.IsNotNull(featuresCrossedBy);
@@ -1229,15 +1229,15 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetFeaturesCrossedByWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), [
                 (11.492779242858825, 45.22633159406854), (11.514751899108825, 45.0539057320877), (11.448833930358825, 44.86538705476387),
-                (11.289532172546325, 44.734811449636325) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:NogaraPortoMaggioreFeat"), new RDFResource("ex:NogaraPortoMaggioreGeom"), new List<(double, double)>() {
+                (11.289532172546325, 44.734811449636325) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:NogaraPortoMaggioreFeat"), new RDFResource("ex:NogaraPortoMaggioreGeom"), [
                 (11.067059028015075, 45.17020515864295), (11.794903266296325, 45.06554633935097), (11.778423774108825, 44.68015498753276),
-                (10.710003363952575, 44.97818401794916), (11.067059028015075, 45.17020515864295) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (10.710003363952575, 44.97818401794916), (11.067059028015075, 45.17020515864295) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresCrossedBy = GEOSpatialHelper.GetFeaturesCrossedBy(geoOntology, new RDFTypedLiteral("LINESTRING(11.001141059265075 45.06554633935097, 11.058819281921325 45.036440377586516, " +
                 "11.127483832702575 45.05972633195962, 11.262066352233825 45.05002500301712, 11.421368110046325 44.960695556664774, 11.605389106140075 44.89068838827955, 11.814129340515075 44.97624111890936, " +
                 "12.069561469421325 44.98012685115769)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)); //PO river
@@ -1252,12 +1252,12 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesCrossedByWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:MontagnanaCentoFeat"), new RDFResource("ex:MontagnanaCentoGeom"), [
                 (11.492779242858825, 45.22633159406854), (11.514751899108825, 45.0539057320877), (11.448833930358825, 44.86538705476387),
-                (11.289532172546325, 44.734811449636325) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (11.289532172546325, 44.734811449636325) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresCrossedBy = GEOSpatialHelper.GetFeaturesCrossedBy(geoOntology, new RDFTypedLiteral("LINESTRING(10.177166449890075 45.53692325390463, 10.144207465515075 45.33648772403282," +
                 "10.388653266296325 45.201178314133756, 10.740215766296325 44.987897525678754)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)); //brescia-suzzara
 
@@ -1294,14 +1294,14 @@ namespace OWLSharp.Extensions.GEO.Test
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"), (10.090599060058592, 45.701863522304734), true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), new List<(double, double)>() {
-                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), [
+                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), [
                 (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291),
-                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresTouchedBy = GEOSpatialHelper.GetFeaturesTouchedBy(geoOntology, new RDFResource("ex:IseoFeat"));
 
             Assert.IsNotNull(featuresTouchedBy);
@@ -1314,16 +1314,16 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesTouchedBy()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:DomodossolaVerbaniaFeat"), new RDFResource("ex:DomodossolaVerbaniaGeom"), new List<(double, double)>() {
-                (8.287124633789062, 46.11703764257686), (8.561782836914062, 45.932050196856295) }, false);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), new List<(double, double)>() {
-                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:DomodossolaVerbaniaFeat"), new RDFResource("ex:DomodossolaVerbaniaGeom"), [
+                (8.287124633789062, 46.11703764257686), (8.561782836914062, 45.932050196856295) ], false);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), [
+                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), [
                 (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291),
-                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresTouchedBy = GEOSpatialHelper.GetFeaturesTouchedBy(geoOntology, new RDFResource("ex:DomodossolaVerbaniaFeat"));
 
             Assert.IsNotNull(featuresTouchedBy);
@@ -1354,14 +1354,14 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetFeaturesTouchedByWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), new List<(double, double)>() {
-                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), [
+                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), [
                 (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291),
-                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresTouchedBy = GEOSpatialHelper.GetFeaturesTouchedBy(geoOntology, new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
 
             Assert.IsNotNull(featuresTouchedBy);
@@ -1374,14 +1374,14 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesTouchedByWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), new List<(double, double)>() {
-                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), new List<(double, double)>() {
+            geoOntology.DeclareLineFeature(new RDFResource("ex:IseoBiennoFeat"), new RDFResource("ex:IseoBiennoGeom"), [
+                (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:IseoLevrangeFeat"), new RDFResource("ex:IseoLevrangeGeom"), [
                 (10.090599060058592, 45.701863522304734), (10.182609558105467, 45.89383147810295), (10.292609558105466, 45.93283147810291),
-                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), new List<(double, double)>() {
+                (10.392609558105468, 45.73283147810295), (10.090599060058592, 45.701863522304734) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:VeronaVillafrancaFeat"), new RDFResource("ex:VeronaVillafrancaGeom"), [
                 (11.270306098327575, 45.4078781070719), (10.992901313171325, 45.432939821462234), (10.866558539733825, 45.338418378714074),
-                (11.270306098327575, 45.4078781070719) }, false);
+                (11.270306098327575, 45.4078781070719) ], false);
             List<RDFResource> featuresTouchedBy = GEOSpatialHelper.GetFeaturesTouchedBy(geoOntology, new RDFTypedLiteral("LINESTRING(8.287124633789062 46.11703764257686, " +
                 "8.561782836914062 45.932050196856295)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
 
@@ -1417,14 +1417,14 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetFeaturesOverlappedBy()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioCivateFeat"), new RDFResource("ex:BallabioCivateGeom"), new List<(double, double)>() {
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioCivateFeat"), new RDFResource("ex:BallabioCivateGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.346078615493791, 45.828624093492635), (9.455255251235979, 45.77932096932273), 
-                (9.425042848892229, 45.89413442236222) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:LaorcaVercuragoFeat"), new RDFResource("ex:LaorcaVercuragoGeom"), new List<(double, double)>() {
+                (9.425042848892229, 45.89413442236222) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:LaorcaVercuragoFeat"), new RDFResource("ex:LaorcaVercuragoGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.386934023208635, 45.87907866204932), (9.421609621353166, 45.81283269722657),
-                (9.425042848892229, 45.89413442236222) }, false);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), new List<(double, double)>() {
-                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) }, false);
+                (9.425042848892229, 45.89413442236222) ], false);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), [
+                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"), 
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresOverlappedBy = GEOSpatialHelper.GetFeaturesOverlappedBy(geoOntology, new RDFResource("ex:BallabioCivateFeat"));
@@ -1438,14 +1438,14 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesOverlappedBy()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioCivateFeat"), new RDFResource("ex:BallabioCivateGeom"), new List<(double, double)>() {
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioCivateFeat"), new RDFResource("ex:BallabioCivateGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.346078615493791, 45.828624093492635), (9.455255251235979, 45.77932096932273),
-                (9.425042848892229, 45.89413442236222) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BorzioArtavaggioFeat"), new RDFResource("ex:BorzioArtavaggioGeom"), new List<(double, double)>() {
+                (9.425042848892229, 45.89413442236222) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BorzioArtavaggioFeat"), new RDFResource("ex:BorzioArtavaggioGeom"), [
                 (9.525979738540666, 45.93092021340824), (9.461091738052385, 45.94261967012623), (9.375604372329729, 45.92709944804776), 
-                (9.426416139907854, 45.92136780653028), (9.525979738540666, 45.93092021340824) }, false);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), new List<(double, double)>() {
-                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) }, false);
+                (9.426416139907854, 45.92136780653028), (9.525979738540666, 45.93092021340824) ], false);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), [
+                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"),
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresOverlappedBy = GEOSpatialHelper.GetFeaturesOverlappedBy(geoOntology, new RDFResource("ex:BallabioCivateFeat"));
@@ -1478,11 +1478,11 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetFeaturesOverlappedByWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:LaorcaVercuragoFeat"), new RDFResource("ex:LaorcaVercuragoGeom"), new List<(double, double)>() {
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:LaorcaVercuragoFeat"), new RDFResource("ex:LaorcaVercuragoGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.386934023208635, 45.87907866204932), (9.421609621353166, 45.81283269722657),
-                (9.425042848892229, 45.89413442236222) }, false);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), new List<(double, double)>() {
-                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) }, false);
+                (9.425042848892229, 45.89413442236222) ], false);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), [
+                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"),
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresOverlappedBy = GEOSpatialHelper.GetFeaturesOverlappedBy(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222," +
@@ -1497,11 +1497,11 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesOverlappedByWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BorzioArtavaggioFeat"), new RDFResource("ex:BorzioArtavaggioGeom"), new List<(double, double)>() {
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BorzioArtavaggioFeat"), new RDFResource("ex:BorzioArtavaggioGeom"), [
                 (9.525979738540666, 45.93092021340824), (9.461091738052385, 45.94261967012623), (9.375604372329729, 45.92709944804776),
-                (9.426416139907854, 45.92136780653028), (9.525979738540666, 45.93092021340824) }, false);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), new List<(double, double)>() {
-                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) }, false);
+                (9.426416139907854, 45.92136780653028), (9.525979738540666, 45.93092021340824) ], false);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), [
+                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"),
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresOverlappedBy = GEOSpatialHelper.GetFeaturesOverlappedBy(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222," +
@@ -1539,14 +1539,14 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetFeaturesWithin()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioCivateFeat"), new RDFResource("ex:BallabioCivateGeom"), new List<(double, double)>() {
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioCivateFeat"), new RDFResource("ex:BallabioCivateGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.346078615493791, 45.828624093492635), (9.455255251235979, 45.77932096932273),
-                (9.425042848892229, 45.89413442236222) }, true);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioPescateFeat"), new RDFResource("ex:BallabioPescateGeom"), new List<(double, double)>() {
+                (9.425042848892229, 45.89413442236222) ], true);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioPescateFeat"), new RDFResource("ex:BallabioPescateGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.392083864517229, 45.85254191756793), (9.346078615493791, 45.828624093492635),
-                (9.393457155532854, 45.82814563213719), (9.425042848892229, 45.89413442236222) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:FornaciVillaFeat"), new RDFResource("ex:FornaciVillaGeom"), new List<(double, double)>() {
-                (9.370156172304162, 45.83948216157425), (9.390755537538537, 45.837807855535225) }, false);
+                (9.393457155532854, 45.82814563213719), (9.425042848892229, 45.89413442236222) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:FornaciVillaFeat"), new RDFResource("ex:FornaciVillaGeom"), [
+                (9.370156172304162, 45.83948216157425), (9.390755537538537, 45.837807855535225) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"),
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresWithin = GEOSpatialHelper.GetFeaturesWithin(geoOntology, new RDFResource("ex:BallabioCivateFeat"));
@@ -1561,14 +1561,14 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesWithin()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:LaglioMoltrasioFeat"), new RDFResource("ex:LaglioMoltrasioGeom"), new List<(double, double)>() {
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:LaglioMoltrasioFeat"), new RDFResource("ex:LaglioMoltrasioGeom"), [
                 (9.138069990663537, 45.88108443556158), (9.101334455995568, 45.86196081911207), (9.128113630800256, 45.87343577859146),
-                (9.138069990663537, 45.88108443556158) }, false);
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioPescateFeat"), new RDFResource("ex:BallabioPescateGeom"), new List<(double, double)>() {
+                (9.138069990663537, 45.88108443556158) ], false);
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioPescateFeat"), new RDFResource("ex:BallabioPescateGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.392083864517229, 45.85254191756793), (9.346078615493791, 45.828624093492635),
-                (9.393457155532854, 45.82814563213719), (9.425042848892229, 45.89413442236222) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:FornaciVillaFeat"), new RDFResource("ex:FornaciVillaGeom"), new List<(double, double)>() {
-                (9.370156172304162, 45.83948216157425), (9.390755537538537, 45.837807855535225) }, false);
+                (9.393457155532854, 45.82814563213719), (9.425042848892229, 45.89413442236222) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:FornaciVillaFeat"), new RDFResource("ex:FornaciVillaGeom"), [
+                (9.370156172304162, 45.83948216157425), (9.390755537538537, 45.837807855535225) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"),
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresWithin = GEOSpatialHelper.GetFeaturesWithin(geoOntology, new RDFResource("ex:LaglioMoltrasioFeat"));
@@ -1601,11 +1601,11 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldGetFeaturesWithinWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioPescateFeat"), new RDFResource("ex:BallabioPescateGeom"), new List<(double, double)>() {
+            geoOntology.DeclareAreaFeature(new RDFResource("ex:BallabioPescateFeat"), new RDFResource("ex:BallabioPescateGeom"), [
                 (9.425042848892229, 45.89413442236222), (9.392083864517229, 45.85254191756793), (9.346078615493791, 45.828624093492635),
-                (9.393457155532854, 45.82814563213719), (9.425042848892229, 45.89413442236222) }, true);
-            geoOntology.DeclareLineFeature(new RDFResource("ex:FornaciVillaFeat"), new RDFResource("ex:FornaciVillaGeom"), new List<(double, double)>() {
-                (9.370156172304162, 45.83948216157425), (9.390755537538537, 45.837807855535225) }, false);
+                (9.393457155532854, 45.82814563213719), (9.425042848892229, 45.89413442236222) ], true);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:FornaciVillaFeat"), new RDFResource("ex:FornaciVillaGeom"), [
+                (9.370156172304162, 45.83948216157425), (9.390755537538537, 45.837807855535225) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"),
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresWithin = GEOSpatialHelper.GetFeaturesWithin(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222," +
@@ -1621,8 +1621,8 @@ namespace OWLSharp.Extensions.GEO.Test
         public void ShouldNotGetFeaturesWithinWKT()
         {
             OWLOntology geoOntology = new OWLOntology("ex:geoOnt");
-            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), new List<(double, double)>() {
-                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) }, false);
+            geoOntology.DeclareLineFeature(new RDFResource("ex:LeccoValseccaFeat"), new RDFResource("ex:LeccoValseccaGeom"), [
+                (9.406846742935198, 45.855650479509684), (9.435685854263323, 45.8271886970881), (9.475854616470354, 45.82694946075535) ], false);
             geoOntology.DeclarePointFeature(new RDFResource("ex:IseoFeat"), new RDFResource("ex:IseoGeom"),
                 (10.090599060058592, 45.701863522304734), true);
             List<RDFResource> featuresWithin = GEOSpatialHelper.GetFeaturesWithin(geoOntology, new RDFTypedLiteral("POLYGON((9.525979738540666 45.93092021340824," +

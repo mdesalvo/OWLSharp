@@ -364,7 +364,7 @@ namespace OWLSharp.Validator.Test
         public void ShouldValidateTermDeclaration_PropertyChainAxiom()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:objprop1") });
+            ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:objprop1")]);
 
             OWLValidatorReport validatorReport = OWLTermDeclarationRule.ExecuteRule(ontology);
 
@@ -378,7 +378,7 @@ namespace OWLSharp.Validator.Test
         public void ShouldValidateTermDeclaration_AllDisjointProperties()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), new List<RDFResource>() { new RDFResource("ex:class1") });
+            ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"), [new RDFResource("ex:class1")]);
 
             OWLValidatorReport validatorReport = OWLTermDeclarationRule.ExecuteRule(ontology);
 
@@ -464,7 +464,7 @@ namespace OWLSharp.Validator.Test
         public void ShouldValidateTermDeclaration_AllDifferent()
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
-            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:allDifferent"), new List<RDFResource>() { new RDFResource("ex:individual1") });
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:allDifferent"), [new RDFResource("ex:individual1")]);
 
             OWLValidatorReport validatorReport = OWLTermDeclarationRule.ExecuteRule(ontology);
 

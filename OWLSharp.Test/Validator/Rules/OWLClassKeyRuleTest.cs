@@ -29,10 +29,10 @@ namespace OWLSharp.Validator.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), new List<RDFResource>() { new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), [new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2")]);
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2")); //this class has no keys, it will not be considered
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class3")); //this class has no members, it will not be considered
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class3"), new List<RDFResource>() { new RDFResource("ex:dtprop1") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class3"), [new RDFResource("ex:dtprop1")]);
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop1"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
@@ -75,7 +75,7 @@ namespace OWLSharp.Validator.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), new List<RDFResource>() { new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), [new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2")]);
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop1"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
@@ -99,7 +99,7 @@ namespace OWLSharp.Validator.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), new List<RDFResource>() { new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), [new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2")]);
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop1"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
@@ -151,7 +151,7 @@ namespace OWLSharp.Validator.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), new List<RDFResource>() { new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), [new RDFResource("ex:dtprop1"), new RDFResource("ex:dtprop2")]);
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop1"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));

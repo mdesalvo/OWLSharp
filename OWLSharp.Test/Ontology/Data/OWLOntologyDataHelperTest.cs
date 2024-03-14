@@ -288,8 +288,8 @@ namespace OWLSharp.Test
             data.DeclareIndividual(new RDFResource("ex:indivC"));
             data.DeclareIndividual(new RDFResource("ex:indivD"));
             data.DeclareIndividual(new RDFResource("ex:indivE"));
-            data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiff"), new List<RDFResource>() {
-                new RDFResource("ex:indivA"), new RDFResource("ex:indivB"), new RDFResource("ex:indivD") });
+            data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiff"), [
+                new RDFResource("ex:indivA"), new RDFResource("ex:indivB"), new RDFResource("ex:indivD") ]);
             data.DeclareSameIndividuals(new RDFResource("ex:indivC"), new RDFResource("ex:indivD"));
             data.DeclareSameIndividuals(new RDFResource("ex:indivE"), new RDFResource("ex:indivD"));
 
@@ -970,8 +970,8 @@ namespace OWLSharp.Test
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class3"));
-            ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() {
-              new RDFResource("ex:class1"), new RDFResource("ex:class2") });
+            ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [
+              new RDFResource("ex:class1"), new RDFResource("ex:class2") ]);
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv3"));
@@ -991,8 +991,8 @@ namespace OWLSharp.Test
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class3"));
-            ontology.Model.ClassModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), new List<RDFResource>() {
-              new RDFResource("ex:class1"), new RDFResource("ex:class2") });
+            ontology.Model.ClassModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), [
+              new RDFResource("ex:class1"), new RDFResource("ex:class2") ]);
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv3"));

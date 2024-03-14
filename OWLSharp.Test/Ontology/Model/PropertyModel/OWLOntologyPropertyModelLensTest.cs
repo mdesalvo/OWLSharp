@@ -57,8 +57,8 @@ namespace OWLSharp.Test
             ModelLens.Ontology.Model.PropertyModel.DeclareSubProperties(new RDFResource("ex:objprop2"), new RDFResource("ex:objprop1"));
             ModelLens.Ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:objprop2"), new RDFResource("ex:objprop3"));
             ModelLens.Ontology.Model.PropertyModel.DeclareDisjointProperties(new RDFResource("ex:objprop1"), new RDFResource("ex:objprop4"));
-            ModelLens.Ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:alldisjprop"), new List<RDFResource>() { new RDFResource("ex:objprop1"), new RDFResource("ex:objprop5") });
-            ModelLens.Ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:objprop1"), new List<RDFResource>() { new RDFResource("ex:objprop8"), new RDFResource("ex:objprop9") });
+            ModelLens.Ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("ex:alldisjprop"), [new RDFResource("ex:objprop1"), new RDFResource("ex:objprop5")]);
+            ModelLens.Ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:objprop1"), [new RDFResource("ex:objprop8"), new RDFResource("ex:objprop9")]);
             ModelLens.Ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("ex:objprop1"), new RDFResource("ex:annObjProp"), new RDFResource("ex:ann"));
             ModelLens.Ontology.Model.PropertyModel.AnnotateProperty(new RDFResource("ex:objprop1"), new RDFResource("ex:annLitProp"), new RDFPlainLiteral("ann"));
         }

@@ -53,7 +53,7 @@ namespace OWLSharp.Test
             ModelLens.Ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:class6"), new RDFResource("ex:class3"));
             ModelLens.Ontology.Model.ClassModel.DeclareDisjointClasses(new RDFResource("ex:class3"), new RDFResource("ex:class4"));
             ModelLens.Ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:class4"), new RDFResource("ex:class5"));
-            ModelLens.Ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), new List<RDFResource>() { new RDFResource("ex:objProp") });
+            ModelLens.Ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class1"), [new RDFResource("ex:objProp")]);
             ModelLens.Ontology.Model.ClassModel.AnnotateClass(new RDFResource("ex:class1"), new RDFResource("ex:annObjProp"), new RDFResource("ex:ann"));
             ModelLens.Ontology.Model.ClassModel.AnnotateClass(new RDFResource("ex:class1"), new RDFResource("ex:annLitProp"), new RDFPlainLiteral("ann"));
             ModelLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv0"));

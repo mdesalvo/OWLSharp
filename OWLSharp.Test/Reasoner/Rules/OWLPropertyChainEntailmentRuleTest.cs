@@ -29,7 +29,7 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:hasUncle"), 
-                new List<RDFResource>() { new RDFResource("ex:hasFather"), new RDFResource("ex:hasBrother") });
+                [new RDFResource("ex:hasFather"), new RDFResource("ex:hasBrother")]);
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:hasFather"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:hasBrother"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:child"));
@@ -53,7 +53,7 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:hasUncle"),
-                new List<RDFResource>() { new RDFResource("ex:hasFather"), new RDFResource("ex:hasBrother") });
+                [new RDFResource("ex:hasFather"), new RDFResource("ex:hasBrother")]);
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:hasFather"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:hasBrother"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:child"));

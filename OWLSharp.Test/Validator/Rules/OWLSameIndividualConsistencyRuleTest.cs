@@ -34,8 +34,8 @@ namespace OWLSharp.Validator.Test
             OWLOntologyData data2 = new OWLOntologyData();
             data2.DeclareIndividual(new RDFResource("ex:indiv1"));
             data2.DeclareIndividual(new RDFResource("ex:indiv2"));
-            data2.DeclareAllDifferentIndividuals(new RDFResource("ex:adi12"), new List<RDFResource>() { 
-                new RDFResource("ex:indiv1"), new RDFResource("ex:indiv2") });
+            data2.DeclareAllDifferentIndividuals(new RDFResource("ex:adi12"), [ 
+                new RDFResource("ex:indiv1"), new RDFResource("ex:indiv2") ]);
 
             data1.Merge(data2);
 

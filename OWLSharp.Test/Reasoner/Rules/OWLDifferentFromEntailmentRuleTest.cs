@@ -51,7 +51,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivC"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivD"));
             ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("exx:allDifferent"),
-                new List<RDFResource>() { new RDFResource("ex:indivA"), new RDFResource("ex:indivB") });
+                [new RDFResource("ex:indivA"), new RDFResource("ex:indivB")]);
             ontology.Data.DeclareSameIndividuals(new RDFResource("ex:indivB"), new RDFResource("ex:indivC"));
             ontology.Data.DeclareSameIndividuals(new RDFResource("ex:indivC"), new RDFResource("ex:indivD"));
 

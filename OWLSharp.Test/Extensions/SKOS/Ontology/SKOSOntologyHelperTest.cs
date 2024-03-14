@@ -189,8 +189,7 @@ namespace OWLSharp.Extensions.SKOS.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
-            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection"), [new RDFResource("ex:concept1"), new RDFResource("ex:concept2")], new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
             Assert.IsTrue(ontology.URI.Equals(ontology.URI));
@@ -241,10 +240,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
-            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>()
-                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), [new RDFResource("ex:concept1"), new RDFResource("ex:collection2")], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection2"), [new RDFResource("ex:concept2"), new RDFResource("ex:concept3")], new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
             Assert.IsTrue(ontology.Model.ClassModel.ClassesCount == 8);
@@ -298,10 +295,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
-            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareOrderedCollection(new RDFResource("ex:collection2"), new List<RDFResource>()
-                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), [new RDFResource("ex:concept1"), new RDFResource("ex:collection2")], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:collection2"), [new RDFResource("ex:concept2"), new RDFResource("ex:concept3")], new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
             Assert.IsTrue(ontology.URI.Equals(ontology.URI));
@@ -356,12 +351,12 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullCollection()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareCollection(null,
-                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
+                    [new RDFResource("ex:concept")], new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullOntology()
             => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareCollection(new RDFResource("ex:collection"), 
-                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
+                    [new RDFResource("ex:concept")], new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullList()
@@ -371,20 +366,19 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseEmptyList()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareCollection(new RDFResource("ex:collection"), 
-                    new List<RDFResource>(), new RDFResource("ex:conceptScheme")));
+                    [], new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringCollectionBecauseNullConceptScheme()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareCollection(new RDFResource("ex:collection"), 
-                    new List<RDFResource>() { new RDFResource("ex:concept") }, null));
+                    [new RDFResource("ex:concept")], null));
         
         [TestMethod]
         public void ShouldDeclareOrderedCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), [new RDFResource("ex:concept1"), new RDFResource("ex:concept2")], new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
             Assert.IsTrue(ontology.URI.Equals(ontology.URI));
@@ -435,10 +429,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection1"), new List<RDFResource>()
-                { new RDFResource("ex:concept1"), new RDFResource("ex:orderedCollection2") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection2"), new List<RDFResource>()
-                { new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection1"), [new RDFResource("ex:concept1"), new RDFResource("ex:orderedCollection2")], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection2"), [new RDFResource("ex:concept2"), new RDFResource("ex:concept3")], new RDFResource("ex:conceptScheme"));
 
             //Test evolution of SKOS knowledge
             Assert.IsTrue(ontology.URI.Equals(ontology.URI));
@@ -491,12 +483,12 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullOrderedCollection()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ontology").DeclareOrderedCollection(null,
-                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
+                    [new RDFResource("ex:concept")], new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullOntology()
             => Assert.ThrowsException<OWLException>(() => (null as OWLOntology).DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
-                    new List<RDFResource>() { new RDFResource("ex:concept") }, new RDFResource("ex:conceptScheme")));
+                    [new RDFResource("ex:concept")], new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullList()
@@ -506,12 +498,12 @@ namespace OWLSharp.Extensions.SKOS.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseEmptyList()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
-                    new List<RDFResource>(), new RDFResource("ex:conceptScheme")));
+                    [], new RDFResource("ex:conceptScheme")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringOrderedCollectionBecauseNullConceptScheme()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:ont").DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
-                    new List<RDFResource>() { new RDFResource("ex:concept") }, null));
+                    [new RDFResource("ex:concept")], null));
         
         [TestMethod]
         public void ShouldDeclareLabel()
@@ -724,7 +716,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
             ontology.DeclareCollection(new RDFResource("ex:collection"), 
-                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept1")], new RDFResource("ex:conceptScheme"));
             ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:Collection!"));
 
             //Test evolution of SKOS knowledge
@@ -761,7 +753,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
             ontology.DeclareCollection(new RDFResource("ex:collection"), 
-                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept1")], new RDFResource("ex:conceptScheme"));
             ontology.AnnotateCollection(new RDFResource("ex:collection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
 
             //Test evolution of SKOS knowledge
@@ -798,7 +790,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
             ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
-                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept1")], new RDFResource("ex:conceptScheme"));
             ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a skos:OrderedCollection!"));
 
             //Test evolution of SKOS knowledge
@@ -835,7 +827,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             OWLOntology ontology = new OWLOntology("ex:ontology");
             ontology.InitializeSKOS();
             ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), 
-                new List<RDFResource>() { new RDFResource("ex:concept1") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept1")], new RDFResource("ex:conceptScheme"));
             ontology.AnnotateOrderedCollection(new RDFResource("ex:orderedCollection"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:seeAlso"));
 
             //Test evolution of SKOS knowledge
@@ -2918,8 +2910,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldCheckHasCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") ], new RDFResource("ex:conceptScheme"));
 
             Assert.IsTrue(ontology.CheckHasCollection(new RDFResource("ex:collection")));
         }
@@ -2930,8 +2922,8 @@ namespace OWLSharp.Extensions.SKOS.Test
             OWLOntology ontologyNULL = null;
             OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") ], new RDFResource("ex:conceptScheme"));
 
             Assert.IsFalse(ontology.CheckHasCollection(new RDFResource("ex:collection2")));
             Assert.IsFalse(ontology.CheckHasCollection(null));
@@ -2943,8 +2935,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldGetCollectionMembers()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") ], new RDFResource("ex:conceptScheme"));
             List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection"));
 
             Assert.IsNotNull(collectionMembers);
@@ -2957,10 +2949,10 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldGetCollectionMembersWithSubCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>() {
-                new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") ], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection2"), [
+                new RDFResource("ex:concept2"), new RDFResource("ex:concept3") ], new RDFResource("ex:conceptScheme"));
             List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
 
             Assert.IsNotNull(collectionMembers);
@@ -2974,10 +2966,10 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldGetCollectionMembersWithSubOrderedCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:orderedCollection") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
-                new RDFResource("ex:concept2"), new RDFResource("ex:concept3") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:orderedCollection") ], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), [
+                new RDFResource("ex:concept2"), new RDFResource("ex:concept3") ], new RDFResource("ex:conceptScheme"));
             List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection"));
 
             Assert.IsNotNull(collectionMembers);
@@ -2991,12 +2983,12 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldGetCollectionMembersWithNestedSubCollections()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>() {
-                new RDFResource("ex:concept2"), new RDFResource("ex:orderedCollection") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
-                new RDFResource("ex:concept3"), new RDFResource("ex:concept4") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") ], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection2"), [
+                new RDFResource("ex:concept2"), new RDFResource("ex:orderedCollection") ], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), [
+                new RDFResource("ex:concept3"), new RDFResource("ex:concept4") ], new RDFResource("ex:conceptScheme"));
             List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
 
             Assert.IsNotNull(collectionMembers);
@@ -3011,8 +3003,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldCheckHasOrderedCollection()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") ], new RDFResource("ex:conceptScheme"));
 
             Assert.IsTrue(ontology.CheckHasOrderedCollection(new RDFResource("ex:orderedCollection")));
         }
@@ -3023,8 +3015,8 @@ namespace OWLSharp.Extensions.SKOS.Test
             OWLOntology ontologyNULL = null;
             OWLOntology ontologyEMPTY = new OWLOntology("ex:ontologyEmpty");
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") ], new RDFResource("ex:conceptScheme"));
 
             Assert.IsFalse(ontology.CheckHasOrderedCollection(new RDFResource("ex:orderedCollection2")));
             Assert.IsFalse(ontology.CheckHasOrderedCollection(null));
@@ -3036,8 +3028,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldGetOrderedCollectionMembers()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareOrderedCollection(new RDFResource("ex:orderedCollection"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:concept2") ], new RDFResource("ex:conceptScheme"));
             List<RDFResource> orderedCollectionMembers = ontology.GetOrderedCollectionMembers(new RDFResource("ex:orderedCollection"));
 
             Assert.IsNotNull(orderedCollectionMembers);
@@ -3050,10 +3042,10 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldNotInfiniteLoopInGettingRecursiveCollectionMembers()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
-            ontology.DeclareCollection(new RDFResource("ex:collection2"), new List<RDFResource>() {
-                new RDFResource("ex:concept2"), new RDFResource("ex:collection1") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection2") ], new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection2"), [
+                new RDFResource("ex:concept2"), new RDFResource("ex:collection1") ], new RDFResource("ex:conceptScheme"));
             List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
 
             Assert.IsNotNull(collectionMembers);
@@ -3073,8 +3065,8 @@ namespace OWLSharp.Extensions.SKOS.Test
         public void ShouldNotInfiniteLoopInGettingSelfRecursiveCollectionMembers()
         {
             OWLOntology ontology = new OWLOntology("ex:ontology");
-            ontology.DeclareCollection(new RDFResource("ex:collection1"), new List<RDFResource>() {
-                new RDFResource("ex:concept1"), new RDFResource("ex:collection1") }, new RDFResource("ex:conceptScheme"));
+            ontology.DeclareCollection(new RDFResource("ex:collection1"), [
+                new RDFResource("ex:concept1"), new RDFResource("ex:collection1") ], new RDFResource("ex:conceptScheme"));
             List<RDFResource> collectionMembers = ontology.GetCollectionMembers(new RDFResource("ex:collection1"));
 
             Assert.IsNotNull(collectionMembers);
@@ -3655,10 +3647,10 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
             ontology.DeclareExactMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
             ontology.DeclareCollection(new RDFResource("ex:collection1"),
-                new List<RDFResource>() { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept1"), new RDFResource("ex:collection2")], new RDFResource("ex:conceptScheme"));
             ontology.AnnotateCollection(new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection"));
             ontology.DeclareCollection(new RDFResource("ex:collection2"),
-                new List<RDFResource>() { new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept2")], new RDFResource("ex:conceptScheme"));
             RDFGraph graph = ontology.ToRDFGraph();
 
             Assert.IsNotNull(graph);
@@ -3708,10 +3700,10 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.DeclareConcept(new RDFResource("ex:concept2"), new RDFResource("ex:conceptScheme"));
             ontology.DeclareExactMatchConcepts(new RDFResource("ex:concept1"), new RDFResource("ex:concept2"));
             ontology.DeclareCollection(new RDFResource("ex:collection1"),
-                new List<RDFResource>() { new RDFResource("ex:concept1"), new RDFResource("ex:collection2") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept1"), new RDFResource("ex:collection2")], new RDFResource("ex:conceptScheme"));
             ontology.AnnotateCollection(new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection"));
             ontology.DeclareCollection(new RDFResource("ex:collection2"),
-                new List<RDFResource>() { new RDFResource("ex:concept2") }, new RDFResource("ex:conceptScheme"));
+                [new RDFResource("ex:concept2")], new RDFResource("ex:conceptScheme"));
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);

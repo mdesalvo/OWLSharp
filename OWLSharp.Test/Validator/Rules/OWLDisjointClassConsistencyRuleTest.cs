@@ -30,7 +30,7 @@ namespace OWLSharp.Validator.Test
             OWLOntologyClassModel classmodel1 = new OWLOntologyClassModel();
             classmodel1.DeclareClass(new RDFResource("ex:class1"));
             classmodel1.DeclareClass(new RDFResource("ex:class2"));
-            classmodel1.DeclareAllDisjointClasses(new RDFResource("ex:adj"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:class2") });
+            classmodel1.DeclareAllDisjointClasses(new RDFResource("ex:adj"), [new RDFResource("ex:class1"), new RDFResource("ex:class2")]);
             OWLOntologyClassModel classmodel2 = new OWLOntologyClassModel();
             classmodel2.DeclareClass(new RDFResource("ex:class1"));
             classmodel2.DeclareClass(new RDFResource("ex:class2"));

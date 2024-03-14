@@ -1855,7 +1855,7 @@ namespace OWLSharp.Test
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
             ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("http://example.com/UnionClass"),
-              new List<RDFResource>() { new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2") });
+              [new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectUnionOf.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectUnionOf.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectUnionOf.owx"));
@@ -1882,7 +1882,7 @@ namespace OWLSharp.Test
         {
             OWLOntology ontology = new OWLOntology("http://example.com/");
             ontology.Model.ClassModel.DeclareIntersectionClass(new RDFResource("http://example.com/IntersectionClass"),
-              new List<RDFResource>() { new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2") });
+              [new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIntersectionOf.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIntersectionOf.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeObjectIntersectionOf.owx"));
@@ -2198,7 +2198,7 @@ namespace OWLSharp.Test
             ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls1"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls2"));
             ontology.Model.ClassModel.DeclareDisjointUnionClass(new RDFResource("http://example.com/DisjointUnionClass"),
-              new List<RDFResource>() { new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2") });
+              [new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointUnionClassRelation.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointUnionClassRelation.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeDisjointUnionClassRelation.owx"));
@@ -2232,7 +2232,7 @@ namespace OWLSharp.Test
             ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls2"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("http://example.com/Cls3"));
             ontology.Model.ClassModel.DeclareAllDisjointClasses(new RDFResource("http://example.com/AllDisjointClasses"),
-              new List<RDFResource>() { new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"), new RDFResource("http://example.com/Cls3") });
+              [new RDFResource("http://example.com/Cls1"), new RDFResource("http://example.com/Cls2"), new RDFResource("http://example.com/Cls3")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointClassesRelation.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointClassesRelation.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointClassesRelation.owx"));
@@ -2269,7 +2269,7 @@ namespace OWLSharp.Test
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp1"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
             ontology.Model.ClassModel.DeclareHasKey(new RDFResource("http://example.com/Cls"),
-              new List<RDFResource>() { new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2") });
+              [new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasKeyObjectRelation.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasKeyObjectRelation.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasKeyObjectRelation.owx"));
@@ -2306,7 +2306,7 @@ namespace OWLSharp.Test
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp1"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp2"));
             ontology.Model.ClassModel.DeclareHasKey(new RDFResource("http://example.com/Cls"),
-              new List<RDFResource>() { new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2") });
+              [new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasKeyDataRelation.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasKeyDataRelation.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeHasKeyDataRelation.owx"));
@@ -2833,7 +2833,7 @@ namespace OWLSharp.Test
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp3"));
             ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("http://example.com/AllDisjointProperties"),
-                new List<RDFResource>() { new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"), new RDFResource("http://example.com/objProp3") });
+                [new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"), new RDFResource("http://example.com/objProp3")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointObjectPropertyRelation.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointObjectPropertyRelation.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointObjectPropertyRelation.owx"));
@@ -2870,7 +2870,7 @@ namespace OWLSharp.Test
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp2"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("http://example.com/dtProp3"));
             ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("http://example.com/AllDisjointProperties"),
-                new List<RDFResource>() { new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2"), new RDFResource("http://example.com/dtProp3") });
+                [new RDFResource("http://example.com/dtProp1"), new RDFResource("http://example.com/dtProp2"), new RDFResource("http://example.com/dtProp3")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointDataPropertyRelation.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointDataPropertyRelation.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDisjointDataPropertyRelation.owx"));
@@ -2995,7 +2995,7 @@ namespace OWLSharp.Test
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp2"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("http://example.com/objProp3"));
             ontology.Model.PropertyModel.DeclarePropertyChainAxiom(new RDFResource("http://example.com/PropertyChain"),
-                new List<RDFResource>() { new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"), new RDFResource("http://example.com/objProp3") });
+                [new RDFResource("http://example.com/objProp1"), new RDFResource("http://example.com/objProp2"), new RDFResource("http://example.com/objProp3")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializePropertyChainRelation.owx"));
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializePropertyChainRelation.owx")));
             string fileContent = File.ReadAllText(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializePropertyChainRelation.owx"));
@@ -3404,7 +3404,7 @@ namespace OWLSharp.Test
             ontology.Data.DeclareIndividual(RDFVocabulary.GEO.LOCATION);
             ontology.Data.DeclareIndividual(new RDFResource("http://example.com/ID2"));
             ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("http://example.com/AllDifferent"),
-                new List<RDFResource>() { new RDFResource("http://example.com/ID1"), RDFVocabulary.GEO.LOCATION, new RDFResource("http://example.com/ID2") });
+                [new RDFResource("http://example.com/ID1"), RDFVocabulary.GEO.LOCATION, new RDFResource("http://example.com/ID2")]);
             OWLXml.Serialize(ontology, Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDifferentRelations.owx"));
 
             Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, $"OWLXmlTest_ShouldSerializeAllDifferentRelations.owx")));

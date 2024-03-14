@@ -51,7 +51,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:classC"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:classD"));
             ontology.Model.ClassModel.DeclareAllDisjointClasses(new RDFResource("exx:allDisjointClasses"),
-                new List<RDFResource>() { new RDFResource("ex:classA"), new RDFResource("ex:classB") });
+                [new RDFResource("ex:classA"), new RDFResource("ex:classB")]);
             ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classB"), new RDFResource("ex:classC"));
             ontology.Model.ClassModel.DeclareEquivalentClasses(new RDFResource("ex:classC"), new RDFResource("ex:classD"));
 

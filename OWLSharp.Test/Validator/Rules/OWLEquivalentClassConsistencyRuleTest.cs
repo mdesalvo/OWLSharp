@@ -82,8 +82,8 @@ namespace OWLSharp.Validator.Test
             OWLOntologyClassModel classmodel2 = new OWLOntologyClassModel();
             classmodel2.DeclareClass(new RDFResource("ex:class1"));
             classmodel2.DeclareClass(new RDFResource("ex:class2"));
-            classmodel2.DeclareAllDisjointClasses(new RDFResource("ex:adj12"), new List<RDFResource>() { 
-                new RDFResource("ex:class1"),new RDFResource("ex:class2") });
+            classmodel2.DeclareAllDisjointClasses(new RDFResource("ex:adj12"), [ 
+                new RDFResource("ex:class1"),new RDFResource("ex:class2") ]);
 
             classmodel1.Merge(classmodel2);
 

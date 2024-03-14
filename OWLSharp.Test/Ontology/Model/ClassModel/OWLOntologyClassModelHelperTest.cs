@@ -143,7 +143,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasCompositeClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:classA") });
+            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [new RDFResource("ex:classA")]);
 
             Assert.IsTrue(classModel.CheckHasCompositeClass(new RDFResource("ex:unionClass")));
         }
@@ -152,7 +152,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotCompositeClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:classA") });
+            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [new RDFResource("ex:classA")]);
 
             Assert.IsFalse(classModel.CheckHasCompositeClass(new RDFResource("ex:unionClass2")));
             Assert.IsFalse(classModel.CheckHasCompositeClass(null));
@@ -162,7 +162,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasCompositeUnionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:classA") });
+            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [new RDFResource("ex:classA")]);
 
             Assert.IsTrue(classModel.CheckHasCompositeUnionClass(new RDFResource("ex:unionClass")));
         }
@@ -171,7 +171,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotCompositeUnionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:classA") });
+            classModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [new RDFResource("ex:classA")]);
 
             Assert.IsFalse(classModel.CheckHasCompositeUnionClass(new RDFResource("ex:unionClass2")));
             Assert.IsFalse(classModel.CheckHasCompositeUnionClass(null));
@@ -181,7 +181,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasCompositeIntersectionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), new List<RDFResource>() { new RDFResource("ex:classA") });
+            classModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), [new RDFResource("ex:classA")]);
 
             Assert.IsTrue(classModel.CheckHasCompositeIntersectionClass(new RDFResource("ex:intersectionClass")));
         }
@@ -190,7 +190,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotCompositeIntersectionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), new List<RDFResource>() { new RDFResource("ex:classA") });
+            classModel.DeclareIntersectionClass(new RDFResource("ex:intersectionClass"), [new RDFResource("ex:classA")]);
 
             Assert.IsFalse(classModel.CheckHasCompositeIntersectionClass(new RDFResource("ex:intersectionClass2")));
             Assert.IsFalse(classModel.CheckHasCompositeIntersectionClass(null));
@@ -519,7 +519,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasDisjointUnionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classA"), new RDFResource("ex:classB") });
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classA"), new RDFResource("ex:classB")]);
 
             Assert.IsTrue(classModel.CheckHasDisjointUnionClass(new RDFResource("ex:disjointUnionClass")));
         }
@@ -528,7 +528,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotDisjointUnionClass()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), new List<RDFResource>() { new RDFResource("ex:classA"), new RDFResource("ex:classB") });
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:disjointUnionClass"), [new RDFResource("ex:classA"), new RDFResource("ex:classB")]);
 
             Assert.IsFalse(classModel.CheckHasDisjointUnionClass(new RDFResource("ex:disjointUnionClass2")));
             Assert.IsFalse(classModel.CheckHasDisjointUnionClass(null));
@@ -538,7 +538,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasAllDisjointClasses()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classA"), new RDFResource("ex:classB") });
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classA"), new RDFResource("ex:classB")]);
 
             Assert.IsTrue(classModel.CheckHasAllDisjointClasses(new RDFResource("ex:allDisjointClasses")));
         }
@@ -547,7 +547,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotAllDisjointClasses()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), new List<RDFResource>() { new RDFResource("ex:classA"), new RDFResource("ex:classB") });
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"), [new RDFResource("ex:classA"), new RDFResource("ex:classB")]);
 
             Assert.IsFalse(classModel.CheckHasAllDisjointClasses(new RDFResource("ex:allDisjointClasses2")));
             Assert.IsFalse(classModel.CheckHasAllDisjointClasses(null));
@@ -584,7 +584,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotSimpleClassBecauseComposite()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareIntersectionClass(new RDFResource("ex:classA"), new List<RDFResource>() { new RDFResource("ex:class1") });
+            classModel.DeclareIntersectionClass(new RDFResource("ex:classA"), [new RDFResource("ex:class1")]);
 
             Assert.IsFalse(classModel.CheckHasSimpleClass(new RDFResource("ex:classA")));
         }
@@ -593,7 +593,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotSimpleClassBecauseDisjointUnion()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareDisjointUnionClass(new RDFResource("ex:classA"), new List<RDFResource>() { new RDFResource("ex:class1") });
+            classModel.DeclareDisjointUnionClass(new RDFResource("ex:classA"), [new RDFResource("ex:class1")]);
 
             Assert.IsFalse(classModel.CheckHasSimpleClass(new RDFResource("ex:classA")));
         }
@@ -602,7 +602,7 @@ namespace OWLSharp.Test
         public void ShouldCheckHasNotSimpleClassBecauseAllDisjointClasses()
         {
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
-            classModel.DeclareAllDisjointClasses(new RDFResource("ex:classA"), new List<RDFResource>() { new RDFResource("ex:class1") });
+            classModel.DeclareAllDisjointClasses(new RDFResource("ex:classA"), [new RDFResource("ex:class1")]);
 
             Assert.IsFalse(classModel.CheckHasSimpleClass(new RDFResource("ex:classA")));
         }
@@ -807,7 +807,7 @@ namespace OWLSharp.Test
             OWLOntologyClassModel classModel = new OWLOntologyClassModel();
             classModel.DeclareClass(new RDFResource("ex:classA"));
             classModel.DeclareClass(new RDFResource("ex:classB"));
-            classModel.DeclareHasKey(new RDFResource("ex:classA"), new List<RDFResource>() { new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2") });
+            classModel.DeclareHasKey(new RDFResource("ex:classA"), [new RDFResource("ex:objprop1"), new RDFResource("ex:objprop2")]);
 
             Assert.IsTrue(classModel.GetKeyPropertiesOf(new RDFResource("ex:classA")).Any(p => p.Equals(new RDFResource("ex:objprop1"))));
             Assert.IsTrue(classModel.GetKeyPropertiesOf(new RDFResource("ex:classA")).Any(p => p.Equals(new RDFResource("ex:objprop2"))));
@@ -920,7 +920,7 @@ namespace OWLSharp.Test
             classModel.DeclareClass(new RDFResource("ex:classA"));
             classModel.DeclareClass(new RDFResource("ex:classB"));
             classModel.DeclareAllDisjointClasses(new RDFResource("ex:allDisjointClasses"),
-                new List<RDFResource>() { new RDFResource("ex:classA"), new RDFResource("ex:classB") });
+                [new RDFResource("ex:classA"), new RDFResource("ex:classB")]);
 
             Assert.IsFalse(classModel.CheckEquivalentClassCompatibility(new RDFResource("ex:classA"), new RDFResource("ex:classB")));
             Assert.IsFalse(classModel.CheckEquivalentClassCompatibility(new RDFResource("ex:classB"), new RDFResource("ex:classA")));

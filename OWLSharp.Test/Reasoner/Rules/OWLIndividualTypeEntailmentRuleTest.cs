@@ -66,7 +66,7 @@ namespace OWLSharp.Reasoner.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:simpleClass"));
             ontology.Model.ClassModel.DeclareHasValueRestriction(new RDFResource("ex:hvRestriction"), new RDFResource("ex:objprop"), new RDFResource("ex:indiv2"));
-            ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:simpleClass"), new RDFResource("ex:hvRestriction") });
+            ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [new RDFResource("ex:simpleClass"), new RDFResource("ex:hvRestriction")]);
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));

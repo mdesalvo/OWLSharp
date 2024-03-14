@@ -63,10 +63,10 @@ namespace OWLSharp.Reasoner.Test
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivC"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivD"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indivE"));
-            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffAE"), new List<RDFResource>() {
-                new RDFResource("ex:indivA"),new RDFResource("ex:indivE")});
-            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffBE"), new List<RDFResource>() {
-                new RDFResource("ex:indivB"),new RDFResource("ex:indivE")});
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffAE"), [
+                new RDFResource("ex:indivA"),new RDFResource("ex:indivE")]);
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffBE"), [
+                new RDFResource("ex:indivB"),new RDFResource("ex:indivE")]);
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivA"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivB"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indivE"), new RDFResource("ex:invfuncobjprop1"), new RDFResource("ex:indivC"));

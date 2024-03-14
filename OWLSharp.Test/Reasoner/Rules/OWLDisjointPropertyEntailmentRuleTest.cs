@@ -51,7 +51,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objpropC"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objpropD"));
             ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("exx:allDisjointProperties"),
-                new List<RDFResource>() { new RDFResource("ex:objpropA"), new RDFResource("ex:objpropB") });
+                [new RDFResource("ex:objpropA"), new RDFResource("ex:objpropB")]);
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:objpropB"), new RDFResource("ex:objpropC"));
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:objpropC"), new RDFResource("ex:objpropD"));
 
@@ -107,7 +107,7 @@ namespace OWLSharp.Reasoner.Test
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtpropC"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtpropD"));
             ontology.Model.PropertyModel.DeclareAllDisjointProperties(new RDFResource("exx:allDisjointProperties"),
-                new List<RDFResource>() { new RDFResource("ex:dtpropA"), new RDFResource("ex:dtpropB") });
+                [new RDFResource("ex:dtpropA"), new RDFResource("ex:dtpropB")]);
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:dtpropB"), new RDFResource("ex:dtpropC"));
             ontology.Model.PropertyModel.DeclareEquivalentProperties(new RDFResource("ex:dtpropC"), new RDFResource("ex:dtpropD"));
 

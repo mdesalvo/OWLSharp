@@ -43,7 +43,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:ACenturyINTV")),
                 new TIMEInterval(new RDFResource("ex:BCenturyINTV")), TIMEEnums.TIMEIntervalRelation.Before); //clash on time:intervalNotDisjoint
 
-            OWLValidatorReport validatorReport = TIMEIntervalNotDisjointRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:ACenturyINTV"), new RDFResource("ex:BCenturyINTV") });
+            OWLValidatorReport validatorReport = TIMEIntervalNotDisjointRule.ExecuteRule(ontology, [new RDFResource("ex:ACenturyINTV"), new RDFResource("ex:BCenturyINTV")]);
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -69,7 +69,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:ACenturyINTV")),
                 new TIMEInterval(new RDFResource("ex:BCenturyINTV")), TIMEEnums.TIMEIntervalRelation.After); //clash on time:intervalNotDisjoint
 
-            OWLValidatorReport validatorReport = TIMEIntervalNotDisjointRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:ACenturyINTV"), new RDFResource("ex:BCenturyINTV") });
+            OWLValidatorReport validatorReport = TIMEIntervalNotDisjointRule.ExecuteRule(ontology, [new RDFResource("ex:ACenturyINTV"), new RDFResource("ex:BCenturyINTV")]);
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);
@@ -95,7 +95,7 @@ namespace OWLSharp.Extensions.TIME.Test
             ontology.DeclareIntervalRelation(new TIMEInterval(new RDFResource("ex:ACenturyINTV")),
                 new TIMEInterval(new RDFResource("ex:BCenturyINTV")), TIMEEnums.TIMEIntervalRelation.Disjoint); //clash on time:intervalNotDisjoint
 
-            OWLValidatorReport validatorReport = TIMEIntervalNotDisjointRule.ExecuteRule(ontology, new List<RDFResource>() { new RDFResource("ex:ACenturyINTV"), new RDFResource("ex:BCenturyINTV") });
+            OWLValidatorReport validatorReport = TIMEIntervalNotDisjointRule.ExecuteRule(ontology, [new RDFResource("ex:ACenturyINTV"), new RDFResource("ex:BCenturyINTV")]);
 
             Assert.IsNotNull(validatorReport);
             Assert.IsTrue(validatorReport.EvidencesCount == 1);

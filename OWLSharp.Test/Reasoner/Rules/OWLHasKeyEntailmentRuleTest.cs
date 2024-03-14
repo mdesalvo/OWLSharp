@@ -29,7 +29,7 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), new List<RDFResource>() { new RDFResource("ex:objprop") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), [new RDFResource("ex:objprop")]);
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class"));
@@ -52,7 +52,7 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), new List<RDFResource>() { new RDFResource("ex:objprop"), new RDFResource("ex:objprop2") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), [new RDFResource("ex:objprop"), new RDFResource("ex:objprop2")]);
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
@@ -78,7 +78,7 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), new List<RDFResource>() { new RDFResource("ex:dtprop") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), [new RDFResource("ex:dtprop")]);
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class"));
@@ -101,7 +101,7 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), new List<RDFResource>() { new RDFResource("ex:dtprop"), new RDFResource("ex:dtprop2") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), [new RDFResource("ex:dtprop"), new RDFResource("ex:dtprop2")]);
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop"));
             ontology.Model.PropertyModel.DeclareDatatypeProperty(new RDFResource("ex:dtprop2"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
@@ -127,7 +127,7 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), new List<RDFResource>() { new RDFResource("ex:objprop") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), [new RDFResource("ex:objprop")]);
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class"));
@@ -151,13 +151,13 @@ namespace OWLSharp.Reasoner.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class"));
-            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), new List<RDFResource>() { new RDFResource("ex:objprop") });
+            ontology.Model.ClassModel.DeclareHasKey(new RDFResource("ex:class"), [new RDFResource("ex:objprop")]);
             ontology.Model.PropertyModel.DeclareObjectProperty(new RDFResource("ex:objprop"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class"));
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv2"), new RDFResource("ex:class"));
-            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffIndivs"), new List<RDFResource>() { new RDFResource("ex:indiv1"), new RDFResource("ex:indiv2") });
+            ontology.Data.DeclareAllDifferentIndividuals(new RDFResource("ex:alldiffIndivs"), [new RDFResource("ex:indiv1"), new RDFResource("ex:indiv2")]);
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv3"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv3"), new RDFResource("ex:class"));
             ontology.Data.DeclareObjectAssertion(new RDFResource("ex:indiv1"), new RDFResource("ex:objprop"), new RDFResource("ex:keyval"));

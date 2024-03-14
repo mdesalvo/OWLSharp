@@ -41,7 +41,7 @@ namespace OWLSharp.Test
             DataLens.Ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2"));
             DataLens.Ontology.Model.ClassModel.DeclareEnumerateClass(new RDFResource("ex:enumClass"), new List<RDFResource>() { new RDFResource("ex:indiv1"), new RDFResource("ex:indiv5") });
             DataLens.Ontology.Model.ClassModel.DeclareHasValueRestriction(new RDFResource("ex:hvRestr"), new RDFResource("ex:objProp"), new RDFResource("ex:indiv2"));
-            DataLens.Ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("ex:unionClass"), new List<RDFResource>() { new RDFResource("ex:class1"), new RDFResource("ex:enumClass") });
+            DataLens.Ontology.Model.ClassModel.DeclareUnionClass(new RDFResource("ex:unionClass"), [new RDFResource("ex:class1"), new RDFResource("ex:enumClass")]);
             DataLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             DataLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv2"));
             DataLens.Ontology.Data.DeclareIndividual(new RDFResource("ex:indiv3"));

@@ -30,8 +30,8 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2"));
-            ontology.Model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjoinUnionClass"), new List<RDFResource>() {
-                new RDFResource("ex:class1"), new RDFResource("ex:class2")});
+            ontology.Model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjoinUnionClass"), [
+                new RDFResource("ex:class1"), new RDFResource("ex:class2")]);
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class2")); //will cause violation
@@ -52,8 +52,8 @@ namespace OWLSharp.Validator.Test
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class1"));
             ontology.Model.ClassModel.DeclareClass(new RDFResource("ex:class2"));
-            ontology.Model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjoinUnionClass"), new List<RDFResource>() {
-                new RDFResource("ex:class1"), new RDFResource("ex:class2")});
+            ontology.Model.ClassModel.DeclareDisjointUnionClass(new RDFResource("ex:disjoinUnionClass"), [
+                new RDFResource("ex:class1"), new RDFResource("ex:class2")]);
             ontology.Data.DeclareIndividual(new RDFResource("ex:indiv1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class1"));
             ontology.Data.DeclareIndividualType(new RDFResource("ex:indiv1"), new RDFResource("ex:class2")); //will cause violation

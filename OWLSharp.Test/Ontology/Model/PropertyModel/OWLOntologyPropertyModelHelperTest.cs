@@ -361,7 +361,7 @@ namespace OWLSharp.Test
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
             propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyA"));
             propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyB"));
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB") });
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB")]);
 
             Assert.IsTrue(propertyModel.CheckHasPropertyChainAxiom(new RDFResource("ex:propertyChainAxiom")));
             Assert.IsFalse(propertyModel.CheckHasPropertyChainAxiom(null));
@@ -611,7 +611,7 @@ namespace OWLSharp.Test
             OWLOntologyPropertyModel propertyModel = new OWLOntologyPropertyModel();
             propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyA"));
             propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyB"));
-            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), new List<RDFResource>() { new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB") });
+            propertyModel.DeclarePropertyChainAxiom(new RDFResource("ex:propertyChainAxiom"), [new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB")]);
 
             Assert.IsTrue(propertyModel.GetChainAxiomPropertiesOf(new RDFResource("ex:propertyChainAxiom")).Any(sp => sp.Equals(new RDFResource("ex:propertyA"))));
             Assert.IsTrue(propertyModel.GetChainAxiomPropertiesOf(new RDFResource("ex:propertyChainAxiom")).Any(sp => sp.Equals(new RDFResource("ex:propertyB"))));
@@ -723,7 +723,7 @@ namespace OWLSharp.Test
             propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyA"));
             propertyModel.DeclareObjectProperty(new RDFResource("ex:propertyB"));
             propertyModel.DeclareAllDisjointProperties(new RDFResource("ex:allDisjointProperties"),
-                new List<RDFResource>() { new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB") });
+                [new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB")]);
 
             Assert.IsFalse(propertyModel.CheckEquivalentPropertyCompatibility(new RDFResource("ex:propertyA"), new RDFResource("ex:propertyB")));
             Assert.IsFalse(propertyModel.CheckEquivalentPropertyCompatibility(new RDFResource("ex:propertyB"), new RDFResource("ex:propertyA")));
