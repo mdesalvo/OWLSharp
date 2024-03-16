@@ -90,6 +90,7 @@ namespace OWLSharp
                 RDFVocabulary.XSD.G_YEAR.PatternMemberID,
                 RDFVocabulary.XSD.G_YEAR_MONTH.PatternMemberID,
                 RDFVocabulary.XSD.HEX_BINARY.PatternMemberID,
+                RDFVocabulary.XSD.ID.PatternMemberID,
                 RDFVocabulary.XSD.INT.PatternMemberID,
                 RDFVocabulary.XSD.INTEGER.PatternMemberID,
                 RDFVocabulary.XSD.LANGUAGE.PatternMemberID,
@@ -198,6 +199,8 @@ namespace OWLSharp
                 RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY.PatternMemberID,
                 RDFVocabulary.OWL.ON_CLASS.PatternMemberID,
                 RDFVocabulary.OWL.ON_DATARANGE.PatternMemberID,
+                RDFVocabulary.OWL.ON_DATATYPE.PatternMemberID,
+                RDFVocabulary.OWL.DEPRECATED.PatternMemberID,
                 RDFVocabulary.OWL.SOURCE_INDIVIDUAL.PatternMemberID,
                 RDFVocabulary.OWL.ASSERTION_PROPERTY.PatternMemberID,
                 RDFVocabulary.OWL.TARGET_INDIVIDUAL.PatternMemberID,
@@ -210,7 +213,8 @@ namespace OWLSharp
                 RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY.PatternMemberID,
                 RDFVocabulary.OWL.ANNOTATED_SOURCE.PatternMemberID,
                 RDFVocabulary.OWL.ANNOTATION_PROPERTY.PatternMemberID,
-                RDFVocabulary.OWL.ANNOTATED_TARGET.PatternMemberID
+                RDFVocabulary.OWL.ANNOTATED_TARGET.PatternMemberID,
+                RDFVocabulary.OWL.WITH_RESTRICTIONS.PatternMemberID
             };
 
             StandardResourceAnnotations = new HashSet<long>()
@@ -221,6 +225,7 @@ namespace OWLSharp
                 { RDFVocabulary.RDFS.SEE_ALSO.PatternMemberID },
                 { RDFVocabulary.RDFS.IS_DEFINED_BY.PatternMemberID },
                 //OWL
+                { RDFVocabulary.OWL.DEPRECATED.PatternMemberID },
                 { RDFVocabulary.OWL.VERSION_INFO.PatternMemberID },
                 { RDFVocabulary.OWL.VERSION_IRI.PatternMemberID },
                 //DC+DCTERMS
