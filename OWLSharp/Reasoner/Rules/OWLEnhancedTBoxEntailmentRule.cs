@@ -27,12 +27,7 @@ namespace OWLSharp
             #region RuleBody
             void InferRelationsFromObjectPropertyHierarchy(RDFResource currentProperty, OWLReasonerReport report)
             {
-                /*
-                   ANTECEDENT: EQUIVALENTPROPERTY(CURRENTPROPERTY, EQPROPERTY) 
-                   ANTECEDENT: INVERSEOF(EQPROPERTY, INVOFEQPROPERTY)
-                   -----------------------------------------------------------
-                   CONSEQUENT: INVERSEOF(CURRENTPROPERTY, INVOFEQPROPERTY)
-                */
+                //EquivalentProperty(?P1,?P2) ^ InverseOf(?P2,?P3) -> InverseOf(?P1,?P3) 
                 foreach (RDFResource eqProperty in ontology.Model.PropertyModel.GetEquivalentPropertiesOf(currentProperty))
                     foreach (RDFResource invOfEqProperty in ontology.Model.PropertyModel.GetInversePropertiesOf(eqProperty))
                     {
