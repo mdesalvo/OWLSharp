@@ -311,11 +311,11 @@ namespace OWLSharp.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
-            RDFAsyncGraph asyncGraph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-            Assert.IsNotNull(asyncGraph);
-            Assert.IsTrue((await asyncGraph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null]).Any());
-            Assert.IsTrue((await asyncGraph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")]).Any());
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
         }
 
         [TestMethod]
@@ -394,7 +394,7 @@ namespace OWLSharp.Test
             RDFGraph graph = new RDFGraph().SetContext(new Uri("ex:ont"));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology")));
-            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(new RDFAsyncGraph(graph));
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(ontology.Equals(new RDFResource("ex:ont")));
@@ -438,7 +438,7 @@ namespace OWLSharp.Test
             RDFMemoryStore store = new RDFMemoryStore();
             store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx1"), new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
             store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx2"), new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology")));
-            OWLOntology ontology = await OWLOntology.FromRDFStoreAsync(new RDFAsyncStore(store));
+            OWLOntology ontology = await OWLOntology.FromRDFStoreAsync(store);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(ontology.Equals(new RDFResource("ex:ont")));
