@@ -57,30 +57,14 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Builds a time instant with the given Uri, whose temporal extent is expressed through the given description
         /// </summary>
-        public TIMEInstant(RDFResource timeInstantUri, TIMEInstantDescription timeInstantDescription)
-            : base(timeInstantUri)
-        {
-            #region Guards
-            if (timeInstantDescription == null)
-                throw new OWLException("Cannot create time instant because given \"timeInstantDescription\" parameter is null");
-            #endregion
-
-            Description = timeInstantDescription;
-        }
+        public TIMEInstant(RDFResource timeInstantUri, TIMEInstantDescription timeInstantDescription) : base(timeInstantUri)
+            => Description = timeInstantDescription ?? throw new OWLException("Cannot create time instant because given \"timeInstantDescription\" parameter is null");
 
         /// <summary>
         /// Builds a time instant with the given Uri, whose temporal extent is expressed through the given position
         /// </summary>
-        public TIMEInstant(RDFResource timeInstantUri, TIMEInstantPosition timeInstantPosition)
-            : base(timeInstantUri)
-        {
-            #region Guards
-            if (timeInstantPosition == null)
-                throw new OWLException("Cannot create time instant because given \"timeInstantPosition\" parameter is null");
-            #endregion
-
-            Position = timeInstantPosition;
-        }
+        public TIMEInstant(RDFResource timeInstantUri, TIMEInstantPosition timeInstantPosition) : base(timeInstantUri)
+            => Position = timeInstantPosition ?? throw new OWLException("Cannot create time instant because given \"timeInstantPosition\" parameter is null");
         #endregion
     }
 }

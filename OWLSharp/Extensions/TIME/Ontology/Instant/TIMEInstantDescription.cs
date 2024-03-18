@@ -33,31 +33,19 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Builds a time instant description with the given Uri, whose temporal extent is not expressed
         /// </summary>
-        internal TIMEInstantDescription(RDFResource timeInstantDescriptionUri)
-            : base(timeInstantDescriptionUri?.ToString()) { }
+        internal TIMEInstantDescription(RDFResource timeInstantDescriptionUri) : base(timeInstantDescriptionUri?.ToString()) { }
 
         /// <summary>
         /// Builds a time instant description with the given Uri, whose temporal extent is expressed through the given Gregorian DateTime
         /// </summary>
-        public TIMEInstantDescription(RDFResource timeInstantDescriptionUri, DateTime dateTime)
-            : this(timeInstantDescriptionUri)
-        {
-            Coordinate = new TIMECoordinate(dateTime.ToUniversalTime());
-        }
+        public TIMEInstantDescription(RDFResource timeInstantDescriptionUri, DateTime dateTime) : this(timeInstantDescriptionUri)
+            => Coordinate = new TIMECoordinate(dateTime.ToUniversalTime());
 
         /// <summary>
         /// Builds a time instant description with the given Uri, whose temporal extent is expressed through the given instant coordinate
         /// </summary>
-        public TIMEInstantDescription(RDFResource timeInstantDescriptionUri, TIMECoordinate timeInstantCoordinate)
-            : this(timeInstantDescriptionUri)
-        {
-            #region Guards
-            if (timeInstantCoordinate == null)
-                throw new OWLException("Cannot create description of time instant because given \"timeInstantCoordinate\" parameter is null");
-            #endregion
-
-            Coordinate = timeInstantCoordinate;
-        }
+        public TIMEInstantDescription(RDFResource timeInstantDescriptionUri, TIMECoordinate timeInstantCoordinate) : this(timeInstantDescriptionUri)
+            => Coordinate = timeInstantCoordinate ?? throw new OWLException("Cannot create description of time instant because given \"timeInstantCoordinate\" parameter is null");
         #endregion
 
         #region Interfaces

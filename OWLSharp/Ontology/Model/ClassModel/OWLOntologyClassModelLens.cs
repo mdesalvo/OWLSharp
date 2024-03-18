@@ -46,15 +46,8 @@ namespace OWLSharp
         /// </summary>
         public OWLOntologyClassModelLens(RDFResource owlClass, OWLOntology ontology)
         {
-            #region Guards
-            if (owlClass == null)
-                throw new OWLException("Cannot create class model lens because given \"owlClass\" parameter is null");
-            if (ontology == null)
-                throw new OWLException("Cannot create class model lens because given \"ontology\" parameter is null");
-            #endregion
-
-            Class = owlClass;
-            Ontology = ontology;
+            Class = owlClass ?? throw new OWLException("Cannot create class model lens because given \"owlClass\" parameter is null");
+            Ontology = ontology ?? throw new OWLException("Cannot create class model lens because given \"ontology\" parameter is null");
         }
         #endregion
 

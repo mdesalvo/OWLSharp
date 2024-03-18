@@ -50,14 +50,8 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Builds a calendar TRS measuring time with the given metrics
         /// </summary>
-        public TIMECalendarReferenceSystem(RDFResource trsUri, TIMECalendarReferenceSystemMetrics trsMetrics)
-            : base(trsUri)
-        {
-            if (trsMetrics == null)
-                throw new OWLException("Cannot create calendar-based TRS because given \"trsMetrics\" parameter is null");
-
-            Metrics = trsMetrics;
-        }
+        public TIMECalendarReferenceSystem(RDFResource trsUri, TIMECalendarReferenceSystemMetrics trsMetrics) : base(trsUri)
+            => Metrics = trsMetrics ?? throw new OWLException("Cannot create calendar-based TRS because given \"trsMetrics\" parameter is null");
         #endregion
     }
 

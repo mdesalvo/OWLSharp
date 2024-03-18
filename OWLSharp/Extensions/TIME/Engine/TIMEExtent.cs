@@ -217,14 +217,7 @@ namespace OWLSharp.Extensions.TIME
         /// Builds a extent metadata with the given TRS
         /// </summary>
         public TIMEExtentMetadata(RDFResource trsUri)
-        {
-            #region Guards
-            if (trsUri == null)
-                throw new OWLException("Cannot create extent metadata because given \"trsUri\" parameter is null");
-            #endregion
-
-            TRS = trsUri;
-        }
+            => TRS = trsUri ?? throw new OWLException("Cannot create extent metadata because given \"trsUri\" parameter is null");
         #endregion
     }
 }

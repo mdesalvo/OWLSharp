@@ -54,15 +54,8 @@ namespace OWLSharp.Extensions.SWRL
         /// </summary>
         public SWRLAtom(RDFResource predicate, RDFPatternMember leftArgument, RDFPatternMember rightArgument)
         {
-            #region Guards
-            if (predicate == null)
-                throw new OWLException("Cannot create atom because given \"predicate\" parameter is null");
-            if (leftArgument == null)
-                throw new OWLException("Cannot create atom because given \"leftArgument\" parameter is null");
-            #endregion
-
-            Predicate = predicate;
-            LeftArgument = leftArgument;
+            Predicate = predicate ?? throw new OWLException("Cannot create atom because given \"predicate\" parameter is null");
+            LeftArgument = leftArgument ?? throw new OWLException("Cannot create atom because given \"leftArgument\" parameter is null");
             RightArgument = rightArgument;
         }
         #endregion

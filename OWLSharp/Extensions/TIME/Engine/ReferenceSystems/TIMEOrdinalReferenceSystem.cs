@@ -299,20 +299,18 @@ namespace OWLSharp.Extensions.TIME
 
             //Get begin boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraBeginBoundaryCoordinate = null;
-            RDFResource eraBeginBoundary = Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.BEGIN, null, null]
-                                             ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
-                                             ?.FirstOrDefault()
-                                             ?.Object as RDFResource;
-            if (eraBeginBoundary != null && CheckHasEraBoundary(eraBeginBoundary))
+            if (Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.BEGIN, null, null]
+                            ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                            ?.FirstOrDefault()
+                            ?.Object is RDFResource eraBeginBoundary && CheckHasEraBoundary(eraBeginBoundary))
                 eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfInstant(eraBeginBoundary, calendarTRS);
 
             //Get end boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraEndBoundaryCoordinate = null;
-            RDFResource eraEndBoundary = Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.END, null, null]
-                                           ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
-                                           ?.FirstOrDefault()
-                                           ?.Object as RDFResource;
-            if (eraEndBoundary != null && CheckHasEraBoundary(eraEndBoundary))
+            if (Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.END, null, null]
+                            ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                            ?.FirstOrDefault()
+                            ?.Object is RDFResource eraEndBoundary && CheckHasEraBoundary(eraEndBoundary))
                 eraEndBoundaryCoordinate = Ontology.GetCoordinateOfInstant(eraEndBoundary, calendarTRS);
 
             return (eraBeginBoundaryCoordinate, eraEndBoundaryCoordinate);

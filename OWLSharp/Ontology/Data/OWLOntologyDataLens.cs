@@ -46,15 +46,8 @@ namespace OWLSharp
         /// </summary>
         public OWLOntologyDataLens(RDFResource owlIndividual, OWLOntology ontology)
         {
-            #region Guards
-            if (owlIndividual == null)
-                throw new OWLException("Cannot create data lens because given \"owlIndividual\" parameter is null");
-            if (ontology == null)
-                throw new OWLException("Cannot create data lens because given \"ontology\" parameter is null");
-            #endregion
-
-            Individual = owlIndividual;
-            Ontology = ontology;
+            Individual = owlIndividual ?? throw new OWLException("Cannot create data lens because given \"owlIndividual\" parameter is null");
+            Ontology = ontology ?? throw new OWLException("Cannot create data lens because given \"ontology\" parameter is null");
         }
         #endregion
 

@@ -247,15 +247,8 @@ namespace OWLSharp.Extensions.TIME
         public TIMECoordinateMetadata(RDFResource trsUri, RDFResource unitTypeUri, 
             RDFResource monthOfYear=null, RDFResource dayOfWeek=null, uint? dayOfYear=null)
         {
-            #region Guards
-            if (trsUri == null)
-                throw new OWLException("Cannot create coordinate metadata because given \"trsUri\" parameter is null");
-            if (unitTypeUri == null)
-                throw new OWLException("Cannot create coordinate metadata because given \"unitTypeUri\" parameter is null");
-            #endregion
-
-            TRS = trsUri;
-            UnitType = unitTypeUri;
+            TRS = trsUri ?? throw new OWLException("Cannot create coordinate metadata because given \"trsUri\" parameter is null");
+            UnitType = unitTypeUri ?? throw new OWLException("Cannot create coordinate metadata because given \"unitTypeUri\" parameter is null");
             MonthOfYear = monthOfYear;
             DayOfWeek = dayOfWeek;
             DayOfYear = dayOfYear;

@@ -43,15 +43,8 @@ namespace OWLSharp.Extensions.SKOS
         /// </summary>
         public SKOSOntologyLens(RDFResource skosConcept, OWLOntology ontology)
         {
-            #region Guards
-            if (skosConcept == null)
-                throw new OWLException("Cannot create SKOS lens because given \"skosConcept\" parameter is null");
-            if (ontology == null)
-                throw new OWLException("Cannot create SKOS lens because given \"ontology\" parameter is null");
-            #endregion
-
-            Concept = skosConcept;
-            Ontology = ontology;
+            Concept = skosConcept ?? throw new OWLException("Cannot create SKOS lens because given \"skosConcept\" parameter is null");
+            Ontology = ontology ?? throw new OWLException("Cannot create SKOS lens because given \"ontology\" parameter is null");
         }
         #endregion
 

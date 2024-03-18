@@ -493,8 +493,7 @@ namespace OWLSharp
             #endregion
 
             #region Parse
-            RDFResource valuesFromClass = model.ClassModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.SOME_VALUES_FROM, null, null].First().Object as RDFResource;
-            if (valuesFromClass == null)
+            if (!(model.ClassModel.TBoxGraph[owlRestriction, RDFVocabulary.OWL.SOME_VALUES_FROM, null, null].FirstOrDefault()?.Object is RDFResource valuesFromClass))
                 throw new OWLException($"Cannot find individuals of owl:SomeValuesFromRestriction '{owlRestriction}' because required owl:someValuesFrom information is not declared in the model");
 
             //Materialize individuals of the given owl:[all|some]ValuesFrom class
@@ -623,7 +622,7 @@ namespace OWLSharp
 
                 //Compute union of answered individuals
                 RDFCollection unionOfCollection = RDFModelUtilities.DeserializeCollectionFromGraph(model.ClassModel.TBoxGraph, (RDFResource)unionOfGraph.First().Object, RDFModelEnums.RDFTripleFlavors.SPO);
-                foreach (RDFResource unionOfClass in unionOfCollection)
+                foreach (RDFResource unionOfClass in unionOfCollection.Cast<RDFResource>())
                     compositeIndividuals.AddRange(data.GetIndividualsOf(model, unionOfClass));
             }
 
@@ -636,7 +635,7 @@ namespace OWLSharp
                 //Compute intersection of answered individuals
                 bool isFirstIntersectionClass = true;
                 RDFCollection intersectionOfCollection = RDFModelUtilities.DeserializeCollectionFromGraph(model.ClassModel.TBoxGraph, (RDFResource)intersectionOfGraph.First().Object, RDFModelEnums.RDFTripleFlavors.SPO);
-                foreach (RDFResource intersectionOfClass in intersectionOfCollection)
+                foreach (RDFResource intersectionOfClass in intersectionOfCollection.Cast<RDFResource>())
                 {
                     List<RDFResource> currentClassIndividuals = data.GetIndividualsOf(model, intersectionOfClass);
                     if (isFirstIntersectionClass)
@@ -673,7 +672,7 @@ namespace OWLSharp
             //Compute answered individuals
             RDFCollection enumerateIndividualsCollection = RDFModelUtilities.DeserializeCollectionFromGraph(model.ClassModel.TBoxGraph, 
                 (RDFResource)oneOfGraph.First().Object, RDFModelEnums.RDFTripleFlavors.SPO);
-            foreach (RDFResource enumerateIndividual in enumerateIndividualsCollection)
+            foreach (RDFResource enumerateIndividual in enumerateIndividualsCollection.Cast<RDFResource>())
                 enumerateIndividuals.Add(enumerateIndividual);
 
             return enumerateIndividuals;

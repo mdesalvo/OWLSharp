@@ -49,13 +49,11 @@ namespace OWLSharp
             #region Guards
             if (string.IsNullOrEmpty(ruleName))
                 throw new OWLException("Cannot create validator rule because given \"ruleName\" parameter is null");
-            if (ruleDelegate == null)
-                throw new OWLException("Cannot create validator rule because given \"ruleDelegate\" parameter is null");
             #endregion
 
             RuleName = ruleName;
             RuleDescription = ruleDescription;
-            ExecuteRule = ruleDelegate;
+            ExecuteRule = ruleDelegate ?? throw new OWLException("Cannot create validator rule because given \"ruleDelegate\" parameter is null");
         }
         #endregion
     }

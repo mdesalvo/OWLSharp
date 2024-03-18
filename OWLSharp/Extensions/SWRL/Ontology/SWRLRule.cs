@@ -52,17 +52,15 @@ namespace OWLSharp.Extensions.SWRL
         /// </summary>
         public SWRLRule(string ruleName, string ruleDescription, SWRLAntecedent antecedent, SWRLConsequent consequent)
         {
+            #region Guards
             if (string.IsNullOrEmpty(ruleName))
                 throw new OWLException("Cannot create rule because given \"ruleName\" parameter is null or empty");
-            if (antecedent == null)
-                throw new OWLException("Cannot create rule because given \"antecedent\" parameter is null");
-            if (consequent == null)
-                throw new OWLException("Cannot create rule because given \"consequent\" parameter is null");
+            #endregion
 
             RuleName = ruleName;
             RuleDescription = ruleDescription;
-            Antecedent = antecedent;
-            Consequent = consequent;
+            Antecedent = antecedent ?? throw new OWLException("Cannot create rule because given \"antecedent\" parameter is null");
+            Consequent = consequent ?? throw new OWLException("Cannot create rule because given \"consequent\" parameter is null");
         }
         #endregion
 

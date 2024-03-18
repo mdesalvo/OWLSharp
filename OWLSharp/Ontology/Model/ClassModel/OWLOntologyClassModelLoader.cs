@@ -331,9 +331,8 @@ namespace OWLSharp
         internal static void LoadRestriction(this OWLOntology ontology, RDFResource owlRestriction, RDFGraph graph)
         {
             //Get mandatory owl:onProperty information
-            RDFResource onProperty = GetRestrictionProperty(graph, owlRestriction);
-            if (onProperty == null)
-                throw new OWLException($"Cannot load Restriction '{owlRestriction}' from graph because it does not have required owl:onProperty information");
+            RDFResource onProperty = GetRestrictionProperty(graph, owlRestriction) 
+                                      ?? throw new OWLException($"Cannot load Restriction '{owlRestriction}' from graph because it does not have required owl:onProperty information");
 
             //Try load the given restriction as instance of owl:[all|some]ValuesFrom
             if (TryLoadAllValuesFromRestriction(ontology, owlRestriction, onProperty, graph)
@@ -400,8 +399,8 @@ namespace OWLSharp
             RDFPatternMember hasValue = GetRestrictionHasValue(graph, owlRestriction);
             if (hasValue != null)
             {
-                if (hasValue is RDFResource)
-                    ontology.Model.ClassModel.DeclareHasValueRestriction(owlRestriction, onProperty, (RDFResource)hasValue);
+                if (hasValue is RDFResource hasValueRes)
+                    ontology.Model.ClassModel.DeclareHasValueRestriction(owlRestriction, onProperty, hasValueRes);
                 else
                     ontology.Model.ClassModel.DeclareHasValueRestriction(owlRestriction, onProperty, (RDFLiteral)hasValue);
                 return true;
@@ -491,9 +490,8 @@ namespace OWLSharp
         internal static bool TryLoadQualifiedCardinalityRestriction(this OWLOntology ontology, RDFResource owlRestriction, RDFResource onProperty, RDFGraph graph)
         {
             //Get mandatory owl:onClass information
-            RDFResource onClass = GetRestrictionClass(graph, owlRestriction);
-            if (onClass == null)
-                throw new OWLException($"Cannot load qualified Restriction '{owlRestriction}' from graph because it does not have required owl:onClass information");
+            RDFResource onClass = GetRestrictionClass(graph, owlRestriction)
+                                   ?? throw new OWLException($"Cannot load qualified Restriction '{owlRestriction}' from graph because it does not have required owl:onClass information");
 
             RDFTypedLiteral qualifiedCardinality = GetRestrictionQualifiedCardinality(graph, owlRestriction);
             if (qualifiedCardinality != null && qualifiedCardinality.HasDecimalDatatype())
@@ -513,9 +511,8 @@ namespace OWLSharp
         internal static bool TryLoadMinMaxQualifiedCardinalityRestriction(this OWLOntology ontology, RDFResource owlRestriction, RDFResource onProperty, RDFGraph graph)
         {
             //Get mandatory owl:onClass information
-            RDFResource onClass = GetRestrictionClass(graph, owlRestriction);
-            if (onClass == null)
-                throw new OWLException($"Cannot load qualified Restriction '{owlRestriction}' from graph because it does not have required owl:onClass information");
+            RDFResource onClass = GetRestrictionClass(graph, owlRestriction)
+                                   ?? throw new OWLException($"Cannot load qualified Restriction '{owlRestriction}' from graph because it does not have required owl:onClass information");
 
             //Try detect owl:minQualifiedCardinality
             uint minQualifiedCardinalityValue = 0;
@@ -554,8 +551,7 @@ namespace OWLSharp
         /// </summary>
         internal static void LoadEnumerateClass(this OWLOntology ontology, RDFResource owlEnumerate, RDFGraph graph)
         {
-            RDFResource oneOfRepresentative = graph[owlEnumerate, RDFVocabulary.OWL.ONE_OF, null, null].FirstOrDefault()?.Object as RDFResource;
-            if (oneOfRepresentative != null)
+            if (graph[owlEnumerate, RDFVocabulary.OWL.ONE_OF, null, null].FirstOrDefault()?.Object is RDFResource oneOfRepresentative)
             {
                 List<RDFPatternMember> oneOfMembers = new List<RDFPatternMember>();
 
@@ -577,34 +573,31 @@ namespace OWLSharp
         internal static void LoadCompositeClass(this OWLOntology ontology, RDFResource owlComposite, RDFGraph graph)
         {
             #region owl:unionOf
-            RDFResource unionRepresentative = graph[owlComposite, RDFVocabulary.OWL.UNION_OF, null, null].FirstOrDefault()?.Object as RDFResource;
-            if (unionRepresentative != null)
+            if (graph[owlComposite, RDFVocabulary.OWL.UNION_OF, null, null].FirstOrDefault()?.Object is RDFResource unionRepresentative)
             {
                 List<RDFResource> unionMembers = new List<RDFResource>();
                 RDFCollection unionMembersCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, unionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
-                foreach (RDFPatternMember unionMember in unionMembersCollection)
-                    unionMembers.Add((RDFResource)unionMember);
+                foreach (RDFResource unionMember in unionMembersCollection.Cast<RDFResource>())
+                    unionMembers.Add(unionMember);
                 ontology.Model.ClassModel.DeclareUnionClass(owlComposite, unionMembers);
                 return;
             }
             #endregion
 
             #region owl:intersectionOf
-            RDFResource intersectionRepresentative = graph[owlComposite, RDFVocabulary.OWL.INTERSECTION_OF, null, null].FirstOrDefault()?.Object as RDFResource;
-            if (intersectionRepresentative != null)
+            if (graph[owlComposite, RDFVocabulary.OWL.INTERSECTION_OF, null, null].FirstOrDefault()?.Object is RDFResource intersectionRepresentative)
             {
                 List<RDFResource> intersectionMembers = new List<RDFResource>();
                 RDFCollection intersectionMembersCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, intersectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
-                foreach (RDFPatternMember intersectionMember in intersectionMembersCollection)
-                    intersectionMembers.Add((RDFResource)intersectionMember);
+                foreach (RDFResource intersectionMember in intersectionMembersCollection.Cast<RDFResource>())
+                    intersectionMembers.Add(intersectionMember);
                 ontology.Model.ClassModel.DeclareIntersectionClass(owlComposite, intersectionMembers);
                 return;
             }
             #endregion
 
             #region owl:complementOf
-            RDFResource complementClass = graph[owlComposite, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].FirstOrDefault()?.Object as RDFResource;
-            if (complementClass != null)
+            if (graph[owlComposite, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].FirstOrDefault()?.Object is RDFResource complementClass)
                 ontology.Model.ClassModel.DeclareComplementClass(owlComposite, complementClass);
             #endregion
         }
@@ -614,13 +607,12 @@ namespace OWLSharp
         /// </summary>
         internal static void LoadDisjointUnionClass(this OWLOntology ontology, RDFResource owlDisjointUnion, RDFGraph graph)
         {
-            RDFResource disjointUnionRepresentative = graph[owlDisjointUnion, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].FirstOrDefault()?.Object as RDFResource;
-            if (disjointUnionRepresentative != null)
+            if (graph[owlDisjointUnion, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].FirstOrDefault()?.Object is RDFResource disjointUnionRepresentative)
             {
                 List<RDFResource> disjointUnionMembers = new List<RDFResource>();
                 RDFCollection disjointUnionMembersCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, disjointUnionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
-                foreach (RDFPatternMember disjointUnionMember in disjointUnionMembersCollection)
-                    disjointUnionMembers.Add((RDFResource)disjointUnionMember);
+                foreach (RDFResource disjointUnionMember in disjointUnionMembersCollection.Cast<RDFResource>())
+                    disjointUnionMembers.Add(disjointUnionMember);
                 ontology.Model.ClassModel.DeclareDisjointUnionClass(owlDisjointUnion, disjointUnionMembers);
             }
         }

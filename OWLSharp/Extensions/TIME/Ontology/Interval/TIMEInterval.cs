@@ -70,30 +70,14 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Builds a time interval with the given Uri, whose temporal extent is expressed through the given description
         /// </summary>
-        public TIMEInterval(RDFResource timeInstantUri, TIMEIntervalDescription timeIntervalDescription)
-            : base(timeInstantUri)
-        {
-            #region Guards
-            if (timeIntervalDescription == null)
-                throw new OWLException("Cannot create time interval because given \"timeIntervalDescription\" parameter is null");
-            #endregion
-
-            Description = timeIntervalDescription;
-        }
+        public TIMEInterval(RDFResource timeInstantUri, TIMEIntervalDescription timeIntervalDescription) : base(timeInstantUri)
+            => Description = timeIntervalDescription ?? throw new OWLException("Cannot create time interval because given \"timeIntervalDescription\" parameter is null");
 
         /// <summary>
         /// Builds a time interval with the given Uri, whose temporal extent is expressed through the given duration 
         /// </summary>
-        public TIMEInterval(RDFResource timeInstantUri, TIMEIntervalDuration timeIntervalDuration)
-            : base(timeInstantUri)
-        {
-            #region Guards
-            if (timeIntervalDuration == null)
-                throw new OWLException("Cannot create time interval because given \"timeIntervalDuration\" parameter is null");
-            #endregion
-
-            Duration = timeIntervalDuration;
-        }
+        public TIMEInterval(RDFResource timeInstantUri, TIMEIntervalDuration timeIntervalDuration) : base(timeInstantUri)
+            => Duration = timeIntervalDuration ?? throw new OWLException("Cannot create time interval because given \"timeIntervalDuration\" parameter is null");
 
         /// <summary>
         /// Builds a time interval with the given Uri, whose temporal extent is expressed through the given boundary instants

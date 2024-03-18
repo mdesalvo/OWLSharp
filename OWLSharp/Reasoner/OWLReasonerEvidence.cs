@@ -46,13 +46,11 @@ namespace OWLSharp
             #region Guards
             if (string.IsNullOrEmpty(evidenceRule))
                 throw new OWLException("Cannot create reasoner evidence because given \"evidenceRule\" parameter is null or empty");
-            if (evidenceContent == null)
-                throw new OWLException("Cannot create reasoner evidence because given \"evidenceContent\" parameter is null");
             #endregion
 
             EvidenceCategory = evidenceCategory;
             EvidenceRule = evidenceRule;
-            EvidenceContent = evidenceContent;
+            EvidenceContent = evidenceContent ?? throw new OWLException("Cannot create reasoner evidence because given \"evidenceContent\" parameter is null");
         }
         #endregion
     }

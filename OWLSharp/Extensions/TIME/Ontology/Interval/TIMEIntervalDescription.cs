@@ -36,31 +36,19 @@ namespace OWLSharp.Extensions.TIME
         /// <summary>
         /// Builds a time interval description with the given Uri, whose temporal extent is not expressed
         /// </summary>
-        internal TIMEIntervalDescription(RDFResource timeIntervalDescriptionUri)
-            : base(timeIntervalDescriptionUri?.ToString()) { }
+        internal TIMEIntervalDescription(RDFResource timeIntervalDescriptionUri) : base(timeIntervalDescriptionUri?.ToString()) { }
 
         /// <summary>
         /// Builds a time interval description with the given Uri, whose temporal extent is expressed through the given TimeSpan
         /// </summary>
-        public TIMEIntervalDescription(RDFResource timeIntervalDescriptionUri, TimeSpan timeSpan)
-            : this(timeIntervalDescriptionUri)
-        {
-            Extent = new TIMEExtent(timeSpan);
-        }
+        public TIMEIntervalDescription(RDFResource timeIntervalDescriptionUri, TimeSpan timeSpan) : this(timeIntervalDescriptionUri)
+            => Extent = new TIMEExtent(timeSpan);
 
         /// <summary>
         /// Builds a time interval description with the given Uri, whose temporal extent is expressed through the given interval length
         /// </summary>
-        public TIMEIntervalDescription(RDFResource timeInstantDescriptionUri, TIMEExtent timeIntervalExtent)
-            : this(timeInstantDescriptionUri)
-        {
-            #region Guards
-            if (timeIntervalExtent == null)
-                throw new OWLException("Cannot create description of time interval because given \"timeIntervalExtent\" parameter is null");
-            #endregion
-
-            Extent = timeIntervalExtent;
-        }
+        public TIMEIntervalDescription(RDFResource timeInstantDescriptionUri, TIMEExtent timeIntervalExtent) : this(timeInstantDescriptionUri)
+            => Extent = timeIntervalExtent?? throw new OWLException("Cannot create description of time interval because given \"timeIntervalExtent\" parameter is null");
         #endregion
 
         #region Interfaces

@@ -453,7 +453,7 @@ namespace OWLSharp
                     RDFCollection objectUnionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, objectUnionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                     
                     XmlNode unionOfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectUnionOf", RDFVocabulary.OWL.BASE_URI);
-                    foreach (RDFResource objectUnionMember in objectUnionMembers)
+                    foreach (RDFResource objectUnionMember in objectUnionMembers.Cast<RDFResource>())
                         WriteResourceElement(unionOfNode, owlDoc, "Class", objectUnionMember, ontGraphNamespaces);
                     equivalentClassesNode.AppendChild(unionOfNode);
                 }
@@ -467,7 +467,7 @@ namespace OWLSharp
                     RDFCollection objectIntersectionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, objectIntersectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                     
                     XmlNode intersectionOfNode = owlDoc.CreateNode(XmlNodeType.Element, "ObjectIntersectionOf", RDFVocabulary.OWL.BASE_URI);
-                    foreach (RDFResource objectIntersectionMember in objectIntersectionMembers)
+                    foreach (RDFResource objectIntersectionMember in objectIntersectionMembers.Cast<RDFResource>())
                         WriteResourceElement(intersectionOfNode, owlDoc, "Class", objectIntersectionMember, ontGraphNamespaces);
                     equivalentClassesNode.AppendChild(intersectionOfNode);
                 }
@@ -543,15 +543,14 @@ namespace OWLSharp
             while (allDisjointClasses.MoveNext())
             {
                 //OWL/XML lacks syntax for AllDisjointClasses, so it fallbacks to DisjointClasses (n-ary)
-                RDFResource disjointMembersRepresentative = ontology.Model.ClassModel.TBoxGraph[allDisjointClasses.Current, RDFVocabulary.OWL.MEMBERS, null, null]
-                                                                .FirstOrDefault()?.Object as RDFResource;
-                if (disjointMembersRepresentative != null)
+                if (ontology.Model.ClassModel.TBoxGraph[allDisjointClasses.Current, RDFVocabulary.OWL.MEMBERS, null, null]
+                                             .FirstOrDefault()?.Object is RDFResource disjointMembersRepresentative)
                 {
                     RDFCollection disjointMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, disjointMembersRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                     if (disjointMembers.ItemsCount > 0)
                     {
                         XmlNode disjointMembersNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointClasses", RDFVocabulary.OWL.BASE_URI);
-                        foreach (RDFResource disjointMember in disjointMembers)
+                        foreach (RDFResource disjointMember in disjointMembers.Cast<RDFResource>())
                             WriteResourceElement(disjointMembersNode, owlDoc, "Class", disjointMember, ontGraphNamespaces);
                         xmlNode.AppendChild(disjointMembersNode);
                     }
@@ -564,16 +563,15 @@ namespace OWLSharp
             IEnumerator<RDFResource> classes = ontology.Model.ClassModel.ClassesEnumerator;
             while (classes.MoveNext())
             {
-                RDFResource disjointUnionRepresentative = ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null]
-                                                            .FirstOrDefault()?.Object as RDFResource;
-                if (disjointUnionRepresentative != null)
+                if (ontology.Model.ClassModel.TBoxGraph[classes.Current, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null]
+                                             .FirstOrDefault()?.Object is RDFResource disjointUnionRepresentative)
                 {
                     RDFCollection disjointUnionClasses = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.ClassModel.TBoxGraph, disjointUnionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                     if (disjointUnionClasses.ItemsCount > 0)
                     {
                         XmlNode disjointClassesNode = owlDoc.CreateNode(XmlNodeType.Element, "DisjointUnion", RDFVocabulary.OWL.BASE_URI);
                         WriteResourceElement(disjointClassesNode, owlDoc, "Class", classes.Current, ontGraphNamespaces);
-                        foreach (RDFResource disjointUnionClass in disjointUnionClasses)
+                        foreach (RDFResource disjointUnionClass in disjointUnionClasses.Cast<RDFResource>())
                             WriteResourceElement(disjointClassesNode, owlDoc, "Class", disjointUnionClass, ontGraphNamespaces);
                         xmlNode.AppendChild(disjointClassesNode);
                     }
@@ -696,16 +694,15 @@ namespace OWLSharp
             while (allDisjointProperties.MoveNext())
             {
                 //OWL/XML lacks syntax for AllDisjointProperties, so it fallbacks to Disjoint[Object|Data]Properties (n-ary)
-                RDFResource disjointMembersRepresentative = ontology.Model.PropertyModel.TBoxGraph[allDisjointProperties.Current, RDFVocabulary.OWL.MEMBERS, null, null]
-                                                                  .FirstOrDefault()?.Object as RDFResource;
-                if (disjointMembersRepresentative != null)
+                if (ontology.Model.PropertyModel.TBoxGraph[allDisjointProperties.Current, RDFVocabulary.OWL.MEMBERS, null, null]
+                                                .FirstOrDefault()?.Object is RDFResource disjointMembersRepresentative)
                 {
                     RDFCollection disjointMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.PropertyModel.TBoxGraph, disjointMembersRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                     if (disjointMembers.ItemsCount > 0)
                     {
                         string objectOrData = ontology.Model.PropertyModel.CheckHasObjectProperty((RDFResource)disjointMembers.Items[0]) ? "Object" : "Data";
                         XmlNode disjointMembersNode = owlDoc.CreateNode(XmlNodeType.Element, $"Disjoint{objectOrData}Properties", RDFVocabulary.OWL.BASE_URI);
-                        foreach (RDFResource disjointMember in disjointMembers)
+                        foreach (RDFResource disjointMember in disjointMembers.Cast<RDFResource>())
                             WriteResourceElement(disjointMembersNode, owlDoc, $"{objectOrData}Property", disjointMember, ontGraphNamespaces);
                         xmlNode.AppendChild(disjointMembersNode);
                     }
@@ -734,16 +731,15 @@ namespace OWLSharp
             IEnumerator<RDFResource> objectProperties = ontology.Model.PropertyModel.ObjectPropertiesEnumerator;
             while (objectProperties.MoveNext())
             {
-                RDFResource propertyChainMembersRepresentative = ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, null, null]
-                                                                  .FirstOrDefault()?.Object as RDFResource;
-                if (propertyChainMembersRepresentative != null)
+                if (ontology.Model.PropertyModel.TBoxGraph[objectProperties.Current, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, null, null]
+                                                .FirstOrDefault()?.Object is RDFResource propertyChainMembersRepresentative)
                 {
                     RDFCollection propertyChainMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Model.PropertyModel.TBoxGraph, propertyChainMembersRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                     if (propertyChainMembers.ItemsCount > 0)
                     {
                         XmlNode subObjectPropertyOfNode = owlDoc.CreateNode(XmlNodeType.Element, $"SubObjectPropertyOf", RDFVocabulary.OWL.BASE_URI);
                         XmlNode objectPropertyChainNode = owlDoc.CreateNode(XmlNodeType.Element, $"ObjectPropertyChain", RDFVocabulary.OWL.BASE_URI);
-                        foreach (RDFResource propertyChainMember in propertyChainMembers)
+                        foreach (RDFResource propertyChainMember in propertyChainMembers.Cast<RDFResource>())
                             WriteResourceElement(objectPropertyChainNode, owlDoc, "ObjectProperty", propertyChainMember, ontGraphNamespaces);
                         subObjectPropertyOfNode.AppendChild(objectPropertyChainNode);
                         WriteResourceElement(subObjectPropertyOfNode, owlDoc, "ObjectProperty", objectProperties.Current, ontGraphNamespaces);
@@ -871,15 +867,14 @@ namespace OWLSharp
             while (allDifferent.MoveNext())
             {
                 //OWL/XML lacks syntax for AllDifferent, so it fallbacks to DifferentIndividuals (n-ary)
-                RDFResource allDifferentMembersRepresentative = ontology.Data.ABoxGraph[allDifferent.Current, RDFVocabulary.OWL.DISTINCT_MEMBERS, null, null]
-                                                                    .FirstOrDefault()?.Object as RDFResource;
-                if (allDifferentMembersRepresentative != null)
+                if (ontology.Data.ABoxGraph[allDifferent.Current, RDFVocabulary.OWL.DISTINCT_MEMBERS, null, null]
+                                 .FirstOrDefault()?.Object is RDFResource allDifferentMembersRepresentative)
                 {
                     RDFCollection allDifferentMembers = RDFModelUtilities.DeserializeCollectionFromGraph(ontology.Data.ABoxGraph, allDifferentMembersRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                     if (allDifferentMembers.ItemsCount > 0)
                     {
                         XmlNode allDifferentMembersNode = owlDoc.CreateNode(XmlNodeType.Element, "DifferentIndividuals", RDFVocabulary.OWL.BASE_URI);
-                        foreach (RDFResource allDifferentMember in allDifferentMembers)
+                        foreach (RDFResource allDifferentMember in allDifferentMembers.Cast<RDFResource>())
                             WriteResourceElement(allDifferentMembersNode, owlDoc, "NamedIndividual", allDifferentMember, ontGraphNamespaces);
                         xmlNode.AppendChild(allDifferentMembersNode);
                     }
@@ -933,14 +928,11 @@ namespace OWLSharp
             foreach (RDFTriple negativeAsn in ontology.Data.ABoxGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION, null])
             {
                 RDFResource negativeAsnSourceIdv = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, null, null]
-                                                    .FirstOrDefault()?.Object as RDFResource;
+                                                                .FirstOrDefault()?.Object as RDFResource;
                 RDFResource negativeAsnProperty = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.ASSERTION_PROPERTY, null, null]
-                                                    .FirstOrDefault()?.Object as RDFResource;
-                RDFResource negativeAsnTargetIdv = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.TARGET_INDIVIDUAL, null, null]
-                                                    .FirstOrDefault()?.Object as RDFResource;
-                RDFLiteral negativeAsnTargetVal = ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.TARGET_VALUE, null, null]
-                                                    .FirstOrDefault()?.Object as RDFLiteral;
-                if (negativeAsnTargetIdv != null)
+                                                                .FirstOrDefault()?.Object as RDFResource;
+                if (ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.TARGET_INDIVIDUAL, null, null]
+                                 .FirstOrDefault()?.Object is RDFResource negativeAsnTargetIdv)
                 {
                     XmlNode negativeAssertionNode = owlDoc.CreateNode(XmlNodeType.Element, "NegativeObjectPropertyAssertion", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(negativeAssertionNode, owlDoc, "ObjectProperty", negativeAsnProperty, ontGraphNamespaces);
@@ -948,7 +940,8 @@ namespace OWLSharp
                     WriteResourceElement(negativeAssertionNode, owlDoc, "NamedIndividual", negativeAsnTargetIdv, ontGraphNamespaces);
                     xmlNode.AppendChild(negativeAssertionNode);
                 }
-                else if (negativeAsnTargetVal != null)
+                else if (ontology.Data.ABoxGraph[(RDFResource)negativeAsn.Subject, RDFVocabulary.OWL.TARGET_VALUE, null, null]
+                                      .FirstOrDefault()?.Object is RDFLiteral negativeAsnTargetVal)
                 {
                     XmlNode negativeAssertionNode = owlDoc.CreateNode(XmlNodeType.Element, "NegativeDataPropertyAssertion", RDFVocabulary.OWL.BASE_URI);
                     WriteResourceElement(negativeAssertionNode, owlDoc, "DataProperty", negativeAsnProperty, ontGraphNamespaces);

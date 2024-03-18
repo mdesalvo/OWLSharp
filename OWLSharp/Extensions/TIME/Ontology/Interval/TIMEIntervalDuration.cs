@@ -48,12 +48,7 @@ namespace OWLSharp.Extensions.TIME
         public TIMEIntervalDuration(RDFResource timeIntervalDurationUri, RDFResource unitTypeURI, double value)
             : this(timeIntervalDurationUri)
         {
-            #region Guards
-            if (unitTypeURI == null)
-                throw new OWLException("Cannot create duration of time interval because given \"unitTypeURI\" parameter is null");
-            #endregion
-
-            UnitType = unitTypeURI;
+            UnitType = unitTypeURI ?? throw new OWLException("Cannot create duration of time interval because given \"unitTypeURI\" parameter is null");
             Value = value;
         }
         #endregion
