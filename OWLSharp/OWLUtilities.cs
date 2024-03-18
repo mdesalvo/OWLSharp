@@ -272,24 +272,12 @@ namespace OWLSharp
             };
         }
         #endregion
-    
+
         #region Extensions
-        internal static bool IsInference(this RDFTriple triple)
-            => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsInference;
-
-        internal static RDFTriple SetInference(this RDFTriple triple)
-            => triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsInference);
-
-        internal static bool IsImport(this RDFTriple triple)
-            => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsImport;
-
-        internal static RDFTriple SetImport(this RDFTriple triple)
-            => triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsImport);
-
         /// <summary>
         /// Applies the given SPARQL SELECT query to the given ontology, along with the (eventually) given OWL reasoner
         /// </summary>
-        public static RDFSelectQueryResult ApplyToOntology(this RDFSelectQuery query, OWLOntology ontology, OWLReasoner reasoner=null)
+        public static RDFSelectQueryResult ApplyToOntology(this RDFSelectQuery query, OWLOntology ontology, OWLReasoner reasoner = null)
         {
             RDFSelectQueryResult result = new RDFSelectQueryResult();
 
@@ -298,6 +286,9 @@ namespace OWLSharp
                 //Clone the given ontology into a temporary ontology
                 OWLOntology tempOntology = new OWLOntology(ontology.URI.ToString(), ontology.Model, ontology.Data) {
                     OBoxGraph = ontology.OBoxGraph };
+
+                //Prepare the temporary ontology with foundational RDFS/OWL knowledge
+                tempOntology?.InitializeBase();
 
                 //Apply the given reasoner to the temporary ontology, which is "enriched" with inferences
                 OWLReasonerReport report = reasoner?.ApplyToOntology(tempOntology);
@@ -311,6 +302,32 @@ namespace OWLSharp
             }
 
             return result;
+        }
+
+        internal static bool IsInference(this RDFTriple triple)
+            => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsInference;
+        internal static RDFTriple SetInference(this RDFTriple triple)
+            => triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsInference);
+
+        internal static bool IsImport(this RDFTriple triple)
+            => triple.TripleMetadata.HasValue && triple.TripleMetadata.Value == RDFModelEnums.RDFTripleMetadata.IsImport;
+        internal static RDFTriple SetImport(this RDFTriple triple)
+            => triple.SetMetadata(RDFModelEnums.RDFTripleMetadata.IsImport);
+
+        /// <summary>
+        /// Prepares the given ontology with an helpful (small) subset of foundational RDFS/OWL knowledge
+        /// </summary>
+        internal static void InitializeBase(this OWLOntology ontology)
+        {
+            //Declarations
+            ontology.Model.ClassModel.DeclareClass(RDFVocabulary.OWL.THING);
+            ontology.Model.ClassModel.DeclareClass(RDFVocabulary.OWL.INDIVIDUAL);
+            ontology.Model.ClassModel.DeclareClass(RDFVocabulary.OWL.NAMED_INDIVIDUAL);
+            ontology.Model.ClassModel.DeclareClass(RDFVocabulary.OWL.NOTHING);
+
+            //Taxonomies
+            ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(RDFVocabulary.OWL.NAMED_INDIVIDUAL, RDFVocabulary.RDFS.SUB_CLASS_OF, RDFVocabulary.OWL.INDIVIDUAL).SetInference());
+            ontology.Model.ClassModel.TBoxGraph.AddTriple(new RDFTriple(RDFVocabulary.OWL.INDIVIDUAL, RDFVocabulary.RDFS.SUB_CLASS_OF, RDFVocabulary.OWL.THING).SetInference());
         }
         #endregion
     }

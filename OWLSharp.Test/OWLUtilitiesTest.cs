@@ -46,7 +46,7 @@ namespace OWLSharp.Test
 
             RDFSelectQuery query = new RDFSelectQuery()
                 .AddPatternGroup(new RDFPatternGroup()
-                    .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:ClsA")))
+                    .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.THING))
                     .AddPattern(new RDFPattern(new RDFVariable("?IDV"), new RDFResource("ex:objProp"), new RDFVariable("?IDV2"))));
 
             RDFSelectQueryResult result = query.ApplyToOntology(ontology, reasoner);
