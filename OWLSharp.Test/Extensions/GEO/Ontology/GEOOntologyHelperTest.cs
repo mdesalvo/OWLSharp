@@ -269,11 +269,11 @@ namespace OWLSharp.Extensions.GEO.Test
             OWLOntology geoOnt = new OWLOntology("ex:geoOnt") { Model = new OWLOntologyModel() {
                     ClassModel = GEOOntologyLoader.BuildGEOClassModel(), PropertyModel = GEOOntologyLoader.BuildGEOPropertyModel() } };
             geoOnt.DeclareMultiLineFeature(new RDFResource("ex:FT1"), new RDFResource("ex:GM1"), [
-                new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782) },
-                new List<(double, double)>() { (12.496365, 41.902782), (14.2681244, 40.8517746) } ], true);
+                [(9.188540, 45.464664), (12.496365, 41.902782)],
+                [(12.496365, 41.902782), (14.2681244, 40.8517746)] ], true);
             geoOnt.DeclareMultiLineFeature(new RDFResource("ex:FT2"), new RDFResource("ex:GM2"), [
-                new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782) },
-                new List<(double, double)>() { (12.496365, 41.902782), (14.2681244, 40.8517746) } ], false);
+                [(9.188540, 45.464664), (12.496365, 41.902782)],
+                [(12.496365, 41.902782), (14.2681244, 40.8517746)] ], false);
 
             //Test evolution of GEO knowledge
             Assert.IsTrue(geoOnt.URI.Equals(geoOnt.URI));
@@ -305,12 +305,12 @@ namespace OWLSharp.Extensions.GEO.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseNullFeatureUri()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiLineFeature(null, new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) } ], false));
+                [(0, 0), (1, 1)], [(1, 1), (2, 2)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseNullGeometryUri()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiLineFeature(new RDFResource("ex:FT"), null, [
-                new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) } ], false));
+                [(0, 0), (1, 1)], [(1, 1), (2, 2)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseNullLineStrings()
@@ -319,27 +319,27 @@ namespace OWLSharp.Extensions.GEO.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseLessThan2LineStrings()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiLineFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 0), (1, 1) } ], false));
+                [(0, 0), (1, 1)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseHavingNullLineString()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiLineFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                null, new List<(double,double)>() { (1, 1), (2, 2) } ], false));
+                null, [(1, 1), (2, 2)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseHavingLineStringWithLessThan2Points()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiLineFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 0) }, new List<(double,double)>() { (1, 1), (2, 2) } ], false));
+                [(0, 0)], [(1, 1), (2, 2)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseInvalideLatitude()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiLineFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 91), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) } ], false));
+                [(0, 91), (1, 1)], [(1, 1), (2, 2)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiLineFeatureBecauseInvalideLongitude()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiLineFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (181, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) } ], false));
+                [(181, 0), (1, 1)], [(1, 1), (2, 2)] ], false));
 
         //sf:MultiPolygon
         [TestMethod]
@@ -348,11 +348,11 @@ namespace OWLSharp.Extensions.GEO.Test
             OWLOntology geoOnt = new OWLOntology("ex:geoOnt") { Model = new OWLOntologyModel() {
                     ClassModel = GEOOntologyLoader.BuildGEOClassModel(), PropertyModel = GEOOntologyLoader.BuildGEOPropertyModel() } };
             geoOnt.DeclareMultiAreaFeature(new RDFResource("ex:FT1"), new RDFResource("ex:GM1"), [
-                new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746) }, //These polygons will be automatically closed
-                new List<(double, double)>() { (12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664) } ], true);
+                [(9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746)], //These polygons will be automatically closed
+                [(12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664)] ], true);
             geoOnt.DeclareMultiAreaFeature(new RDFResource("ex:FT2"), new RDFResource("ex:GM2"), [
-                new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746) }, //These polygons will be automatically closed
-                new List<(double, double)>() { (12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664) } ], false);
+                [(9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746)], //These polygons will be automatically closed
+                [(12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664)] ], false);
 
             //Test evolution of GEO knowledge
             Assert.IsTrue(geoOnt.URI.Equals(geoOnt.URI));
@@ -384,12 +384,12 @@ namespace OWLSharp.Extensions.GEO.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseNullFeatureUri()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiAreaFeature(null, new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) } ], false));
+                [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseNullGeometryUri()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiAreaFeature(new RDFResource("ex:FT"), null, [
-                new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) } ], false));
+                [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseNullPolygons()
@@ -398,27 +398,27 @@ namespace OWLSharp.Extensions.GEO.Test
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseLessThan2Polygons()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiAreaFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 0), (1, 1), (2, 2) } ], false));
+                [(0, 0), (1, 1), (2, 2)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseHavingNullPolygon()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiAreaFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                null, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) } ], false));
+                null, [(1, 1), (2, 2), (3, 3)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseHavingPolygonWithLessThan3Points()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiAreaFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) } ], false));
+                [(0, 0), (1, 1)], [(1, 1), (2, 2), (3, 3)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseInvalideLatitude()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiAreaFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (0, 91), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) } ], false));
+                [(0, 91), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)] ], false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringMultiAreaFeatureBecauseInvalideLongitude()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:geoOnt").DeclareMultiAreaFeature(new RDFResource("ex:FT"), new RDFResource("ex:GM"), [
-                new List<(double,double)>() { (181, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (2, 2) } ], false));
+                [(181, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (2, 2)] ], false));
 
         //sf:GeometryCollection
         [TestMethod]
@@ -433,12 +433,12 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (14.2681244, 40.8517746) }
                 },
                 [
-                    new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782) },
-                    new List<(double, double)>() { (14.2681244, 40.8517746), (9.188540, 45.464664) }
+                    [(9.188540, 45.464664), (12.496365, 41.902782)],
+                    [(14.2681244, 40.8517746), (9.188540, 45.464664)]
                 ],
                 [
-                    new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746) }, //These polygons will be automatically closed
-					new List<(double, double)>() { (12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664) }
+                    [(9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746)], //These polygons will be automatically closed
+					[(12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664)]
                 ], true);
             geoOnt.DeclareCollectionFeature(new RDFResource("ex:FT2"), new RDFResource("ex:GM2"),
                 new List<(double, double)>() {
@@ -447,12 +447,12 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (14.2681244, 40.8517746) }
                 },
                 [
-                    new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782) },
-                    new List<(double, double)>() { (14.2681244, 40.8517746), (9.188540, 45.464664) }
+                    [(9.188540, 45.464664), (12.496365, 41.902782)],
+                    [(14.2681244, 40.8517746), (9.188540, 45.464664)]
                 ],
                 [
-                    new List<(double, double)>() { (9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746) }, //These polygons will be automatically closed
-					new List<(double, double)>() { (12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664) }
+                    [(9.188540, 45.464664), (12.496365, 41.902782), (14.2681244, 40.8517746)], //These polygons will be automatically closed
+					[(12.496365, 41.902782), (14.2681244, 40.8517746), (9.188540, 45.464664)]
                 ], false);
 
             //Test evolution of GEO knowledge
@@ -489,10 +489,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -502,10 +502,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -515,10 +515,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 91) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -528,10 +528,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (181, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -541,10 +541,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    null, new List<(double,double)>() { (1, 1), (2, 2) }
+                    null, [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -554,10 +554,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -567,10 +567,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 91), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 91), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -580,10 +580,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (181, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(181, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -593,10 +593,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    null, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    null, [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -606,10 +606,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -619,10 +619,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (0, 91), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(0, 91), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
 
         [TestMethod]
@@ -632,10 +632,10 @@ namespace OWLSharp.Extensions.GEO.Test
                     { (0, 0) }, { (1, 1) }, { (2, 2) }
                 },
                 [
-                    new List<(double,double)>() { (0, 0), (1, 1) }, new List<(double,double)>() { (1, 1), (2, 2) }
+                    [(0, 0), (1, 1)], [(1, 1), (2, 2)]
                 ],
                 [
-                    new List<(double,double)>() { (181, 0), (1, 1), (2, 2) }, new List<(double,double)>() { (1, 1), (2, 2), (3, 3) }
+                    [(181, 0), (1, 1), (2, 2)], [(1, 1), (2, 2), (3, 3)]
                 ], false));
         #endregion
 

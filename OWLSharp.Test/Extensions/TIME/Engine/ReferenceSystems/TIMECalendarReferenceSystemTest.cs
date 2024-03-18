@@ -28,7 +28,7 @@ namespace OWLSharp.Extensions.TIME.Test
         {
             TIMECalendarReferenceSystem ModifiedGregorianTRS = new TIMECalendarReferenceSystem(
                 new RDFResource("ex:ModifiedGregorian"),
-                new TIMECalendarReferenceSystemMetrics(60, 60, 24, new uint[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 }));
+                new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]));
 
             Assert.IsNotNull(ModifiedGregorianTRS);
             Assert.IsTrue(ModifiedGregorianTRS.Equals(new RDFResource("ex:ModifiedGregorian")));
@@ -50,19 +50,19 @@ namespace OWLSharp.Extensions.TIME.Test
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics1()
             => Assert.ThrowsException<OWLException>(() =>
                 new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
-                new TIMECalendarReferenceSystemMetrics(0, 60, 24, new uint[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 })));
+                new TIMECalendarReferenceSystemMetrics(0, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics2()
             => Assert.ThrowsException<OWLException>(() =>
                 new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
-                new TIMECalendarReferenceSystemMetrics(60, 0, 24, new uint[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 })));
+                new TIMECalendarReferenceSystemMetrics(60, 0, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics3()
             => Assert.ThrowsException<OWLException>(() =>
                 new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
-                new TIMECalendarReferenceSystemMetrics(60, 60, 0, new uint[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 })));
+                new TIMECalendarReferenceSystemMetrics(60, 60, 0, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics4()
@@ -74,13 +74,13 @@ namespace OWLSharp.Extensions.TIME.Test
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics5()
            => Assert.ThrowsException<OWLException>(() =>
                new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
-               new TIMECalendarReferenceSystemMetrics(60, 60, 24, new uint[] { })));
+               new TIMECalendarReferenceSystemMetrics(60, 60, 24, [])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics6()
            => Assert.ThrowsException<OWLException>(() =>
                new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
-               new TIMECalendarReferenceSystemMetrics(60, 60, 24, new uint[] { 30, 30, 0, 31 })));
+               new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 0, 31])));
         #endregion
     }
 }

@@ -143,11 +143,11 @@ namespace OWLSharp.Extensions.TIME.Test
                 unixModifiedTRS,
                 new TIMECalendarReferenceSystem(
                     new RDFResource("https://en.wikipedia.org/wiki/360-day_calendar"),
-                    new TIMECalendarReferenceSystemMetrics(60, 60, 24, new uint[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 })
+                    new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])
                         .SetLeapYearRule(year => {
                             return (year >= 1985 && (year % 2 == 0))
-                                ? new uint[] { 31, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 }
-                                : new uint[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 };
+                                ? [31, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+                                : [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30];
                         })));
 
             Assert.IsNotNull(tc);
@@ -303,11 +303,11 @@ namespace OWLSharp.Extensions.TIME.Test
                 new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond),
                 new TIMECalendarReferenceSystem(
                     new RDFResource("ex:MyStrangeCalendar"),
-                    new TIMECalendarReferenceSystemMetrics(10, 10, 10, new uint[] { 10, 10, 10, 10, 10, 10 })
+                    new TIMECalendarReferenceSystemMetrics(10, 10, 10, [10, 10, 10, 10, 10, 10])
                         .SetLeapYearRule(year => {
                             return year % 2 == 0
-                                ? new uint[] { 10, 10, 10, 10, 10, 11 }
-                                : new uint[] { 10, 10, 10, 10, 10, 10 };
+                                ? [10, 10, 10, 10, 10, 11]
+                                : [10, 10, 10, 10, 10, 10];
                         })));
 
             Assert.IsNotNull(tc);
@@ -550,7 +550,7 @@ namespace OWLSharp.Extensions.TIME.Test
             TIMEExtent te = TIMEConverter.DurationToExtent(timeDuration, new TIMEUnit(new RDFResource(unitTypeURI), unitTypeEnum, scaleFactor),
                 new TIMECalendarReferenceSystem(
                     new RDFResource("https://en.wikipedia.org/wiki/360-day_calendar"),
-                    new TIMECalendarReferenceSystemMetrics(60, 60, 24, new uint[] { 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30 })));
+                    new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
             Assert.IsNotNull(te);
             Assert.IsTrue(te.Years == expectedYears);

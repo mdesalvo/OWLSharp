@@ -1336,7 +1336,7 @@ namespace OWLSharp.Extensions.TIME.Test
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECalendarReferenceSystem myCalendarTRS = new TIMECalendarReferenceSystem(
                 new RDFResource("ex:MyCalendarTRS"),
-                new TIMECalendarReferenceSystemMetrics(100, 100, 50, new uint[] { 20, 20, 12, 18 }));
+                new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18]));
             TIMEReferenceSystemRegistry.AddTRS(myCalendarTRS);
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalExtent"), myCalendarTRS);
 
@@ -1399,7 +1399,7 @@ namespace OWLSharp.Extensions.TIME.Test
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMEReferenceSystemRegistry.AddTRS(new TIMECalendarReferenceSystem(
                 new RDFResource("ex:MyCalendarTRS"), 
-                new TIMECalendarReferenceSystemMetrics(100, 100, 50, new uint[] { 20, 20, 12, 18 })));
+                new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18])));
 
             Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalExtent")));
         }

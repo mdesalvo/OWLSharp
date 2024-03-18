@@ -23,13 +23,13 @@ using System.Text.RegularExpressions;
 namespace OWLSharp.Extensions.SWRL.Test
 {
     [TestClass]
-    public class SWRLMatchesBuiltInTest
+    public partial class SWRLMatchesBuiltInTest
     {
         #region Tests
         [TestMethod]
         public void ShouldCreateMatchesBuiltIn()
         {
-            SWRLMatchesBuiltIn builtin = new SWRLMatchesBuiltIn(new RDFVariable("?L"), new Regex("val"));
+            SWRLMatchesBuiltIn builtin = new SWRLMatchesBuiltIn(new RDFVariable("?L"), Regex_val());
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.BuiltInFilter);
@@ -46,7 +46,7 @@ namespace OWLSharp.Extensions.SWRL.Test
         [TestMethod]
         public void ShouldCreateMatchesBuiltInWithOptions()
         {
-            SWRLMatchesBuiltIn builtin = new SWRLMatchesBuiltIn(new RDFVariable("?L"), new Regex("val", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace));
+            SWRLMatchesBuiltIn builtin = new SWRLMatchesBuiltIn(new RDFVariable("?L"), Regex_val_withoptions());
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.BuiltInFilter);
@@ -62,7 +62,7 @@ namespace OWLSharp.Extensions.SWRL.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingMatchesBuiltInBecauseNullLeftArgument()
-            => Assert.ThrowsException<OWLException>(() => new SWRLMatchesBuiltIn(null, new Regex("val")));
+            => Assert.ThrowsException<OWLException>(() => new SWRLMatchesBuiltIn(null, Regex_val()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingMatchesBuiltInBecauseNullRightArgument()
@@ -77,12 +77,21 @@ namespace OWLSharp.Extensions.SWRL.Test
             antecedentTable.Rows.Add("ex:indiv2");
             antecedentTable.Rows.Add("ex:indiV2");
 
-            SWRLMatchesBuiltIn builtin = new SWRLMatchesBuiltIn(new RDFVariable("?C"), new Regex("iv2$", RegexOptions.IgnoreCase | RegexOptions.Multiline));
+            SWRLMatchesBuiltIn builtin = new SWRLMatchesBuiltIn(new RDFVariable("?C"), Regex_iv2());
             DataTable result = builtin.Evaluate(antecedentTable, null);
 
             Assert.IsNotNull(result);
             Assert.IsTrue(result.Rows.Count == 2);
         }
+
+        [GeneratedRegex("val")]
+        private static partial Regex Regex_val();
+
+        [GeneratedRegex("val", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace, "en-US")]
+        private static partial Regex Regex_val_withoptions();
+
+        [GeneratedRegex("iv2$", RegexOptions.IgnoreCase | RegexOptions.Multiline, "en-US")]
+        private static partial Regex Regex_iv2();
         #endregion
     }
 }
