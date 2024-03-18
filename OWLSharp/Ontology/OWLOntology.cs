@@ -292,16 +292,18 @@ namespace OWLSharp
             => OWLOntologyLoader.FromRDFStore(store, loaderOptions);
 
         /// <summary>
-        /// Asynchronously gets an ontology representation from the given store
+        /// Asynchronously gets an ontology representation from the given store<br/><br/>
+        /// (Knowledge will be collected under default graph, since context is unmeaningful in ontology domain)
         /// </summary>
-        public static Task<OWLOntology> FromRDFStoreAsync(RDFStore store)
-            => Task.Run(() => FromRDFStore(store));
+        public static Task<OWLOntology> FromRDFStoreAsync(RDFAsyncStore asyncStore)
+            => Task.Run(() => FromRDFStore(asyncStore?.WrappedStore));
 
         /// <summary>
-        /// Asynchronously gets an ontology representation from the given store (applying the given loader options)
+        /// Asynchronously gets an ontology representation from the given store (applying the given loader options)<br/><br/>
+        /// (Knowledge will be collected under default graph, since context is unmeaningful in ontology domain)
         /// </summary>
-        public static Task<OWLOntology> FromRDFStoreAsync(RDFStore store, OWLOntologyLoaderOptions loaderOptions)
-            => Task.Run(() => FromRDFStore(store, loaderOptions));
+        public static Task<OWLOntology> FromRDFStoreAsync(RDFAsyncStore asyncStore, OWLOntologyLoaderOptions loaderOptions)
+            => Task.Run(() => FromRDFStore(asyncStore?.WrappedStore, loaderOptions));
         #endregion
     }
 }

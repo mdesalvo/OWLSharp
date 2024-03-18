@@ -411,6 +411,10 @@ namespace OWLSharp.Test
             => Assert.ThrowsException<OWLException>(() => OWLOntology.FromRDFGraph(null));
 
         [TestMethod]
+        public async Task ShouldRaiseExceptionOnCreatingFromNullGraphAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromRDFGraphAsync(null));
+
+        [TestMethod]
         public void ShouldCreateFromStore()
         {
             RDFMemoryStore store = new RDFMemoryStore();
@@ -434,7 +438,7 @@ namespace OWLSharp.Test
             RDFMemoryStore store = new RDFMemoryStore();
             store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx1"), new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
             store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx2"), new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology")));
-            OWLOntology ontology = await OWLOntology.FromRDFStoreAsync(store);
+            OWLOntology ontology = await OWLOntology.FromRDFStoreAsync(new RDFAsyncStore(store));
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(ontology.Equals(new RDFResource("ex:ont")));
@@ -449,6 +453,10 @@ namespace OWLSharp.Test
         [TestMethod]
         public void ShouldRaiseExceptionOnCreatingFromNullStore()
             => Assert.ThrowsException<OWLException>(() => OWLOntology.FromRDFStore(null));
+
+        [TestMethod]
+        public async Task ShouldRaiseExceptionOnCreatingFromNullStoreAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromRDFStoreAsync(null));
 
         [TestCleanup]
         public void Cleanup()
