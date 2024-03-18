@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using RDFSharp.Model;
+using RDFSharp.Store;
 
 namespace OWLSharp
 {
@@ -186,6 +187,8 @@ namespace OWLSharp
         public Task ImportAsync(RDFResource ontologyUri, int timeoutMilliseconds=20000)
             => Task.Run(() => Import(ontologyUri, timeoutMilliseconds));
 
+        //EXPORT
+
         /// <summary>
         /// Gets a graph representation of the ontology (eventually including current inferences)
         /// </summary>
@@ -248,6 +251,8 @@ namespace OWLSharp
         public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream, bool includeInferences=true)
             => Task.Run(() => ToStream(owlFormat, outputStream, includeInferences));
 
+        //IMPORT
+
         /// <summary>
         /// Gets an ontology representation from the given graph
         /// </summary>
@@ -263,14 +268,40 @@ namespace OWLSharp
         /// <summary>
         /// Asynchronously gets an ontology representation from the given graph
         /// </summary>
-        public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph)
-            => Task.Run(() => FromRDFGraph(graph));
+        public static Task<OWLOntology> FromRDFGraphAsync(RDFAsyncGraph asyncGraph)
+            => Task.Run(() => FromRDFGraph(asyncGraph?.WrappedGraph));
 
         /// <summary>
         /// Asynchronously gets an ontology representation from the given graph (applying the given loader options)
         /// </summary>
-        public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
-            => Task.Run(() => FromRDFGraph(graph, loaderOptions));
+        public static Task<OWLOntology> FromRDFGraphAsync(RDFAsyncGraph asyncGraph, OWLOntologyLoaderOptions loaderOptions)
+            => Task.Run(() => FromRDFGraph(asyncGraph?.WrappedGraph, loaderOptions));
+
+        /// <summary>
+        /// Gets an ontology representation from the given store<br/><br/>
+        /// (Knowledge will be collected under default graph, since context is unmeaningful in ontology domain)
+        /// </summary>
+        public static OWLOntology FromRDFStore(RDFStore store)
+            => FromRDFStore(store, OWLOntologyLoaderOptions.DefaultOptions);
+
+        /// <summary>
+        /// Gets an ontology representation from the given store (applying the given loader options)<br/><br/>
+        /// (Knowledge will be collected under default graph, since context is unmeaningful in ontology domain)
+        /// </summary>
+        public static OWLOntology FromRDFStore(RDFStore store, OWLOntologyLoaderOptions loaderOptions)
+            => OWLOntologyLoader.FromRDFStore(store, loaderOptions);
+
+        /// <summary>
+        /// Asynchronously gets an ontology representation from the given store
+        /// </summary>
+        public static Task<OWLOntology> FromRDFStoreAsync(RDFStore store)
+            => Task.Run(() => FromRDFStore(store));
+
+        /// <summary>
+        /// Asynchronously gets an ontology representation from the given store (applying the given loader options)
+        /// </summary>
+        public static Task<OWLOntology> FromRDFStoreAsync(RDFStore store, OWLOntologyLoaderOptions loaderOptions)
+            => Task.Run(() => FromRDFStore(store, loaderOptions));
         #endregion
     }
 }

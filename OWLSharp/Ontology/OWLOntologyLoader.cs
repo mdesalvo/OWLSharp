@@ -20,6 +20,7 @@ using RDFSharp.Model;
 using OWLSharp.Extensions.GEO;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Extensions.TIME;
+using RDFSharp.Store;
 
 namespace OWLSharp
 {
@@ -32,7 +33,7 @@ namespace OWLSharp
         /// <summary>
         /// Gets an ontology representation of the given graph, eventually supporting extension ontologies (GEO, TIME, SKOS)
         /// </summary>
-        internal static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
+        internal static OWLOntology FromRDFGraph(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions, bool shouldRaiseBeginEndEvents=true)
         {
             #region Guards
             if (graph == null)
@@ -41,8 +42,10 @@ namespace OWLSharp
                 loaderOptions = OWLOntologyLoaderOptions.DefaultOptions;
             #endregion
 
-            OWLEvents.RaiseInfo(string.Format("Graph '{0}' is going to be parsed as Ontology...", graph.Context));
-            
+            if (shouldRaiseBeginEndEvents)
+                OWLEvents.RaiseInfo(string.Format("Graph '{0}' is going to be parsed as Ontology...", graph.Context));
+
+            #region Process
             //Ontology creation
             LoadOntology(graph, out OWLOntology ontology);
 
@@ -92,8 +95,44 @@ namespace OWLSharp
             //Ontology loading
             ontology.LoadModel(graph);
             ontology.LoadData(graph);
+            #endregion
 
-            OWLEvents.RaiseInfo(string.Format("Graph '{0}' has been parsed as Ontology", graph.Context));
+            if (shouldRaiseBeginEndEvents)
+                OWLEvents.RaiseInfo(string.Format("Graph '{0}' has been parsed as Ontology", graph.Context));
+
+            return ontology;
+        }
+
+        /// <summary>
+        /// Gets an ontology representation of the given store, eventually supporting extension ontologies (GEO, TIME, SKOS)
+        /// </summary>
+        internal static OWLOntology FromRDFStore(RDFStore store, OWLOntologyLoaderOptions loaderOptions)
+        {
+            #region Guards
+            if (store == null)
+                throw new OWLException("Cannot get ontology from RDFStore because given \"store\" parameter is null");
+            if (loaderOptions == null)
+                loaderOptions = OWLOntologyLoaderOptions.DefaultOptions;
+            #endregion
+
+            OWLEvents.RaiseInfo(string.Format("Store '{0}' is going to be parsed as Ontology...", store.StoreID));
+
+            #region Process
+            //Obtain a default graph representation of the given store
+            RDFGraph graph = new RDFGraph();
+            foreach (RDFQuadruple quadruple in store.SelectAllQuadruples())
+            {
+                if (quadruple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                    graph.AddTriple(new RDFTriple((RDFResource)quadruple.Subject, (RDFResource)quadruple.Predicate, (RDFResource)quadruple.Object));
+                else
+                    graph.AddTriple(new RDFTriple((RDFResource)quadruple.Subject, (RDFResource)quadruple.Predicate, (RDFLiteral)quadruple.Object));
+            }
+
+            //Process the obtained graph as usual
+            OWLOntology ontology = FromRDFGraph(graph, loaderOptions, false);
+            #endregion
+
+            OWLEvents.RaiseInfo(string.Format("Store '{0}' has been parsed as Ontology", store.StoreID));
 
             return ontology;
         }

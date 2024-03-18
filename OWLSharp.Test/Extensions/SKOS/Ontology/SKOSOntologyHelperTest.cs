@@ -3836,7 +3836,7 @@ namespace OWLSharp.Extensions.SKOS.Test
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:ordcollRepresentative"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:ordcollRepresentative"), RDFVocabulary.RDF.FIRST, new RDFResource("ex:concept3")));
             graph.AddTriple(new RDFTriple(new RDFResource("bnode:ordcollRepresentative"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
-            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph, new OWLOntologyLoaderOptions() { EnableSKOSSupport = true });
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(new RDFAsyncGraph(graph), new OWLOntologyLoaderOptions() { EnableSKOSSupport = true });
 
             //Test persistence of SKOS knowledge
             Assert.IsNotNull(ontology);
