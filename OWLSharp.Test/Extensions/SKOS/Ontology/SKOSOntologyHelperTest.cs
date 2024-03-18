@@ -3704,42 +3704,42 @@ namespace OWLSharp.Extensions.SKOS.Test
             ontology.AnnotateCollection(new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test collection"));
             ontology.DeclareCollection(new RDFResource("ex:collection2"),
                 [new RDFResource("ex:concept2")], new RDFResource("ex:conceptScheme"));
-            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFAsyncGraph asyncGraph = await ontology.ToRDFGraphAsync();
 
-            Assert.IsNotNull(graph);
+            Assert.IsNotNull(asyncGraph);
 
             //Test persistence of SKOS knowledge (sampling)
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.CONCEPT_SCHEME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Any());
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.CONCEPT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].Any());
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.EXACT_MATCH, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].Any());
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.EXACT_MATCH, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null].Any());
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.EXACT_MATCH, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null].Any());
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.MEMBER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].Any());
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.MEMBER, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.SKOS.COLLECTION, null].Any());
-            Assert.IsTrue(graph[RDFVocabulary.SKOS.MEMBER, RDFVocabulary.RDFS.RANGE, new RDFResource("bnode:ConceptCollection"), null].Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.CONCEPT_SCHEME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null]).Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.CONCEPT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null]).Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.EXACT_MATCH, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null]).Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.EXACT_MATCH, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null]).Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.EXACT_MATCH, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null]).Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.MEMBER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null]).Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.MEMBER, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.SKOS.COLLECTION, null]).Any());
+            Assert.IsTrue((await asyncGraph[RDFVocabulary.SKOS.MEMBER, RDFVocabulary.RDFS.RANGE, new RDFResource("bnode:ConceptCollection"), null]).Any());
 
             //Test persistence of user sentences
-            Assert.IsTrue(graph[new RDFResource("ex:conceptScheme"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:conceptScheme"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT_SCHEME, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:conceptScheme"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test concept scheme")].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test concept")].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept1"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:concept2"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:concept2"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:concept1"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test collection")].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2"), null].Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:conceptScheme"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:conceptScheme"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT_SCHEME, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:conceptScheme"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test concept scheme")]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept1"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test concept")]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept1"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:concept2"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:concept2"), RDFVocabulary.SKOS.EXACT_MATCH, new RDFResource("ex:concept1"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection1"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept1"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection1"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test collection")]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection1"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:collection2"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.COLLECTION, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection2"), RDFVocabulary.SKOS.IN_SCHEME, new RDFResource("ex:conceptScheme"), null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:collection2"), RDFVocabulary.SKOS.MEMBER, new RDFResource("ex:concept2"), null]).Any());
         }
 
         [TestMethod]

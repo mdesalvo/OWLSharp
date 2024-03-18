@@ -311,11 +311,11 @@ namespace OWLSharp.Test
         {
             OWLOntology ontology = new OWLOntology("ex:ont");
             ontology.Annotate(RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology"));
-            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFAsyncGraph asyncGraph = await ontology.ToRDFGraphAsync();
 
-            Assert.IsNotNull(graph);
-            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
-            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
+            Assert.IsNotNull(asyncGraph);
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null]).Any());
+            Assert.IsTrue((await asyncGraph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")]).Any());
         }
 
         [TestMethod]
