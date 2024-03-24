@@ -3,7 +3,7 @@
     <AssemblyTitle>OWLSharp</AssemblyTitle>
     <AssemblyName>OWLSharp</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Version>3.11.0</Version>
+    <Version>4.0.0-dev</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
     <Description>Lightweight and friendly .NET library for realizing intelligent Semantic Web applications</Description>
@@ -12,7 +12,7 @@
     <Product>OWLSharp</Product>
     <PackageId>OWLSharp</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
-    <PackageTags>rdfs owl owl-dl owl2 skos skos-xl geosparql owl-time ontology reasoner swrl semantic-web</PackageTags>
+    <PackageTags>rdfs owl owl2 ontology reasoner</PackageTags>
     <PackageProjectUrl>https://github.com/mdesalvo/OWLSharp</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mdesalvo/OWLSharp.git</RepositoryUrl>
@@ -45,8 +45,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="NetTopologySuite" Version="2.5.0" />
-    <PackageReference Include="ProjNet" Version="2.0.0" />
     <PackageReference Include="RDFSharp" Version="3.11.0" />
   </ItemGroup>
 </Project>
