@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using OWLSharp;
+using RDFSharp.Model;
 
 namespace RDFSharp.Test.Model
 {
@@ -28,7 +29,9 @@ namespace RDFSharp.Test.Model
         public void ShouldSerializeOntology()
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
-            
+            ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDF.PREFIX)));
+            ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)));
+
             string owxOntology = OWLOntologySerializer.Serialize(ontology);
 
             OWLOntology ontology2 = OWLOntologySerializer.Deserialize(owxOntology);

@@ -1,4 +1,4 @@
-/*
+﻿/*
    Copyright 2014-2024 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,39 +15,27 @@
 */
 
 using RDFSharp.Model;
-using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    [XmlRoot("Ontology")]
-    public class OWLOntology
+    public class OWLPrefix
     {
         #region Properties
-        [XmlAttribute("ontologyIRI", DataType="anyURI")]
-        public string OntologyIRI { get; set; }
+        [XmlAttribute("name", DataType="string")]
+        public string Name { get; set; }
 
-
-        [XmlAttribute("ontologyVersion", DataType="anyURI")]
-        public string OntologyVersion { get; set; }
-
-        [XmlElement("Prefix")]
-        public List<OWLPrefix> Prefixes { get; set; }
+        [XmlAttribute("IRI", DataType="anyURI")]
+        public string IRI { get; set; }
         #endregion
 
         #region Ctors
-        public OWLOntology() {}
-        public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null)
+        public OWLPrefix() { }
+        public OWLPrefix(RDFNamespace rdfNamespace)
         {
-            OntologyIRI = ontologyIRI?.ToString();
-            OntologyVersion = ontologyVersion?.ToString();
-            Prefixes = new List<OWLPrefix>();
+            Name = rdfNamespace.NamespacePrefix;
+            IRI = rdfNamespace.NamespaceUri.ToString();
         }
-        #endregion
-
-        #region Methods
-
         #endregion
     }
 }
