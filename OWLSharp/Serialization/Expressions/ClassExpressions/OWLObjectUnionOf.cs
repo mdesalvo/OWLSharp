@@ -14,32 +14,34 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLSubClassOfAxiom : OWLClassAxiom
+    public class OWLObjectUnionOf : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLClassExpression
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=1)]
-        public OWLClassExpression SubClassExpression { get; set; }
-
-        //Register here all derived types of OWLClassExpression
-        [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
-        [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
-        [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
-        public OWLClassExpression SuperClassExpression { get; set; }
+        public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 
         #region Ctors
-        public OWLSubClassOfAxiom() { }
-        public OWLSubClassOfAxiom(OWLClassExpression subClassExpression, OWLClassExpression superClassExpression) 
+        public OWLObjectUnionOf() { }
+        public OWLObjectUnionOf(List<OWLClassExpression> classExpressions)
         {
-            SubClassExpression = subClassExpression ?? throw new OWLException("Cannot create OWLSubClassOfAxiom because given \"subClassExpression\" parameter is null");
-            SuperClassExpression = superClassExpression ?? throw new OWLException("Cannot create OWLSubClassOfAxiom because given \"superClassExpression\" parameter is null");
+            #region Guards
+            if (classExpressions == null)
+                throw new OWLException("Cannot create OWLObjectUnionOf because given \"classExpressions\" parameter is null");
+            if (classExpressions.Count < 2)
+                throw new OWLException("Cannot create OWLObjectUnionOf because given \"classExpressions\" parameter must contain at least 2 elements");
+            #endregion
+
+            ClassExpressions = classExpressions;
         }
         #endregion
     }

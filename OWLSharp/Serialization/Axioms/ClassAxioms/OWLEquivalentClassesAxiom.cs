@@ -35,7 +35,7 @@ namespace OWLSharp
             #region Guards
             if (classExpressions == null)
                 throw new OWLException("Cannot create OWLEquivalentClassesAxiom because given \"classExpressions\" parameter is null");
-            if (classExpressions?.Count < 2)
+            if (classExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLEquivalentClassesAxiom because given \"classExpressions\" parameter must contain at least 2 elements");
             #endregion
 

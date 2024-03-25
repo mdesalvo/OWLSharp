@@ -26,6 +26,7 @@ namespace OWLSharp
         //Register here all derived types of OWLClassExpression
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
+        [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=1)]
         public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 
@@ -36,7 +37,7 @@ namespace OWLSharp
             #region Guards
             if (classExpressions == null)
                 throw new OWLException("Cannot create OWLObjectIntersectionOf because given \"classExpressions\" parameter is null");
-            if (classExpressions?.Count < 2)
+            if (classExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLObjectIntersectionOf because given \"classExpressions\" parameter must contain at least 2 elements");
             #endregion
 
