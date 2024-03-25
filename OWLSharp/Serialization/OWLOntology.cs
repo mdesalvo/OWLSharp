@@ -39,6 +39,7 @@ namespace OWLSharp
 
         //Register here all derived types of OWLAxiom
         [XmlElement(typeof(OWLSubClassOfAxiom), ElementName="SubClassOf")]
+        [XmlElement(typeof(OWLEquivalentClassesAxiom), ElementName="EquivalentClasses")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 

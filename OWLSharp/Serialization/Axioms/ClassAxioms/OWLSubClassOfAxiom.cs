@@ -23,10 +23,12 @@ namespace OWLSharp
         #region Properties
         //Register here all derived types of OWLClassExpression
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
+        [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
         public OWLClassExpression SubClassExpression { get; set; }
 
         //Register here all derived types of OWLClassExpression
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
+        [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         public OWLClassExpression SuperClassExpression { get; set; }
         #endregion
 
