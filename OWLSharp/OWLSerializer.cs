@@ -32,12 +32,15 @@ namespace OWLSharp
             #endregion
 
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            //Hide hard-coded .NET prefixes (e.g: xsi)
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
+            //Initialize standard Semantic Web prefixes
             xmlSerializerNamespaces.Add(RDFVocabulary.OWL.PREFIX, RDFVocabulary.OWL.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.RDF.PREFIX, RDFVocabulary.RDF.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.XSD.PREFIX, RDFVocabulary.XSD.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.XML.PREFIX, RDFVocabulary.XML.BASE_URI);
+            //Initialize user-declared prefixes
             ontology.Prefixes.ForEach(pfx => xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI));
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
