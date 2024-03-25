@@ -42,7 +42,14 @@ namespace OWLSharp
         {
             OntologyIRI = ontologyIRI?.ToString();
             OntologyVersion = ontologyVersion?.ToString();
-            Prefixes = new List<OWLPrefix>();
+            Prefixes = new List<OWLPrefix>() 
+            { 
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)),
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDF.PREFIX)),
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
+            };
         }
         #endregion
 

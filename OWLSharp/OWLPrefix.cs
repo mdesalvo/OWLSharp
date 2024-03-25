@@ -33,8 +33,8 @@ namespace OWLSharp
         public OWLPrefix() { }
         public OWLPrefix(RDFNamespace rdfNamespace)
         {
-            Name = rdfNamespace.NamespacePrefix;
-            IRI = rdfNamespace.NamespaceUri.ToString();
+            Name = rdfNamespace?.NamespacePrefix ?? throw new OWLException("Cannot create OWLPrefix because given \"rdfNamespace\" parameter is null");
+            IRI = rdfNamespace?.NamespaceUri.ToString() ?? throw new OWLException("Cannot create OWLPrefix because given \"rdfNamespace\" parameter is null");
         }
         #endregion
     }
