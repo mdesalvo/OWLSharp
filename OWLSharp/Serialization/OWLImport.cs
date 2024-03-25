@@ -23,7 +23,7 @@ namespace OWLSharp
     public class OWLImport
     {
         #region Properties
-        [XmlText()]
+        [XmlText(DataType="anyURI")]
         public string IRI { get; set; }
         #endregion
 

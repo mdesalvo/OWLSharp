@@ -22,7 +22,7 @@ namespace OWLSharp
     public class OWLPrefix
     {
         #region Properties
-        [XmlAttribute("name", DataType="string")]
+        [XmlAttribute("name", DataType="NCName")]
         public string Name { get; set; }
 
         [XmlAttribute("IRI", DataType="anyURI")]
