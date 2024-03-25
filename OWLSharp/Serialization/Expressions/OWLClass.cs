@@ -34,15 +34,8 @@ namespace OWLSharp
         public OWLClass() { }
         public OWLClass(RDFResource classUri)
             => IRI = classUri?.ToString() ?? throw new OWLException("Cannot create OWLClass because given \"classUri\" parameter is null");
-        public OWLClass(string xsdQName)
-        {
-            try
-            {
-                RDFTypedLiteral xsdQNameLiteral = new RDFTypedLiteral(xsdQName, RDFModelEnums.RDFDatatypes.XSD_QNAME);
-                AbbreviatedIRI = new XmlQualifiedName(xsdQNameLiteral.Value);
-            }
-            catch { throw new OWLException("Cannot create OWLClass because given \"xsdQName\" parameter is not a valid xsd:QName"); }
-        }
+        public OWLClass(XmlQualifiedName abbreviatedClassUri)
+            => AbbreviatedIRI = abbreviatedClassUri ?? throw new OWLException("Cannot create OWLClass because given \"xsdQName\" parameter is null");
         #endregion
     }
 }

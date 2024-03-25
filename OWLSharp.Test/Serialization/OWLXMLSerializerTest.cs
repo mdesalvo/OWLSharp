@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using RDFSharp.Model;
+using System.Xml;
 
 namespace OWLSharp.Test.Serialization
 {
@@ -105,13 +106,35 @@ namespace OWLSharp.Test.Serialization
         }
 
         [TestMethod]
-        public void ShouldSerializeAndDeserializeOntologyWithSubClassOfAxiom()
+        public void ShouldSerializeAndDeserializeOntologyWithSubClassOfAxiomHavingIRI()
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
             ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
             ontology.Axioms.Add(new OWLSubClassOfAxiom(
                 new OWLClass(new RDFResource("http://example.org/Cls1")), 
+                new OWLClass(new RDFResource("http://example.org/Cls2"))));
+
+            string owxOntology = OWLSerializer.Serialize(ontology);
+
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
+            Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
+            Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 1);
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAndDeserializeOntologyWithSubClassOfAxiomHavingAbbreviatedIRI()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
+            ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("ex", "http://example.org/classes/")));
+            ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
+            ontology.Axioms.Add(new OWLSubClassOfAxiom(
+                new OWLClass(new XmlQualifiedName("Cls1", "http://example.org/classes/")),
                 new OWLClass(new RDFResource("http://example.org/Cls2"))));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
