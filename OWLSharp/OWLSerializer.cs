@@ -22,7 +22,7 @@ using System.Xml;
 
 namespace OWLSharp
 {
-    public static class OWLXMLSerializer
+    public static class OWLSerializer
     {
         public static string Serialize(OWLOntology ontology)
         {

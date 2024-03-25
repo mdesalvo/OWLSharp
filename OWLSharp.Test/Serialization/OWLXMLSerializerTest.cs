@@ -29,9 +29,9 @@ namespace OWLSharp.Test.Serialization
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"));
 
-            string owxOntology = OWLXMLSerializer.Serialize(ontology);
+            string owxOntology = OWLSerializer.Serialize(ontology);
 
-            OWLOntology ontology2 = OWLXMLSerializer.Deserialize(owxOntology);
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
@@ -44,9 +44,9 @@ namespace OWLSharp.Test.Serialization
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
 
-            string owxOntology = OWLXMLSerializer.Serialize(ontology);
+            string owxOntology = OWLSerializer.Serialize(ontology);
 
-            OWLOntology ontology2 = OWLXMLSerializer.Deserialize(owxOntology);
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
@@ -57,8 +57,8 @@ namespace OWLSharp.Test.Serialization
         [TestMethod]
         public void ShouldThrowExceptionOnSerializingAndDeserializingNullOntology()
         {
-            Assert.ThrowsException<OWLException>(() => OWLXMLSerializer.Serialize(null));
-            Assert.ThrowsException<OWLException>(() => OWLXMLSerializer.Deserialize(null));
+            Assert.ThrowsException<OWLException>(() => OWLSerializer.Serialize(null));
+            Assert.ThrowsException<OWLException>(() => OWLSerializer.Deserialize(null));
         }
 
         [TestMethod]
@@ -67,9 +67,9 @@ namespace OWLSharp.Test.Serialization
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
 
-            string owxOntology = OWLXMLSerializer.Serialize(ontology);
+            string owxOntology = OWLSerializer.Serialize(ontology);
 
-            OWLOntology ontology2 = OWLXMLSerializer.Deserialize(owxOntology);
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
@@ -84,9 +84,9 @@ namespace OWLSharp.Test.Serialization
             ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
             ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
 
-            string owxOntology = OWLXMLSerializer.Serialize(ontology);
+            string owxOntology = OWLSerializer.Serialize(ontology);
 
-            OWLOntology ontology2 = OWLXMLSerializer.Deserialize(owxOntology);
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
