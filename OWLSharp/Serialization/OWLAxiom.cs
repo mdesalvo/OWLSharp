@@ -16,8 +16,21 @@
 
 namespace OWLSharp
 {
-    public abstract class OWLAxiom
-    {
+    public abstract class OWLAxiom { }
 
-    }
+    //Derived
+
+    public abstract class OWLAnnotationAxiom : OWLAxiom { }
+
+    public abstract class OWLAssertionAxiom : OWLAxiom { }
+
+    public abstract class OWLClassAxiom : OWLAxiom { }
+
+    public abstract class OWLDataPropertyAxiom : OWLAxiom { }
+
+    public abstract class OWLDeclarationAxiom : OWLAxiom { }
+
+    public abstract class OWLHasKeyAxiom : OWLAxiom { }
+
+    public abstract class OWLObjectPropertyAxiom : OWLAxiom { }
 }

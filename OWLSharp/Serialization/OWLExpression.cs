@@ -16,8 +16,21 @@
 
 namespace OWLSharp
 {
-    public abstract class OWLExpression
-    {
+    public abstract class OWLExpression { }
 
-    }
+    //Derived
+
+    public abstract class OWLAnnotationPropertyExpression : OWLExpression { }
+
+    public abstract class OWLClassExpression : OWLExpression { }
+
+    public abstract class OWLDataPropertyExpression : OWLExpression { }
+
+    public abstract class OWLDataRangeExpression : OWLExpression { }
+
+    public abstract class OWLIndividualExpression : OWLExpression { }
+
+    public abstract class OWLLiteralExpression : OWLExpression { }
+
+    public abstract class OWLObjectPropertyExpression : OWLExpression { }
 }
