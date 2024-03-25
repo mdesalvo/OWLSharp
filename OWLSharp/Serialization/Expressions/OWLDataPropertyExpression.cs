@@ -18,8 +18,6 @@ namespace OWLSharp
 {
     public abstract class OWLDataPropertyExpression : OWLExpression
     {
-        #region Ctors
-        public OWLDataPropertyExpression() { }
-        #endregion
+
     }
 }

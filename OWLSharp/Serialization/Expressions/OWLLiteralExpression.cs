@@ -18,8 +18,6 @@ namespace OWLSharp
 {
     public abstract class OWLLiteralExpression : OWLExpression
     {
-        #region Ctors
-        public OWLLiteralExpression() { }
-        #endregion
+
     }
 }

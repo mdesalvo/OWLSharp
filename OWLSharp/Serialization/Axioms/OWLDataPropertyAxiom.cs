@@ -18,8 +18,6 @@ namespace OWLSharp
 {
     public abstract class OWLDataPropertyAxiom : OWLAxiom
     {
-        #region Ctors
-        public OWLDataPropertyAxiom() { }
-        #endregion
+
     }
 }

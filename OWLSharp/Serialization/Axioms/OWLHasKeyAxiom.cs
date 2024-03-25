@@ -18,8 +18,6 @@ namespace OWLSharp
 {
     public abstract class OWLHasKeyAxiom : OWLAxiom
     {
-        #region Ctors
-        public OWLHasKeyAxiom() { }
-        #endregion
+
     }
 }

@@ -18,8 +18,6 @@ namespace OWLSharp
 {
     public abstract class OWLClassExpression : OWLExpression
     {
-        #region Ctors
-        public OWLClassExpression() { }
-        #endregion
+
     }
 }
