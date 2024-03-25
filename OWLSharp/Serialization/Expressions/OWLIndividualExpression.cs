@@ -16,7 +16,7 @@
 
 namespace OWLSharp
 {
-    public class OWLIndividualExpression : OWLExpression
+    public abstract class OWLIndividualExpression : OWLExpression
     {
         #region Ctors
         public OWLIndividualExpression() { }

@@ -16,7 +16,7 @@
 
 namespace OWLSharp
 {
-    public class OWLHasKeyAxiom : OWLAxiom
+    public abstract class OWLHasKeyAxiom : OWLAxiom
     {
         #region Ctors
         public OWLHasKeyAxiom() { }

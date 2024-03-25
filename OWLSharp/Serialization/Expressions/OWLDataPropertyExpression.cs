@@ -16,7 +16,7 @@
 
 namespace OWLSharp
 {
-    public class OWLDataPropertyExpression : OWLExpression
+    public abstract class OWLDataPropertyExpression : OWLExpression
     {
         #region Ctors
         public OWLDataPropertyExpression() { }
