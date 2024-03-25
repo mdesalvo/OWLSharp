@@ -26,6 +26,11 @@ namespace OWLSharp
     {
         public static string Serialize(OWLOntology ontology)
         {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot serialize OWLOntology because given \"ontology\" parameter is null");
+            #endregion
+
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
             xmlSerializerNamespaces.Add(RDFVocabulary.OWL.PREFIX, RDFVocabulary.OWL.BASE_URI);
@@ -53,6 +58,11 @@ namespace OWLSharp
 
         public static OWLOntology Deserialize(string ontology)
         {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot deserialize OWLOntology because given \"ontology\" parameter is null");
+            #endregion
+
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (StringReader stringReader = new StringReader(ontology))
             {

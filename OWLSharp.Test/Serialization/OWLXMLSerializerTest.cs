@@ -55,6 +55,13 @@ namespace OWLSharp.Test.Serialization
         }
 
         [TestMethod]
+        public void ShouldThrowExceptionOnSerializingAndDeserializingNullOntology()
+        {
+            Assert.ThrowsException<OWLException>(() => OWLXMLSerializer.Serialize(null));
+            Assert.ThrowsException<OWLException>(() => OWLXMLSerializer.Deserialize(null));
+        }
+
+        [TestMethod]
         public void ShouldSerializeAndDeserializeOntologyWithPrefix()
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
