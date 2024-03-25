@@ -47,12 +47,4 @@
     </PackageReference>
     <PackageReference Include="RDFSharp" Version="3.11.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Serialization\Axioms\ClassAxioms\" />
-    <Folder Include="Serialization\Axioms\DataPropertyAxioms\" />
-    <Folder Include="Serialization\Axioms\AssertionAxioms\" />
-    <Folder Include="Serialization\Axioms\AnnotationAxioms\" />
-    <Folder Include="Serialization\Axioms\DeclarationAxioms\" />
-    <Folder Include="Serialization\Axioms\ObjectPropertyAxioms\" />
-  </ItemGroup>
 </Project>

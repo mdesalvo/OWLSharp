@@ -1,0 +1,17 @@
+<!-- Assertions -->
+<xsd:complexType name="Assertion" abstract="true">
+    <xsd:complexContent>
+        <xsd:extension base="owl:Axiom"/>
+    </xsd:complexContent>
+</xsd:complexType>
+<xsd:group name="Assertion">
+    <xsd:choice>
+        <xsd:element ref="owl:SameIndividual"/>
+        <xsd:element ref="owl:DifferentIndividuals"/>
+        <xsd:element ref="owl:ClassAssertion"/>
+        <xsd:element ref="owl:ObjectPropertyAssertion"/>
+        <xsd:element ref="owl:NegativeObjectPropertyAssertion"/>
+        <xsd:element ref="owl:DataPropertyAssertion"/>
+        <xsd:element ref="owl:NegativeDataPropertyAssertion"/>
+    </xsd:choice>
+</xsd:group>

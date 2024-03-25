@@ -36,6 +36,10 @@ namespace OWLSharp
 
         [XmlElement("Import")]
         public List<OWLImport> Imports { get; set; }
+
+        //Register here all derived types of OWLAxiom
+        [XmlElement(typeof(OWLSubClassOfAxiom), ElementName="SubClassOf")]
+        public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
         #region Ctors
@@ -53,6 +57,7 @@ namespace OWLSharp
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
             };
             Imports = new List<OWLImport>();
+            Axioms = new List<OWLAxiom>();
         }
         #endregion
     }

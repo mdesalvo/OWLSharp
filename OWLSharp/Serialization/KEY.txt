@@ -1,0 +1,13 @@
+<!-- Key axioms -->
+<xsd:complexType name="HasKey">
+    <xsd:complexContent>
+        <xsd:extension base="owl:Axiom">
+        <xsd:sequence>
+            <xsd:group ref="owl:ClassExpression"/>
+            <xsd:group ref="owl:ObjectPropertyExpression" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:group ref="owl:DataPropertyExpression" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        </xsd:extension>
+    </xsd:complexContent>
+</xsd:complexType>
+<xsd:element name="HasKey" type="owl:HasKey"/>

@@ -1,0 +1,14 @@
+<!-- Annotation axioms -->
+<xsd:complexType name="AnnotationAxiom" abstract="true">
+    <xsd:complexContent>
+        <xsd:extension base="owl:Axiom"/>
+    </xsd:complexContent>
+</xsd:complexType>
+<xsd:group name="AnnotationAxiom">
+    <xsd:choice>
+        <xsd:element ref="owl:AnnotationAssertion"/>
+        <xsd:element ref="owl:SubAnnotationPropertyOf"/>
+        <xsd:element ref="owl:AnnotationPropertyDomain"/>
+        <xsd:element ref="owl:AnnotationPropertyRange"/>
+    </xsd:choice>
+</xsd:group>

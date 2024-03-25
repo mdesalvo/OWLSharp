@@ -103,6 +103,28 @@ namespace OWLSharp.Test.Serialization
             Assert.ThrowsException<OWLException>(() => ontology.Imports.Add(new OWLImport(null)));
             Assert.ThrowsException<OWLException>(() => ontology.Imports.Add(new OWLImport(new RDFResource())));
         }
+
+        [TestMethod]
+        public void ShouldSerializeAndDeserializeOntologyWithSubClassOfAxiom()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
+            ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
+            ontology.Axioms.Add(new OWLSubClassOfAxiom(
+                new OWLClass(new RDFResource("http://example.org/Cls1")), 
+                new OWLClass(new RDFResource("http://example.org/Cls2"))));
+
+            string owxOntology = OWLSerializer.Serialize(ontology);
+
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
+            Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
+            Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 1);
+        }
         #endregion
     }
 }

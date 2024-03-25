@@ -1,0 +1,34 @@
+<!-- Object property axioms -->
+<xsd:complexType name="ObjectPropertyAxiom" abstract="true">
+    <xsd:complexContent>
+        <xsd:extension base="owl:Axiom"/>
+    </xsd:complexContent>
+</xsd:complexType>
+<xsd:group name="ObjectPropertyAxiom">
+    <xsd:choice>
+        <xsd:element ref="owl:SubObjectPropertyOf"/>
+        <xsd:element ref="owl:EquivalentObjectProperties"/>
+        <xsd:element ref="owl:DisjointObjectProperties"/>
+        <xsd:element ref="owl:InverseObjectProperties"/>
+        <xsd:element ref="owl:ObjectPropertyDomain"/>
+        <xsd:element ref="owl:ObjectPropertyRange"/>
+        <xsd:element ref="owl:FunctionalObjectProperty"/>
+        <xsd:element ref="owl:InverseFunctionalObjectProperty"/>
+        <xsd:element ref="owl:ReflexiveObjectProperty"/>
+        <xsd:element ref="owl:IrreflexiveObjectProperty"/>
+        <xsd:element ref="owl:SymmetricObjectProperty"/>
+        <xsd:element ref="owl:AsymmetricObjectProperty"/>
+        <xsd:element ref="owl:TransitiveObjectProperty"/>
+    </xsd:choice>
+</xsd:group>
+
+<!-- Object property expressions -->
+<xsd:complexType name="ObjectPropertyExpression" abstract="true">
+    <xsd:attributeGroup ref="xml:specialAttrs"/>
+</xsd:complexType>
+<xsd:group name="ObjectPropertyExpression">
+    <xsd:choice>
+        <xsd:element ref="owl:ObjectProperty"/>
+        <xsd:element ref="owl:ObjectInverseOf"/>
+    </xsd:choice>
+</xsd:group>

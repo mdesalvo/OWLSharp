@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace OWLSharp
@@ -22,11 +23,11 @@ namespace OWLSharp
     public class OWLAnnotationProperty : OWLAnnotationPropertyExpression
     {
         #region Properties
-        [XmlAttribute("IRI", DataType = "anyURI")]
+        [XmlAttribute("IRI", DataType="anyURI")]
         public string IRI { get; set; }
 
-        [XmlAttribute("AbbreviatedIRI", DataType = "QName")]
-        public string AbbreviatedIRI { get; set; }
+        [XmlAttribute("AbbreviatedIRI", DataType="QName")]
+        public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
         #region Ctors
@@ -38,7 +39,7 @@ namespace OWLSharp
             try
             {
                 RDFTypedLiteral xsdQNameLiteral = new RDFTypedLiteral(xsdQName, RDFModelEnums.RDFDatatypes.XSD_QNAME);
-                AbbreviatedIRI = xsdQNameLiteral.Value;
+                AbbreviatedIRI = new XmlQualifiedName(xsdQNameLiteral.Value);
             }
             catch { throw new OWLException("Cannot create OWLAnnotationProperty because given \"xsdQName\" parameter is not a valid xsd:QName"); }
         }

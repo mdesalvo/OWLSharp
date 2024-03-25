@@ -15,7 +15,6 @@
 */
 
 using RDFSharp.Model;
-using System;
 using System.Xml.Serialization;
 
 namespace OWLSharp
