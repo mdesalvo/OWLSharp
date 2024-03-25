@@ -1,5 +1,5 @@
 /*
-   Copyright 2012-2024 Marco De Salvo
+   Copyright 2014-2024 Marco De Salvo
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -14,15 +14,9 @@
    limitations under the License.
 */
 
-using RDFSharp.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using OWLSharp;
-using System.Xml.Serialization;
-using System.IO;
-using System.Xml;
-using System.Text;
 
 namespace RDFSharp.Test.Model
 {
@@ -36,37 +30,11 @@ namespace RDFSharp.Test.Model
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             
             string owxOntology = OWLOntologySerializer.Serialize(ontology);
-            
 
+            OWLOntology ontology2 = OWLOntologySerializer.Deserialize(owxOntology);
         }
         #endregion
 
-        public class OWLOntologySerializer
-        {
-            public static string Serialize(OWLOntology ontology)
-            {
-                XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
-                xmlSerializerNamespaces.Add(string.Empty, string.Empty);
-                xmlSerializerNamespaces.Add(RDFVocabulary.OWL.PREFIX, RDFVocabulary.OWL.BASE_URI);
-
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
-                using (UTF8StringWriter stringWriter = new UTF8StringWriter())
-                {
-                    using (XmlWriter writer = XmlWriter.Create(stringWriter, new XmlWriterSettings() { 
-                        Encoding=Encoding.UTF8, 
-                        Indent=true, 
-                        NewLineHandling=NewLineHandling.None }))
-                    {
-                        xmlSerializer.Serialize(writer, ontology, xmlSerializerNamespaces);
-                        return stringWriter.ToString();
-                    }
-                }
-            }
-        }
-
-        public class UTF8StringWriter : StringWriter
-        {
-            public override Encoding Encoding => Encoding.UTF8;
-        }
+        
     }
 }
