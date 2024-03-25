@@ -34,6 +34,9 @@ namespace OWLSharp
 
         [XmlElement("Prefix")]
         public List<OWLPrefix> Prefixes { get; set; }
+
+        [XmlElement("Import")]
+        public List<OWLImport> Imports { get; set; }
         #endregion
 
         #region Ctors
@@ -50,11 +53,8 @@ namespace OWLSharp
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
             };
+            Imports = new List<OWLImport>();
         }
-        #endregion
-
-        #region Methods
-
         #endregion
     }
 }
