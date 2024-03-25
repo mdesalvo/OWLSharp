@@ -16,10 +16,10 @@
 
 namespace OWLSharp
 {
-    public class OWLClassExpression : OWLExpression
+    public class OWLIndividualExpression : OWLExpression
     {
         #region Ctors
-        public OWLClassExpression() { }
+        public OWLIndividualExpression() { }
         #endregion
     }
 }
