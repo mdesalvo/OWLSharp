@@ -28,7 +28,6 @@ namespace OWLSharp
         [XmlAttribute("ontologyIRI", DataType="anyURI")]
         public string OntologyIRI { get; set; }
 
-
         [XmlAttribute("ontologyVersion", DataType="anyURI")]
         public string OntologyVersion { get; set; }
 
