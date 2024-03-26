@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLObjectMinCardinality : OWLClassExpression
+    public class OWLObjectExactCardinality : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
@@ -47,14 +47,14 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        internal OWLObjectMinCardinality() { }
-        public OWLObjectMinCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality)
+        internal OWLObjectExactCardinality() { }
+        public OWLObjectExactCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality)
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectMinCardinality because given \"objectPropertyExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectExactCardinality because given \"objectPropertyExpression\" parameter is null");
             Cardinality = cardinality.ToString();
         }
-        public OWLObjectMinCardinality(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression, uint cardinality) : this(objectPropertyExpression, cardinality)
-            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectMinCardinality because given \"classExpression\" parameter is null");
+        public OWLObjectExactCardinality(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression, uint cardinality) : this(objectPropertyExpression, cardinality)
+            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectExactCardinality because given \"classExpression\" parameter is null");
         #endregion
     }
 }
