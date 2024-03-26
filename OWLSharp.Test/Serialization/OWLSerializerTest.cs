@@ -326,11 +326,13 @@ namespace OWLSharp.Test.Serialization
                     {
                         new OWLClass(new RDFResource("http://example.org/Cls2")),
                         new OWLClass(new RDFResource("http://example.org/Cls3")),
-                        new OWLObjectIntersectionOf(new List<OWLClassExpression>()
-                        {
-                            new OWLClass(new RDFResource("http://example.org/Cls4")),
-                            new OWLClass(new RDFResource("http://example.org/Cls5")),
-                        })
+                        new OWLObjectComplementOf(new OWLObjectUnionOf(
+                            new List<OWLClassExpression>()
+                            {
+                                new OWLClass(new RDFResource("http://example.org/Cls4")),
+                                new OWLClass(new RDFResource("http://example.org/Cls5")),
+                                new OWLObjectComplementOf(new OWLClass(new RDFResource("http://example.org/Cls6")))
+                            }))
                     })
                 }));
 

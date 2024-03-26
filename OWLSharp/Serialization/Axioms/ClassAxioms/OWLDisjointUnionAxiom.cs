@@ -29,6 +29,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
+        [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf", Order=2)]
         public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 
