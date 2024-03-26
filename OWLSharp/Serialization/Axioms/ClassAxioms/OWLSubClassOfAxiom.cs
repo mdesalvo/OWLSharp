@@ -30,6 +30,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom", Order=1)]
         [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom", Order=1)]
         [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue", Order=1)]
+        [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf", Order=1)]
         public OWLClassExpression SubClassExpression { get; set; }
 
         //Register here all derived types of OWLClassExpression
@@ -41,6 +42,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom", Order=2)]
         [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue", Order=2)]
+        [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf", Order=2)]
         public OWLClassExpression SuperClassExpression { get; set; }
         #endregion
 

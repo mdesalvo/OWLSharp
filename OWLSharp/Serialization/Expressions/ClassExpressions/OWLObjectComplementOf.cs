@@ -31,6 +31,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom")]
         [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom")]
         [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue")]
+        [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf")]
         public OWLClassExpression ClassExpression { get; set; }
         #endregion
 

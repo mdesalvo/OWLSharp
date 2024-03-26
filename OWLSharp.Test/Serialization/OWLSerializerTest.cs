@@ -217,7 +217,9 @@ namespace OWLSharp.Test.Serialization
                 ]),
                 new OWLObjectHasValue(
                     new OWLObjectProperty(new RDFResource("http://example.org/objProp")),
-                    new OWLNamedIndividual(new RDFResource("http://example.org/Idv1")))
+                    new OWLNamedIndividual(new RDFResource("http://example.org/Idv1"))),
+                new OWLObjectHasSelf(
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")))
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
