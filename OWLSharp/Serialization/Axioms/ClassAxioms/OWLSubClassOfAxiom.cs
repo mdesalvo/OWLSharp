@@ -26,6 +26,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=1)]
         [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf", Order=1)]
+        [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=1)]
         public OWLClassExpression SubClassExpression { get; set; }
 
         //Register here all derived types of OWLClassExpression
@@ -33,6 +34,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=2)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
         [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf", Order=2)]
+        [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=2)]
         public OWLClassExpression SuperClassExpression { get; set; }
         #endregion
 
