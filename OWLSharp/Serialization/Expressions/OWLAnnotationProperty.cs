@@ -32,17 +32,10 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLAnnotationProperty() { }
-        public OWLAnnotationProperty(RDFResource annotationPropertyUri)
-            => IRI = annotationPropertyUri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"annotationPropertyUri\" parameter is null");
-        public OWLAnnotationProperty(string xsdQName)
-        {
-            try
-            {
-                RDFTypedLiteral xsdQNameLiteral = new RDFTypedLiteral(xsdQName, RDFModelEnums.RDFDatatypes.XSD_QNAME);
-                AbbreviatedIRI = new XmlQualifiedName(xsdQNameLiteral.Value);
-            }
-            catch { throw new OWLException("Cannot create OWLAnnotationProperty because given \"xsdQName\" parameter is not a valid xsd:QName"); }
-        }
+        public OWLAnnotationProperty(RDFResource iri)
+            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"iri\" parameter is null");
+        public OWLAnnotationProperty(XmlQualifiedName abbreviatedIri)
+            => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"abbreviatedIri\" parameter is null");
         #endregion
     }
 }

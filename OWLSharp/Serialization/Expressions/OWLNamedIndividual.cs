@@ -32,17 +32,10 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLNamedIndividual() { }
-        public OWLNamedIndividual(RDFResource namedIndividualUri)
-            => IRI = namedIndividualUri?.ToString() ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"namedIndividualUri\" parameter is null");
-        public OWLNamedIndividual(string xsdQName)
-        {
-            try
-            {
-                RDFTypedLiteral xsdQNameLiteral = new RDFTypedLiteral(xsdQName, RDFModelEnums.RDFDatatypes.XSD_QNAME);
-                AbbreviatedIRI = new XmlQualifiedName(xsdQNameLiteral.Value);
-            }
-            catch { throw new OWLException("Cannot create OWLNamedIndividual because given \"xsdQName\" parameter is not a valid xsd:QName"); }
-        }
+        public OWLNamedIndividual(RDFResource iri)
+            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"iri\" parameter is null");
+        public OWLNamedIndividual(XmlQualifiedName abbreviatedIri)
+            => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"abbreviatedIri\" parameter is null");
         #endregion
     }
 }

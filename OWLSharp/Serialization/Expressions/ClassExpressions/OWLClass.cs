@@ -32,10 +32,10 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLClass() { }
-        public OWLClass(RDFResource classUri)
-            => IRI = classUri?.ToString() ?? throw new OWLException("Cannot create OWLClass because given \"classUri\" parameter is null");
-        public OWLClass(XmlQualifiedName abbreviatedClassUri)
-            => AbbreviatedIRI = abbreviatedClassUri ?? throw new OWLException("Cannot create OWLClass because given \"xsdQName\" parameter is null");
+        public OWLClass(RDFResource iri)
+            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLClass because given \"iri\" parameter is null");
+        public OWLClass(XmlQualifiedName abbreviatedIri)
+            => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLClass because given \"abbreviatedIri\" parameter is null");
         #endregion
     }
 }
