@@ -219,7 +219,16 @@ namespace OWLSharp.Test.Serialization
                     new OWLObjectProperty(new RDFResource("http://example.org/objProp")),
                     new OWLNamedIndividual(new RDFResource("http://example.org/Idv1"))),
                 new OWLObjectHasSelf(
-                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")))
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp"))),
+                new OWLDataHasValue(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")),
+                    new OWLLiteral(new RDFPlainLiteral("hello"))),
+                new OWLDataHasValue(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")),
+                    new OWLLiteral(new RDFPlainLiteral("hello", "en-us--ltr"))),
+                new OWLDataHasValue(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")),
+                    new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))),
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);

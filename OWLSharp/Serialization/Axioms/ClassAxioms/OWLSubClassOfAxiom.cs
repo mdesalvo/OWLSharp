@@ -36,6 +36,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectExactCardinality), ElementName="ObjectExactCardinality", Order=1)]
         [XmlElement(typeof(OWLDataSomeValuesFrom), ElementName="DataSomeValuesFrom", Order=1)]
         [XmlElement(typeof(OWLDataAllValuesFrom), ElementName="DataAllValuesFrom", Order=1)]
+        [XmlElement(typeof(OWLDataHasValue), ElementName="DataHasValue", Order=1)]
         public OWLClassExpression SubClassExpression { get; set; }
 
         //Register here all derived types of OWLClassExpression
@@ -53,6 +54,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectExactCardinality), ElementName="ObjectExactCardinality", Order=2)]
         [XmlElement(typeof(OWLDataSomeValuesFrom), ElementName="DataSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLDataAllValuesFrom), ElementName="DataAllValuesFrom", Order=2)]
+        [XmlElement(typeof(OWLDataHasValue), ElementName="DataHasValue", Order=2)]
         public OWLClassExpression SuperClassExpression { get; set; }
         #endregion
 

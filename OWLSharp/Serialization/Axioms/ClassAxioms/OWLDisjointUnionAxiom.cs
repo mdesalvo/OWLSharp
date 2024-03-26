@@ -40,6 +40,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectExactCardinality), ElementName="ObjectExactCardinality", Order=2)]
         [XmlElement(typeof(OWLDataSomeValuesFrom), ElementName="DataSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLDataAllValuesFrom), ElementName="DataAllValuesFrom", Order=2)]
+        [XmlElement(typeof(OWLDataHasValue), ElementName="DataHasValue", Order=2)]
         public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 
