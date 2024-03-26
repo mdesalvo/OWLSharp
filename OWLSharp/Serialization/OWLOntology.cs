@@ -41,6 +41,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLSubClassOfAxiom), ElementName="SubClassOf")]
         [XmlElement(typeof(OWLEquivalentClassesAxiom), ElementName="EquivalentClasses")]
         [XmlElement(typeof(OWLDisjointClassesAxiom), ElementName="DisjointClasses")]
+        [XmlElement(typeof(OWLDisjointUnionAxiom), ElementName = "DisjointUnion")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
