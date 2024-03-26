@@ -34,6 +34,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue")]
         [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf")]
         [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality")]
+        [XmlElement(typeof(OWLObjectMaxCardinality), ElementName="ObjectMaxCardinality")]
         public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 

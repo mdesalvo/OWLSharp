@@ -247,7 +247,12 @@ namespace OWLSharp.Test.Serialization
                 new OWLObjectMinCardinality(
                     new OWLObjectProperty(new RDFResource("http://example.org/objProp")), 1),
                 new OWLObjectMinCardinality(
-                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")), new OWLClass(new RDFResource("http://example.org/Cls1")), 0)
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")), new OWLClass(new RDFResource("http://example.org/Cls1")), 0),
+                new OWLObjectMaxCardinality(
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://example.org/objProp"))), 2),
+                new OWLObjectMaxCardinality(
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")), 
+                    new OWLObjectHasSelf(new OWLObjectProperty(new RDFResource("http://example.org/objProp"))), 4)
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);

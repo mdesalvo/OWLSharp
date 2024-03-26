@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLObjectSomeValuesFromOf : OWLClassExpression
+    public class OWLObjectMaxCardinality : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
@@ -35,20 +35,25 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=2)]
         [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom", Order=2)]
-        [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue", Order=2)]
+        [XmlElement(typeof(OWLObjectHasValue), ElementName = "ObjectHasValue", Order=2)]
         [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf", Order=2)]
         [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality", Order=2)]
         [XmlElement(typeof(OWLObjectMaxCardinality), ElementName="ObjectMaxCardinality", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
+
+        [XmlAttribute("cardinality", DataType="nonNegativeInteger")]
+        public string Cardinality { get; set; } = "0";
         #endregion
 
         #region Ctors
-        internal OWLObjectSomeValuesFromOf() { }
-        public OWLObjectSomeValuesFromOf(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression)
+        internal OWLObjectMaxCardinality() { }
+        public OWLObjectMaxCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality)
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectSomeValuesFromOf because given \"objectPropertyExpression\" parameter is null");
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectSomeValuesFromOf because given \"classExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectMaxCardinality because given \"objectPropertyExpression\" parameter is null");
+            Cardinality = cardinality.ToString();
         }
+        public OWLObjectMaxCardinality(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression, uint cardinality) : this(objectPropertyExpression, cardinality)
+            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectMaxCardinality because given \"classExpression\" parameter is null");
         #endregion
     }
 }
