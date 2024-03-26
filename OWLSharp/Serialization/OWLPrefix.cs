@@ -30,7 +30,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLPrefix() { }
+        internal OWLPrefix() { }
         public OWLPrefix(RDFNamespace rdfNamespace)
         {
             Name = rdfNamespace?.NamespacePrefix ?? throw new OWLException("Cannot create OWLPrefix because given \"rdfNamespace\" parameter is null");

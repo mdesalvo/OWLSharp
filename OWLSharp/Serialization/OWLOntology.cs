@@ -45,7 +45,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLOntology() {}
+        internal OWLOntology() {}
         public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null)
         {
             OntologyIRI = ontologyIRI?.ToString();

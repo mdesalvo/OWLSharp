@@ -31,7 +31,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLObjectUnionOf() { }
+        internal OWLObjectUnionOf() { }
         public OWLObjectUnionOf(List<OWLClassExpression> classExpressions)
         {
             #region Guards

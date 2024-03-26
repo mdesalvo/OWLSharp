@@ -31,7 +31,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLNamedIndividual() { }
+        internal OWLNamedIndividual() { }
         public OWLNamedIndividual(RDFResource namedIndividualUri)
             => IRI = namedIndividualUri?.ToString() ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"namedIndividualUri\" parameter is null");
         public OWLNamedIndividual(string xsdQName)

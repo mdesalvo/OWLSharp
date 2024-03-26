@@ -31,7 +31,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLDataProperty() { }
+        internal OWLDataProperty() { }
         public OWLDataProperty(RDFResource dataPropertyUri)
             => IRI = dataPropertyUri?.ToString() ?? throw new OWLException("Cannot create OWLDataProperty because given \"dataPropertyUri\" parameter is null");
         public OWLDataProperty(string xsdQName)

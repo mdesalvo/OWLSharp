@@ -33,7 +33,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLLiteral() { }
+        internal OWLLiteral() { }
         public OWLLiteral(RDFLiteral literal)
         {
             Value = literal?.Value ?? string.Empty;

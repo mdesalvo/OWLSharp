@@ -31,7 +31,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLObjectIntersectionOf() { }
+        internal OWLObjectIntersectionOf() { }
         public OWLObjectIntersectionOf(List<OWLClassExpression> classExpressions)
         {
             #region Guards

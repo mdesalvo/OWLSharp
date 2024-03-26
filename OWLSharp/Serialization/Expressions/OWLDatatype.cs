@@ -31,7 +31,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLDatatype() { }
+        internal OWLDatatype() { }
         public OWLDatatype(RDFResource datatypeUri)
             => IRI = datatypeUri?.ToString() ?? throw new OWLException("Cannot create OWLDatatype because given \"datatypeUri\" parameter is null");
         public OWLDatatype(string xsdQName)

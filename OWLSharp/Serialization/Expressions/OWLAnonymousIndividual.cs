@@ -27,7 +27,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLAnonymousIndividual() { }
+        internal OWLAnonymousIndividual() { }
         public OWLAnonymousIndividual(string ncName)
         {
             try

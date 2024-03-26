@@ -29,7 +29,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLEquivalentClassesAxiom() { }
+        internal OWLEquivalentClassesAxiom() { }
         public OWLEquivalentClassesAxiom(List<OWLClassExpression> classExpressions) 
         {
             #region Guards

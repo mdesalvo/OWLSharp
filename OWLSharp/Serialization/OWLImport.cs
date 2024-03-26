@@ -27,7 +27,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLImport() { }
+        internal OWLImport() { }
         public OWLImport(RDFResource importUri)
         {
             #region Guards

@@ -31,7 +31,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLAnnotationProperty() { }
+        internal OWLAnnotationProperty() { }
         public OWLAnnotationProperty(RDFResource annotationPropertyUri)
             => IRI = annotationPropertyUri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"annotationPropertyUri\" parameter is null");
         public OWLAnnotationProperty(string xsdQName)

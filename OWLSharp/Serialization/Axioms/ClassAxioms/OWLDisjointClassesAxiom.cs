@@ -30,7 +30,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLDisjointClassesAxiom() { }
+        internal OWLDisjointClassesAxiom() { }
         public OWLDisjointClassesAxiom(List<OWLClassExpression> classExpressions) 
         {
             #region Guards

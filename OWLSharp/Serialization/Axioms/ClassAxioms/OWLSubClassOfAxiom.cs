@@ -35,7 +35,7 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        public OWLSubClassOfAxiom() { }
+        internal OWLSubClassOfAxiom() { }
         public OWLSubClassOfAxiom(OWLClassExpression subClassExpression, OWLClassExpression superClassExpression) 
         {
             SubClassExpression = subClassExpression ?? throw new OWLException("Cannot create OWLSubClassOfAxiom because given \"subClassExpression\" parameter is null");
