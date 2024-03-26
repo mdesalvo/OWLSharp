@@ -265,7 +265,23 @@ namespace OWLSharp.Test.Serialization
                 new OWLObjectExactCardinality(
                     new OWLObjectProperty(new RDFResource("http://example.org/objProp")), 1),
                 new OWLObjectExactCardinality(
-                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")), new OWLClass(new RDFResource("http://example.org/Cls1")), 0),
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")), 
+                    new OWLClass(new RDFResource("http://example.org/Cls1")), 0),
+                new OWLDataMinCardinality(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")), 1),
+                new OWLDataMinCardinality(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")), 
+                    new OWLDatatype(RDFVocabulary.XSD.BOOLEAN), 0),
+                new OWLDataMaxCardinality(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")), 2),
+                new OWLDataMaxCardinality(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")), 
+                    new OWLDatatype(RDFVocabulary.XSD.BOOLEAN), 4),
+                new OWLDataExactCardinality(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")), 1),
+                new OWLDataExactCardinality(
+                    new OWLDataProperty(new RDFResource("http://example.org/dtProp")), 
+                    new OWLDatatype(RDFVocabulary.XSD.BOOLEAN), 2),
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
@@ -277,7 +293,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
             Assert.IsTrue(ontology2.Imports.Count == 1);
-            Assert.IsTrue(ontology2.Axioms.Count == 2);
+            Assert.IsTrue(ontology2.Axioms.Count == 1);
         }
 
         [TestMethod]

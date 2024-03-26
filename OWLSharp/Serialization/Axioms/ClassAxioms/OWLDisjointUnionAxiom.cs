@@ -41,6 +41,9 @@ namespace OWLSharp
         [XmlElement(typeof(OWLDataSomeValuesFrom), ElementName="DataSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLDataAllValuesFrom), ElementName="DataAllValuesFrom", Order=2)]
         [XmlElement(typeof(OWLDataHasValue), ElementName="DataHasValue", Order=2)]
+        [XmlElement(typeof(OWLDataMinCardinality), ElementName="DataMinCardinality", Order=2)]
+        [XmlElement(typeof(OWLDataMaxCardinality), ElementName="DataMaxCardinality", Order=2)]
+        [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=2)]
         public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 
