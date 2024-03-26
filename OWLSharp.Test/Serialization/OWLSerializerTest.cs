@@ -18,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using RDFSharp.Model;
 using System.Xml;
-using System.Collections.Generic;
 
 namespace OWLSharp.Test.Serialization
 {
@@ -215,7 +214,10 @@ namespace OWLSharp.Test.Serialization
                 [
                     new OWLClass(new RDFResource("http://example.org/Cls2")),
                     new OWLClass(new RDFResource("http://example.org/Cls3"))
-                ])
+                ]),
+                new OWLObjectHasValue(
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")),
+                    new OWLNamedIndividual(new RDFResource("http://example.org/Idv1")))
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);

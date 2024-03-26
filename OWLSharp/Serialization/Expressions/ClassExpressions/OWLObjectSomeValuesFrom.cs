@@ -35,6 +35,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=2)]
         [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom", Order=2)]
+        [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
         #endregion
 
