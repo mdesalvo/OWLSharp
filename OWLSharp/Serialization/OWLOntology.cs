@@ -38,6 +38,7 @@ namespace OWLSharp
         public List<OWLImport> Imports { get; set; }
 
         //Register here all derived types of OWLAxiom
+        [XmlElement(typeof(OWLDeclarationAxiom), ElementName="Declaration")]
         [XmlElement(typeof(OWLSubClassOfAxiom), ElementName="SubClassOf")]
         [XmlElement(typeof(OWLEquivalentClassesAxiom), ElementName="EquivalentClasses")]
         [XmlElement(typeof(OWLDisjointClassesAxiom), ElementName="DisjointClasses")]

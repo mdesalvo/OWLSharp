@@ -28,8 +28,6 @@ namespace OWLSharp
 
     public abstract class OWLDataPropertyAxiom : OWLAxiom { }
 
-    public abstract class OWLDeclarationAxiom : OWLAxiom { }
-
     public abstract class OWLHasKeyAxiom : OWLAxiom { }
 
     public abstract class OWLObjectPropertyAxiom : OWLAxiom { }
