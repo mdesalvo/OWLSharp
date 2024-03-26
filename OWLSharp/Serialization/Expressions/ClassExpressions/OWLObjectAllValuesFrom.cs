@@ -14,22 +14,18 @@
    limitations under the License.
 */
 
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLSubClassOfAxiom : OWLClassAxiom
+    public class OWLObjectAllValuesFromOf : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLClassExpression
-        [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
-        [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
-        [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=1)]
-        [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf", Order=1)]
-        [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=1)]
-        [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom", Order=1)]
-        [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom", Order=1)]
-        public OWLClassExpression SubClassExpression { get; set; }
+        //Register here all derived types of OWLObjectPropertyExpression
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
+        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=1)]
+        public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
 
         //Register here all derived types of OWLClassExpression
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
@@ -39,15 +35,15 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=2)]
         [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom", Order=2)]
-        public OWLClassExpression SuperClassExpression { get; set; }
+        public OWLClassExpression ClassExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLSubClassOfAxiom() { }
-        public OWLSubClassOfAxiom(OWLClassExpression subClassExpression, OWLClassExpression superClassExpression) 
+        internal OWLObjectAllValuesFromOf() { }
+        public OWLObjectAllValuesFromOf(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression)
         {
-            SubClassExpression = subClassExpression ?? throw new OWLException("Cannot create OWLSubClassOfAxiom because given \"subClassExpression\" parameter is null");
-            SuperClassExpression = superClassExpression ?? throw new OWLException("Cannot create OWLSubClassOfAxiom because given \"superClassExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFromOf because given \"objectPropertyExpression\" parameter is null");
+            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFromOf because given \"classExpression\" parameter is null");
         }
         #endregion
     }

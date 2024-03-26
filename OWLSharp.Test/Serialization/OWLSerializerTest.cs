@@ -322,9 +322,11 @@ namespace OWLSharp.Test.Serialization
             ontology.Axioms.Add(new OWLEquivalentClassesAxiom(
             [
                 new OWLObjectSomeValuesFromOf(
-                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://example.org/objProp"))),
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://example.org/objProp1"))),
                     new OWLClass(new RDFResource("http://example.org/Cls1"))),
-                new OWLClass(new RDFResource("http://example.org/Cls2"))
+                new OWLObjectAllValuesFromOf(
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp2")),
+                    new OWLClass(new XmlQualifiedName("Agent", RDFVocabulary.FOAF.BASE_URI))),
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);

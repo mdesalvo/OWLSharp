@@ -29,6 +29,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf")]
         [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf")]
         [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom")]
+        [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom")]
         public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 
