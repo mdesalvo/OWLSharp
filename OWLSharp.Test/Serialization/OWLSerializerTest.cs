@@ -229,7 +229,7 @@ namespace OWLSharp.Test.Serialization
         }
 
         [TestMethod]
-        public void ShouldSerializeAndDeserializeOntologyWithDisjointClassesAxiomHavingIRI()
+        public void ShouldSerializeAndDeserializeOntologyWithDisjointClassesAxiom()
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
@@ -253,35 +253,7 @@ namespace OWLSharp.Test.Serialization
         }
 
         [TestMethod]
-        public void ShouldSerializeAndDeserializeOntologyWithDisjointClasssAxiomHavingObjectUnionOfAxiom()
-        {
-            OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
-            ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
-            ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
-            ontology.Axioms.Add(new OWLDisjointClassesAxiom(new List<OWLClassExpression>()
-            {
-                new OWLClass(new RDFResource("http://example.org/Cls1")),
-                new OWLObjectUnionOf(new List<OWLClassExpression>()
-                {
-                    new OWLClass(new RDFResource("http://example.org/Cls2")),
-                    new OWLClass(new RDFResource("http://example.org/Cls3"))
-                })
-            }));
-
-            string owxOntology = OWLSerializer.Serialize(ontology);
-
-            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
-
-            Assert.IsNotNull(ontology2);
-            Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
-            Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
-            Assert.IsTrue(ontology2.Prefixes.Count == 6);
-            Assert.IsTrue(ontology2.Imports.Count == 1);
-            Assert.IsTrue(ontology2.Axioms.Count == 1);
-        }
-
-        [TestMethod]
-        public void ShouldSerializeAndDeserializeOntologyWithDisjointClasssAxiomHavingObjectUnionOfAxiomWithNestedObjectIntersectionOfAxiom()
+        public void ShouldSerializeAndDeserializeOntologyWithDisjointClassesAxiomHavingClassExpression()
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
@@ -310,6 +282,66 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 1);
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAndDeserializeOntologyWithDisjointUnionAxiomHavingClass()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
+            ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
+            ontology.Axioms.Add(new OWLDisjointUnionAxiom(
+                new OWLClass(new RDFResource("http://example/DisjUnCls")),
+                new List<OWLClassExpression>()
+                {
+                    new OWLClass(new RDFResource("http://example.org/Cls1")),
+                    new OWLClass(new RDFResource("http://example.org/Cls2"))
+                }));
+
+            string owxOntology = OWLSerializer.Serialize(ontology);
+
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
+            Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
+            Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 1);
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAndDeserializeOntologyWithDisjointUnionAxiomHavingClassExpression()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
+            ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
+            ontology.Axioms.Add(new OWLDisjointUnionAxiom(
+                new OWLClass(new RDFResource("http://example/DisjUnCls")),
+                new List<OWLClassExpression>()
+                {
+                    new OWLClass(new RDFResource("http://example.org/Cls1")),
+                    new OWLObjectUnionOf(new List<OWLClassExpression>()
+                    {
+                        new OWLClass(new RDFResource("http://example.org/Cls2")),
+                        new OWLClass(new RDFResource("http://example.org/Cls3")),
+                        new OWLObjectIntersectionOf(new List<OWLClassExpression>()
+                        {
+                            new OWLClass(new RDFResource("http://example.org/Cls4")),
+                            new OWLClass(new RDFResource("http://example.org/Cls5")),
+                        })
+                    })
+                }));
+
+            string owxOntology = OWLSerializer.Serialize(ontology);
+
+            OWLOntology ontology2 = OWLSerializer.Deserialize(owxOntology);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
+            Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
+            Assert.IsTrue(ontology2.Prefixes.Count == 5);
             Assert.IsTrue(ontology2.Imports.Count == 1);
             Assert.IsTrue(ontology2.Axioms.Count == 1);
         }
