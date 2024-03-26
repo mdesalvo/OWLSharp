@@ -40,7 +40,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
 
-        [XmlAttribute("cardinality", DataType = "nonNegativeInteger")]
+        [XmlAttribute("cardinality", DataType="nonNegativeInteger")]
         public string Cardinality { get; set; } = "0";
         #endregion
 
