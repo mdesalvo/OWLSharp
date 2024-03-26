@@ -243,7 +243,11 @@ namespace OWLSharp.Test.Serialization
             ontology.Axioms.Add(new OWLDisjointClassesAxiom(
             [
                 new OWLClass(new RDFResource("http://example.org/Cls1")),
-                new OWLClass(new RDFResource("http://example.org/Cls2"))
+                new OWLClass(new RDFResource("http://example.org/Cls2")),
+                new OWLObjectMinCardinality(
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")), 1),
+                new OWLObjectMinCardinality(
+                    new OWLObjectProperty(new RDFResource("http://example.org/objProp")), new OWLClass(new RDFResource("http://example.org/Cls1")), 0)
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);

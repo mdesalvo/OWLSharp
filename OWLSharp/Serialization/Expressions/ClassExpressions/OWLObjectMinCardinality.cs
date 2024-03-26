@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLObjectAllValuesFromOf : OWLClassExpression
+    public class OWLObjectMinCardinality : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
@@ -39,15 +39,20 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf", Order=2)]
         [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
+
+        [XmlAttribute("cardinality", DataType = "nonNegativeInteger")]
+        public string Cardinality { get; set; } = "0";
         #endregion
 
         #region Ctors
-        internal OWLObjectAllValuesFromOf() { }
-        public OWLObjectAllValuesFromOf(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression)
+        internal OWLObjectMinCardinality() { }
+        public OWLObjectMinCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality)
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFromOf because given \"objectPropertyExpression\" parameter is null");
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFromOf because given \"classExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectMinCardinality because given \"objectPropertyExpression\" parameter is null");
+            Cardinality = cardinality.ToString();
         }
+        public OWLObjectMinCardinality(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression, uint cardinality) : this(objectPropertyExpression, cardinality)
+            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectMinCardinality because given \"classExpression\" parameter is null");
         #endregion
     }
 }
