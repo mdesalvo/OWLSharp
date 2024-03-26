@@ -29,13 +29,15 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf")]
         [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf")]
         [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf")]
-        [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom")]
-        [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom")]
+        [XmlElement(typeof(OWLObjectSomeValuesFrom), ElementName="ObjectSomeValuesFrom")]
+        [XmlElement(typeof(OWLObjectAllValuesFrom), ElementName="ObjectAllValuesFrom")]
         [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue")]
         [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf")]
         [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality")]
         [XmlElement(typeof(OWLObjectMaxCardinality), ElementName="ObjectMaxCardinality")]
         [XmlElement(typeof(OWLObjectExactCardinality), ElementName="ObjectExactCardinality")]
+        [XmlElement(typeof(OWLDataSomeValuesFrom), ElementName="DataSomeValuesFrom")]
+        [XmlElement(typeof(OWLDataAllValuesFrom), ElementName="DataAllValuesFrom")]
         public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 

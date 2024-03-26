@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLObjectAllValuesFromOf : OWLClassExpression
+    public class OWLObjectAllValuesFrom : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
@@ -33,22 +33,24 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=2)]
         [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf", Order=2)]
         [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=2)]
-        [XmlElement(typeof(OWLObjectSomeValuesFromOf), ElementName="ObjectSomeValuesFrom", Order=2)]
-        [XmlElement(typeof(OWLObjectAllValuesFromOf), ElementName="ObjectAllValuesFrom", Order=2)]
+        [XmlElement(typeof(OWLObjectSomeValuesFrom), ElementName="ObjectSomeValuesFrom", Order=2)]
+        [XmlElement(typeof(OWLObjectAllValuesFrom), ElementName="ObjectAllValuesFrom", Order=2)]
         [XmlElement(typeof(OWLObjectHasValue), ElementName = "ObjectHasValue", Order=2)]
         [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf", Order=2)]
         [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality", Order=2)]
         [XmlElement(typeof(OWLObjectMaxCardinality), ElementName="ObjectMaxCardinality", Order=2)]
         [XmlElement(typeof(OWLObjectExactCardinality), ElementName="ObjectExactCardinality", Order=2)]
+        [XmlElement(typeof(OWLDataSomeValuesFrom), ElementName="DataSomeValuesFrom", Order=2)]
+        [XmlElement(typeof(OWLDataAllValuesFrom), ElementName="DataAllValuesFrom", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLObjectAllValuesFromOf() { }
-        public OWLObjectAllValuesFromOf(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression)
+        internal OWLObjectAllValuesFrom() { }
+        public OWLObjectAllValuesFrom(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression)
         {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFromOf because given \"objectPropertyExpression\" parameter is null");
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFromOf because given \"classExpression\" parameter is null");
+            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFrom because given \"objectPropertyExpression\" parameter is null");
+            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectAllValuesFrom because given \"classExpression\" parameter is null");
         }
         #endregion
     }

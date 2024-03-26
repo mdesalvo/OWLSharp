@@ -257,7 +257,6 @@ namespace OWLSharp.Test.Serialization
                     new OWLObjectProperty(new RDFResource("http://example.org/objProp")), 1),
                 new OWLObjectExactCardinality(
                     new OWLObjectProperty(new RDFResource("http://example.org/objProp")), new OWLClass(new RDFResource("http://example.org/Cls1")), 0),
-
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
@@ -269,7 +268,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
             Assert.IsTrue(ontology2.Imports.Count == 1);
-            Assert.IsTrue(ontology2.Axioms.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 2);
         }
 
         [TestMethod]
@@ -339,12 +338,19 @@ namespace OWLSharp.Test.Serialization
             ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
             ontology.Axioms.Add(new OWLEquivalentClassesAxiom(
             [
-                new OWLObjectSomeValuesFromOf(
+                new OWLObjectSomeValuesFrom(
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://example.org/objProp1"))),
                     new OWLClass(new RDFResource("http://example.org/Cls1"))),
-                new OWLObjectAllValuesFromOf(
+                new OWLObjectAllValuesFrom(
                     new OWLObjectProperty(new RDFResource("http://example.org/objProp2")),
                     new OWLClass(new XmlQualifiedName("Agent", RDFVocabulary.FOAF.BASE_URI))),
+                new OWLDataSomeValuesFrom(
+                    [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
+                    new OWLDatatype(RDFVocabulary.XSD.BOOLEAN)),
+                new OWLDataSomeValuesFrom(
+                    [new OWLDataProperty(new RDFResource("http://example.org/dtProp1")),
+                     new OWLDataProperty(new RDFResource("http://example.org/dtProp2"))],
+                    new OWLDatatype(RDFVocabulary.XSD.BOOLEAN)),
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
