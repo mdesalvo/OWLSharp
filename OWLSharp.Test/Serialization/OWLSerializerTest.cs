@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace OWLSharp.Test.Serialization
 {
     [TestClass]
-    public class OWLXMLSerializerTest
+    public class OWLSerializerTest
     {
         #region Tests
         [TestMethod]
