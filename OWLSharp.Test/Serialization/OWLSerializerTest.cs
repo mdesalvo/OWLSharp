@@ -313,7 +313,7 @@ namespace OWLSharp.Test.Serialization
         }
 
         [TestMethod]
-        public void ShouldSerializeAndDeserializeOntologyWithDisjointUnionAxiomHavingClassExpression()
+        public void ShouldSerializeAndDeserializeOntologyWithMultipleAxioms()
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
@@ -335,6 +335,12 @@ namespace OWLSharp.Test.Serialization
                             }))
                     })
                 }));
+            ontology.Axioms.Add(new OWLSubClassOfAxiom(
+                new OWLClass(new RDFResource("http://example.org/Cls1")),
+                new OWLClass(new RDFResource("http://example.org/Cls2"))));
+            ontology.Axioms.Add(new OWLSubClassOfAxiom(
+                new OWLClass(new RDFResource("http://example.org/Cls2")),
+                new OWLClass(new RDFResource("http://example.org/Cls3"))));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
 
@@ -345,7 +351,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 5);
             Assert.IsTrue(ontology2.Imports.Count == 1);
-            Assert.IsTrue(ontology2.Axioms.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 3);
         }
         #endregion
     }
