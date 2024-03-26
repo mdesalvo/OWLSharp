@@ -26,7 +26,7 @@ namespace OWLSharp
         [XmlAttribute("IRI", DataType="anyURI")]
         public string IRI { get; set; }
 
-        [XmlAttribute("AbbreviatedIRI", DataType="QName")]
+        [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
