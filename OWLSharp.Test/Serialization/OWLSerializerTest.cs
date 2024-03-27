@@ -398,6 +398,12 @@ namespace OWLSharp.Test.Serialization
                     [new OWLDataProperty(new RDFResource("http://example.org/dtProp1")),
                      new OWLDataProperty(new RDFResource("http://example.org/dtProp2"))],
                     new OWLDatatype(RDFVocabulary.XSD.BOOLEAN)),
+                new OWLDataSomeValuesFrom(
+                    [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI)),
+                        [new OWLFacetRestriction(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INT),
+                                                 new RDFResource("http://www.w3.org/2001/XMLSchema#minInclusive"))]))
             ]));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
