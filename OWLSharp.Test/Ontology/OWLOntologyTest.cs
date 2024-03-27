@@ -414,50 +414,6 @@ namespace OWLSharp.Test
         public async Task ShouldRaiseExceptionOnCreatingFromNullGraphAsync()
             => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromRDFGraphAsync(null));
 
-        [TestMethod]
-        public void ShouldCreateFromStore()
-        {
-            RDFMemoryStore store = new RDFMemoryStore();
-            store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx1"), new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-            store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx2"), new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology")));
-            OWLOntology ontology = OWLOntology.FromRDFStore(store);
-
-            Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.Equals(new RDFResource("ex:ont")));
-            Assert.IsNotNull(ontology.OBoxGraph);
-            Assert.IsTrue(ontology.OBoxGraph.Context.Equals(new Uri("ex:ont")));
-            Assert.IsTrue(ontology.OBoxGraph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
-            Assert.IsTrue(ontology.OBoxGraph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
-            Assert.IsNotNull(ontology.Model);
-            Assert.IsNotNull(ontology.Data);
-        }
-
-        [TestMethod]
-        public async Task  ShouldCreateFromStoreAsync()
-        {
-            RDFMemoryStore store = new RDFMemoryStore();
-            store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx1"), new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
-            store.AddQuadruple(new RDFQuadruple(new RDFContext("ex:ctx2"), new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("This is a test ontology")));
-            OWLOntology ontology = await OWLOntology.FromRDFStoreAsync(store);
-
-            Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.Equals(new RDFResource("ex:ont")));
-            Assert.IsNotNull(ontology.OBoxGraph);
-            Assert.IsTrue(ontology.OBoxGraph.Context.Equals(new Uri("ex:ont")));
-            Assert.IsTrue(ontology.OBoxGraph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].Any());
-            Assert.IsTrue(ontology.OBoxGraph[new RDFResource("ex:ont"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("This is a test ontology")].Any());
-            Assert.IsNotNull(ontology.Model);
-            Assert.IsNotNull(ontology.Data);
-        }
-
-        [TestMethod]
-        public void ShouldRaiseExceptionOnCreatingFromNullStore()
-            => Assert.ThrowsException<OWLException>(() => OWLOntology.FromRDFStore(null));
-
-        [TestMethod]
-        public async Task ShouldRaiseExceptionOnCreatingFromNullStoreAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromRDFStoreAsync(null));
-
         [TestCleanup]
         public void Cleanup()
         {
