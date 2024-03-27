@@ -24,7 +24,7 @@ namespace OWLSharp
         [XmlIgnore]
         public bool IsInference { get; set; }
         [XmlIgnore]
-        internal int SerializationOrder { get; set; }
+        public int SerializationPriority { get; set; }
         #endregion
     }
 
@@ -32,31 +32,31 @@ namespace OWLSharp
 
     public class OWLAnnotationAxiom : OWLAxiom 
     {
-        internal OWLAnnotationAxiom() => SerializationOrder = 7;
+        internal OWLAnnotationAxiom() => SerializationPriority = 7;
     }
 
     public class OWLAssertionAxiom : OWLAxiom
     {
-        internal OWLAssertionAxiom() => SerializationOrder = 6;
+        internal OWLAssertionAxiom() => SerializationPriority = 6;
     }
 
     public class OWLClassAxiom : OWLAxiom
     {
-        internal OWLClassAxiom() => SerializationOrder = 2;
+        internal OWLClassAxiom() => SerializationPriority = 2;
     }
 
     public class OWLDataPropertyAxiom : OWLAxiom
     {
-        internal OWLDataPropertyAxiom() => SerializationOrder = 4;
+        internal OWLDataPropertyAxiom() => SerializationPriority = 4;
     }
 
     public class OWLHasKeyAxiom : OWLAxiom
     {
-        internal OWLHasKeyAxiom() => SerializationOrder = 5;
+        internal OWLHasKeyAxiom() => SerializationPriority = 5;
     }
 
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
-        internal OWLObjectPropertyAxiom() => SerializationOrder = 3;
+        internal OWLObjectPropertyAxiom() => SerializationPriority = 3;
     }
 }

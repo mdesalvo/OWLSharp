@@ -144,7 +144,8 @@ namespace OWLSharp.Test.Serialization
                 new OWLClass(new XmlQualifiedName("Cls1", "http://example.org/classes/")),
                 new OWLClass(new RDFResource("http://example.org/Cls2"))));
             ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
-            ontology.Axioms.Add(new OWLDeclarationAxiom(new OWLClass(new RDFResource("http://example.org/Cls2"))));
+            ontology.Axioms.Add(new OWLDeclarationAxiom(new OWLClass(new RDFResource("http://example.org/Cls2"))) { IsInference=true, SerializationPriority=12 });
+            ontology.Axioms.Add(new OWLDeclarationAxiom(new OWLClass(new RDFResource("http://example.org/Cls3"))));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
 
@@ -155,7 +156,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
             Assert.IsTrue(ontology2.Imports.Count == 1);
-            Assert.IsTrue(ontology2.Axioms.Count == 2);
+            Assert.IsTrue(ontology2.Axioms.Count == 3);
         }
 
         [TestMethod]
