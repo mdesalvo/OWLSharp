@@ -18,7 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLDeclarationAxiom : OWLAxiom
+    public partial class OWLDeclarationAxiom : OWLAxiom
     {
         #region Properties
         //Register here derived types of (in-scope) OWLExpression
@@ -32,7 +32,6 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        internal OWLDeclarationAxiom() => SerializationPriority = 1;
         public OWLDeclarationAxiom(OWLClass classIRI) : this()
             => Expression = classIRI ?? throw new OWLException("Cannot create OWLDeclarationAxiom because given \"classIRI\" parameter is null");
         public OWLDeclarationAxiom(OWLDatatype datatypeIRI) : this()
