@@ -48,8 +48,8 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        internal OWLDisjointUnionAxiom() { }
-        public OWLDisjointUnionAxiom(OWLClass classIRI, List<OWLClassExpression> classExpressions) 
+        internal OWLDisjointUnionAxiom() : base() { }
+        public OWLDisjointUnionAxiom(OWLClass classIRI, List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards
             if (classIRI == null)

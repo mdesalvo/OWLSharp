@@ -65,8 +65,8 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        internal OWLSubClassOfAxiom() { }
-        public OWLSubClassOfAxiom(OWLClassExpression subClassExpression, OWLClassExpression superClassExpression) 
+        internal OWLSubClassOfAxiom() : base() { }
+        public OWLSubClassOfAxiom(OWLClassExpression subClassExpression, OWLClassExpression superClassExpression) : this()
         {
             SubClassExpression = subClassExpression ?? throw new OWLException("Cannot create OWLSubClassOfAxiom because given \"subClassExpression\" parameter is null");
             SuperClassExpression = superClassExpression ?? throw new OWLException("Cannot create OWLSubClassOfAxiom because given \"superClassExpression\" parameter is null");

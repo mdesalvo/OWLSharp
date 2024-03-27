@@ -19,6 +19,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
+using System;
 
 namespace OWLSharp
 {
@@ -42,6 +43,8 @@ namespace OWLSharp
             xmlSerializerNamespaces.Add(RDFVocabulary.XML.PREFIX, RDFVocabulary.XML.BASE_URI);
             //Initialize user-declared prefixes
             ontology.Prefixes.ForEach(pfx => xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI));
+            //Reorder axioms for pretty-printing
+            ontology.Axioms.Sort((ax1,ax2) => ax1.SerializationOrder.CompareTo(ax2.SerializationOrder));
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())

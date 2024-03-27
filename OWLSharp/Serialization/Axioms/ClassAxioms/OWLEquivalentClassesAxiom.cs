@@ -45,8 +45,8 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        internal OWLEquivalentClassesAxiom() { }
-        public OWLEquivalentClassesAxiom(List<OWLClassExpression> classExpressions) 
+        internal OWLEquivalentClassesAxiom() : base() { }
+        public OWLEquivalentClassesAxiom(List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards
             if (classExpressions == null)

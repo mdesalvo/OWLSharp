@@ -14,21 +14,49 @@
    limitations under the License.
 */
 
+using System.Xml.Serialization;
+
 namespace OWLSharp
 {
-    public abstract class OWLAxiom { }
+    public class OWLAxiom 
+    {
+        #region Properties
+        [XmlIgnore]
+        public bool IsInference { get; set; }
+        [XmlIgnore]
+        internal int SerializationOrder { get; set; }
+        #endregion
+    }
 
     //Derived
 
-    public abstract class OWLAnnotationAxiom : OWLAxiom { }
+    public class OWLAnnotationAxiom : OWLAxiom 
+    {
+        internal OWLAnnotationAxiom() => SerializationOrder = 7;
+    }
 
-    public abstract class OWLAssertionAxiom : OWLAxiom { }
+    public class OWLAssertionAxiom : OWLAxiom
+    {
+        internal OWLAssertionAxiom() => SerializationOrder = 6;
+    }
 
-    public abstract class OWLClassAxiom : OWLAxiom { }
+    public class OWLClassAxiom : OWLAxiom
+    {
+        internal OWLClassAxiom() => SerializationOrder = 2;
+    }
 
-    public abstract class OWLDataPropertyAxiom : OWLAxiom { }
+    public class OWLDataPropertyAxiom : OWLAxiom
+    {
+        internal OWLDataPropertyAxiom() => SerializationOrder = 4;
+    }
 
-    public abstract class OWLHasKeyAxiom : OWLAxiom { }
+    public class OWLHasKeyAxiom : OWLAxiom
+    {
+        internal OWLHasKeyAxiom() => SerializationOrder = 5;
+    }
 
-    public abstract class OWLObjectPropertyAxiom : OWLAxiom { }
+    public class OWLObjectPropertyAxiom : OWLAxiom
+    {
+        internal OWLObjectPropertyAxiom() => SerializationOrder = 3;
+    }
 }

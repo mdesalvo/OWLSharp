@@ -32,18 +32,18 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        internal OWLDeclarationAxiom() { }
-        public OWLDeclarationAxiom(OWLClass classIRI) 
+        internal OWLDeclarationAxiom() => SerializationOrder = 1;
+        public OWLDeclarationAxiom(OWLClass classIRI) : this()
             => Expression = classIRI ?? throw new OWLException("Cannot create OWLDeclarationAxiom because given \"classIRI\" parameter is null");
-        public OWLDeclarationAxiom(OWLDatatype datatypeIRI) 
+        public OWLDeclarationAxiom(OWLDatatype datatypeIRI) : this()
             => Expression = datatypeIRI ?? throw new OWLException("Cannot create OWLDeclarationAxiom because given \"datatypeIRI\" parameter is null");
-        public OWLDeclarationAxiom(OWLObjectProperty objectPropertyIRI) 
+        public OWLDeclarationAxiom(OWLObjectProperty objectPropertyIRI) : this()
             => Expression = objectPropertyIRI ?? throw new OWLException("Cannot create OWLDeclarationAxiom because given \"objectPropertyIRI\" parameter is null");
-        public OWLDeclarationAxiom(OWLDataProperty dataPropertyIRI) 
+        public OWLDeclarationAxiom(OWLDataProperty dataPropertyIRI) : this()
             => Expression = dataPropertyIRI ?? throw new OWLException("Cannot create OWLDeclarationAxiom because given \"dataPropertyIRI\" parameter is null");
-        public OWLDeclarationAxiom(OWLAnnotationProperty annotationPropertyIRI) 
+        public OWLDeclarationAxiom(OWLAnnotationProperty annotationPropertyIRI) : this()
             => Expression = annotationPropertyIRI ?? throw new OWLException("Cannot create OWLDeclarationAxiom because given \"annotationPropertyIRI\" parameter is null");
-        public OWLDeclarationAxiom(OWLNamedIndividual namedIndividualIRI) 
+        public OWLDeclarationAxiom(OWLNamedIndividual namedIndividualIRI) : this()
             => Expression = namedIndividualIRI ?? throw new OWLException("Cannot create OWLDeclarationAxiom because given \"namedIndividualIRI\" parameter is null");
         #endregion
     }

@@ -140,10 +140,11 @@ namespace OWLSharp.Test.Serialization
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Prefixes.Add(new OWLPrefix(new RDFNamespace("ex", "http://example.org/classes/")));
-            ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
             ontology.Axioms.Add(new OWLSubClassOfAxiom(
                 new OWLClass(new XmlQualifiedName("Cls1", "http://example.org/classes/")),
                 new OWLClass(new RDFResource("http://example.org/Cls2"))));
+            ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
+            ontology.Axioms.Add(new OWLDeclarationAxiom(new OWLClass(new RDFResource("http://example.org/Cls2"))));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
 
@@ -154,7 +155,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
             Assert.IsTrue(ontology2.Imports.Count == 1);
-            Assert.IsTrue(ontology2.Axioms.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 2);
         }
 
         [TestMethod]

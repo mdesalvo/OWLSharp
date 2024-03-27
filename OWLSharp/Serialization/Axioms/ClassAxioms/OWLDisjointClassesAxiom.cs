@@ -45,8 +45,8 @@ namespace OWLSharp
         #endregion
 
         #region Ctors
-        internal OWLDisjointClassesAxiom() { }
-        public OWLDisjointClassesAxiom(List<OWLClassExpression> classExpressions) 
+        internal OWLDisjointClassesAxiom() : base() { }
+        public OWLDisjointClassesAxiom(List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards
             if (classExpressions == null)
