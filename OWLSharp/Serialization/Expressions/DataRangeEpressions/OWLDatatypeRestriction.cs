@@ -62,7 +62,7 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLFacetRestriction() { }
-        public OWLFacetRestriction(RDFTypedLiteral literal, RDFResource facetIRI)
+        public OWLFacetRestriction(RDFLiteral literal, RDFResource facetIRI)
         {
             #region Guards
             if (literal == null)
