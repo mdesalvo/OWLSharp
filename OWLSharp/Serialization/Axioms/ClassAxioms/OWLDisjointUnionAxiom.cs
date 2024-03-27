@@ -22,7 +22,7 @@ namespace OWLSharp
     public class OWLDisjointUnionAxiom : OWLClassAxiom
     {
         #region Properties
-        [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
+        [XmlElement("Class", Order=1)]
         public OWLClass ClassIRI { get; set; }
 
         //Register here all derived types of OWLClassExpression

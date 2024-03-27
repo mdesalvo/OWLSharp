@@ -22,7 +22,7 @@ namespace OWLSharp
     public class OWLObjectInverseOf : OWLObjectPropertyExpression
     {
         #region Properties
-        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty")]
+        [XmlElement("ObjectProperty")]
         public OWLObjectProperty ObjectProperty { get; set; }
         #endregion
 
