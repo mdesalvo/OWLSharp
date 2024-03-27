@@ -28,6 +28,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf")]
         [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf")]
         [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf")]
+        [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction")]
         public OWLDataRangeExpression DataRangeExpression { get; set; }
         #endregion
 

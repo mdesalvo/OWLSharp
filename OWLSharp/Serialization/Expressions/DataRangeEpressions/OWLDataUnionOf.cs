@@ -23,11 +23,13 @@ namespace OWLSharp
     public class OWLDataUnionOf : OWLDataRangeExpression
     {
         #region Properties
-        [XmlElement(typeof(OWLDatatype), ElementName = "Datatype")]
-        [XmlElement(typeof(OWLDataIntersectionOf), ElementName = "DataIntersectionOf")]
-        [XmlElement(typeof(OWLDataUnionOf), ElementName = "DataUnionOf")]
-        [XmlElement(typeof(OWLDataComplementOf), ElementName = "DataComplementOf")]
-        [XmlElement(typeof(OWLDataOneOf), ElementName = "DataOneOf")]
+        //Register here all derived types of OWLDataRangeExpression
+        [XmlElement(typeof(OWLDatatype), ElementName="Datatype")]
+        [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf")]
+        [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf")]
+        [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf")]
+        [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf")]
+        [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction")]
         public List<OWLDataRangeExpression> DataRangeExpressions { get; set; }
         #endregion
 

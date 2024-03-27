@@ -32,6 +32,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=2)]
         [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf", Order=2)]
         [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf", Order=2)]
+        [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=2)]
         public OWLDataRangeExpression DataRangeExpression { get; set; }
 
         [XmlAttribute("cardinality", DataType="nonNegativeInteger")]
