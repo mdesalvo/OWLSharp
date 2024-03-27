@@ -29,6 +29,10 @@ namespace OWLSharp
 
         //Register here all derived types of OWLDataRangeExpression
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
+        [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=2)]
+        [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=2)]
+        [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf", Order=2)]
+        [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf", Order=2)]
         public OWLDataRangeExpression DataRangeExpression { get; set; }
         #endregion
 
