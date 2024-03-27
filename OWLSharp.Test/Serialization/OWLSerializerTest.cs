@@ -172,6 +172,16 @@ namespace OWLSharp.Test.Serialization
                     new OWLClass(new RDFResource("http://example.org/Cls2")),
                     new OWLClass(new RDFResource("http://example.org/Cls3"))
                 ])));
+            ontology.Axioms.Add(new OWLDatatypeDefinitionAxiom(
+                new OWLDatatype(new RDFResource("http://example.org/minorAge")),
+                new OWLDatatypeRestriction(
+                    new OWLDatatype(RDFVocabulary.XSD.INT),
+                    [ new OWLFacetRestriction(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INT), 
+                                              new RDFResource("http://www.w3.org/2001/XMLSchema#minInclusive")),
+                      new OWLFacetRestriction(new RDFTypedLiteral("18", RDFModelEnums.RDFDatatypes.XSD_INT),
+                                              new RDFResource("http://www.w3.org/2001/XMLSchema#maxInclusive"))
+                    ]
+                )));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
 
@@ -182,7 +192,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
             Assert.IsTrue(ontology2.Imports.Count == 1);
-            Assert.IsTrue(ontology2.Axioms.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 2);
         }
 
         [TestMethod]
