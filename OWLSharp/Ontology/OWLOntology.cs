@@ -276,30 +276,6 @@ namespace OWLSharp
         /// </summary>
         public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph, OWLOntologyLoaderOptions loaderOptions)
             => Task.Run(() => FromRDFGraph(graph, loaderOptions));
-
-        /// <summary>
-        /// Gets an ontology representation from the given store
-        /// </summary>
-        public static OWLOntology FromRDFStore(RDFStore store)
-            => FromRDFStore(store, OWLOntologyLoaderOptions.DefaultOptions);
-
-        /// <summary>
-        /// Gets an ontology representation from the given store (applying the given loader options)
-        /// </summary>
-        public static OWLOntology FromRDFStore(RDFStore store, OWLOntologyLoaderOptions loaderOptions)
-            => OWLOntologyLoader.FromRDFStore(store, loaderOptions);
-
-        /// <summary>
-        /// Asynchronously gets an ontology representation from the given store
-        /// </summary>
-        public static Task<OWLOntology> FromRDFStoreAsync(RDFStore store)
-            => Task.Run(() => FromRDFStore(store));
-
-        /// <summary>
-        /// Asynchronously gets an ontology representation from the given store (applying the given loader options)
-        /// </summary>
-        public static Task<OWLOntology> FromRDFStoreAsync(RDFStore store, OWLOntologyLoaderOptions loaderOptions)
-            => Task.Run(() => FromRDFStore(store, loaderOptions));
         #endregion
     }
 }
