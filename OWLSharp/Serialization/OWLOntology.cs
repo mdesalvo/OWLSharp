@@ -44,6 +44,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLDisjointClassesAxiom), ElementName="DisjointClasses")]
         [XmlElement(typeof(OWLDisjointUnionAxiom), ElementName="DisjointUnion")]
         [XmlElement(typeof(OWLDatatypeDefinitionAxiom), ElementName="DatatypeDefinition")]
+        [XmlElement(typeof(OWLHasKeyAxiom), ElementName="HasKey")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 

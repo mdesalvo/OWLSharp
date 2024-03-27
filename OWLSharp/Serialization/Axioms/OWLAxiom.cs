@@ -55,7 +55,7 @@ namespace OWLSharp
         internal OWLDatatypeDefinitionAxiom() => SerializationPriority=5;
     }
 
-    public class OWLHasKeyAxiom : OWLAxiom
+    public partial class OWLHasKeyAxiom : OWLAxiom
     {
         internal OWLHasKeyAxiom() => SerializationPriority=6;
     }
