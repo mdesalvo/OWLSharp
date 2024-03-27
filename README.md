@@ -14,3 +14,6 @@ In addition to the <a href="https://github.com/mdesalvo/OWLSharp/releases/downlo
     <li>Creating schemes describing, documenting and organizing vocabularies of concepts (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.SKOS-3.10.0.pdf">SKOS</a>)</li>
     <li>Modeling and relating features having a spatiotemporal representation (<a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.GEO-3.10.0.pdf">GeoSPARQL</a>, <a href="https://github.com/mdesalvo/OWLSharp/releases/download/v3.10.0/OWLSharp.Extensions.TIME-3.10.0.pdf">OWL-TIME</a>)</li>
 </ul>
+<hr/>
+
+Development of <b>OWLSharp v4</b> has started! Track the progress <a href="https://github.com/mdesalvo/OWLSharp/tree/v4">here</a> to stay tuned for the next big thing :)
