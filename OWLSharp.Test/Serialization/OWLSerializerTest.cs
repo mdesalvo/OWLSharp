@@ -381,6 +381,20 @@ namespace OWLSharp.Test.Serialization
                     [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
                     new OWLDatatype(RDFVocabulary.XSD.BOOLEAN)),
                 new OWLDataSomeValuesFrom(
+                    [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
+                    new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.BOOLEAN))),
+                new OWLDataAllValuesFrom(
+                    [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
+                    new OWLDataIntersectionOf([new OWLDatatype(RDFVocabulary.XSD.BOOLEAN),new OWLDatatype(RDFVocabulary.XSD.INT)])),
+                new OWLDataAllValuesFrom(
+                    [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
+                    new OWLDataUnionOf([new OWLDatatype(RDFVocabulary.XSD.BOOLEAN),new OWLDatatype(RDFVocabulary.XSD.INT)])),
+                new OWLDataAllValuesFrom(
+                    [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
+                    new OWLDataOneOf([new OWLLiteral(new RDFPlainLiteral("hello")),
+                                      new OWLLiteral(new RDFPlainLiteral("hello","en-US--rtl")),
+                                      new OWLLiteral(new RDFTypedLiteral("34.77", RDFModelEnums.RDFDatatypes.XSD_FLOAT))])),
+                new OWLDataSomeValuesFrom(
                     [new OWLDataProperty(new RDFResource("http://example.org/dtProp1")),
                      new OWLDataProperty(new RDFResource("http://example.org/dtProp2"))],
                     new OWLDatatype(RDFVocabulary.XSD.BOOLEAN)),
