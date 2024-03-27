@@ -24,10 +24,10 @@ namespace OWLSharp
     public class OWLDatatypeRestriction : OWLDataRangeExpression
     {
         #region Properties
-        [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=1)]
+        [XmlElement("Datatype", Order=1)]
         public OWLDatatype Datatype { get; set; }
 
-        [XmlElement(typeof(OWLFacetRestriction), ElementName="FacetRestriction", Order=2)]
+        [XmlElement("FacetRestriction", Order=2)]
         public List<OWLFacetRestriction> FacetRestrictions { get; set; }
         #endregion
 
