@@ -24,13 +24,13 @@ namespace OWLSharp
 
     public abstract class OWLClassExpression : OWLExpression { }
 
+    public abstract class OWLDataRangeExpression : OWLExpression { }
+
     public abstract class OWLDataPropertyExpression : OWLExpression { }
 
-    public abstract class OWLDataRangeExpression : OWLExpression { }
+    public abstract class OWLObjectPropertyExpression : OWLExpression { }
 
     public abstract class OWLIndividualExpression : OWLExpression { }
 
     public abstract class OWLLiteralExpression : OWLExpression { }
-
-    public abstract class OWLObjectPropertyExpression : OWLExpression { }
 }

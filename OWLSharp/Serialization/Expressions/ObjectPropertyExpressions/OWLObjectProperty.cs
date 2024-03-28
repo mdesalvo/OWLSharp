@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -36,6 +37,31 @@ namespace OWLSharp
             => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLObjectProperty because given \"iri\" parameter is null");
         public OWLObjectProperty(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLObjectProperty because given \"abbreviatedIri\" parameter is null");
+        #endregion
+    }
+
+    public class OWLObjectPropertyChain
+    {
+        #region Properties
+        //Register here all derived types of OWLObjectPropertyExpression
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty")]
+        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf")]
+        public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
+        #endregion
+
+        #region Ctors
+        internal OWLObjectPropertyChain() { }
+        public OWLObjectPropertyChain(List<OWLObjectPropertyExpression> objectPropertyExpressions)
+        {
+            #region Guards
+            if (objectPropertyExpressions == null)
+                throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter is null");
+            if (objectPropertyExpressions.Count < 2)
+                throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter must contain at least 2 elements");
+            #endregion
+
+            ObjectPropertyExpressions = objectPropertyExpressions;
+        }
         #endregion
     }
 }
