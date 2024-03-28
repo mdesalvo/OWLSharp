@@ -39,13 +39,16 @@ namespace OWLSharp
 
         //Register here all derived types of OWLAxiom
         [XmlElement(typeof(OWLDeclarationAxiom), ElementName="Declaration")]
-        [XmlElement(typeof(OWLDatatypeDefinitionAxiom), ElementName="DatatypeDefinition")]
         [XmlElement(typeof(OWLSubClassOfAxiom), ElementName="SubClassOf")]
         [XmlElement(typeof(OWLEquivalentClassesAxiom), ElementName="EquivalentClasses")]
         [XmlElement(typeof(OWLDisjointClassesAxiom), ElementName="DisjointClasses")]
         [XmlElement(typeof(OWLDisjointUnionAxiom), ElementName="DisjointUnion")]        
         [XmlElement(typeof(OWLHasKeyAxiom), ElementName="HasKey")]
+        [XmlElement(typeof(OWLDatatypeDefinitionAxiom), ElementName="DatatypeDefinition")]
         [XmlElement(typeof(OWLSubObjectPropertyOfAxiom), ElementName="SubObjectPropertyOf")]
+        [XmlElement(typeof(OWLEquivalentObjectPropertiesAxiom), ElementName="EquivalentObjectProperties")]
+        [XmlElement(typeof(OWLDisjointObjectPropertiesAxiom), ElementName="DisjointObjectProperties")]
+        [XmlElement(typeof(OWLInverseObjectPropertiesAxiom), ElementName="InverseObjectProperties")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
