@@ -23,19 +23,19 @@ namespace OWLSharp
         #region Properties
         //Register here all derived types of OWLDataPropertyExpression
         [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
-        public OWLDataPropertyExpression SubObjectPropertyExpression { get; set; }
+        public OWLDataPropertyExpression SubDataPropertyExpression { get; set; }
 
         //Register here all derived types of OWLDataPropertyExpression
         [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
-        public OWLDataPropertyExpression SuperObjectPropertyExpression { get; set; }
+        public OWLDataPropertyExpression SuperDataPropertyExpression { get; set; }
         #endregion
 
         #region Ctors
         internal OWLSubDataPropertyOfAxiom() : base() { }
         public OWLSubDataPropertyOfAxiom(OWLDataPropertyExpression subDataPropertyExpression, OWLDataPropertyExpression superDataPropertyExpression) : this()
         {
-            SubObjectPropertyExpression = subDataPropertyExpression ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"subDataPropertyExpression\" parameter is null");
-            SuperObjectPropertyExpression = superDataPropertyExpression ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"superDataPropertyExpression\" parameter is null");
+            SubDataPropertyExpression = subDataPropertyExpression ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"subDataPropertyExpression\" parameter is null");
+            SuperDataPropertyExpression = superDataPropertyExpression ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"superDataPropertyExpression\" parameter is null");
         }
         #endregion
     }
