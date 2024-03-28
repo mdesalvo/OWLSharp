@@ -18,7 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    public class OWLDataPropertyDomainAxiom : OWLObjectPropertyAxiom
+    public class OWLDataPropertyDomainAxiom : OWLDataPropertyAxiom
     {
         #region Properties
         //Register here all derived types of OWLDataPropertyExpression
