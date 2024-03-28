@@ -51,6 +51,13 @@ namespace OWLSharp
         [XmlElement(typeof(OWLInverseObjectPropertiesAxiom), ElementName="InverseObjectProperties")]
         [XmlElement(typeof(OWLObjectPropertyDomainAxiom), ElementName="ObjectPropertyDomain")]
         [XmlElement(typeof(OWLObjectPropertyRangeAxiom), ElementName="ObjectPropertyRange")]
+        [XmlElement(typeof(OWLFunctionalObjectPropertyAxiom), ElementName="FunctionalObjectProperty")]
+        [XmlElement(typeof(OWLInverseFunctionalObjectPropertyAxiom), ElementName="InverseFunctionalObjectProperty")]
+        [XmlElement(typeof(OWLReflexiveObjectPropertyAxiom), ElementName="ReflexiveObjectProperty")]
+        [XmlElement(typeof(OWLIrreflexiveObjectPropertyAxiom), ElementName="IrreflexiveObjectProperty")]
+        [XmlElement(typeof(OWLSymmetricObjectPropertyAxiom), ElementName="SymmetricObjectProperty")]
+        [XmlElement(typeof(OWLAsymmetricObjectPropertyAxiom), ElementName="AsymmetricObjectProperty")]
+        [XmlElement(typeof(OWLTransitiveObjectPropertyAxiom), ElementName="TransitiveObjectProperty")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
