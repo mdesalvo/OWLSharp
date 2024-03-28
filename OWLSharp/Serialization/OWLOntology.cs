@@ -49,6 +49,8 @@ namespace OWLSharp
         [XmlElement(typeof(OWLEquivalentObjectPropertiesAxiom), ElementName="EquivalentObjectProperties")]
         [XmlElement(typeof(OWLDisjointObjectPropertiesAxiom), ElementName="DisjointObjectProperties")]
         [XmlElement(typeof(OWLInverseObjectPropertiesAxiom), ElementName="InverseObjectProperties")]
+        [XmlElement(typeof(OWLObjectPropertyDomainAxiom), ElementName="ObjectPropertyDomain")]
+        [XmlElement(typeof(OWLObjectPropertyRangeAxiom), ElementName="ObjectPropertyRange")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
