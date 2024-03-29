@@ -31,6 +31,14 @@ namespace OWLSharp.Test
             Assert.IsNotNull(import);
             Assert.IsTrue(string.Equals(import.IRI, RDFVocabulary.FOAF.BASE_URI));
         }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingImportBecauseNullUri()
+            => Assert.ThrowsException<OWLException>(() => new OWLImport(null));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingImportBecauseBlankUri()
+            => Assert.ThrowsException<OWLException>(() => new OWLImport(new RDFResource()));
         #endregion
     }
 }
