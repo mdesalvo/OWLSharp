@@ -39,6 +39,16 @@ namespace OWLSharp.Test
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingImportBecauseBlankUri()
             => Assert.ThrowsException<OWLException>(() => new OWLImport(new RDFResource()));
+
+        [TestMethod]
+        public void ShouldSerializeImport()
+        {
+            OWLImport import = new OWLImport(new RDFResource(RDFVocabulary.FOAF.BASE_URI));
+            string serializedXML = OWLTestSerializer<OWLImport>.Serialize(import);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLImport>http://xmlns.com/foaf/0.1/</OWLImport>"));          
+        }
         #endregion
     }
 }

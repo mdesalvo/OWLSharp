@@ -36,6 +36,16 @@ namespace OWLSharp.Test
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingImportBecauseNullNamepsace()
             => Assert.ThrowsException<OWLException>(() => new OWLPrefix(null));
+
+        [TestMethod]
+        public void ShouldSerializePrefix()
+        {
+            OWLPrefix prefix = new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX));
+            string serializedXML = OWLTestSerializer<OWLPrefix>.Serialize(prefix);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLPrefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />"));          
+        }
         #endregion
     }
 }
