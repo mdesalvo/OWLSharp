@@ -23,8 +23,8 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLIndividualExpression
-        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual")]
-        [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual")]
+        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
+        [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=2)]
         public List<OWLIndividualExpression> IndividualExpressions { get; set; }
         #endregion
 

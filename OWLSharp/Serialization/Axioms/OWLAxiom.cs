@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace OWLSharp
@@ -25,6 +26,12 @@ namespace OWLSharp
         public bool IsInference { get; set; }
         [XmlIgnore]
         public int SerializationPriority { get; set; }
+        [XmlElement("Annotation", Order=1)]
+        public List<OWLAnnotation> AxiomAnnotations { get; set; }
+        #endregion
+
+        #region Ctors
+        internal OWLAxiom() => AxiomAnnotations = new List<OWLAnnotation>();
         #endregion
     }
 

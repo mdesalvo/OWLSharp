@@ -24,13 +24,13 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLAnnotationPropertyExpression
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
+        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
         public OWLAnnotationPropertyExpression AnnotationPropertyExpression { get; set; }
 
-        [XmlElement("IRI", DataType="anyURI", Order=2)]
+        [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string IRI { get; set; }
 
-        [XmlElement("AbbreviatedIRI", DataType="QName", Order=3)]
+        [XmlElement("AbbreviatedIRI", DataType="QName", Order=4)]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 

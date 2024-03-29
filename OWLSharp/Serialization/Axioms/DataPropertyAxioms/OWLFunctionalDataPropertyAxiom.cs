@@ -22,7 +22,7 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty")]
+        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
         public OWLDataPropertyExpression DataPropertyExpression { get; set; }
         #endregion
 

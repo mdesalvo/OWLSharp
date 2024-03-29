@@ -22,11 +22,11 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLAnnotationPropertyExpression
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
+        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
         public OWLAnnotationPropertyExpression SubAnnotationPropertyExpression { get; set; }
 
         //Register here all derived types of OWLAnnotationPropertyExpression
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
+        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=3)]
         public OWLAnnotationPropertyExpression SuperAnnotationPropertyExpression { get; set; }
         #endregion
 

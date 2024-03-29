@@ -24,28 +24,28 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLAnnotationPropertyExpression
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
+        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
         public OWLAnnotationPropertyExpression AnnotationPropertyExpression { get; set; }
 
         //AnnotationSubject (cannot be a self-object, since this would introduce an additional XmlElement)
 
-        [XmlElement("IRI", DataType="anyURI", Order=2)]
+        [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string SubjectIRI { get; set; }
-        [XmlElement("AbbreviatedIRI", DataType="QName", Order=3)]
+        [XmlElement("AbbreviatedIRI", DataType="QName", Order=4)]
         public XmlQualifiedName SubjectAbbreviatedIRI { get; set; }
-        [XmlElement("AnonymousIndividual", Order=4)]
+        [XmlElement("AnonymousIndividual", Order=5)]
         public OWLAnonymousIndividual SubjectAnonymousIndividual { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
-        [XmlElement("IRI", DataType="anyURI", Order=5)]
+        [XmlElement("IRI", DataType="anyURI", Order=6)]
         public string ValueIRI { get; set; }
-        [XmlElement("AbbreviatedIRI", DataType="QName", Order=6)]
+        [XmlElement("AbbreviatedIRI", DataType="QName", Order=7)]
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
-        [XmlElement("AnonymousIndividual", Order=7)]
+        [XmlElement("AnonymousIndividual", Order=8)]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
         //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=8)]
+        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=9)]
         public OWLLiteralExpression ValueLiteralExpression { get; set; }
         #endregion
 

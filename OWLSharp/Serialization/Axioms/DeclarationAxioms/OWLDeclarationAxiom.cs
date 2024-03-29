@@ -22,12 +22,12 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of "declarable" OWLExpression
-        [XmlElement(typeof(OWLClass), ElementName="Class")]
-        [XmlElement(typeof(OWLDatatype), ElementName="Datatype")]
-        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty")]
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty")]
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty")]
-        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual")]
+        [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
+        [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
+        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
+        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
+        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
         public OWLExpression Expression { get; set; }
         #endregion
 

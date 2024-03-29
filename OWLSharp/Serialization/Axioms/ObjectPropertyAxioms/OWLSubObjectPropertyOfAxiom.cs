@@ -22,16 +22,16 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
-        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
-        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=1)]
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
+        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression SubObjectPropertyExpression { get; set; }
 
-        [XmlElement("ObjectPropertyChain", Order=2)]
+        [XmlElement("ObjectPropertyChain", Order=3)]
         public OWLObjectPropertyChain SubObjectPropertyChain { get; set; }
 
         //Register here all derived types of OWLObjectPropertyExpression
-        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=3)]
-        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=3)]
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=4)]
+        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=4)]
         public OWLObjectPropertyExpression SuperObjectPropertyExpression { get; set; }
         #endregion
 

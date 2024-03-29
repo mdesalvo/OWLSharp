@@ -22,16 +22,16 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
+        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
         public OWLDataPropertyExpression DataPropertyExpression { get; set; }
 
         //Register here all derived types of OWLDataRangeExpression
-        [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
-        [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=2)]
-        [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=2)]
-        [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf", Order=2)]
-        [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf", Order=2)]
-        [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=2)]
+        [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=3)]
+        [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=3)]
+        [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=3)]
+        [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf", Order=3)]
+        [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf", Order=3)]
+        [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=3)]
         public OWLDataRangeExpression DataRangeExpression { get; set; }
         #endregion
 

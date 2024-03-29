@@ -22,18 +22,18 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
-        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
-        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=1)]
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
+        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
-
-        //Register here all derived types of OWLIndividualExpression
-        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
-        [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=2)]
-        public OWLIndividualExpression SourceIndividualExpression { get; set; }
 
         //Register here all derived types of OWLIndividualExpression
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=3)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
+        public OWLIndividualExpression SourceIndividualExpression { get; set; }
+
+        //Register here all derived types of OWLIndividualExpression
+        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=4)]
+        [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=4)]
         public OWLIndividualExpression TargetIndividualExpression { get; set; }
         #endregion
 

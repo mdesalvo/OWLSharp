@@ -22,16 +22,16 @@ namespace OWLSharp
     {
         #region Properties
         //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
+        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
         public OWLDataPropertyExpression DataPropertyExpression { get; set; }
 
         //Register here all derived types of OWLIndividualExpression
-        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=2)]
-        [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=2)]
+        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=3)]
+        [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
         public OWLIndividualExpression SourceIndividualExpression { get; set; }
 
         //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=3)]
+        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=4)]
         public OWLLiteralExpression TargetLiteralExpression { get; set; }
         #endregion
 

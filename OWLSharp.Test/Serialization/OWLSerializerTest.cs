@@ -113,7 +113,12 @@ namespace OWLSharp.Test.Serialization
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("http://example.org/Cls1"),
                 new RDFResource("http://example.org/Cls2")
-                ));
+                ) { 
+                    AxiomAnnotations = 
+                    [ 
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello!")))
+                    ] 
+                  });
             ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI),
