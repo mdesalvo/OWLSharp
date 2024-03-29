@@ -28,16 +28,16 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLImport() { }
-        public OWLImport(RDFResource importUri)
+        public OWLImport(RDFResource iri)
         {
             #region Guards
-            if (importUri == null)
-                throw new OWLException("Cannot create OWLImport because given \"importUri\" parameter is null");
-            if (importUri.IsBlank)
-                throw new OWLException("Cannot create OWLImport because given \"importUri\" parameter is a blank resource");
+            if (iri == null)
+                throw new OWLException("Cannot create OWLImport because given \"iri\" parameter is null");
+            if (iri.IsBlank)
+                throw new OWLException("Cannot create OWLImport because given \"iri\" parameter is a blank resource");
             #endregion
 
-            IRI = importUri.ToString();
+            IRI = iri.ToString();
         }
         #endregion
     }
