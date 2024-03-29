@@ -38,13 +38,14 @@ namespace OWLSharp
         public List<OWLImport> Imports { get; set; }
 
         //Register here all derived types of OWLAxiom
+        //OWLDeclarationAxiom
         [XmlElement(typeof(OWLDeclarationAxiom), ElementName="Declaration")]
-        [XmlElement(typeof(OWLDatatypeDefinitionAxiom), ElementName = "DatatypeDefinition")]
+        //OWLClassAxiom
         [XmlElement(typeof(OWLSubClassOfAxiom), ElementName="SubClassOf")]
         [XmlElement(typeof(OWLEquivalentClassesAxiom), ElementName="EquivalentClasses")]
         [XmlElement(typeof(OWLDisjointClassesAxiom), ElementName="DisjointClasses")]
         [XmlElement(typeof(OWLDisjointUnionAxiom), ElementName="DisjointUnion")]
-        [XmlElement(typeof(OWLHasKeyAxiom), ElementName="HasKey")]
+        //OWLObjectPropertyAxiom
         [XmlElement(typeof(OWLSubObjectPropertyOfAxiom), ElementName="SubObjectPropertyOf")]
         [XmlElement(typeof(OWLEquivalentObjectPropertiesAxiom), ElementName="EquivalentObjectProperties")]
         [XmlElement(typeof(OWLDisjointObjectPropertiesAxiom), ElementName="DisjointObjectProperties")]
@@ -58,12 +59,18 @@ namespace OWLSharp
         [XmlElement(typeof(OWLSymmetricObjectPropertyAxiom), ElementName="SymmetricObjectProperty")]
         [XmlElement(typeof(OWLAsymmetricObjectPropertyAxiom), ElementName="AsymmetricObjectProperty")]
         [XmlElement(typeof(OWLTransitiveObjectPropertyAxiom), ElementName="TransitiveObjectProperty")]
+        //OWLDataPropertyAxiom
         [XmlElement(typeof(OWLSubDataPropertyOfAxiom), ElementName="SubDataPropertyOf")]
         [XmlElement(typeof(OWLEquivalentDataPropertiesAxiom), ElementName="EquivalentDataProperties")]
         [XmlElement(typeof(OWLDisjointDataPropertiesAxiom), ElementName="DisjointDataProperties")]
         [XmlElement(typeof(OWLDataPropertyDomainAxiom), ElementName="DataPropertyDomain")]
         [XmlElement(typeof(OWLDataPropertyRangeAxiom), ElementName="DataPropertyRange")]
         [XmlElement(typeof(OWLFunctionalDataPropertyAxiom), ElementName="FunctionalDataProperty")]
+        //OWLDatatypeDefinitionAxiom
+        [XmlElement(typeof(OWLDatatypeDefinitionAxiom), ElementName="DatatypeDefinition")]
+        //OWLHasKeyAxiom
+        [XmlElement(typeof(OWLHasKeyAxiom), ElementName="HasKey")]
+        //OWLAssertionAxiom
         [XmlElement(typeof(OWLSameIndividualAxiom), ElementName="SameIndividual")]
         [XmlElement(typeof(OWLDifferentIndividualsAxiom), ElementName="DifferentIndividuals")]
         [XmlElement(typeof(OWLClassAssertionAxiom), ElementName="ClassAssertion")]
@@ -71,6 +78,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLNegativeObjectPropertyAssertionAxiom), ElementName="NegativeObjectPropertyAssertion")]
         [XmlElement(typeof(OWLDataPropertyAssertionAxiom), ElementName="DataPropertyAssertion")]
         [XmlElement(typeof(OWLNegativeDataPropertyAssertionAxiom), ElementName="NegativeDataPropertyAssertion")]
+        //OWLAnnotationAxiom
         [XmlElement(typeof(OWLAnnotationAssertionAxiom), ElementName="AnnotationAssertion")]
         [XmlElement(typeof(OWLSubAnnotationPropertyOfAxiom), ElementName="SubAnnotationPropertyOf")]
         [XmlElement(typeof(OWLAnnotationPropertyDomainAxiom), ElementName="AnnotationPropertyDomain")]
