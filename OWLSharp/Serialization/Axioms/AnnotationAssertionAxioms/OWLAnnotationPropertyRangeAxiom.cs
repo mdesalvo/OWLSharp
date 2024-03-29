@@ -28,10 +28,10 @@ namespace OWLSharp
         public OWLAnnotationPropertyExpression AnnotationPropertyExpression { get; set; }
 
         [XmlElement("IRI", DataType="anyURI", Order=2)]
-        public string RangeIRI { get; set; }
+        public string IRI { get; set; }
 
         [XmlElement("AbbreviatedIRI", DataType="QName", Order=3)]
-        public XmlQualifiedName RangeAbbreviatedIRI { get; set; }
+        public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
         #region Ctors
@@ -39,12 +39,12 @@ namespace OWLSharp
         public OWLAnnotationPropertyRangeAxiom(OWLAnnotationPropertyExpression annotationPropertyExpression, RDFResource iri) : this()
         {
             AnnotationPropertyExpression = annotationPropertyExpression ?? throw new OWLException("Cannot create OWLAnnotationPropertyRangeAxiom because given \"annotationPropertyExpression\" parameter is null");
-            RangeIRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyRangeAxiom because given \"iri\" parameter is null");
+            IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyRangeAxiom because given \"iri\" parameter is null");
         }
         public OWLAnnotationPropertyRangeAxiom(OWLAnnotationPropertyExpression annotationPropertyExpression, XmlQualifiedName abbreviatedIRI) : this()
         {
             AnnotationPropertyExpression = annotationPropertyExpression ?? throw new OWLException("Cannot create OWLAnnotationPropertyRangeAxiom because given \"annotationPropertyExpression\" parameter is null");
-            RangeAbbreviatedIRI = abbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyRangeAxiom because given \"abbreviatedIRI\" parameter is null");
+            AbbreviatedIRI = abbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyRangeAxiom because given \"abbreviatedIRI\" parameter is null");
         }
         #endregion
     }
