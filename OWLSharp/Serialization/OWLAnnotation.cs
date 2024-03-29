@@ -23,20 +23,23 @@ namespace OWLSharp
     public class OWLAnnotation
     {
         #region Properties
+        [XmlElement(ElementName="Annotation", Order=1)]
+        public OWLAnnotation AnnotationAnnotation { get; set; }
+
         //Register here all derived types of OWLAnnotationPropertyExpression
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
+        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
         public OWLAnnotationPropertyExpression AnnotationPropertyExpression { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
-        [XmlElement("IRI", DataType="anyURI", Order=2)]
+        [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string ValueIRI { get; set; }
-        [XmlElement("AbbreviatedIRI", DataType="QName", Order=3)]
+        [XmlElement("AbbreviatedIRI", DataType="QName", Order=4)]
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
-        [XmlElement("AnonymousIndividual", Order=4)]
+        [XmlElement("AnonymousIndividual", Order=5)]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
         //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=5)]
+        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=6)]
         public OWLLiteralExpression ValueLiteralExpression { get; set; }
         #endregion
 

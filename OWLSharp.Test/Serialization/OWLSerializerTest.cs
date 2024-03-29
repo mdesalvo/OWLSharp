@@ -117,6 +117,9 @@ namespace OWLSharp.Test.Serialization
                     AxiomAnnotations = 
                     [ 
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello!")))
+                        {
+                            AnnotationAnnotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.RELATION), new OWLLiteral(new RDFPlainLiteral("hello2!"))) 
+                        }
                     ] 
                   });
             ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
