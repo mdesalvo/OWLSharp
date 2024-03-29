@@ -21,7 +21,7 @@ namespace OWLSharp
     public partial class OWLDeclarationAxiom : OWLAxiom
     {
         #region Properties
-        //Register here derived types of (in-scope) OWLExpression
+        //Register here all derived types of declarable OWLExpression
         [XmlElement(typeof(OWLClass), ElementName="Class")]
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype")]
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty")]

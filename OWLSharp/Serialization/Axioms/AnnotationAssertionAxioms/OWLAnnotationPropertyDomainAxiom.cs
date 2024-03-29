@@ -23,27 +23,28 @@ namespace OWLSharp
     public class OWLAnnotationPropertyDomainAxiom : OWLAnnotationAxiom
     {
         #region Properties
+        //Register here all derived types of OWLAnnotationPropertyExpression
         [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
-        public OWLAnnotationProperty AnnotationProperty { get; set; }
+        public OWLAnnotationPropertyExpression AnnotationPropertyExpression { get; set; }
 
         [XmlElement("IRI", DataType="anyURI", Order=2)]
-        public string DomainIRI { get; set; }
+        public string IRI { get; set; }
 
         [XmlElement("AbbreviatedIRI", DataType="QName", Order=3)]
-        public XmlQualifiedName DomainAbbreviatedIRI { get; set; }
+        public XmlQualifiedName AbbreviatedIRI { get; set; }
         #endregion
 
         #region Ctors
         internal OWLAnnotationPropertyDomainAxiom() : base() { }
-        public OWLAnnotationPropertyDomainAxiom(OWLAnnotationProperty annotationProperty, RDFResource domainIri) : this()
+        public OWLAnnotationPropertyDomainAxiom(OWLAnnotationPropertyExpression annotationPropertyExpression, RDFResource iri) : this()
         {
-            AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"annotationProperty\" parameter is null");
-            DomainIRI = domainIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"domainIri\" parameter is null");
+            AnnotationPropertyExpression = annotationPropertyExpression ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"annotationPropertyExpression\" parameter is null");
+            IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"iri\" parameter is null");
         }
-        public OWLAnnotationPropertyDomainAxiom(OWLAnnotationProperty annotationProperty, XmlQualifiedName domainAbbreviatedIRI) : this()
+        public OWLAnnotationPropertyDomainAxiom(OWLAnnotationPropertyExpression annotationPropertyExpression, XmlQualifiedName abbreviatedIRI) : this()
         {
-            AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"annotationProperty\" parameter is null");
-            DomainAbbreviatedIRI = domainAbbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"domainAbbreviatedIRI\" parameter is null");
+            AnnotationPropertyExpression = annotationPropertyExpression ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"annotationPropertyExpression\" parameter is null");
+            AbbreviatedIRI = abbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomainAxiom because given \"abbreviatedIRI\" parameter is null");
         }
         #endregion
     }
