@@ -27,7 +27,7 @@ namespace OWLSharp
         [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
         public OWLAnnotationPropertyExpression AnnotationPropertyExpression { get; set; }
 
-        //AnnotationSubject
+        //AnnotationSubject (cannot be a self-object, since this would introduce an additional XmlElement)
 
         [XmlElement("IRI", DataType="anyURI", Order=2)]
         public string SubjectIRI { get; set; }
@@ -36,7 +36,7 @@ namespace OWLSharp
         [XmlElement("AnonymousIndividual", Order=4)]
         public OWLAnonymousIndividual SubjectAnonymousIndividual { get; set; }
 
-        //AnnotationValue
+        //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
         [XmlElement("IRI", DataType="anyURI", Order=5)]
         public string ValueIRI { get; set; }
