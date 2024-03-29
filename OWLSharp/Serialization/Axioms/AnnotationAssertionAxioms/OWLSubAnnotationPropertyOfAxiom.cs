@@ -21,19 +21,19 @@ namespace OWLSharp
     public class OWLSubAnnotationPropertyOfAxiom : OWLAnnotationAxiom
     {
         #region Properties
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
-        public OWLAnnotationPropertyExpression SubAnnotationPropertyExpression { get; set; }
+        [XmlElement(ElementName="AnnotationProperty", Order=1)]
+        public OWLAnnotationProperty SubAnnotationProperty { get; set; }
 
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
-        public OWLAnnotationPropertyExpression SuperAnnotationPropertyExpression { get; set; }
+        [XmlElement(ElementName="AnnotationProperty", Order=2)]
+        public OWLAnnotationProperty SuperAnnotationProperty { get; set; }
         #endregion
 
         #region Ctors
         internal OWLSubAnnotationPropertyOfAxiom() : base() { }
         public OWLSubAnnotationPropertyOfAxiom(OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty) : this()
         {
-            SubAnnotationPropertyExpression = subAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOfAxiom because given \"subAnnotationProperty\" parameter is null");
-            SuperAnnotationPropertyExpression = superAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOfAxiom because given \"superAnnotationProperty\" parameter is null");
+            SubAnnotationProperty = subAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOfAxiom because given \"subAnnotationProperty\" parameter is null");
+            SuperAnnotationProperty = superAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOfAxiom because given \"superAnnotationProperty\" parameter is null");
         }
         #endregion
     }
