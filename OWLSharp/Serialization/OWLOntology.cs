@@ -64,6 +64,8 @@ namespace OWLSharp
         [XmlElement(typeof(OWLDataPropertyDomainAxiom), ElementName="DataPropertyDomain")]
         [XmlElement(typeof(OWLDataPropertyRangeAxiom), ElementName="DataPropertyRange")]
         [XmlElement(typeof(OWLFunctionalDataPropertyAxiom), ElementName="FunctionalDataProperty")]
+        [XmlElement(typeof(OWLSameIndividualAxiom), ElementName="SameIndividual")]
+        [XmlElement(typeof(OWLDifferentIndividualsAxiom), ElementName="DifferentIndividuals")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
