@@ -12,7 +12,7 @@
     <Product>OWLSharp</Product>
     <PackageId>OWLSharp</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
-    <PackageTags>rdfs owl owl2 ontology reasoner</PackageTags>
+    <PackageTags>rdfs owl owl2 ontology</PackageTags>
     <PackageProjectUrl>https://github.com/mdesalvo/OWLSharp</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mdesalvo/OWLSharp.git</RepositoryUrl>
