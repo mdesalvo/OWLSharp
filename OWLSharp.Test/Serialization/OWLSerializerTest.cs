@@ -248,9 +248,9 @@ namespace OWLSharp.Test.Serialization
                 new OWLDatatype(new RDFResource("http://example.org/minorAge")),
                 new OWLDatatypeRestriction(
                     new OWLDatatype(RDFVocabulary.XSD.INT),
-                    [ new OWLFacetRestriction(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INT), 
+                    [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INT)), 
                                               new RDFResource("http://www.w3.org/2001/XMLSchema#minInclusive")),
-                      new OWLFacetRestriction(new RDFTypedLiteral("18", RDFModelEnums.RDFDatatypes.XSD_INT),
+                      new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("18", RDFModelEnums.RDFDatatypes.XSD_INT)),
                                               new RDFResource("http://www.w3.org/2001/XMLSchema#maxInclusive"))
                     ]
                 )));
@@ -504,7 +504,7 @@ namespace OWLSharp.Test.Serialization
                     [new OWLDataProperty(new RDFResource("http://example.org/dtProp1"))],
                     new OWLDatatypeRestriction(
                         new OWLDatatype(new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI)),
-                        [new OWLFacetRestriction(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INT),
+                        [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INT)),
                                                  new RDFResource("http://www.w3.org/2001/XMLSchema#minInclusive"))]))
             ]));
 
