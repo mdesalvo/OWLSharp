@@ -41,41 +41,41 @@ namespace OWLSharp
 
     public partial class OWLDeclarationAxiom : OWLAxiom
     {
-        internal OWLDeclarationAxiom() => SerializationPriority=1;
+        internal OWLDeclarationAxiom() : base() => SerializationPriority=1;
     }
 
     public class OWLClassAxiom : OWLAxiom
     {
-        internal OWLClassAxiom() => SerializationPriority=2;
+        internal OWLClassAxiom() : base() => SerializationPriority=2;
     }
 
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
-        internal OWLObjectPropertyAxiom() => SerializationPriority=3;
+        internal OWLObjectPropertyAxiom() : base() => SerializationPriority=3;
     }
 
     public class OWLDataPropertyAxiom : OWLAxiom
     {
-        internal OWLDataPropertyAxiom() => SerializationPriority=4;
+        internal OWLDataPropertyAxiom() : base() => SerializationPriority=4;
     }
 
     public partial class OWLDatatypeDefinitionAxiom : OWLAxiom
     {
-        internal OWLDatatypeDefinitionAxiom() => SerializationPriority=5;
+        internal OWLDatatypeDefinitionAxiom() : base() => SerializationPriority=5;
     }
 
     public partial class OWLHasKeyAxiom : OWLAxiom
     {
-        internal OWLHasKeyAxiom() => SerializationPriority=6;
+        internal OWLHasKeyAxiom() : base() => SerializationPriority=6;
     }
 
     public class OWLAssertionAxiom : OWLAxiom
     {
-        internal OWLAssertionAxiom() => SerializationPriority=7;
+        internal OWLAssertionAxiom() : base() => SerializationPriority=7;
     }
 
     public class OWLAnnotationAxiom : OWLAxiom
     {
-        internal OWLAnnotationAxiom() => SerializationPriority=8;
+        internal OWLAnnotationAxiom() : base() => SerializationPriority=8;
     }
 }
