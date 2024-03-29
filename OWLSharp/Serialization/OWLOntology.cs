@@ -69,6 +69,8 @@ namespace OWLSharp
         [XmlElement(typeof(OWLClassAssertionAxiom), ElementName="ClassAssertion")]
         [XmlElement(typeof(OWLObjectPropertyAssertionAxiom), ElementName="ObjectPropertyAssertion")]
         [XmlElement(typeof(OWLNegativeObjectPropertyAssertionAxiom), ElementName="NegativeObjectPropertyAssertion")]
+        [XmlElement(typeof(OWLDataPropertyAssertionAxiom), ElementName="DataPropertyAssertion")]
+        [XmlElement(typeof(OWLNegativeDataPropertyAssertionAxiom), ElementName="NegativeDataPropertyAssertion")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
