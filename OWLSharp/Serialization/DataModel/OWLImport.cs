@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp
 {
     /// <summary>
-    /// Represents a directive signalling the presence of terms contained in a remote ontology located at the given IRI.
+    /// Indicates that the working ontology uses terms from a remote ontology located at the given IRI.
     /// </summary>
     public class OWLImport
     {

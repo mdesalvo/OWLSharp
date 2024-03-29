@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp
 {
     /// <summary>
-    /// Represents a prefix declared to an ontology with the goal of making its serialization shorter and easier to understand.
+    /// Indicates that the working ontology uses terms from a known namespace. This helps its serialization to be shorter and easier to understand.
     /// </summary>
     public class OWLPrefix
     {

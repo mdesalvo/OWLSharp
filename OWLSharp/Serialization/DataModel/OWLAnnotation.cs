@@ -20,6 +20,9 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// Represents a metadata for labeling and commenting any kind of axiom (including the working ontology itself). It is not considered for reasoning purposes.
+    /// </summary>
     public class OWLAnnotation
     {
         #region Properties
