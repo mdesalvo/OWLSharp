@@ -73,6 +73,8 @@ namespace OWLSharp
         [XmlElement(typeof(OWLNegativeDataPropertyAssertionAxiom), ElementName="NegativeDataPropertyAssertion")]
         [XmlElement(typeof(OWLAnnotationAssertionAxiom), ElementName="AnnotationAssertion")]
         [XmlElement(typeof(OWLSubAnnotationPropertyOfAxiom), ElementName="SubAnnotationPropertyOf")]
+        [XmlElement(typeof(OWLAnnotationPropertyDomainAxiom), ElementName="AnnotationPropertyDomain")]
+        [XmlElement(typeof(OWLAnnotationPropertyRangeAxiom), ElementName="AnnotationPropertyRange")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
