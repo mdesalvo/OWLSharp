@@ -84,6 +84,66 @@ namespace OWLSharp.Test.Serialization
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
             ontology.Imports.Add(new OWLImport(new RDFResource("http://example.org/import/")));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("http://example.org/Cls1"),
+                new RDFResource("http://example.org/Cls2")
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI),
+                new RDFResource("http://example.org/Cls2")
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLAnonymousIndividual("AnonIdv"),
+                new RDFResource("http://example.org/Cls2")
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("http://example.org/Cls1"),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI)
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI)
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLAnonymousIndividual("AnonIdv"),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI)
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("http://example.org/Cls1"),
+                new OWLAnonymousIndividual("AnonIdv")
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI),
+                new OWLAnonymousIndividual("AnonIdv")
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLAnonymousIndividual("AnonIdv"),
+                new OWLAnonymousIndividual("AnonIdv")
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("http://example.org/Cls1"),
+                new OWLLiteral(new RDFPlainLiteral("hello"))
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI),
+                new OWLLiteral(new RDFPlainLiteral("hello", "en-US--ltr"))
+                ));
+            ontology.Axioms.Add(new OWLAnnotationAssertionAxiom(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLAnonymousIndividual("AnonIdv"),
+                new OWLLiteral(RDFTypedLiteral.True)
+                ));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
 
@@ -94,6 +154,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
             Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsTrue(ontology2.Axioms.Count == 12);
         }
 
         [TestMethod]
