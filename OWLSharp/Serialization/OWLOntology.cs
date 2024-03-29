@@ -37,6 +37,9 @@ namespace OWLSharp
         [XmlElement("Import")]
         public List<OWLImport> Imports { get; set; }
 
+        [XmlElement("Annotation")]
+        public List<OWLAnnotation> Annotations { get; set; }
+
         //Register here all derived types of OWLAxiom
         //OWLDeclarationAxiom
         [XmlElement(typeof(OWLDeclarationAxiom), ElementName="Declaration")]
@@ -101,6 +104,7 @@ namespace OWLSharp
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
             };
             Imports = new List<OWLImport>();
+            Annotations = new List<OWLAnnotation>();
             Axioms = new List<OWLAxiom>();
         }
         #endregion
