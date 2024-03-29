@@ -67,6 +67,8 @@ namespace OWLSharp
         [XmlElement(typeof(OWLSameIndividualAxiom), ElementName="SameIndividual")]
         [XmlElement(typeof(OWLDifferentIndividualsAxiom), ElementName="DifferentIndividuals")]
         [XmlElement(typeof(OWLClassAssertionAxiom), ElementName="ClassAssertion")]
+        [XmlElement(typeof(OWLObjectPropertyAssertionAxiom), ElementName="ObjectPropertyAssertion")]
+        [XmlElement(typeof(OWLNegativeObjectPropertyAssertionAxiom), ElementName="NegativeObjectPropertyAssertion")]
         public List<OWLAxiom> Axioms { get; set; }
         #endregion
 
