@@ -67,6 +67,30 @@ namespace OWLSharp.Test.Serialization
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://example.org/"), new Uri("http://example.org/v1"));
             ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Annotations.Add(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("http://example.org/test")
+                ));
+            ontology.Annotations.Add(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Age", RDFVocabulary.FOAF.BASE_URI)
+                ));
+            ontology.Annotations.Add(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLAnonymousIndividual("AnonIdv")
+                ));
+            ontology.Annotations.Add(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("hello"))
+                ));
+            ontology.Annotations.Add(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("hello", "en-US--rtl"))
+                ));
+            ontology.Annotations.Add(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFTypedLiteral("75.24", RDFModelEnums.RDFDatatypes.XSD_FLOAT))
+                ));
 
             string owxOntology = OWLSerializer.Serialize(ontology);
 
@@ -76,6 +100,7 @@ namespace OWLSharp.Test.Serialization
             Assert.IsTrue(string.Equals(ontology2.OntologyIRI, "http://example.org/"));
             Assert.IsTrue(string.Equals(ontology2.OntologyVersion, "http://example.org/v1"));
             Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsTrue(ontology2.Annotations.Count == 6);
         }
 
         [TestMethod]
