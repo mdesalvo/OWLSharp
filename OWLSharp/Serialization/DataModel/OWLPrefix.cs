@@ -19,6 +19,9 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// Represents a prefix declared to an ontology with the goal of making its serialization shorter and easier to understand.
+    /// </summary>
     public class OWLPrefix
     {
         #region Properties
