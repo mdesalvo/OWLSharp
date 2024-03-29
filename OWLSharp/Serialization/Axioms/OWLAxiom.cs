@@ -24,8 +24,10 @@ namespace OWLSharp
         #region Properties
         [XmlIgnore]
         public bool IsInference { get; set; }
+
         [XmlIgnore]
         public int SerializationPriority { get; set; }
+
         [XmlElement("Annotation", Order=1)]
         public List<OWLAnnotation> AxiomAnnotations { get; set; }
         #endregion
