@@ -45,12 +45,10 @@ namespace OWLSharp
                 throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"dataPropertyExpressions\" parameter is null");
             if (dataPropertyExpressions.Count < 1)
                 throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"dataPropertyExpressions\" parameter must contain at least 1 element");
-            if (datarangeExpression == null)
-                throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"datarangeExpression\" parameter is null");
             #endregion
 
             DataPropertyExpressions = dataPropertyExpressions;
-            DataRangeExpression = datarangeExpression;
+            DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"datarangeExpression\" parameter is null");
         }
         #endregion
     }

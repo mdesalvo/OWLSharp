@@ -52,15 +52,13 @@ namespace OWLSharp
         public OWLDisjointUnionAxiom(OWLClass classIRI, List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards
-            if (classIRI == null)
-                throw new OWLException("Cannot create OWLDisjointUnionAxiom because given \"classIRI\" parameter is null");
             if (classExpressions == null)
                 throw new OWLException("Cannot create OWLDisjointUnionAxiom because given \"classExpressions\" parameter is null");
             if (classExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLDisjointUnionAxiom because given \"classExpressions\" parameter must contain at least 2 elements");
             #endregion
 
-            ClassIRI = classIRI;
+            ClassIRI = classIRI ?? throw new OWLException("Cannot create OWLDisjointUnionAxiom because given \"classIRI\" parameter is null");
             ClassExpressions = classExpressions;
         }
         #endregion

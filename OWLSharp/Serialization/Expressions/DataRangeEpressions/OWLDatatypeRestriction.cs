@@ -36,15 +36,13 @@ namespace OWLSharp
         public OWLDatatypeRestriction(OWLDatatype datatypeIRI, List<OWLFacetRestriction> facetRestrictions)
         {
             #region Guards
-            if (datatypeIRI == null)
-                throw new OWLException("Cannot create OWLDatatypeRestriction because given \"datatypeIRI\" parameter is null");
             if (facetRestrictions == null)
                 throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter is null");
             if (facetRestrictions.Count < 1)
                 throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter must contain at least 1 elements");
             #endregion
 
-            Datatype = datatypeIRI;
+            Datatype = datatypeIRI ?? throw new OWLException("Cannot create OWLDatatypeRestriction because given \"datatypeIRI\" parameter is null");
             FacetRestrictions = facetRestrictions;
         }
         #endregion
