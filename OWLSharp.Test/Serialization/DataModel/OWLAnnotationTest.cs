@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+using System.Xml;
+using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 
@@ -56,6 +58,23 @@ namespace OWLSharp.Test
             Assert.IsTrue(string.Equals(serializedXML,
 @"<OWLAnnotation>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>http://example.org/seeThis</IRI>
+</OWLAnnotation>"));          
+        }
+
+        [TestMethod]
+        public void ShouldSerializeIRIAnnotationWithAbbreviatedProperty()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(new XmlQualifiedName("comment", RDFVocabulary.RDFS.BASE_URI)),
+                new RDFResource("http://example.org/seeThis"));
+            XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation, xmlSerializerNamespaces);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
+  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
   <IRI>http://example.org/seeThis</IRI>
 </OWLAnnotation>"));          
         }
