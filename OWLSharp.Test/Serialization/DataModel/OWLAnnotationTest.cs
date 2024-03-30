@@ -80,7 +80,7 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldSerializeIRIAnnotationWithAnnotation()
+        public void ShouldSerializeIRIAnnotationWithNestedAnnotations()
         {
             OWLAnnotation annotation = new OWLAnnotation(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -89,12 +89,21 @@ namespace OWLSharp.Test
                 Annotation = new OWLAnnotation(
                     new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                     new RDFResource("http://example.org/seeThat"))
+                    {
+                        Annotation = new OWLAnnotation(
+                            new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
+                            new OWLLiteral(new RDFPlainLiteral("annotation!", "en-US")))
+                    }
             };
             string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<OWLAnnotation>
   <Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal xml:lang=""EN-US"">annotation!</Literal>
+    </Annotation>
     <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
     <IRI>http://example.org/seeThat</IRI>
   </Annotation>
