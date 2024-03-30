@@ -78,6 +78,30 @@ namespace OWLSharp.Test
   <IRI>http://example.org/seeThis</IRI>
 </OWLAnnotation>"));          
         }
+
+        [TestMethod]
+        public void ShouldSerializeIRIAnnotationWithAnnotation()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("http://example.org/seeThis"))
+            {
+                Annotation = new OWLAnnotation(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new RDFResource("http://example.org/seeThat"))
+            };
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation>
+  <Annotation>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <IRI>http://example.org/seeThat</IRI>
+  </Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>http://example.org/seeThis</IRI>
+</OWLAnnotation>"));          
+        }
         #endregion
     }
 }

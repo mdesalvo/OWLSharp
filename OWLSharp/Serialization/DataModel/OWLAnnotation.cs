@@ -26,8 +26,8 @@ namespace OWLSharp
     public class OWLAnnotation
     {
         #region Properties
-        [XmlElement(ElementName="Annotation", Order=1)]
-        public OWLAnnotation AnnotationAnnotation { get; set; }
+        [XmlElement(Order=1)]
+        public OWLAnnotation Annotation { get; set; }
 
         //Register here all derived types of OWLAnnotationPropertyExpression
         [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
