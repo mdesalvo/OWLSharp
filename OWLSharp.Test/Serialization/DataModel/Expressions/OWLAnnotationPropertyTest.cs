@@ -63,7 +63,7 @@ namespace OWLSharp.Test
             string serializedXML = OWLTestSerializer<OWLAnnotationProperty>.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<OWLAnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />"));
+@"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />"));
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace OWLSharp.Test
             string serializedXML = OWLTestSerializer<OWLAnnotationProperty>.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<OWLAnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />"));
+@"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />"));
         }
         #endregion
     }
