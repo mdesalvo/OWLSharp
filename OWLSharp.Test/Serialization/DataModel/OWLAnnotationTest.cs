@@ -218,7 +218,7 @@ namespace OWLSharp.Test
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(null, new OWLAnonymousIndividual("AnonIdv")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAnonymousIndividualAnnotationBecauseNullIRI()
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualAnnotationBecauseNullAnonymousIndividual()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as OWLAnonymousIndividual));
 
         [TestMethod]
@@ -283,6 +283,93 @@ namespace OWLSharp.Test
   </Annotation>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <AnonymousIndividual nodeID=""AnonIdv"" />
+</OWLAnnotation>"));          
+        }
+
+        [TestMethod]
+        public void ShouldCreateLiteralAnnotation()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("Lit!")));
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(annotation.AnnotationPropertyExpression is OWLAnnotationProperty annProp 
+                            && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
+                            && annProp.AbbreviatedIRI is null);
+            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteralExpression).Value, "Lit!"));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingLiteralAnnotationBecauseNullAnnotationProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(null, new OWLLiteral(new RDFPlainLiteral("Lit!"))));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingLiteralAnnotationBecauseNullLiteral()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as OWLLiteral));
+
+        [TestMethod]
+        public void ShouldSerializeLiteralAnnotation()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("Lit!")));
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <Literal>Lit!</Literal>
+</OWLAnnotation>"));          
+        }
+
+        [TestMethod]
+        public void ShouldSerializeLiteralAnnotationWithAbbreviatedProperty()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(new XmlQualifiedName("comment", RDFVocabulary.RDFS.BASE_URI)),
+                new OWLLiteral(new RDFPlainLiteral("Lit!")));
+            XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation, xmlSerializerNamespaces);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
+  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
+  <Literal>Lit!</Literal>
+</OWLAnnotation>"));          
+        }
+
+        [TestMethod]
+        public void ShouldSerializeLiteralAnnotationWithNestedAnnotations()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("Lit!")))
+            {
+                Annotation = new OWLAnnotation(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new OWLLiteral(new RDFPlainLiteral("Lit!2")))
+                    {
+                        Annotation = new OWLAnnotation(
+                            new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
+                            new OWLLiteral(new RDFPlainLiteral("annotation!", "en-US")))
+                    }
+            };
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation>
+  <Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal xml:lang=""EN-US"">annotation!</Literal>
+    </Annotation>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <Literal>Lit!2</Literal>
+  </Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <Literal>Lit!</Literal>
 </OWLAnnotation>"));          
         }
         #endregion
