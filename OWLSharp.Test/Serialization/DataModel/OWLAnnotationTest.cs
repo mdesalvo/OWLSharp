@@ -111,6 +111,93 @@ namespace OWLSharp.Test
   <IRI>http://example.org/seeThis</IRI>
 </OWLAnnotation>"));          
         }
+
+        [TestMethod]
+        public void ShouldCreateAbbreviatedIRIAnnotation()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("seeThis","http://example.org/"));
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(annotation.AnnotationPropertyExpression is OWLAnnotationProperty annProp 
+                            && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
+                            && annProp.AbbreviatedIRI is null);
+            Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationBecauseNullAnnotationProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(null, new XmlQualifiedName("seeThis","http://example.org/")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationBecauseNullQualifiedName()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as XmlQualifiedName));
+
+        [TestMethod]
+        public void ShouldSerializeAbbreviatedIRIAnnotation()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("seeThis","http://example.org/"));
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI>
+</OWLAnnotation>"));          
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAbbreviatedIRIAnnotationWithAbbreviatedProperty()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(new XmlQualifiedName("comment", RDFVocabulary.RDFS.BASE_URI)),
+                new XmlQualifiedName("seeThis","http://example.org/"));
+            XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation, xmlSerializerNamespaces);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
+  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
+  <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI>
+</OWLAnnotation>"));          
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAbbreviatedIRIAnnotationWithNestedAnnotations()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("seeThis","http://example.org/"))
+            {
+                Annotation = new OWLAnnotation(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new XmlQualifiedName("seeThat","http://example.org/"))
+                    {
+                        Annotation = new OWLAnnotation(
+                            new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
+                            new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)))
+                    }
+            };
+            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<OWLAnnotation>
+  <Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#positiveInteger"">25</Literal>
+    </Annotation>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThat</AbbreviatedIRI>
+  </Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <AbbreviatedIRI xmlns:q2=""http://example.org/"">q2:seeThis</AbbreviatedIRI>
+</OWLAnnotation>"));          
+        }
         #endregion
     }
 }
