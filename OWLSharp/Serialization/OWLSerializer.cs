@@ -56,7 +56,8 @@ namespace OWLSharp
                     {
                         Encoding = stringWriter.Encoding,
                         Indent = true,
-                        NewLineHandling = NewLineHandling.None
+                        NewLineHandling = NewLineHandling.None,
+                        NamespaceHandling = NamespaceHandling.OmitDuplicates
                     }))
                 {
                     xmlSerializer.Serialize(writer, ontology, xmlSerializerNamespaces);
@@ -81,7 +82,8 @@ namespace OWLSharp
                         DtdProcessing = DtdProcessing.Parse,
                         IgnoreComments = true,
                         IgnoreWhitespace = true,
-                        IgnoreProcessingInstructions = true
+                        IgnoreProcessingInstructions = true,
+                        XmlResolver = null
                     }))
                 {
                     return (OWLOntology)xmlSerializer.Deserialize(reader);

@@ -43,7 +43,8 @@ namespace OWLSharp
                         Encoding = stringWriter.Encoding,
                         Indent = true,
                         NewLineHandling = NewLineHandling.None,
-                        OmitXmlDeclaration = true
+                        OmitXmlDeclaration = true,
+                        NamespaceHandling = NamespaceHandling.OmitDuplicates
                     }))
                 {
                     xmlSerializer.Serialize(writer, objectToSerialize, xmlSerializerNamespaces);
@@ -68,7 +69,8 @@ namespace OWLSharp
                         DtdProcessing = DtdProcessing.Parse,
                         IgnoreComments = true,
                         IgnoreWhitespace = true,
-                        IgnoreProcessingInstructions = true
+                        IgnoreProcessingInstructions = true,
+                        XmlResolver = null
                     }))
                 {
                     return (T)xmlSerializer.Deserialize(reader);
