@@ -33,7 +33,16 @@ namespace OWLSharp
         #region Ctors
         internal OWLAnnotationProperty() { }
         public OWLAnnotationProperty(RDFResource iri)
-            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"iri\" parameter is null");
+        {
+            #region Guards
+            if (iri == null)
+                throw new OWLException("Cannot create OWLAnnotationProperty because given \"iri\" parameter is null");
+            if (iri.IsBlank)
+                throw new OWLException("Cannot create OWLAnnotationProperty because given \"iri\" parameter is a blank resource");
+            #endregion
+
+            IRI = iri.ToString();
+        }
         public OWLAnnotationProperty(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"anonymousIndividual\" parameter is null");
         #endregion
