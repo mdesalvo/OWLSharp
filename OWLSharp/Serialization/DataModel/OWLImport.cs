@@ -22,6 +22,7 @@ namespace OWLSharp
     /// <summary>
     /// Indicates that the working ontology uses terms from a remote ontology located at the given IRI.
     /// </summary>
+    [XmlRoot("Import")]
     public class OWLImport
     {
         #region Properties

@@ -47,7 +47,17 @@ namespace OWLSharp.Test
             string serializedXML = OWLTestSerializer<OWLImport>.Serialize(import);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<OWLImport>http://xmlns.com/foaf/0.1/</OWLImport>"));          
+@"<Import>http://xmlns.com/foaf/0.1/</Import>"));          
+        }
+
+        [TestMethod] 
+        public void ShouldDeserializeImport()
+        {
+            OWLImport import = OWLTestSerializer<OWLImport>.Deserialize(
+@"<Import>http://xmlns.com/foaf/0.1/</Import>");
+
+            Assert.IsNotNull(import);
+            Assert.IsTrue(string.Equals(import.IRI, RDFVocabulary.FOAF.BASE_URI));
         }
         #endregion
     }

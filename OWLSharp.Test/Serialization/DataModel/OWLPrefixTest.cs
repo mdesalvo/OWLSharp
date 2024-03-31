@@ -44,7 +44,18 @@ namespace OWLSharp.Test
             string serializedXML = OWLTestSerializer<OWLPrefix>.Serialize(prefix);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<OWLPrefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />"));          
+@"<Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />"));
+        }
+
+        [TestMethod] 
+        public void ShouldDeserializePrefix()
+        {
+            OWLPrefix prefix = OWLTestSerializer<OWLPrefix>.Deserialize(
+@"<Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />");
+
+            Assert.IsNotNull(prefix);
+            Assert.IsTrue(string.Equals(prefix.Name, RDFVocabulary.FOAF.PREFIX));
+            Assert.IsTrue(string.Equals(prefix.IRI, RDFVocabulary.FOAF.BASE_URI));
         }
         #endregion
     }
