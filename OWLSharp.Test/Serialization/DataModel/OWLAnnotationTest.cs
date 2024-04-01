@@ -145,6 +145,35 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldDeserializeIRIAnnotationWithNestedAnnotations()
+        {
+            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation>
+  <Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal xml:lang=""EN-US"">annotation!</Literal>
+    </Annotation>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <IRI>http://example.org/seeThat</IRI>
+  </Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>http://example.org/seeThis</IRI>
+</Annotation>");
+
+          Assert.IsNotNull(annotation);
+          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
+          Assert.IsNotNull(annotation.Annotation);
+          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.ValueIRI, "http://example.org/seeThat"));
+          Assert.IsNotNull(annotation.Annotation.Annotation);
+          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.Annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
+          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteralExpression).Value, "annotation!"));
+          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteralExpression).Language, "EN-US"));
+        }
+
+        [TestMethod]
         public void ShouldCreateAbbreviatedIRIAnnotation()
         {
             OWLAnnotation annotation = new OWLAnnotation(
