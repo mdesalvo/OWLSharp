@@ -527,7 +527,7 @@ namespace OWLSharp.Test
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
   <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
   <Literal>Lit!</Literal>
-</Annotation>"));          
+</Annotation>"));
         }
 
         [TestMethod]
@@ -577,6 +577,51 @@ namespace OWLSharp.Test
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteralExpression).Value, "Lit!"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeLiteralAnnotationWithAbbreviatedProperty()
+        {
+            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
+  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
+  <Literal>Lit!</Literal>
+</Annotation>");
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(annotation.AnnotationPropertyExpression is OWLAnnotationProperty annProp 
+                            && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
+                            && annProp.IRI is null);
+            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteralExpression).Value, "Lit!"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeLiteralAnnotationWithNestedAnnotations()
+        {
+            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation>
+  <Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal xml:lang=""en"">annotation!</Literal>
+    </Annotation>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <Literal>Lit!2</Literal>
+  </Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <Literal>Lit!</Literal>
+</Annotation>");
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteralExpression).Value, "Lit!"));
+            Assert.IsNotNull(annotation.Annotation);
+            Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.ValueLiteralExpression).Value, "Lit!2"));
+            Assert.IsNotNull(annotation.Annotation.Annotation);
+            Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.Annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
+            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteralExpression).Value, "annotation!"));
+            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteralExpression).Language, "en"));
         }
         #endregion
     }
