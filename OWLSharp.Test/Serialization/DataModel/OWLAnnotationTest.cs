@@ -25,6 +25,7 @@ namespace OWLSharp.Test
     public class OWLAnnotationTest
     {
         #region Tests
+        //IRI
         [TestMethod]
         public void ShouldCreateIRIAnnotation()
         {
@@ -173,6 +174,8 @@ namespace OWLSharp.Test
           Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteralExpression).Language, "EN-US"));
         }
 
+        //AbbreviatedIRI
+
         [TestMethod]
         public void ShouldCreateAbbreviatedIRIAnnotation()
         {
@@ -260,6 +263,8 @@ namespace OWLSharp.Test
 </Annotation>"));          
         }
         
+        //AnonymousIndividual
+
         [TestMethod]
         public void ShouldCreateAnonymousIndividualAnnotation()
         {
@@ -346,6 +351,8 @@ namespace OWLSharp.Test
   <AnonymousIndividual nodeID=""AnonIdv"" />
 </Annotation>"));          
         }
+
+        //Literal
 
         [TestMethod]
         public void ShouldCreateLiteralAnnotation()
