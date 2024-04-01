@@ -562,6 +562,22 @@ namespace OWLSharp.Test
   <Literal>Lit!</Literal>
 </Annotation>"));          
         }
+
+        [TestMethod]
+        public void ShouldDeserializeLiteralAnnotation()
+        {
+            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <Literal>Lit!</Literal>
+</Annotation>");
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(annotation.AnnotationPropertyExpression is OWLAnnotationProperty annProp 
+                            && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
+                            && annProp.AbbreviatedIRI is null);
+            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteralExpression).Value, "Lit!"));
+        }
         #endregion
     }
 }
