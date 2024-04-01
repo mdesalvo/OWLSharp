@@ -67,6 +67,17 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldDeserializeIRIAnnotationProperty()
+        {
+            OWLAnnotationProperty annotation = OWLTestSerializer<OWLAnnotationProperty>.Deserialize(
+@"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />");
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(string.Equals(annotation.IRI, RDFVocabulary.DC.CREATOR.ToString()));
+            Assert.IsNull(annotation.AbbreviatedIRI);
+        }
+
+        [TestMethod]
         public void ShouldSerializeQualifiedNameAnnotationProperty()
         {
             OWLAnnotationProperty annotation = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
@@ -74,6 +85,17 @@ namespace OWLSharp.Test
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeQualifiedNameAnnotationProperty()
+        {
+            OWLAnnotationProperty annotation = OWLTestSerializer<OWLAnnotationProperty>.Deserialize(
+@"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />");
+
+            Assert.IsNotNull(annotation);
+            Assert.IsNull(annotation.IRI);
+            Assert.IsTrue(string.Equals(annotation.AbbreviatedIRI, new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI)));
         }
         #endregion
     }

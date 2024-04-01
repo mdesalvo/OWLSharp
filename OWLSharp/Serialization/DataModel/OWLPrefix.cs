@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp
 {
     /// <summary>
-    /// Indicates that the working ontology uses terms from a known namespace. This helps its serialization to be shorter and easier to understand.
+    /// Represents a namespace used by any terms of the working ontology. This helps the serialization to be shorter and easier to understand.
     /// </summary>
     [XmlRoot("Prefix")]
     public class OWLPrefix

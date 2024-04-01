@@ -20,6 +20,9 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// Represents a property for documenting any kind of axiom (including the working ontology itself). It does not participate to reasoning processes.
+    /// </summary>
     [XmlRoot("AnnotationProperty")]
     public class OWLAnnotationProperty : OWLAnnotationPropertyExpression
     {

@@ -19,6 +19,10 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// Represents an individual not identified by a well-known IRI, but rather by a symbolic xsd:NCName having local purposes.
+    /// </summary>
+    [XmlRoot("AnonymousIndividual")]
     public class OWLAnonymousIndividual : OWLIndividualExpression
     {
         #region Properties
@@ -28,14 +32,14 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLAnonymousIndividual() { }
-        public OWLAnonymousIndividual(string ncName)
+        public OWLAnonymousIndividual(string anonymousName)
         {
             try
             {
-                RDFTypedLiteral xsdNCNameLiteral = new RDFTypedLiteral(ncName, RDFModelEnums.RDFDatatypes.XSD_NCNAME);
+                RDFTypedLiteral xsdNCNameLiteral = new RDFTypedLiteral(anonymousName, RDFModelEnums.RDFDatatypes.XSD_NCNAME);
                 NodeID = xsdNCNameLiteral.Value;
             }
-            catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"ncName\" parameter is not a valid xsd:NCName"); }
+            catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"ncName\" parameter is null or is not a valid xsd:NCName"); }
         }
         #endregion
     }

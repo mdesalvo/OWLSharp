@@ -20,7 +20,8 @@ using System.Xml.Serialization;
 namespace OWLSharp
 {
     /// <summary>
-    /// Indicates that the working ontology uses terms from a remote ontology located at the given IRI.
+    /// Represents the IRI of a remote ontology whose terms are referenced by the working ontology.<br/>
+    /// Anyway, this doesn't imply that the remote ontology is physically loaded into the working ontology.
     /// </summary>
     [XmlRoot("Import")]
     public class OWLImport
