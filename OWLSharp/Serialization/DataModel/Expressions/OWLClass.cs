@@ -20,6 +20,10 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// Represents a named concept in the taxonomical definition (T-BOX) of an ontology.
+    /// </summary>
+    [XmlRoot("Class")]
     public class OWLClass : OWLClassExpression
     {
         #region Properties
@@ -33,7 +37,16 @@ namespace OWLSharp
         #region Ctors
         internal OWLClass() { }
         public OWLClass(RDFResource iri)
-            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLClass because given \"iri\" parameter is null");
+        {
+            #region Guards
+            if (iri == null)
+                throw new OWLException("Cannot create OWLClass because given \"iri\" parameter is null");
+            if (iri.IsBlank)
+                throw new OWLException("Cannot create OWLClass because given \"iri\" parameter is a blank resource");
+            #endregion
+
+            IRI = iri.ToString();
+        }
         public OWLClass(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLClass because given \"abbreviatedIri\" parameter is null");
         #endregion
