@@ -295,6 +295,35 @@ namespace OWLSharp.Test
           Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
         }
 
+        [TestMethod]
+        public void ShouldDeserializeAbbreviatedIRIAnnotationWithNestedAnnotations()
+        {
+          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation>
+  <Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#positiveInteger"">25</Literal>
+    </Annotation>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThat</AbbreviatedIRI>
+  </Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <AbbreviatedIRI xmlns:q2=""http://example.org/"">q2:seeThis</AbbreviatedIRI>
+</Annotation>");
+
+          Assert.IsNotNull(annotation);
+          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI.ToString(), "http://example.org/:seeThis"));
+          Assert.IsNotNull(annotation.Annotation);
+          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.ValueAbbreviatedIRI.ToString(), "http://example.org/:seeThat"));
+          Assert.IsNotNull(annotation.Annotation.Annotation);
+          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.Annotation.AnnotationPropertyExpression).IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
+          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteralExpression).Value, "25"));
+          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteralExpression).DatatypeIRI, "http://www.w3.org/2001/XMLSchema#positiveInteger"));
+        }
+
         //AnonymousIndividual
 
         [TestMethod]
