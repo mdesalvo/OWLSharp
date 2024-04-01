@@ -113,6 +113,38 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
+        public void ShouldDeserializeIRIAnnotation()
+        {
+            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>http://example.org/seeThis</IRI>
+</Annotation>");
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(annotation.AnnotationPropertyExpression is OWLAnnotationProperty annProp 
+                            && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
+                            && annProp.AbbreviatedIRI is null);
+            Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeIRIAnnotationWithAbbreviatedProperty()
+        {
+            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
+  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
+  <IRI>http://example.org/seeThis</IRI>
+</Annotation>");
+
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(annotation.AnnotationPropertyExpression is OWLAnnotationProperty annProp 
+                            && string.Equals(annProp.AbbreviatedIRI.ToString(), $"http://www.w3.org/2000/01/rdf-schema#:comment")
+                            && annProp.IRI is null);
+            Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
+        }
+
+        [TestMethod]
         public void ShouldCreateAbbreviatedIRIAnnotation()
         {
             OWLAnnotation annotation = new OWLAnnotation(
