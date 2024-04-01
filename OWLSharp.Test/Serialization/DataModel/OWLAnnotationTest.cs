@@ -262,7 +262,23 @@ namespace OWLSharp.Test
   <AbbreviatedIRI xmlns:q2=""http://example.org/"">q2:seeThis</AbbreviatedIRI>
 </Annotation>"));          
         }
-        
+
+        [TestMethod]
+        public void ShouldDeserializeAbbreviatedIRIAnnotation()
+        {
+          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+@"<Annotation>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI>
+</Annotation>");
+
+          Assert.IsNotNull(annotation);
+          Assert.IsTrue(annotation.AnnotationPropertyExpression is OWLAnnotationProperty annProp 
+                          && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
+                          && annProp.AbbreviatedIRI is null);
+          Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
+        }
+
         //AnonymousIndividual
 
         [TestMethod]
