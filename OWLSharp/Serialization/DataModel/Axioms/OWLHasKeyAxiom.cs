@@ -48,17 +48,16 @@ namespace OWLSharp
         [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=3)]
         public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
 
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=4)]
-        public List<OWLDataPropertyExpression> DataPropertyExpressions { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=4)]
+        public List<OWLDataProperty> DataProperties { get; set; }
         #endregion
 
         #region Ctors
-        public OWLHasKeyAxiom(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataPropertyExpression> dataPropertyExpressions) : this()
+        public OWLHasKeyAxiom(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
         {
             ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLHasKeyAxiom because given \"classExpression\" parameter is null");
             ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
-            DataPropertyExpressions = dataPropertyExpressions ?? new List<OWLDataPropertyExpression>();
+            DataProperties = dataProperties ?? new List<OWLDataProperty>();
         }
         #endregion
     }

@@ -22,21 +22,19 @@ namespace OWLSharp
     public class OWLDataHasValue : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
-        public OWLDataPropertyExpression DataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=1)]
+        public OWLDataProperty DataProperty { get; set; }
 
-        //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=2)]
-        public OWLLiteralExpression LiteralExpression { get; set; }
+        [XmlElement(ElementName="Literal", Order=2)]
+        public OWLLiteral Literal { get; set; }
         #endregion
 
         #region Ctors
         internal OWLDataHasValue() { }
-        public OWLDataHasValue(OWLDataPropertyExpression dataPropertyExpression, OWLLiteralExpression literalExpression)
+        public OWLDataHasValue(OWLDataProperty dataProperty, OWLLiteral literal)
         {
-            DataPropertyExpression = dataPropertyExpression ?? throw new OWLException("Cannot create OWLDataHasValue because given \"dataPropertyExpression\" parameter is null");
-            LiteralExpression = literalExpression ?? throw new OWLException("Cannot create OWLDataHasValue because given \"literalExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataHasValue because given \"dataProperty\" parameter is null");
+            Literal = literal ?? throw new OWLException("Cannot create OWLDataHasValue because given \"literal\" parameter is null");
         }
         #endregion
     }

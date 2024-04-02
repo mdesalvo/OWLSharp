@@ -30,9 +30,8 @@ namespace OWLSharp
         [XmlElement(Order=1)]
         public OWLAnnotation Annotation { get; set; }
 
-        //Register here all derived types of OWLAnnotationPropertyExpression
-        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=2)]
-        public OWLAnnotationPropertyExpression AnnotationPropertyExpression { get; set; }
+        [XmlElement(ElementName="AnnotationProperty", Order=2)]
+        public OWLAnnotationProperty AnnotationProperty { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
@@ -42,26 +41,25 @@ namespace OWLSharp
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
         [XmlElement("AnonymousIndividual", Order=5)]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
-        //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=6)]
-        public OWLLiteralExpression ValueLiteralExpression { get; set; }
+        [XmlElement(ElementName="Literal", Order=6)]
+        public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
         #region Internal-Ctors
         internal OWLAnnotation() { }
-        internal OWLAnnotation(OWLAnnotationPropertyExpression annotationPropertyExpression) : this()
-            => AnnotationPropertyExpression = annotationPropertyExpression ?? throw new OWLException("Cannot create OWLAnnotationAssertionAxiom because given \"annotationPropertyExpression\" parameter is null");
+        internal OWLAnnotation(OWLAnnotationProperty annotationProperty) : this()
+            => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertionAxiom because given \"annotationProperty\" parameter is null");
         #endregion
 
         #region Public-Ctors
-        public OWLAnnotation(OWLAnnotationPropertyExpression annotationPropertyExpression, RDFResource valueIri) : this(annotationPropertyExpression)
+        public OWLAnnotation(OWLAnnotationProperty annotationProperty, RDFResource valueIri) : this(annotationProperty)
             => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueIri\" parameter is null");
-        public OWLAnnotation(OWLAnnotationPropertyExpression annotationPropertyExpression, XmlQualifiedName valueAbbreviatedIri) : this(annotationPropertyExpression)
+        public OWLAnnotation(OWLAnnotationProperty annotationProperty, XmlQualifiedName valueAbbreviatedIri) : this(annotationProperty)
             => ValueAbbreviatedIRI = valueAbbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueAbbreviatedIri\" parameter is null");
-        public OWLAnnotation(OWLAnnotationPropertyExpression annotationPropertyExpression, OWLAnonymousIndividual valueAnonymousIndividual) : this(annotationPropertyExpression)
+        public OWLAnnotation(OWLAnnotationProperty annotationProperty, OWLAnonymousIndividual valueAnonymousIndividual) : this(annotationProperty)
             => ValueAnonymousIndividual = valueAnonymousIndividual ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueAnonymousIndividual\" parameter is null");
-        public OWLAnnotation(OWLAnnotationPropertyExpression annotationPropertyExpression, OWLLiteralExpression valueLiteralExpression) : this(annotationPropertyExpression)
-            => ValueLiteralExpression = valueLiteralExpression ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueLiteralExpression\" parameter is null");
+        public OWLAnnotation(OWLAnnotationProperty annotationProperty, OWLLiteral valueLiteral) : this(annotationProperty)
+            => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueLiteral\" parameter is null");
         #endregion
     }
 }

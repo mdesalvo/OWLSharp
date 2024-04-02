@@ -23,23 +23,22 @@ namespace OWLSharp
     public class OWLDataOneOf : OWLDataRangeExpression
     {
         #region Properties
-        //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal")]
-        public List<OWLLiteralExpression> LiteralExpressions { get; set; }
+        [XmlElement(ElementName="Literal")]
+        public List<OWLLiteral> Literals { get; set; }
         #endregion
 
         #region Ctors
         internal OWLDataOneOf() { }
-        public OWLDataOneOf(List<OWLLiteralExpression> literalExpressions)
+        public OWLDataOneOf(List<OWLLiteral> literals)
         {
             #region Guards
-            if (literalExpressions == null)
-                throw new OWLException("Cannot create OWLDataOneOf because given \"literalExpressions\" parameter is null");
-            if (literalExpressions.Count < 1)
-                throw new OWLException("Cannot create OWLDataOneOf because given \"literalExpressions\" parameter must contain at least 1 element");
+            if (literals == null)
+                throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter is null");
+            if (literals.Count < 1)
+                throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter must contain at least 1 element");
             #endregion
 
-            LiteralExpressions = literalExpressions;
+            Literals = literals;
         }
         #endregion
     }

@@ -23,9 +23,8 @@ namespace OWLSharp
     public class OWLDataSomeValuesFrom : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
-        public List<OWLDataPropertyExpression> DataPropertyExpressions { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=1)]
+        public List<OWLDataProperty> DataProperties { get; set; }
 
         //Register here all derived types of OWLDataRangeExpression
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
@@ -39,16 +38,16 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLDataSomeValuesFrom() { }
-        public OWLDataSomeValuesFrom(List<OWLDataPropertyExpression> dataPropertyExpressions, OWLDataRangeExpression datarangeExpression)
+        public OWLDataSomeValuesFrom(List<OWLDataProperty> dataProperties, OWLDataRangeExpression datarangeExpression)
         {
             #region Guards
-            if (dataPropertyExpressions == null)
-                throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataPropertyExpressions\" parameter is null");
-            if (dataPropertyExpressions.Count < 1)
-                throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataPropertyExpressions\" parameter must contain at least 1 element");
+            if (dataProperties == null)
+                throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataProperties\" parameter is null");
+            if (dataProperties.Count < 1)
+                throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataProperties\" parameter must contain at least 1 element");
             #endregion
 
-            DataPropertyExpressions = dataPropertyExpressions;
+            DataProperties = dataProperties;
             DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"datarangeExpression\" parameter is null");
         }
         #endregion

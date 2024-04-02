@@ -21,21 +21,19 @@ namespace OWLSharp
     public class OWLSubDataPropertyOfAxiom : OWLDataPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
-        public OWLDataPropertyExpression SubDataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=2)]
+        public OWLDataProperty SubDataProperty { get; set; }
 
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=3)]
-        public OWLDataPropertyExpression SuperDataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=3)]
+        public OWLDataProperty SuperDataProperty { get; set; }
         #endregion
 
         #region Ctors
         internal OWLSubDataPropertyOfAxiom() : base() { }
-        public OWLSubDataPropertyOfAxiom(OWLDataPropertyExpression subDataPropertyExpression, OWLDataPropertyExpression superDataPropertyExpression) : this()
+        public OWLSubDataPropertyOfAxiom(OWLDataProperty subDataProperty, OWLDataProperty superDataProperty) : this()
         {
-            SubDataPropertyExpression = subDataPropertyExpression ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"subDataPropertyExpression\" parameter is null");
-            SuperDataPropertyExpression = superDataPropertyExpression ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"superDataPropertyExpression\" parameter is null");
+            SubDataProperty = subDataProperty ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"subDataProperty\" parameter is null");
+            SuperDataProperty = superDataProperty ?? throw new OWLException("Cannot create OWLSubDataPropertyOfAxiom because given \"superDataProperty\" parameter is null");
         }
         #endregion
     }

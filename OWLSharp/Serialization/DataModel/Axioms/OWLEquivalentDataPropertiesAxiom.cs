@@ -22,23 +22,22 @@ namespace OWLSharp
     public class OWLEquivalentDataPropertiesAxiom : OWLDataPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
-        public List<OWLDataPropertyExpression> DataPropertyExpressions { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=2)]
+        public List<OWLDataProperty> DataProperties { get; set; }
         #endregion
 
         #region Ctors
         internal OWLEquivalentDataPropertiesAxiom() : base() { }
-        public OWLEquivalentDataPropertiesAxiom(List<OWLDataPropertyExpression> dataPropertyExpressions) : this()
+        public OWLEquivalentDataPropertiesAxiom(List<OWLDataProperty> dataProperties) : this()
         {
             #region Guards
-            if (dataPropertyExpressions == null)
-                throw new OWLException("Cannot create OWLEquivalentDataPropertiesAxiom because given \"dataPropertyExpressions\" parameter is null");
-            if (dataPropertyExpressions.Count < 2)
-                throw new OWLException("Cannot create OWLEquivalentDataPropertiesAxiom because given \"dataPropertyExpressions\" parameter must contain at least 2 elements");
+            if (dataProperties == null)
+                throw new OWLException("Cannot create OWLEquivalentDataPropertiesAxiom because given \"dataProperties\" parameter is null");
+            if (dataProperties.Count < 2)
+                throw new OWLException("Cannot create OWLEquivalentDataPropertiesAxiom because given \"dataProperties\" parameter must contain at least 2 elements");
             #endregion
 
-            DataPropertyExpressions = dataPropertyExpressions;
+            DataProperties = dataProperties;
         }
         #endregion
     }

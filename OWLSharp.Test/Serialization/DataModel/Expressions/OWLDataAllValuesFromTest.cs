@@ -33,8 +33,8 @@ namespace OWLSharp.Test
                 new OWLDatatype(RDFVocabulary.XSD.STRING));
 
             Assert.IsNotNull(dataAllValuesFrom);
-            Assert.IsNotNull(dataAllValuesFrom.DataPropertyExpressions);
-            Assert.IsTrue(dataAllValuesFrom.DataPropertyExpressions.Single() is OWLDataProperty dataProperty 
+            Assert.IsNotNull(dataAllValuesFrom.DataProperties);
+            Assert.IsTrue(dataAllValuesFrom.DataProperties.Single() is OWLDataProperty dataProperty 
                             && string.Equals(dataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
             Assert.IsNotNull(dataAllValuesFrom.DataRangeExpression);
             Assert.IsTrue(dataAllValuesFrom.DataRangeExpression is OWLDatatype datatype 
@@ -81,8 +81,8 @@ namespace OWLSharp.Test
 </DataAllValuesFrom>");
 
             Assert.IsNotNull(dataAllValuesFrom);
-            Assert.IsNotNull(dataAllValuesFrom.DataPropertyExpressions);
-            Assert.IsTrue(dataAllValuesFrom.DataPropertyExpressions.Single() is OWLDataProperty dataProperty 
+            Assert.IsNotNull(dataAllValuesFrom.DataProperties);
+            Assert.IsTrue(dataAllValuesFrom.DataProperties.Single() is OWLDataProperty dataProperty 
                             && string.Equals(dataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
             Assert.IsNotNull(dataAllValuesFrom.DataRangeExpression);
             Assert.IsTrue(dataAllValuesFrom.DataRangeExpression is OWLDatatype datatype 

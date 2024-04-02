@@ -21,27 +21,25 @@ namespace OWLSharp
     public class OWLNegativeDataPropertyAssertionAxiom : OWLAssertionAxiom
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
-        public OWLDataPropertyExpression DataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=2)]
+        public OWLDataProperty DataProperty { get; set; }
 
         //Register here all derived types of OWLIndividualExpression
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=3)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
         public OWLIndividualExpression SourceIndividualExpression { get; set; }
 
-        //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal", Order=4)]
-        public OWLLiteralExpression TargetLiteralExpression { get; set; }
+        [XmlElement(ElementName="Literal", Order=4)]
+        public OWLLiteral TargetLiteral { get; set; }
         #endregion
 
         #region Ctors
         internal OWLNegativeDataPropertyAssertionAxiom() : base() { }
-        public OWLNegativeDataPropertyAssertionAxiom(OWLDataPropertyExpression dataPropertyExpression, OWLIndividualExpression sourceIndividualExpression, OWLLiteralExpression targetLiteralExpression) : this()
+        public OWLNegativeDataPropertyAssertionAxiom(OWLDataProperty dataProperty, OWLIndividualExpression sourceIndividualExpression, OWLLiteral targetLiteral) : this()
         {
-            DataPropertyExpression = dataPropertyExpression ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertionAxiom because given \"dataPropertyExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertionAxiom because given \"dataProperty\" parameter is null");
             SourceIndividualExpression = sourceIndividualExpression ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertionAxiom because given \"sourceIndividualExpression\" parameter is null");
-            TargetLiteralExpression = targetLiteralExpression ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertionAxiom because given \"targetLiteralExpression\" parameter is null");
+            TargetLiteral = targetLiteral ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertionAxiom because given \"targetLiteral\" parameter is null");
         }
         #endregion
     }

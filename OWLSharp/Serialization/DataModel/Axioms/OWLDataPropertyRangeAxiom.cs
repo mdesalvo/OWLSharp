@@ -21,9 +21,8 @@ namespace OWLSharp
     public class OWLDataPropertyRangeAxiom : OWLDataPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
-        public OWLDataPropertyExpression DataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=2)]
+        public OWLDataProperty DataProperty { get; set; }
 
         //Register here all derived types of OWLDataRangeExpression
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=3)]
@@ -37,9 +36,9 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLDataPropertyRangeAxiom() : base() { }
-        public OWLDataPropertyRangeAxiom(OWLDataPropertyExpression dataPropertyExpression, OWLDataRangeExpression datarangeExpression) : this()
+        public OWLDataPropertyRangeAxiom(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression) : this()
         {
-            DataPropertyExpression = dataPropertyExpression ?? throw new OWLException("Cannot create OWLDataPropertyRangeAxiom because given \"dataPropertyExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyRangeAxiom because given \"dataProperty\" parameter is null");
             DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataPropertyRangeAxiom because given \"datarangeExpression\" parameter is null");
         }
         #endregion

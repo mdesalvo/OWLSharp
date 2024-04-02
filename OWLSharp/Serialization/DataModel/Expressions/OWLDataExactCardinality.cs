@@ -22,9 +22,8 @@ namespace OWLSharp
     public class OWLDataExactCardinality : OWLClassExpression
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
-        public OWLDataPropertyExpression DataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=1)]
+        public OWLDataProperty DataProperty { get; set; }
 
         //Register here all derived types of OWLDataRangeExpression
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
@@ -41,12 +40,12 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLDataExactCardinality() { }
-        public OWLDataExactCardinality(OWLDataPropertyExpression dataPropertyExpression, uint cardinality)
+        public OWLDataExactCardinality(OWLDataProperty dataProperty, uint cardinality)
         {
-            DataPropertyExpression = dataPropertyExpression ?? throw new OWLException("Cannot create OWLDataExactCardinality because given \"dataPropertyExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataExactCardinality because given \"dataProperty\" parameter is null");
             Cardinality = cardinality.ToString();
         }
-        public OWLDataExactCardinality(OWLDataPropertyExpression dataPropertyExpression, OWLDataRangeExpression datarangeExpression, uint cardinality) : this(dataPropertyExpression, cardinality)
+        public OWLDataExactCardinality(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression, uint cardinality) : this(dataProperty, cardinality)
             => DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataExactCardinality because given \"datarangeExpression\" parameter is null");
         #endregion
     }

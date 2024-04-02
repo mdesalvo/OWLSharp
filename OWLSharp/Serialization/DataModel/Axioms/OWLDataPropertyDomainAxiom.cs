@@ -21,9 +21,8 @@ namespace OWLSharp
     public class OWLDataPropertyDomainAxiom : OWLDataPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
-        public OWLDataPropertyExpression DataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=2)]
+        public OWLDataProperty DataProperty { get; set; }
 
         //Register here all derived types of OWLClassExpression
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=3)]
@@ -49,9 +48,9 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLDataPropertyDomainAxiom() : base() { }
-        public OWLDataPropertyDomainAxiom(OWLDataPropertyExpression dataPropertyExpression, OWLClassExpression classExpression) : this()
+        public OWLDataPropertyDomainAxiom(OWLDataProperty dataProperty, OWLClassExpression classExpression) : this()
         {
-            DataPropertyExpression = dataPropertyExpression ?? throw new OWLException("Cannot create OWLDataPropertyDomainAxiom because given \"dataPropertyExpression\" parameter is null");
+            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyDomainAxiom because given \"dataProperty\" parameter is null");
             ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLDataPropertyDomainAxiom because given \"classExpression\" parameter is null");
         }
         #endregion

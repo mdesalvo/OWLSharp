@@ -21,15 +21,14 @@ namespace OWLSharp
     public class OWLFunctionalDataPropertyAxiom : OWLDataPropertyAxiom
     {
         #region Properties
-        //Register here all derived types of OWLDataPropertyExpression
-        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=2)]
-        public OWLDataPropertyExpression DataPropertyExpression { get; set; }
+        [XmlElement(ElementName="DataProperty", Order=2)]
+        public OWLDataProperty DataProperty { get; set; }
         #endregion
 
         #region Ctors
         internal OWLFunctionalDataPropertyAxiom() : base() { }
-        public OWLFunctionalDataPropertyAxiom(OWLDataPropertyExpression dataPropertyExpression) : this()
-            => DataPropertyExpression = dataPropertyExpression ?? throw new OWLException("Cannot create OWLFunctionalDataPropertyAxiom because given \"dataPropertyExpression\" parameter is null");
+        public OWLFunctionalDataPropertyAxiom(OWLDataProperty dataProperty) : this()
+            => DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLFunctionalDataPropertyAxiom because given \"dataProperty\" parameter is null");
         #endregion
     }
 }

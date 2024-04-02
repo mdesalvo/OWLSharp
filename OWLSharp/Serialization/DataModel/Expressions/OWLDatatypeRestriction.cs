@@ -51,9 +51,8 @@ namespace OWLSharp
     public class OWLFacetRestriction
     {
         #region Properties
-        //Register here all derived types of OWLLiteralExpression
-        [XmlElement(typeof(OWLLiteral), ElementName="Literal")]
-        public OWLLiteralExpression LiteralExpression { get; set; }
+        [XmlElement(ElementName="Literal")]
+        public OWLLiteral Literal { get; set; }
 
         [XmlAttribute("facet", DataType="anyURI")]
         public string FacetIRI { get; set; }
@@ -61,9 +60,9 @@ namespace OWLSharp
 
         #region Ctors
         internal OWLFacetRestriction() { }
-        public OWLFacetRestriction(OWLLiteralExpression literalExpression, RDFResource facetIRI)
+        public OWLFacetRestriction(OWLLiteral literal, RDFResource facetIRI)
         {
-            LiteralExpression = literalExpression ?? throw new OWLException("Cannot create OWLFacetRestriction because given \"literalExpression\" parameter is null");
+            Literal = literal ?? throw new OWLException("Cannot create OWLFacetRestriction because given \"literal\" parameter is null");
             FacetIRI = facetIRI?.ToString() ?? throw new OWLException("Cannot create OWLFacetRestriction because given \"facetIRI\" parameter is null");
         }
         #endregion
