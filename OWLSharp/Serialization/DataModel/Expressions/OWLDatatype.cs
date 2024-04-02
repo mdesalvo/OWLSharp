@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("Datatype")]
     public class OWLDatatype : OWLDataRangeExpression
     {
         #region Properties
@@ -33,7 +34,16 @@ namespace OWLSharp
         #region Ctors
         internal OWLDatatype() { }
         public OWLDatatype(RDFResource iri)
-            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLDatatype because given \"iri\" parameter is null");
+        {
+            #region Guards
+            if (iri == null)
+                throw new OWLException("Cannot create OWLDatatype because given \"iri\" parameter is null");
+            if (iri.IsBlank)
+                throw new OWLException("Cannot create OWLDatatype because given \"iri\" parameter is a blank resource");
+            #endregion
+
+            IRI = iri.ToString();
+        }
         public OWLDatatype(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLDatatype because given \"abbreviatedIri\" parameter is null");
         #endregion
