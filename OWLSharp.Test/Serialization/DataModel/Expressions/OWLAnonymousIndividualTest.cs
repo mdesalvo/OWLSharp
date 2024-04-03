@@ -14,9 +14,7 @@
    limitations under the License.
 */
 
-using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RDFSharp.Model;
 
 namespace OWLSharp.Test
 {
