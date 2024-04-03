@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ObjectInverseOf")]
     public class OWLObjectInverseOf : OWLObjectPropertyExpression
     {
         #region Properties

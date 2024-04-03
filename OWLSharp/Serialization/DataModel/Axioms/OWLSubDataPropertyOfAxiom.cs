@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("SubDataPropertyOf")]
     public class OWLSubDataPropertyOfAxiom : OWLDataPropertyAxiom
     {
         #region Properties

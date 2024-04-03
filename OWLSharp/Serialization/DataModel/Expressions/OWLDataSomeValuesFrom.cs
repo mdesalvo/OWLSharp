@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("DataSomeValuesFrom")]
     public class OWLDataSomeValuesFrom : OWLClassExpression
     {
         #region Properties

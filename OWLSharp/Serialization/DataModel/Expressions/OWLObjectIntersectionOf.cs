@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ObjectIntersectionOf")]
     public class OWLObjectIntersectionOf : OWLClassExpression
     {
         #region Properties

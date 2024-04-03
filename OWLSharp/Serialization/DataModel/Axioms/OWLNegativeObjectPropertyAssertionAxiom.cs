@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("NegativeObjectPropertyAssertion")]
     public class OWLNegativeObjectPropertyAssertionAxiom : OWLAssertionAxiom
     {
         #region Properties

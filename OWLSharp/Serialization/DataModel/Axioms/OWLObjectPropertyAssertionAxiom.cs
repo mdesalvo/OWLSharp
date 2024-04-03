@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ObjectPropertyAssertion")]
     public class OWLObjectPropertyAssertionAxiom : OWLAssertionAxiom
     {
         #region Properties

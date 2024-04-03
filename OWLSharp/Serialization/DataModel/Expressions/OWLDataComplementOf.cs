@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("DataComplementOf")]
     public class OWLDataComplementOf : OWLDataRangeExpression
     {
         #region Properties

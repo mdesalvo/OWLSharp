@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("DifferentIndividuals")]
     public class OWLDifferentIndividualsAxiom : OWLAssertionAxiom
     {
         #region Properties

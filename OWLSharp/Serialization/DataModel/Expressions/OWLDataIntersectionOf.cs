@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("DataIntersectionOf")]
     public class OWLDataIntersectionOf : OWLDataRangeExpression
     {
         #region Properties

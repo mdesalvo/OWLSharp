@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ReflexiveObjectProperty")]
     public class OWLReflexiveObjectPropertyAxiom : OWLObjectPropertyAxiom
     {
         #region Properties

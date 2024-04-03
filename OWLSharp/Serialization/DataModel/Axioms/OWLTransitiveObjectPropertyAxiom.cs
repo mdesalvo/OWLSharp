@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("TransitiveObjectProperty")]
     public class OWLTransitiveObjectPropertyAxiom : OWLObjectPropertyAxiom
     {
         #region Properties

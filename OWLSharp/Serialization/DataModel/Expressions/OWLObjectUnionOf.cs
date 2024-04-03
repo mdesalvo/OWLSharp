@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ObjectUnionOf")]
     public class OWLObjectUnionOf : OWLClassExpression
     {
         #region Properties

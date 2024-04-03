@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("DataMaxCardinality")]
     public class OWLDataMaxCardinality : OWLClassExpression
     {
         #region Properties

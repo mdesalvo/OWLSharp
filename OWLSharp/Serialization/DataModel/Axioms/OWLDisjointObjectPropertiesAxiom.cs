@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("DisjointObjectProperties")]
     public class OWLDisjointObjectPropertiesAxiom : OWLObjectPropertyAxiom
     {
         #region Properties

@@ -21,6 +21,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ObjectProperty")]
     public class OWLObjectProperty : OWLObjectPropertyExpression
     {
         #region Properties
@@ -40,6 +41,7 @@ namespace OWLSharp
         #endregion
     }
 
+    [XmlRoot("ObjectPropertyChain")]
     public class OWLObjectPropertyChain
     {
         #region Properties

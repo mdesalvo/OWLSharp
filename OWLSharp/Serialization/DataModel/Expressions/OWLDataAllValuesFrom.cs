@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp
 {
     /// <summary>
-    /// Represents the class of all individuals for which all values of the property under consideration are data values within the specified data range.
+    /// Represents the class of individuals for which all values of the property under consideration are data values within the specified data range.
     /// </summary>
     [XmlRoot("DataAllValuesFrom")]
     public class OWLDataAllValuesFrom : OWLClassExpression

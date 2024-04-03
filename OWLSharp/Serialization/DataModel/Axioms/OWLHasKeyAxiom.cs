@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("HasKey")]
     public partial class OWLHasKeyAxiom : OWLAxiom
     {
         #region Properties

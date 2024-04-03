@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ObjectExactCardinality")]
     public class OWLObjectExactCardinality : OWLClassExpression
     {
         #region Properties

@@ -21,6 +21,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("DatatypeRestriction")]
     public class OWLDatatypeRestriction : OWLDataRangeExpression
     {
         #region Properties
@@ -48,6 +49,7 @@ namespace OWLSharp
         #endregion
     }
 
+    [XmlRoot("FacetRestriction")]
     public class OWLFacetRestriction
     {
         #region Properties

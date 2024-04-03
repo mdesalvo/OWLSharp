@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("Declaration")]
     public partial class OWLDeclarationAxiom : OWLAxiom
     {
         #region Properties

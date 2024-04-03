@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("AnnotationPropertyRange")]
     public class OWLAnnotationPropertyRangeAxiom : OWLAnnotationAxiom
     {
         #region Properties

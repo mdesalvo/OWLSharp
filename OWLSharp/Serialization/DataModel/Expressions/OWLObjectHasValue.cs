@@ -19,6 +19,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("ObjectHasValue")]
     public class OWLObjectHasValue : OWLClassExpression
     {
         #region Properties

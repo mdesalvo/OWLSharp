@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
+    [XmlRoot("AsymmetricObjectProperty")]
     public class OWLAsymmetricObjectPropertyAxiom : OWLObjectPropertyAxiom
     {
         #region Properties
