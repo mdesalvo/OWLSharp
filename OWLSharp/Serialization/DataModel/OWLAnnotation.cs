@@ -20,9 +20,6 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    /// <summary>
-    /// Represents a metadata for documenting any kind of axiom (including the working ontology itself). It is not considered for reasoning purposes.
-    /// </summary>
     [XmlRoot("Annotation")]
     public class OWLAnnotation
     {

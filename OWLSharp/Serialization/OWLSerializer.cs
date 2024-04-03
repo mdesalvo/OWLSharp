@@ -22,9 +22,6 @@ using System.Xml;
 
 namespace OWLSharp
 {
-    /// <summary>
-    /// Responsible for serializing and deserializing ontologies in OWL2/XML format.
-    /// </summary>
     public static class OWLSerializer
     {
         public static string Serialize(OWLOntology ontology)

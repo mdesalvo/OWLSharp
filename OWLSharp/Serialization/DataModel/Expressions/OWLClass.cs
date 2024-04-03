@@ -20,9 +20,6 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    /// <summary>
-    /// Represents a named concept in the taxonomical view (T-BOX) of an ontology.
-    /// </summary>
     [XmlRoot("Class")]
     public class OWLClass : OWLClassExpression
     {

@@ -19,9 +19,6 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    /// <summary>
-    /// Represents an individual not identified by an IRI, but rather by a symbolic xsd:NCName having local purposes.
-    /// </summary>
     [XmlRoot("AnonymousIndividual")]
     public class OWLAnonymousIndividual : OWLIndividualExpression
     {

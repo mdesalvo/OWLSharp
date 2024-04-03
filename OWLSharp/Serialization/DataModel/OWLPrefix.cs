@@ -19,9 +19,6 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    /// <summary>
-    /// Represents a namespace used by any terms of the working ontology. This helps the serialization to be shorter and easier to understand.
-    /// </summary>
     [XmlRoot("Prefix")]
     public class OWLPrefix
     {
