@@ -19,8 +19,8 @@ using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    [XmlRoot("HasKey")]
-    public partial class OWLHasKey : OWLAxiom
+    [XmlRoot("EquivalentClasses")]
+    public class OWLEquivalentClasses : OWLClassAxiom
     {
         #region Properties
         //Register here all derived types of OWLClassExpression
@@ -42,23 +42,21 @@ namespace OWLSharp
         [XmlElement(typeof(OWLDataMinCardinality), ElementName="DataMinCardinality", Order=2)]
         [XmlElement(typeof(OWLDataMaxCardinality), ElementName="DataMaxCardinality", Order=2)]
         [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=2)]
-        public OWLClassExpression ClassExpression { get; set; }
-
-        //Register here all derived types of OWLObjectPropertyExpression
-        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=3)]
-        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=3)]
-        public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
-
-        [XmlElement(ElementName="DataProperty", Order=4)]
-        public List<OWLDataProperty> DataProperties { get; set; }
+        public List<OWLClassExpression> ClassExpressions { get; set; }
         #endregion
 
         #region Ctors
-        public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
+        internal OWLEquivalentClasses() : base() { }
+        public OWLEquivalentClasses(List<OWLClassExpression> classExpressions) : this()
         {
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLHasKey because given \"classExpression\" parameter is null");
-            ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
-            DataProperties = dataProperties ?? new List<OWLDataProperty>();
+            #region Guards
+            if (classExpressions == null)
+                throw new OWLException("Cannot create OWLEquivalentClasses because given \"classExpressions\" parameter is null");
+            if (classExpressions.Count < 2)
+                throw new OWLException("Cannot create OWLEquivalentClasses because given \"classExpressions\" parameter must contain at least 2 elements");
+            #endregion
+
+            ClassExpressions = classExpressions;
         }
         #endregion
     }

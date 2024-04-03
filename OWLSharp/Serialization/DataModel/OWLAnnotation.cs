@@ -48,7 +48,7 @@ namespace OWLSharp
         #region Internal-Ctors
         internal OWLAnnotation() { }
         internal OWLAnnotation(OWLAnnotationProperty annotationProperty) : this()
-            => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertionAxiom because given \"annotationProperty\" parameter is null");
+            => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
         #endregion
 
         #region Public-Ctors

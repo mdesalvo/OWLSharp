@@ -14,13 +14,12 @@
    limitations under the License.
 */
 
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace OWLSharp
 {
-    [XmlRoot("HasKey")]
-    public partial class OWLHasKey : OWLAxiom
+    [XmlRoot("ClassAssertion")]
+    public class OWLClassAssertion : OWLAssertionAxiom
     {
         #region Properties
         //Register here all derived types of OWLClassExpression
@@ -44,21 +43,18 @@ namespace OWLSharp
         [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=2)]
         public OWLClassExpression ClassExpression { get; set; }
 
-        //Register here all derived types of OWLObjectPropertyExpression
-        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=3)]
-        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=3)]
-        public List<OWLObjectPropertyExpression> ObjectPropertyExpressions { get; set; }
-
-        [XmlElement(ElementName="DataProperty", Order=4)]
-        public List<OWLDataProperty> DataProperties { get; set; }
+        //Register here all derived types of OWLIndividualExpression
+        [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=3)]
+        [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
+        public OWLIndividualExpression IndividualExpression { get; set; }
         #endregion
 
         #region Ctors
-        public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
+        internal OWLClassAssertion() : base() { }
+        public OWLClassAssertion(OWLClassExpression classExpression, OWLIndividualExpression individualExpression) : this()
         {
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLHasKey because given \"classExpression\" parameter is null");
-            ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
-            DataProperties = dataProperties ?? new List<OWLDataProperty>();
+            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"classExpression\" parameter is null");
+            IndividualExpression = individualExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"individualExpression\" parameter is null");
         }
         #endregion
     }

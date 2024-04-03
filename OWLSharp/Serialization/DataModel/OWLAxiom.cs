@@ -39,9 +39,9 @@ namespace OWLSharp
 
     //Derived
 
-    public partial class OWLDeclarationAxiom : OWLAxiom
+    public partial class OWLDeclaration : OWLAxiom
     {
-        internal OWLDeclarationAxiom() : base() => SerializationPriority=1;
+        internal OWLDeclaration() : base() => SerializationPriority=1;
     }
 
     public class OWLClassAxiom : OWLAxiom
@@ -59,14 +59,14 @@ namespace OWLSharp
         internal OWLDataPropertyAxiom() : base() => SerializationPriority=4;
     }
 
-    public partial class OWLDatatypeDefinitionAxiom : OWLAxiom
+    public partial class OWLDatatypeDefinition : OWLAxiom
     {
-        internal OWLDatatypeDefinitionAxiom() : base() => SerializationPriority=5;
+        internal OWLDatatypeDefinition() : base() => SerializationPriority=5;
     }
 
-    public partial class OWLHasKeyAxiom : OWLAxiom
+    public partial class OWLHasKey : OWLAxiom
     {
-        internal OWLHasKeyAxiom() : base() => SerializationPriority=6;
+        internal OWLHasKey() : base() => SerializationPriority=6;
     }
 
     public class OWLAssertionAxiom : OWLAxiom
