@@ -60,7 +60,7 @@ namespace OWLSharp
             ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectMinCardinality because given \"objectPropertyExpression\" parameter is null");
             Cardinality = cardinality.ToString();
         }
-        public OWLObjectMinCardinality(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression, uint cardinality) : this(objectPropertyExpression, cardinality)
+        public OWLObjectMinCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality, OWLClassExpression classExpression) : this(objectPropertyExpression, cardinality)
             => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectMinCardinality because given \"classExpression\" parameter is null");
         #endregion
     }

@@ -46,7 +46,7 @@ namespace OWLSharp
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataMaxCardinality because given \"dataProperty\" parameter is null");
             Cardinality = cardinality.ToString();
         }
-        public OWLDataMaxCardinality(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression, uint cardinality) : this(dataProperty, cardinality)
+        public OWLDataMaxCardinality(OWLDataProperty dataProperty, uint cardinality, OWLDataRangeExpression datarangeExpression) : this(dataProperty, cardinality)
             => DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataMaxCardinality because given \"datarangeExpression\" parameter is null");
         #endregion
     }
