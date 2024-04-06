@@ -45,7 +45,7 @@ namespace OWLSharp
             IRI = iri.ToString();
         }
         public OWLAnnotationProperty(XmlQualifiedName abbreviatedIri)
-            => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"anonymousIndividual\" parameter is null");
+            => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"abbreviatedIri\" parameter is null");
         #endregion
     }
 }

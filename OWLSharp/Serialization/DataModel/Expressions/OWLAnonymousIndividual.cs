@@ -36,7 +36,7 @@ namespace OWLSharp
                 RDFTypedLiteral xsdNCNameLiteral = new RDFTypedLiteral(anonymousName, RDFModelEnums.RDFDatatypes.XSD_NCNAME);
                 NodeID = xsdNCNameLiteral.Value;
             }
-            catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"ncName\" parameter is null or is not a valid xsd:NCName"); }
+            catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"anonymousName\" parameter is null or is not a valid xsd:NCName"); }
         }
         #endregion
     }
