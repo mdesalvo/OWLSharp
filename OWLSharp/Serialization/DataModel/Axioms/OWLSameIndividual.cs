@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp
@@ -38,6 +39,8 @@ namespace OWLSharp
                 throw new OWLException("Cannot create OWLSameIndividual because given \"individualExpressions\" parameter is null");
             if (individualExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLSameIndividual because given \"individualExpressions\" parameter must contain at least 2 elements");
+            if (individualExpressions.Any(iex => iex == null))
+                throw new OWLException("Cannot create OWLSameIndividual because given \"individualExpressions\" parameter contains a null element");
             #endregion
 
             IndividualExpressions = individualExpressions;

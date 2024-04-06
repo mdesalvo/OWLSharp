@@ -16,6 +16,7 @@
 
 using RDFSharp.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -39,8 +40,10 @@ namespace OWLSharp
             #region Guards
             if (facetRestrictions == null)
                 throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter is null");
-            if (facetRestrictions.Count < 1)
+            if (facetRestrictions.Count == 0)
                 throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter must contain at least 1 elements");
+            if (facetRestrictions.Any(fr => fr == null))
+                throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter contains a null element");
             #endregion
 
             Datatype = datatypeIRI ?? throw new OWLException("Cannot create OWLDatatypeRestriction because given \"datatypeIRI\" parameter is null");

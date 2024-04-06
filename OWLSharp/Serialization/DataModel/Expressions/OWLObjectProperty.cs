@@ -16,6 +16,7 @@
 
 using RDFSharp.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -35,7 +36,16 @@ namespace OWLSharp
         #region Ctors
         internal OWLObjectProperty() { }
         public OWLObjectProperty(RDFResource iri)
-            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLObjectProperty because given \"iri\" parameter is null");
+        {
+            #region Guards
+            if (iri == null)
+                throw new OWLException("Cannot create OWLObjectProperty because given \"iri\" parameter is null");
+            if (iri.IsBlank)
+                throw new OWLException("Cannot create OWLObjectProperty because given \"iri\" parameter is a blank resource");
+            #endregion
+
+            IRI = iri.ToString();
+        }
         public OWLObjectProperty(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLObjectProperty because given \"abbreviatedIri\" parameter is null");
         #endregion
@@ -60,6 +70,8 @@ namespace OWLSharp
                 throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter is null");
             if (objectPropertyExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter must contain at least 2 elements");
+            if (objectPropertyExpressions.Any(ope => ope == null))
+                throw new OWLException("Cannot create OWLObjectPropertyChain because given \"objectPropertyExpressions\" parameter contains a null element");
             #endregion
 
             ObjectPropertyExpressions = objectPropertyExpressions;

@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -43,6 +44,8 @@ namespace OWLSharp
                 throw new OWLException("Cannot create OWLDataUnionOf because given \"datarangeExpressions\" parameter is null");
             if (datarangeExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLDataUnionOf because given \"datarangeExpressions\" parameter must contain at least 2 elements");
+            if (datarangeExpressions.Any(dre => dre == null))
+                throw new OWLException("Cannot create OWLDataUnionOf because given \"datarangeExpressions\" parameter contains a null element");
             #endregion
 
             DataRangeExpressions = datarangeExpressions;

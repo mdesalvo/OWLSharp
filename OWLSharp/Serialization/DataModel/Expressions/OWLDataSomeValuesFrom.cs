@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -44,8 +45,10 @@ namespace OWLSharp
             #region Guards
             if (dataProperties == null)
                 throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataProperties\" parameter is null");
-            if (dataProperties.Count < 1)
+            if (dataProperties.Count == 0)
                 throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataProperties\" parameter must contain at least 1 element");
+            if (dataProperties.Any(dp => dp == null))
+                throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataProperties\" parameter contains a null element");
             #endregion
 
             DataProperties = dataProperties;

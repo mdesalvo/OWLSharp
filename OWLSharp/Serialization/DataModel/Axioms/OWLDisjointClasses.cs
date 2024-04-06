@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp
@@ -54,6 +55,8 @@ namespace OWLSharp
                 throw new OWLException("Cannot create OWLDisjointClasses because given \"classExpressions\" parameter is null");
             if (classExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLDisjointClasses because given \"classExpressions\" parameter must contain at least 2 elements");
+            if (classExpressions.Any(cex => cex == null))
+                throw new OWLException("Cannot create OWLDisjointClasses because given \"classExpressions\" parameter contains a null element");
             #endregion
 
             ClassExpressions = classExpressions;

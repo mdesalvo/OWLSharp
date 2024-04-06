@@ -51,6 +51,11 @@ namespace OWLSharp.Test
                 [], new OWLDatatype(RDFVocabulary.XSD.STRING)));
 
         [TestMethod]
+        public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseNullDataPropertyFound()
+            => Assert.ThrowsException<OWLException>(() => new OWLDataAllValuesFrom(
+                [null], new OWLDatatype(RDFVocabulary.XSD.STRING)));
+
+        [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseNullDataRange()
             => Assert.ThrowsException<OWLException>(() => new OWLDataAllValuesFrom(
                 [ new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())) ], null));

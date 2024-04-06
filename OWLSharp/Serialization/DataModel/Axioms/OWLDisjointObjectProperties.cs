@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp
@@ -38,6 +39,8 @@ namespace OWLSharp
                 throw new OWLException("Cannot create OWLDisjointObjectProperties because given \"objectPropertyExpressions\" parameter is null");
             if (objectPropertyExpressions.Count < 2)
                 throw new OWLException("Cannot create OWLDisjointObjectProperties because given \"objectPropertyExpressions\" parameter must contain at least 2 elements");
+            if (objectPropertyExpressions.Any(ope => ope == null))
+                throw new OWLException("Cannot create OWLDisjointObjectProperties because given \"objectPropertyExpressions\" parameter contains a null element");
             #endregion
 
             ObjectPropertyExpressions = objectPropertyExpressions;

@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -35,8 +36,10 @@ namespace OWLSharp
             #region Guards
             if (literals == null)
                 throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter is null");
-            if (literals.Count < 1)
+            if (literals.Count == 0)
                 throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter must contain at least 1 element");
+            if (literals.Any(lit => lit == null))
+                throw new OWLException("Cannot create OWLDataOneOf because given \"literals\" parameter contains a null element");
             #endregion
 
             Literals = literals;

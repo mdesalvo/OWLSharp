@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp
@@ -36,6 +37,8 @@ namespace OWLSharp
                 throw new OWLException("Cannot create OWLEquivalentDataProperties because given \"dataProperties\" parameter is null");
             if (dataProperties.Count < 2)
                 throw new OWLException("Cannot create OWLEquivalentDataProperties because given \"dataProperties\" parameter must contain at least 2 elements");
+            if (dataProperties.Any(dp => dp == null))
+                throw new OWLException("Cannot create OWLEquivalentObjectProperties because given \"dataProperties\" parameter contains a null element");
             #endregion
 
             DataProperties = dataProperties;

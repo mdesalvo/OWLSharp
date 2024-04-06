@@ -34,7 +34,16 @@ namespace OWLSharp
         #region Ctors
         internal OWLNamedIndividual() { }
         public OWLNamedIndividual(RDFResource iri)
-            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"iri\" parameter is null");
+        {
+            #region Guards
+            if (iri == null)
+                throw new OWLException("Cannot create OWLNamedIndividual because given \"iri\" parameter is null");
+            if (iri.IsBlank)
+                throw new OWLException("Cannot create OWLNamedIndividual because given \"iri\" parameter is a blank resource");
+            #endregion
+
+            IRI = iri.ToString();
+        }
         public OWLNamedIndividual(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"abbreviatedIri\" parameter is null");
         #endregion

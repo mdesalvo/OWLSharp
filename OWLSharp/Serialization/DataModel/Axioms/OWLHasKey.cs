@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp
@@ -56,6 +57,13 @@ namespace OWLSharp
         #region Ctors
         public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
         {
+            #region Guards
+            if (objectPropertyExpressions?.Any(ope => ope == null) ?? false)
+                throw new OWLException("Cannot create OWLHasKey because given \"objectPropertyExpressions\" parameter contains a null element");
+            if (dataProperties?.Any(dp => dp == null) ?? false)
+                throw new OWLException("Cannot create OWLHasKey because given \"dataProperties\" parameter contains a null element");
+            #endregion
+
             ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLHasKey because given \"classExpression\" parameter is null");
             ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
             DataProperties = dataProperties ?? new List<OWLDataProperty>();

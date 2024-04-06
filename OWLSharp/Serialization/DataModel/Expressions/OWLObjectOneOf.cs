@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -37,8 +38,10 @@ namespace OWLSharp
             #region Guards
             if (individualExpressions == null)
                 throw new OWLException("Cannot create OWLObjectOneOf because given \"individualExpressions\" parameter is null");
-            if (individualExpressions.Count < 1)
+            if (individualExpressions.Count == 0)
                 throw new OWLException("Cannot create OWLObjectOneOf because given \"individualExpressions\" parameter must contain at least 1 element");
+            if (individualExpressions.Any(iex => iex == null))
+                throw new OWLException("Cannot create OWLObjectOneOf because given \"individualExpressions\" parameter contains a null element");
             #endregion
 
             IndividualExpressions = individualExpressions;

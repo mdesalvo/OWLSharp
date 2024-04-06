@@ -22,7 +22,7 @@ namespace OWLSharp
     public partial class OWLDeclaration : OWLAxiom
     {
         #region Properties
-        //Register here all derived types of "declarable" OWLExpression
+        //Register here all derived types of OWLExpression allowed for declaration
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=2)]
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]

@@ -48,6 +48,10 @@ namespace OWLSharp.Test
             => Assert.ThrowsException<OWLException>(() => new OWLDataIntersectionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING) ]));
 
         [TestMethod]
+        public void ShouldThrowExceptionOnCreatingDataIntersectionOfBecauseNullDataRangeExpressionFound()
+            => Assert.ThrowsException<OWLException>(() => new OWLDataIntersectionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING), null ]));
+
+        [TestMethod]
         public void ShouldSerializeDataIntersectionOf()
         {
            OWLDataIntersectionOf dataIntersectionOf = new OWLDataIntersectionOf(
