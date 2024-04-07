@@ -30,7 +30,7 @@ namespace OWLSharp
         public string Language { get; set; }
 
         [XmlText(DataType="string")]
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
         #endregion
 
         #region Ctors
