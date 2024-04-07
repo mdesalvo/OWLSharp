@@ -55,6 +55,21 @@ namespace OWLSharp
     [XmlRoot("FacetRestriction")]
     public class OWLFacetRestriction
     {
+        #region Statics (TODO: wait for RDFSharp-3.12)
+        public static readonly RDFResource LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "length"));
+        public static readonly RDFResource MIN_LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minLength"));
+        public static readonly RDFResource MAX_LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxLength"));
+        public static readonly RDFResource PATTERN = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "pattern"));
+        public static readonly RDFResource ENUMERATION = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "enumeration"));
+        public static readonly RDFResource MAX_INCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxInclusive"));
+        public static readonly RDFResource MAX_EXCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxExclusive"));
+        public static readonly RDFResource MIN_EXCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minExclusive"));
+        public static readonly RDFResource MIN_INCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minInclusive"));
+        public static readonly RDFResource TOTAL_DIGITS = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "totalDigits"));
+        public static readonly RDFResource FRACTION_DIGITS = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "fractionDigits"));
+        public static readonly RDFResource ASSERTION = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "assertion"));
+        #endregion
+
         #region Properties
         [XmlElement(ElementName="Literal")]
         public OWLLiteral Literal { get; set; }
@@ -67,8 +82,15 @@ namespace OWLSharp
         internal OWLFacetRestriction() { }
         public OWLFacetRestriction(OWLLiteral literal, RDFResource facetIRI)
         {
+            #region Guards
+            if (facetIRI == null)
+                throw new OWLException("Cannot create OWLFacetRestriction because given \"facetIRI\" parameter is null");
+            if (facetIRI.IsBlank)
+                throw new OWLException("Cannot create OWLFacetRestriction because given \"facetIRI\" parameter is a blank resource");
+            #endregion
+
             Literal = literal ?? throw new OWLException("Cannot create OWLFacetRestriction because given \"literal\" parameter is null");
-            FacetIRI = facetIRI?.ToString() ?? throw new OWLException("Cannot create OWLFacetRestriction because given \"facetIRI\" parameter is null");
+            FacetIRI = facetIRI.ToString();
         }
         #endregion
     }
