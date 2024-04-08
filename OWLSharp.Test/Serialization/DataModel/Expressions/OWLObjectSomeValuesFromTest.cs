@@ -20,65 +20,65 @@ using RDFSharp.Model;
 namespace OWLSharp.Test
 {
     [TestClass]
-    public class OWLObjectAllValuesFromTest
+    public class OWLObjectSomeValuesFromTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateObjectAllValuesFrom()
+        public void ShouldCreateObjectSomeValuesFrom()
         {
-            OWLObjectAllValuesFrom objectAllValuesFrom = new OWLObjectAllValuesFrom(
+            OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
                 new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
                 new OWLClass(RDFVocabulary.FOAF.PERSON));
 
-            Assert.IsNotNull(objectAllValuesFrom);
-            Assert.IsNotNull(objectAllValuesFrom.ObjectPropertyExpression);
-            Assert.IsTrue(objectAllValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty 
+            Assert.IsNotNull(objectSomeValuesFrom);
+            Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);
+            Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty 
                             && string.Equals(objectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsNotNull(objectAllValuesFrom.ClassExpression);
-            Assert.IsTrue(objectAllValuesFrom.ClassExpression is OWLClass owlClass 
+            Assert.IsNotNull(objectSomeValuesFrom.ClassExpression);
+            Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass 
                             && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingObjectAllValuesFromBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectAllValuesFrom(
+        public void ShouldThrowExceptionOnCreatingObjectSomeValuesFromBecauseNullObjectProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLObjectSomeValuesFrom(
                 null, new OWLClass(RDFVocabulary.FOAF.PERSON)));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingObjectAllValuesFromBecauseNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectAllValuesFrom(
+        public void ShouldThrowExceptionOnCreatingObjectSomeValuesFromBecauseNullClassExpression()
+            => Assert.ThrowsException<OWLException>(() => new OWLObjectSomeValuesFrom(
                 new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())), null));
 
         [TestMethod]
-        public void ShouldSerializeObjectAllValuesFrom()
+        public void ShouldSerializeObjectSomeValuesFrom()
         {
-            OWLObjectAllValuesFrom objectAllValuesFrom = new OWLObjectAllValuesFrom(
+            OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
                 new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
                 new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLTestSerializer<OWLObjectAllValuesFrom>.Serialize(objectAllValuesFrom);
+            string serializedXML = OWLTestSerializer<OWLObjectSomeValuesFrom>.Serialize(objectSomeValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectAllValuesFrom>
+@"<ObjectSomeValuesFrom>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectAllValuesFrom>"));
+</ObjectSomeValuesFrom>"));
         }
 
         [TestMethod]
-        public void ShouldDeserializeObjectAllValuesFrom()
+        public void ShouldDeserializeObjectSomeValuesFrom()
         {
-            OWLObjectAllValuesFrom objectAllValuesFrom = OWLTestSerializer<OWLObjectAllValuesFrom>.Deserialize(
-@"<ObjectAllValuesFrom>
+            OWLObjectSomeValuesFrom objectSomeValuesFrom = OWLTestSerializer<OWLObjectSomeValuesFrom>.Deserialize(
+@"<ObjectSomeValuesFrom>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectAllValuesFrom>");
+</ObjectSomeValuesFrom>");
 
-            Assert.IsNotNull(objectAllValuesFrom);
-            Assert.IsNotNull(objectAllValuesFrom.ObjectPropertyExpression);
-            Assert.IsTrue(objectAllValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty
+            Assert.IsNotNull(objectSomeValuesFrom);
+            Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);
+            Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty
                             && string.Equals(objectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsNotNull(objectAllValuesFrom.ClassExpression);
-            Assert.IsTrue(objectAllValuesFrom.ClassExpression is OWLClass owlClass
+            Assert.IsNotNull(objectSomeValuesFrom.ClassExpression);
+            Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass
                             && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
         }
         #endregion
