@@ -29,6 +29,7 @@ namespace OWLSharp.Test
             OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
 
             Assert.IsNotNull(dataMinCardinality);
+            Assert.IsTrue(string.Equals(dataMinCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMinCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMinCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataMinCardinality.DataRangeExpression);
@@ -44,6 +45,7 @@ namespace OWLSharp.Test
             OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
 
             Assert.IsNotNull(dataMinCardinality);
+            Assert.IsTrue(string.Equals(dataMinCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMinCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMinCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNotNull(dataMinCardinality.DataRangeExpression);
@@ -80,6 +82,7 @@ namespace OWLSharp.Test
 </DataMinCardinality>");
 
             Assert.IsNotNull(dataMinCardinality);
+            Assert.IsTrue(string.Equals(dataMinCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMinCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMinCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataMinCardinality.DataRangeExpression);
@@ -108,6 +111,7 @@ namespace OWLSharp.Test
 </DataMinCardinality>");
 
             Assert.IsNotNull(dataMinCardinality);
+            Assert.IsTrue(string.Equals(dataMinCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMinCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMinCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNotNull(dataMinCardinality.DataRangeExpression);

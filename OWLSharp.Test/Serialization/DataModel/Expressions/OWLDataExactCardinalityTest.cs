@@ -29,6 +29,7 @@ namespace OWLSharp.Test
             OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
 
             Assert.IsNotNull(dataExactCardinality);
+            Assert.IsTrue(string.Equals(dataExactCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataExactCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataExactCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataExactCardinality.DataRangeExpression);
@@ -44,6 +45,7 @@ namespace OWLSharp.Test
             OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
 
             Assert.IsNotNull(dataExactCardinality);
+            Assert.IsTrue(string.Equals(dataExactCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataExactCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataExactCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNotNull(dataExactCardinality.DataRangeExpression);
@@ -80,6 +82,7 @@ namespace OWLSharp.Test
 </DataExactCardinality>");
 
             Assert.IsNotNull(dataExactCardinality);
+            Assert.IsTrue(string.Equals(dataExactCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataExactCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataExactCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataExactCardinality.DataRangeExpression);
@@ -108,6 +111,7 @@ namespace OWLSharp.Test
 </DataExactCardinality>");
 
             Assert.IsNotNull(dataExactCardinality);
+            Assert.IsTrue(string.Equals(dataExactCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataExactCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataExactCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNotNull(dataExactCardinality.DataRangeExpression);

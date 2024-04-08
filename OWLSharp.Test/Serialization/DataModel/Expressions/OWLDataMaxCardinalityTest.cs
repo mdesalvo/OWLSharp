@@ -29,6 +29,7 @@ namespace OWLSharp.Test
             OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
 
             Assert.IsNotNull(dataMaxCardinality);
+            Assert.IsTrue(string.Equals(dataMaxCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMaxCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMaxCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataMaxCardinality.DataRangeExpression);
@@ -44,6 +45,7 @@ namespace OWLSharp.Test
             OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
 
             Assert.IsNotNull(dataMaxCardinality);
+            Assert.IsTrue(string.Equals(dataMaxCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMaxCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMaxCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNotNull(dataMaxCardinality.DataRangeExpression);
@@ -80,6 +82,7 @@ namespace OWLSharp.Test
 </DataMaxCardinality>");
 
             Assert.IsNotNull(dataMaxCardinality);
+            Assert.IsTrue(string.Equals(dataMaxCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMaxCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMaxCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataMaxCardinality.DataRangeExpression);
@@ -108,6 +111,7 @@ namespace OWLSharp.Test
 </DataMaxCardinality>");
 
             Assert.IsNotNull(dataMaxCardinality);
+            Assert.IsTrue(string.Equals(dataMaxCardinality.Cardinality, "1"));
             Assert.IsNotNull(dataMaxCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMaxCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNotNull(dataMaxCardinality.DataRangeExpression);
