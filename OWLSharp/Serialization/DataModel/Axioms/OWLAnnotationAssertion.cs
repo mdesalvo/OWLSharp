@@ -67,18 +67,21 @@ namespace OWLSharp
             => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueIri\" parameter is null");
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, OWLAnonymousIndividual subjectAnonymousIndividual, RDFResource valueIri) : this(annotationProperty, subjectAnonymousIndividual)
             => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueIri\" parameter is null");
+
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, XmlQualifiedName valueAbbreviatedIri) : this(annotationProperty, subjectIri)
             => ValueAbbreviatedIRI = valueAbbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueAbbreviatedIri\" parameter is null");
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, XmlQualifiedName subjectAbbreviatedIri, XmlQualifiedName valueAbbreviatedIri) : this(annotationProperty, subjectAbbreviatedIri)
             => ValueAbbreviatedIRI = valueAbbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueAbbreviatedIri\" parameter is null");
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, OWLAnonymousIndividual subjectAnonymousIndividual, XmlQualifiedName valueAbbreviatedIri) : this(annotationProperty, subjectAnonymousIndividual)
             => ValueAbbreviatedIRI = valueAbbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueAbbreviatedIri\" parameter is null");
+
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, OWLAnonymousIndividual valueAnonymousIndividual) : this(annotationProperty, subjectIri)
             => ValueAnonymousIndividual = valueAnonymousIndividual ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueAnonymousIndividual\" parameter is null");
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, XmlQualifiedName subjectAbbreviatedIri, OWLAnonymousIndividual valueAnonymousIndividual) : this(annotationProperty, subjectAbbreviatedIri)
             => ValueAnonymousIndividual = valueAnonymousIndividual ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueAnonymousIndividual\" parameter is null");
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, OWLAnonymousIndividual subjectAnonymousIndividual, OWLAnonymousIndividual valueAnonymousIndividual) : this(annotationProperty, subjectAnonymousIndividual)
             => ValueAnonymousIndividual = valueAnonymousIndividual ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueAnonymousIndividual\" parameter is null");
+
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, OWLLiteral valueLiteral) : this(annotationProperty, subjectIri)
             => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueLiteral\" parameter is null");
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, XmlQualifiedName subjectAbbreviatedIri, OWLLiteral valueLiteral) : this(annotationProperty, subjectAbbreviatedIri)
