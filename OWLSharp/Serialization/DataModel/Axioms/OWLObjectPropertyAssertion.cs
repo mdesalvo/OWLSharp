@@ -16,7 +16,7 @@
 
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("ObjectPropertyAssertion")]
     public class OWLObjectPropertyAssertion : OWLAssertionAxiom

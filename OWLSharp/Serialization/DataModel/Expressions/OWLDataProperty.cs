@@ -18,7 +18,7 @@ using RDFSharp.Model;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("DataProperty")]
     public class OWLDataProperty : OWLDataPropertyExpression

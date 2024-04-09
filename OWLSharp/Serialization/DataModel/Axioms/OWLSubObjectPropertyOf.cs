@@ -16,7 +16,7 @@
 
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("SubObjectPropertyOf")]
     public class OWLSubObjectPropertyOf : OWLObjectPropertyAxiom

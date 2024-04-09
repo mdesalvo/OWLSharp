@@ -20,7 +20,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("DatatypeRestriction")]
     public class OWLDatatypeRestriction : OWLDataRangeExpression

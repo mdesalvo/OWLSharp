@@ -16,7 +16,7 @@
 
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("DataPropertyDomain")]
     public class OWLDataPropertyDomain : OWLDataPropertyAxiom

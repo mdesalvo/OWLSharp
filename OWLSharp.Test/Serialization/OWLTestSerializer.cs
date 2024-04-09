@@ -14,12 +14,11 @@
    limitations under the License.
 */
 
-using RDFSharp.Model;
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization.Test
 {
     public static class OWLTestSerializer<T> where T : class
     {

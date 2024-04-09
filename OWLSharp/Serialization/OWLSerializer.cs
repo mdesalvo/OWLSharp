@@ -20,7 +20,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     public static class OWLSerializer
     {

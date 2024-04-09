@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     public class OWLAxiom 
     {

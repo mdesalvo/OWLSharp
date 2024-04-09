@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     public abstract class OWLExpression { }
 

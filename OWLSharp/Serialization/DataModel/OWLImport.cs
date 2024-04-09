@@ -17,7 +17,7 @@
 using RDFSharp.Model;
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("Import")]
     public class OWLImport

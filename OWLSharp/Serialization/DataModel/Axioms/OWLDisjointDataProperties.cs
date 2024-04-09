@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("DisjointDataProperties")]
     public class OWLDisjointDataProperties : OWLDataPropertyAxiom

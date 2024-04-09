@@ -17,7 +17,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("ObjectAllValuesFrom")]
     public class OWLObjectAllValuesFrom : OWLClassExpression

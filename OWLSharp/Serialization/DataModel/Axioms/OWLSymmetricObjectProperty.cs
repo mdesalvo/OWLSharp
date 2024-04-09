@@ -16,7 +16,7 @@
 
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("SymmetricObjectProperty")]
     public class OWLSymmetricObjectProperty : OWLObjectPropertyAxiom

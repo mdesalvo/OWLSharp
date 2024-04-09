@@ -16,7 +16,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace OWLSharp.Test
+namespace OWLSharp.Serialization.Test
 {
     [TestClass]
     public class OWLAnonymousIndividualTest

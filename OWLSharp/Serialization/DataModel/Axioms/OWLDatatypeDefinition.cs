@@ -16,7 +16,7 @@
 
 using System.Xml.Serialization;
 
-namespace OWLSharp
+namespace OWLSharp.Serialization
 {
     [XmlRoot("DatatypeDefinition")]
     public partial class OWLDatatypeDefinition : OWLAxiom
