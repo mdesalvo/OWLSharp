@@ -27,7 +27,7 @@ namespace OWLSharp.Test
         #region Tests
         //SubjectIRI
         [TestMethod]
-        public void ShouldCreateIRIIRIAssertion()
+        public void ShouldCreateIRIIRIAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -49,28 +49,28 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIRIRIAnnotationBecauseNullAnnotationProperty()
+        public void ShouldThrowExceptionOnCreatingIRIRIAnnotationAssertionBecauseNullAnnotationProperty()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 null,
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIRIRIAnnotationBecauseNullSubjectIRI()
+        public void ShouldThrowExceptionOnCreatingIRIRIAnnotationAssertionBecauseNullSubjectIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null as RDFResource,
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIRIRIAnnotationBecauseNullValueIRI()
+        public void ShouldThrowExceptionOnCreatingIRIRIAnnotationAssertionBecauseNullValueIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 null as RDFResource));
 
         [TestMethod]
-        public void ShouldCreateIRIAbbreviatedIRIAssertion()
+        public void ShouldCreateIRIAbbreviatedIRIAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -92,14 +92,14 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIRIAbbreviatedIRIAnnotationBecauseNullValueAbbreviatedIRI()
+        public void ShouldThrowExceptionOnCreatingIRIAbbreviatedIRIAnnotationAssertionBecauseNullValueAbbreviatedIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 null as XmlQualifiedName));
 
         [TestMethod]
-        public void ShouldCreateIRIAnonymousIndividualAssertion()
+        public void ShouldCreateIRIAnonymousIndividualAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -121,14 +121,14 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIRIAnonymousIndividualAnnotationBecauseNullValueAnonymousIndividual()
+        public void ShouldThrowExceptionOnCreatingIRIAnonymousIndividualAnnotationAssertionBecauseNullValueAnonymousIndividual()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 null as OWLAnonymousIndividual));
 
         [TestMethod]
-        public void ShouldCreateIRILiteralAssertion()
+        public void ShouldCreateIRILiteralAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -151,7 +151,7 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIRILiteralAnnotationBecauseNullValueLiteral()
+        public void ShouldThrowExceptionOnCreatingIRILiteralAnnotationAssertionBecauseNullValueLiteral()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
@@ -159,7 +159,7 @@ namespace OWLSharp.Test
 
         //SubjectAbbreviatedIRI
         [TestMethod]
-        public void ShouldCreateAbbreviatedIRIIRIAssertion()
+        public void ShouldCreateAbbreviatedIRIIRIAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -181,28 +181,28 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationBecauseNullAnnotationProperty()
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationAssertionBecauseNullAnnotationProperty()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 null,
                 new XmlQualifiedName("Subj", "http://example.org/"),
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationBecauseNullSubjectIRI()
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationAssertionBecauseNullSubjectIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null as XmlQualifiedName,
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationBecauseNullValueIRI()
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationAssertionBecauseNullValueIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new XmlQualifiedName("Subj", "http://example.org/"),
                 null as RDFResource));
 
         [TestMethod]
-        public void ShouldCreateAbbreviatedIRIAbbreviatedIRIAssertion()
+        public void ShouldCreateAbbreviatedIRIAbbreviatedIRIAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -224,14 +224,14 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAbbreviatedIRIAnnotationBecauseNullValueAbbreviatedIRI()
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAbbreviatedIRIAnnotationAssertionBecauseNullValueAbbreviatedIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new XmlQualifiedName("Subj", "http://example.org/"),
                 null as XmlQualifiedName));
 
         [TestMethod]
-        public void ShouldCreateAbbreviatedIRIAnonymousIndividualAssertion()
+        public void ShouldCreateAbbreviatedIRIAnonymousIndividualAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -253,14 +253,14 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnonymousIndividualAnnotationBecauseNullValueAnonymousIndividual()
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnonymousIndividualAnnotationAssertionBecauseNullValueAnonymousIndividual()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new XmlQualifiedName("Subj", "http://example.org/"),
                 null as OWLAnonymousIndividual));
 
         [TestMethod]
-        public void ShouldCreateAbbreviatedIRILiteralAssertion()
+        public void ShouldCreateAbbreviatedIRILiteralAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -283,7 +283,7 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAbbreviatedIRILiteralAnnotationBecauseNullValueLiteral()
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRILiteralAnnotationAssertionBecauseNullValueLiteral()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new XmlQualifiedName("Subj", "http://example.org/"),
@@ -291,7 +291,7 @@ namespace OWLSharp.Test
 
         //SubjectAnonymousIndividual
         [TestMethod]
-        public void ShouldCreateAnonymousIndividualIRIAssertion()
+        public void ShouldCreateAnonymousIndividualIRIAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -313,28 +313,28 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAnonymousIndividualRIAnnotationBecauseNullAnnotationProperty()
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualRIAnnotationAssertionBecauseNullAnnotationProperty()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 null,
                 new OWLAnonymousIndividual("AnonIdv"),
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAnonymousIndividualRIAnnotationBecauseNullSubjectIRI()
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualRIAnnotationAssertionBecauseNullSubjectIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null as XmlQualifiedName,
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAnonymousIndividualRIAnnotationBecauseNullValueIRI()
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualRIAnnotationAssertionBecauseNullValueIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLAnonymousIndividual("AnonIdv"),
                 null as RDFResource));
 
         [TestMethod]
-        public void ShouldCreateAnonymousIndividualAbbreviatedIRIAssertion()
+        public void ShouldCreateAnonymousIndividualAbbreviatedIRIAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -356,14 +356,14 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAnonymousIndividualAbbreviatedIRIAnnotationBecauseNullValueAbbreviatedIRI()
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualAbbreviatedIRIAnnotationAssertionBecauseNullValueAbbreviatedIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLAnonymousIndividual("AnonIdv"),
                 null as XmlQualifiedName));
 
         [TestMethod]
-        public void ShouldCreateAnonymousIndividualAnonymousIndividualAssertion()
+        public void ShouldCreateAnonymousIndividualAnonymousIndividualAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -385,14 +385,14 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAnonymousIndividualAnonymousIndividualAnnotationBecauseNullValueAnonymousIndividual()
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualAnonymousIndividualAnnotationAssertionBecauseNullValueAnonymousIndividual()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLAnonymousIndividual("AnonIdv"),
                 null as OWLAnonymousIndividual));
 
         [TestMethod]
-        public void ShouldCreateAnonymousIndividualLiteralAssertion()
+        public void ShouldCreateAnonymousIndividualLiteralAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
@@ -415,7 +415,7 @@ namespace OWLSharp.Test
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingAnonymousIndividualLiteralAnnotationBecauseNullValueLiteral()
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualLiteralAnnotationAssertionBecauseNullValueLiteral()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLAnonymousIndividual("AnonIdv"),
