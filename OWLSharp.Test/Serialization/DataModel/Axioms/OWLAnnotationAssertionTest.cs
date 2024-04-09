@@ -25,6 +25,7 @@ namespace OWLSharp.Test
     public class OWLAnnotationAssertionTest
     {
         #region Tests
+        //SubjectIRI
         [TestMethod]
         public void ShouldCreateIRIIRIAssertion()
         {
@@ -154,6 +155,138 @@ namespace OWLSharp.Test
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
+                null as OWLLiteral));
+
+        //SubjectAbbreviatedIRI
+        [TestMethod]
+        public void ShouldCreateAbbreviatedIRIIRIAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                new RDFResource("ex:Obj"));
+
+            Assert.IsNotNull(annotationAssertion);
+            Assert.IsNotNull(annotationAssertion.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationAssertion.AnnotationProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
+            Assert.IsNull(annotationAssertion.SubjectIRI);
+            Assert.IsNotNull(annotationAssertion.SubjectAbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.SubjectAbbreviatedIRI.ToString(), "http://example.org/:Subj"));
+            Assert.IsNull(annotationAssertion.SubjectAnonymousIndividual);
+            Assert.IsNotNull(annotationAssertion.ValueIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.ValueIRI, "ex:Obj"));
+            Assert.IsNull(annotationAssertion.ValueAbbreviatedIRI);
+            Assert.IsNull(annotationAssertion.ValueAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueLiteral);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationBecauseNullAnnotationProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+                null,
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                new RDFResource("ex:Obj")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationBecauseNullSubjectIRI()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                null as XmlQualifiedName,
+                new RDFResource("ex:Obj")));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIRIAnnotationBecauseNullValueIRI()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                null as RDFResource));
+
+        [TestMethod]
+        public void ShouldCreateAbbreviatedIRIAbbreviatedIRIAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                new XmlQualifiedName("Obj", "http://example.org/"));
+
+            Assert.IsNotNull(annotationAssertion);
+            Assert.IsNotNull(annotationAssertion.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationAssertion.AnnotationProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
+            Assert.IsNull(annotationAssertion.SubjectIRI);
+            Assert.IsNotNull(annotationAssertion.SubjectAbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.SubjectAbbreviatedIRI.ToString(), "http://example.org/:Subj"));
+            Assert.IsNull(annotationAssertion.SubjectAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueIRI);
+            Assert.IsNotNull(annotationAssertion.ValueAbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.ValueAbbreviatedIRI.ToString(), "http://example.org/:Obj"));
+            Assert.IsNull(annotationAssertion.ValueAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueLiteral);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAbbreviatedIRIAnnotationBecauseNullValueAbbreviatedIRI()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                null as XmlQualifiedName));
+
+        [TestMethod]
+        public void ShouldCreateAbbreviatedIRIAnonymousIndividualAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                new OWLAnonymousIndividual("AnonIdv"));
+
+            Assert.IsNotNull(annotationAssertion);
+            Assert.IsNotNull(annotationAssertion.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationAssertion.AnnotationProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
+            Assert.IsNull(annotationAssertion.SubjectIRI);
+            Assert.IsNotNull(annotationAssertion.SubjectAbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.SubjectAbbreviatedIRI.ToString(), "http://example.org/:Subj"));
+            Assert.IsNull(annotationAssertion.SubjectAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueIRI);
+            Assert.IsNull(annotationAssertion.ValueAbbreviatedIRI);
+            Assert.IsNotNull(annotationAssertion.ValueAnonymousIndividual);
+            Assert.IsTrue(string.Equals(annotationAssertion.ValueAnonymousIndividual.NodeID, "AnonIdv"));
+            Assert.IsNull(annotationAssertion.ValueLiteral);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnonymousIndividualAnnotationBecauseNullValueAnonymousIndividual()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                null as OWLAnonymousIndividual));
+
+        [TestMethod]
+        public void ShouldCreateAbbreviatedIRILiteralAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
+                new OWLLiteral(new RDFPlainLiteral("hello", "en-US")));
+
+            Assert.IsNotNull(annotationAssertion);
+            Assert.IsNotNull(annotationAssertion.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationAssertion.AnnotationProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
+            Assert.IsNull(annotationAssertion.SubjectIRI);
+            Assert.IsNotNull(annotationAssertion.SubjectAbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.SubjectAbbreviatedIRI.ToString(), "http://example.org/:Subj"));
+            Assert.IsNull(annotationAssertion.SubjectAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueIRI);
+            Assert.IsNull(annotationAssertion.ValueAbbreviatedIRI);
+            Assert.IsNull(annotationAssertion.ValueAnonymousIndividual);
+            Assert.IsNotNull(annotationAssertion.ValueLiteral);
+            Assert.IsTrue(string.Equals(annotationAssertion.ValueLiteral.Value, "hello"));
+            Assert.IsTrue(string.Equals(annotationAssertion.ValueLiteral.Language, "EN-US"));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRILiteralAnnotationBecauseNullValueLiteral()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new XmlQualifiedName("Subj", "http://example.org/"),
                 null as OWLLiteral));
         #endregion
     }
