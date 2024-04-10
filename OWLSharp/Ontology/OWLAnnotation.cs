@@ -28,7 +28,7 @@ namespace OWLSharp.Ontology
         [XmlElement(Order=1)]
         public OWLAnnotation Annotation { get; set; }
 
-        [XmlElement(ElementName="AnnotationProperty", Order=2)]
+        [XmlElement(Order=2)]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
