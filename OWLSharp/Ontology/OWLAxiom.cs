@@ -42,26 +42,31 @@ namespace OWLSharp.Ontology
 
     public class OWLClassAxiom : OWLAxiom
     {
-        internal OWLClassAxiom() : base() => SerializationPriority=2;
+        internal OWLClassAxiom() : base() 
+            => SerializationPriority=2;
     }
 
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
-        internal OWLObjectPropertyAxiom() : base() => SerializationPriority=3;
+        internal OWLObjectPropertyAxiom() : base() 
+            => SerializationPriority=3;
     }
 
     public class OWLDataPropertyAxiom : OWLAxiom
     {
-        internal OWLDataPropertyAxiom() : base() => SerializationPriority=4;
+        internal OWLDataPropertyAxiom() : base() 
+            => SerializationPriority=4;
     }
 
     public class OWLAssertionAxiom : OWLAxiom
     {
-        internal OWLAssertionAxiom() : base() => SerializationPriority=7;
+        internal OWLAssertionAxiom() : base() 
+            => SerializationPriority=7;
     }
 
     public class OWLAnnotationAxiom : OWLAxiom
     {
-        internal OWLAnnotationAxiom() : base() => SerializationPriority=8;
+        internal OWLAnnotationAxiom() : base() 
+            => SerializationPriority=8;
     }
 }
