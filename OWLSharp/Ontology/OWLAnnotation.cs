@@ -43,13 +43,10 @@ namespace OWLSharp.Ontology
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
-        #region Internal-Ctors
+        #region Ctors
         internal OWLAnnotation() { }
         internal OWLAnnotation(OWLAnnotationProperty annotationProperty) : this()
             => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
-        #endregion
-
-        #region Public-Ctors
         public OWLAnnotation(OWLAnnotationProperty annotationProperty, RDFResource valueIri) : this(annotationProperty)
             => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueIri\" parameter is null");
         public OWLAnnotation(OWLAnnotationProperty annotationProperty, XmlQualifiedName valueAbbreviatedIri) : this(annotationProperty)
