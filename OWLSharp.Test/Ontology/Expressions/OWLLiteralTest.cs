@@ -14,12 +14,11 @@
    limitations under the License.
 */
 
-using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Test;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Test
+namespace OWLSharp.Ontology.Expressions.Test
 {
     [TestClass]
     public class OWLLiteralTest

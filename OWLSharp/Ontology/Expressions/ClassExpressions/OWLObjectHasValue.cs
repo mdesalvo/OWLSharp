@@ -17,7 +17,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology
+namespace OWLSharp.Ontology.Expressions
 {
     [XmlRoot("ObjectHasValue")]
     public class OWLObjectHasValue : OWLClassExpression

@@ -17,7 +17,7 @@
 using RDFSharp.Model;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology
+namespace OWLSharp.Ontology.Expressions
 {
     [XmlRoot("AnonymousIndividual")]
     public class OWLAnonymousIndividual : OWLIndividualExpression

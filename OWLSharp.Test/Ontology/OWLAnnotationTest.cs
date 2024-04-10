@@ -17,6 +17,7 @@
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
 using RDFSharp.Model;
 

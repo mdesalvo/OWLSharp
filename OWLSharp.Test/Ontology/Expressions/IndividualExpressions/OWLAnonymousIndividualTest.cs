@@ -17,7 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Test;
 
-namespace OWLSharp.Ontology.Test
+namespace OWLSharp.Ontology.Expressions.Test
 {
     [TestClass]
     public class OWLAnonymousIndividualTest

@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Ontology.Expressions;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms

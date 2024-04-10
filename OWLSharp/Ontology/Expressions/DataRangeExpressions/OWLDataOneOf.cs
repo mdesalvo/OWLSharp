@@ -19,7 +19,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology
+namespace OWLSharp.Ontology.Expressions
 {
     [XmlRoot("DataOneOf")]
     public class OWLDataOneOf : OWLDataRangeExpression

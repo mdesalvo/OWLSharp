@@ -19,7 +19,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology
+namespace OWLSharp.Ontology.Expressions
 {
     [XmlRoot("ObjectIntersectionOf")]
     public class OWLObjectIntersectionOf : OWLClassExpression
