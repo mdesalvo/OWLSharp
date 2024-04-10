@@ -25,21 +25,21 @@ namespace OWLSharp.Ontology
     public class OWLAnnotation
     {
         #region Properties
-        [XmlElement(Order=1)]
+        [XmlElement(Order = 1)]
         public OWLAnnotation Annotation { get; set; }
 
-        [XmlElement(Order=2)]
+        [XmlElement(Order = 2)]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
-        [XmlElement("IRI", DataType="anyURI", Order=3)]
+        [XmlElement("IRI", DataType = "anyURI", Order = 3)]
         public string ValueIRI { get; set; }
-        [XmlElement("AbbreviatedIRI", DataType="QName", Order=4)]
+        [XmlElement("AbbreviatedIRI", DataType = "QName", Order = 4)]
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
-        [XmlElement("AnonymousIndividual", Order=5)]
+        [XmlElement("AnonymousIndividual", Order = 5)]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
-        [XmlElement(ElementName="Literal", Order=6)]
+        [XmlElement(ElementName = "Literal", Order = 6)]
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
@@ -55,6 +55,40 @@ namespace OWLSharp.Ontology
             => ValueAnonymousIndividual = valueAnonymousIndividual ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueAnonymousIndividual\" parameter is null");
         public OWLAnnotation(OWLAnnotationProperty annotationProperty, OWLLiteral valueLiteral) : this(annotationProperty)
             => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotation because given \"valueLiteral\" parameter is null");
+        #endregion
+    }
+
+    public class OWLAnnotationSubject
+    {
+        #region Properties
+        [XmlElement("IRI", DataType = "anyURI")]
+        public string SubjectIRI { get; set; }
+        [XmlElement("AbbreviatedIRI", DataType = "QName")]
+        public XmlQualifiedName SubjectAbbreviatedIRI { get; set; }
+        [XmlElement("AnonymousIndividual")]
+        public OWLAnonymousIndividual SubjectAnonymousIndividual { get; set; }
+        #endregion
+
+        #region Ctors
+        internal OWLAnnotationSubject() { }
+        #endregion
+    }
+
+    public class OWLAnnotationValue
+    {
+        #region Properties
+        [XmlElement("IRI", DataType = "anyURI")]
+        public string ValueIRI { get; set; }
+        [XmlElement("AbbreviatedIRI", DataType = "QName")]
+        public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
+        [XmlElement("AnonymousIndividual")]
+        public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
+        [XmlElement("Literal")]
+        public OWLLiteral ValueLiteral { get; set; }
+        #endregion
+
+        #region Ctors
+        internal OWLAnnotationValue() { }
         #endregion
     }
 }
