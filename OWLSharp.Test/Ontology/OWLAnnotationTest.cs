@@ -165,15 +165,15 @@ namespace OWLSharp.Ontology.Test
 </Annotation>");
 
           Assert.IsNotNull(annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
           Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
           Assert.IsNotNull(annotation.Annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
           Assert.IsTrue(string.Equals(annotation.Annotation.ValueIRI, "http://example.org/seeThat"));
           Assert.IsNotNull(annotation.Annotation.Annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
-          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).Value, "annotation!"));
-          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).Language, "EN-US"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Value, "annotation!"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Language, "EN-US"));
         }
 
         //AbbreviatedIRI
@@ -315,15 +315,15 @@ namespace OWLSharp.Ontology.Test
 </Annotation>");
 
           Assert.IsNotNull(annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
           Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI.ToString(), "http://example.org/:seeThis"));
           Assert.IsNotNull(annotation.Annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
           Assert.IsTrue(string.Equals(annotation.Annotation.ValueAbbreviatedIRI.ToString(), "http://example.org/:seeThat"));
           Assert.IsNotNull(annotation.Annotation.Annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
-          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).Value, "25"));
-          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).DatatypeIRI, "http://www.w3.org/2001/XMLSchema#positiveInteger"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Value, "25"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#positiveInteger"));
         }
 
         //AnonymousIndividual
@@ -465,15 +465,15 @@ namespace OWLSharp.Ontology.Test
 </Annotation>");
 
           Assert.IsNotNull(annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
           Assert.IsTrue(string.Equals(annotation.ValueAnonymousIndividual.NodeID.ToString(), "AnonIdv"));
           Assert.IsNotNull(annotation.Annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
           Assert.IsTrue(string.Equals(annotation.Annotation.ValueAnonymousIndividual.NodeID.ToString(), "AnonIdv2"));
           Assert.IsNotNull(annotation.Annotation.Annotation);
-          Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
-          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).Value, "annotation!"));
-          Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).Language, "EN-US--ltr"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Value, "annotation!"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Language, "EN-US--ltr"));
         }
 
         //Literal
@@ -489,7 +489,7 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
-            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteral).Value, "Lit!"));
+            Assert.IsTrue(string.Equals(annotation.ValueLiteral.Value, "Lit!"));
         }
 
         [TestMethod]
@@ -578,7 +578,7 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
-            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteral).Value, "Lit!"));
+            Assert.IsTrue(string.Equals(annotation.ValueLiteral.Value, "Lit!"));
         }
 
         [TestMethod]
@@ -594,7 +594,7 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
                             && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
                             && annProp.IRI is null);
-            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteral).Value, "Lit!"));
+            Assert.IsTrue(string.Equals(annotation.ValueLiteral.Value, "Lit!"));
         }
 
         [TestMethod]
@@ -615,15 +615,15 @@ namespace OWLSharp.Ontology.Test
 </Annotation>");
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
-            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.ValueLiteral).Value, "Lit!"));
+            Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+            Assert.IsTrue(string.Equals(annotation.ValueLiteral.Value, "Lit!"));
             Assert.IsNotNull(annotation.Annotation);
-            Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
-            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.ValueLiteral).Value, "Lit!2"));
+            Assert.IsTrue(string.Equals(annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+            Assert.IsTrue(string.Equals(annotation.Annotation.ValueLiteral.Value, "Lit!2"));
             Assert.IsNotNull(annotation.Annotation.Annotation);
-            Assert.IsTrue(string.Equals(((OWLAnnotationProperty)annotation.Annotation.Annotation.AnnotationProperty).IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
-            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).Value, "annotation!"));
-            Assert.IsTrue(string.Equals(((OWLLiteral)annotation.Annotation.Annotation.ValueLiteral).Language, "en"));
+            Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
+            Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Value, "annotation!"));
+            Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Language, "en"));
         }
         #endregion
     }

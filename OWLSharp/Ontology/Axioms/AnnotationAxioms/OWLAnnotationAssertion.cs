@@ -73,4 +73,38 @@ namespace OWLSharp.Ontology.Axioms
             => AnnotationValue.ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueLiteral\" parameter is null");
         #endregion
     }
+
+    public class OWLAnnotationSubject
+    {
+        #region Properties
+        [XmlElement("IRI", DataType="anyURI")]
+        public string SubjectIRI { get; set; }
+        [XmlElement("AbbreviatedIRI", DataType="QName")]
+        public XmlQualifiedName SubjectAbbreviatedIRI { get; set; }
+        [XmlElement("AnonymousIndividual")]
+        public OWLAnonymousIndividual SubjectAnonymousIndividual { get; set; }
+        #endregion
+
+        #region Ctors
+        internal OWLAnnotationSubject() { }
+        #endregion
+    }
+
+    public class OWLAnnotationValue
+    {
+        #region Properties
+        [XmlElement("IRI", DataType="anyURI")]
+        public string ValueIRI { get; set; }
+        [XmlElement("AbbreviatedIRI", DataType="QName")]
+        public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
+        [XmlElement("AnonymousIndividual")]
+        public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
+        [XmlElement("Literal")]
+        public OWLLiteral ValueLiteral { get; set; }
+        #endregion
+
+        #region Ctors
+        internal OWLAnnotationValue() { }
+        #endregion
+    }
 }

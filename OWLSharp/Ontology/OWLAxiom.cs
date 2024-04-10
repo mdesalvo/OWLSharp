@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Expressions;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
