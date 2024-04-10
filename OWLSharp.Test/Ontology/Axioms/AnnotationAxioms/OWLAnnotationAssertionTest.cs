@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Test
+namespace OWLSharp.Ontology.Axioms.Test
 {
     [TestClass]
     public class OWLAnnotationAssertionTest

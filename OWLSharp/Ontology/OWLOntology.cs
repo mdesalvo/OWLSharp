@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Ontology.Axioms;
 using RDFSharp.Model;
 using System;
 using System.Collections.Generic;

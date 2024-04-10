@@ -16,7 +16,7 @@
 
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology
+namespace OWLSharp.Ontology.Axioms
 {
     [XmlRoot("NegativeObjectPropertyAssertion")]
     public class OWLNegativeObjectPropertyAssertion : OWLAssertionAxiom
