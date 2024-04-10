@@ -75,11 +75,6 @@ namespace OWLSharp.Ontology
 
     public class OWLAnnotationAxiom : OWLAxiom
     {
-        #region Properties
-        [XmlElement(ElementName="AnnotationProperty", Order=2)]
-        public OWLAnnotationProperty AnnotationProperty { get; set; }
-        #endregion
-
         #region Ctors
         internal OWLAnnotationAxiom() : base() 
             => SerializationPriority=8;

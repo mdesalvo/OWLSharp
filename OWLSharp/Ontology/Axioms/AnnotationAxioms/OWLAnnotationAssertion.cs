@@ -25,6 +25,9 @@ namespace OWLSharp.Ontology.Axioms
     public class OWLAnnotationAssertion : OWLAnnotationAxiom
     {
         #region Properties
+        [XmlElement(ElementName="AnnotationProperty", Order=2)]
+        public OWLAnnotationProperty AnnotationProperty { get; set; }
+
         //AnnotationSubject (cannot be a self-object, since this would introduce an additional XmlElement)
 
         [XmlElement("IRI", DataType="anyURI", Order=3)]
