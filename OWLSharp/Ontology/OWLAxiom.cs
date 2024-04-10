@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Ontology.Expressions;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -42,31 +43,46 @@ namespace OWLSharp.Ontology
 
     public class OWLClassAxiom : OWLAxiom
     {
+        #region Ctors
         internal OWLClassAxiom() : base() 
             => SerializationPriority=2;
+        #endregion
     }
 
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
+        #region Ctors
         internal OWLObjectPropertyAxiom() : base() 
             => SerializationPriority=3;
+        #endregion
     }
 
     public class OWLDataPropertyAxiom : OWLAxiom
     {
+        #region Ctors
         internal OWLDataPropertyAxiom() : base() 
             => SerializationPriority=4;
+        #endregion
     }
 
     public class OWLAssertionAxiom : OWLAxiom
     {
+        #region Ctors
         internal OWLAssertionAxiom() : base() 
             => SerializationPriority=7;
+        #endregion
     }
 
     public class OWLAnnotationAxiom : OWLAxiom
     {
+        #region Properties
+        [XmlElement(ElementName="AnnotationProperty", Order=2)]
+        public OWLAnnotationProperty AnnotationProperty { get; set; }
+        #endregion
+
+        #region Ctors
         internal OWLAnnotationAxiom() : base() 
             => SerializationPriority=8;
+        #endregion
     }
 }
