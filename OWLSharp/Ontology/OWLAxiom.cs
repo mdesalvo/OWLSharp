@@ -39,11 +39,6 @@ namespace OWLSharp.Ontology
 
     //Derived
 
-    public partial class OWLDeclaration : OWLAxiom
-    {
-        internal OWLDeclaration() : base() => SerializationPriority=1;
-    }
-
     public class OWLClassAxiom : OWLAxiom
     {
         internal OWLClassAxiom() : base() => SerializationPriority=2;
@@ -57,16 +52,6 @@ namespace OWLSharp.Ontology
     public class OWLDataPropertyAxiom : OWLAxiom
     {
         internal OWLDataPropertyAxiom() : base() => SerializationPriority=4;
-    }
-
-    public partial class OWLDatatypeDefinition : OWLAxiom
-    {
-        internal OWLDatatypeDefinition() : base() => SerializationPriority=5;
-    }
-
-    public partial class OWLHasKey : OWLAxiom
-    {
-        internal OWLHasKey() : base() => SerializationPriority=6;
     }
 
     public class OWLAssertionAxiom : OWLAxiom

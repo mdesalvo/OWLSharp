@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Declaration")]
-    public partial class OWLDeclaration : OWLAxiom
+    public class OWLDeclaration : OWLAxiom
     {
         #region Properties
         //Register here all derived types of OWLExpression allowed for declaration
@@ -33,6 +33,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
+        internal OWLDeclaration() : base() 
+            => SerializationPriority = 1;
         public OWLDeclaration(OWLClass classIRI) : this()
             => Expression = classIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"classIRI\" parameter is null");
         public OWLDeclaration(OWLDatatype datatypeIRI) : this()

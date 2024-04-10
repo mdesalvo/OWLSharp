@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("HasKey")]
-    public partial class OWLHasKey : OWLAxiom
+    public class OWLHasKey : OWLAxiom
     {
         #region Properties
         //Register here all derived types of OWLClassExpression
@@ -55,6 +55,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
+        internal OWLHasKey() : base() 
+            => SerializationPriority = 6;
         public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
         {
             #region Guards

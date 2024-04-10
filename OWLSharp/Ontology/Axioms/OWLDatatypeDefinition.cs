@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DatatypeDefinition")]
-    public partial class OWLDatatypeDefinition : OWLAxiom
+    public class OWLDatatypeDefinition : OWLAxiom
     {
         #region Properties
         [XmlElement("Datatype", Order=2)]
@@ -36,6 +36,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
+        internal OWLDatatypeDefinition() : base() 
+            => SerializationPriority = 5;
         public OWLDatatypeDefinition(OWLDatatype datatypeIRI, OWLDataRangeExpression dataRangeExpression) : this()
         {
             Datatype = datatypeIRI ?? throw new OWLException("Cannot create OWLDatatypeDefinition because given \"datatypeIRI\" parameter is null");
