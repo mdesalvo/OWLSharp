@@ -49,7 +49,7 @@ namespace OWLSharp.Ontology.Axioms
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
-        #region Internal-Ctors
+        #region Ctors
         internal OWLAnnotationAssertion() : base() { }
         internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty) : this()
             => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
@@ -59,9 +59,6 @@ namespace OWLSharp.Ontology.Axioms
             => SubjectAbbreviatedIRI = subjectAbbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"subjectAbbreviatedIri\" parameter is null");
         internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, OWLAnonymousIndividual subjectAnonymousIndividual) : this(annotationProperty)
             => SubjectAnonymousIndividual = subjectAnonymousIndividual ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"subjectAnonymousIndividual\" parameter is null");
-        #endregion
-
-        #region Public-Ctors
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, RDFResource valueIri) : this(annotationProperty, subjectIri)
             => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueIri\" parameter is null");
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, XmlQualifiedName subjectAbbreviatedIri, RDFResource valueIri) : this(annotationProperty, subjectAbbreviatedIri)
