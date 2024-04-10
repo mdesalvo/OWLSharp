@@ -39,7 +39,7 @@ namespace OWLSharp.Ontology
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
         [XmlElement("AnonymousIndividual")]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
-        [XmlElement(ElementName = "Literal")]
+        [XmlElement("Literal")]
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
