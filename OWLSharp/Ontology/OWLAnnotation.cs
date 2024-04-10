@@ -25,21 +25,21 @@ namespace OWLSharp.Ontology
     public class OWLAnnotation
     {
         #region Properties
-        [XmlElement(Order=1)]
+        [XmlElement]
         public OWLAnnotation Annotation { get; set; }
 
-        [XmlElement(Order=2)]
+        [XmlElement]
         public OWLAnnotationProperty AnnotationProperty { get; set; }
 
         //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
 
-        [XmlElement("IRI", DataType="anyURI", Order=3)]
+        [XmlElement("IRI", DataType="anyURI")]
         public string ValueIRI { get; set; }
-        [XmlElement("AbbreviatedIRI", DataType="QName", Order=4)]
+        [XmlElement("AbbreviatedIRI", DataType="QName")]
         public XmlQualifiedName ValueAbbreviatedIRI { get; set; }
-        [XmlElement("AnonymousIndividual", Order=5)]
+        [XmlElement("AnonymousIndividual")]
         public OWLAnonymousIndividual ValueAnonymousIndividual { get; set; }
-        [XmlElement(ElementName = "Literal", Order=6)]
+        [XmlElement(ElementName = "Literal")]
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
