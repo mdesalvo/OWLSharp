@@ -33,7 +33,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLAxiom() => AxiomAnnotations = new List<OWLAnnotation>();
+        internal OWLAxiom() 
+            => AxiomAnnotations = new List<OWLAnnotation>();
         #endregion
     }
 
