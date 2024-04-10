@@ -19,7 +19,7 @@ using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
-using OWLSharp.DataModel;
+using OWLSharp.Ontology;
 
 namespace OWLSharp
 {
