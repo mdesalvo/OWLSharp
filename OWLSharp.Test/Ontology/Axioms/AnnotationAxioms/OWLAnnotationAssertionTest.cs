@@ -18,6 +18,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Test;
 using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Axioms.Test
@@ -69,6 +70,47 @@ namespace OWLSharp.Ontology.Axioms.Test
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 null as RDFResource));
+
+        [TestMethod]
+        public void ShouldSerializeIRIIRIAnnotationAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("ex:Subj"),
+                new RDFResource("ex:Obj"));
+            string serializedXML = OWLTestSerializer<OWLAnnotationAssertion>.Serialize(annotationAssertion);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<AnnotationAssertion>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>ex:Subj</IRI>
+  <IRI>ex:Obj</IRI>
+</AnnotationAssertion>"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeIRIIRIAnnotationAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = OWLTestSerializer<OWLAnnotationAssertion>.Deserialize(
+@"<AnnotationAssertion>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>ex:Subj</IRI>
+  <IRI>ex:Obj</IRI>
+</AnnotationAssertion>");
+
+            Assert.IsNotNull(annotationAssertion);
+            Assert.IsNotNull(annotationAssertion.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationAssertion.AnnotationProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
+            Assert.IsNotNull(annotationAssertion.SubjectIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.SubjectIRI, "ex:Subj"));
+            Assert.IsNull(annotationAssertion.SubjectAbbreviatedIRI);
+            Assert.IsNull(annotationAssertion.SubjectAnonymousIndividual);
+            Assert.IsNotNull(annotationAssertion.ValueIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.ValueIRI, "ex:Obj"));
+            Assert.IsNull(annotationAssertion.ValueAbbreviatedIRI);
+            Assert.IsNull(annotationAssertion.ValueAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueLiteral);
+        }
 
         [TestMethod]
         public void ShouldCreateIRIAbbreviatedIRIAnnotationAssertion()

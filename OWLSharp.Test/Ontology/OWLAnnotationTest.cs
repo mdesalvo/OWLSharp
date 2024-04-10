@@ -62,7 +62,7 @@ namespace OWLSharp.Ontology.Test
 @"<Annotation>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <IRI>http://example.org/seeThis</IRI>
-</Annotation>"));          
+</Annotation>"));
         }
 
         [TestMethod]
