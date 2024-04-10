@@ -142,6 +142,47 @@ namespace OWLSharp.Ontology.Axioms.Test
                 null as XmlQualifiedName));
 
         [TestMethod]
+        public void ShouldSerializeIRIAbbreviatedIRIAnnotationAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("ex:Subj"),
+                new XmlQualifiedName("Obj", "http://example.org/"));
+            string serializedXML = OWLTestSerializer<OWLAnnotationAssertion>.Serialize(annotationAssertion);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<AnnotationAssertion>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>ex:Subj</IRI>
+  <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:Obj</AbbreviatedIRI>
+</AnnotationAssertion>"));
+        }
+
+        [TestMethod] //TODO: Fails due to Order=3 occupied by IRI
+        public void ShouldDeserializeIRIAbbreviatedIRIAnnotationAssertion()
+        {
+            OWLAnnotationAssertion annotationAssertion = OWLTestSerializer<OWLAnnotationAssertion>.Deserialize(
+@"<AnnotationAssertion>
+  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  <IRI>ex:Subj</IRI>
+  <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:Obj</AbbreviatedIRI>
+</AnnotationAssertion>");
+
+            Assert.IsNotNull(annotationAssertion);
+            Assert.IsNotNull(annotationAssertion.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationAssertion.AnnotationProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
+            Assert.IsNotNull(annotationAssertion.SubjectIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.SubjectIRI, "ex:Subj"));
+            Assert.IsNull(annotationAssertion.SubjectAbbreviatedIRI);
+            Assert.IsNull(annotationAssertion.SubjectAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueIRI);
+            Assert.IsNotNull(annotationAssertion.ValueAbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationAssertion.ValueAbbreviatedIRI.ToString(), "http://example.org/:Obj"));
+            Assert.IsNull(annotationAssertion.ValueAnonymousIndividual);
+            Assert.IsNull(annotationAssertion.ValueLiteral);
+        }
+
+        [TestMethod]
         public void ShouldCreateIRIAnonymousIndividualAnnotationAssertion()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
