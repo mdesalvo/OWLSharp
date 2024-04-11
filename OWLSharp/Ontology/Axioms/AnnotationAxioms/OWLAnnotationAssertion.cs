@@ -39,7 +39,7 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Ctors
-        internal OWLAnnotationAssertion() { }
+        internal OWLAnnotationAssertion() : base() { }
         internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri) : this() 
         {
             AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
