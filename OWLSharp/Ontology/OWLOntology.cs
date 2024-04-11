@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Axioms;
+using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System;
 using System.Collections.Generic;
@@ -75,10 +76,12 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLNegativeObjectPropertyAssertion), ElementName="NegativeObjectPropertyAssertion")]
         [XmlElement(typeof(OWLDataPropertyAssertion), ElementName="DataPropertyAssertion")]
         [XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName="NegativeDataPropertyAssertion")]
-        [XmlElement(typeof(OWLAnnotationAssertion), ElementName="AnnotationAssertion")]
         [XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName="SubAnnotationPropertyOf")]
         [XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
         [XmlElement(typeof(OWLAnnotationPropertyRange), ElementName="AnnotationPropertyRange")]
+        //Register here all derived types of OWLAnnotationAssertion
+        [XmlElement(typeof(OWLAnnotationIRIAssertion), ElementName="AnnotationAssertion")]
+        [XmlElement(typeof(OWLAnnotationLiteralAssertion), ElementName="AnnotationAssertion")]
         public List<OWLAxiom> Axioms { get; internal set; }
         #endregion
 
