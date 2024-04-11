@@ -21,6 +21,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
 {
+    [XmlRoot("AnnotationAssertion")]
     public class OWLAnnotationAssertion : OWLAnnotationAxiom
     {
         #region Properties

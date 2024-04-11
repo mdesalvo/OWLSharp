@@ -15,7 +15,6 @@
 */
 
 using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System;
 using System.Collections.Generic;
