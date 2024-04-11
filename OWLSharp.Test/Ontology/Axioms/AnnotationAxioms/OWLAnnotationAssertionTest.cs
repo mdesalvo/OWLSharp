@@ -284,7 +284,7 @@ namespace OWLSharp.Ontology.Axioms.Test
         }
 
         [TestMethod]
-        public void ShouldSerializeMultipleAnnotationAssertionsViaOntology()
+        public void ShouldSerializeMultipleAndNestedAnnotationAssertionsViaOntology()
         {
             OWLOntology ontology = new OWLOntology();
             ontology.AnnotationAxioms.Add(
