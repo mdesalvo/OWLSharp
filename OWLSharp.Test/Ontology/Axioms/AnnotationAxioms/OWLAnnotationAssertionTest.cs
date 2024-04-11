@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
@@ -79,6 +78,32 @@ namespace OWLSharp.Ontology.Axioms.Test
   <IRI>ex:Subj</IRI>
   <IRI>ex:Obj</IRI>
 </AnnotationAssertion>"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAnnotationIRIAssertionViaOntology()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.Axioms.Add(new OWLAnnotationIRIAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("ex:Subj"),
+                new RDFResource("ex:Obj")));
+            string serializedXML = OWLSerializer.Serialize(ontology);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <owl:AnnotationAssertion>
+    <owl:AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <owl:IRI>ex:Subj</owl:IRI>
+    <owl:IRI>ex:Obj</owl:IRI>
+  </owl:AnnotationAssertion>
+</Ontology>"));
         }
 
         [TestMethod]

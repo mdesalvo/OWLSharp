@@ -80,19 +80,16 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
         [XmlElement(typeof(OWLAnnotationPropertyRange), ElementName="AnnotationPropertyRange")]
         //Register here all derived types of OWLAnnotationAssertion
-        [XmlElement(typeof(OWLAnnotationIRIAssertion), ElementName="AnnotationAssertion")]
+        [XmlElement(typeof(OWLAnnotationIRIAssertion), ElementName="AnnotationAssertion", Namespace= "http://www.w3.org/2002/07/owl#")] //Namespace is needed for disambiguation
         [XmlElement(typeof(OWLAnnotationLiteralAssertion), ElementName="AnnotationAssertion")]
         public List<OWLAxiom> Axioms { get; internal set; }
         #endregion
 
         #region Ctors
-        internal OWLOntology() {}
-        public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null)
+        internal OWLOntology()
         {
-            OntologyIRI = ontologyIRI?.ToString();
-            OntologyVersion = ontologyVersion?.ToString();
-            Prefixes = new List<OWLPrefix>() 
-            { 
+            Prefixes = new List<OWLPrefix>()
+            {
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)),
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDF.PREFIX)),
@@ -102,6 +99,11 @@ namespace OWLSharp.Ontology
             Imports = new List<OWLImport>();
             Annotations = new List<OWLAnnotation>();
             Axioms = new List<OWLAxiom>();
+        }
+        public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null) : this()
+        {
+            OntologyIRI = ontologyIRI?.ToString();
+            OntologyVersion = ontologyVersion?.ToString();
         }
         #endregion
     }
