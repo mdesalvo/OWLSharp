@@ -379,7 +379,10 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(annAsn.ValueIRI, "ex:Obj")
                             && string.Equals(annAsn.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment")
                                 && string.Equals(annAsn.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/description")
-                                && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:AnnValue")));
+                                && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:AnnValue")
+                                    && string.Equals(annAsn.Annotations.Single().Annotation.AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                                    && string.Equals(annAsn.Annotations.Single().Annotation.ValueLiteral.Value, "contributor")
+                                    && string.Equals(annAsn.Annotations.Single().Annotation.ValueLiteral.Language, "EN-US--RTL")));
             Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationAssertion annAsn
                             && string.Equals(annAsn.SubjectIRI, "ex:Subj")
                             && string.Equals(annAsn.ValueLiteral?.Value, "hello")
