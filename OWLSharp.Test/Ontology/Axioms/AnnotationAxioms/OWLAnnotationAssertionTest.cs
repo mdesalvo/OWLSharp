@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
 using RDFSharp.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Ontology.Axioms.Test
@@ -212,10 +213,11 @@ namespace OWLSharp.Ontology.Axioms.Test
         public void ShouldSerializeAnnotationLiteralAssertionViaOntology()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(
-                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
-                new RDFResource("ex:Subj"),
-                new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new RDFResource("ex:Subj"),
+                    new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
             string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -279,6 +281,64 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(annAsn.ValueLiteral.Value, "hello")
                             && string.Equals(annAsn.ValueLiteral.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#string")
                             && string.Equals(annAsn.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeMultipleAnnotationAssertionsViaOntology()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new RDFResource("ex:Subj"),
+                    new RDFResource("ex:Obj"))
+                { 
+                    AxiomAnnotations = new List<OWLAnnotation>()
+                    {
+                        new OWLAnnotation(
+                            new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION),
+                            new RDFResource("ex:AnnValue")) 
+                        { 
+                            Annotation = new OWLAnnotation(
+                                new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR),
+                                new OWLLiteral(new RDFPlainLiteral("contributor", "en-us--rtl")))
+                        }
+                    }
+                });
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new RDFResource("ex:Subj"),
+                    new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+            string serializedXML = OWLSerializer.Serialize(ontology);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <AnnotationAssertion>
+    <Annotation>
+      <Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN-US--RTL"">contributor</Literal>
+      </Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+      <IRI>ex:AnnValue</IRI>
+    </Annotation>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <IRI>ex:Subj</IRI>
+    <IRI>ex:Obj</IRI>
+  </AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <IRI>ex:Subj</IRI>
+    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal>
+  </AnnotationAssertion>
+</Ontology>"));
         }
         #endregion
     }
