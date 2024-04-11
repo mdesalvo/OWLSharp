@@ -43,8 +43,6 @@ namespace OWLSharp
             xmlSerializerNamespaces.Add(RDFVocabulary.XML.PREFIX, RDFVocabulary.XML.BASE_URI);
             //Initialize user-declared prefixes
             ontology.Prefixes.ForEach(pfx => xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI));
-            //Reorder axioms for pretty-printing
-            ontology.Axioms.Sort((ax1,ax2) => ax1.SerializationPriority.CompareTo(ax2.SerializationPriority));
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())

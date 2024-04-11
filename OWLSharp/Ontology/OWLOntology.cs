@@ -42,12 +42,17 @@ namespace OWLSharp.Ontology
         [XmlElement("Annotation")]
         public List<OWLAnnotation> Annotations { get; internal set; }
 
-        //Register here all derived types of OWLAxiom
-        [XmlElement(typeof(OWLDeclaration), ElementName="Declaration")]
+        //Axioms
+
+        [XmlElement("Declaration")]
+        public List<OWLDeclaration> DeclarationAxioms { get; internal set; }
+
         [XmlElement(typeof(OWLSubClassOf), ElementName="SubClassOf")]
         [XmlElement(typeof(OWLEquivalentClasses), ElementName="EquivalentClasses")]
         [XmlElement(typeof(OWLDisjointClasses), ElementName="DisjointClasses")]
         [XmlElement(typeof(OWLDisjointUnion), ElementName="DisjointUnion")]
+        public List<OWLClassAxiom> ClassAxioms { get; internal set; }
+
         [XmlElement(typeof(OWLSubObjectPropertyOf), ElementName="SubObjectPropertyOf")]
         [XmlElement(typeof(OWLEquivalentObjectProperties), ElementName="EquivalentObjectProperties")]
         [XmlElement(typeof(OWLDisjointObjectProperties), ElementName="DisjointObjectProperties")]
@@ -61,14 +66,22 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLSymmetricObjectProperty), ElementName="SymmetricObjectProperty")]
         [XmlElement(typeof(OWLAsymmetricObjectProperty), ElementName="AsymmetricObjectProperty")]
         [XmlElement(typeof(OWLTransitiveObjectProperty), ElementName="TransitiveObjectProperty")]
+        public List<OWLObjectPropertyAxiom> ObjectPropertyAxioms { get; internal set; }
+
         [XmlElement(typeof(OWLSubDataPropertyOf), ElementName="SubDataPropertyOf")]
         [XmlElement(typeof(OWLEquivalentDataProperties), ElementName="EquivalentDataProperties")]
         [XmlElement(typeof(OWLDisjointDataProperties), ElementName="DisjointDataProperties")]
         [XmlElement(typeof(OWLDataPropertyDomain), ElementName="DataPropertyDomain")]
         [XmlElement(typeof(OWLDataPropertyRange), ElementName="DataPropertyRange")]
         [XmlElement(typeof(OWLFunctionalDataProperty), ElementName="FunctionalDataProperty")]
-        [XmlElement(typeof(OWLDatatypeDefinition), ElementName="DatatypeDefinition")]
-        [XmlElement(typeof(OWLHasKey), ElementName="HasKey")]
+        public List<OWLDataPropertyAxiom> DataPropertyAxioms { get; internal set; }
+
+        [XmlElement(ElementName="DatatypeDefinition")]
+        public List<OWLDatatypeDefinition> DatatypeDefinitionAxioms { get; internal set; }
+
+        [XmlElement(ElementName="HasKey")]
+        public List<OWLHasKey> HasKeyAxioms { get; internal set; }
+
         [XmlElement(typeof(OWLSameIndividual), ElementName="SameIndividual")]
         [XmlElement(typeof(OWLDifferentIndividuals), ElementName="DifferentIndividuals")]
         [XmlElement(typeof(OWLClassAssertion), ElementName="ClassAssertion")]
@@ -76,13 +89,13 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLNegativeObjectPropertyAssertion), ElementName="NegativeObjectPropertyAssertion")]
         [XmlElement(typeof(OWLDataPropertyAssertion), ElementName="DataPropertyAssertion")]
         [XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName="NegativeDataPropertyAssertion")]
+        public List<OWLAssertionAxiom> AssertionAxioms { get; internal set; }
+
+        [XmlElement(typeof(OWLAnnotationAssertion), ElementName="AnnotationAssertion")]
         [XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName="SubAnnotationPropertyOf")]
         [XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
         [XmlElement(typeof(OWLAnnotationPropertyRange), ElementName="AnnotationPropertyRange")]
-        //Register here all derived types of OWLAnnotationAssertion
-        [XmlElement(typeof(OWLAnnotationIRIAssertion), ElementName="AnnotationAssertion", Namespace= "http://www.w3.org/2002/07/owl#")] //Namespace is needed for disambiguation
-        [XmlElement(typeof(OWLAnnotationLiteralAssertion), ElementName="AnnotationAssertion")]
-        public List<OWLAxiom> Axioms { get; internal set; }
+        public List<OWLAnnotationAxiom> AnnotationAxioms { get; internal set; }
         #endregion
 
         #region Ctors
@@ -98,7 +111,16 @@ namespace OWLSharp.Ontology
             };
             Imports = new List<OWLImport>();
             Annotations = new List<OWLAnnotation>();
-            Axioms = new List<OWLAxiom>();
+
+            //Axioms
+            DeclarationAxioms = new List<OWLDeclaration>();
+            ClassAxioms = new List<OWLClassAxiom>();
+            ObjectPropertyAxioms = new List<OWLObjectPropertyAxiom>();
+            DataPropertyAxioms = new List<OWLDataPropertyAxiom>();
+            DatatypeDefinitionAxioms = new List<OWLDatatypeDefinition>();
+            HasKeyAxioms = new List<OWLHasKey>();
+            AssertionAxioms = new List<OWLAssertionAxiom>();
+            AnnotationAxioms = new List<OWLAnnotationAxiom>();
         }
         public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null) : this()
         {

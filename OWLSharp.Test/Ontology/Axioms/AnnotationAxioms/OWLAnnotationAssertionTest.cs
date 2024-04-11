@@ -29,7 +29,7 @@ namespace OWLSharp.Ontology.Axioms.Test
         [TestMethod]
         public void ShouldCreateAnnotationIRIAssertion()
         {
-            OWLAnnotationIRIAssertion annotationAssertion = new OWLAnnotationIRIAssertion(
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj"));
@@ -45,33 +45,33 @@ namespace OWLSharp.Ontology.Axioms.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationIRIAssertionBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationIRIAssertion(
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 null,
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationIRIAssertionBecauseNullSubjectIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationIRIAssertion(
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null,
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationIRIAssertionBecauseNullValueIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationIRIAssertion(
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
-                null));
+                null as RDFResource));
 
         [TestMethod]
         public void ShouldSerializeAnnotationIRIAssertion()
         {
-            OWLAnnotationIRIAssertion annotationAssertion = new OWLAnnotationIRIAssertion(
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj"));
-            string serializedXML = OWLTestSerializer<OWLAnnotationIRIAssertion>.Serialize(annotationAssertion);
+            string serializedXML = OWLTestSerializer<OWLAnnotationAssertion>.Serialize(annotationAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationAssertion>
@@ -85,7 +85,7 @@ namespace OWLSharp.Ontology.Axioms.Test
         public void ShouldSerializeAnnotationIRIAssertionViaOntology()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.Axioms.Add(new OWLAnnotationIRIAssertion(
+            ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj")));
@@ -99,18 +99,18 @@ namespace OWLSharp.Ontology.Axioms.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <owl:AnnotationAssertion>
-    <owl:AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <owl:IRI>ex:Subj</owl:IRI>
-    <owl:IRI>ex:Obj</owl:IRI>
-  </owl:AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <IRI>ex:Subj</IRI>
+    <IRI>ex:Obj</IRI>
+  </AnnotationAssertion>
 </Ontology>"));
         }
 
         [TestMethod]
         public void ShouldDeserializeAnnotationIRIAssertion()
         {
-            OWLAnnotationIRIAssertion annotationAssertion = OWLTestSerializer<OWLAnnotationIRIAssertion>.Deserialize(
+            OWLAnnotationAssertion annotationAssertion = OWLTestSerializer<OWLAnnotationAssertion>.Deserialize(
 @"<AnnotationAssertion>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <IRI>ex:Subj</IRI>
@@ -137,16 +137,16 @@ namespace OWLSharp.Ontology.Axioms.Test
   <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
   <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <owl:AnnotationAssertion>
-    <owl:AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <owl:IRI>ex:Subj</owl:IRI>
-    <owl:IRI>ex:Obj</owl:IRI>
-  </owl:AnnotationAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <IRI>ex:Subj</IRI>
+    <IRI>ex:Obj</IRI>
+  </AnnotationAssertion>
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.Axioms.Count == 1);
-            Assert.IsTrue(ontology.Axioms.Single() is OWLAnnotationIRIAssertion annAsn
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationAssertion annAsn
                             && string.Equals(annAsn.SubjectIRI, "ex:Subj")
                             && string.Equals(annAsn.ValueIRI, "ex:Obj")
                             && string.Equals(annAsn.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
@@ -155,7 +155,7 @@ namespace OWLSharp.Ontology.Axioms.Test
         [TestMethod]
         public void ShouldCreateAnnotationLiteralAssertion()
         {
-            OWLAnnotationLiteralAssertion annotationAssertion = new OWLAnnotationLiteralAssertion(
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new OWLLiteral(new RDFPlainLiteral("hello", "en")));
@@ -172,33 +172,33 @@ namespace OWLSharp.Ontology.Axioms.Test
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationLiteralAssertionBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationLiteralAssertion(
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 null,
                 new RDFResource("ex:Subj"),
                 new OWLLiteral(new RDFPlainLiteral("hello", "en"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationLiteralAssertionBecauseNullSubjectIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationLiteralAssertion(
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null,
                 new OWLLiteral(new RDFPlainLiteral("hello", "en"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationLiteralAssertionBecauseNullValueLiteral()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationLiteralAssertion(
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
-                null));
+                null as OWLLiteral));
 
         [TestMethod]
         public void ShouldSerializeAnnotationLiteralAssertion()
         {
-            OWLAnnotationLiteralAssertion annotationAssertion = new OWLAnnotationLiteralAssertion(
+            OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new OWLLiteral(new RDFPlainLiteral("hello", "en")));
-            string serializedXML = OWLTestSerializer<OWLAnnotationLiteralAssertion>.Serialize(annotationAssertion);
+            string serializedXML = OWLTestSerializer<OWLAnnotationAssertion>.Serialize(annotationAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationAssertion>
@@ -211,7 +211,7 @@ namespace OWLSharp.Ontology.Axioms.Test
         [TestMethod]
         public void ShouldDeserializeAnnotationLiteralAssertion()
         {
-            OWLAnnotationLiteralAssertion annotationAssertion = OWLTestSerializer<OWLAnnotationLiteralAssertion>.Deserialize(
+            OWLAnnotationAssertion annotationAssertion = OWLTestSerializer<OWLAnnotationAssertion>.Deserialize(
 @"<AnnotationAssertion>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <IRI>ex:Subj</IRI>

@@ -34,8 +34,7 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Ctors
-        internal OWLDeclaration() : base() 
-            => SerializationPriority = 1;
+        internal OWLDeclaration() : base() { }
         public OWLDeclaration(OWLClass classIRI) : this()
             => Expression = classIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"classIRI\" parameter is null");
         public OWLDeclaration(OWLDatatype datatypeIRI) : this()

@@ -56,8 +56,7 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Ctors
-        internal OWLHasKey() : base() 
-            => SerializationPriority = 6;
+        internal OWLHasKey() : base() { }
         public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
         {
             #region Guards

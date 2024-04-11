@@ -29,48 +29,24 @@ namespace OWLSharp.Ontology.Axioms
 
         [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string SubjectIRI { get; set; }
-        #endregion
 
-        #region Ctors
-        internal OWLAnnotationAssertion() : base() { }
-        internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri) : this()
-        {
-            AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
-            SubjectIRI = subjectIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"subjectIri\" parameter is null");
-        }
-        #endregion
-    }
-
-    //Derived
-
-    [XmlRoot("AnnotationAssertion")]
-    public class OWLAnnotationIRIAssertion : OWLAnnotationAssertion
-    {
-        #region Properties
-        
         [XmlElement("IRI", DataType="anyURI", Order=4)]
         public string ValueIRI { get; set; }
-        #endregion
 
-        #region Ctors
-        internal OWLAnnotationIRIAssertion() : base() { }
-        public OWLAnnotationIRIAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, RDFResource valueIri) : base(annotationProperty, subjectIri)
-            => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationIRIAssertion because given \"valueIri\" parameter is null");
-        #endregion
-    }
-
-    [XmlRoot("AnnotationAssertion")]
-    public class OWLAnnotationLiteralAssertion : OWLAnnotationAssertion
-    {
-        #region Properties
-        [XmlElement("Literal", Order=4)]
+        [XmlElement("Literal", Order=5)]
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLAnnotationLiteralAssertion() : base() { }
-        public OWLAnnotationLiteralAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, OWLLiteral valueLiteral) : base(annotationProperty, subjectIri)
-            => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotationLiteralAssertion because given \"valueLiteral\" parameter is null");
+        internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri) : base() 
+        {
+            AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
+            SubjectIRI = subjectIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"subjectIri\" parameter is null");
+        }
+        public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, RDFResource valueIri) : this(annotationProperty, subjectIri)
+            => ValueIRI = valueIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueIri\" parameter is null");
+        public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, OWLLiteral valueLiteral) : this(annotationProperty, subjectIri)
+            => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueLiteral\" parameter is null");
         #endregion
     }
 }

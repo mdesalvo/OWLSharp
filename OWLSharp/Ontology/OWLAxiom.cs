@@ -25,9 +25,6 @@ namespace OWLSharp.Ontology
         [XmlIgnore]
         public bool IsInference { get; set; }
 
-        [XmlIgnore]
-        public int SerializationPriority { get; set; }
-
         [XmlElement("Annotation", Order=1)]
         public List<OWLAnnotation> AxiomAnnotations { get; set; }
         #endregion
@@ -42,41 +39,34 @@ namespace OWLSharp.Ontology
 
     public class OWLClassAxiom : OWLAxiom
     {
-        #region Ctors
-        internal OWLClassAxiom() : base() 
-            => SerializationPriority=2;
-        #endregion
+        internal OWLClassAxiom() : base() { }
     }
 
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLObjectPropertyAxiom() : base() 
-            => SerializationPriority=3;
+        internal OWLObjectPropertyAxiom() : base() { }
         #endregion
     }
 
     public class OWLDataPropertyAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLDataPropertyAxiom() : base() 
-            => SerializationPriority=4;
+        internal OWLDataPropertyAxiom() : base() { }
         #endregion
     }
 
     public class OWLAssertionAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLAssertionAxiom() : base() 
-            => SerializationPriority=7;
+        internal OWLAssertionAxiom() : base() { }
         #endregion
-    }
+    };
 
     public class OWLAnnotationAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLAnnotationAxiom() : base() 
-            => SerializationPriority=8;
+        internal OWLAnnotationAxiom() : base() { }
         #endregion
     }
 }
