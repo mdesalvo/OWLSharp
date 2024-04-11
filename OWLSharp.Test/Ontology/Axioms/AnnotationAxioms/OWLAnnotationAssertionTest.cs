@@ -293,7 +293,7 @@ namespace OWLSharp.Ontology.Axioms.Test
                     new RDFResource("ex:Subj"),
                     new RDFResource("ex:Obj"))
                 { 
-                    AxiomAnnotations = new List<OWLAnnotation>()
+                    Annotations = new List<OWLAnnotation>()
                     {
                         new OWLAnnotation(
                             new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION),

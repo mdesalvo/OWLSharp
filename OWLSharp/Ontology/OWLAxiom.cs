@@ -26,12 +26,12 @@ namespace OWLSharp.Ontology
         public bool IsInference { get; set; }
 
         [XmlElement("Annotation", Order=1)]
-        public List<OWLAnnotation> AxiomAnnotations { get; set; }
+        public List<OWLAnnotation> Annotations { get; set; }
         #endregion
 
         #region Ctors
         internal OWLAxiom() 
-            => AxiomAnnotations = new List<OWLAnnotation>();
+            => Annotations = new List<OWLAnnotation>();
         #endregion
     }
 
