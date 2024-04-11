@@ -34,13 +34,13 @@ namespace OWLSharp.Ontology
         public string OntologyVersion { get; set; }
 
         [XmlElement("Prefix")]
-        public List<OWLPrefix> Prefixes { get; internal set; }
+        public List<OWLPrefix> OntologyPrefixes { get; internal set; }
 
         [XmlElement("Import")]
-        public List<OWLImport> Imports { get; internal set; }
+        public List<OWLImport> OntologyImports { get; internal set; }
 
         [XmlElement("Annotation")]
-        public List<OWLAnnotation> Annotations { get; internal set; }
+        public List<OWLAnnotation> OntologyAnnotations { get; internal set; }
 
         //Axioms
 
@@ -101,7 +101,7 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLOntology()
         {
-            Prefixes = new List<OWLPrefix>()
+            OntologyPrefixes = new List<OWLPrefix>()
             {
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)),
@@ -109,8 +109,8 @@ namespace OWLSharp.Ontology
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
             };
-            Imports = new List<OWLImport>();
-            Annotations = new List<OWLAnnotation>();
+            OntologyImports = new List<OWLImport>();
+            OntologyAnnotations = new List<OWLAnnotation>();
 
             //Axioms
             DeclarationAxioms = new List<OWLDeclaration>();
