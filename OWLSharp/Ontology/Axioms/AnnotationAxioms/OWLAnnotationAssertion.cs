@@ -31,9 +31,10 @@ namespace OWLSharp.Ontology.Axioms
         [XmlElement("IRI", DataType="anyURI", Order=3)]
         public string SubjectIRI { get; set; }
 
+        //AnnotationValue (cannot be a self-object, since this would introduce an additional XmlElement)
+
         [XmlElement("IRI", DataType="anyURI", Order=4)]
         public string ValueIRI { get; set; }
-
         [XmlElement("Literal", Order=5)]
         public OWLLiteral ValueLiteral { get; set; }
         #endregion
