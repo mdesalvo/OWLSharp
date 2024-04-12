@@ -140,6 +140,10 @@ namespace OWLSharp.Ontology.Axioms.Test
   <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <ClassAssertion>
+    <Annotation>
+		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+		<Literal xml:lang=""EN"">Steve</Literal>
+	</Annotation>
     <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
     <NamedIndividual IRI=""ex:Bob"" />
   </ClassAssertion>
@@ -150,6 +154,10 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLClassAssertion clsAsn
                             && string.Equals(((OWLClass)clsAsn.ClassExpression).IRI, "http://xmlns.com/foaf/0.1/Agent")
                             && string.Equals(((OWLNamedIndividual)clsAsn.IndividualExpression).IRI, "ex:Bob"));
+			Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLClassAssertion clsAsn1
+							&& string.Equals(clsAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+							&& string.Equals(clsAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+							&& string.Equals(clsAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
         #endregion
     }
