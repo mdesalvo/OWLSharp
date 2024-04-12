@@ -24,18 +24,18 @@ namespace OWLSharp.Ontology.Axioms
     {
         #region Properties
         [XmlElement(ElementName="AnnotationProperty", Order=2)]
-        public OWLAnnotationProperty SubAnnotationPropertyExpression { get; set; }
+        public OWLAnnotationProperty SubAnnotationProperty { get; set; }
 
         [XmlElement(ElementName="AnnotationProperty", Order=3)]
-        public OWLAnnotationProperty SuperAnnotationPropertyExpression { get; set; }
+        public OWLAnnotationProperty SuperAnnotationProperty { get; set; }
         #endregion
 
         #region Ctors
         internal OWLSubAnnotationPropertyOf() : base() { }
         public OWLSubAnnotationPropertyOf(OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty) : this()
         {
-            SubAnnotationPropertyExpression = subAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"subAnnotationProperty\" parameter is null");
-            SuperAnnotationPropertyExpression = superAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"superAnnotationProperty\" parameter is null");
+            SubAnnotationProperty = subAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"subAnnotationProperty\" parameter is null");
+            SuperAnnotationProperty = superAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"superAnnotationProperty\" parameter is null");
         }
         #endregion
     }
