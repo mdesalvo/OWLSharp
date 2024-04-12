@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
 using RDFSharp.Model;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
@@ -244,6 +245,107 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationPropertyDomain annPropDom
                             && string.Equals(annPropDom.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString())
                             && string.Equals(annPropDom.AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:Person"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeMultipleAndNestedAnnotationPropertyDomainsViaOntology()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationPropertyDomain(
+                    new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
+                    RDFVocabulary.FOAF.PERSON)
+                {
+                    Annotations = new List<OWLAnnotation>()
+                    {
+                        new OWLAnnotation(
+                            new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION),
+                            new RDFResource("ex:AnnValue"))
+                        {
+                            Annotation = new OWLAnnotation(
+                                new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR),
+                                new OWLLiteral(new RDFPlainLiteral("contributor", "en-us--rtl")))
+                        }
+                    }
+                });
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationPropertyDomain(
+                    new OWLAnnotationProperty(RDFVocabulary.FOAF.TITLE),
+                    new XmlQualifiedName("Agent", RDFVocabulary.FOAF.BASE_URI)));
+            string serializedXML = OWLSerializer.Serialize(ontology);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
+  <AnnotationPropertyDomain>
+    <Annotation>
+      <Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN-US--RTL"">contributor</Literal>
+      </Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+      <IRI>ex:AnnValue</IRI>
+    </Annotation>
+    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+    <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
+  </AnnotationPropertyDomain>
+  <AnnotationPropertyDomain>
+    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/title"" />
+    <AbbreviatedIRI>foaf:Agent</AbbreviatedIRI>
+  </AnnotationPropertyDomain>
+</Ontology>"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeMultipleAndNestedAnnotationAssertionsViaOntology()
+        {
+            OWLOntology ontology = OWLSerializer.Deserialize(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
+  <AnnotationPropertyDomain>
+    <Annotation>
+      <Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN-US--RTL"">contributor</Literal>
+      </Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+      <IRI>ex:AnnValue</IRI>
+    </Annotation>
+    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+    <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
+  </AnnotationPropertyDomain>
+  <AnnotationPropertyDomain>
+    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/title"" />
+    <AbbreviatedIRI>foaf:Agent</AbbreviatedIRI>
+  </AnnotationPropertyDomain>
+</Ontology>");
+
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 2);
+            Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationPropertyDomain annPropDom
+                            && string.Equals(annPropDom.AnnotationProperty.IRI.ToString(), "http://xmlns.com/foaf/0.1/Agent")
+                            && string.Equals(annPropDom.IRI, "http://xmlns.com/foaf/0.1/Person")
+                                && string.Equals(annPropDom.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/description")
+                                && string.Equals(annPropDom.Annotations.Single().ValueIRI, "ex:AnnValue")
+                                    && string.Equals(annPropDom.Annotations.Single().Annotation.AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                                    && string.Equals(annPropDom.Annotations.Single().Annotation.ValueLiteral.Value, "contributor")
+                                    && string.Equals(annPropDom.Annotations.Single().Annotation.ValueLiteral.Language, "EN-US--RTL")));
+            Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationPropertyDomain annPropDom
+                            && string.Equals(annPropDom.AbbreviatedIRI?.ToString(), "http://xmlns.com/foaf/0.1/:Agent")
+                            && string.Equals(annPropDom.AnnotationProperty.IRI, "http://xmlns.com/foaf/0.1/title")));
         }
         #endregion
     }
