@@ -37,16 +37,12 @@ namespace OWLSharp.Ontology.Axioms
 
         #region Ctors
         internal OWLAnnotationPropertyDomain() : base() { }
-        public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, RDFResource iri) : this()
-        {
-            AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"annotationProperty\" parameter is null");
-            IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"iri\" parameter is null");
-        }
-        public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, XmlQualifiedName abbreviatedIRI) : this()
-        {
-            AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"annotationProperty\" parameter is null");
-            AbbreviatedIRI = abbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"abbreviatedIRI\" parameter is null");
-        }
+        internal OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty) : this() 
+            => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"annotationProperty\" parameter is null");
+        public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, RDFResource iri) : this(annotationProperty)
+            => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"iri\" parameter is null");
+        public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, XmlQualifiedName abbreviatedIRI) : this(annotationProperty)
+            => AbbreviatedIRI = abbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"abbreviatedIRI\" parameter is null");
         #endregion
     }
 }
