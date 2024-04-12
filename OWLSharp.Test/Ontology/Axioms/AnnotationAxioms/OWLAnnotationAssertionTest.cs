@@ -368,7 +368,7 @@ namespace OWLSharp.Ontology.Axioms.Test
   <AnnotationAssertion>
     <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
     <IRI>ex:Subj</IRI>
-    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal>
+    <IRI>ex:Obj2</IRI>
   </AnnotationAssertion>
 </Ontology>");
 
@@ -385,8 +385,7 @@ namespace OWLSharp.Ontology.Axioms.Test
                                     && string.Equals(annAsn.Annotations.Single().Annotation.ValueLiteral.Language, "EN-US--RTL")));
             Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationAssertion annAsn
                             && string.Equals(annAsn.SubjectIRI, "ex:Subj")
-                            && string.Equals(annAsn.ValueLiteral?.Value, "hello")
-                            && string.Equals(annAsn.ValueLiteral?.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#string")
+                            && string.Equals(annAsn.ValueIRI, "ex:Obj2")
                             && string.Equals(annAsn.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment")));
         }
         #endregion
