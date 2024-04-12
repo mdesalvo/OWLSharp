@@ -86,10 +86,11 @@ namespace OWLSharp.Ontology.Axioms.Test
         public void ShouldSerializeAnnotationIRIAssertionViaOntology()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.AnnotationAxioms.Add(new OWLAnnotationAssertion(
-                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
-                new RDFResource("ex:Subj"),
-                new RDFResource("ex:Obj")));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new RDFResource("ex:Subj"),
+                    new RDFResource("ex:Obj")));
             string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
