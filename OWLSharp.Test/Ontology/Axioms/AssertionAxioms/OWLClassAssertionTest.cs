@@ -48,10 +48,16 @@ namespace OWLSharp.Ontology.Axioms.Test
                 new OWLNamedIndividual(new RDFResource("ex:Bob"))));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingClassAssertionBecauseNullIndividualExpression()
+        public void ShouldThrowExceptionOnCreatingClassAssertionBecauseNullNamedIndividual()
             => Assert.ThrowsException<OWLException>(() => new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
-                null));
+                null as OWLNamedIndividual));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingClassAssertionBecauseNullAnonymousIndividual()
+            => Assert.ThrowsException<OWLException>(() => new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.FOAF.AGENT),
+                null as OWLAnonymousIndividual));
 
         [TestMethod]
         public void ShouldSerializeClassAssertion()
@@ -65,6 +71,21 @@ namespace OWLSharp.Ontology.Axioms.Test
 @"<ClassAssertion>
   <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
   <NamedIndividual IRI=""ex:Bob"" />
+</ClassAssertion>"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAnonymousIndividualClassAssertion()
+        {
+            OWLClassAssertion classAssertion = new OWLClassAssertion(
+               new OWLClass(RDFVocabulary.FOAF.AGENT),
+               new OWLAnonymousIndividual("AnonIdv"));
+            string serializedXML = OWLTestSerializer<OWLClassAssertion>.Serialize(classAssertion);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<ClassAssertion>
+  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+  <AnonymousIndividual nodeID=""AnonIdv"" />
 </ClassAssertion>"));
         }
 
@@ -107,6 +128,22 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(string.Equals(((OWLClass)classAssertion.ClassExpression).IRI, RDFVocabulary.FOAF.AGENT.ToString()));
             Assert.IsNotNull(classAssertion.IndividualExpression);
             Assert.IsTrue(string.Equals(((OWLNamedIndividual)classAssertion.IndividualExpression).IRI, "ex:Bob"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeAnonymousIndividualClassAssertion()
+        {
+            OWLClassAssertion classAssertion = OWLTestSerializer<OWLClassAssertion>.Deserialize(
+@"<ClassAssertion>
+  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+  <AnonymousIndividual nodeID=""AnonIdv"" />
+</ClassAssertion>");
+
+            Assert.IsNotNull(classAssertion);
+            Assert.IsNotNull(classAssertion.ClassExpression);
+            Assert.IsTrue(string.Equals(((OWLClass)classAssertion.ClassExpression).IRI, RDFVocabulary.FOAF.AGENT.ToString()));
+            Assert.IsNotNull(classAssertion.IndividualExpression);
+            Assert.IsTrue(string.Equals(((OWLAnonymousIndividual)classAssertion.IndividualExpression).NodeID, "AnonIdv"));
         }
 
         [TestMethod]

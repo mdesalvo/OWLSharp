@@ -52,11 +52,12 @@ namespace OWLSharp.Ontology.Axioms
 
         #region Ctors
         internal OWLClassAssertion() : base() { }
-        public OWLClassAssertion(OWLClassExpression classExpression, OWLIndividualExpression individualExpression) : this()
-        {
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"classExpression\" parameter is null");
-            IndividualExpression = individualExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"individualExpression\" parameter is null");
-        }
+        internal OWLClassAssertion(OWLClassExpression classExpression) : this() 
+            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"classExpression\" parameter is null");
+        public OWLClassAssertion(OWLClassExpression classExpression, OWLNamedIndividual namedIndividual) : this(classExpression)
+            => IndividualExpression = namedIndividual ?? throw new OWLException("Cannot create OWLClassAssertion because given \"namedIndividual\" parameter is null");
+        public OWLClassAssertion(OWLClassExpression classExpression, OWLAnonymousIndividual anonymousIndividual) : this(classExpression)
+            => IndividualExpression = anonymousIndividual ?? throw new OWLException("Cannot create OWLClassAssertion because given \"anonymousIndividual\" parameter is null");
         #endregion
     }
 }
