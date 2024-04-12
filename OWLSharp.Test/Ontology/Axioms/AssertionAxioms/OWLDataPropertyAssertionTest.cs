@@ -93,6 +93,74 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
 			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
 		}
+
+		[TestMethod]
+        public void ShouldCreateAnonymousIndividualDataPropertyAssertion()
+        {
+            OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                new OWLAnonymousIndividual("AnonIdv"),
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+
+            Assert.IsNotNull(dataPropertyAssertion);
+            Assert.IsNotNull(dataPropertyAssertion.DataProperty);
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
+            Assert.IsNotNull(dataPropertyAssertion.IndividualExpression);
+            Assert.IsTrue(string.Equals(((OWLAnonymousIndividual)dataPropertyAssertion.IndividualExpression).NodeID, "AnonIdv"));
+			Assert.IsNotNull(dataPropertyAssertion.Literal);
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
+			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullDataProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+                null,
+                new OWLAnonymousIndividual("AnonIdv"),
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullAnonymousIndividual()
+            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                null as OWLAnonymousIndividual,
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullLiteral()
+            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                new OWLAnonymousIndividual("AnonIdv"),
+				null));
+
+        [TestMethod]
+        public void ShouldSerializeAnonymousIndividualDataPropertyAssertion()
+        {
+            OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                new OWLAnonymousIndividual("AnonIdv"),
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+            string serializedXML = OWLTestSerializer<OWLDataPropertyAssertion>.Serialize(dataPropertyAssertion);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><AnonymousIndividual nodeID=""AnonIdv"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>"));
+        }
+
+		[TestMethod]
+        public void ShouldDeserializeAnonymousIndividualDataPropertyAssertion()
+        {
+            OWLDataPropertyAssertion dataPropertyAssertion = OWLTestSerializer<OWLDataPropertyAssertion>.Deserialize(
+@"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><AnonymousIndividual nodeID=""AnonIdv"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>");
+        
+			Assert.IsNotNull(dataPropertyAssertion);
+            Assert.IsNotNull(dataPropertyAssertion.DataProperty);
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
+            Assert.IsNotNull(dataPropertyAssertion.IndividualExpression);
+            Assert.IsTrue(string.Equals(((OWLAnonymousIndividual)dataPropertyAssertion.IndividualExpression).NodeID, "AnonIdv"));
+			Assert.IsNotNull(dataPropertyAssertion.Literal);
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
+			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
+		}
         #endregion
     }
 }
