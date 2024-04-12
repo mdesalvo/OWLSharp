@@ -70,9 +70,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectMaxCardinality>.Serialize(objectMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMaxCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectMaxCardinality>"));
+@"<ObjectMaxCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectMaxCardinality>"));
         }
 
         [TestMethod]
@@ -98,10 +96,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectMaxCardinality>.Serialize(objectMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMaxCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectMaxCardinality>"));
+@"<ObjectMaxCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectMaxCardinality>"));
         }
 
         [TestMethod]

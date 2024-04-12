@@ -60,10 +60,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectIntersectionOf>.Serialize(objectIntersectionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectIntersectionOf>
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-</ObjectIntersectionOf>"));
+@"<ObjectIntersectionOf><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectIntersectionOf>"));
         }
 
         [TestMethod]

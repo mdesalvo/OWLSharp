@@ -59,10 +59,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectAllValuesFrom>.Serialize(objectAllValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectAllValuesFrom>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectAllValuesFrom>"));
+@"<ObjectAllValuesFrom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectAllValuesFrom>"));
         }
 
         [TestMethod]

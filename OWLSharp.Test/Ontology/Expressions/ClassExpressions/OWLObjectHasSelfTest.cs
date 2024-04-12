@@ -57,9 +57,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectHasSelf>.Serialize(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectHasSelf>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectHasSelf>"));
+@"<ObjectHasSelf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectHasSelf>"));
         }
 
         [TestMethod]
@@ -69,11 +67,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectHasSelf>.Serialize(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectHasSelf>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </ObjectInverseOf>
-</ObjectHasSelf>"));
+@"<ObjectHasSelf><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></ObjectHasSelf>"));
         }
 
         [TestMethod]

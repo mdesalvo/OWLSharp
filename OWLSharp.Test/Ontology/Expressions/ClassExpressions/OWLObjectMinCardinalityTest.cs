@@ -70,9 +70,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectMinCardinality>.Serialize(objectMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMinCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectMinCardinality>"));
+@"<ObjectMinCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectMinCardinality>"));
         }
 
         [TestMethod]
@@ -98,10 +96,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectMinCardinality>.Serialize(objectMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMinCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectMinCardinality>"));
+@"<ObjectMinCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectMinCardinality>"));
         }
 
         [TestMethod]

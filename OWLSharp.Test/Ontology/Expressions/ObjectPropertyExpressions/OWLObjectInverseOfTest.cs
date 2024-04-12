@@ -45,9 +45,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectInverseOf>.Serialize(objectInverseOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectInverseOf>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectInverseOf>"));
+@"<ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf>"));
         }
 
         [TestMethod]

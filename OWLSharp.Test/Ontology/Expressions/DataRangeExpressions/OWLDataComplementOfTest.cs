@@ -46,9 +46,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLDataComplementOf>.Serialize(dataComplementOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataComplementOf>
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataComplementOf>"));
+@"<DataComplementOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataComplementOf>"));
         }
 
         [TestMethod]

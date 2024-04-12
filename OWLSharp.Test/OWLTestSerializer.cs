@@ -40,7 +40,7 @@ namespace OWLSharp.Test
                     new XmlWriterSettings()
                     {
                         Encoding = stringWriter.Encoding,
-                        Indent = true,
+                        Indent = false,
                         NewLineHandling = NewLineHandling.None,
                         OmitXmlDeclaration = true
                     }))

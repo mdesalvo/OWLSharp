@@ -60,10 +60,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectUnionOf>.Serialize(objectUnionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectUnionOf>
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-</ObjectUnionOf>"));
+@"<ObjectUnionOf><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectUnionOf>"));
         }
 
         [TestMethod]

@@ -96,15 +96,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLDatatypeRestriction>.Serialize(length6to10Facet);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DatatypeRestriction>
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-  <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">
-    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal>
-  </FacetRestriction>
-  <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength"">
-    <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal>
-  </FacetRestriction>
-</DatatypeRestriction>"));
+@"<DatatypeRestriction><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal></FacetRestriction><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal></FacetRestriction></DatatypeRestriction>"));
         }
 
         [TestMethod]

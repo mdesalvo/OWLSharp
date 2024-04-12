@@ -69,9 +69,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLDataMaxCardinality>.Serialize(dataMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataMaxCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-</DataMaxCardinality>"));
+@"<DataMaxCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /></DataMaxCardinality>"));
         }
 
         [TestMethod]
@@ -96,10 +94,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLDataMaxCardinality>.Serialize(dataMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataMaxCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataMaxCardinality>"));
+@"<DataMaxCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataMaxCardinality>"));
         }
 
         [TestMethod]

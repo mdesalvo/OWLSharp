@@ -70,10 +70,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLDataSomeValuesFrom>.Serialize(dataSomeValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataSomeValuesFrom>
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataSomeValuesFrom>"));
+@"<DataSomeValuesFrom><DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataSomeValuesFrom>"));
         }
 
         [TestMethod]

@@ -46,9 +46,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectComplementOf>.Serialize(objectComplementOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectComplementOf>
-  <Class IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectComplementOf>"));
+@"<ObjectComplementOf><Class IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectComplementOf>"));
         }
 
         [TestMethod]

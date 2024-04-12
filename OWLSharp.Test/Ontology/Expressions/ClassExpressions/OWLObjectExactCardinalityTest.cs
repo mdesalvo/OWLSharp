@@ -70,9 +70,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectExactCardinality>.Serialize(objectExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectExactCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectExactCardinality>"));
+@"<ObjectExactCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectExactCardinality>"));
         }
 
         [TestMethod]
@@ -98,10 +96,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectExactCardinality>.Serialize(objectExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectExactCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectExactCardinality>"));
+@"<ObjectExactCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectExactCardinality>"));
         }
 
         [TestMethod]

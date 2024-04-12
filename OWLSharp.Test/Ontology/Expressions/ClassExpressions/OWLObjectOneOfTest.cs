@@ -60,10 +60,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLObjectOneOf>.Serialize(ObjectOneOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectOneOf>
-  <NamedIndividual IRI=""ex:Bob"" />
-  <AnonymousIndividual nodeID=""AnonIdv"" />
-</ObjectOneOf>"));
+@"<ObjectOneOf><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></ObjectOneOf>"));
         }
 
         [TestMethod]

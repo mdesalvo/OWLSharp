@@ -60,10 +60,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLDataIntersectionOf>.Serialize(dataIntersectionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataIntersectionOf>
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" />
-</DataIntersectionOf>"));
+@"<DataIntersectionOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" /></DataIntersectionOf>"));
         }
 
         [TestMethod]

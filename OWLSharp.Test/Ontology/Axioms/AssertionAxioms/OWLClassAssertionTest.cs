@@ -68,10 +68,7 @@ namespace OWLSharp.Ontology.Axioms.Test
             string serializedXML = OWLTestSerializer<OWLClassAssertion>.Serialize(classAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ClassAssertion>
-  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-  <NamedIndividual IRI=""ex:Bob"" />
-</ClassAssertion>"));
+@"<ClassAssertion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><NamedIndividual IRI=""ex:Bob"" /></ClassAssertion>"));
         }
 
         [TestMethod]
@@ -83,10 +80,7 @@ namespace OWLSharp.Ontology.Axioms.Test
             string serializedXML = OWLTestSerializer<OWLClassAssertion>.Serialize(classAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ClassAssertion>
-  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-  <AnonymousIndividual nodeID=""AnonIdv"" />
-</ClassAssertion>"));
+@"<ClassAssertion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><AnonymousIndividual nodeID=""AnonIdv"" /></ClassAssertion>"));
         }
 
         [TestMethod]
@@ -97,21 +91,10 @@ namespace OWLSharp.Ontology.Axioms.Test
                 new OWLClassAssertion(
                    new OWLClass(RDFVocabulary.FOAF.AGENT),
                    new OWLNamedIndividual(new RDFResource("ex:Bob"))));
-            string serializedXML = OWLSerializer.Serialize(ontology);
+            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <ClassAssertion>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <NamedIndividual IRI=""ex:Bob"" />
-  </ClassAssertion>
-</Ontology>"));
+@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ClassAssertion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><NamedIndividual IRI=""ex:Bob"" /></ClassAssertion></Ontology>"));
         }
 
         [TestMethod]

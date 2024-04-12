@@ -52,10 +52,7 @@ namespace OWLSharp.Ontology.Expressions.Test
             string serializedXML = OWLTestSerializer<OWLDataHasValue>.Serialize(dataHasValue);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataHasValue>
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  <Literal xml:lang=""EN"">hello</Literal>
-</DataHasValue>"));
+@"<DataHasValue><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Literal xml:lang=""EN"">hello</Literal></DataHasValue>"));
         }
 
         [TestMethod]
