@@ -18,7 +18,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
 using RDFSharp.Model;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Ontology.Axioms.Test
