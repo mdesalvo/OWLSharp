@@ -18,8 +18,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
 using RDFSharp.Model;
-using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 
 namespace OWLSharp.Ontology.Axioms.Test
 {
@@ -49,7 +49,7 @@ namespace OWLSharp.Ontology.Axioms.Test
                 RDFVocabulary.FOAF.PERSON));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIRIAnnotationPropertyDomainBecauseIRI()
+        public void ShouldThrowExceptionOnCreatingIRIAnnotationPropertyDomainBecauseNullIRI()
             => Assert.ThrowsException<OWLException>(() => new OWLAnnotationPropertyDomain(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null as RDFResource));
@@ -133,6 +133,117 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationPropertyDomain annPropDom
                             && string.Equals(annPropDom.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString())
                             && string.Equals(annPropDom.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
+        }
+
+        [TestMethod]
+        public void ShouldCreateAbbreviatedIRIAnnotationPropertyDomain()
+        {
+            OWLAnnotationPropertyDomain annotationPropertyDomain = new OWLAnnotationPropertyDomain(
+                new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
+                new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
+
+            Assert.IsNotNull(annotationPropertyDomain);
+            Assert.IsNotNull(annotationPropertyDomain.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationPropertyDomain.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString()));
+            Assert.IsNull(annotationPropertyDomain.IRI);
+            Assert.IsNotNull(annotationPropertyDomain.AbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationPropertyDomain.AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:Person"));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationPropertyDomainBecauseNullAnnotationProperty()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationPropertyDomain(
+                null,
+                new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI)));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationPropertyDomainBecauseNullQualifiedName()
+            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationPropertyDomain(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                null as XmlQualifiedName));
+
+        [TestMethod]
+        public void ShouldSerializeAbbreviatedIRIAnnotationPropertyDomain()
+        {
+            OWLAnnotationPropertyDomain annotationPropertyDomain = new OWLAnnotationPropertyDomain(
+                new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
+                new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
+            string serializedXML = OWLTestSerializer<OWLAnnotationPropertyDomain>.Serialize(annotationPropertyDomain);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<AnnotationPropertyDomain>
+  <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+  <AbbreviatedIRI xmlns:q1=""http://xmlns.com/foaf/0.1/"">q1:Person</AbbreviatedIRI>
+</AnnotationPropertyDomain>"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeAbbreviatedIRIAnnotationPropertyDomainViaOntology()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationPropertyDomain(
+                    new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
+                    new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI)));
+            string serializedXML = OWLSerializer.Serialize(ontology);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
+  <AnnotationPropertyDomain>
+    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+    <AbbreviatedIRI>foaf:Person</AbbreviatedIRI>
+  </AnnotationPropertyDomain>
+</Ontology>"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeAbbreviatedIRIAnnotationPropertyDomain()
+        {
+            OWLAnnotationPropertyDomain annotationPropertyDomain = OWLTestSerializer<OWLAnnotationPropertyDomain>.Deserialize(
+@"<AnnotationPropertyDomain>
+  <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+  <AbbreviatedIRI xmlns:q1=""http://xmlns.com/foaf/0.1/"">q1:Person</AbbreviatedIRI>
+</AnnotationPropertyDomain>");
+
+            Assert.IsNotNull(annotationPropertyDomain);
+            Assert.IsNotNull(annotationPropertyDomain.AnnotationProperty);
+            Assert.IsTrue(string.Equals(annotationPropertyDomain.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString()));
+            Assert.IsNull(annotationPropertyDomain.IRI);
+            Assert.IsNotNull(annotationPropertyDomain.AbbreviatedIRI);
+            Assert.IsTrue(string.Equals(annotationPropertyDomain.AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:Person"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeAbbreviatedIRIAnnotationPropertyDomainViaOntology()
+        {
+            OWLOntology ontology = OWLSerializer.Deserialize(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
+  <AnnotationPropertyDomain>
+    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+    <AbbreviatedIRI>foaf:Person</AbbreviatedIRI>
+  </AnnotationPropertyDomain>
+</Ontology>");
+
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationPropertyDomain annPropDom
+                            && string.Equals(annPropDom.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString())
+                            && string.Equals(annPropDom.AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:Person"));
         }
         #endregion
     }

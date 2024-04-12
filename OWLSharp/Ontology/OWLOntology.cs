@@ -27,19 +27,19 @@ namespace OWLSharp.Ontology
     {
         #region Properties
         [XmlAttribute("ontologyIRI", DataType="anyURI")]
-        public string OntologyIRI { get; set; }
+        public string IRI { get; set; }
 
         [XmlAttribute("ontologyVersion", DataType="anyURI")]
-        public string OntologyVersion { get; set; }
+        public string Version { get; set; }
 
         [XmlElement("Prefix")]
-        public List<OWLPrefix> OntologyPrefixes { get; internal set; }
+        public List<OWLPrefix> Prefixes { get; internal set; }
 
         [XmlElement("Import")]
-        public List<OWLImport> OntologyImports { get; internal set; }
+        public List<OWLImport> Imports { get; internal set; }
 
         [XmlElement("Annotation")]
-        public List<OWLAnnotation> OntologyAnnotations { get; internal set; }
+        public List<OWLAnnotation> Annotations { get; internal set; }
 
         //Axioms
 
@@ -100,7 +100,7 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLOntology()
         {
-            OntologyPrefixes = new List<OWLPrefix>()
+            Prefixes = new List<OWLPrefix>()
             {
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)),
@@ -108,8 +108,8 @@ namespace OWLSharp.Ontology
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
                 new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
             };
-            OntologyImports = new List<OWLImport>();
-            OntologyAnnotations = new List<OWLAnnotation>();
+            Imports = new List<OWLImport>();
+            Annotations = new List<OWLAnnotation>();
 
             //Axioms
             DeclarationAxioms = new List<OWLDeclaration>();
@@ -123,8 +123,8 @@ namespace OWLSharp.Ontology
         }
         public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null) : this()
         {
-            OntologyIRI = ontologyIRI?.ToString();
-            OntologyVersion = ontologyVersion?.ToString();
+            IRI = ontologyIRI?.ToString();
+            Version = ontologyVersion?.ToString();
         }
         #endregion
     }
