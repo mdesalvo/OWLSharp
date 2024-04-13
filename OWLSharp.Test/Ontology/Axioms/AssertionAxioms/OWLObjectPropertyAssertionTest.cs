@@ -152,6 +152,94 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
+
+		[TestMethod]
+        public void ShouldSerializeNamedIndividualInverseObjectPropertyAssertion()
+        {
+             OWLObjectPropertyAssertion objectPropertyAssertion = new OWLObjectPropertyAssertion(
+                new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                new OWLNamedIndividual(new RDFResource("ex:Alice")),
+				new OWLNamedIndividual(new RDFResource("ex:Bob")));
+            string serializedXML = OWLTestSerializer<OWLObjectPropertyAssertion>.Serialize(objectPropertyAssertion);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion>"));
+        }
+
+		[TestMethod]
+        public void ShouldSerializeNamedIndividualInverseObjectPropertyAssertionViaOntology()
+        {
+			OWLOntology ontology = new OWLOntology();
+			ontology.AssertionAxioms.Add(
+				new OWLObjectPropertyAssertion(
+					new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLNamedIndividual(new RDFResource("ex:Alice")),
+					new OWLNamedIndividual(new RDFResource("ex:Bob")))
+					{
+						Annotations = [ new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR), new OWLLiteral(new RDFPlainLiteral("Steve","en"))) ]
+					});
+            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ObjectPropertyAssertion><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN"">Steve</Literal></Annotation><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion></Ontology>"));
+        }
+
+		[TestMethod]
+        public void ShouldDeserializeNamedIndividualInverseObjectPropertyAssertion()
+        {
+            OWLObjectPropertyAssertion objectPropertyAssertion = OWLTestSerializer<OWLObjectPropertyAssertion>.Deserialize(
+@"<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion>");
+        
+			Assert.IsNotNull(objectPropertyAssertion);
+            Assert.IsNotNull(objectPropertyAssertion.ObjectPropertyExpression);
+            Assert.IsTrue(objectPropertyAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOf &&
+							string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsNotNull(objectPropertyAssertion.SourceIndividualExpression);
+            Assert.IsTrue(objectPropertyAssertion.SourceIndividualExpression is OWLNamedIndividual srcIdv &&
+							string.Equals(srcIdv.IRI, "ex:Alice"));
+			Assert.IsNotNull(objectPropertyAssertion.TargetIndividualExpression);
+            Assert.IsTrue(objectPropertyAssertion.TargetIndividualExpression is OWLNamedIndividual dstIdv &&
+							string.Equals(dstIdv.IRI, "ex:Bob"));
+		}
+
+		[TestMethod]
+        public void ShouldDeserializeNamedIndividualInverseObjectPropertyAssertionViaOntology()
+        {
+			OWLOntology ontology = OWLSerializer.Deserialize(
+@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<Ontology>
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <ObjectPropertyAssertion>
+    <Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
+    <ObjectInverseOf>
+      <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
+    </ObjectInverseOf>
+    <NamedIndividual IRI=""ex:Alice"" />
+    <NamedIndividual IRI=""ex:Bob"" />
+  </ObjectPropertyAssertion>
+</Ontology>");
+
+			Assert.IsNotNull(ontology);
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion opAsn
+                            && opAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf 
+							&& string.Equals(objInvOf.ObjectProperty.IRI, "http://xmlns.com/foaf/0.1/knows")
+                            && opAsn.SourceIndividualExpression is OWLNamedIndividual srcIdv
+							&& string.Equals(srcIdv.IRI, "ex:Alice")
+							&& opAsn.TargetIndividualExpression is OWLNamedIndividual dstIdv
+							&& string.Equals(dstIdv.IRI, "ex:Bob"));
+			Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion dpAsn1
+							&& string.Equals(dpAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+							&& string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+							&& string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+        }
         #endregion
     }
 }
