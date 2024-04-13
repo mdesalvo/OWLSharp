@@ -31,17 +31,17 @@ namespace OWLSharp.Ontology.Axioms
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
         public OWLIndividualExpression SourceIndividualExpression { get; set; }
 
-        [XmlElement(ElementName="Literal", Order=4)]
-        public OWLLiteral TargetLiteral { get; set; }
+        [XmlElement(Order=4)]
+        public OWLLiteral Literal { get; set; }
         #endregion
 
         #region Ctors
         internal OWLNegativeDataPropertyAssertion() : base() { }
-        public OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLIndividualExpression sourceIndividualExpression, OWLLiteral targetLiteral) : this()
+        public OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLIndividualExpression sourceIndividualExpression, OWLLiteral literal) : this()
         {
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"dataProperty\" parameter is null");
             SourceIndividualExpression = sourceIndividualExpression ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"sourceIndividualExpression\" parameter is null");
-            TargetLiteral = targetLiteral ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"targetLiteral\" parameter is null");
+            Literal = literal ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"literal\" parameter is null");
         }
         #endregion
     }
