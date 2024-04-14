@@ -29,7 +29,7 @@ namespace OWLSharp.Ontology.Axioms
         //Register here all derived types of OWLIndividualExpression
         [XmlElement(typeof(OWLNamedIndividual), ElementName="NamedIndividual", Order=3)]
         [XmlElement(typeof(OWLAnonymousIndividual), ElementName="AnonymousIndividual", Order=3)]
-        public OWLIndividualExpression SourceIndividualExpression { get; set; }
+        public OWLIndividualExpression IndividualExpression { get; set; }
 
         [XmlElement(Order=4)]
         public OWLLiteral Literal { get; set; }
@@ -37,12 +37,15 @@ namespace OWLSharp.Ontology.Axioms
 
         #region Ctors
         internal OWLNegativeDataPropertyAssertion() : base() { }
-        public OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLIndividualExpression sourceIndividualExpression, OWLLiteral literal) : this()
-        {
-            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"dataProperty\" parameter is null");
-            SourceIndividualExpression = sourceIndividualExpression ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"sourceIndividualExpression\" parameter is null");
+		internal OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this() 
+		{ 
+			DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"dataProperty\" parameter is null");
             Literal = literal ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"literal\" parameter is null");
-        }
+		}
+        public OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLNamedIndividual namedIndividual, OWLLiteral literal) : this(dataProperty, literal)
+        	=> IndividualExpression = namedIndividual ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"namedIndividual\" parameter is null");
+		 public OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLAnonymousIndividual anonymousIndividual, OWLLiteral literal) : this(dataProperty, literal)
+        	=> IndividualExpression = anonymousIndividual ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"anonymousIndividual\" parameter is null");
         #endregion
     }
 }
