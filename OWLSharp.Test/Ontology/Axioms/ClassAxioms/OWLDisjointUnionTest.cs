@@ -109,7 +109,7 @@ namespace OWLSharp.Ontology.Axioms.Test
         public void ShouldDeserializeDisjointUnionViaOntology()
         {
             OWLOntology ontology = OWLSerializer.Deserialize(
-@"<Ontology>
+@"<Ontology xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
 	<Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#""/>
 	<Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#""/>
 	<Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""/>
@@ -123,7 +123,7 @@ namespace OWLSharp.Ontology.Axioms.Test
 	    </Annotation>
 		<Class IRI=""http://xmlns.com/foaf/0.1/Agent""/>
 		<Class IRI=""http://xmlns.com/foaf/0.1/Person""/>
-		<Class abbreviatedIRI=""foaf:Organization"" xmlns:foaf=""http://xmlns.com/foaf/0.1/""/>
+		<Class abbreviatedIRI=""foaf:Organization""/>
 	</DisjointUnion>
 </Ontology>");
 
