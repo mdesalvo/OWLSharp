@@ -23,7 +23,7 @@ namespace OWLSharp.Ontology.Axioms
     public class OWLDataPropertyDomain : OWLDataPropertyAxiom
     {
         #region Properties
-        [XmlElement(ElementName="DataProperty", Order=2)]
+        [XmlElement(Order=2)]
         public OWLDataProperty DataProperty { get; set; }
 
         //Register here all derived types of OWLClassExpression

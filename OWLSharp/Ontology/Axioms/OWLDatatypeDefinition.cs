@@ -23,7 +23,7 @@ namespace OWLSharp.Ontology.Axioms
     public class OWLDatatypeDefinition : OWLAxiom
     {
         #region Properties
-        [XmlElement("Datatype", Order=2)]
+        [XmlElement(Order=2)]
         public OWLDatatype Datatype { get; set; }
 
         //Register here all derived types of OWLDataRangeExpression
