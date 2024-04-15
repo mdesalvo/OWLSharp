@@ -20,7 +20,6 @@ using OWLSharp.Test;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 
 namespace OWLSharp.Ontology.Axioms.Test
 {
