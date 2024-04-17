@@ -48,7 +48,7 @@ namespace OWLSharp.Ontology.Test
             string serializedXML = OWLTestSerializer<OWLImport>.Serialize(import);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Import>http://xmlns.com/foaf/0.1/</Import>"));          
+@"<Import>http://xmlns.com/foaf/0.1/</Import>"));
         }
 
         [TestMethod] 
