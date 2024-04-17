@@ -52,7 +52,6 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "10")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
-
         }
 
         [TestMethod]
@@ -68,6 +67,43 @@ namespace OWLSharp.Ontology.Axioms.Test
         public void ShouldThrowExceptionOnCreatingDatatypeDefinitionBecauseNullDataRangeExpression()
             => Assert.ThrowsException<OWLException>(() => new OWLDatatypeDefinition(
                 new OWLDatatype(new RDFResource("ex:length6to10")), null));
+
+        [TestMethod]
+        public void ShouldSerializeDatatypeDefinition()
+        {
+            OWLDatatypeDefinition length6to10DT = new OWLDatatypeDefinition(
+                new OWLDatatype(new RDFResource("ex:length6to10")),
+                new OWLDatatypeRestriction(
+                    new OWLDatatype(RDFVocabulary.XSD.STRING),
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]));
+
+            string serializedXML = OWLTestSerializer<OWLDatatypeDefinition>.Serialize(length6to10DT);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<DatatypeDefinition><Datatype IRI=""ex:length6to10"" /><DatatypeRestriction><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal></FacetRestriction><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal></FacetRestriction></DatatypeRestriction></DatatypeDefinition>"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeDatatypeDefinition()
+        {
+            OWLDatatypeDefinition length6to10DT = OWLTestSerializer<OWLDatatypeDefinition>.Deserialize(
+@"<DatatypeDefinition><Datatype IRI=""ex:length6to10"" /><DatatypeRestriction><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal></FacetRestriction><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal></FacetRestriction></DatatypeRestriction></DatatypeDefinition>");
+
+            Assert.IsNotNull(length6to10DT);
+            Assert.IsNotNull(length6to10DT.Datatype);
+            Assert.IsTrue(string.Equals(length6to10DT.Datatype.IRI, "ex:length6to10"));
+            Assert.IsNotNull(length6to10DT.DataRangeExpression);
+            Assert.IsTrue(length6to10DT.DataRangeExpression is OWLDatatypeRestriction dtRestr
+                            && string.Equals(dtRestr.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString())
+                            && dtRestr.FacetRestrictions.Count == 2
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+                                                                     && string.Equals(fr.Literal.Value, "6")
+                                                                     && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString()))
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+                                                                     && string.Equals(fr.Literal.Value, "10")
+                                                                     && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
+        }
         #endregion
     }
 }
