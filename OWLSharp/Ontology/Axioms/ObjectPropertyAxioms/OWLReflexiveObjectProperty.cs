@@ -31,8 +31,10 @@ namespace OWLSharp.Ontology.Axioms
 
         #region Ctors
         internal OWLReflexiveObjectProperty() : base() { }
-        public OWLReflexiveObjectProperty(OWLObjectPropertyExpression objectPropertyExpression) : this()
-            => ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLReflexiveObjectProperty because given \"objectPropertyExpression\" parameter is null");
+        public OWLReflexiveObjectProperty(OWLObjectProperty objectProperty) : this()
+            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLReflexiveObjectProperty because given \"objectProperty\" parameter is null");
+        public OWLReflexiveObjectProperty(OWLObjectInverseOf objectInverseOf) : this()
+            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLReflexiveObjectProperty because given \"objectInverseOf\" parameter is null");
         #endregion
     }
 }
