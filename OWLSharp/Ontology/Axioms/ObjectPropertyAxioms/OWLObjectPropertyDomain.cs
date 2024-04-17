@@ -52,11 +52,12 @@ namespace OWLSharp.Ontology.Axioms
 
         #region Ctors
         internal OWLObjectPropertyDomain() : base() { }
-        public OWLObjectPropertyDomain(OWLObjectPropertyExpression objectPropertyExpression, OWLClassExpression classExpression) : this()
-        {
-            ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"objectPropertyExpression\" parameter is null");
-            ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"classExpression\" parameter is null");
-        }
+        internal OWLObjectPropertyDomain(OWLClassExpression classExpression) : this()
+            => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"classExpression\" parameter is null");
+        public OWLObjectPropertyDomain(OWLObjectProperty objectProperty, OWLClassExpression classExpression) : this(classExpression)
+            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"objectProperty\" parameter is null");
+        public OWLObjectPropertyDomain(OWLObjectInverseOf objectInverseOf, OWLClassExpression classExpression) : this(classExpression)
+            => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLObjectPropertyDomain because given \"objectInverseOf\" parameter is null");
         #endregion
     }
 }
