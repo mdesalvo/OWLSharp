@@ -49,6 +49,16 @@ namespace OWLSharp.Ontology.Axioms.Test
 		}
 
 		[TestMethod]
+		public void ShouldDeserializeClassDeclaration()
+		{
+			OWLDeclaration declaration = OWLTestSerializer<OWLDeclaration>.Deserialize(
+@"<Declaration><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></Declaration>");
+
+			Assert.IsNotNull(declaration);
+			Assert.IsTrue(declaration.Expression is OWLClass cls && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
+		}
+
+		[TestMethod]
 		public void ShouldThrowExceptionOnCreatingClassDeclarationBecauseNullClass()
 			=> Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLClass));
 
@@ -69,6 +79,16 @@ namespace OWLSharp.Ontology.Axioms.Test
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><Datatype IRI=""http://www.w3.org/2001/XMLSchema#int"" /></Declaration>"));
+		}
+
+		[TestMethod]
+		public void ShouldDeserializeDatatypeDeclaration()
+		{
+			OWLDeclaration declaration = OWLTestSerializer<OWLDeclaration>.Deserialize(
+@"<Declaration><Datatype IRI=""http://www.w3.org/2001/XMLSchema#int"" /></Declaration>");
+
+			Assert.IsNotNull(declaration);
+			Assert.IsTrue(declaration.Expression is OWLDatatype dt && string.Equals(dt.IRI, "http://www.w3.org/2001/XMLSchema#int"));
 		}
 
 		[TestMethod]
@@ -95,6 +115,16 @@ namespace OWLSharp.Ontology.Axioms.Test
 		}
 
 		[TestMethod]
+		public void ShouldDeserializeObjectPropertyDeclaration()
+		{
+			OWLDeclaration declaration = OWLTestSerializer<OWLDeclaration>.Deserialize(
+@"<Declaration><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></Declaration>");
+
+			Assert.IsNotNull(declaration);
+			Assert.IsTrue(declaration.Expression is OWLObjectProperty objProp && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
+		}
+
+		[TestMethod]
 		public void ShouldThrowExceptionOnCreatingObjectPropertyDeclarationBecauseNullObjectProperty()
 			=> Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLObjectProperty));
 
@@ -115,6 +145,16 @@ namespace OWLSharp.Ontology.Axioms.Test
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></Declaration>"));
+		}
+
+		[TestMethod]
+		public void ShouldDeserializeDataPropertyDeclaration()
+		{
+			OWLDeclaration declaration = OWLTestSerializer<OWLDeclaration>.Deserialize(
+@"<Declaration><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></Declaration>");
+
+			Assert.IsNotNull(declaration);
+			Assert.IsTrue(declaration.Expression is OWLDataProperty dtProp && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
 		}
 
 		[TestMethod]
@@ -141,6 +181,16 @@ namespace OWLSharp.Ontology.Axioms.Test
 		}
 
 		[TestMethod]
+		public void ShouldDeserializeAnnotationPropertyDeclaration()
+		{
+			OWLDeclaration declaration = OWLTestSerializer<OWLDeclaration>.Deserialize(
+@"<Declaration><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /></Declaration>");
+
+			Assert.IsNotNull(declaration);
+			Assert.IsTrue(declaration.Expression is OWLAnnotationProperty annProp && string.Equals(annProp.IRI, "http://purl.org/dc/elements/1.1/creator"));
+		}
+
+		[TestMethod]
 		public void ShouldThrowExceptionOnCreatingAnnotationPropertyDeclarationBecauseNullAnnotationProperty()
 			=> Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLAnnotationProperty));
 
@@ -161,6 +211,16 @@ namespace OWLSharp.Ontology.Axioms.Test
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><NamedIndividual IRI=""ex:Mark"" /></Declaration>"));
+		}
+
+		[TestMethod]
+		public void ShouldDeserializeNamedIndividualDeclaration()
+		{
+			OWLDeclaration declaration = OWLTestSerializer<OWLDeclaration>.Deserialize(
+@"<Declaration><NamedIndividual IRI=""ex:Mark"" /></Declaration>");
+
+			Assert.IsNotNull(declaration);
+			Assert.IsTrue(declaration.Expression is OWLNamedIndividual nIdv && string.Equals(nIdv.IRI, "ex:Mark"));
 		}
 
 		[TestMethod]
