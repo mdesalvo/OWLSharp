@@ -227,6 +227,42 @@ namespace OWLSharp.Ontology.Axioms.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeSubObjectPropertyOfWithSubAsInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA"))),
+                new OWLObjectProperty(new RDFResource("ex:objPropB")));
+            string serializedXML = OWLTestSerializer<OWLSubObjectPropertyOf>.Serialize(subObjectPropertyOf);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<SubObjectPropertyOf><ObjectInverseOf><ObjectProperty IRI=""ex:objPropA"" /></ObjectInverseOf><ObjectProperty IRI=""ex:objPropB"" /></SubObjectPropertyOf>"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeSubObjectPropertyOfWithSuperAsInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectProperty(new RDFResource("ex:objPropA")),
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB"))));
+            string serializedXML = OWLTestSerializer<OWLSubObjectPropertyOf>.Serialize(subObjectPropertyOf);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<SubObjectPropertyOf><ObjectProperty IRI=""ex:objPropA"" /><ObjectInverseOf><ObjectProperty IRI=""ex:objPropB"" /></ObjectInverseOf></SubObjectPropertyOf>"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeSubObjectPropertyOfWithInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA"))),
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB"))));
+            string serializedXML = OWLTestSerializer<OWLSubObjectPropertyOf>.Serialize(subObjectPropertyOf);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<SubObjectPropertyOf><ObjectInverseOf><ObjectProperty IRI=""ex:objPropA"" /></ObjectInverseOf><ObjectInverseOf><ObjectProperty IRI=""ex:objPropB"" /></ObjectInverseOf></SubObjectPropertyOf>"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeSubObjectPropertyOfViaOntology()
         {
             OWLOntology ontology = new OWLOntology();
