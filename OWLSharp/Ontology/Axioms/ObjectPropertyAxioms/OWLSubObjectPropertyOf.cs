@@ -39,15 +39,35 @@ namespace OWLSharp.Ontology.Axioms
 
         #region Ctors
         internal OWLSubObjectPropertyOf() : base() { }
-        public OWLSubObjectPropertyOf(OWLObjectPropertyExpression subObjectPropertyExpression, OWLObjectPropertyExpression superObjectPropertyExpression) : this()
+        public OWLSubObjectPropertyOf(OWLObjectProperty subObjectProperty, OWLObjectProperty superObjectProperty) : this()
         {
-            SubObjectPropertyExpression = subObjectPropertyExpression ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectPropertyExpression\" parameter is null");
-            SuperObjectPropertyExpression = superObjectPropertyExpression ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectPropertyExpression\" parameter is null");
+            SubObjectPropertyExpression = subObjectProperty ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectProperty\" parameter is null");
+            SuperObjectPropertyExpression = superObjectProperty ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectProperty\" parameter is null");
         }
-        public OWLSubObjectPropertyOf(OWLObjectPropertyChain subObjectPropertyChain, OWLObjectPropertyExpression superObjectPropertyExpression) : this()
+        public OWLSubObjectPropertyOf(OWLObjectProperty subObjectProperty, OWLObjectInverseOf superObjectInverseOf) : this()
+        {
+            SubObjectPropertyExpression = subObjectProperty ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectProperty\" parameter is null");
+            SuperObjectPropertyExpression = superObjectInverseOf ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectInverseOf\" parameter is null");
+        }
+        public OWLSubObjectPropertyOf(OWLObjectInverseOf subObjectInverseOf, OWLObjectProperty superObjectProperty) : this()
+        {
+            SubObjectPropertyExpression = subObjectInverseOf ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectInverseOf\" parameter is null");
+            SuperObjectPropertyExpression = superObjectProperty ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectProperty\" parameter is null");
+        }
+        public OWLSubObjectPropertyOf(OWLObjectInverseOf subObjectInverseOf, OWLObjectInverseOf superObjectInverseOf) : this()
+        {
+            SubObjectPropertyExpression = subObjectInverseOf ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectInverseOf\" parameter is null");
+            SuperObjectPropertyExpression = superObjectInverseOf ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectInverseOf\" parameter is null");
+        }
+        public OWLSubObjectPropertyOf(OWLObjectPropertyChain subObjectPropertyChain, OWLObjectProperty superObjectProperty) : this()
         {
             SubObjectPropertyChain = subObjectPropertyChain ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectPropertyChain\" parameter is null");
-            SuperObjectPropertyExpression = superObjectPropertyExpression ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectPropertyExpression\" parameter is null");
+            SuperObjectPropertyExpression = superObjectProperty ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectProperty\" parameter is null");
+        }
+        public OWLSubObjectPropertyOf(OWLObjectPropertyChain subObjectPropertyChain, OWLObjectInverseOf superObjectInverseOf) : this()
+        {
+            SubObjectPropertyChain = subObjectPropertyChain ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectPropertyChain\" parameter is null");
+            SuperObjectPropertyExpression = superObjectInverseOf ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectInverseOf\" parameter is null");
         }
         #endregion
     }
