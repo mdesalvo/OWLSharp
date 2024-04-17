@@ -263,6 +263,34 @@ namespace OWLSharp.Ontology.Axioms.Test
         }
 
         [TestMethod]
+        public void ShouldSerializeSubObjectPropertyOfWithChain()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectPropertyChain([
+                    new OWLObjectProperty(new RDFResource("ex:hasFather")),
+                    new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),
+                new OWLObjectProperty(new RDFResource("ex:hasUncle")));
+            string serializedXML = OWLTestSerializer<OWLSubObjectPropertyOf>.Serialize(subObjectPropertyOf);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<SubObjectPropertyOf><ObjectPropertyChain><ObjectProperty IRI=""ex:hasFather"" /><ObjectProperty IRI=""ex:hasBrother"" /></ObjectPropertyChain><ObjectProperty IRI=""ex:hasUncle"" /></SubObjectPropertyOf>"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeSubObjectPropertyOfWithChainAndInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectPropertyChain([
+                    new OWLObjectProperty(new RDFResource("ex:hasFather")),
+                    new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:isUncleOf"))));
+            string serializedXML = OWLTestSerializer<OWLSubObjectPropertyOf>.Serialize(subObjectPropertyOf);
+
+            Assert.IsTrue(string.Equals(serializedXML,
+@"<SubObjectPropertyOf><ObjectPropertyChain><ObjectProperty IRI=""ex:hasFather"" /><ObjectProperty IRI=""ex:hasBrother"" /></ObjectPropertyChain><ObjectInverseOf><ObjectProperty IRI=""ex:isUncleOf"" /></ObjectInverseOf></SubObjectPropertyOf>"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeSubObjectPropertyOfViaOntology()
         {
             OWLOntology ontology = new OWLOntology();
