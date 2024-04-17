@@ -324,6 +324,123 @@ namespace OWLSharp.Ontology.Axioms.Test
         }
 
         [TestMethod]
+        public void ShouldDeserializeSubObjectPropertyOfWithSubAsInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = OWLTestSerializer<OWLSubObjectPropertyOf>.Deserialize(
+@"<SubObjectPropertyOf>
+  <ObjectInverseOf>
+    <ObjectProperty IRI=""ex:objPropA"" />
+  </ObjectInverseOf>
+  <ObjectProperty IRI=""ex:objPropB"" />
+</SubObjectPropertyOf>");
+
+            Assert.IsNotNull(subObjectPropertyOf);
+            Assert.IsNull(subObjectPropertyOf.SubObjectPropertyChain);
+            Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyExpression is OWLObjectInverseOf subObjInvOf
+                            && string.Equals(subObjInvOf.ObjectProperty.IRI, "ex:objPropA"));
+            Assert.IsNotNull(subObjectPropertyOf.SuperObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectProperty superObjProp
+                            && string.Equals(superObjProp.IRI, "ex:objPropB"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeSubObjectPropertyOfWithSuperAsInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = OWLTestSerializer<OWLSubObjectPropertyOf>.Deserialize(
+@"<SubObjectPropertyOf>
+  <ObjectProperty IRI=""ex:objPropA"" />
+  <ObjectInverseOf>
+    <ObjectProperty IRI=""ex:objPropB"" />
+  </ObjectInverseOf>
+</SubObjectPropertyOf>");
+
+            Assert.IsNotNull(subObjectPropertyOf);
+            Assert.IsNull(subObjectPropertyOf.SubObjectPropertyChain);
+            Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyExpression is OWLObjectProperty subObjProp
+                            && string.Equals(subObjProp.IRI, "ex:objPropA"));
+            Assert.IsNotNull(subObjectPropertyOf.SuperObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf superObjInvOf
+                            && string.Equals(superObjInvOf.ObjectProperty.IRI, "ex:objPropB"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeSubObjectPropertyOfWithInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = OWLTestSerializer<OWLSubObjectPropertyOf>.Deserialize(
+@"<SubObjectPropertyOf>
+  <ObjectInverseOf>
+    <ObjectProperty IRI=""ex:objPropA"" />
+  </ObjectInverseOf>
+  <ObjectInverseOf>
+    <ObjectProperty IRI=""ex:objPropB"" />
+  </ObjectInverseOf>
+</SubObjectPropertyOf>");
+
+            Assert.IsNotNull(subObjectPropertyOf);
+            Assert.IsNull(subObjectPropertyOf.SubObjectPropertyChain);
+            Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyExpression is OWLObjectInverseOf subObjInvOf
+                            && string.Equals(subObjInvOf.ObjectProperty.IRI, "ex:objPropA"));
+            Assert.IsNotNull(subObjectPropertyOf.SuperObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf superObjInvOf
+                            && string.Equals(superObjInvOf.ObjectProperty.IRI, "ex:objPropB"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeSubObjectPropertyOfWithChain()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = OWLTestSerializer<OWLSubObjectPropertyOf>.Deserialize(
+@"<SubObjectPropertyOf>
+  <ObjectPropertyChain>
+    <ObjectProperty IRI=""ex:hasFather"" />
+    <ObjectProperty IRI=""ex:hasBrother"" />
+  </ObjectPropertyChain>
+  <ObjectProperty IRI=""ex:hasUncle"" />
+</SubObjectPropertyOf>");
+
+            Assert.IsNotNull(subObjectPropertyOf);
+            Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
+            Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyChain);
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions.Count == 2);
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[0]
+                            is OWLObjectProperty firstChainProp && string.Equals(firstChainProp.IRI, "ex:hasFather"));
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[1]
+                            is OWLObjectProperty secondChainProp && string.Equals(secondChainProp.IRI, "ex:hasBrother"));
+            Assert.IsNotNull(subObjectPropertyOf.SuperObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectProperty superObjProp
+                            && string.Equals(superObjProp.IRI, "ex:hasUncle"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeSubObjectPropertyOfWithChainAndInverse()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = OWLTestSerializer<OWLSubObjectPropertyOf>.Deserialize(
+@"<SubObjectPropertyOf>
+  <ObjectPropertyChain>
+    <ObjectProperty IRI=""ex:hasFather"" />
+    <ObjectProperty IRI=""ex:hasBrother"" />
+  </ObjectPropertyChain>
+  <ObjectInverseOf>
+    <ObjectProperty IRI=""ex:hasUncle"" />
+  </ObjectInverseOf>
+</SubObjectPropertyOf>");
+
+            Assert.IsNotNull(subObjectPropertyOf);
+            Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
+            Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyChain);
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions.Count == 2);
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[0]
+                            is OWLObjectProperty firstChainProp && string.Equals(firstChainProp.IRI, "ex:hasFather"));
+            Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[1]
+                            is OWLObjectProperty secondChainProp && string.Equals(secondChainProp.IRI, "ex:hasBrother"));
+            Assert.IsNotNull(subObjectPropertyOf.SuperObjectPropertyExpression);
+            Assert.IsTrue(subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf superObjInvOf
+                            && string.Equals(superObjInvOf.ObjectProperty.IRI, "ex:hasUncle"));
+        }
+
+        [TestMethod]
         public void ShouldDeserializeSubObjectPropertyOfViaOntology()
         {
             OWLOntology ontology = OWLSerializer.Deserialize(
@@ -355,6 +472,45 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(subObjPropOf1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
 							&& string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Language, "EN"));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeSubObjectPropertyOfWithChainViaOntology()
+        {
+            OWLOntology ontology = OWLSerializer.Deserialize(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <SubObjectPropertyOf>
+    <Annotation>
+	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+	  <Literal xml:lang=""EN"">Steve</Literal>
+	</Annotation>
+    <ObjectPropertyChain>
+      <ObjectProperty IRI=""ex:hasFather"" />
+      <ObjectProperty IRI=""ex:hasBrother"" />
+    </ObjectPropertyChain>
+    <ObjectProperty IRI=""ex:hasUncle"" />
+  </SubObjectPropertyOf>
+</Ontology>");
+
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 1);
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf subObjPropOf
+                            && subObjPropOf.SubObjectPropertyChain.ObjectPropertyExpressions[0] is OWLObjectProperty firstChainProp
+                            && string.Equals(firstChainProp.IRI, "ex:hasFather")
+                            && subObjPropOf.SubObjectPropertyChain.ObjectPropertyExpressions[1] is OWLObjectProperty secondChainProp
+                            && string.Equals(secondChainProp.IRI, "ex:hasBrother")
+                            && subObjPropOf.SuperObjectPropertyExpression is OWLObjectProperty superObjProp
+                            && string.Equals(superObjProp.IRI, "ex:hasUncle"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf subObjPropOf1
+                            && string.Equals(subObjPropOf1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
         #endregion
     }
