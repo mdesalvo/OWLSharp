@@ -79,7 +79,7 @@ namespace OWLSharp.Ontology
         public List<OWLDatatypeDefinition> DatatypeDefinitionAxioms { get; internal set; }
 
         [XmlElement(ElementName="HasKey")]
-        public List<OWLHasKey> HasKeyAxioms { get; internal set; }
+        public List<OWLHasKey> KeyAxioms { get; internal set; }
 
         [XmlElement(typeof(OWLSameIndividual), ElementName="SameIndividual")]
         [XmlElement(typeof(OWLDifferentIndividuals), ElementName="DifferentIndividuals")]
@@ -117,7 +117,7 @@ namespace OWLSharp.Ontology
             ObjectPropertyAxioms = new List<OWLObjectPropertyAxiom>();
             DataPropertyAxioms = new List<OWLDataPropertyAxiom>();
             DatatypeDefinitionAxioms = new List<OWLDatatypeDefinition>();
-            HasKeyAxioms = new List<OWLHasKey>();
+            KeyAxioms = new List<OWLHasKey>();
             AssertionAxioms = new List<OWLAssertionAxiom>();
             AnnotationAxioms = new List<OWLAnnotationAxiom>();
         }
