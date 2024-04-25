@@ -186,6 +186,118 @@ namespace OWLSharp.Ontology.Test
   </AnnotationAssertion>
 </Ontology>")); 
 		}
+
+		[TestMethod]
+		public void ShouldDeserializeOntology()
+		{
+			OWLOntology ontology = OWLSerializer.Deserialize(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
+  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
+  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
+  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
+  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
+  <Import>ex:ont2</Import>
+  <Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+      <Literal>nested annotation</Literal>
+    </Annotation>
+    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+    <Literal>annotation</Literal>
+  </Annotation>
+  <Declaration>
+    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
+  </Declaration>
+  <Declaration>
+    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
+  </Declaration>
+  <Declaration>
+    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+  </Declaration>
+  <Declaration>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""ex:Mark"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""ex:Steve"" />
+  </Declaration>
+  <DisjointClasses>
+    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
+  </DisjointClasses>
+  <AsymmetricObjectProperty>
+    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
+  </AsymmetricObjectProperty>
+  <DataPropertyDomain>
+    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
+    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+  </DataPropertyDomain>
+  <DatatypeDefinition>
+    <Datatype IRI=""ex:length6to10"" />
+    <DatatypeRestriction>
+      <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
+      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">
+        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal>
+      </FacetRestriction>
+      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength"">
+        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal>
+      </FacetRestriction>
+    </DatatypeRestriction>
+  </DatatypeDefinition>
+  <HasKey>
+    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
+    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
+  </HasKey>
+  <ObjectPropertyAssertion>
+    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
+    <NamedIndividual IRI=""ex:Mark"" />
+    <NamedIndividual IRI=""ex:Steve"" />
+  </ObjectPropertyAssertion>
+  <AnnotationAssertion>
+    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+    <IRI>ex:Mark</IRI>
+    <Literal>This is Mark</Literal>
+  </AnnotationAssertion>
+</Ontology>");
+
+			Assert.IsNotNull(ontology);
+			Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
+			Assert.IsTrue(string.Equals(ontology.Version, "ex:ont/v1"));
+			Assert.IsNotNull(ontology.Prefixes);
+			Assert.IsTrue(ontology.Prefixes.Count == 11); //TODO: since we inject 5 default prefixes, there may be duplicates after deserialization
+			Assert.IsNotNull(ontology.Imports);
+			Assert.IsTrue(ontology.Imports.Count == 1);
+			Assert.IsNotNull(ontology.Annotations);
+			Assert.IsTrue(ontology.Annotations.Count == 1);
+			Assert.IsNotNull(ontology.DeclarationAxioms);
+			Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
+			Assert.IsNotNull(ontology.ClassAxioms);
+			Assert.IsTrue(ontology.ClassAxioms.Count == 1);
+			Assert.IsNotNull(ontology.ObjectPropertyAxioms);
+			Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 1);
+			Assert.IsNotNull(ontology.DataPropertyAxioms);
+			Assert.IsTrue(ontology.DataPropertyAxioms.Count == 1);
+			Assert.IsNotNull(ontology.DatatypeDefinitionAxioms);
+			Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 1);
+			Assert.IsNotNull(ontology.KeyAxioms);
+			Assert.IsTrue(ontology.KeyAxioms.Count == 1);
+			Assert.IsNotNull(ontology.AssertionAxioms);
+			Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
+			Assert.IsNotNull(ontology.AnnotationAxioms);
+			Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+		}
         #endregion
     }
 }
