@@ -64,7 +64,7 @@ namespace OWLSharp
         public static OWLOntology Deserialize(string ontology)
         {
             #region Guards
-            if (ontology == null)
+            if (string.IsNullOrEmpty(ontology))
                 throw new OWLException("Cannot deserialize OWLOntology because given \"ontology\" parameter is null");
             #endregion
 
