@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Linq;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Test;
@@ -97,6 +98,28 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsNotNull(cls);
             Assert.IsNull(cls.IRI);
             Assert.IsTrue(string.Equals(cls.AbbreviatedIRI, new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI)));
+        }
+
+		[TestMethod]
+        public void ShouldConvertIRIClassToGraph()
+        {
+            OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
+			RDFGraph graph = cls.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldConvertQualifiedNameClassToGraph()
+        {
+            OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
+			RDFGraph graph = cls.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
         }
         #endregion
     }
