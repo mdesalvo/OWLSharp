@@ -51,7 +51,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public override RDFResource GetRepresentative()
+		public override RDFResource ToRDFResource()
 		{
 			string objectPropertyIRI = IRI;
 			if (string.IsNullOrEmpty(objectPropertyIRI))
@@ -62,7 +62,7 @@ namespace OWLSharp.Ontology.Expressions
 		public override RDFGraph ToRDFGraph()
 		{
 			RDFGraph graph = new RDFGraph();
-			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+			graph.AddTriple(new RDFTriple(ToRDFResource(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
 			return graph;
 		}
 		#endregion
@@ -100,7 +100,7 @@ namespace OWLSharp.Ontology.Expressions
 		{
 			RDFCollection chainMembers = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
 			foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
-				chainMembers.AddItem(objectPropertyExpression.GetRepresentative());
+				chainMembers.AddItem(objectPropertyExpression.ToRDFResource());
 			return chainMembers;
 		}
 		#endregion

@@ -49,7 +49,7 @@ namespace OWLSharp.Ontology.Expressions
 		#endregion
 
 		#region Methods
-		public override RDFResource GetRepresentative()
+		public override RDFResource ToRDFResource()
 		{
 			string classIRI = IRI;
 			if (string.IsNullOrEmpty(classIRI))
@@ -60,7 +60,7 @@ namespace OWLSharp.Ontology.Expressions
 		public override RDFGraph ToRDFGraph()
 		{
 			RDFGraph graph = new RDFGraph();
-			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+			graph.AddTriple(new RDFTriple(ToRDFResource(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
 			return graph;
 		}
 		#endregion

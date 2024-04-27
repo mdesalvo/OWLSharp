@@ -122,20 +122,20 @@ namespace OWLSharp.Ontology.Expressions.Test
         }
 
 		[TestMethod]
-        public void ShouldGetIRIRepresentative()
+        public void ShouldConvertIRIAnnotationPropertyToResource()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR);
-			RDFResource representative = ann.GetRepresentative();
+			RDFResource representative = ann.ToRDFResource();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.DC.CREATOR));
         }
 
 		[TestMethod]
-        public void ShouldGetQualifiedNameRepresentative()
+        public void ShouldConvertQualifiedNameAnnotationPropertyToResource()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
-			RDFResource representative = ann.GetRepresentative();
+			RDFResource representative = ann.ToRDFResource();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.DC.CREATOR));

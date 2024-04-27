@@ -42,5 +42,21 @@ namespace OWLSharp.Ontology.Expressions
             Language = literal is RDFPlainLiteral pLit && pLit.HasLanguage() ? pLit.Language : null;
         }
         #endregion
+
+		#region Methods
+		public RDFLiteral ToRDFLiteral()
+		{
+			if (DatatypeIRI != null)
+				return new RDFTypedLiteral(Value, RDFModelUtilities.GetDatatypeFromString(DatatypeIRI));
+			else
+				return new RDFPlainLiteral(Value, Language);
+		}
+
+		public override RDFResource ToRDFResource()
+			=> new RDFResource(string.Concat($"bnode:", ToRDFLiteral().PatternMemberID));
+
+		public override RDFGraph ToRDFGraph()
+			=> new RDFGraph();
+		#endregion
     }
 }

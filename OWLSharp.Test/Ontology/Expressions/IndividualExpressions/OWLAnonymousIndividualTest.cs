@@ -72,10 +72,10 @@ namespace OWLSharp.Ontology.Expressions.Test
         }
 
 		[TestMethod]
-        public void ShouldGetRepresentative()
+        public void ShouldConvertAnonymousIndividualToResource()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-			RDFResource representative = anonIdv.GetRepresentative();
+			RDFResource representative = anonIdv.ToRDFResource();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(new RDFResource($"bnode:{anonIdv.NodeID}")));

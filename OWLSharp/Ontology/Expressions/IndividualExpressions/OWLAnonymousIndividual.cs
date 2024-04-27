@@ -41,7 +41,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public override RDFResource GetRepresentative()
+		public override RDFResource ToRDFResource()
 			=> new RDFResource(string.Concat("bnode:", NodeID));
 
 		public override RDFGraph ToRDFGraph()

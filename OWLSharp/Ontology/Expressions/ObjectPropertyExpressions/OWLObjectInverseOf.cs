@@ -35,13 +35,13 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public override RDFResource GetRepresentative()
-			=> new RDFResource(string.Concat($"bnode:", ObjectProperty.GetRepresentative().PatternMemberID));
+		public override RDFResource ToRDFResource()
+			=> new RDFResource(string.Concat($"bnode:", ObjectProperty.ToRDFResource().PatternMemberID));
 
 		public override RDFGraph ToRDFGraph()
 		{
 			RDFGraph graph = new RDFGraph();
-			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.OWL.INVERSE_OF, ObjectProperty.GetRepresentative()));
+			graph.AddTriple(new RDFTriple(ToRDFResource(), RDFVocabulary.OWL.INVERSE_OF, ObjectProperty.ToRDFResource()));
 			return graph;
 		}
 		#endregion

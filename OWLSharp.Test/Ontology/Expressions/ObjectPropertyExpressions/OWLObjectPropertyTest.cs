@@ -122,20 +122,20 @@ namespace OWLSharp.Ontology.Expressions.Test
         }
 
 		[TestMethod]
-        public void ShouldGetIRIRepresentative()
+        public void ShouldConvertIRIObjectPropertyToResource()
         {
             OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
-			RDFResource representative = op.GetRepresentative();
+			RDFResource representative = op.ToRDFResource();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));
         }
 
 		[TestMethod]
-        public void ShouldGetQualifiedNameRepresentative()
+        public void ShouldConvertQualifiedNameObjectPropertyToResource()
         {
             OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = op.GetRepresentative();
+			RDFResource representative = op.ToRDFResource();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));

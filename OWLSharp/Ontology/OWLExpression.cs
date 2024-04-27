@@ -20,7 +20,7 @@ namespace OWLSharp.Ontology
 {
     public abstract class OWLExpression 
 	{ 
-		public abstract RDFResource GetRepresentative();
+		public abstract RDFResource ToRDFResource();
 		public abstract RDFGraph ToRDFGraph();
 	}
 
