@@ -94,5 +94,15 @@ namespace OWLSharp.Ontology.Expressions
             ObjectPropertyExpressions = objectPropertyExpressions;
         }
         #endregion
+
+		#region Methods
+		public RDFCollection GetPropertyChainMembers()
+		{
+			RDFCollection chainMembers = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+			foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
+				chainMembers.AddItem(objectPropertyExpression.GetRepresentative());
+			return chainMembers;
+		}
+		#endregion
     }
 }
