@@ -98,6 +98,48 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsNull(dp.IRI);
             Assert.IsTrue(string.Equals(dp.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
         }
+
+		[TestMethod]
+        public void ShouldConvertIRIObjectPropertyToGraph()
+        {
+            OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
+			RDFGraph graph = op.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldConvertQualifiedNameObjectPropertyToGraph()
+        {
+            OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
+			RDFGraph graph = op.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldGetIRIRepresentative()
+        {
+            OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
+			RDFResource representative = op.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));
+        }
+
+		[TestMethod]
+        public void ShouldGetQualifiedNameRepresentative()
+        {
+            OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
+			RDFResource representative = op.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));
+        }
         #endregion
     }
 }
