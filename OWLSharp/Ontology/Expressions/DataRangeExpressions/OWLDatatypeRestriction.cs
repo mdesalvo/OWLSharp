@@ -50,6 +50,34 @@ namespace OWLSharp.Ontology.Expressions
             FacetRestrictions = facetRestrictions;
         }
         #endregion
+
+		#region Methods
+		public override RDFResource ToRDFResource()
+			=> new RDFResource();
+
+		public override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+
+			//Build the representation of facets restrictions
+			RDFCollection facetsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+			foreach (OWLFacetRestriction facetRestriction in FacetRestrictions)
+			{
+				RDFResource facetRepresentative = new RDFResource();
+				facetsCollection.AddItem(facetRepresentative);
+				graph = graph.UnionWith(facetRestriction.ToRDFGraph(facetRepresentative));
+			}				
+
+			//Build the representation of the datatype restriction
+			RDFResource representative = ToRDFResource();
+			graph.AddTriple(new RDFTriple(representative, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
+			graph.AddTriple(new RDFTriple(representative, RDFVocabulary.OWL.ON_DATATYPE, Datatype.ToRDFResource()));
+			graph.AddTriple(new RDFTriple(representative, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsCollection.ReificationSubject));
+			graph.AddCollection(facetsCollection);
+
+			return graph;
+		}
+		#endregion
     }
 
     [XmlRoot("FacetRestriction")]
@@ -71,7 +99,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
         #region Properties
-        [XmlElement(ElementName="Literal")]
+        [XmlElement]
         public OWLLiteral Literal { get; set; }
 
         [XmlAttribute("facet", DataType="anyURI")]
@@ -93,5 +121,14 @@ namespace OWLSharp.Ontology.Expressions
             FacetIRI = facetIRI.ToString();
         }
         #endregion
+
+		#region Methods
+		internal RDFGraph ToRDFGraph(RDFResource facetRepresentative)
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(facetRepresentative, new RDFResource(FacetIRI), Literal.ToRDFLiteral()));
+			return graph;
+		}
+		#endregion
     }
 }
