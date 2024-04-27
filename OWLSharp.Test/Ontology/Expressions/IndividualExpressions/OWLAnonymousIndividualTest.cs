@@ -16,6 +16,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Test;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Expressions.Test
 {
@@ -58,6 +59,27 @@ namespace OWLSharp.Ontology.Expressions.Test
 
             Assert.IsNotNull(anonIdv);
             Assert.IsTrue(string.Equals(anonIdv.NodeID, "AnonIdv"));
+        }
+
+		[TestMethod]
+        public void ShouldConvertAnonymousIndividualToGraph()
+        {
+            OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
+			RDFGraph graph = anonIdv.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[new RDFResource($"bnode:{anonIdv.NodeID}"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INDIVIDUAL, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldGetRepresentative()
+        {
+            OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
+			RDFResource representative = anonIdv.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(new RDFResource($"bnode:{anonIdv.NodeID}")));
         }
         #endregion
     }

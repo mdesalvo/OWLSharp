@@ -39,5 +39,17 @@ namespace OWLSharp.Ontology.Expressions
             catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"anonymousName\" parameter is null or is not a valid xsd:NCName"); }
         }
         #endregion
+
+		#region Methods
+		public override RDFResource GetRepresentative()
+			=> new RDFResource(string.Concat("bnode:", NodeID));
+
+		public override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INDIVIDUAL));
+			return graph;
+		}
+		#endregion
     }
 }
