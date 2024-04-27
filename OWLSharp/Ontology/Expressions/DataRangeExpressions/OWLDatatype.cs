@@ -47,5 +47,22 @@ namespace OWLSharp.Ontology.Expressions
         public OWLDatatype(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLDatatype because given \"abbreviatedIri\" parameter is null");
         #endregion
+
+		#region Methods
+		public override RDFResource ToRDFResource()
+		{
+			string datatypeIRI = IRI;
+			if (string.IsNullOrEmpty(datatypeIRI))
+				datatypeIRI = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
+			return new RDFResource(datatypeIRI);
+		}
+
+		public override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(ToRDFResource(), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
+			return graph;
+		}
+		#endregion
     }
 }
