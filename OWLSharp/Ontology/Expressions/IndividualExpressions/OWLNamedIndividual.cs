@@ -47,5 +47,22 @@ namespace OWLSharp.Ontology.Expressions
         public OWLNamedIndividual(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLNamedIndividual because given \"abbreviatedIri\" parameter is null");
         #endregion
+
+		#region Methods
+		public override RDFResource GetRepresentative()
+		{
+			string namedIndividualIRI = IRI;
+			if (string.IsNullOrEmpty(namedIndividualIRI))
+				namedIndividualIRI = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
+			return new RDFResource(namedIndividualIRI);
+		}
+
+		public override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
+			return graph;
+		}
+		#endregion
     }
 }

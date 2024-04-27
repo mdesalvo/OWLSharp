@@ -98,6 +98,48 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsNull(idv.IRI);
             Assert.IsTrue(string.Equals(idv.AbbreviatedIRI, new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI)));
         }
+
+		[TestMethod]
+        public void ShouldConvertIRINamedIndividualToGraph()
+        {
+            OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
+			RDFGraph graph = idv.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldConvertQualifiedNameNamedIndividualToGraph()
+        {
+            OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
+			RDFGraph graph = idv.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldGetIRIRepresentative()
+        {
+            OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
+			RDFResource representative = idv.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));
+        }
+
+		[TestMethod]
+        public void ShouldGetQualifiedNameRepresentative()
+        {
+            OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
+			RDFResource representative = idv.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));
+        }
         #endregion
     }
 }
