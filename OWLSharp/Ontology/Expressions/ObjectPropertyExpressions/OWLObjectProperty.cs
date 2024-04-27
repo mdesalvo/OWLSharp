@@ -96,7 +96,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public RDFCollection GetChainCollection()
+		public RDFCollection GetChainMembers()
 		{
 			RDFCollection chainMembers = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
 			foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
