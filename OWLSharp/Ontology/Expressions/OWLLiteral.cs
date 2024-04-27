@@ -44,6 +44,12 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
+		public override RDFResource ToRDFResource()
+			=> new RDFResource(string.Concat($"bnode:", ToRDFLiteral().PatternMemberID));
+
+		public override RDFGraph ToRDFGraph()
+			=> new RDFGraph();
+
 		public RDFLiteral ToRDFLiteral()
 		{
 			if (DatatypeIRI != null)
@@ -51,12 +57,6 @@ namespace OWLSharp.Ontology.Expressions
 			else
 				return new RDFPlainLiteral(Value, Language);
 		}
-
-		public override RDFResource ToRDFResource()
-			=> new RDFResource(string.Concat($"bnode:", ToRDFLiteral().PatternMemberID));
-
-		public override RDFGraph ToRDFGraph()
-			=> new RDFGraph();
 		#endregion
     }
 }
