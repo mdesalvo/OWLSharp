@@ -60,6 +60,27 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsNotNull(objectInverseOf.ObjectProperty);
             Assert.IsTrue(string.Equals(objectInverseOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         }
+
+		[TestMethod]
+        public void ShouldConvertObjectInverseOfToGraph()
+        {
+            OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+			RDFGraph graph = objectInverseOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[new RDFResource(string.Concat($"bnode:", RDFVocabulary.FOAF.KNOWS.PatternMemberID)), RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldGetRepresentative()
+        {
+            OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+			RDFResource representative = objectInverseOf.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(new RDFResource(string.Concat($"bnode:", RDFVocabulary.FOAF.KNOWS.PatternMemberID))));
+        }
         #endregion
     }
 }

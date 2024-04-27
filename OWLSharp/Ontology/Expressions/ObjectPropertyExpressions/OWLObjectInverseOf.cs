@@ -16,6 +16,7 @@
 
 using System.Xml;
 using System.Xml.Serialization;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Expressions
 {
@@ -23,7 +24,7 @@ namespace OWLSharp.Ontology.Expressions
     public class OWLObjectInverseOf : OWLObjectPropertyExpression
     {
         #region Properties
-        [XmlElement("ObjectProperty")]
+        [XmlElement]
         public OWLObjectProperty ObjectProperty { get; set; }
         #endregion
 
@@ -32,5 +33,17 @@ namespace OWLSharp.Ontology.Expressions
         public OWLObjectInverseOf(OWLObjectProperty objectProperty)
             => ObjectProperty = objectProperty ?? throw new OWLException("Cannot create OWLObjectInverseOf because given \"objectProperty\" parameter is null");
         #endregion
+
+		#region Methods
+		public override RDFResource GetRepresentative()
+			=> new RDFResource(string.Concat($"bnode:", ObjectProperty.GetRepresentative().PatternMemberID));
+
+		public override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.OWL.INVERSE_OF, ObjectProperty.GetRepresentative()));
+			return graph;
+		}
+		#endregion
     }
 }
