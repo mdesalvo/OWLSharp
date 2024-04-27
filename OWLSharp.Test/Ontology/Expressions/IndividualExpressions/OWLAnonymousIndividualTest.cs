@@ -68,8 +68,7 @@ namespace OWLSharp.Ontology.Expressions.Test
 			RDFGraph graph = anonIdv.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource($"bnode:{anonIdv.NodeID}"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph.TriplesCount == 0);
         }
 
 		[TestMethod]

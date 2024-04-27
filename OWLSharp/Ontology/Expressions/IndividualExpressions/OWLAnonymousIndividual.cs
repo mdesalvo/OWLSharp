@@ -45,11 +45,7 @@ namespace OWLSharp.Ontology.Expressions
 			=> new RDFResource(string.Concat("bnode:", NodeID));
 
 		public override RDFGraph ToRDFGraph()
-		{
-			RDFGraph graph = new RDFGraph();
-			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INDIVIDUAL));
-			return graph;
-		}
+			=> new RDFGraph();
 		#endregion
     }
 }
