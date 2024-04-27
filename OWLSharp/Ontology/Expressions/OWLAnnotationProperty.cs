@@ -47,5 +47,22 @@ namespace OWLSharp.Ontology.Expressions
         public OWLAnnotationProperty(XmlQualifiedName abbreviatedIri)
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLAnnotationProperty because given \"abbreviatedIri\" parameter is null");
         #endregion
+
+		#region Methods
+		public override RDFResource GetRepresentative()
+		{
+			string annotationPropertyIRI = IRI;
+			if (string.IsNullOrEmpty(annotationPropertyIRI))
+				annotationPropertyIRI = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
+			return new RDFResource(annotationPropertyIRI);
+		}
+
+		public override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(GetRepresentative(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
+			return graph;
+		}
+		#endregion
     }
 }
