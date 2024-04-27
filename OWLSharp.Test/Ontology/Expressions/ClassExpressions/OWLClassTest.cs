@@ -121,6 +121,26 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(graph.TriplesCount == 1);
 			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
         }
+
+		[TestMethod]
+        public void ShouldGetIRIRepresentative()
+        {
+            OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
+			RDFResource representative = cls.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));
+        }
+
+		[TestMethod]
+        public void ShouldGetQualifiedNameRepresentative()
+        {
+            OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
+			RDFResource representative = cls.GetRepresentative();
+
+            Assert.IsNotNull(representative);
+            Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));
+        }
         #endregion
     }
 }
