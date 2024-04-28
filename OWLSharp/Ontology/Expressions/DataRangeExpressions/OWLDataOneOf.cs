@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Expressions
 {
@@ -27,6 +28,10 @@ namespace OWLSharp.Ontology.Expressions
         #region Properties
         [XmlElement(ElementName="Literal")]
         public List<OWLLiteral> Literals { get; set; }
+
+		[XmlIgnore]
+		public override RDFResource ExpressionIRI 
+			=> new RDFResource();
         #endregion
 
         #region Ctors
@@ -45,5 +50,19 @@ namespace OWLSharp.Ontology.Expressions
             Literals = literals;
         }
         #endregion
+
+		#region Methods
+		internal override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+
+			RDFCollection dataoneofCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Literal);
+			foreach (OWLLiteral dataoneofLiteral in Literals)
+				dataoneofCollection.AddItem(dataoneofLiteral.ToRDFLiteral());
+			graph.AddCollection(dataoneofCollection);
+
+			return graph;
+		}
+		#endregion
     }
 }

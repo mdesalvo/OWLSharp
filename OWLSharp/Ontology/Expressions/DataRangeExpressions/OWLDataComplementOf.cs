@@ -16,6 +16,7 @@
 
 using System.Xml;
 using System.Xml.Serialization;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Expressions
 {
@@ -31,6 +32,10 @@ namespace OWLSharp.Ontology.Expressions
         [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf")]
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction")]
         public OWLDataRangeExpression DataRangeExpression { get; set; }
+
+		[XmlIgnore]
+		public override RDFResource ExpressionIRI 
+			=> new RDFResource();
         #endregion
 
         #region Ctors
@@ -38,5 +43,14 @@ namespace OWLSharp.Ontology.Expressions
         public OWLDataComplementOf(OWLDataRangeExpression datarangeExpression)
             => DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataComplementOf because given \"datarangeExpression\" parameter is null");
         #endregion
+
+		#region Methods
+		internal override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, DataRangeExpression.ExpressionIRI));
+			return graph;
+		}
+		#endregion
     }
 }

@@ -31,6 +31,10 @@ namespace OWLSharp.Ontology.Expressions
 
         [XmlElement("FacetRestriction", Order=2)]
         public List<OWLFacetRestriction> FacetRestrictions { get; set; }
+
+		[XmlIgnore]
+		public override RDFResource ExpressionIRI 
+			=> new RDFResource();
         #endregion
 
         #region Ctors
@@ -52,14 +56,10 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public override RDFResource ToRDFResource()
-			=> new RDFResource();
-
-		public override RDFGraph ToRDFGraph()
+		internal override RDFGraph ToRDFGraph()
 		{
 			RDFGraph graph = new RDFGraph();
 
-			//Build the representation of facets restrictions
 			RDFCollection facetsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
 			foreach (OWLFacetRestriction facetRestriction in FacetRestrictions)
 			{
@@ -67,12 +67,9 @@ namespace OWLSharp.Ontology.Expressions
 				facetsCollection.AddItem(facetRepresentative);
 				graph = graph.UnionWith(facetRestriction.ToRDFGraph(facetRepresentative));
 			}				
-
-			//Build the representation of the datatype restriction
-			RDFResource representative = ToRDFResource();
-			graph.AddTriple(new RDFTriple(representative, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
-			graph.AddTriple(new RDFTriple(representative, RDFVocabulary.OWL.ON_DATATYPE, Datatype.ToRDFResource()));
-			graph.AddTriple(new RDFTriple(representative, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsCollection.ReificationSubject));
+			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
+			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_DATATYPE, Datatype.ExpressionIRI));
+			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsCollection.ReificationSubject));
 			graph.AddCollection(facetsCollection);
 
 			return graph;

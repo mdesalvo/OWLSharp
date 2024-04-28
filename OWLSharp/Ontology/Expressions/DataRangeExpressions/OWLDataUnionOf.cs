@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Expressions
 {
@@ -33,6 +34,10 @@ namespace OWLSharp.Ontology.Expressions
         [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf")]
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction")]
         public List<OWLDataRangeExpression> DataRangeExpressions { get; set; }
+
+		[XmlIgnore]
+		public override RDFResource ExpressionIRI 
+			=> new RDFResource();
         #endregion
 
         #region Ctors
@@ -51,5 +56,22 @@ namespace OWLSharp.Ontology.Expressions
             DataRangeExpressions = datarangeExpressions;
         }
         #endregion
+
+		#region Methods
+		internal override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+
+			RDFCollection dataunionCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+			foreach (OWLDataRangeExpression datarangeExpression in DataRangeExpressions)
+			{
+				dataunionCollection.AddItem(datarangeExpression.ExpressionIRI);
+				graph = graph.UnionWith(datarangeExpression.ToRDFGraph());
+			}
+			graph.AddCollection(dataunionCollection);
+
+			return graph;
+		}
+		#endregion
     }
 }

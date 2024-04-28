@@ -29,6 +29,18 @@ namespace OWLSharp.Ontology.Expressions
 
         [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
+
+		[XmlIgnore]
+		public override RDFResource ExpressionIRI 
+		{
+			get 
+			{
+				string iri = IRI;
+				if (string.IsNullOrEmpty(iri))
+					iri = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
+				return new RDFResource(iri);
+			}
+		}
         #endregion
 
         #region Ctors
@@ -49,18 +61,10 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public override RDFResource ToRDFResource()
-		{
-			string datatypeIRI = IRI;
-			if (string.IsNullOrEmpty(datatypeIRI))
-				datatypeIRI = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
-			return new RDFResource(datatypeIRI);
-		}
-
-		public override RDFGraph ToRDFGraph()
+		internal override RDFGraph ToRDFGraph()
 		{
 			RDFGraph graph = new RDFGraph();
-			graph.AddTriple(new RDFTriple(ToRDFResource(), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
+			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
 			return graph;
 		}
 		#endregion

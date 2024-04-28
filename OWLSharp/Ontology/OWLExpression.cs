@@ -14,14 +14,16 @@
    limitations under the License.
 */
 
+using System.Xml.Serialization;
 using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
     public abstract class OWLExpression 
 	{ 
-		public abstract RDFResource ToRDFResource();
-		public abstract RDFGraph ToRDFGraph();
+		[XmlIgnore]
+		public abstract RDFResource ExpressionIRI { get; }
+		internal abstract RDFGraph ToRDFGraph();
 	}
 
     //Derived

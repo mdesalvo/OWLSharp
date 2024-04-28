@@ -31,10 +31,14 @@ namespace OWLSharp.Ontology.Expressions
 
         [XmlText(DataType="string")]
         public string Value { get; set; } = string.Empty;
-        #endregion
 
-        #region Ctors
-        internal OWLLiteral() { }
+		[XmlIgnore]
+		public override RDFResource ExpressionIRI 
+			=> new RDFResource(string.Concat($"bnode:", ToRDFLiteral().PatternMemberID));
+		#endregion
+
+		#region Ctors
+		internal OWLLiteral() { }
         public OWLLiteral(RDFLiteral literal)
         {
             Value = literal?.Value ?? string.Empty;
@@ -44,10 +48,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public override RDFResource ToRDFResource()
-			=> new RDFResource(string.Concat($"bnode:", ToRDFLiteral().PatternMemberID));
-
-		public override RDFGraph ToRDFGraph()
+		internal override RDFGraph ToRDFGraph()
 			=> new RDFGraph();
 
 		public RDFLiteral ToRDFLiteral()

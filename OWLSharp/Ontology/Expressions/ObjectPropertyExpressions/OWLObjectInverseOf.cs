@@ -26,6 +26,10 @@ namespace OWLSharp.Ontology.Expressions
         #region Properties
         [XmlElement]
         public OWLObjectProperty ObjectProperty { get; set; }
+
+		[XmlIgnore]
+		public override RDFResource ExpressionIRI 
+			=> new RDFResource();
         #endregion
 
         #region Ctors
@@ -35,13 +39,10 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public override RDFResource ToRDFResource()
-			=> new RDFResource(string.Concat($"bnode:", ObjectProperty.ToRDFResource().PatternMemberID));
-
-		public override RDFGraph ToRDFGraph()
+		internal override RDFGraph ToRDFGraph()
 		{
 			RDFGraph graph = new RDFGraph();
-			graph.AddTriple(new RDFTriple(ToRDFResource(), RDFVocabulary.OWL.INVERSE_OF, ObjectProperty.ToRDFResource()));
+			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, ObjectProperty.ExpressionIRI));
 			return graph;
 		}
 		#endregion
