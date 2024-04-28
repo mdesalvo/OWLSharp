@@ -26,10 +26,6 @@ namespace OWLSharp.Ontology.Expressions
         #region Properties
         [XmlElement]
         public OWLObjectProperty ObjectProperty { get; set; }
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-			=> new RDFResource();
         #endregion
 
         #region Ctors

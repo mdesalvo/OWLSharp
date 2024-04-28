@@ -170,7 +170,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertLiteralToResource()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFResource representative = lit.ToRDFResource();
+			RDFResource representative = lit.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(new RDFResource($"bnode:{lit.ToRDFLiteral().PatternMemberID}")));

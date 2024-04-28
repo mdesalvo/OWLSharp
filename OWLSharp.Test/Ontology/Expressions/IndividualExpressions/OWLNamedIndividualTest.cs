@@ -125,7 +125,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRINamedIndividualToResource()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
-			RDFResource representative = idv.ToRDFResource();
+			RDFResource representative = idv.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));
@@ -135,7 +135,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameNamedIndividualToResource()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = idv.ToRDFResource();
+			RDFResource representative = idv.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));

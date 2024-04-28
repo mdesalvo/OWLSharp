@@ -32,10 +32,6 @@ namespace OWLSharp.Ontology.Expressions
         [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf")]
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction")]
         public OWLDataRangeExpression DataRangeExpression { get; set; }
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-			=> new RDFResource();
         #endregion
 
         #region Ctors

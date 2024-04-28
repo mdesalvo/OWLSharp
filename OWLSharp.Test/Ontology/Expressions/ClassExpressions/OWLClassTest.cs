@@ -126,7 +126,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIClassToResource()
         {
             OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
-			RDFResource representative = cls.ToRDFResource();
+			RDFResource representative = cls.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));
@@ -136,7 +136,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameClassToResource()
         {
             OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = cls.ToRDFResource();
+			RDFResource representative = cls.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));

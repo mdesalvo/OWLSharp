@@ -31,10 +31,6 @@ namespace OWLSharp.Ontology.Expressions
 
         [XmlElement("FacetRestriction", Order=2)]
         public List<OWLFacetRestriction> FacetRestrictions { get; set; }
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-			=> new RDFResource();
         #endregion
 
         #region Ctors

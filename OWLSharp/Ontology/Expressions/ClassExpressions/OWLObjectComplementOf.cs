@@ -16,6 +16,7 @@
 
 using System.Xml;
 using System.Xml.Serialization;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Expressions
 {
@@ -50,5 +51,14 @@ namespace OWLSharp.Ontology.Expressions
         public OWLObjectComplementOf(OWLClassExpression classExpression)
             => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectComplementOf because given \"classExpression\" parameter is null");
         #endregion
+
+		#region Methods
+		internal override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, ClassExpression.ExpressionIRI));
+			return graph;
+		}
+		#endregion
     }
 }

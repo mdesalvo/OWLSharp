@@ -76,7 +76,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertObjectInverseOfToResource()
         {
             OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-			RDFResource representative = objectInverseOf.ToRDFResource();
+			RDFResource representative = objectInverseOf.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(new RDFResource(string.Concat($"bnode:", RDFVocabulary.FOAF.KNOWS.PatternMemberID))));

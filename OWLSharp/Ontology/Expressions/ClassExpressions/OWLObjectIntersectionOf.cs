@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Expressions
 {
@@ -63,5 +64,22 @@ namespace OWLSharp.Ontology.Expressions
             ClassExpressions = classExpressions;
         }
         #endregion
+
+		#region Methods
+		internal override RDFGraph ToRDFGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+
+			RDFCollection objectintersectionCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+			foreach (OWLClassExpression classExpression in ClassExpressions)
+			{
+				objectintersectionCollection.AddItem(classExpression.ExpressionIRI);
+				graph = graph.UnionWith(classExpression.ToRDFGraph());
+			}
+			graph.AddCollection(objectintersectionCollection);
+
+			return graph;
+		}
+		#endregion
     }
 }

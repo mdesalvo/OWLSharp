@@ -31,10 +31,6 @@ namespace OWLSharp.Ontology.Expressions
 
         [XmlText(DataType="string")]
         public string Value { get; set; } = string.Empty;
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-			=> new RDFResource(string.Concat($"bnode:", ToRDFLiteral().PatternMemberID));
 		#endregion
 
 		#region Ctors
@@ -48,9 +44,6 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		internal override RDFGraph ToRDFGraph()
-			=> new RDFGraph();
-
 		public RDFLiteral ToRDFLiteral()
 		{
 			if (DatatypeIRI != null)

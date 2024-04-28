@@ -19,26 +19,29 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
-    public abstract class OWLExpression 
+    public class OWLExpression 
 	{ 
 		[XmlIgnore]
-		public abstract RDFResource ExpressionIRI { get; }
-		internal abstract RDFGraph ToRDFGraph();
+		public virtual RDFResource ExpressionIRI 
+			=> new RDFResource();
+
+		internal virtual RDFGraph ToRDFGraph()
+			=> new RDFGraph();
 	}
 
     //Derived
 
-    public abstract class OWLAnnotationPropertyExpression : OWLExpression { }
+    public class OWLAnnotationPropertyExpression : OWLExpression { }
 
-    public abstract class OWLClassExpression : OWLExpression { }
+    public class OWLClassExpression : OWLExpression { }
 
-    public abstract class OWLDataRangeExpression : OWLExpression { }
+    public class OWLDataRangeExpression : OWLExpression { }
 
-    public abstract class OWLDataPropertyExpression : OWLExpression { }
+    public class OWLDataPropertyExpression : OWLExpression { }
 
-    public abstract class OWLObjectPropertyExpression : OWLExpression { }
+    public class OWLObjectPropertyExpression : OWLExpression { }
 
-    public abstract class OWLIndividualExpression : OWLExpression { }
+    public class OWLIndividualExpression : OWLExpression { }
 
-    public abstract class OWLLiteralExpression : OWLExpression { }
+    public class OWLLiteralExpression : OWLExpression { }
 }

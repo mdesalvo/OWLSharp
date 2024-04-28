@@ -125,7 +125,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIDatatypeToResource()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
-			RDFResource representative = dt.ToRDFResource();
+			RDFResource representative = dt.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.XSD.STRING));
@@ -135,7 +135,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameDatatypeToResource()
         {
             OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
-			RDFResource representative = dt.ToRDFResource();
+			RDFResource representative = dt.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.XSD.STRING));

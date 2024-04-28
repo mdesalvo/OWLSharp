@@ -28,10 +28,6 @@ namespace OWLSharp.Ontology.Expressions
         #region Properties
         [XmlElement(ElementName="Literal")]
         public List<OWLLiteral> Literals { get; set; }
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-			=> new RDFResource();
         #endregion
 
         #region Ctors

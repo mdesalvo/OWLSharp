@@ -125,7 +125,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIObjectPropertyToResource()
         {
             OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
-			RDFResource representative = op.ToRDFResource();
+			RDFResource representative = op.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));
@@ -135,7 +135,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameObjectPropertyToResource()
         {
             OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = op.ToRDFResource();
+			RDFResource representative = op.ExpressionIRI;
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));
