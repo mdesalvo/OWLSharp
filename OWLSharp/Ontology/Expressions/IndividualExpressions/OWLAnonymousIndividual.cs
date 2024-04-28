@@ -25,10 +25,6 @@ namespace OWLSharp.Ontology.Expressions
         #region Properties
         [XmlAttribute("nodeID", DataType="NCName")]
         public string NodeID { get; set; }
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-			=> new RDFResource(string.Concat("bnode:", NodeID));
         #endregion
 
         #region Ctors
