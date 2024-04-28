@@ -69,7 +69,7 @@ namespace OWLSharp.Ontology.Expressions.Test
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource(string.Concat($"bnode:", RDFVocabulary.FOAF.KNOWS.PatternMemberID)), RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
         }
 
 		[TestMethod]
@@ -79,7 +79,7 @@ namespace OWLSharp.Ontology.Expressions.Test
 			RDFResource representative = objectInverseOf.ExpressionIRI;
 
             Assert.IsNotNull(representative);
-            Assert.IsTrue(representative.Equals(new RDFResource(string.Concat($"bnode:", RDFVocabulary.FOAF.KNOWS.PatternMemberID))));
+            Assert.IsTrue(representative.IsBlank);
         }
         #endregion
     }

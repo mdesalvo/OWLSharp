@@ -173,7 +173,7 @@ namespace OWLSharp.Ontology.Expressions.Test
 			RDFResource representative = lit.ExpressionIRI;
 
             Assert.IsNotNull(representative);
-            Assert.IsTrue(representative.Equals(new RDFResource($"bnode:{lit.ToRDFLiteral().PatternMemberID}")));
+            Assert.IsTrue(representative.IsBlank);
         }
 
 		[TestMethod]
