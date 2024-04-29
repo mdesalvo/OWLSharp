@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using System.Xml.Serialization;
 using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
