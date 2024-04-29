@@ -46,7 +46,7 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        public override RDFGraph ToRDFGraph()
+        internal override RDFGraph GetGraph()
         {
             RDFGraph graph = new RDFGraph();
 
