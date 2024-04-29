@@ -70,15 +70,17 @@ namespace OWLSharp.Ontology.Expressions
 		{
 			RDFGraph graph = new RDFGraph();
 
-			RDFCollection objectintersectionCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+            RDFCollection objectIntersectionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
 			foreach (OWLClassExpression classExpression in ClassExpressions)
 			{
-				objectintersectionCollection.AddItem(classExpression.ExpressionIRI);
+				objectIntersectionOfCollection.AddItem(classExpression.ExpressionIRI);
 				graph = graph.UnionWith(classExpression.ToRDFGraph());
 			}
-			graph.AddCollection(objectintersectionCollection);
+			graph.AddCollection(objectIntersectionOfCollection);
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.INTERSECTION_OF, objectIntersectionOfCollection.ReificationSubject));
 
-			return graph;
+            return graph;
 		}
 		#endregion
     }

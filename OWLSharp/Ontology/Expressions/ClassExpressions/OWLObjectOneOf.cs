@@ -58,6 +58,8 @@ namespace OWLSharp.Ontology.Expressions
             foreach (OWLIndividualExpression objectOneOfIndividual in IndividualExpressions)
                 objectOneOfCollection.AddItem(objectOneOfIndividual.ExpressionIRI);
             graph.AddCollection(objectOneOfCollection);
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ONE_OF, objectOneOfCollection.ReificationSubject));
 
             return graph;
         }

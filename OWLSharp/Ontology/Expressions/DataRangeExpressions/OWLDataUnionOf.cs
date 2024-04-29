@@ -65,8 +65,10 @@ namespace OWLSharp.Ontology.Expressions
 				graph = graph.UnionWith(dataRangeExpression.ToRDFGraph());
 			}
 			graph.AddCollection(dataUnionOfCollection);
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.UNION_OF, dataUnionOfCollection.ReificationSubject));
 
-			return graph;
+            return graph;
 		}
 		#endregion
     }

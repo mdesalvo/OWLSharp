@@ -62,11 +62,11 @@ namespace OWLSharp.Ontology.Expressions
 				RDFResource facetRepresentative = new RDFResource();
 				facetsCollection.AddItem(facetRepresentative);
 				graph = graph.UnionWith(facetRestriction.ToRDFGraph(facetRepresentative));
-			}				
+			}
+            graph.AddCollection(facetsCollection);				
 			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
 			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_DATATYPE, Datatype.ExpressionIRI));
 			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsCollection.ReificationSubject));
-			graph.AddCollection(facetsCollection);
 
 			return graph;
 		}
