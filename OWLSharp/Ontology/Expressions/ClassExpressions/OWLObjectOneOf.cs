@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -45,6 +46,20 @@ namespace OWLSharp.Ontology.Expressions
             #endregion
 
             IndividualExpressions = individualExpressions;
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            RDFCollection objectOneOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+            foreach (OWLIndividualExpression objectOneOfIndividual in IndividualExpressions)
+                objectOneOfCollection.AddItem(objectOneOfIndividual.ExpressionIRI);
+            graph.AddCollection(objectOneOfCollection);
+
+            return graph;
         }
         #endregion
     }

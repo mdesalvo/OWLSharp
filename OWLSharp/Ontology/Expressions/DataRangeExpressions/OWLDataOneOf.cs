@@ -52,10 +52,10 @@ namespace OWLSharp.Ontology.Expressions
 		{
 			RDFGraph graph = new RDFGraph();
 
-			RDFCollection dataoneofCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Literal);
-			foreach (OWLLiteral dataoneofLiteral in Literals)
-				dataoneofCollection.AddItem(dataoneofLiteral.ToRDFLiteral());
-			graph.AddCollection(dataoneofCollection);
+			RDFCollection dataOneOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Literal);
+			foreach (OWLLiteral dataOneOfLiteral in Literals)
+				dataOneOfCollection.AddItem(dataOneOfLiteral.ToRDFLiteral());
+			graph.AddCollection(dataOneOfCollection);
 
 			return graph;
 		}
