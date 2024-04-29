@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -48,6 +49,25 @@ namespace OWLSharp.Ontology.Expressions
         }
         public OWLDataExactCardinality(OWLDataProperty dataProperty, uint cardinality, OWLDataRangeExpression datarangeExpression) : this(dataProperty, cardinality)
             => DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataExactCardinality because given \"datarangeExpression\" parameter is null");
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.ExpressionIRI));
+            if (DataRangeExpression == null)
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+            else
+            {
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_DATARANGE, DataRangeExpression.ExpressionIRI));
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+            }
+
+            return graph;
+        }
         #endregion
     }
 }

@@ -66,7 +66,9 @@ namespace OWLSharp.Ontology.Expressions
 		internal override RDFGraph ToRDFGraph()
 		{
 			RDFGraph graph = new RDFGraph();
+
 			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+
 			return graph;
 		}
 		#endregion

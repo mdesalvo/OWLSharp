@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -62,6 +63,25 @@ namespace OWLSharp.Ontology.Expressions
         }
         public OWLObjectMaxCardinality(OWLObjectPropertyExpression objectPropertyExpression, uint cardinality, OWLClassExpression classExpression) : this(objectPropertyExpression, cardinality)
             => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectMaxCardinality because given \"classExpression\" parameter is null");
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_PROPERTY, ObjectPropertyExpression.ExpressionIRI));
+            if (ClassExpression == null)
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.MAX_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+            else
+            {
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_CLASS, ClassExpression.ExpressionIRI));
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+            }
+
+            return graph;
+        }
         #endregion
     }
 }

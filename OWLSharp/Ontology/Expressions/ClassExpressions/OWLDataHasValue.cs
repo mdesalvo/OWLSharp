@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -36,6 +37,19 @@ namespace OWLSharp.Ontology.Expressions
         {
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataHasValue because given \"dataProperty\" parameter is null");
             Literal = literal ?? throw new OWLException("Cannot create OWLDataHasValue because given \"literal\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.ExpressionIRI));
+            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.HAS_VALUE, Literal.ToRDFLiteral()));
+
+            return graph;
         }
         #endregion
     }
