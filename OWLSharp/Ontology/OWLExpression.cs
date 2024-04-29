@@ -25,7 +25,7 @@ namespace OWLSharp.Ontology
         public virtual RDFResource GetIRI()
             => new RDFResource();
 
-        public virtual RDFGraph GetGraph(RDFResource expressionIRI=null)
+        internal virtual RDFGraph GetGraph(RDFResource expressionIRI=null)
 			=> new RDFGraph();
         #endregion
     }

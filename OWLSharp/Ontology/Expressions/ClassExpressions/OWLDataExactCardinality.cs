@@ -52,7 +52,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
         #region Methods
-        public override RDFGraph GetGraph(RDFResource expressionIRI=null)
+        internal override RDFGraph GetGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
