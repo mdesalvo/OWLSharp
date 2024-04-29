@@ -76,8 +76,23 @@ namespace OWLSharp.Ontology.Axioms
         internal override RDFGraph GetGraph()
         {
             RDFGraph graph = new RDFGraph();
+			RDFResource superObjPropExpressionIRI = SuperObjectPropertyExpression.GetIRI();
 
-            //TODO
+            if (SubObjectPropertyChain == null)
+			{
+				RDFResource subObjPropExpressionIRI = SubObjectPropertyExpression.GetIRI();
+				graph.AddTriple(new RDFTriple(subObjPropExpressionIRI, RDFVocabulary.RDFS.SUB_PROPERTY_OF, superObjPropExpressionIRI));
+				graph = graph.UnionWith(SubObjectPropertyExpression.GetGraph(subObjPropExpressionIRI));
+			}
+			else
+			{
+				RDFCollection chainMembers = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+				foreach (OWLObjectPropertyExpression objectPropertyExpression in SubObjectPropertyChain.ObjectPropertyExpressions)
+					chainMembers.AddItem(objectPropertyExpression.GetIRI());
+				graph.AddCollection(chainMembers);
+				graph.AddTriple(new RDFTriple(superObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, chainMembers.ReificationSubject));
+			}
+			graph = graph.UnionWith(SuperObjectPropertyExpression.GetGraph(superObjPropExpressionIRI));
 
             return graph;
         }
