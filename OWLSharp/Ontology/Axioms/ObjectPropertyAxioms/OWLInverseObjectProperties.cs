@@ -49,7 +49,7 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+			graph.AddTriple(new RDFTriple(LeftObjectPropertyExpression.GetIRI(), RDFVocabulary.OWL.INVERSE_OF, RightObjectPropertyExpression.GetIRI()));
 
             return graph;
         }
