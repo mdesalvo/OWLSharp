@@ -20,14 +20,18 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     public class OWLExpression 
-	{ 
-		[XmlIgnore]
+	{
+        #region Properties
+        [XmlIgnore]
 		public virtual RDFResource ExpressionIRI 
 			=> new RDFResource();
+        #endregion
 
-		internal virtual RDFGraph ToRDFGraph()
+        #region Methods
+        internal virtual RDFGraph ToRDFGraph()
 			=> new RDFGraph();
-	}
+        #endregion
+    }
 
     //Derived
 

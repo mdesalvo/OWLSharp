@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -32,6 +33,11 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLAxiom() 
             => Annotations = new List<OWLAnnotation>();
+        #endregion
+
+        #region Methods
+        internal virtual RDFGraph ToRDFGraph()
+            => new RDFGraph();
         #endregion
     }
 
