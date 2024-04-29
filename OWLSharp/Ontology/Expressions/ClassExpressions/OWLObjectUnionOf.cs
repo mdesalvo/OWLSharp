@@ -70,13 +70,13 @@ namespace OWLSharp.Ontology.Expressions
 		{
 			RDFGraph graph = new RDFGraph();
 
-			RDFCollection objectunionCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+			RDFCollection objectUnionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
 			foreach (OWLClassExpression classExpression in ClassExpressions)
 			{
-				objectunionCollection.AddItem(classExpression.ExpressionIRI);
+				objectUnionOfCollection.AddItem(classExpression.ExpressionIRI);
 				graph = graph.UnionWith(classExpression.ToRDFGraph());
 			}
-			graph.AddCollection(objectunionCollection);
+			graph.AddCollection(objectUnionOfCollection);
 
 			return graph;
 		}

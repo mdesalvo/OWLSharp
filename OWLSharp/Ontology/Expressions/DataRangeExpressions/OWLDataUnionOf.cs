@@ -58,13 +58,13 @@ namespace OWLSharp.Ontology.Expressions
 		{
 			RDFGraph graph = new RDFGraph();
 
-			RDFCollection dataunionCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
-			foreach (OWLDataRangeExpression datarangeExpression in DataRangeExpressions)
+			RDFCollection dataUnionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+			foreach (OWLDataRangeExpression dataRangeExpression in DataRangeExpressions)
 			{
-				dataunionCollection.AddItem(datarangeExpression.ExpressionIRI);
-				graph = graph.UnionWith(datarangeExpression.ToRDFGraph());
+				dataUnionOfCollection.AddItem(dataRangeExpression.ExpressionIRI);
+				graph = graph.UnionWith(dataRangeExpression.ToRDFGraph());
 			}
-			graph.AddCollection(dataunionCollection);
+			graph.AddCollection(dataUnionOfCollection);
 
 			return graph;
 		}
