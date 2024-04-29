@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -53,6 +54,22 @@ namespace OWLSharp.Ontology.Expressions
 
             DataProperties = dataProperties;
             DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"datarangeExpression\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            foreach (OWLDataProperty dataProperty in DataProperties)
+            {
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_PROPERTY, dataProperty.ExpressionIRI));
+                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.SOME_VALUES_FROM, DataRangeExpression.ExpressionIRI));
+            }
+
+            return graph;
         }
         #endregion
     }
