@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -72,6 +73,17 @@ namespace OWLSharp.Ontology.Axioms
         {
             SubClassExpression = subClassExpression ?? throw new OWLException("Cannot create OWLSubClassOf because given \"subClassExpression\" parameter is null");
             SuperClassExpression = superClassExpression ?? throw new OWLException("Cannot create OWLSubClassOf because given \"superClassExpression\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

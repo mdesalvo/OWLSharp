@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -40,6 +41,17 @@ namespace OWLSharp.Ontology.Axioms
         {
             LeftObjectPropertyExpression = leftObjectPropertyExpression ?? throw new OWLException("Cannot create OWLInverseObjectProperties because given \"leftObjectPropertyExpression\" parameter is null");
             RightObjectPropertyExpression = rightObjectPropertyExpression ?? throw new OWLException("Cannot create OWLInverseObjectProperties because given \"rightObjectPropertyExpression\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

@@ -51,5 +51,16 @@ namespace OWLSharp.Ontology.Axioms
         public OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri, OWLLiteral valueLiteral) : this(annotationProperty, subjectIri)
             => ValueLiteral = valueLiteral ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"valueLiteral\" parameter is null");
         #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
+        #endregion
     }
 }

@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -31,6 +32,17 @@ namespace OWLSharp.Ontology.Axioms
         internal OWLFunctionalDataProperty() : base() { }
         public OWLFunctionalDataProperty(OWLDataProperty dataProperty) : this()
             => DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLFunctionalDataProperty because given \"dataProperty\" parameter is null");
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
         #endregion
     }
 }

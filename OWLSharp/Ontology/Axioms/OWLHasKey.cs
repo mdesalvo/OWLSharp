@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -69,6 +70,17 @@ namespace OWLSharp.Ontology.Axioms
             ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLHasKey because given \"classExpression\" parameter is null");
             ObjectPropertyExpressions = objectPropertyExpressions ?? new List<OWLObjectPropertyExpression>();
             DataProperties = dataProperties ?? new List<OWLDataProperty>();
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

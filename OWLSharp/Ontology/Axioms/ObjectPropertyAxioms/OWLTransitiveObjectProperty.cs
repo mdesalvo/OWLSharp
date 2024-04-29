@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -35,6 +36,17 @@ namespace OWLSharp.Ontology.Axioms
            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLTransitiveObjectProperty because given \"objectProperty\" parameter is null");
         public OWLTransitiveObjectProperty(OWLObjectInverseOf objectInverseOf) : this()
             => ObjectPropertyExpression = objectInverseOf ?? throw new OWLException("Cannot create OWLTransitiveObjectProperty because given \"objectInverseOf\" parameter is null");
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
         #endregion
     }
 }

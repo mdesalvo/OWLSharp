@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -36,6 +37,17 @@ namespace OWLSharp.Ontology.Axioms
         {
             SubDataProperty = subDataProperty ?? throw new OWLException("Cannot create OWLSubDataPropertyOf because given \"subDataProperty\" parameter is null");
             SuperDataProperty = superDataProperty ?? throw new OWLException("Cannot create OWLSubDataPropertyOf because given \"superDataProperty\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

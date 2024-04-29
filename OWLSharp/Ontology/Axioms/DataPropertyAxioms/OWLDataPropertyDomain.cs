@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -54,6 +55,17 @@ namespace OWLSharp.Ontology.Axioms
         {
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyDomain because given \"dataProperty\" parameter is null");
             ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLDataPropertyDomain because given \"classExpression\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

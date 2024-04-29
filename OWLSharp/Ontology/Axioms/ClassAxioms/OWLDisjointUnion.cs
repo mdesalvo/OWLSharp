@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -65,6 +66,17 @@ namespace OWLSharp.Ontology.Axioms
 
             ClassIRI = classIRI ?? throw new OWLException("Cannot create OWLDisjointUnion because given \"classIRI\" parameter is null");
             ClassExpressions = classExpressions;
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -68,6 +69,17 @@ namespace OWLSharp.Ontology.Axioms
         {
             SubObjectPropertyChain = subObjectPropertyChain ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectPropertyChain\" parameter is null");
             SuperObjectPropertyExpression = superObjectInverseOf ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"superObjectInverseOf\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -36,6 +37,17 @@ namespace OWLSharp.Ontology.Axioms
         {
             SubAnnotationProperty = subAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"subAnnotationProperty\" parameter is null");
             SuperAnnotationProperty = superAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"superAnnotationProperty\" parameter is null");
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

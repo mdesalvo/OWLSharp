@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -45,6 +46,17 @@ namespace OWLSharp.Ontology.Axioms
             #endregion
 
             IndividualExpressions = individualExpressions;
+        }
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }

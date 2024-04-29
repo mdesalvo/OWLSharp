@@ -44,5 +44,16 @@ namespace OWLSharp.Ontology.Axioms
         public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, XmlQualifiedName abbreviatedIRI) : this(annotationProperty)
             => AbbreviatedIRI = abbreviatedIRI ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"abbreviatedIRI\" parameter is null");
         #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
+        #endregion
     }
 }

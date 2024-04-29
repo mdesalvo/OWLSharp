@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -46,6 +47,17 @@ namespace OWLSharp.Ontology.Axioms
         	=> IndividualExpression = namedIndividual ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"namedIndividual\" parameter is null");
 		public OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLAnonymousIndividual anonymousIndividual, OWLLiteral literal) : this(dataProperty, literal)
         	=> IndividualExpression = anonymousIndividual ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"anonymousIndividual\" parameter is null");
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
         #endregion
     }
 }
