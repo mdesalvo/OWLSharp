@@ -52,21 +52,22 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		internal override RDFGraph ToRDFGraph()
+		public override RDFGraph GetGraph(RDFResource expressionIRI=null)
 		{
 			RDFGraph graph = new RDFGraph();
+            expressionIRI = expressionIRI ?? GetIRI();
 
 			RDFCollection facetsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
 			foreach (OWLFacetRestriction facetRestriction in FacetRestrictions)
 			{
 				RDFResource facetRepresentative = new RDFResource();
 				facetsCollection.AddItem(facetRepresentative);
-				graph = graph.UnionWith(facetRestriction.ToRDFGraph(facetRepresentative));
-			}
+                graph.AddTriple(new RDFTriple(facetRepresentative, new RDFResource(facetRestriction.FacetIRI), facetRestriction.Literal.GetLiteral()));
+            }
             graph.AddCollection(facetsCollection);				
-			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
-			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_DATATYPE, Datatype.ExpressionIRI));
-			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsCollection.ReificationSubject));
+			graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
+			graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_DATATYPE, Datatype.GetIRI()));
+			graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsCollection.ReificationSubject));
 
 			return graph;
 		}
@@ -114,14 +115,5 @@ namespace OWLSharp.Ontology.Expressions
             FacetIRI = facetIRI.ToString();
         }
         #endregion
-
-		#region Methods
-		internal RDFGraph ToRDFGraph(RDFResource facetRepresentative)
-		{
-			RDFGraph graph = new RDFGraph();
-			graph.AddTriple(new RDFTriple(facetRepresentative, new RDFResource(FacetIRI), Literal.ToRDFLiteral()));
-			return graph;
-		}
-		#endregion
     }
 }

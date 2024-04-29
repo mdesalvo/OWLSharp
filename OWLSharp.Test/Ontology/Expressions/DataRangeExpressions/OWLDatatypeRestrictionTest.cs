@@ -133,7 +133,7 @@ namespace OWLSharp.Ontology.Expressions.Test
                 new OWLDatatype(RDFVocabulary.XSD.STRING),
                 [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
                  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]);
-			RDFGraph graph = length6to10Facet.ToRDFGraph();
+			RDFGraph graph = length6to10Facet.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 11);

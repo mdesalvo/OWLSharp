@@ -24,11 +24,7 @@ namespace OWLSharp.Ontology.Expressions
     {
         #region Properties
         [XmlAttribute("nodeID", DataType="NCName")]
-        public string NodeID { get; set; }
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-			=> new RDFResource(string.Concat($"bnode:{NodeID}"));
+        public string NodeID { get; set; }			
         #endregion
 
         #region Ctors
@@ -42,6 +38,11 @@ namespace OWLSharp.Ontology.Expressions
             }
             catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"anonymousName\" parameter is null or is not a valid xsd:NCName"); }
         }
+        #endregion
+
+        #region Methods
+        public override RDFResource GetIRI()
+            => new RDFResource(string.Concat($"bnode:{NodeID}"));
         #endregion
     }
 }

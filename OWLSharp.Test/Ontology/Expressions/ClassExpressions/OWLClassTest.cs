@@ -104,7 +104,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIClassToGraph()
         {
             OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
-			RDFGraph graph = cls.ToRDFGraph();
+			RDFGraph graph = cls.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -115,7 +115,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameClassToGraph()
         {
             OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = cls.ToRDFGraph();
+			RDFGraph graph = cls.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -126,7 +126,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIClassToResource()
         {
             OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
-			RDFResource representative = cls.ExpressionIRI;
+			RDFResource representative = cls.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));
@@ -136,7 +136,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameClassToResource()
         {
             OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = cls.ExpressionIRI;
+			RDFResource representative = cls.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));

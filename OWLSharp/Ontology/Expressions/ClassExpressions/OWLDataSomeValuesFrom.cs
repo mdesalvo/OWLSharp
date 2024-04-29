@@ -58,16 +58,15 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
         #region Methods
-        internal override RDFGraph ToRDFGraph()
+        public override RDFGraph GetGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
+            expressionIRI = expressionIRI ?? GetIRI();
 
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.SOME_VALUES_FROM, DataRangeExpression.GetIRI()));
             foreach (OWLDataProperty dataProperty in DataProperties)
-            {
-                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
-                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_PROPERTY, dataProperty.ExpressionIRI));
-                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.SOME_VALUES_FROM, DataRangeExpression.ExpressionIRI));
-            }
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, dataProperty.GetIRI()));
 
             return graph;
         }

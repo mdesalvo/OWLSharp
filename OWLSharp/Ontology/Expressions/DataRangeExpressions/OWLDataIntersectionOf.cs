@@ -54,19 +54,21 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		internal override RDFGraph ToRDFGraph()
+		public override RDFGraph GetGraph(RDFResource expressionIRI=null)
 		{
-			RDFGraph graph = new RDFGraph();
+            RDFGraph graph = new RDFGraph();
+            expressionIRI = expressionIRI ?? GetIRI();
 
-			RDFCollection dataIntersectionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
-			foreach (OWLDataRangeExpression dataRangeExpression in DataRangeExpressions)
-			{
-				dataIntersectionOfCollection.AddItem(dataRangeExpression.ExpressionIRI);
-				graph = graph.UnionWith(dataRangeExpression.ToRDFGraph());
-			}
-			graph.AddCollection(dataIntersectionOfCollection);
-            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
-            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.INTERSECTION_OF, dataIntersectionOfCollection.ReificationSubject));
+            RDFCollection dataIntersectionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+            foreach (OWLDataRangeExpression dataRangeExpression in DataRangeExpressions)
+            {
+                RDFResource drExpressionIRI = dataRangeExpression.GetIRI();
+                dataIntersectionOfCollection.AddItem(drExpressionIRI);
+                graph = graph.UnionWith(dataRangeExpression.GetGraph(drExpressionIRI));
+            }
+            graph.AddCollection(dataIntersectionOfCollection);
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.INTERSECTION_OF, dataIntersectionOfCollection.ReificationSubject));
 
             return graph;
 		}

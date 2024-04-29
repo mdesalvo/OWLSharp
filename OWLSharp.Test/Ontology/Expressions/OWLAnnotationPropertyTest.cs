@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIAnnotationPropertyToGraph()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR);
-			RDFGraph graph = ann.ToRDFGraph();
+			RDFGraph graph = ann.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -114,7 +114,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameAnnotationPropertyToGraph()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
-			RDFGraph graph = ann.ToRDFGraph();
+			RDFGraph graph = ann.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -125,7 +125,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIAnnotationPropertyToResource()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR);
-			RDFResource representative = ann.ExpressionIRI;
+			RDFResource representative = ann.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.DC.CREATOR));
@@ -135,7 +135,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameAnnotationPropertyToResource()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
-			RDFResource representative = ann.ExpressionIRI;
+			RDFResource representative = ann.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.DC.CREATOR));

@@ -31,18 +31,6 @@ namespace OWLSharp.Ontology.Expressions
 
         [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
-
-		[XmlIgnore]
-		public override RDFResource ExpressionIRI 
-		{
-			get 
-			{
-				string iri = IRI;
-				if (string.IsNullOrEmpty(iri))
-					iri = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
-				return new RDFResource(iri);
-			}
-		}
         #endregion
 
         #region Ctors
@@ -62,16 +50,24 @@ namespace OWLSharp.Ontology.Expressions
             => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLObjectProperty because given \"abbreviatedIri\" parameter is null");
         #endregion
 
-		#region Methods
-		internal override RDFGraph ToRDFGraph()
-		{
-			RDFGraph graph = new RDFGraph();
+        #region Methods
+        public override RDFResource GetIRI()
+        {
+            string iri = IRI;
+            if (string.IsNullOrEmpty(iri))
+                iri = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
+            return new RDFResource(iri);
+        }
 
-			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+        public override RDFGraph GetGraph(RDFResource expressionIRI=null)
+        {
+            RDFGraph graph = new RDFGraph();
 
-			return graph;
-		}
-		#endregion
+            graph.AddTriple(new RDFTriple(GetIRI(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+
+            return graph;
+        }
+        #endregion
     }
 
     [XmlRoot("ObjectPropertyChain")]
@@ -106,7 +102,7 @@ namespace OWLSharp.Ontology.Expressions
 		{
 			RDFCollection chainMembers = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
 			foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
-				chainMembers.AddItem(objectPropertyExpression.ExpressionIRI);
+				chainMembers.AddItem(objectPropertyExpression.GetIRI());
 			return chainMembers;
 		}
 		#endregion

@@ -53,11 +53,11 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		internal override RDFGraph ToRDFGraph()
+		public override RDFGraph GetGraph(RDFResource expressionIRI=null)
 		{
 			RDFGraph graph = new RDFGraph();
 
-			graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, ClassExpression.ExpressionIRI));
+			graph.AddTriple(new RDFTriple(GetIRI(), RDFVocabulary.OWL.COMPLEMENT_OF, ClassExpression.GetIRI()));
 
 			return graph;
 		}

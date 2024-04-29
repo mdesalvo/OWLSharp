@@ -52,18 +52,19 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
         #region Methods
-        internal override RDFGraph ToRDFGraph()
+        public override RDFGraph GetGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
+            expressionIRI = expressionIRI ?? GetIRI();
 
-            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
-            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.ExpressionIRI));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
             if (DataRangeExpression == null)
-                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.MIN_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.MIN_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             else
             {
-                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.ON_DATARANGE, DataRangeExpression.ExpressionIRI));
-                graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_DATARANGE, DataRangeExpression.GetIRI()));
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             }
 
             return graph;

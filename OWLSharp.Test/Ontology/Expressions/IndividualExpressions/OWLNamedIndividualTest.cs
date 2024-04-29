@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRINamedIndividualToGraph()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
-			RDFGraph graph = idv.ToRDFGraph();
+			RDFGraph graph = idv.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -114,7 +114,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameNamedIndividualToGraph()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = idv.ToRDFGraph();
+			RDFGraph graph = idv.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -125,7 +125,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRINamedIndividualToResource()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
-			RDFResource representative = idv.ExpressionIRI;
+			RDFResource representative = idv.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));
@@ -135,7 +135,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameNamedIndividualToResource()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = idv.ExpressionIRI;
+			RDFResource representative = idv.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));

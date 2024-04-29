@@ -36,7 +36,7 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
-        internal virtual RDFGraph ToRDFGraph()
+        public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
         #endregion
     }

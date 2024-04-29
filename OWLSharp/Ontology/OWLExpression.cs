@@ -21,14 +21,11 @@ namespace OWLSharp.Ontology
 {
     public class OWLExpression 
 	{
-        #region Properties
-        [XmlIgnore]
-		public virtual RDFResource ExpressionIRI 
-			=> new RDFResource();
-        #endregion
-
         #region Methods
-        internal virtual RDFGraph ToRDFGraph()
+        public virtual RDFResource GetIRI()
+            => new RDFResource();
+
+        public virtual RDFGraph GetGraph(RDFResource expressionIRI=null)
 			=> new RDFGraph();
         #endregion
     }

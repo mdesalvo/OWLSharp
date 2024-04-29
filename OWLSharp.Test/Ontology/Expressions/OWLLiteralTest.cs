@@ -160,7 +160,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertLiteralToGraph()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFGraph graph = lit.ToRDFGraph();
+			RDFGraph graph = lit.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 0);
@@ -170,7 +170,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertLiteralToResource()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFResource representative = lit.ExpressionIRI;
+			RDFResource representative = lit.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.IsBlank);
@@ -180,7 +180,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertLiteralToPlainLiteral()
         {
             OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello"));
-			RDFLiteral rdfLit = lit.ToRDFLiteral();
+			RDFLiteral rdfLit = lit.GetLiteral();
 
             Assert.IsNotNull(rdfLit);
             Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL 
@@ -191,7 +191,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertLiteralToPlainLiteralWithLanguage()
         {
             OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello", "en-US--ltr"));
-			RDFLiteral rdfLit = lit.ToRDFLiteral();
+			RDFLiteral rdfLit = lit.GetLiteral();
 
             Assert.IsNotNull(rdfLit);
             Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL 
@@ -202,7 +202,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertLiteralToTypedLiteral()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFLiteral rdfLit = lit.ToRDFLiteral();
+			RDFLiteral rdfLit = lit.GetLiteral();
 
             Assert.IsNotNull(rdfLit);
             Assert.IsTrue(rdfLit is RDFTypedLiteral rdfLitTL 

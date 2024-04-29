@@ -66,22 +66,24 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		internal override RDFGraph ToRDFGraph()
+		public override RDFGraph GetGraph(RDFResource expressionIRI=null)
 		{
-			RDFGraph graph = new RDFGraph();
+            RDFGraph graph = new RDFGraph();
+            expressionIRI = expressionIRI ?? GetIRI();
 
-			RDFCollection objectUnionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
-			foreach (OWLClassExpression classExpression in ClassExpressions)
-			{
-				objectUnionOfCollection.AddItem(classExpression.ExpressionIRI);
-				graph = graph.UnionWith(classExpression.ToRDFGraph());
-			}
-			graph.AddCollection(objectUnionOfCollection);
-            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
-            graph.AddTriple(new RDFTriple(ExpressionIRI, RDFVocabulary.OWL.UNION_OF, objectUnionOfCollection.ReificationSubject));
+            RDFCollection objectUnionOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+            foreach (OWLClassExpression classExpression in ClassExpressions)
+            {
+                RDFResource clsExpressionIRI = classExpression.GetIRI();
+                objectUnionOfCollection.AddItem(clsExpressionIRI);
+                graph = graph.UnionWith(classExpression.GetGraph(clsExpressionIRI));
+            }
+            graph.AddCollection(objectUnionOfCollection);
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.UNION_OF, objectUnionOfCollection.ReificationSubject));
 
             return graph;
-		}
-		#endregion
+        }
+        #endregion
     }
 }

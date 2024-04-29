@@ -65,7 +65,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertAnonymousIndividualToGraph()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-			RDFGraph graph = anonIdv.ToRDFGraph();
+			RDFGraph graph = anonIdv.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 0);
@@ -75,7 +75,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertAnonymousIndividualToResource()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-			RDFResource representative = anonIdv.ExpressionIRI;
+			RDFResource representative = anonIdv.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(new RDFResource($"bnode:{anonIdv.NodeID}")));

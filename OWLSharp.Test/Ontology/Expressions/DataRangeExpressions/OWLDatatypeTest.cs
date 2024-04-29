@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIDatatypeToGraph()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
-			RDFGraph graph = dt.ToRDFGraph();
+			RDFGraph graph = dt.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -114,7 +114,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameDatatypeToGraph()
         {
             OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
-			RDFGraph graph = dt.ToRDFGraph();
+			RDFGraph graph = dt.GetGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -125,7 +125,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIDatatypeToResource()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
-			RDFResource representative = dt.ExpressionIRI;
+			RDFResource representative = dt.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.XSD.STRING));
@@ -135,7 +135,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameDatatypeToResource()
         {
             OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
-			RDFResource representative = dt.ExpressionIRI;
+			RDFResource representative = dt.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.XSD.STRING));

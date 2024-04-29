@@ -44,7 +44,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		public RDFLiteral ToRDFLiteral()
+		public RDFLiteral GetLiteral()
 		{
 			if (DatatypeIRI != null)
 				return new RDFTypedLiteral(Value, RDFModelUtilities.GetDatatypeFromString(DatatypeIRI));
