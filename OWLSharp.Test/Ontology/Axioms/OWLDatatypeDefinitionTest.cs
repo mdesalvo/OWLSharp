@@ -15,8 +15,6 @@
 */
 
 using System.Linq;
-using System.Xml;
-using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
@@ -180,6 +178,30 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(dtDef1.Annotations.Single().ValueLiteral.Value, "Steve")
                             && string.Equals(dtDef1.Annotations.Single().ValueLiteral.Language, "EN"));
 
+        }
+
+        [TestMethod]
+        public void ShouldConvertDatatypeDefinitionToGraph()
+        {
+            OWLDatatypeDefinition length6to10DT = new OWLDatatypeDefinition(
+                new OWLDatatype(new RDFResource("ex:length6to10")),
+                new OWLDatatypeRestriction(
+                    new OWLDatatype(RDFVocabulary.XSD.STRING),
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]));
+            RDFGraph graph = length6to10DT.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 14);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_DATATYPE, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, OWLFacetRestriction.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, OWLFacetRestriction.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
         }
         #endregion
     }
