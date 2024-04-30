@@ -80,6 +80,23 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(objectIntersectionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass
                             && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.AGENT.ToString())));
         }
+
+        [TestMethod]
+        public void ShouldConvertObjectIntersectionOfToGraph()
+        {
+            OWLObjectIntersectionOf objectIntersectionOf = new OWLObjectIntersectionOf(
+                [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)]);
+            RDFGraph graph = objectIntersectionOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 10);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+        }
         #endregion
     }
 }

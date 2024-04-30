@@ -68,8 +68,9 @@ namespace OWLSharp.Ontology.Expressions.Test
 			RDFGraph graph = objectInverseOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 1);
+            Assert.IsTrue(graph.TriplesCount == 2);
 			Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
         }
 
 		[TestMethod]

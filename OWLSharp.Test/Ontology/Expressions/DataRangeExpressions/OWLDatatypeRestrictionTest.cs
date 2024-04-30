@@ -136,8 +136,8 @@ namespace OWLSharp.Ontology.Expressions.Test
 			RDFGraph graph = length6to10Facet.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 11);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
+            Assert.IsTrue(graph.TriplesCount == 12);
+			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 2);
 			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_DATATYPE, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
 			Assert.IsTrue(graph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].TriplesCount == 1);
 			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
