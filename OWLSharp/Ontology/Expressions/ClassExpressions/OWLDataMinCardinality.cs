@@ -59,12 +59,15 @@ namespace OWLSharp.Ontology.Expressions
 
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
+            graph = graph.UnionWith(DataProperty.ToRDFGraph());
             if (DataRangeExpression == null)
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.MIN_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             else
             {
-                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_DATARANGE, DataRangeExpression.GetIRI()));
+                RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_DATARANGE, drExpressionIRI));
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+                graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
             }
 
             return graph;

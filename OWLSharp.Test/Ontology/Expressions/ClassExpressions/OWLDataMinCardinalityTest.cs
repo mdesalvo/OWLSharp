@@ -114,6 +114,36 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(dataMinCardinality.DataRangeExpression is OWLDatatype datatype 
                             && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
         }
+
+        [TestMethod]
+        public void ShouldConvertDataMinCardinalityToGraph()
+        {
+            OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+            RDFGraph graph = dataMinCardinality.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.DC.DESCRIPTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.MIN_CARDINALITY, null, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertDataMinQualifiedCardinalityToGraph()
+        {
+            OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING)); 
+            RDFGraph graph = dataMinCardinality.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 6);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.DC.DESCRIPTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_DATARANGE, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
