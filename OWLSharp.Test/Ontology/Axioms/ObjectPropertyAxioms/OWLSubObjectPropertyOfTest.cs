@@ -576,6 +576,51 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(graph[new RDFResource("ex:objPropA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:objPropB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
         }
+
+        [TestMethod]
+        public void ShouldConvertSubObjectPropertyOfWithChainToGraph()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectPropertyChain([
+                    new OWLObjectProperty(new RDFResource("ex:hasFather")),
+                    new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),
+                new OWLObjectProperty(new RDFResource("ex:hasUncle")));
+            RDFGraph graph = subObjectPropertyOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 10);
+            Assert.IsTrue(graph[new RDFResource("ex:hasUncle"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasUncle"), RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:hasFather"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:hasBrother"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[new RDFResource("ex:hasFather"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasBrother"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertSubObjectPropertyOfWithChainAndSuperInverseOfToGraph()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectPropertyChain([
+                    new OWLObjectProperty(new RDFResource("ex:hasFather")),
+                    new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasUncle"))));
+            RDFGraph graph = subObjectPropertyOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 11);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:hasUncle"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:hasFather"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:hasBrother"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[new RDFResource("ex:hasFather"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasBrother"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasUncle"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
