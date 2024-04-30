@@ -63,10 +63,15 @@ namespace OWLSharp.Ontology.Expressions
             RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
+            RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
-            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.SOME_VALUES_FROM, DataRangeExpression.GetIRI()));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.SOME_VALUES_FROM, drExpressionIRI));
+            graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
             foreach (OWLDataProperty dataProperty in DataProperties)
+            {
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, dataProperty.GetIRI()));
+                graph = graph.UnionWith(dataProperty.ToRDFGraph());
+            }
 
             return graph;
         }

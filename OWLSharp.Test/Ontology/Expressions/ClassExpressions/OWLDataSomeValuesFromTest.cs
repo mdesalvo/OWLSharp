@@ -90,6 +90,23 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(dataSomeValuesFrom.DataRangeExpression is OWLDatatype datatype 
                             && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
         }
+
+        [TestMethod]
+        public void ShouldConvertDataSomeValuesFromToGraph()
+        {
+            OWLDataSomeValuesFrom dataSomeValuesFrom = new OWLDataSomeValuesFrom(
+                [new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString()))],
+                new OWLDatatype(RDFVocabulary.XSD.STRING));
+            RDFGraph graph = dataSomeValuesFrom.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 5);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.DC.CREATOR, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.SOME_VALUES_FROM, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
