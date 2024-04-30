@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
@@ -47,6 +48,11 @@ namespace OWLSharp.Ontology.Axioms
             => Expression = annotationPropertyIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"annotationPropertyIRI\" parameter is null");
         public OWLDeclaration(OWLNamedIndividual namedIndividualIRI) : this()
             => Expression = namedIndividualIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"namedIndividualIRI\" parameter is null");
+        #endregion
+
+        #region Methods
+        internal override RDFGraph ToRDFGraph()
+            => Expression.ToRDFGraph();
         #endregion
     }
 }

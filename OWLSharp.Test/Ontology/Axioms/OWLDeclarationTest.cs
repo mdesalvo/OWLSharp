@@ -226,6 +226,17 @@ namespace OWLSharp.Ontology.Axioms.Test
 		[TestMethod]
 		public void ShouldThrowExceptionOnCreatingNamedIndividualDeclarationBecauseNullNamedIndividual()
 			=> Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLNamedIndividual));
+
+		[TestMethod]
+		public void ShouldConvertDeclarationToGraph()
+		{
+            OWLDeclaration declaration = new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT));
+			RDFGraph graph = declaration.ToRDFGraph();
+
+			Assert.IsNotNull(graph);
+			Assert.IsTrue(graph.TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+        }
 		#endregion
 	}
 }
