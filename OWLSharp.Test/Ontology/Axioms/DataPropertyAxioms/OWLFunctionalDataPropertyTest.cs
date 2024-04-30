@@ -107,6 +107,19 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(funcDtProp1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(funcDtProp1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
-		#endregion
-	}
+
+        [TestMethod]
+        public void ShouldConvertFunctionalDataPropertyToGraph()
+        {
+            OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(
+                new OWLDataProperty(RDFVocabulary.RDFS.LABEL));
+            RDFGraph graph = functionalDataProperty.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 2);
+            Assert.IsTrue(graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+        }
+        #endregion
+    }
 }

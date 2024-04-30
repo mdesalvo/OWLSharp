@@ -39,7 +39,8 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+            graph.AddTriple(new RDFTriple(DataProperty.GetIRI(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY));
+            graph = graph.UnionWith(DataProperty.ToRDFGraph());
 
             return graph;
         }
