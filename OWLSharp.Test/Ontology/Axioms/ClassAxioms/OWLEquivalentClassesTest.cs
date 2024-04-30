@@ -122,6 +122,39 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(djclsAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(djclsAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
+
+		[TestMethod]
+        public void ShouldConvert2EquivalentClassesToGraph()
+        {
+            OWLEquivalentClasses equivalentClasses = new OWLEquivalentClasses(
+                [ new OWLClass(RDFVocabulary.FOAF.AGENT), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]);
+            RDFGraph graph = equivalentClasses.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvert3EquivalentClassesToGraph()
+        {
+            OWLEquivalentClasses equivalentClasses = new OWLEquivalentClasses(
+                [ new OWLClass(RDFVocabulary.FOAF.AGENT), 
+				  new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+				  new OWLClass(RDFVocabulary.FOAF.PERSON) ]);
+            RDFGraph graph = equivalentClasses.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 6);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
