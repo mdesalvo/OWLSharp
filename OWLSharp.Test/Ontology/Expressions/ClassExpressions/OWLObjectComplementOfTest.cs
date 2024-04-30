@@ -27,12 +27,12 @@ namespace OWLSharp.Ontology.Expressions.Test
         [TestMethod]
         public void ShouldCreateObjectComplementOf()
         {
-            OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.KNOWS));
+            OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT));
 
             Assert.IsNotNull(objectComplementOf);
             Assert.IsNotNull(objectComplementOf.ClassExpression);
             Assert.IsTrue(objectComplementOf.ClassExpression is OWLClass owlClass 
-                            && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+                            && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.AGENT.ToString()));
         }
 
         [TestMethod]
@@ -42,11 +42,11 @@ namespace OWLSharp.Ontology.Expressions.Test
         [TestMethod]
         public void ShouldSerializeObjectComplementOf()
         {
-            OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.KNOWS));
+            OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT));
             string serializedXML = OWLTestSerializer<OWLObjectComplementOf>.Serialize(objectComplementOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectComplementOf><Class IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectComplementOf>"));
+@"<ObjectComplementOf><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectComplementOf>"));
         }
 
         [TestMethod]
@@ -54,13 +54,25 @@ namespace OWLSharp.Ontology.Expressions.Test
         {
             OWLObjectComplementOf objectComplementOf = OWLTestSerializer<OWLObjectComplementOf>.Deserialize(
 @"<ObjectComplementOf>
-  <Class IRI=""http://xmlns.com/foaf/0.1/knows"" />
+  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
 </ObjectComplementOf>");
 
             Assert.IsNotNull(objectComplementOf);
             Assert.IsNotNull(objectComplementOf.ClassExpression);
             Assert.IsTrue(objectComplementOf.ClassExpression is OWLClass owlClass
-                            && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+                            && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.AGENT.ToString()));
+        }
+
+        [TestMethod]
+        public void ShouldConvertObjectComplementOfToGraph()
+        {
+            OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT)); 
+            RDFGraph graph = objectComplementOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
         }
         #endregion
     }

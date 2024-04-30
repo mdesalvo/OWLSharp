@@ -56,8 +56,12 @@ namespace OWLSharp.Ontology.Expressions
 		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 		{
 			RDFGraph graph = new RDFGraph();
+            expressionIRI = expressionIRI ?? GetIRI();
 
-			graph.AddTriple(new RDFTriple(GetIRI(), RDFVocabulary.OWL.COMPLEMENT_OF, ClassExpression.GetIRI()));
+            RDFResource clsExpressionIRI = ClassExpression.GetIRI();
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, clsExpressionIRI));
+            graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
 
 			return graph;
 		}
