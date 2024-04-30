@@ -50,9 +50,13 @@ namespace OWLSharp.Ontology.Expressions
             RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
+            RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
+            RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
-            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, ObjectPropertyExpression.GetIRI()));
-            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.HAS_VALUE, IndividualExpression.GetIRI()));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, objPropExpressionIRI));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.HAS_VALUE, idvExpressionIRI));
+            graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI))
+                         .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
 
             return graph;
         }

@@ -115,6 +115,35 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(objectHasValue.IndividualExpression is OWLAnonymousIndividual anonIdv
                             && string.Equals(anonIdv.NodeID, "AnonIdv"));
         }
+
+        [TestMethod]
+        public void ShouldConvertHasValueToGraph()
+        {
+            OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Bob")));
+            RDFGraph graph = objectHasValue.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 5);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.HAS_VALUE, new RDFResource("ex:Bob"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertHasValueWithAnonymousIndividualToGraph()
+        {
+            OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLAnonymousIndividual("AnonIdv"));
+            RDFGraph graph = objectHasValue.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.HAS_VALUE, new RDFResource("bnode:AnonIdv"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
