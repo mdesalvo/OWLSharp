@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIDataPropertyToGraph()
         {
             OWLDataProperty dp = new OWLDataProperty(RDFVocabulary.FOAF.AGE);
-			RDFGraph graph = dp.GetGraph();
+			RDFGraph graph = dp.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -114,7 +114,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameDataPropertyToGraph()
         {
             OWLDataProperty dp = new OWLDataProperty(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = dp.GetGraph();
+			RDFGraph graph = dp.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);

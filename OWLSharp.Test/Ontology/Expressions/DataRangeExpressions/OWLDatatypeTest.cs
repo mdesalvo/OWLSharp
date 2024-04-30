@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIDatatypeToGraph()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
-			RDFGraph graph = dt.GetGraph();
+			RDFGraph graph = dt.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -114,7 +114,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameDatatypeToGraph()
         {
             OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
-			RDFGraph graph = dt.GetGraph();
+			RDFGraph graph = dt.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);

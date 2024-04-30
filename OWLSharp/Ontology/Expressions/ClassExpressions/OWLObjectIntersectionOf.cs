@@ -66,7 +66,7 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
-		internal override RDFGraph GetGraph(RDFResource expressionIRI=null)
+		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 		{
             RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
@@ -76,7 +76,7 @@ namespace OWLSharp.Ontology.Expressions
             {
                 RDFResource clsExpressionIRI = classExpression.GetIRI();
                 objectIntersectionOfCollection.AddItem(clsExpressionIRI);
-                graph = graph.UnionWith(classExpression.GetGraph(clsExpressionIRI));
+                graph = graph.UnionWith(classExpression.ToRDFGraph(clsExpressionIRI));
             }
             graph.AddCollection(objectIntersectionOfCollection);
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));

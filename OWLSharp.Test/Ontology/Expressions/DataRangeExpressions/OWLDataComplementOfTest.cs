@@ -62,6 +62,18 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype 
                             && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
         }
+
+        [TestMethod]
+        public void ShouldConvertDataIntersectionOfToGraph()
+        {
+            OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
+            RDFGraph graph = dataComplementOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
+        }
         #endregion
     }
 }

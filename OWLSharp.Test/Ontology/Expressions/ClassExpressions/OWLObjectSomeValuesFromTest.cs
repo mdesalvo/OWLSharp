@@ -79,6 +79,21 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass
                             && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
         }
+
+        [TestMethod]
+        public void ShouldConvertObjectSomeValuesFromToGraph()
+        {
+            OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
+                new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+                new OWLClass(RDFVocabulary.FOAF.PERSON));
+            RDFGraph graph = objectSomeValuesFrom.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.SOME_VALUES_FROM, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+        }
         #endregion
     }
 }

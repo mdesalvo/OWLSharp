@@ -47,7 +47,7 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        internal override RDFGraph GetGraph()
+        internal override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
             RDFResource datatypeIRI = Datatype.GetIRI();
@@ -55,7 +55,7 @@ namespace OWLSharp.Ontology.Axioms
 
             graph.AddTriple(new RDFTriple(datatypeIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
             graph.AddTriple(new RDFTriple(datatypeIRI, RDFVocabulary.OWL.EQUIVALENT_CLASS, drExpressionIRI));
-            graph = graph.UnionWith(DataRangeExpression.GetGraph(drExpressionIRI));
+            graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
 
             return graph;
         }

@@ -59,7 +59,7 @@ namespace OWLSharp.Ontology.Expressions
             return new RDFResource(iri);
         }
 
-        internal override RDFGraph GetGraph(RDFResource expressionIRI=null)
+        internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
 
@@ -96,5 +96,15 @@ namespace OWLSharp.Ontology.Expressions
             ObjectPropertyExpressions = objectPropertyExpressions;
         }
         #endregion
+
+		#region Methods
+		public RDFCollection GetChainMembers()
+		{
+			RDFCollection chainMembers = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+			foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
+				chainMembers.AddItem(objectPropertyExpression.GetIRI());
+			return chainMembers;
+		}
+		#endregion
     }
 }

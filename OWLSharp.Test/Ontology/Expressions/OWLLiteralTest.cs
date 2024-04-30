@@ -160,7 +160,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertLiteralToGraph()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFGraph graph = lit.GetGraph();
+			RDFGraph graph = lit.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 0);

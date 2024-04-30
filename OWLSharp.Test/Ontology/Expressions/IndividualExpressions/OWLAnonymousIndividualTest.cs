@@ -65,7 +65,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertAnonymousIndividualToGraph()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-			RDFGraph graph = anonIdv.GetGraph();
+			RDFGraph graph = anonIdv.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 0);

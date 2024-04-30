@@ -39,13 +39,13 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        internal override RDFGraph GetGraph()
+        internal override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 			RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
 
 			graph.AddTriple(new RDFTriple(objPropExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY));
-			graph = graph.UnionWith(ObjectPropertyExpression.GetGraph(objPropExpressionIRI));
+			graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
 
             return graph;
         }

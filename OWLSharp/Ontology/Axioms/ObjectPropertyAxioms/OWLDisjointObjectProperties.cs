@@ -50,7 +50,7 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        internal override RDFGraph GetGraph()
+        internal override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 
@@ -60,8 +60,8 @@ namespace OWLSharp.Ontology.Axioms
 				RDFResource leftObjPropExpressionIRI = ObjectPropertyExpressions[0].GetIRI();
 				RDFResource rightObjPropExpressionIRI = ObjectPropertyExpressions[1].GetIRI();
 				graph.AddTriple(new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, rightObjPropExpressionIRI));
-				graph = graph.UnionWith(ObjectPropertyExpressions[0].GetGraph(leftObjPropExpressionIRI))
-							 .UnionWith(ObjectPropertyExpressions[1].GetGraph(rightObjPropExpressionIRI));
+				graph = graph.UnionWith(ObjectPropertyExpressions[0].ToRDFGraph(leftObjPropExpressionIRI))
+							 .UnionWith(ObjectPropertyExpressions[1].ToRDFGraph(rightObjPropExpressionIRI));
 			}
 
 			//AllDisjointProperties
@@ -73,7 +73,7 @@ namespace OWLSharp.Ontology.Axioms
 				{
 					RDFResource objectPropertyExpressionIRI = objectPropertyExpression.GetIRI();
 					disjointObjectPropertiesCollection.AddItem(objectPropertyExpressionIRI);
-					graph = graph.UnionWith(objectPropertyExpression.GetGraph(objectPropertyExpressionIRI));
+					graph = graph.UnionWith(objectPropertyExpression.ToRDFGraph(objectPropertyExpressionIRI));
 				}
 				graph.AddCollection(disjointObjectPropertiesCollection);
 				graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES));

@@ -65,7 +65,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertObjectInverseOfToGraph()
         {
             OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-			RDFGraph graph = objectInverseOf.GetGraph();
+			RDFGraph graph = objectInverseOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);

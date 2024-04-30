@@ -80,6 +80,23 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(objectUnionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass
                             && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.AGENT.ToString())));
         }
+
+        [TestMethod]
+        public void ShouldConvertObjectUnionOfToGraph()
+        {
+            OWLObjectUnionOf objectUnionOf = new OWLObjectUnionOf(
+                [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)]);
+            RDFGraph graph = objectUnionOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 10);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+        }
         #endregion
     }
 }

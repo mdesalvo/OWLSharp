@@ -45,15 +45,15 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        internal override RDFGraph GetGraph()
+        internal override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 			RDFResource leftObjPropExpressionIRI = LeftObjectPropertyExpression.GetIRI();
 			RDFResource rightObjPropExpressionIRI = RightObjectPropertyExpression.GetIRI();
 
 			graph.AddTriple(new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, rightObjPropExpressionIRI));
-			graph = graph.UnionWith(LeftObjectPropertyExpression.GetGraph(leftObjPropExpressionIRI))
-						 .UnionWith(RightObjectPropertyExpression.GetGraph(rightObjPropExpressionIRI));
+			graph = graph.UnionWith(LeftObjectPropertyExpression.ToRDFGraph(leftObjPropExpressionIRI))
+						 .UnionWith(RightObjectPropertyExpression.ToRDFGraph(rightObjPropExpressionIRI));
 
             return graph;
         }

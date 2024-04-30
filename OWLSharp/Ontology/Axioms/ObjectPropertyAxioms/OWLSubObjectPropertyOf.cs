@@ -73,7 +73,7 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        internal override RDFGraph GetGraph()
+        internal override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
 			
@@ -83,8 +83,8 @@ namespace OWLSharp.Ontology.Axioms
 				RDFResource subObjPropExpressionIRI = SubObjectPropertyExpression.GetIRI();
 				RDFResource superObjPropExpressionIRI = SuperObjectPropertyExpression.GetIRI();
 				graph.AddTriple(new RDFTriple(subObjPropExpressionIRI, RDFVocabulary.RDFS.SUB_PROPERTY_OF, superObjPropExpressionIRI));
-				graph = graph.UnionWith(SubObjectPropertyExpression.GetGraph(subObjPropExpressionIRI))
-							 .UnionWith(SuperObjectPropertyExpression.GetGraph(superObjPropExpressionIRI));
+				graph = graph.UnionWith(SubObjectPropertyExpression.ToRDFGraph(subObjPropExpressionIRI))
+							 .UnionWith(SuperObjectPropertyExpression.ToRDFGraph(superObjPropExpressionIRI));
 			}
 
 			//ObjectPropertyChain
@@ -96,7 +96,7 @@ namespace OWLSharp.Ontology.Axioms
 					chainMembers.AddItem(chainMember.GetIRI());
 				graph.AddCollection(chainMembers);
 				graph.AddTriple(new RDFTriple(superObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, chainMembers.ReificationSubject));
-				graph = graph.UnionWith(SuperObjectPropertyExpression.GetGraph(superObjPropExpressionIRI));
+				graph = graph.UnionWith(SuperObjectPropertyExpression.ToRDFGraph(superObjPropExpressionIRI));
 			}
 
             return graph;

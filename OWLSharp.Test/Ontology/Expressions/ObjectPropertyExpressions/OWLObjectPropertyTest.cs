@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertIRIObjectPropertyToGraph()
         {
             OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
-			RDFGraph graph = op.GetGraph();
+			RDFGraph graph = op.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
@@ -114,7 +114,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         public void ShouldConvertQualifiedNameObjectPropertyToGraph()
         {
             OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = op.GetGraph();
+			RDFGraph graph = op.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
