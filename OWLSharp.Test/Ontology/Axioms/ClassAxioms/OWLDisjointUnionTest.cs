@@ -138,6 +138,26 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(djUnAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(djUnAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
+
+		[TestMethod]
+        public void ShouldConvertDisjointUnionToGraph()
+        {
+            OWLDisjointUnion disjointUnion = new OWLDisjointUnion(
+                new OWLClass(RDFVocabulary.FOAF.AGENT),
+                [ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]);
+			RDFGraph graph = disjointUnion.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 10);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+        }
         #endregion
     }
 }
