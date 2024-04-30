@@ -70,7 +70,31 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+            //disjointWith
+            if (ClassExpressions.Count == 2)
+			{
+				RDFResource leftClassExpressionIRI = ClassExpressions[0].GetIRI();
+				RDFResource rightClassExpressionIRI = ClassExpressions[1].GetIRI();
+				graph.AddTriple(new RDFTriple(leftClassExpressionIRI, RDFVocabulary.OWL.DISJOINT_WITH, rightClassExpressionIRI));
+				graph = graph.UnionWith(ClassExpressions[0].ToRDFGraph(leftClassExpressionIRI))
+							 .UnionWith(ClassExpressions[1].ToRDFGraph(rightClassExpressionIRI));
+			}
+
+			//AllDisjointClasses
+			else
+			{
+				RDFResource allDisjointClassesIRI = new RDFResource(); 
+				RDFCollection disjointClassesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+				foreach (OWLClassExpression classExpression in ClassExpressions)
+				{
+					RDFResource classExpressionIRI = classExpression.GetIRI();
+					disjointClassesCollection.AddItem(classExpressionIRI);
+					graph = graph.UnionWith(classExpression.ToRDFGraph(classExpressionIRI));
+				}
+				graph.AddCollection(disjointClassesCollection);
+				graph.AddTriple(new RDFTriple(allDisjointClassesIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES));
+				graph.AddTriple(new RDFTriple(allDisjointClassesIRI, RDFVocabulary.OWL.MEMBERS, disjointClassesCollection.ReificationSubject));
+			}
 
             return graph;
         }
