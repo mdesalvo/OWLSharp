@@ -62,8 +62,11 @@ namespace OWLSharp.Ontology.Axioms
         internal override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
+            RDFResource clsExpressionIRI = ClassExpression.GetIRI();
 
-            //TODO
+            graph.AddTriple(new RDFTriple(DataProperty.GetIRI(), RDFVocabulary.RDFS.DOMAIN, clsExpressionIRI));
+            graph = graph.UnionWith(DataProperty.ToRDFGraph())
+                         .UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
 
             return graph;
         }
