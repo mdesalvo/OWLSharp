@@ -96,6 +96,27 @@ namespace OWLSharp.Ontology.Axioms.Test
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [null]));
+
+        [TestMethod]
+        public void ShouldConvertHasKeyToGraph()
+        {
+            OWLHasKey hasKey = new OWLHasKey(
+                new OWLClass(RDFVocabulary.FOAF.AGENT),
+                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+                [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
+            RDFGraph graph = hasKey.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 10);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.AGE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }

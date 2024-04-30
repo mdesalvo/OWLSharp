@@ -81,9 +81,16 @@ namespace OWLSharp.Ontology.Axioms
 
             RDFCollection keyPropsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
             foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
-                keyPropsCollection.AddItem(objectPropertyExpression.GetIRI());
+            {
+                RDFResource objPropExpressionIRI = objectPropertyExpression.GetIRI();
+                keyPropsCollection.AddItem(objPropExpressionIRI);
+                graph = graph.UnionWith(objectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
+            }                
             foreach (OWLDataProperty dataProperty in DataProperties)
+            { 
                 keyPropsCollection.AddItem(dataProperty.GetIRI());
+                graph = graph.UnionWith(dataProperty.ToRDFGraph());
+            }   
             graph.AddCollection(keyPropsCollection);
             graph.AddTriple(new RDFTriple(clsExprIRI, RDFVocabulary.OWL.HAS_KEY, keyPropsCollection.ReificationSubject));
             graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExprIRI));
