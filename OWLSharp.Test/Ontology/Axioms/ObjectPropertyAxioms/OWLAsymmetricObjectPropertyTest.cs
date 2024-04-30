@@ -199,6 +199,33 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(asymObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
                             && string.Equals(asymObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
+
+        [TestMethod]
+        public void ShouldConvertAsymmetricObjectPropertyToGraph()
+        {
+            OWLAsymmetricObjectProperty asymmetricObjectProperty = new OWLAsymmetricObjectProperty(
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            RDFGraph graph = asymmetricObjectProperty.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 2);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertAsymmetricObjectInverseOfToGraph()
+        {
+            OWLAsymmetricObjectProperty asymmetricObjectProperty = new OWLAsymmetricObjectProperty(
+                new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            RDFGraph graph = asymmetricObjectProperty.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
