@@ -42,9 +42,11 @@ namespace OWLSharp.Ontology.Expressions
             RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
+            RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
-            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, ObjectPropertyExpression.GetIRI()));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, objPropExpressionIRI));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.HAS_SELF, RDFTypedLiteral.True));
+            graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
 
             return graph;
         }

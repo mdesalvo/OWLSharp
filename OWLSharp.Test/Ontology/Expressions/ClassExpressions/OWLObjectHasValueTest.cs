@@ -117,7 +117,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         }
 
         [TestMethod]
-        public void ShouldConvertHasValueToGraph()
+        public void ShouldConvertObjectHasValueToGraph()
         {
             OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Bob")));
             RDFGraph graph = objectHasValue.ToRDFGraph();
@@ -132,7 +132,7 @@ namespace OWLSharp.Ontology.Expressions.Test
         }
 
         [TestMethod]
-        public void ShouldConvertHasValueWithAnonymousIndividualToGraph()
+        public void ShouldConvertObjectHasValueWithAnonymousIndividualToGraph()
         {
             OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLAnonymousIndividual("AnonIdv"));
             RDFGraph graph = objectHasValue.ToRDFGraph();

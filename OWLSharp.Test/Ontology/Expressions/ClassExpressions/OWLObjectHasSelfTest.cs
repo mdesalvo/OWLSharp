@@ -99,6 +99,35 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(objectHasSelf.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
                             && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         }
+
+        [TestMethod]
+        public void ShouldConvertObjectHasSelfToGraph()
+        {
+            OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            RDFGraph graph = objectHasSelf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.HAS_SELF, null, RDFTypedLiteral.True].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertObjectHasSelfWithObjectInverseOfToGraph()
+        {
+            OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            RDFGraph graph = objectHasSelf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 5);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.HAS_SELF, null, RDFTypedLiteral.True].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
