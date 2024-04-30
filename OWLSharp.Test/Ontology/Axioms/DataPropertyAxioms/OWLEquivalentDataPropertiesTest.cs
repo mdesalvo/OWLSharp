@@ -123,6 +123,39 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
+
+        [TestMethod]
+        public void ShouldConvert2EquivalentDataPropertiesToGraph()
+        {
+            OWLEquivalentDataProperties equivalentObjectProperties = new OWLEquivalentDataProperties(
+                [new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLDataProperty(RDFVocabulary.FOAF.NAME)]);
+            RDFGraph graph = equivalentObjectProperties.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.NAME, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvert3EquivalentDataPropertiesToGraph()
+        {
+            OWLEquivalentDataProperties equivalentObjectProperties = new OWLEquivalentDataProperties(
+                [new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                 new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+                 new OWLDataProperty(RDFVocabulary.FOAF.TITLE)]);
+            RDFGraph graph = equivalentObjectProperties.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 6);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.NAME, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.TITLE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.NAME, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.TITLE, null].TriplesCount == 1);
+        }
         #endregion
     }
 }

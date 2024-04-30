@@ -52,7 +52,16 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+            List<RDFResource> dtPropIRIs = new List<RDFResource>();
+            for (int i = 0; i < DataProperties.Count; i++)
+            {
+                dtPropIRIs.Add(DataProperties[i].GetIRI());
+                graph = graph.UnionWith(DataProperties[i].ToRDFGraph());
+            }
+
+            for (int i = 0; i < DataProperties.Count - 1; i++)
+                for (int j = i + 1; j < DataProperties.Count; j++)
+                    graph.AddTriple(new RDFTriple(dtPropIRIs[i], RDFVocabulary.OWL.EQUIVALENT_PROPERTY, dtPropIRIs[j]));
 
             return graph;
         }
