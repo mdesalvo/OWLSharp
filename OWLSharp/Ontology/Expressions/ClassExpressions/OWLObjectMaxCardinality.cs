@@ -71,14 +71,18 @@ namespace OWLSharp.Ontology.Expressions
             RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
+            RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
-            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, ObjectPropertyExpression.GetIRI()));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, objPropExpressionIRI));
+            graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
             if (ClassExpression == null)
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.MAX_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             else
             {
-                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_CLASS, ClassExpression.GetIRI()));
+                RDFResource clsExpressionIRI = ClassExpression.GetIRI();
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_CLASS, clsExpressionIRI));
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, new RDFTypedLiteral(Cardinality, RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
+                graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
             }
 
             return graph;
