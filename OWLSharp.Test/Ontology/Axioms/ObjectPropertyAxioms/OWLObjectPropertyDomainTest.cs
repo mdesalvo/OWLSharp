@@ -168,6 +168,21 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(objPropDom1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(objPropDom1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
-		#endregion
-	}
+
+        [TestMethod]
+        public void ShouldConvertObjectPropertyDomainToGraph()
+        {
+            OWLObjectPropertyDomain objectPropertyDomain = new OWLObjectPropertyDomain(
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                new OWLClass(RDFVocabulary.FOAF.PERSON));
+            RDFGraph graph = objectPropertyDomain.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+        }
+        #endregion
+    }
 }
