@@ -89,10 +89,12 @@ namespace OWLSharp.Ontology.Expressions.Test
             RDFGraph graph = objectSomeValuesFrom.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph.TriplesCount == 5);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.SOME_VALUES_FROM, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
         }
         #endregion
     }

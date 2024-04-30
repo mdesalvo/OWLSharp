@@ -57,7 +57,11 @@ namespace OWLSharp.Ontology.Expressions
 
             RDFCollection objectOneOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
             foreach (OWLIndividualExpression objectOneOfIndividual in IndividualExpressions)
-                objectOneOfCollection.AddItem(objectOneOfIndividual.GetIRI());
+            {
+                RDFResource idvExpressionIRI = objectOneOfIndividual.GetIRI();
+                objectOneOfCollection.AddItem(idvExpressionIRI);
+                graph = graph.UnionWith(objectOneOfIndividual.ToRDFGraph(idvExpressionIRI));
+            }   
             graph.AddCollection(objectOneOfCollection);
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ONE_OF, objectOneOfCollection.ReificationSubject));
