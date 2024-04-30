@@ -512,6 +512,70 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Value, "Steve")
                             && string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
+
+        [TestMethod]
+        public void ShouldConvertSubObjectPropertyOfToGraph()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectProperty(new RDFResource("ex:objPropA")),
+                new OWLObjectProperty(new RDFResource("ex:objPropB")));
+            RDFGraph graph = subObjectPropertyOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:objPropB"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertSubObjectPropertyOfWithInverseSubToGraph()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA"))),
+                new OWLObjectProperty(new RDFResource("ex:objPropB")));
+            RDFGraph graph = subObjectPropertyOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, new RDFResource("ex:objPropB"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:objPropA"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertSubObjectPropertyOfWithInverseSuperToGraph()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectProperty(new RDFResource("ex:objPropA")),
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB"))));
+            RDFGraph graph = subObjectPropertyOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropA"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:objPropB"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertSubObjectPropertyOfWithBothInverseToGraph()
+        {
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA"))),
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB"))));
+            RDFGraph graph = subObjectPropertyOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 5);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:objPropA"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:objPropB"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:objPropB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
