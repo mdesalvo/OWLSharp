@@ -67,7 +67,7 @@ namespace OWLSharp.Ontology.Expressions
                 graph = graph.UnionWith(dataRangeExpression.ToRDFGraph(drExpressionIRI));
             }
             graph.AddCollection(dataIntersectionOfCollection);
-            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.INTERSECTION_OF, dataIntersectionOfCollection.ReificationSubject));
 
             return graph;

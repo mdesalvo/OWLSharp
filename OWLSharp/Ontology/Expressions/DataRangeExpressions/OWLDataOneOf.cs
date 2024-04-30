@@ -57,7 +57,7 @@ namespace OWLSharp.Ontology.Expressions
 			foreach (OWLLiteral dataOneOfLiteral in Literals)
 				dataOneOfCollection.AddItem(dataOneOfLiteral.GetLiteral());
 			graph.AddCollection(dataOneOfCollection);
-            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ONE_OF, dataOneOfCollection.ReificationSubject));
 
             return graph;

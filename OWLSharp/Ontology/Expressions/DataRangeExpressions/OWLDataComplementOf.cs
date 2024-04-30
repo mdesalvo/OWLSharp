@@ -44,9 +44,11 @@ namespace OWLSharp.Ontology.Expressions
 		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 		{
 			RDFGraph graph = new RDFGraph();
-            RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
+            expressionIRI = expressionIRI ?? GetIRI();
 
-            graph.AddTriple(new RDFTriple(GetIRI(), RDFVocabulary.OWL.COMPLEMENT_OF, drExpressionIRI));
+            RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, drExpressionIRI));
             graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
 
 			return graph;

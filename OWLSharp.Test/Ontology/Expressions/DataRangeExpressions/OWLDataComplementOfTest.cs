@@ -64,13 +64,14 @@ namespace OWLSharp.Ontology.Expressions.Test
         }
 
         [TestMethod]
-        public void ShouldConvertDataIntersectionOfToGraph()
+        public void ShouldConvertDataComplementOfToGraph()
         {
             OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
             RDFGraph graph = dataComplementOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 2);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
         }

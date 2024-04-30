@@ -90,7 +90,7 @@ namespace OWLSharp.Ontology.Expressions.Test
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 10);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
