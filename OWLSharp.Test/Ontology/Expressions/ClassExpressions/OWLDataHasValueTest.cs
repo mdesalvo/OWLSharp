@@ -71,6 +71,21 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(string.Equals(dataHasValue.Literal.Value, "hello"));
             Assert.IsTrue(string.Equals(dataHasValue.Literal.Language, "EN"));
         }
+
+
+        [TestMethod]
+        public void ShouldConvertDataHasValueToGraph()
+        {
+            OWLDataHasValue dataHasValue = new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello", "en")));
+            RDFGraph graph = dataHasValue.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.DC.DESCRIPTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.HAS_VALUE, null, new RDFPlainLiteral("hello", "en")].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
