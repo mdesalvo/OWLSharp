@@ -116,6 +116,33 @@ namespace OWLSharp.Ontology.Expressions.Test
             Assert.IsTrue(objectExactCardinality.ClassExpression is OWLClass cls
                             && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
         }
+
+        [TestMethod]
+        public void ShouldConvertObjectExactCardinalityToGraph()
+        {
+            OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+            RDFGraph graph = objectExactCardinality.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.CARDINALITY, null, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertObjectExactQualifiedCardinalityToGraph()
+        {
+            OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+            RDFGraph graph = objectExactCardinality.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
