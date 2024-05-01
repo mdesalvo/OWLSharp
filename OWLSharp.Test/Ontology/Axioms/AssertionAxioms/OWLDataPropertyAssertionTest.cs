@@ -214,6 +214,37 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
 			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
 		}
+
+		[TestMethod]
+        public void ShouldConvertDataPropertyAssertionToGraph()
+        {
+            OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                new OWLNamedIndividual(new RDFResource("ex:Bob")),
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+			RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.FOAF.AGE, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+			Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldConvertDataPropertyAssertionWithAnonymousIndividualToGraph()
+        {
+            OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                new OWLAnonymousIndividual("Bob"),
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+			RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 2);
+            Assert.IsTrue(graph[new RDFResource("bnode:Bob"), RDFVocabulary.FOAF.AGE, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
