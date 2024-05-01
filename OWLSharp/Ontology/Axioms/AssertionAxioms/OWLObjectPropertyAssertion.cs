@@ -55,7 +55,28 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+			RDFResource sidvExpressionIRI = SourceIndividualExpression.GetIRI();
+			RDFResource tidvExpressionIRI = TargetIndividualExpression.GetIRI();
+
+			//ObjectInverseOf
+			if (ObjectPropertyExpression is OWLObjectInverseOf objectInverseOf)
+			{
+				RDFResource objectInverseOfIRI = objectInverseOf.ObjectProperty.GetIRI();
+				graph.AddTriple(new RDFTriple(tidvExpressionIRI, objectInverseOfIRI, sidvExpressionIRI));
+				graph = graph.UnionWith(objectInverseOf.ObjectProperty.ToRDFGraph())
+							 .UnionWith(SourceIndividualExpression.ToRDFGraph(sidvExpressionIRI))
+						 	 .UnionWith(TargetIndividualExpression.ToRDFGraph(tidvExpressionIRI));
+			}
+
+			//ObjectProperty
+			else
+			{
+				RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();				
+				graph.AddTriple(new RDFTriple(sidvExpressionIRI, objPropExpressionIRI, tidvExpressionIRI));
+				graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI))
+							 .UnionWith(SourceIndividualExpression.ToRDFGraph(sidvExpressionIRI))
+						 	 .UnionWith(TargetIndividualExpression.ToRDFGraph(tidvExpressionIRI));
+			}
 
             return graph;
         }
