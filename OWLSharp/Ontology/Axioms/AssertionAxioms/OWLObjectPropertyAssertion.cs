@@ -78,6 +78,10 @@ namespace OWLSharp.Ontology.Axioms
 						 	 .UnionWith(TargetIndividualExpression.ToRDFGraph(tidvExpressionIRI));
 			}
 
+			//Annotations
+			foreach (OWLAnnotation annotation in Annotations)
+				graph = graph.UnionWith(annotation.ToRDFGraph());
+
             return graph;
         }
         #endregion

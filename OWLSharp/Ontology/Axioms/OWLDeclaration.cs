@@ -52,7 +52,15 @@ namespace OWLSharp.Ontology.Axioms
 
         #region Methods
         internal override RDFGraph ToRDFGraph()
-            => Expression.ToRDFGraph();
+    	{
+			RDFGraph graph = Expression.ToRDFGraph();
+
+			//Annotations
+			foreach (OWLAnnotation annotation in Annotations)
+				graph = graph.UnionWith(annotation.ToRDFGraph());
+
+			return graph;
+		}
         #endregion
     }
 }

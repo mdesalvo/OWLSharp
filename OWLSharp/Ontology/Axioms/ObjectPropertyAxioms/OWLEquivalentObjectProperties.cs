@@ -66,6 +66,10 @@ namespace OWLSharp.Ontology.Axioms
 				for (int j = i + 1; j < ObjectPropertyExpressions.Count; j++)
 					graph.AddTriple(new RDFTriple(objPropIRIs[i], RDFVocabulary.OWL.EQUIVALENT_PROPERTY, objPropIRIs[j]));
 
+			//Annotations
+			foreach (OWLAnnotation annotation in Annotations)
+				graph = graph.UnionWith(annotation.ToRDFGraph());
+
             return graph;
         }
         #endregion

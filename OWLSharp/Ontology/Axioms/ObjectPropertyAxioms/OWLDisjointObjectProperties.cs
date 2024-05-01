@@ -80,6 +80,10 @@ namespace OWLSharp.Ontology.Axioms
 				graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.OWL.MEMBERS, disjointObjectPropertiesCollection.ReificationSubject));
 			}
 
+			//Annotations
+			foreach (OWLAnnotation annotation in Annotations)
+				graph = graph.UnionWith(annotation.ToRDFGraph());
+
             return graph;
         }
         #endregion

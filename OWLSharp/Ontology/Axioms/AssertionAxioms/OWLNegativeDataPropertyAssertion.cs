@@ -63,6 +63,10 @@ namespace OWLSharp.Ontology.Axioms
 			graph = graph.UnionWith(DataProperty.ToRDFGraph())
 						 .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
 	
+			//Annotations
+			foreach (OWLAnnotation annotation in Annotations)
+				graph = graph.UnionWith(annotation.ToRDFGraph());
+
             return graph;
         }
         #endregion
