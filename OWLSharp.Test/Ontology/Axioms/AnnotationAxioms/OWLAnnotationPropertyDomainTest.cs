@@ -294,6 +294,20 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(annPropDom.AbbreviatedIRI?.ToString(), "http://xmlns.com/foaf/0.1/:Agent")
                             && string.Equals(annPropDom.AnnotationProperty.IRI, "http://xmlns.com/foaf/0.1/title")));
         }
+
+		[TestMethod]
+        public void ShouldConvertIRIAnnotationPropertyDomainToGraph()
+        {
+            OWLAnnotationPropertyDomain annotationPropertyDomain = new OWLAnnotationPropertyDomain(
+                new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
+                RDFVocabulary.FOAF.PERSON);
+			RDFGraph graph = annotationPropertyDomain.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 2);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
