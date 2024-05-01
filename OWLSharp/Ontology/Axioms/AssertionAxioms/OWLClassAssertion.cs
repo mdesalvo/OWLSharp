@@ -66,7 +66,11 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+            RDFResource clsExpressionIRI = ClassExpression.GetIRI();
+			RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
+			graph.AddTriple(new RDFTriple(idvExpressionIRI, RDFVocabulary.RDF.TYPE, clsExpressionIRI));
+			graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI))
+						 .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
 
             return graph;
         }
