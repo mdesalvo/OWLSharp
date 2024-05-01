@@ -86,7 +86,7 @@ namespace OWLSharp.Ontology.Axioms.Test
         }
 
 		[TestMethod]
-        public void ShouldDeserializeNamedIndividuals()
+        public void ShouldDeserializeSameIndividual()
         {
             OWLSameIndividual SameIndividual = OWLTestSerializer<OWLSameIndividual>.Deserialize(
 @"<SameIndividual><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></SameIndividual>");
@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology.Axioms.Test
 		}
 
 		[TestMethod]
-        public void ShouldDeserializeNamedIndividualsViaOntology()
+        public void ShouldDeserializeSameIndividualViaOntology()
         {
 			OWLOntology ontology = OWLSerializer.Deserialize(
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
@@ -138,6 +138,25 @@ namespace OWLSharp.Ontology.Axioms.Test
 							&& string.Equals(diffAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
 							&& string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
 							&& string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+        }
+
+		[TestMethod]
+        public void ShouldConvertSameIndividualToGraph()
+        {
+            OWLSameIndividual sameIndividual = new OWLSameIndividual(
+                [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
+				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
+			RDFGraph graph = sameIndividual.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 6);
+            Assert.IsTrue(graph[new RDFResource("ex:Alice"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Carl"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Alice"), RDFVocabulary.OWL.SAME_AS, new RDFResource("ex:Bob"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Alice"), RDFVocabulary.OWL.SAME_AS, new RDFResource("ex:Carl"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.OWL.SAME_AS, new RDFResource("ex:Carl"), null].TriplesCount == 1);
         }
         #endregion
     }
