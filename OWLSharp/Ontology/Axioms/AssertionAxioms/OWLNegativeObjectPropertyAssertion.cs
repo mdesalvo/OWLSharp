@@ -55,7 +55,34 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+			RDFResource sidvExpressionIRI = SourceIndividualExpression.GetIRI();
+			RDFResource tidvExpressionIRI = TargetIndividualExpression.GetIRI();
+			RDFResource negativeObjectPropertyAssertionIRI = new RDFResource();
+			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION));
+
+			//ObjectInverseOf
+			if (ObjectPropertyExpression is OWLObjectInverseOf objectInverseOf)
+			{
+				RDFResource objectInverseOfIRI = objectInverseOf.ObjectProperty.GetIRI();
+				graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, tidvExpressionIRI));
+				graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.ASSERTION_PROPERTY, objectInverseOfIRI));
+				graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.TARGET_INDIVIDUAL, sidvExpressionIRI));
+				graph = graph.UnionWith(objectInverseOf.ObjectProperty.ToRDFGraph())
+							 .UnionWith(SourceIndividualExpression.ToRDFGraph(sidvExpressionIRI))
+							 .UnionWith(TargetIndividualExpression.ToRDFGraph(tidvExpressionIRI));
+			}
+
+			//ObjectProperty
+			else
+			{
+				RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();				
+				graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, sidvExpressionIRI));
+				graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.ASSERTION_PROPERTY, objPropExpressionIRI));
+				graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.TARGET_INDIVIDUAL, tidvExpressionIRI));
+				graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI))
+							 .UnionWith(SourceIndividualExpression.ToRDFGraph(sidvExpressionIRI))
+							 .UnionWith(TargetIndividualExpression.ToRDFGraph(tidvExpressionIRI));
+			}
 
             return graph;
         }
