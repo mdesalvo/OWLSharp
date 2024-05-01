@@ -154,6 +154,37 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(((OWLObjectProperty)invObjProp.LeftObjectPropertyExpression).IRI, "ex:hasWife")
                             && string.Equals(((OWLObjectProperty)invObjProp.RightObjectPropertyExpression).IRI, "ex:isWifeOf"));
         }
+
+		[TestMethod]
+        public void ShouldConvertInverseObjectPropertiesToGraph()
+        {
+            OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties(
+                new OWLObjectProperty(new RDFResource("ex:hasWife")),
+                new OWLObjectProperty(new RDFResource("ex:isWifeOf")));
+            RDFGraph graph = inverseObjectProperties.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[new RDFResource("ex:hasWife"), RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:isWifeOf"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasWife"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:isWifeOf"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldConvertInverseObjectPropertiesWithObjectInverseOfAsLeftToGraph()
+        {
+            OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties(
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasWife"))),
+                new OWLObjectProperty(new RDFResource("ex:isWifeOf")));
+            RDFGraph graph = inverseObjectProperties.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:isWifeOf"), null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:hasWife"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasWife"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:isWifeOf"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
