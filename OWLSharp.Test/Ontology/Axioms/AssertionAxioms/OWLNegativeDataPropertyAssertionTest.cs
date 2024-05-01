@@ -214,6 +214,43 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(string.Equals(NegativeDataPropertyAssertion.Literal.Value, "25"));
 			Assert.IsTrue(string.Equals(NegativeDataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
 		}
+
+		[TestMethod]
+        public void ShouldConvertNegativeDataPropertyAssertionToGraph()
+        {
+            OWLNegativeDataPropertyAssertion negativeDataPropertyAssertion = new OWLNegativeDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                new OWLNamedIndividual(new RDFResource("ex:Bob")),
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+			RDFGraph graph = negativeDataPropertyAssertion.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 6);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, new RDFResource("ex:Bob"), null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ASSERTION_PROPERTY, RDFVocabulary.FOAF.AGE, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.TARGET_VALUE, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+			Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldConvertNegativeDataPropertyAssertionWithAnonymousIndividualToGraph()
+        {
+            OWLNegativeDataPropertyAssertion negativeDataPropertyAssertion = new OWLNegativeDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                new OWLAnonymousIndividual("Bob"),
+				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+			RDFGraph graph = negativeDataPropertyAssertion.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 5);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, new RDFResource("bnode:Bob"), null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ASSERTION_PROPERTY, RDFVocabulary.FOAF.AGE, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.TARGET_VALUE, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }

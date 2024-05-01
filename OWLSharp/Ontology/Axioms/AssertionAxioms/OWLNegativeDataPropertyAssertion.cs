@@ -54,8 +54,15 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
-
+            RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
+			RDFResource negativeObjectPropertyAssertionIRI = new RDFResource();
+			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION));
+			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, idvExpressionIRI));
+			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.ASSERTION_PROPERTY, DataProperty.GetIRI()));
+			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.TARGET_VALUE, Literal.GetLiteral()));
+			graph = graph.UnionWith(DataProperty.ToRDFGraph())
+						 .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
+	
             return graph;
         }
         #endregion
