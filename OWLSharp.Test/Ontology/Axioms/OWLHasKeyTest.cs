@@ -184,6 +184,7 @@ namespace OWLSharp.Ontology.Axioms.Test
 			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, null, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.HAS_KEY, null].TriplesCount == 1);
 			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFResource("ex:title"), null].TriplesCount == 1);
 			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, null].TriplesCount == 2);
 			Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
 			Assert.IsTrue(graph[null, RDFVocabulary.DC.DCTERMS.TITLE, null, new RDFTypedLiteral("title", RDFModelEnums.RDFDatatypes.XSD_STRING)].TriplesCount == 1);
