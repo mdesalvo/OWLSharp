@@ -45,8 +45,10 @@ namespace OWLSharp.Ontology
 
     public class OWLClassAxiom : OWLAxiom
     {
+		#region Ctors
         internal OWLClassAxiom() : base() { }
-    }
+		#endregion	
+	}
 
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
