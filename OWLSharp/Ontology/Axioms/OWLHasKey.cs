@@ -78,6 +78,7 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
             RDFResource clsExprIRI = ClassExpression.GetIRI();
+			RDFTriple axiomTriple; 
 
             RDFCollection keyPropsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
             foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
@@ -92,12 +93,13 @@ namespace OWLSharp.Ontology.Axioms
                 graph = graph.UnionWith(dataProperty.ToRDFGraph());
             }   
             graph.AddCollection(keyPropsCollection);
-            graph.AddTriple(new RDFTriple(clsExprIRI, RDFVocabulary.OWL.HAS_KEY, keyPropsCollection.ReificationSubject));
+            axiomTriple = new RDFTriple(clsExprIRI, RDFVocabulary.OWL.HAS_KEY, keyPropsCollection.ReificationSubject);
+			graph.AddTriple(axiomTriple);
             graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExprIRI));
 
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
