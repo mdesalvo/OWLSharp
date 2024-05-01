@@ -57,7 +57,11 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+			if (!string.IsNullOrEmpty(ValueIRI))
+            	graph.AddTriple(new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI)));
+			else
+				graph.AddTriple(new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral()));
+			graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
 
             return graph;
         }
