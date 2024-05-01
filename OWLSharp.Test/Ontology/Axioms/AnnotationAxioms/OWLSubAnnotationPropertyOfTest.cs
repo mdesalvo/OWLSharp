@@ -195,6 +195,21 @@ namespace OWLSharp.Ontology.Axioms.Test
                             && string.Equals(subannProp.SubAnnotationProperty.IRI.ToString(), "http://purl.org/dc/terms/creator")
                             && string.Equals(subannProp.SuperAnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/creator")));
         }
+
+		[TestMethod]
+        public void ShouldConvertSubAnnotationPropertyOfToGraph()
+        {
+            OWLSubAnnotationPropertyOf subAnnotationPropertyOf = new OWLSubAnnotationPropertyOf(
+                new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE),
+                new OWLAnnotationProperty(RDFVocabulary.DC.TITLE));
+            RDFGraph graph = subAnnotationPropertyOf.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+        }
         #endregion
     }
 }
