@@ -58,11 +58,34 @@ namespace OWLSharp.Ontology
         #endregion
 
 		#region Methods
-		internal RDFGraph ToRDFGraph(RDFResource axiomIRI=null)
+		internal RDFGraph ToRDFGraph(RDFTriple annotatedTriple=null)
 		{
 			RDFGraph graph = new RDFGraph();
+			graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
 
-			//TODO
+			RDFResource axiomIRI = new RDFResource();
+			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM));
+			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_SOURCE, (RDFResource)annotatedTriple?.Subject));
+			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_PROPERTY, (RDFResource)annotatedTriple?.Predicate));
+			if (annotatedTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)
+				graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFLiteral)annotatedTriple?.Object));
+			else
+				graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFResource)annotatedTriple?.Object));
+
+			RDFTriple annotationTriple;
+			if (!string.IsNullOrEmpty(ValueIRI))
+				annotationTriple = new RDFTriple(axiomIRI, AnnotationProperty.GetIRI(), new RDFResource(ValueIRI));
+			else if (ValueAbbreviatedIRI != null)
+				annotationTriple = new RDFTriple(axiomIRI, AnnotationProperty.GetIRI(), new RDFResource(string.Concat(ValueAbbreviatedIRI.Namespace, ValueAbbreviatedIRI.Name)));
+			else if (ValueAnonymousIndividual != null)
+				annotationTriple = new RDFTriple(axiomIRI, AnnotationProperty.GetIRI(), ValueAnonymousIndividual.GetIRI());
+			else
+				annotationTriple = new RDFTriple(axiomIRI, AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral());
+			graph.AddTriple(annotationTriple);
+
+			//Annotation
+			if (Annotation != null)
+				graph = graph.UnionWith(Annotation.ToRDFGraph(annotationTriple));
 
 			return graph;
 		}
