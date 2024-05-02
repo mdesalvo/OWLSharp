@@ -58,7 +58,7 @@ namespace OWLSharp.Ontology
         #endregion
 
 		#region Methods
-		internal RDFGraph ToRDFGraph(RDFTriple axiomTriple=null)
+		internal RDFGraph ToRDFGraph(RDFTriple axiomTriple=null) //TODO: remove optionality
 		{
 			RDFGraph graph = new RDFGraph();
 			graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
