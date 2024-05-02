@@ -127,5 +127,16 @@ namespace OWLSharp.Ontology
             Version = ontologyVersion?.ToString();
         }
         #endregion
+
+        #region Methods
+        public RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
+        #endregion
     }
 }
