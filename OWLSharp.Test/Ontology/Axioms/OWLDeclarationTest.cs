@@ -14,9 +14,6 @@
    limitations under the License.
 */
 
-using System.Linq;
-using System.Xml;
-using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Test;
@@ -237,6 +234,29 @@ namespace OWLSharp.Ontology.Axioms.Test
 			Assert.IsTrue(graph.TriplesCount == 1);
 			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
         }
-		#endregion
-	}
+
+        [TestMethod]
+        public void ShouldConvertDeclarationWithAnnotationToGraph()
+        {
+            OWLDeclaration declaration = new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT))
+			{
+                Annotations = [
+                    new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                ]
+            };
+            RDFGraph graph = declaration.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 7);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            //Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+        }
+        #endregion
+    }
 }

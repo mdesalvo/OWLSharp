@@ -203,6 +203,42 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(graph[null, OWLFacetRestriction.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
             Assert.IsTrue(graph[null, OWLFacetRestriction.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
         }
+
+        [TestMethod]
+        public void ShouldConvertDatatypeDefinitionWithAnnotationToGraph()
+        {
+            OWLDatatypeDefinition length6to10DT = new OWLDatatypeDefinition(
+                new OWLDatatype(new RDFResource("ex:length6to10")),
+                new OWLDatatypeRestriction(
+                    new OWLDatatype(RDFVocabulary.XSD.STRING),
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]))
+            {
+                Annotations = [
+                    new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                ]
+            };
+            RDFGraph graph = length6to10DT.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 20);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_DATATYPE, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, OWLFacetRestriction.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, OWLFacetRestriction.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            //Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:length6to10"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+        }
         #endregion
     }
 }
