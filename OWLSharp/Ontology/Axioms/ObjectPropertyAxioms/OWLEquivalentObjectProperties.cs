@@ -62,13 +62,20 @@ namespace OWLSharp.Ontology.Axioms
 				graph = graph.UnionWith(ObjectPropertyExpressions[i].ToRDFGraph(objPropIRI));
 			}
 
+			//Axiom Triple(s)
+			List<RDFTriple> axiomTriples = new List<RDFTriple>();
             for (int i = 0; i < ObjectPropertyExpressions.Count - 1; i++)
 				for (int j = i + 1; j < ObjectPropertyExpressions.Count; j++)
-					graph.AddTriple(new RDFTriple(objPropIRIs[i], RDFVocabulary.OWL.EQUIVALENT_PROPERTY, objPropIRIs[j]));
+				{
+					RDFTriple axiomTriple = new RDFTriple(objPropIRIs[i], RDFVocabulary.OWL.EQUIVALENT_PROPERTY, objPropIRIs[j]); 
+					axiomTriples.Add(axiomTriple);
+					graph.AddTriple(axiomTriple);
+				}					
 
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				foreach (RDFTriple axiomTriple in axiomTriples)
+					graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
