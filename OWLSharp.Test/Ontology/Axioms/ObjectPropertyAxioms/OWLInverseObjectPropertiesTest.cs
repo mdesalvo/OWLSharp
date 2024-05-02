@@ -185,6 +185,61 @@ namespace OWLSharp.Ontology.Axioms.Test
             Assert.IsTrue(graph[new RDFResource("ex:hasWife"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:isWifeOf"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
         }
+
+		[TestMethod]
+        public void ShouldConvertInverseObjectPropertiesWithAnnotationToGraph()
+        {
+            OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties(
+                new OWLObjectProperty(new RDFResource("ex:hasWife")),
+                new OWLObjectProperty(new RDFResource("ex:isWifeOf")))
+			{
+                Annotations = [
+                    new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                ]
+            };
+            RDFGraph graph = inverseObjectProperties.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 9);
+            Assert.IsTrue(graph[new RDFResource("ex:hasWife"), RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:isWifeOf"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasWife"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:isWifeOf"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+			//Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:hasWife"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.INVERSE_OF, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFResource("ex:isWifeOf"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+        }
+
+		[TestMethod]
+        public void ShouldConvertInverseObjectPropertiesWithObjectInverseOfAsLeftWithAnnotationToGraph()
+        {
+            OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties(
+                new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasWife"))),
+                new OWLObjectProperty(new RDFResource("ex:isWifeOf")))
+			{
+                Annotations = [
+                    new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                ]
+            };
+            RDFGraph graph = inverseObjectProperties.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 10);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:isWifeOf"), null].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, new RDFResource("ex:hasWife"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:hasWife"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:isWifeOf"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+			//Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.INVERSE_OF, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFResource("ex:isWifeOf"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+        }
         #endregion
     }
 }

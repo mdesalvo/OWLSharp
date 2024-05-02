@@ -50,14 +50,16 @@ namespace OWLSharp.Ontology.Axioms
             RDFGraph graph = new RDFGraph();
 			RDFResource leftObjPropExpressionIRI = LeftObjectPropertyExpression.GetIRI();
 			RDFResource rightObjPropExpressionIRI = RightObjectPropertyExpression.GetIRI();
-
-			graph.AddTriple(new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, rightObjPropExpressionIRI));
 			graph = graph.UnionWith(LeftObjectPropertyExpression.ToRDFGraph(leftObjPropExpressionIRI))
 						 .UnionWith(RightObjectPropertyExpression.ToRDFGraph(rightObjPropExpressionIRI));
 
+			//Axiom Triple
+			RDFTriple axiomTriple = new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, rightObjPropExpressionIRI); 
+			graph.AddTriple(axiomTriple);			
+
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
