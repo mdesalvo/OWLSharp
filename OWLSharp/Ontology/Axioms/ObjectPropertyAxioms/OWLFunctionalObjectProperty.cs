@@ -42,14 +42,16 @@ namespace OWLSharp.Ontology.Axioms
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
-			RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
+            RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
+            graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
 
-			graph.AddTriple(new RDFTriple(objPropExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY));
-			graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(objPropExpressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY);
+            graph.AddTriple(axiomTriple);
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
