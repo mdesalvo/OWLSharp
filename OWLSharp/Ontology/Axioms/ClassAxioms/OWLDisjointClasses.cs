@@ -72,33 +72,40 @@ namespace OWLSharp.Ontology.Axioms
 
             //disjointWith
             if (ClassExpressions.Count == 2)
-			{
-				RDFResource leftClassExpressionIRI = ClassExpressions[0].GetIRI();
-				RDFResource rightClassExpressionIRI = ClassExpressions[1].GetIRI();
-				graph.AddTriple(new RDFTriple(leftClassExpressionIRI, RDFVocabulary.OWL.DISJOINT_WITH, rightClassExpressionIRI));
-				graph = graph.UnionWith(ClassExpressions[0].ToRDFGraph(leftClassExpressionIRI))
-							 .UnionWith(ClassExpressions[1].ToRDFGraph(rightClassExpressionIRI));
-			}
+            {
+                RDFResource leftClsExpressionIRI = ClassExpressions[0].GetIRI();
+                RDFResource rightClsExpressionIRI = ClassExpressions[1].GetIRI();
+                graph = graph.UnionWith(ClassExpressions[0].ToRDFGraph(leftClsExpressionIRI))
+                             .UnionWith(ClassExpressions[1].ToRDFGraph(rightClsExpressionIRI));
 
-			//AllDisjointClasses
-			else
-			{
-				RDFResource allDisjointClassesIRI = new RDFResource(); 
-				RDFCollection disjointClassesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
-				foreach (OWLClassExpression classExpression in ClassExpressions)
-				{
-					RDFResource classExpressionIRI = classExpression.GetIRI();
-					disjointClassesCollection.AddItem(classExpressionIRI);
-					graph = graph.UnionWith(classExpression.ToRDFGraph(classExpressionIRI));
-				}
-				graph.AddCollection(disjointClassesCollection);
-				graph.AddTriple(new RDFTriple(allDisjointClassesIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES));
-				graph.AddTriple(new RDFTriple(allDisjointClassesIRI, RDFVocabulary.OWL.MEMBERS, disjointClassesCollection.ReificationSubject));
-			}
+                //Axiom Triple
+                RDFTriple axiomTriple = new RDFTriple(leftClsExpressionIRI, RDFVocabulary.OWL.DISJOINT_WITH, rightClsExpressionIRI);
+                graph.AddTriple(axiomTriple);
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            }
+
+            //AllDisjointClasses
+            else
+            {
+                RDFResource allDisjointClassesIRI = new RDFResource();
+                RDFCollection disjointClassesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+                foreach (OWLClassExpression clsExpression in ClassExpressions)
+                {
+                    RDFResource clsExpressionIRI = clsExpression.GetIRI();
+                    disjointClassesCollection.AddItem(clsExpressionIRI);
+                    graph = graph.UnionWith(clsExpression.ToRDFGraph(clsExpressionIRI));
+                }
+                graph.AddCollection(disjointClassesCollection);
+                graph.AddTriple(new RDFTriple(allDisjointClassesIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES));
+                graph.AddTriple(new RDFTriple(allDisjointClassesIRI, RDFVocabulary.OWL.MEMBERS, disjointClassesCollection.ReificationSubject));
+
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraphInternal(allDisjointClassesIRI));
+            }
 
             return graph;
         }
