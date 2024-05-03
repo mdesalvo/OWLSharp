@@ -149,7 +149,7 @@ namespace OWLSharp.Ontology.Axioms.Test
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 10);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount == 1);
 			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
 			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
 			Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
@@ -174,7 +174,7 @@ namespace OWLSharp.Ontology.Axioms.Test
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 16);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
