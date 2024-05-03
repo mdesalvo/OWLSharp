@@ -58,8 +58,7 @@ namespace OWLSharp.Ontology.Axioms
 			RDFResource sidvExpressionIRI = SourceIndividualExpression.GetIRI();
 			RDFResource tidvExpressionIRI = TargetIndividualExpression.GetIRI();
 			RDFResource negativeObjectPropertyAssertionIRI = new RDFResource();
-			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION));
-
+			
 			//ObjectInverseOf
 			if (ObjectPropertyExpression is OWLObjectInverseOf objectInverseOf)
 			{
@@ -84,9 +83,13 @@ namespace OWLSharp.Ontology.Axioms
 							 .UnionWith(TargetIndividualExpression.ToRDFGraph(tidvExpressionIRI));
 			}
 
+			//Axiom Triple
+			RDFTriple axiomTriple = new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION); 
+			graph.AddTriple(axiomTriple);
+
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				graph = graph.UnionWith(annotation.ToRDFGraphInternal(negativeObjectPropertyAssertionIRI));
 
             return graph;
         }
