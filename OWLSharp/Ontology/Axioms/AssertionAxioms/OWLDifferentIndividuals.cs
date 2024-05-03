@@ -59,9 +59,16 @@ namespace OWLSharp.Ontology.Axioms
 			{
 				RDFResource leftIdvExpressionIRI = IndividualExpressions[0].GetIRI();
 				RDFResource rightIdvExpressionIRI = IndividualExpressions[1].GetIRI();
-				graph.AddTriple(new RDFTriple(leftIdvExpressionIRI, RDFVocabulary.OWL.DIFFERENT_FROM, rightIdvExpressionIRI));
 				graph = graph.UnionWith(IndividualExpressions[0].ToRDFGraph(leftIdvExpressionIRI))
 							 .UnionWith(IndividualExpressions[1].ToRDFGraph(rightIdvExpressionIRI));
+
+				//Axiom Triple
+                RDFTriple axiomTriple = new RDFTriple(leftIdvExpressionIRI, RDFVocabulary.OWL.DIFFERENT_FROM, rightIdvExpressionIRI);
+                graph.AddTriple(axiomTriple);
+
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 			}
 
 			//AllDifferent
@@ -78,11 +85,11 @@ namespace OWLSharp.Ontology.Axioms
 				graph.AddCollection(differentIndividualsCollection);
 				graph.AddTriple(new RDFTriple(allDifferentIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DIFFERENT));
 				graph.AddTriple(new RDFTriple(allDifferentIRI, RDFVocabulary.OWL.DISTINCT_MEMBERS, differentIndividualsCollection.ReificationSubject));
-			}
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				//Annotations
+				foreach (OWLAnnotation annotation in Annotations)
+					graph = graph.UnionWith(annotation.ToRDFGraphInternal(allDifferentIRI));
+			}
 
             return graph;
         }
