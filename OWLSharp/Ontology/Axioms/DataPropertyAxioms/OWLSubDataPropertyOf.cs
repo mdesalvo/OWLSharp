@@ -44,14 +44,16 @@ namespace OWLSharp.Ontology.Axioms
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
-
-            graph.AddTriple(new RDFTriple(SubDataProperty.GetIRI(), RDFVocabulary.RDFS.SUB_PROPERTY_OF, SuperDataProperty.GetIRI()));
             graph = graph.UnionWith(SubDataProperty.ToRDFGraph())
                          .UnionWith(SuperDataProperty.ToRDFGraph());
 
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(SubDataProperty.GetIRI(), RDFVocabulary.RDFS.SUB_PROPERTY_OF, SuperDataProperty.GetIRI());
+            graph.AddTriple(axiomTriple);            
+
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
