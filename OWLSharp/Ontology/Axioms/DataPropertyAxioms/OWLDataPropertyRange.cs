@@ -51,14 +51,16 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
             RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
-
-            graph.AddTriple(new RDFTriple(DataProperty.GetIRI(), RDFVocabulary.RDFS.RANGE, drExpressionIRI));
             graph = graph.UnionWith(DataProperty.ToRDFGraph())
                          .UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
 
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(DataProperty.GetIRI(), RDFVocabulary.RDFS.RANGE, drExpressionIRI);
+            graph.AddTriple(axiomTriple);            
+
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
