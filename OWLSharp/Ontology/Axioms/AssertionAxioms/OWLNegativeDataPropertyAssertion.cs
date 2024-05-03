@@ -55,17 +55,20 @@ namespace OWLSharp.Ontology.Axioms
             RDFGraph graph = new RDFGraph();
 
             RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
-			RDFResource negativeObjectPropertyAssertionIRI = new RDFResource();
-			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION));
-			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, idvExpressionIRI));
-			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.ASSERTION_PROPERTY, DataProperty.GetIRI()));
-			graph.AddTriple(new RDFTriple(negativeObjectPropertyAssertionIRI, RDFVocabulary.OWL.TARGET_VALUE, Literal.GetLiteral()));
+			RDFResource negativeDataPropertyAssertionIRI = new RDFResource();			
+			graph.AddTriple(new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, idvExpressionIRI));
+			graph.AddTriple(new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.OWL.ASSERTION_PROPERTY, DataProperty.GetIRI()));
+			graph.AddTriple(new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.OWL.TARGET_VALUE, Literal.GetLiteral()));
 			graph = graph.UnionWith(DataProperty.ToRDFGraph())
 						 .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
 	
+			//Axiom Triple
+			RDFTriple axiomTriple = new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION); 
+			graph.AddTriple(axiomTriple);
+
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				graph = graph.UnionWith(annotation.ToRDFGraphInternal(negativeDataPropertyAssertionIRI));
 
             return graph;
         }
