@@ -56,16 +56,19 @@ namespace OWLSharp.Ontology.Axioms
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
-
-			if (!string.IsNullOrEmpty(ValueIRI))
-            	graph.AddTriple(new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI)));
-			else
-				graph.AddTriple(new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral()));
 			graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
+
+			//Axiom Triple
+			RDFTriple axiomTriple;
+			if (!string.IsNullOrEmpty(ValueIRI))
+            	axiomTriple = new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI));
+			else
+				axiomTriple = new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral());
+			graph.AddTriple(axiomTriple);
 
 			//Annotations
 			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
