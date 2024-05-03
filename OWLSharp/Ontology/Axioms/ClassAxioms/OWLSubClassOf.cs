@@ -80,16 +80,18 @@ namespace OWLSharp.Ontology.Axioms
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
-
             RDFResource subClassExpressionIRI = SubClassExpression.GetIRI();
 			RDFResource superClassExpressionIRI = SuperClassExpression.GetIRI();
-			graph.AddTriple(new RDFTriple(subClassExpressionIRI, RDFVocabulary.RDFS.SUB_CLASS_OF, superClassExpressionIRI));
 			graph = graph.UnionWith(SubClassExpression.ToRDFGraph(subClassExpressionIRI))
 						 .UnionWith(SuperClassExpression.ToRDFGraph(superClassExpressionIRI));
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(subClassExpressionIRI, RDFVocabulary.RDFS.SUB_CLASS_OF, superClassExpressionIRI);
+            graph.AddTriple(axiomTriple);
+
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
