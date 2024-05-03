@@ -55,9 +55,16 @@ namespace OWLSharp.Ontology.Axioms
             //propertyDisjointWith
             if (DataProperties.Count == 2)
             {
-                graph.AddTriple(new RDFTriple(DataProperties[0].GetIRI(), RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, DataProperties[1].GetIRI()));
                 graph = graph.UnionWith(DataProperties[0].ToRDFGraph())
                              .UnionWith(DataProperties[1].ToRDFGraph());
+
+                //Axiom Triple
+                RDFTriple axiomTriple = new RDFTriple(DataProperties[0].GetIRI(), RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, DataProperties[1].GetIRI());
+                graph.AddTriple(axiomTriple);
+
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
             }
 
             //AllDisjointProperties
@@ -73,11 +80,11 @@ namespace OWLSharp.Ontology.Axioms
                 graph.AddCollection(disjointDataPropertiesCollection);
                 graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES));
                 graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.OWL.MEMBERS, disjointDataPropertiesCollection.ReificationSubject));
-            }
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraphInternal(allDisjointPropertiesIRI));
+            }
 
             return graph;
         }
