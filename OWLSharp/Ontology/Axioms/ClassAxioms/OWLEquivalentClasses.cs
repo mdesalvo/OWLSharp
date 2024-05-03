@@ -70,21 +70,28 @@ namespace OWLSharp.Ontology.Axioms
         {
             RDFGraph graph = new RDFGraph();
 
-			List<RDFResource> clsExpressionIRIs = new List<RDFResource>();
-			for (int i = 0; i < ClassExpressions.Count; i++)
-			{
-				RDFResource clsExpressionIRI = ClassExpressions[i].GetIRI(); 
-				clsExpressionIRIs.Add(clsExpressionIRI);
-				graph = graph.UnionWith(ClassExpressions[i].ToRDFGraph(clsExpressionIRI));
-			}
+            List<RDFResource> clsExpressionIRIs = new List<RDFResource>();
+            for (int i = 0; i < ClassExpressions.Count; i++)
+            {
+                RDFResource clsExpressionIRI = ClassExpressions[i].GetIRI();
+                clsExpressionIRIs.Add(clsExpressionIRI);
+                graph = graph.UnionWith(ClassExpressions[i].ToRDFGraph(clsExpressionIRI));
+            }
 
+            //Axiom Triple(s)
+            List<RDFTriple> axiomTriples = new List<RDFTriple>();
             for (int i = 0; i < ClassExpressions.Count - 1; i++)
-				for (int j = i + 1; j < ClassExpressions.Count; j++)
-					graph.AddTriple(new RDFTriple(clsExpressionIRIs[i], RDFVocabulary.OWL.EQUIVALENT_CLASS, clsExpressionIRIs[j]));
+                for (int j = i + 1; j < ClassExpressions.Count; j++)
+                {
+                    RDFTriple axiomTriple = new RDFTriple(clsExpressionIRIs[i], RDFVocabulary.OWL.EQUIVALENT_CLASS, clsExpressionIRIs[j]);
+                    axiomTriples.Add(axiomTriple);
+                    graph.AddTriple(axiomTriple);
+                }
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph());
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                foreach (RDFTriple axiomTriple in axiomTriples)
+                    graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }
