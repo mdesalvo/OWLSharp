@@ -58,19 +58,19 @@ namespace OWLSharp.Ontology
         #endregion
 
 		#region Methods
-		internal RDFGraph ToRDFGraph(RDFTriple axiomTriple=null)
+		internal RDFGraph ToRDFGraph(RDFTriple axiomTriple)
 		{
 			RDFGraph graph = new RDFGraph();
 
 			//Axiom Reification
 			RDFResource axiomIRI = new RDFResource();
 			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM));
-			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_SOURCE, (RDFResource)axiomTriple?.Subject));
-			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_PROPERTY, (RDFResource)axiomTriple?.Predicate));
+			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_SOURCE, (RDFResource)axiomTriple.Subject));
+			graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_PROPERTY, (RDFResource)axiomTriple.Predicate));
 			if (axiomTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)
-				graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFLiteral)axiomTriple?.Object));
+				graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFLiteral)axiomTriple.Object));
 			else
-				graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFResource)axiomTriple?.Object));
+				graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFResource)axiomTriple.Object));
 
 			//Axiom Annotation
 			graph = graph.UnionWith(ToRDFGraphInternal(axiomIRI));
@@ -78,7 +78,7 @@ namespace OWLSharp.Ontology
 			return graph;
 		}
 
-		internal RDFGraph ToRDFGraphInternal(RDFResource axiomIRI=null)
+		internal RDFGraph ToRDFGraphInternal(RDFResource axiomIRI)
 		{
 			RDFGraph graph = new RDFGraph();
 			graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());

@@ -133,7 +133,25 @@ namespace OWLSharp.Ontology
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+			//IRI
+            RDFResource ontologyIRI = new RDFResource();
+			if (!string.IsNullOrWhiteSpace(IRI))
+				ontologyIRI = new RDFResource(IRI);
+			graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+
+			//Version
+			if (!string.IsNullOrWhiteSpace(Version))
+				graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.OWL.VERSION_IRI, new RDFResource(Version)));
+
+			//Imports
+			foreach (OWLImport import in Imports)
+				graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.OWL.IMPORTS, new RDFResource(import.IRI)));
+
+			//Annotations
+			foreach (OWLAnnotation annotation in Annotations)
+				graph = graph.UnionWith(annotation.ToRDFGraphInternal(ontologyIRI));
+
+			//TODO
 
             return graph;
         }
