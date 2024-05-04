@@ -353,6 +353,28 @@ namespace OWLSharp.Ontology.Test
 			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
 		}
+
+		[TestMethod]
+		public void ShouldConvertOntologyWithClassAxiomToGraph()
+		{
+			OWLOntology ontology = OWLSerializer.Deserialize(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <SubClassOf>
+	<Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+	<Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+  </SubClassOf>
+</Ontology>");
+			RDFGraph graph = ontology.ToRDFGraph();
+
+			Assert.IsNotNull(graph);
+			Assert.IsTrue(graph.TriplesCount == 4);
+			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDFS.SUB_CLASS_OF, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+		}
         #endregion
     }
 }
