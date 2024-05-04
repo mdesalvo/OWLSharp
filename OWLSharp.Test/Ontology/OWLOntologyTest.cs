@@ -33,7 +33,7 @@ namespace OWLSharp.Ontology.Test
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology.Version, "ex:ont/v1"));
+			Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
 			Assert.IsNotNull(ontology.Prefixes);
 			Assert.IsTrue(ontology.Prefixes.Count == 5);
 			Assert.IsNotNull(ontology.Imports);
@@ -274,7 +274,7 @@ namespace OWLSharp.Ontology.Test
 
 			Assert.IsNotNull(ontology);
 			Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology.Version, "ex:ont/v1"));
+			Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
 			Assert.IsNotNull(ontology.Prefixes);
 			Assert.IsTrue(ontology.Prefixes.Count == 11); //TODO: since we inject 5 default prefixes, there may be duplicates after deserialization
 			Assert.IsNotNull(ontology.Imports);
@@ -332,6 +332,25 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.VERSION_INFO, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, new RDFPlainLiteral("v1.0")].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.DC.DESCRIPTION, null, new RDFPlainLiteral("nested annotation")].TriplesCount == 1);
+		}
+
+		[TestMethod]
+		public void ShouldConvertOntologyWithDeclarationToGraph()
+		{
+			OWLOntology ontology = OWLSerializer.Deserialize(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Declaration>
+	<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+  </Declaration>
+</Ontology>");
+			RDFGraph graph = ontology.ToRDFGraph();
+
+			Assert.IsNotNull(graph);
+			Assert.IsTrue(graph.TriplesCount == 2);
+			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
 		}
         #endregion
     }

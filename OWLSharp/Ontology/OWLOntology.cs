@@ -30,7 +30,7 @@ namespace OWLSharp.Ontology
         public string IRI { get; set; }
 
         [XmlAttribute("ontologyVersion", DataType="anyURI")]
-        public string Version { get; set; }
+        public string VersionIRI { get; set; }
 
         [XmlElement("Prefix")]
         public List<OWLPrefix> Prefixes { get; internal set; }
@@ -124,7 +124,7 @@ namespace OWLSharp.Ontology
         public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null) : this()
         {
             IRI = ontologyIRI?.ToString();
-            Version = ontologyVersion?.ToString();
+            VersionIRI = ontologyVersion?.ToString();
         }
         #endregion
 
@@ -139,9 +139,9 @@ namespace OWLSharp.Ontology
 				ontologyIRI = new RDFResource(IRI);
 			graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
 
-			//Version
-			if (!string.IsNullOrWhiteSpace(Version))
-				graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.OWL.VERSION_IRI, new RDFResource(Version)));
+			//VersionIRI
+			if (!string.IsNullOrWhiteSpace(VersionIRI))
+				graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.OWL.VERSION_IRI, new RDFResource(VersionIRI)));
 
 			//Imports
 			foreach (OWLImport import in Imports)
@@ -151,7 +151,23 @@ namespace OWLSharp.Ontology
 			foreach (OWLAnnotation annotation in Annotations)
 				graph = graph.UnionWith(annotation.ToRDFGraphInternal(ontologyIRI));
 
-			//TODO
+			//Axioms
+			foreach (OWLDeclaration declarationAxiom in DeclarationAxioms)
+				graph = graph.UnionWith(declarationAxiom.ToRDFGraph());
+			foreach (OWLClassAxiom classAxiom in ClassAxioms)
+				graph = graph.UnionWith(classAxiom.ToRDFGraph());
+			foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms)
+				graph = graph.UnionWith(objectPropertyAxiom.ToRDFGraph());
+			foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms)
+				graph = graph.UnionWith(dataPropertyAxiom.ToRDFGraph());
+			foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms)
+				graph = graph.UnionWith(datatypeDefinitionAxiom.ToRDFGraph());
+			foreach (OWLHasKey keyAxiom in KeyAxioms)
+				graph = graph.UnionWith(keyAxiom.ToRDFGraph());
+			foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms)
+				graph = graph.UnionWith(assertionAxiom.ToRDFGraph());
+			foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms)
+				graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
             return graph;
         }
