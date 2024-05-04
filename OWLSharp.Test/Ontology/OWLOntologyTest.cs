@@ -319,6 +319,7 @@ namespace OWLSharp.Ontology.Test
 			RDFGraph graph = ontology.ToRDFGraph();
 
 			Assert.IsNotNull(graph);
+			Assert.IsTrue(graph.Context.Equals(new Uri("ex:ont")));
 			Assert.IsTrue(graph.TriplesCount == 11);
 			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1"), null].TriplesCount == 1);

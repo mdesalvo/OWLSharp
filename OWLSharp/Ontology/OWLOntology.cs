@@ -169,6 +169,8 @@ namespace OWLSharp.Ontology
 			foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms)
 				graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
+			if (!ontologyIRI.IsBlank)
+				graph.SetContext(ontologyIRI.URI);
             return graph;
         }
         #endregion
