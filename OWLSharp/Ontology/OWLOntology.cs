@@ -196,7 +196,8 @@ namespace OWLSharp.Ontology
 			{
 				switch (owlFormat)
 				{
-					case OWLEnums.OWLFormats.Owl2Xml:						
+					case OWLEnums.OWLFormats.Owl2Xml:
+					default:						
 						string ontology = OWLSerializer.Serialize(this);
 						using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
 							streamWriter.Write(ontology);
@@ -206,6 +207,41 @@ namespace OWLSharp.Ontology
 			catch(Exception ex)
 			{
 				throw new OWLException($"Cannot write ontology to stream because: {ex.Message}", ex);
+			}
+        }
+
+		public static OWLOntology FromFile(OWLEnums.OWLFormats owlFormat, string inputFile)
+        {
+            #region Guards
+            if (string.IsNullOrWhiteSpace(inputFile))
+                throw new OWLException("Cannot read ontology from file because given \"inputFile\" parameter is null or empty");
+			if (!File.Exists(inputFile))
+                throw new OWLException("Cannot read ontology from file because given \"inputFile\" parameter (" + inputFile + ") does not indicate an existing file");
+            #endregion
+
+            return FromStream(owlFormat, new FileStream(inputFile, FileMode.Open));
+        }
+
+        public static OWLOntology FromStream(OWLEnums.OWLFormats owlFormat, Stream inputStream)
+        {
+            #region Guards
+            if (inputStream == null)
+                throw new OWLException("Cannot read ontology from stream because given \"inputStream\" parameter is null");
+            #endregion
+
+			try
+			{
+				switch (owlFormat)
+				{
+					case OWLEnums.OWLFormats.Owl2Xml:
+					default:						
+						using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
+							return OWLSerializer.Deserialize(streamReader.ReadToEnd());
+				}
+			}
+			catch(Exception ex)
+			{
+				throw new OWLException($"Cannot read ontology from stream because: {ex.Message}", ex);
 			}
         }
         #endregion
