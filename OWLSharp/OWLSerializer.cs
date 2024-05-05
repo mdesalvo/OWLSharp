@@ -76,18 +76,6 @@ namespace OWLSharp
         }
     }
 
-	internal static class OWLTransformer
-	{
-		internal static OWLOntology Transform(RDFGraph graph)
-		{
-			OWLOntology ontology = new OWLOntology();
-
-			//TODO
-
-			return ontology;
-		}
-	}
-
     internal class UTF8StringWriter : StringWriter
     {
         public override Encoding Encoding => Encoding.UTF8;
