@@ -122,10 +122,10 @@ namespace OWLSharp.Ontology
             AssertionAxioms = new List<OWLAssertionAxiom>();
             AnnotationAxioms = new List<OWLAnnotationAxiom>();
         }
-        public OWLOntology(Uri ontologyIRI, Uri ontologyVersion=null) : this()
+        public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI=null) : this()
         {
             IRI = ontologyIRI?.ToString();
-            VersionIRI = ontologyVersion?.ToString();
+            VersionIRI = ontologyVersionIRI?.ToString();
         }
         #endregion
 
