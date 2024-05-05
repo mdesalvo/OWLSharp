@@ -76,6 +76,7 @@ namespace OWLSharp
 			return ontology;
 		}
 
+		#region Privates
 		private static bool LoadOntologyHeader(RDFGraph graph, out OWLOntology ontology)
 		{
 			RDFGraph typeOntology = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null];
@@ -94,5 +95,6 @@ namespace OWLSharp
 			};
 			return true;
 		}
+		#endregion
 	}
 }
