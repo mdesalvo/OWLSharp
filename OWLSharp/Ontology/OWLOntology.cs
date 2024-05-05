@@ -130,6 +130,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+		//EXPORT
+		
 		public void ToFile(OWLEnums.OWLFormats owlFormat, string outputFile)
         {
             #region Guards
