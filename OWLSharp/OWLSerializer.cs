@@ -23,15 +23,10 @@ using OWLSharp.Ontology;
 
 namespace OWLSharp
 {
-    public static class OWLSerializer
+    internal static class OWLSerializer
     {
-        public static string Serialize(OWLOntology ontology)
+        internal static string Serialize(OWLOntology ontology)
         {
-            #region Guards
-            if (ontology == null)
-                throw new OWLException("Cannot serialize OWLOntology because given \"ontology\" parameter is null");
-            #endregion
-
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             //Hide hard-coded .NET prefixes (e.g: xsi)
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
@@ -61,13 +56,8 @@ namespace OWLSharp
             }
         }
 
-        public static OWLOntology Deserialize(string ontology)
+        internal static OWLOntology Deserialize(string ontology)
         {
-            #region Guards
-            if (string.IsNullOrEmpty(ontology))
-                throw new OWLException("Cannot deserialize OWLOntology because given \"ontology\" parameter is null");
-            #endregion
-
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (StringReader stringReader = new StringReader(ontology))
             {

@@ -18,6 +18,7 @@ using OWLSharp.Ontology.Axioms;
 using RDFSharp.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -129,6 +130,40 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+		public void ToFile(OWLEnums.OWLFormats owlFormat, string outputFile)
+        {
+            #region Guards
+            if (string.IsNullOrWhiteSpace(outputFile))
+                throw new OWLException("Cannot write ontology to file because given \"outputFile\" parameter is null or empty");
+            #endregion
+
+            ToStream(owlFormat, new FileStream(outputFile, FileMode.Create));
+        }
+
+        public void ToStream(OWLEnums.OWLFormats owlFormat, Stream outputStream)
+        {
+            #region Guards
+            if (outputStream == null)
+                throw new OWLException("Cannot write ontology to stream because given \"outputStream\" parameter is null");
+            #endregion
+
+			try
+			{
+				switch (owlFormat)
+				{
+					case OWLEnums.OWLFormats.Owl2Xml:						
+						string ontology = OWLSerializer.Serialize(this);
+						using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
+							streamWriter.Write(ontology);
+					break;
+				}
+			}
+			catch(Exception ex)
+			{
+				throw new OWLException($"Cannot write ontology to stream because: {ex.Message}", ex);
+			}
+        }
+
         public RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
