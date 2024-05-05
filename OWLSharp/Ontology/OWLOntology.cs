@@ -217,8 +217,7 @@ namespace OWLSharp.Ontology
                 throw new OWLException("Cannot read ontology from graph because given \"graph\" parameter is null");
             #endregion
 
-			//TODO
-			return null;
+			return OWLTransformer.Transform(graph);
 		}
 
 		public static OWLOntology FromFile(OWLEnums.OWLFormats owlFormat, string inputFile)
