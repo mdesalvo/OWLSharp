@@ -878,6 +878,40 @@ namespace OWLSharp.Ontology.Test
 		public void ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStream()
 			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromStream(OWLEnums.OWLFormats.Owl2Xml, null));
 
+		[TestMethod]
+		public void ShouldReadOntologyHeaderFromGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+			graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
+			OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+
+			Assert.IsNotNull(ontology);
+			Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
+			Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
+		}
+
+		[TestMethod]
+		public void ShouldReadOntologyHeaderWithInvalidVersionIRIFromGraph()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+			graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFPlainLiteral("ex:ont/v1")));
+			OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+
+			Assert.IsNotNull(ontology);
+			Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
+			Assert.IsNull(ontology.VersionIRI);
+		}
+
+		[TestMethod]
+		public void ShouldCrashOnReadingOntologyHeaderFromGraphBecauseNoOntologyDeclaration()
+		{
+			RDFGraph graph = new RDFGraph();
+			graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
+			Assert.ThrowsException<OWLException>(() => OWLOntology.FromRDFGraph(graph));
+		}
+
 		[TestCleanup]
         public void Cleanup()
         {

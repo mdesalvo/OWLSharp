@@ -17,6 +17,7 @@
 using RDFSharp.Model;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
+using System.Linq;
 
 namespace OWLSharp
 {	
@@ -69,11 +70,29 @@ namespace OWLSharp
 
 		internal static OWLOntology Transform(RDFGraph graph)
 		{
-			OWLOntology ontology = new OWLOntology();
-
-			//TODO
+			if (!LoadOntologyHeader(graph, out OWLOntology ontology))
+				throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
 
 			return ontology;
+		}
+
+		private static bool LoadOntologyHeader(RDFGraph graph, out OWLOntology ontology)
+		{
+			RDFGraph typeOntology = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null];
+			if (typeOntology.TriplesCount == 0)
+			{
+				ontology = null;
+				return false;
+			}
+
+			string ontologyIRI = typeOntology.First().Subject.ToString();
+			ontology = new OWLOntology()
+			{
+				IRI = ontologyIRI,
+				VersionIRI = (graph[new RDFResource(ontologyIRI), RDFVocabulary.OWL.VERSION_IRI, null, null]
+								.FirstOrDefault()?.Object as RDFResource)?.ToString()
+			};
+			return true;
 		}
 	}
 }
