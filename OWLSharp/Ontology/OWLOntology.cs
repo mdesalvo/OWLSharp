@@ -210,6 +210,17 @@ namespace OWLSharp.Ontology
 			}
         }
 
+		public static OWLOntology FromRDFGraph(RDFGraph graph)
+		{
+			#region Guards
+            if (graph == null)
+                throw new OWLException("Cannot read ontology from graph because given \"graph\" parameter is null");
+            #endregion
+
+			//TODO
+			return null;
+		}
+
 		public static OWLOntology FromFile(OWLEnums.OWLFormats owlFormat, string inputFile)
         {
             #region Guards
