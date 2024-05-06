@@ -76,6 +76,7 @@ namespace OWLSharp
 				throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
 			LoadImports(graph, ontology);
 			LoadDeclarations(graph, ontology);
+			LoadOntologyAnnotations(graph, ontology);
 
 			return ontology;
 		}
@@ -107,7 +108,7 @@ namespace OWLSharp
                 ontology.Imports.Add(new OWLImport((RDFResource)imports.Object));
         }
 
-		private static void LoadDeclarations(RDFGraph graph, OWLOntology ontology)
+        private static void LoadDeclarations(RDFGraph graph, OWLOntology ontology)
 		{
 			RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
 
@@ -129,6 +130,32 @@ namespace OWLSharp
 
             foreach (RDFTriple typeNamedIndividual in typeGraph[null, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null])
                 ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual((RDFResource)typeNamedIndividual.Subject)));
+        }
+
+        private static void LoadOntologyAnnotations(RDFGraph graph, OWLOntology ontology)
+        {
+			#region Facilities
+			void LoadAnnotations(RDFResource workingAnnotationProperty, RDFGraph workingGraph)
+			{
+                OWLAnnotationProperty annotationProperty = new OWLAnnotationProperty(workingAnnotationProperty);
+                foreach (RDFTriple annotation in workingGraph[null, workingAnnotationProperty, null, null])
+                    if (annotation.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                        ontology.Annotations.Add(new OWLAnnotation(annotationProperty, (RDFResource)annotation.Object));
+                    else
+                        ontology.Annotations.Add(new OWLAnnotation(annotationProperty, new OWLLiteral((RDFLiteral)annotation.Object)));
+            }
+			#endregion
+
+			RDFGraph ontologyGraph = graph[new RDFResource(ontology.IRI), null, null, null];
+            LoadAnnotations(RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.OWL.INCOMPATIBLE_WITH, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.OWL.PRIOR_VERSION, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.OWL.VERSION_INFO, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.OWL.DEPRECATED, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.RDFS.COMMENT, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.RDFS.LABEL, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.RDFS.SEE_ALSO, ontologyGraph);
+            LoadAnnotations(RDFVocabulary.RDFS.IS_DEFINED_BY, ontologyGraph);
         }
         #endregion
     }
