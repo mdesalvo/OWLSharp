@@ -74,6 +74,7 @@ namespace OWLSharp
 		{
 			if (!TryLoadOntologyHeader(graph, out OWLOntology ontology))
 				throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
+			LoadImports(graph, ontology);
 			LoadDeclarations(graph, ontology);
 
 			return ontology;
@@ -98,6 +99,13 @@ namespace OWLSharp
 			};
 			return true;
 		}
+
+		private static void LoadImports(RDFGraph graph, OWLOntology ontology)
+		{
+            foreach (RDFTriple imports in graph[new RDFResource(ontology.IRI), RDFVocabulary.OWL.IMPORTS, null, null]
+										   .Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+                ontology.Imports.Add(new OWLImport((RDFResource)imports.Object));
+        }
 
 		private static void LoadDeclarations(RDFGraph graph, OWLOntology ontology)
 		{

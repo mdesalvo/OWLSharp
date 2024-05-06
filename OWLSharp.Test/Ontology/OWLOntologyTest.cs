@@ -918,6 +918,21 @@ namespace OWLSharp.Ontology.Test
 		}
 
         [TestMethod]
+        public void ShouldReadImportsFromGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource("ex:ont2")));
+            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
+            Assert.IsNull(ontology.VersionIRI);
+            Assert.IsTrue(ontology.Imports.Count == 1);
+            Assert.IsTrue(ontology.Imports.Count(imp => string.Equals(imp.IRI, "ex:ont2")) == 1);
+        }
+
+        [TestMethod]
         public void ShouldReadDeclarationsFromGraph()
         {
             RDFGraph graph = new RDFGraph();
