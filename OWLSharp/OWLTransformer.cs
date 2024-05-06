@@ -147,6 +147,8 @@ namespace OWLSharp
 			#endregion
 
 			RDFGraph ontologyGraph = graph[new RDFResource(ontology.IRI), null, null, null];
+
+			//Load standard ontology annotations
             LoadAnnotations(RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH, ontologyGraph);
             LoadAnnotations(RDFVocabulary.OWL.INCOMPATIBLE_WITH, ontologyGraph);
             LoadAnnotations(RDFVocabulary.OWL.PRIOR_VERSION, ontologyGraph);
@@ -156,6 +158,10 @@ namespace OWLSharp
             LoadAnnotations(RDFVocabulary.RDFS.LABEL, ontologyGraph);
             LoadAnnotations(RDFVocabulary.RDFS.SEE_ALSO, ontologyGraph);
             LoadAnnotations(RDFVocabulary.RDFS.IS_DEFINED_BY, ontologyGraph);
+
+			//Load custom ontology annotation
+			foreach (OWLDeclaration annPropDeclaration in ontology.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty annProp))
+                LoadAnnotations(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI(), ontologyGraph);
         }
         #endregion
     }
