@@ -965,6 +965,7 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLNamedIndividual daxIdv
                                                                     && daxIdv.GetIRI().Equals(new RDFResource("ex:Alice"))) == 1);
         }
+        #endregion
 
         [TestCleanup]
         public void Cleanup()
@@ -972,6 +973,5 @@ namespace OWLSharp.Ontology.Test
             foreach (string file in Directory.EnumerateFiles(Environment.CurrentDirectory, "OWLOntologyTest_Should*"))
                 File.Delete(file);
         }
-        #endregion
     }
 }
