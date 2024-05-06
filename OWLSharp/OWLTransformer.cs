@@ -159,8 +159,9 @@ namespace OWLSharp
             LoadAnnotations(RDFVocabulary.RDFS.SEE_ALSO, ontologyGraph);
             LoadAnnotations(RDFVocabulary.RDFS.IS_DEFINED_BY, ontologyGraph);
 
-			//Load custom ontology annotations
-			foreach (OWLDeclaration annPropDeclaration in ontology.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty))
+			//Load custom ontology annotations (exclude owl:versionIRI)
+			foreach (OWLDeclaration annPropDeclaration in ontology.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp
+																									&& !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
                 LoadAnnotations(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI(), ontologyGraph);
         }
         #endregion

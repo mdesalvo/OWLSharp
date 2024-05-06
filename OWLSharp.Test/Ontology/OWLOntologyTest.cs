@@ -965,7 +965,42 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLNamedIndividual daxIdv
                                                                     && daxIdv.GetIRI().Equals(new RDFResource("ex:Alice"))) == 1);
         }
-        #endregion
+
+		[TestMethod]
+		public void ShouldReadOntologyAnnotationsFromGraph()
+		{
+            RDFGraph graph = new RDFGraph();
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v2")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH, new RDFResource("ex:ont1")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.INCOMPATIBLE_WITH, new RDFResource("ex:ont0")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.PRIOR_VERSION, new RDFResource("ex:ont1")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.VERSION_INFO, new RDFPlainLiteral("v2")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.OWL.DEPRECATED, RDFTypedLiteral.True));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.COMMENT, new RDFPlainLiteral("comment")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.LABEL, new RDFPlainLiteral("label", "en-US")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.SEE_ALSO, new RDFResource("ex:ont2/seeAlso")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.IS_DEFINED_BY, new RDFResource("ex:ont2")));
+            graph.AddTriple(new RDFTriple(RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.DC.CREATOR, new RDFResource("ex:Test")));
+            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont2"));
+            Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v2"));
+            Assert.IsTrue(ontology.Annotations.Count == 10);
+			Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.INCOMPATIBLE_WITH)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.PRIOR_VERSION)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.VERSION_INFO)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.SEE_ALSO)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.IS_DEFINED_BY)) == 1);
+            Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.CREATOR)) == 1);
+        }
+		#endregion
 
         [TestCleanup]
         public void Cleanup()
