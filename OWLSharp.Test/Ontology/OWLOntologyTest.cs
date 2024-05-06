@@ -16,6 +16,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
@@ -58,6 +59,8 @@ namespace OWLSharp.Ontology.Test
 			Assert.IsNotNull(ontology.AnnotationAxioms);
 			Assert.IsTrue(ontology.AnnotationAxioms.Count == 0);
         }
+
+		//OWLSerializer
 
 		[TestMethod]
 		public void ShouldSerializeOntology()
@@ -878,6 +881,8 @@ namespace OWLSharp.Ontology.Test
 		public void ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStream()
 			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromStream(OWLEnums.OWLFormats.Owl2Xml, null));
 
+		//OWLTransformer
+
 		[TestMethod]
 		public void ShouldReadOntologyHeaderFromGraph()
 		{
@@ -912,7 +917,41 @@ namespace OWLSharp.Ontology.Test
 			Assert.ThrowsException<OWLException>(() => OWLOntology.FromRDFGraph(graph));
 		}
 
-		[TestCleanup]
+        [TestMethod]
+        public void ShouldReadDeclarationsFromGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+			graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
+            graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.CLASS));
+            graph.AddTriple(new RDFTriple(RDFVocabulary.XSD.INTEGER, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
+            graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+            graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY));
+            graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.MAKER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:Alice"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
+            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
+            Assert.IsNull(ontology.VersionIRI);
+			Assert.IsTrue(ontology.DeclarationAxioms.Count == 7);
+			Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLClass daxCls
+																	&& daxCls.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)) == 1);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLClass daxCls
+                                                                    && daxCls.GetIRI().Equals(RDFVocabulary.FOAF.ORGANIZATION)) == 1);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLDatatype daxDtt
+                                                                    && daxDtt.GetIRI().Equals(RDFVocabulary.XSD.INTEGER)) == 1);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLObjectProperty daxObp
+                                                                    && daxObp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)) == 1);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLDataProperty daxDtp
+                                                                    && daxDtp.GetIRI().Equals(RDFVocabulary.FOAF.NAME)) == 1);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLAnnotationProperty daxAnp
+                                                                    && daxAnp.GetIRI().Equals(RDFVocabulary.FOAF.MAKER)) == 1);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLNamedIndividual daxIdv
+                                                                    && daxIdv.GetIRI().Equals(new RDFResource("ex:Alice"))) == 1);
+        }
+
+        [TestCleanup]
         public void Cleanup()
         {
             foreach (string file in Directory.EnumerateFiles(Environment.CurrentDirectory, "OWLOntologyTest_Should*"))
