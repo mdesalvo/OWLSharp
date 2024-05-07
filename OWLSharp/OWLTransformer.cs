@@ -74,14 +74,19 @@ namespace OWLSharp
 
 		internal static OWLOntology Transform(RDFGraph graph)
 		{
+			#region Ontology
 			if (!TryLoadOntologyHeader(graph, out OWLOntology ontology))
 				throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
 			LoadImports(graph, ontology);
 			LoadPrefixes(graph, ontology);
 			LoadDeclarations(graph, ontology);
 			LoadOntologyAnnotations(graph, ontology);
+			#endregion
 
-			//TODO: AXIOMS
+			#region Axioms
+			//TODO
+			
+			#endregion
 
 			return ontology;
 		}
