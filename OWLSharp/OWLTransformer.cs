@@ -79,6 +79,8 @@ namespace OWLSharp
 			LoadDeclarations(graph, ontology);
 			LoadOntologyAnnotations(graph, ontology);
 
+			//TODO: AXIOMS
+
 			return ontology;
 		}
 
