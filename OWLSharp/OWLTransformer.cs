@@ -84,14 +84,13 @@ namespace OWLSharp
 			#endregion
 
 			#region Axioms
-			//TODO
 			
 			#endregion
 
 			return ontology;
 		}
 
-		#region Privates
+		#region Privates (Ontology)
 		private static bool TryLoadOntologyHeader(RDFGraph graph, out OWLOntology ontology)
 		{
 			RDFGraph typeOntology = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null];
@@ -212,5 +211,9 @@ namespace OWLSharp
 				LoadDirectAnnotations(ontologyIRI, ((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
         }
         #endregion
+
+		#region Privates (Axioms)
+
+		#endregion
     }
 }
