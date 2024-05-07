@@ -21,6 +21,7 @@ using System.Linq;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Query;
 using System.Data;
+using System.Collections.Generic;
 
 namespace OWLSharp
 {	
@@ -76,6 +77,7 @@ namespace OWLSharp
 			if (!TryLoadOntologyHeader(graph, out OWLOntology ontology))
 				throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
 			LoadImports(graph, ontology);
+			LoadPrefixes(graph, ontology);
 			LoadDeclarations(graph, ontology);
 			LoadOntologyAnnotations(graph, ontology);
 
@@ -110,8 +112,15 @@ namespace OWLSharp
 										   .Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
                 ontology.Imports.Add(new OWLImport((RDFResource)imports.Object));
         }
+		
+		private static void LoadPrefixes(RDFGraph graph, OWLOntology ontology)
+		{
+			foreach(RDFNamespace graphPrefix in RDFModelUtilities.GetGraphNamespaces(graph))
+				if (!ontology.Prefixes.Any(pfx => string.Equals(pfx.IRI, graphPrefix.NamespaceUri.ToString())))
+					ontology.Prefixes.Add(new OWLPrefix(graphPrefix));
+		}
 
-        private static void LoadDeclarations(RDFGraph graph, OWLOntology ontology)
+		private static void LoadDeclarations(RDFGraph graph, OWLOntology ontology)
 		{
 			RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
 

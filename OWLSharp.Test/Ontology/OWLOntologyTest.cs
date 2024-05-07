@@ -932,6 +932,26 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(ontology.Imports.Count(imp => string.Equals(imp.IRI, "ex:ont2")) == 1);
         }
 
+		[TestMethod]
+        public void ShouldReadPrefixesFromGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.FOAF.MAKER, new RDFResource("ex:Mark")));
+            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
+            Assert.IsNull(ontology.VersionIRI);
+            Assert.IsTrue(ontology.Prefixes.Count == 6);
+			Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX)) == 1);
+			Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX)) == 1);
+			Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX)) == 1);
+			Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX)) == 1);
+			Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX)) == 1);
+            Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.FOAF.PREFIX)) == 1);
+        }
+
         [TestMethod]
         public void ShouldReadDeclarationsFromGraph()
         {
