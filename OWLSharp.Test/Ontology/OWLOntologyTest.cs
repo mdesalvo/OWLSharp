@@ -1000,7 +1000,34 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.IS_DEFINED_BY)) == 1);
             Assert.IsTrue(ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.CREATOR)) == 1);
         }
-		#endregion
+
+        [TestMethod]
+        public void ShouldReadOntologyNestedAnnotationsFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                {
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+					{
+                        Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new RDFResource("ex:ann"))
+                    }
+                });
+			RDFGraph graph = ontology.ToRDFGraph();
+			OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.Annotations.Count == 1);
+			Assert.IsTrue(ontology2.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DESCRIPTION) 
+						   && ontology2.Annotations.Single().ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("annotation")));
+            Assert.IsTrue(ontology2.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DESCRIPTION)
+                           && ontology2.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("nested annotation")));
+            Assert.IsTrue(ontology2.Annotations.Single().Annotation.Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DESCRIPTION)
+                           && ontology2.Annotations.Single().Annotation.Annotation.ValueIRI.Equals("ex:ann"));
+        }
+        #endregion
 
         [TestCleanup]
         public void Cleanup()
