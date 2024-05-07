@@ -136,7 +136,7 @@ namespace OWLSharp
         private static void LoadOntologyAnnotations(RDFGraph graph, OWLOntology ontology)
         {
 			#region Facilities
-			void LoadAnnotations(RDFResource workingAnnotationSubject, RDFResource workingAnnotationProperty)
+			void LoadDirectAnnotations(RDFResource workingAnnotationSubject, RDFResource workingAnnotationProperty)
 			{
                 OWLAnnotationProperty annotationProperty = new OWLAnnotationProperty(workingAnnotationProperty);
                 foreach (RDFTriple annotationTriple in graph[workingAnnotationSubject, workingAnnotationProperty, null, null])
@@ -181,24 +181,19 @@ namespace OWLSharp
 			}
 			#endregion
 
-			//Load standard ontology annotations
 			RDFResource ontologyIRI = new RDFResource(ontology.IRI);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.OWL.INCOMPATIBLE_WITH);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.OWL.PRIOR_VERSION);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.OWL.VERSION_INFO);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.OWL.DEPRECATED);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.RDFS.COMMENT);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.RDFS.LABEL);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.RDFS.SEE_ALSO);
-            LoadAnnotations(ontologyIRI, RDFVocabulary.RDFS.IS_DEFINED_BY);
-
-			//Load custom ontology annotations
-			foreach (OWLDeclaration annPropDeclaration in ontology.DeclarationAxioms.Where(
-				dax => dax.Expression is OWLAnnotationProperty daxAnnProp && !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
-			{
-				LoadAnnotations(ontologyIRI, ((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
-			}
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.OWL.INCOMPATIBLE_WITH);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.OWL.PRIOR_VERSION);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.OWL.VERSION_INFO);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.OWL.DEPRECATED);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.RDFS.COMMENT);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.RDFS.LABEL);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.RDFS.SEE_ALSO);
+            LoadDirectAnnotations(ontologyIRI, RDFVocabulary.RDFS.IS_DEFINED_BY);
+			foreach (OWLDeclaration annPropDeclaration in ontology.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp 
+																									&& !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
+				LoadDirectAnnotations(ontologyIRI, ((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
         }
         #endregion
     }
