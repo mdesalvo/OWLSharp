@@ -1539,6 +1539,12 @@ namespace OWLSharp.Ontology.Test
                              && string.Equals(equivObjProps1.Annotations[1].ValueIRI, "ex:comment2")
                               && equivObjProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && equivObjProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+			Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLEquivalentObjectProperties equivObjProps2
+                            && equivObjProps2.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA3
+                            && objPropA3.GetIRI().Equals(new RDFResource("ex:objPropA3"))
+							&& equivObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB3
+                            && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
+                            && equivObjProps2.Annotations.Count == 0);
         }
         #endregion
 
