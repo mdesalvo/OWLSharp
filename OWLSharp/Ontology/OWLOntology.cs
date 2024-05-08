@@ -271,17 +271,17 @@ namespace OWLSharp.Ontology
             {
                 //Collect annotation properties
                 List<RDFResource> annotationProperties = new List<RDFResource>()
-            {
-                RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
-                RDFVocabulary.OWL.INCOMPATIBLE_WITH,
-                RDFVocabulary.OWL.PRIOR_VERSION,
-                RDFVocabulary.OWL.VERSION_INFO,
-                RDFVocabulary.OWL.DEPRECATED,
-                RDFVocabulary.RDFS.COMMENT,
-                RDFVocabulary.RDFS.LABEL,
-                RDFVocabulary.RDFS.SEE_ALSO,
-                RDFVocabulary.RDFS.IS_DEFINED_BY
-            };
+                {
+                    RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
+                    RDFVocabulary.OWL.INCOMPATIBLE_WITH,
+                    RDFVocabulary.OWL.PRIOR_VERSION,
+                    RDFVocabulary.OWL.VERSION_INFO,
+                    RDFVocabulary.OWL.DEPRECATED,
+                    RDFVocabulary.RDFS.COMMENT,
+                    RDFVocabulary.RDFS.LABEL,
+                    RDFVocabulary.RDFS.SEE_ALSO,
+                    RDFVocabulary.RDFS.IS_DEFINED_BY
+                };
                 foreach (OWLDeclaration annPropDeclaration in ontology.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp
                                                                                                         && !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
                     annotationProperties.Add(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
