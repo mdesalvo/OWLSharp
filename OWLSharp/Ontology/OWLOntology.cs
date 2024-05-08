@@ -308,13 +308,18 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple asymProp in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
                 {
+                    OWLAsymmetricObjectProperty asymmetricObjectProperty;
                     if (graph[(RDFResource)asymProp.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
-                        ont.ObjectPropertyAxioms.Add(new OWLAsymmetricObjectProperty(new OWLObjectProperty((RDFResource)asymProp.Subject)));
+                        asymmetricObjectProperty = new OWLAsymmetricObjectProperty(new OWLObjectProperty((RDFResource)asymProp.Subject));
                     else
                     {
                         RDFResource invOfProp = (RDFResource)graph[(RDFResource)asymProp.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
-                        ont.ObjectPropertyAxioms.Add(new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(invOfProp))));
+                        asymmetricObjectProperty = new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(invOfProp)));
                     }
+
+                    //TODO: Annotation
+
+                    ont.ObjectPropertyAxioms.Add(asymmetricObjectProperty);
                 }
             }
 
