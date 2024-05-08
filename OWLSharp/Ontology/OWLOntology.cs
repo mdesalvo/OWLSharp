@@ -306,20 +306,51 @@ namespace OWLSharp.Ontology
 
             void LoadAsymmetricObjectProperty(OWLOntology ont)
             {
-                foreach (RDFTriple asymProp in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
+                foreach (RDFTriple asymPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
                 {
                     OWLAsymmetricObjectProperty asymmetricObjectProperty;
-                    if (graph[(RDFResource)asymProp.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
-                        asymmetricObjectProperty = new OWLAsymmetricObjectProperty(new OWLObjectProperty((RDFResource)asymProp.Subject));
+                    if (graph[(RDFResource)asymPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+                        asymmetricObjectProperty = new OWLAsymmetricObjectProperty(new OWLObjectProperty((RDFResource)asymPropTriple.Subject));
                     else
                     {
-                        RDFResource invOfProp = (RDFResource)graph[(RDFResource)asymProp.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
-                        asymmetricObjectProperty = new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(invOfProp)));
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)asymPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        asymmetricObjectProperty = new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
                     }
 
-                    //TODO: Annotation
+                    LoadAxiomAnnotations(ont, asymPropTriple, asymmetricObjectProperty);
 
                     ont.ObjectPropertyAxioms.Add(asymmetricObjectProperty);
+                }
+            }
+
+            void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
+            {
+                RDFSelectQuery query = new RDFSelectQuery()
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_SOURCE, axiomTriple.Subject))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_PROPERTY, axiomTriple.Predicate))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_TARGET, axiomTriple.Object))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), new RDFVariable("?ANNPROP"), new RDFVariable("?ANNVAL")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?ANNPROP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY)))
+                    .AddModifier(new RDFLimitModifier(1));
+                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                if (result.SelectResultsCount > 0)
+                {
+                    DataRow resultRow = result.SelectResults.Rows[0];
+                    RDFPatternMember axiomIRI = RDFQueryUtilities.ParseRDFPatternMember(resultRow["?AXIOM"].ToString());
+                    RDFPatternMember annProp = RDFQueryUtilities.ParseRDFPatternMember(resultRow["?ANNPROP"].ToString());
+                    RDFPatternMember annVal = RDFQueryUtilities.ParseRDFPatternMember(resultRow["?ANNVAL"].ToString());
+                    RDFTriple annotationTriple = annVal is RDFResource annValRes
+                        ? new RDFTriple((RDFResource)axiomIRI, (RDFResource)annProp, annValRes)
+                        : new RDFTriple((RDFResource)axiomIRI, (RDFResource)annProp, (RDFLiteral)annVal);
+                    OWLAnnotation annotation = annVal is RDFResource annValRes2
+                        ? new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), annValRes2)
+                        : new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), new OWLLiteral((RDFLiteral)annVal));
+
+                    LoadNestedAnnotation(ont, annotationTriple, annotation);
+
+                    axiom.Annotations.Add(annotation);
                 }
             }
 
