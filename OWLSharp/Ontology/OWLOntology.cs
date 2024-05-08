@@ -320,6 +320,24 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(asymmetricObjectProperty);
                 }
             }
+            void LoadSymmetricObjectProperty(OWLOntology ont)
+            {
+                foreach (RDFTriple symPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null])
+                {
+                    OWLSymmetricObjectProperty symmetricObjectProperty;
+                    if (graph[(RDFResource)symPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+                        symmetricObjectProperty = new OWLSymmetricObjectProperty(new OWLObjectProperty((RDFResource)symPropTriple.Subject));
+                    else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)symPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        symmetricObjectProperty = new OWLSymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                    }
+
+                    LoadAxiomAnnotations(ont, symPropTriple, symmetricObjectProperty);
+
+                    ont.ObjectPropertyAxioms.Add(symmetricObjectProperty);
+                }
+            }
 
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
@@ -393,6 +411,7 @@ namespace OWLSharp.Ontology
             LoadDeclarations(ontology);
             LoadOntologyAnnotations(ontology);
             LoadAsymmetricObjectProperty(ontology);
+            LoadSymmetricObjectProperty(ontology);
 
             return ontology;
         }
