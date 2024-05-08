@@ -228,21 +228,18 @@ namespace OWLSharp.Ontology
                                     .FirstOrDefault()?.Object as RDFResource)?.ToString()
                 };
             }
-
             void LoadImports(OWLOntology ont)
             {
                 foreach (RDFTriple imports in graph[new RDFResource(ont.IRI), RDFVocabulary.OWL.IMPORTS, null, null]
                                                .Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
                     ont.Imports.Add(new OWLImport((RDFResource)imports.Object));
             }
-
             void LoadPrefixes(OWLOntology ont)
             {
                 foreach (RDFNamespace graphPrefix in RDFModelUtilities.GetGraphNamespaces(graph))
                     if (!ont.Prefixes.Any(pfx => string.Equals(pfx.IRI, graphPrefix.NamespaceUri.ToString())))
                         ont.Prefixes.Add(new OWLPrefix(graphPrefix));
             }
-
             void LoadDeclarations(OWLOntology ont)
             {
                 RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
@@ -266,7 +263,6 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple typeNamedIndividual in typeGraph[null, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null])
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual((RDFResource)typeNamedIndividual.Subject)));
             }
-
             void LoadOntologyAnnotations(OWLOntology ont)
             {
                 List<RDFResource> ontologyAnnotationProperties = new List<RDFResource>()
