@@ -351,7 +351,6 @@ namespace OWLSharp.Ontology
                     axiom.Annotations.Add(annotation);
                 }
             }
-
             void LoadNestedAnnotation(OWLOntology ont, RDFTriple annotationTriple, OWLAnnotation annotation)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
