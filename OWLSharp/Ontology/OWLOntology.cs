@@ -269,8 +269,7 @@ namespace OWLSharp.Ontology
 
             void LoadOntologyAnnotations(OWLOntology ont)
             {
-                //Collect annotation properties (for ontologies)
-                List<RDFResource> annotationProperties = new List<RDFResource>()
+                List<RDFResource> ontologyAnnotationProperties = new List<RDFResource>()
                 {
                     RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
                     RDFVocabulary.OWL.INCOMPATIBLE_WITH,
@@ -284,11 +283,10 @@ namespace OWLSharp.Ontology
                 };
                 foreach (OWLDeclaration annPropDeclaration in ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp
                                                                                                   && !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
-                    annotationProperties.Add(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
+                    ontologyAnnotationProperties.Add(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
 
-                //Iterate annotation properties
                 RDFResource ontologyIRI = new RDFResource(ont.IRI);
-                foreach (RDFResource workingAnnotationProperty in annotationProperties)
+                foreach (RDFResource workingAnnotationProperty in ontologyAnnotationProperties)
                 {
                     OWLAnnotationProperty annotationProperty = new OWLAnnotationProperty(workingAnnotationProperty);
                     foreach (RDFTriple annotationTriple in graph[ontologyIRI, workingAnnotationProperty, null, null])
