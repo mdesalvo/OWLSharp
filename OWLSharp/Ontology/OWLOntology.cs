@@ -297,14 +297,14 @@ namespace OWLSharp.Ontology
                             ? new OWLAnnotation(annotationProperty, (RDFResource)annotationTriple.Object)
                             : new OWLAnnotation(annotationProperty, new OWLLiteral((RDFLiteral)annotationTriple.Object));
 
-                        LoadAnnotation(ontology, annotationTriple, annotation);
+                        LoadNestedAnnotation(ontology, annotationTriple, annotation);
 
                         ontology.Annotations.Add(annotation);
                     }
                 }
             }
             
-            void LoadAnnotation(OWLOntology ontology, RDFTriple annotationTriple, OWLAnnotation annotation)
+            void LoadNestedAnnotation(OWLOntology ontology, RDFTriple annotationTriple, OWLAnnotation annotation)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
@@ -330,7 +330,7 @@ namespace OWLSharp.Ontology
                         ? new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), annValRes2)
                         : new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), new OWLLiteral((RDFLiteral)annVal));
 
-                    LoadAnnotation(ontology, nestedAnnotationTriple, annotation.Annotation);
+                    LoadNestedAnnotation(ontology, nestedAnnotationTriple, annotation.Annotation);
                 }
             }
             #endregion
