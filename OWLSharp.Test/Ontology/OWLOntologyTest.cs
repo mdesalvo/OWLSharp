@@ -1466,10 +1466,10 @@ namespace OWLSharp.Ontology.Test
 					[ new OWLObjectProperty(new RDFResource("ex:objPropA1")), new OWLObjectProperty(new RDFResource("ex:objPropB1")) ])
                     {
                         Annotations = [
-                            /*new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                             {
                                 Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
-                            }*/
+                            }
                         ]
                     });
 			ontology.ObjectPropertyAxioms.Add(
@@ -1515,6 +1515,16 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 4);
+			Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLEquivalentObjectProperties equivObjProps
+                            && equivObjProps.ObjectPropertyExpressions[0] is OWLObjectProperty objProp0
+                            && objProp0.GetIRI().Equals(new RDFResource("ex:objPropA1"))
+							&& equivObjProps.ObjectPropertyExpressions[1] is OWLObjectProperty objProp1
+                            && objProp1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
+                             && equivObjProps.Annotations.Count == 1
+                             && equivObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(equivObjProps.Annotations.Single().ValueIRI, "ex:title")
+                              && equivObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && equivObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         }
         #endregion
 
