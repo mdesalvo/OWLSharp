@@ -298,7 +298,7 @@ namespace OWLSharp.Ontology
                 }
             }
 
-            void LoadAsymmetricObjectProperty(OWLOntology ont)
+            void LoadAsymmetricObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple asymPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
                 {
@@ -316,7 +316,7 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(asymmetricObjectProperty);
                 }
             }
-            void LoadSymmetricObjectProperty(OWLOntology ont)
+            void LoadSymmetricObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple symPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null])
                 {
@@ -334,7 +334,7 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(symmetricObjectProperty);
                 }
             }
-            void LoadIrreflexiveObjectProperty(OWLOntology ont)
+            void LoadIrreflexiveObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple irrefPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.IRREFLEXIVE_PROPERTY, null])
                 {
@@ -352,7 +352,7 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(irreflexiveObjectProperty);
                 }
             }
-            void LoadReflexiveObjectProperty(OWLOntology ont)
+            void LoadReflexiveObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple refPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.REFLEXIVE_PROPERTY, null])
                 {
@@ -370,7 +370,7 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(reflexiveObjectProperty);
                 }
             }
-            void LoadTransitiveObjectProperty(OWLOntology ont)
+            void LoadTransitiveObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple transPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null])
                 {
@@ -388,7 +388,7 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(transitiveObjectProperty);
                 }
             }
-            void LoadInverseFunctionalObjectProperty(OWLOntology ont)
+            void LoadInverseFunctionalObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple invfuncPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null])
                 {
@@ -406,7 +406,7 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(inverseFunctionalObjectProperty);
                 }
             }
-            void LoadFunctionalObjectProperty(OWLOntology ont)
+            void LoadFunctionalObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
                 {
@@ -427,6 +427,46 @@ namespace OWLSharp.Ontology
                     LoadAxiomAnnotations(ont, funcPropTriple, functionalObjectProperty);
 
                     ont.ObjectPropertyAxioms.Add(functionalObjectProperty);
+                }
+            }
+			void LoadEquivalentObjectProperties(OWLOntology ont)
+            {
+                foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
+                {
+                    OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties() {
+						ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>()	};
+
+					//Left
+                    if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+					{
+						if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+							equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectProperty((RDFResource)equivPropTriple.Subject));
+						else
+							continue; //Discard equivalent data properties, or equivalent untyped properties
+					}
+					else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                    }
+
+					//Right
+					if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+					{
+						if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+							equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectProperty((RDFResource)equivPropTriple.Object));
+						else
+							continue; //Discard equivalent data properties, or equivalent untyped properties
+					}
+					else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                    }
+
+                    LoadAxiomAnnotations(ont, equivPropTriple, equivalentObjectProperties);
+
+                    ont.ObjectPropertyAxioms.Add(equivalentObjectProperties);
                 }
             }
 
@@ -491,9 +531,9 @@ namespace OWLSharp.Ontology
 
             #region Guards
             if (graph == null)
-                throw new OWLException("Cannot read ontology from graph because given \"graph\" parameter is null");
+                throw new OWLException("Cannot read ontology from graph because: given \"graph\" parameter is null");
             if (graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 0)
-                throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
+                throw new OWLException("Cannot read ontology from graph because: no ontology declaration available in RDF data!");
             #endregion
 
             LoadOntology(out OWLOntology ontology);
@@ -501,13 +541,14 @@ namespace OWLSharp.Ontology
             LoadPrefixes(ontology);
             LoadDeclarations(ontology);
             LoadOntologyAnnotations(ontology);
-            LoadAsymmetricObjectProperty(ontology);
-            LoadSymmetricObjectProperty(ontology);
-            LoadIrreflexiveObjectProperty(ontology);
-            LoadReflexiveObjectProperty(ontology);
-            LoadTransitiveObjectProperty(ontology);
-            LoadInverseFunctionalObjectProperty(ontology);
-            LoadFunctionalObjectProperty(ontology);
+            LoadAsymmetricObjectProperties(ontology);
+            LoadSymmetricObjectProperties(ontology);
+            LoadIrreflexiveObjectProperties(ontology);
+            LoadReflexiveObjectProperties(ontology);
+            LoadTransitiveObjectProperties(ontology);
+            LoadInverseFunctionalObjectProperties(ontology);
+            LoadFunctionalObjectProperties(ontology);
+			LoadEquivalentObjectProperties(ontology);
 
             return ontology;
         }
