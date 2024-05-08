@@ -37,7 +37,15 @@ namespace OWLSharp
             xmlSerializerNamespaces.Add(RDFVocabulary.XSD.PREFIX, RDFVocabulary.XSD.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.XML.PREFIX, RDFVocabulary.XML.BASE_URI);
             //Initialize user-declared prefixes
-            ontology.Prefixes.ForEach(pfx => xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI));
+            ontology.Prefixes.ForEach(pfx => 
+            {
+                if (!string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX, System.StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, System.StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX, System.StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX, System.StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX, System.StringComparison.OrdinalIgnoreCase))
+                    xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI);
+            });
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
