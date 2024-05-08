@@ -1043,6 +1043,31 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(ontology2.Annotations.Single().Annotation.Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DESCRIPTION)
                            && ontology2.Annotations.Single().Annotation.Annotation.ValueIRI.Equals("ex:ann"));
         }
+
+        [TestMethod]
+        public void ShouldReadAsymmetricObjectPropertyAxiomFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(
+                    new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))));
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 2);
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLAsymmetricObjectProperty asymObjProp
+							&& asymObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
+							&& objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS));
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLAsymmetricObjectProperty asymObjProp1
+                            && asymObjProp1.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
+                            && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS));
+        }
         #endregion
 
         [TestCleanup]
