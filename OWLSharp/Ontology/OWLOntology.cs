@@ -217,7 +217,7 @@ namespace OWLSharp.Ontology
         public static OWLOntology FromRDFGraph(RDFGraph graph)
         {
             #region Utilities
-            void LoadOntologyIRI(out OWLOntology ont)
+            void LoadOntology(out OWLOntology ont)
             {
                 string ontIRI = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null]
                                  .First().Subject.ToString();
@@ -342,7 +342,7 @@ namespace OWLSharp.Ontology
                 throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
             #endregion
 
-            LoadOntologyIRI(out OWLOntology ontology);
+            LoadOntology(out OWLOntology ontology);
             LoadImports(ontology);
             LoadPrefixes(ontology);
             LoadDeclarations(ontology);
