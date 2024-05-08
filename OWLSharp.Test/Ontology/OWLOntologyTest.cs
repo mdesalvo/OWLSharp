@@ -280,7 +280,7 @@ namespace OWLSharp.Ontology.Test
 			Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
 			Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
 			Assert.IsNotNull(ontology.Prefixes);
-			Assert.IsTrue(ontology.Prefixes.Count == 11); //TODO: since we inject 5 default prefixes, there may be duplicates after deserialization
+			Assert.IsTrue(ontology.Prefixes.Count == 6);
 			Assert.IsNotNull(ontology.Imports);
 			Assert.IsTrue(ontology.Imports.Count == 1);
 			Assert.IsNotNull(ontology.Annotations);
@@ -599,7 +599,7 @@ namespace OWLSharp.Ontology.Test
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
 			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
 			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 11); //TODO: since we inject 5 default prefixes, there may be duplicates after deserialization
+			Assert.IsTrue(ontology2.Prefixes.Count == 6);
 			Assert.IsNotNull(ontology2.Imports);
 			Assert.IsTrue(ontology2.Imports.Count == 1);
 			Assert.IsNotNull(ontology2.Annotations);
@@ -685,7 +685,7 @@ namespace OWLSharp.Ontology.Test
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
 			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
 			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 11); //TODO: since we inject 5 default prefixes, there may be duplicates after deserialization
+			Assert.IsTrue(ontology2.Prefixes.Count == 6);
 			Assert.IsNotNull(ontology2.Imports);
 			Assert.IsTrue(ontology2.Imports.Count == 1);
 			Assert.IsNotNull(ontology2.Annotations);
@@ -767,7 +767,7 @@ namespace OWLSharp.Ontology.Test
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
 			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
 			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 11); //TODO: since we inject 5 default prefixes, there may be duplicates after deserialization
+			Assert.IsTrue(ontology2.Prefixes.Count == 6);
 			Assert.IsNotNull(ontology2.Imports);
 			Assert.IsTrue(ontology2.Imports.Count == 1);
 			Assert.IsNotNull(ontology2.Annotations);
@@ -854,7 +854,7 @@ namespace OWLSharp.Ontology.Test
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
 			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
 			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 11); //TODO: since we inject 5 default prefixes, there may be duplicates after deserialization
+			Assert.IsTrue(ontology2.Prefixes.Count == 6);
 			Assert.IsNotNull(ontology2.Imports);
 			Assert.IsTrue(ontology2.Imports.Count == 1);
 			Assert.IsNotNull(ontology2.Annotations);

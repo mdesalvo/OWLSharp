@@ -20,6 +20,8 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
 using OWLSharp.Ontology;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OWLSharp
 {
@@ -78,7 +80,18 @@ namespace OWLSharp
                         IgnoreProcessingInstructions = true
                     }))
                 {
-                    return (OWLOntology)xmlSerializer.Deserialize(reader);
+                    OWLOntology owlOntology = (OWLOntology)xmlSerializer.Deserialize(reader);
+
+                    //Remove duplicated prefixes
+                    List<OWLPrefix> prefixes = new List<OWLPrefix>();
+                    owlOntology.Prefixes.ForEach(pfx =>
+                    {
+                        if (!prefixes.Any(pfxs => string.Equals(pfxs.Name, pfx.Name, System.StringComparison.OrdinalIgnoreCase)))
+                            prefixes.Add(pfx);
+                    });
+                    owlOntology.Prefixes = prefixes;
+
+                    return owlOntology;
                 }
             }
         }
