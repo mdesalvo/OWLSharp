@@ -406,6 +406,29 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(inverseFunctionalObjectProperty);
                 }
             }
+            void LoadFunctionalObjectProperty(OWLOntology ont)
+            {
+                foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
+                {
+                    OWLFunctionalObjectProperty functionalObjectProperty;
+                    if (graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+                    {
+                        if (graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+                            functionalObjectProperty = new OWLFunctionalObjectProperty(new OWLObjectProperty((RDFResource)funcPropTriple.Subject));
+                        else
+                            continue; //Discard functional data properties, or functional untyped properties
+                    }   
+                    else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        functionalObjectProperty = new OWLFunctionalObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                    }
+
+                    LoadAxiomAnnotations(ont, funcPropTriple, functionalObjectProperty);
+
+                    ont.ObjectPropertyAxioms.Add(functionalObjectProperty);
+                }
+            }
 
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
@@ -484,6 +507,7 @@ namespace OWLSharp.Ontology
             LoadReflexiveObjectProperty(ontology);
             LoadTransitiveObjectProperty(ontology);
             LoadInverseFunctionalObjectProperty(ontology);
+            LoadFunctionalObjectProperty(ontology);
 
             return ontology;
         }
