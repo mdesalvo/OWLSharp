@@ -129,7 +129,7 @@ namespace OWLSharp.Ontology
         }
         #endregion
 
-        #region Methods (Export)
+        #region Methods
 		public RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
@@ -209,9 +209,7 @@ namespace OWLSharp.Ontology
 				throw new OWLException($"Cannot write ontology to stream because: {ex.Message}", ex);
 			}
         }
-		#endregion
 
-		#region Methods (Import)
 		public static OWLOntology FromFile(OWLEnums.OWLFormats owlFormat, string inputFile)
         {
             #region Guards
