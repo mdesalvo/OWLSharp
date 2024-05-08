@@ -131,7 +131,49 @@ namespace OWLSharp.Ontology
 
         #region Methods (Export)
 		public RDFGraph ToRDFGraph()
-			=> OWLTransformer.Transform(this);
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //IRI
+            RDFResource ontologyIRI = new RDFResource();
+            if (!string.IsNullOrWhiteSpace(IRI))
+                ontologyIRI = new RDFResource(IRI);
+            graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+
+            //VersionIRI
+            if (!string.IsNullOrWhiteSpace(VersionIRI))
+                graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.OWL.VERSION_IRI, new RDFResource(VersionIRI)));
+
+            //Imports
+            foreach (OWLImport import in Imports)
+                graph.AddTriple(new RDFTriple(ontologyIRI, RDFVocabulary.OWL.IMPORTS, new RDFResource(import.IRI)));
+
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraphInternal(ontologyIRI));
+
+            //Axioms
+            foreach (OWLDeclaration declarationAxiom in DeclarationAxioms)
+                graph = graph.UnionWith(declarationAxiom.ToRDFGraph());
+            foreach (OWLClassAxiom classAxiom in ClassAxioms)
+                graph = graph.UnionWith(classAxiom.ToRDFGraph());
+            foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms)
+                graph = graph.UnionWith(objectPropertyAxiom.ToRDFGraph());
+            foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms)
+                graph = graph.UnionWith(dataPropertyAxiom.ToRDFGraph());
+            foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms)
+                graph = graph.UnionWith(datatypeDefinitionAxiom.ToRDFGraph());
+            foreach (OWLHasKey keyAxiom in KeyAxioms)
+                graph = graph.UnionWith(keyAxiom.ToRDFGraph());
+            foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms)
+                graph = graph.UnionWith(assertionAxiom.ToRDFGraph());
+            foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms)
+                graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
+
+            if (!ontologyIRI.IsBlank)
+                graph.SetContext(ontologyIRI.URI);
+            return graph;
+        }
 
 		public void ToFile(OWLEnums.OWLFormats owlFormat, string outputFile)
         {
@@ -170,16 +212,6 @@ namespace OWLSharp.Ontology
 		#endregion
 
 		#region Methods (Import)
-		public static OWLOntology FromRDFGraph(RDFGraph graph)
-		{
-			#region Guards
-            if (graph == null)
-                throw new OWLException("Cannot read ontology from graph because given \"graph\" parameter is null");
-            #endregion
-
-			return OWLTransformer.Transform(graph);
-		}
-
 		public static OWLOntology FromFile(OWLEnums.OWLFormats owlFormat, string inputFile)
         {
             #region Guards
