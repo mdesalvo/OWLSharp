@@ -1498,14 +1498,14 @@ namespace OWLSharp.Ontology.Test
 					[ new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))), new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))) ])
                     {
                         Annotations = [
-                            /*new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
                             {
                                 Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
                             },
                             new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
                             {
                                 Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-                            }*/
+                            }
                         ]
                     });
             RDFGraph graph = ontology.ToRDFGraph();
@@ -1545,6 +1545,20 @@ namespace OWLSharp.Ontology.Test
 							&& equivObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB3
                             && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
                             && equivObjProps2.Annotations.Count == 0);
+			Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLEquivalentObjectProperties equivObjProps3
+                            && equivObjProps3.ObjectPropertyExpressions[0] is OWLObjectInverseOf objInvOfA4
+                            && objInvOfA4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA4"))
+							&& equivObjProps3.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB4
+                            && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
+                            && equivObjProps3.Annotations.Count == 2
+                             && equivObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(equivObjProps3.Annotations[0].ValueIRI, "ex:comment1")
+                              && equivObjProps3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && equivObjProps3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                             && equivObjProps3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(equivObjProps3.Annotations[1].ValueIRI, "ex:comment2")
+                              && equivObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && equivObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
         #endregion
 
