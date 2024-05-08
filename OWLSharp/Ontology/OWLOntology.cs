@@ -15,10 +15,14 @@
 */
 
 using OWLSharp.Ontology.Axioms;
+using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
+using RDFSharp.Query;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -210,7 +214,144 @@ namespace OWLSharp.Ontology
 			}
         }
 
-		public static OWLOntology FromFile(OWLEnums.OWLFormats owlFormat, string inputFile)
+        public static OWLOntology FromRDFGraph(RDFGraph graph)
+        {
+            #region Facilities
+            void LoadOntologyIRI(out OWLOntology ontology)
+            {
+                string ontologyIRI = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null]
+                                      .First().Subject.ToString();
+                ontology = new OWLOntology()
+                {
+                    IRI = ontologyIRI,
+                    VersionIRI = (graph[new RDFResource(ontologyIRI), RDFVocabulary.OWL.VERSION_IRI, null, null]
+                                    .FirstOrDefault()?.Object as RDFResource)?.ToString()
+                };
+            }
+
+            void LoadImports(OWLOntology ontology)
+            {
+                foreach (RDFTriple imports in graph[new RDFResource(ontology.IRI), RDFVocabulary.OWL.IMPORTS, null, null]
+                                               .Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+                    ontology.Imports.Add(new OWLImport((RDFResource)imports.Object));
+            }
+
+            void LoadPrefixes(OWLOntology ontology)
+            {
+                foreach (RDFNamespace graphPrefix in RDFModelUtilities.GetGraphNamespaces(graph))
+                    if (!ontology.Prefixes.Any(pfx => string.Equals(pfx.IRI, graphPrefix.NamespaceUri.ToString())))
+                        ontology.Prefixes.Add(new OWLPrefix(graphPrefix));
+            }
+
+            void LoadDeclarations(OWLOntology ontology)
+            {
+                RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
+
+                foreach (RDFTriple typeClass in typeGraph[null, null, RDFVocabulary.OWL.CLASS, null]
+                                                 .UnionWith(typeGraph[null, null, RDFVocabulary.RDFS.CLASS, null]))
+                    ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass((RDFResource)typeClass.Subject)));
+
+                foreach (RDFTriple typeDatatype in typeGraph[null, null, RDFVocabulary.RDFS.DATATYPE, null])
+                    ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype((RDFResource)typeDatatype.Subject)));
+
+                foreach (RDFTriple typeObjectProperty in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
+                    ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLObjectProperty((RDFResource)typeObjectProperty.Subject)));
+
+                foreach (RDFTriple typeDataProperty in typeGraph[null, null, RDFVocabulary.OWL.DATATYPE_PROPERTY, null])
+                    ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDataProperty((RDFResource)typeDataProperty.Subject)));
+
+                foreach (RDFTriple typeAnnotationProperty in typeGraph[null, null, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null])
+                    ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLAnnotationProperty((RDFResource)typeAnnotationProperty.Subject)));
+
+                foreach (RDFTriple typeNamedIndividual in typeGraph[null, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null])
+                    ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual((RDFResource)typeNamedIndividual.Subject)));
+            }
+
+            void LoadOntologyAnnotations(OWLOntology ontology)
+            {
+                //Collect annotation properties
+                List<RDFResource> annotationProperties = new List<RDFResource>()
+            {
+                RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
+                RDFVocabulary.OWL.INCOMPATIBLE_WITH,
+                RDFVocabulary.OWL.PRIOR_VERSION,
+                RDFVocabulary.OWL.VERSION_INFO,
+                RDFVocabulary.OWL.DEPRECATED,
+                RDFVocabulary.RDFS.COMMENT,
+                RDFVocabulary.RDFS.LABEL,
+                RDFVocabulary.RDFS.SEE_ALSO,
+                RDFVocabulary.RDFS.IS_DEFINED_BY
+            };
+                foreach (OWLDeclaration annPropDeclaration in ontology.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp
+                                                                                                        && !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
+                    annotationProperties.Add(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
+
+                //Iterate annotation properties
+                RDFResource ontologyIRI = new RDFResource(ontology.IRI);
+                foreach (RDFResource workingAnnotationProperty in annotationProperties)
+                {
+                    OWLAnnotationProperty annotationProperty = new OWLAnnotationProperty(workingAnnotationProperty);
+                    foreach (RDFTriple annotationTriple in graph[ontologyIRI, workingAnnotationProperty, null, null])
+                    {
+                        OWLAnnotation annotation = annotationTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                            ? new OWLAnnotation(annotationProperty, (RDFResource)annotationTriple.Object)
+                            : new OWLAnnotation(annotationProperty, new OWLLiteral((RDFLiteral)annotationTriple.Object));
+
+                        LoadAnnotation(ontology, annotationTriple, annotation);
+
+                        ontology.Annotations.Add(annotation);
+                    }
+                }
+            }
+            
+            void LoadAnnotation(OWLOntology ontology, RDFTriple annotationTriple, OWLAnnotation annotation)
+            {
+                RDFSelectQuery query = new RDFSelectQuery()
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_SOURCE, annotationTriple.Subject))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_PROPERTY, annotationTriple.Predicate))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_TARGET, annotationTriple.Object))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), new RDFVariable("?ANNPROP"), new RDFVariable("?ANNVAL")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?ANNPROP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY)))
+                    .AddModifier(new RDFLimitModifier(1));
+                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                if (result.SelectResultsCount > 0)
+                {
+                    DataRow resultRow = result.SelectResults.Rows[0];
+                    RDFPatternMember axiom = RDFQueryUtilities.ParseRDFPatternMember(resultRow["?AXIOM"].ToString());
+                    RDFPatternMember annProp = RDFQueryUtilities.ParseRDFPatternMember(resultRow["?ANNPROP"].ToString());
+                    RDFPatternMember annVal = RDFQueryUtilities.ParseRDFPatternMember(resultRow["?ANNVAL"].ToString());
+                    RDFTriple nestedAnnotationTriple = annVal is RDFResource annValRes
+                        ? new RDFTriple((RDFResource)axiom, (RDFResource)annProp, annValRes)
+                        : new RDFTriple((RDFResource)axiom, (RDFResource)annProp, (RDFLiteral)annVal);
+
+                    annotation.Annotation = annVal is RDFResource annValRes2
+                        ? new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), annValRes2)
+                        : new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), new OWLLiteral((RDFLiteral)annVal));
+
+                    LoadAnnotation(ontology, nestedAnnotationTriple, annotation.Annotation);
+                }
+            }
+            #endregion
+
+            #region Guards
+            if (graph == null)
+                throw new OWLException("Cannot read ontology from graph because given \"graph\" parameter is null");
+            if (graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 0)
+                throw new OWLException("Cannot get ontology from graph because: no ontology declaration available in RDF data!");
+            #endregion
+
+            LoadOntologyIRI(out OWLOntology owlOntology);
+            LoadImports(owlOntology);
+            LoadPrefixes(owlOntology);
+            LoadDeclarations(owlOntology);
+            LoadOntologyAnnotations(owlOntology);
+
+            return owlOntology;
+        }
+
+        public static OWLOntology FromFile(OWLEnums.OWLFormats owlFormat, string inputFile)
         {
             #region Guards
             if (string.IsNullOrWhiteSpace(inputFile))
