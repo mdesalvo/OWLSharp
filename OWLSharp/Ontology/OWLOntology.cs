@@ -370,6 +370,24 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(reflexiveObjectProperty);
                 }
             }
+            void LoadTransitiveObjectProperty(OWLOntology ont)
+            {
+                foreach (RDFTriple transPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null])
+                {
+                    OWLTransitiveObjectProperty transitiveObjectProperty;
+                    if (graph[(RDFResource)transPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+                        transitiveObjectProperty = new OWLTransitiveObjectProperty(new OWLObjectProperty((RDFResource)transPropTriple.Subject));
+                    else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)transPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        transitiveObjectProperty = new OWLTransitiveObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                    }
+
+                    LoadAxiomAnnotations(ont, transPropTriple, transitiveObjectProperty);
+
+                    ont.ObjectPropertyAxioms.Add(transitiveObjectProperty);
+                }
+            }
 
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
@@ -446,6 +464,7 @@ namespace OWLSharp.Ontology
             LoadSymmetricObjectProperty(ontology);
             LoadIrreflexiveObjectProperty(ontology);
             LoadReflexiveObjectProperty(ontology);
+            LoadTransitiveObjectProperty(ontology);
 
             return ontology;
         }
