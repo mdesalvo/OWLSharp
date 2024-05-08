@@ -388,6 +388,24 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(transitiveObjectProperty);
                 }
             }
+            void LoadInverseFunctionalObjectProperty(OWLOntology ont)
+            {
+                foreach (RDFTriple invfuncPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null])
+                {
+                    OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty;
+                    if (graph[(RDFResource)invfuncPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+                        inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(new OWLObjectProperty((RDFResource)invfuncPropTriple.Subject));
+                    else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)invfuncPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                    }
+
+                    LoadAxiomAnnotations(ont, invfuncPropTriple, inverseFunctionalObjectProperty);
+
+                    ont.ObjectPropertyAxioms.Add(inverseFunctionalObjectProperty);
+                }
+            }
 
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
@@ -465,6 +483,7 @@ namespace OWLSharp.Ontology
             LoadIrreflexiveObjectProperty(ontology);
             LoadReflexiveObjectProperty(ontology);
             LoadTransitiveObjectProperty(ontology);
+            LoadInverseFunctionalObjectProperty(ontology);
 
             return ontology;
         }
