@@ -303,7 +303,21 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            
+
+            void LoadAsymmetricObjectProperty(OWLOntology ont)
+            {
+                foreach (RDFTriple asymProp in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
+                {
+                    if (graph[(RDFResource)asymProp.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+                        ont.ObjectPropertyAxioms.Add(new OWLAsymmetricObjectProperty(new OWLObjectProperty((RDFResource)asymProp.Subject)));
+                    else
+                    {
+                        RDFResource invOfProp = (RDFResource)graph[(RDFResource)asymProp.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        ont.ObjectPropertyAxioms.Add(new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(invOfProp))));
+                    }
+                }
+            }
+
             void LoadNestedAnnotation(OWLOntology ont, RDFTriple annotationTriple, OWLAnnotation annotation)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
@@ -347,6 +361,7 @@ namespace OWLSharp.Ontology
             LoadPrefixes(ontology);
             LoadDeclarations(ontology);
             LoadOntologyAnnotations(ontology);
+            LoadAsymmetricObjectProperty(ontology);
 
             return ontology;
         }
