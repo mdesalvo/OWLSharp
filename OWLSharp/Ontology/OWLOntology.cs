@@ -429,6 +429,33 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(functionalObjectProperty);
                 }
             }
+			void LoadInverseObjectProperties(OWLOntology ont)
+            {
+				foreach (RDFTriple invOfTriple in graph[null, RDFVocabulary.OWL.INVERSE_OF, null, null])
+                {
+					OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties();
+
+					//Left
+					if (!((RDFResource)invOfTriple.Subject).IsBlank)
+						inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectProperty((RDFResource)invOfTriple.Subject);
+					else if (graph[(RDFResource)invOfTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+						inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty((RDFResource)invOfTriple.Object));
+					else
+						continue;
+
+					//Right
+					if (!((RDFResource)invOfTriple.Object).IsBlank)
+						inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectProperty((RDFResource)invOfTriple.Object);
+					else if (graph[(RDFResource)invOfTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+						inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty((RDFResource)invOfTriple.Object));
+					else
+						continue;
+
+                    LoadAxiomAnnotations(ont, invOfTriple, inverseObjectProperties);
+
+                    ont.ObjectPropertyAxioms.Add(inverseObjectProperties);
+                }
+            }
 			void LoadEquivalentObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
@@ -548,6 +575,7 @@ namespace OWLSharp.Ontology
             LoadTransitiveObjectProperties(ontology);
             LoadInverseFunctionalObjectProperties(ontology);
             LoadFunctionalObjectProperties(ontology);
+			LoadInverseObjectProperties(ontology);
 			LoadEquivalentObjectProperties(ontology);
 
             return ontology;
