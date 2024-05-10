@@ -1463,7 +1463,8 @@ namespace OWLSharp.Ontology.Test
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
                 new OWLInverseObjectProperties(
-                    new OWLObjectProperty(new RDFResource("ex:objPropA1")), new OWLObjectProperty(new RDFResource("ex:objPropB1")))
+                    new OWLObjectProperty(new RDFResource("ex:objPropA1")), 
+                    new OWLObjectProperty(new RDFResource("ex:objPropB1")))
                 {/*
                     Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
@@ -1474,7 +1475,8 @@ namespace OWLSharp.Ontology.Test
                 */});
             ontology.ObjectPropertyAxioms.Add(
                 new OWLInverseObjectProperties(
-                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA2"))), new OWLObjectProperty(new RDFResource("ex:objPropB2")))
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA2"))), 
+                    new OWLObjectProperty(new RDFResource("ex:objPropB2")))
                          {/*
                              Annotations = [
                                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
@@ -1489,13 +1491,15 @@ namespace OWLSharp.Ontology.Test
                          */});
             ontology.ObjectPropertyAxioms.Add(
                 new OWLInverseObjectProperties(
-					new OWLObjectProperty(new RDFResource("ex:objPropA3")), new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))))
+					new OWLObjectProperty(new RDFResource("ex:objPropA3")), 
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))))
                     {
                         Annotations = []
                     });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLInverseObjectProperties(
-                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))), new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))))
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))), 
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))))
                     {/*
                         Annotations = [
                             new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
