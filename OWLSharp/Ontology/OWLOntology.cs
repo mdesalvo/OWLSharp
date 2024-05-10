@@ -503,9 +503,11 @@ namespace OWLSharp.Ontology
                             break;
                         case "IO":
                             IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
+                            #region IO direction control
                             if (ioplLookup.Contains(IOPL.PatternMemberID))
                                 continue;
                             ioplLookup.Add(IOPL.PatternMemberID);
+                            #endregion
                             OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
                             OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
                             inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPL));
