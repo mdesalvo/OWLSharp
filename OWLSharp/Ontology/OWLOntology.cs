@@ -598,9 +598,9 @@ namespace OWLSharp.Ontology
                 }
 			
 				//Load axioms built with owl:AllDisjointProperties
-				foreach (RDFTriple typeAllDisjointPropertiesTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
+				foreach (RDFTriple allDisjointPropertiesTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
 				{
-					if (graph[(RDFResource)typeAllDisjointPropertiesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
+					if (graph[(RDFResource)allDisjointPropertiesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
 						 .FirstOrDefault()?.Object is RDFResource adjpCollectionRepresentative)
 					{
 						List<OWLObjectPropertyExpression> adjpMembers = new List<OWLObjectPropertyExpression>();
@@ -631,7 +631,7 @@ namespace OWLSharp.Ontology
 								RDFVocabulary.RDFS.LABEL,
 								RDFVocabulary.RDFS.SEE_ALSO,
 								RDFVocabulary.RDFS.IS_DEFINED_BY
-							}, adjpCollectionRepresentative, out List<OWLAnnotation> adjpAnnotations);
+							}, (RDFResource)allDisjointPropertiesTriple.Subject, out List<OWLAnnotation> adjpAnnotations);
 							disjointObjectProperties.Annotations = adjpAnnotations;
 
 							ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
