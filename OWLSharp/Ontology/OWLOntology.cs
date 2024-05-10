@@ -431,27 +431,96 @@ namespace OWLSharp.Ontology
             }
 			void LoadInverseObjectProperties(OWLOntology ont)
             {
-				foreach (RDFTriple invOfTriple in graph[null, RDFVocabulary.OWL.INVERSE_OF, null, null])
+                RDFSelectQuery query = new RDFSelectQuery()
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
+                        .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("OO")), new RDFVariable("?CASE")))
+                        .UnionWithNext())
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?IOPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPL")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?IOPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPL")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
+                        .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?OPL"), new RDFVariable("?OPR"))))
+                        .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("IO")), new RDFVariable("?CASE")))
+                        .UnionWithNext())
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?IOPR")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?IOPR"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPR")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
+                        .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?OPL"), new RDFVariable("?OPR"))))
+                        .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("OI")), new RDFVariable("?CASE")))
+                        .UnionWithNext())
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?IOPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPL")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?IOPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?IOPR")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?IOPR"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPL")))
+                        .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPR")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
+                        .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?OPL"), new RDFVariable("?OPR"))))
+                        .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("II")), new RDFVariable("?CASE"))))
+                    .AddProjectionVariable(new RDFVariable("?IOPL"))
+                    .AddProjectionVariable(new RDFVariable("?OPL"))
+                    .AddProjectionVariable(new RDFVariable("?IOPR"))
+                    .AddProjectionVariable(new RDFVariable("?OPR"))
+                    .AddProjectionVariable(new RDFVariable("?CASE"))
+                    .AddModifier(new RDFOrderByModifier(new RDFVariable("?CASE"), RDFQueryEnums.RDFOrderByFlavors.DESC));
+                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                foreach (DataRow resultRow in result.SelectResults.Rows)
                 {
-					OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties();
+                    OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties();
 
-					//Left
-					if (!((RDFResource)invOfTriple.Subject).IsBlank)
-						inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectProperty((RDFResource)invOfTriple.Subject);
-					else if (graph[(RDFResource)invOfTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
-						inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty((RDFResource)invOfTriple.Object));
-					else
-						continue;
-
-					//Right
-					if (!((RDFResource)invOfTriple.Object).IsBlank)
-						inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectProperty((RDFResource)invOfTriple.Object);
-					else if (graph[(RDFResource)invOfTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
-						inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty((RDFResource)invOfTriple.Object));
-					else
-						continue;
-
-                    LoadAxiomAnnotations(ont, invOfTriple, inverseObjectProperties);
+                    RDFResource IOPL, OPL, IOPR, OPR;
+                    switch (resultRow["?CASE"].ToString())
+                    {
+                        case "OO":
+                            OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
+                            OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
+                            inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectProperty(OPL);
+                            inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectProperty(OPR);
+                            LoadAxiomAnnotations(ont, new RDFTriple(OPL, RDFVocabulary.OWL.INVERSE_OF, OPR), inverseObjectProperties);
+                            break;
+                        case "IO":
+                            IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
+                            OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
+                            OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
+                            inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPL));
+                            inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectProperty(OPR);
+                            LoadAxiomAnnotations(ont, new RDFTriple(IOPL, RDFVocabulary.OWL.INVERSE_OF, OPR), inverseObjectProperties);
+                            break;
+                        case "OI":
+                            OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
+                            IOPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPR"].ToString());
+                            OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
+                            inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectProperty(OPL);
+                            inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPR));
+                            LoadAxiomAnnotations(ont, new RDFTriple(OPL, RDFVocabulary.OWL.INVERSE_OF, IOPR), inverseObjectProperties);
+                            break;
+                        case "II":
+                            IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
+                            OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
+                            IOPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPR"].ToString());
+                            OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
+                            inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPL));
+                            inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPR));
+                            LoadAxiomAnnotations(ont, new RDFTriple(IOPL, RDFVocabulary.OWL.INVERSE_OF, IOPR), inverseObjectProperties);
+                            break;
+                    }
 
                     ont.ObjectPropertyAxioms.Add(inverseObjectProperties);
                 }
