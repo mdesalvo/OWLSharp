@@ -485,6 +485,8 @@ namespace OWLSharp.Ontology
                     .AddProjectionVariable(new RDFVariable("?CASE"))
                     .AddModifier(new RDFOrderByModifier(new RDFVariable("?CASE"), RDFQueryEnums.RDFOrderByFlavors.DESC));
                 RDFSelectQueryResult result = query.ApplyToGraph(graph);
+
+                HashSet<long> ioplLookup = new HashSet<long>();
                 foreach (DataRow resultRow in result.SelectResults.Rows)
                 {
                     OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties();
@@ -501,6 +503,9 @@ namespace OWLSharp.Ontology
                             break;
                         case "IO":
                             IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
+                            if (ioplLookup.Contains(IOPL.PatternMemberID))
+                                continue;
+                            ioplLookup.Add(IOPL.PatternMemberID);
                             OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
                             OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
                             inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPL));
