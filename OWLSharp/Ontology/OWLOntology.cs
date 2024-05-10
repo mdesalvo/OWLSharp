@@ -265,37 +265,18 @@ namespace OWLSharp.Ontology
             }
             void LoadOntologyAnnotations(OWLOntology ont)
             {
-                List<RDFResource> ontologyAnnotationProperties = new List<RDFResource>()
-                {
-                    RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
-                    RDFVocabulary.OWL.INCOMPATIBLE_WITH,
-                    RDFVocabulary.OWL.PRIOR_VERSION,
-                    RDFVocabulary.OWL.VERSION_INFO,
-                    RDFVocabulary.OWL.DEPRECATED,
-                    RDFVocabulary.RDFS.COMMENT,
-                    RDFVocabulary.RDFS.LABEL,
-                    RDFVocabulary.RDFS.SEE_ALSO,
-                    RDFVocabulary.RDFS.IS_DEFINED_BY
-                };
-                foreach (OWLDeclaration annPropDeclaration in ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp
-                                                                                                  && !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
-                    ontologyAnnotationProperties.Add(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
-
-                RDFResource ontologyIRI = new RDFResource(ont.IRI);
-                foreach (RDFResource workingAnnotationProperty in ontologyAnnotationProperties)
-                {
-                    OWLAnnotationProperty annotationProperty = new OWLAnnotationProperty(workingAnnotationProperty);
-                    foreach (RDFTriple annotationTriple in graph[ontologyIRI, workingAnnotationProperty, null, null])
-                    {
-                        OWLAnnotation annotation = annotationTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
-                            ? new OWLAnnotation(annotationProperty, (RDFResource)annotationTriple.Object)
-                            : new OWLAnnotation(annotationProperty, new OWLLiteral((RDFLiteral)annotationTriple.Object));
-
-                        LoadNestedAnnotation(ont, annotationTriple, annotation);
-
-                        ont.Annotations.Add(annotation);
-                    }
-                }
+				LoadIRIAnnotations(ont,	new List<RDFResource>() {
+						RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
+						RDFVocabulary.OWL.INCOMPATIBLE_WITH,
+						RDFVocabulary.OWL.PRIOR_VERSION,
+						RDFVocabulary.OWL.VERSION_INFO,
+						RDFVocabulary.OWL.DEPRECATED,
+						RDFVocabulary.RDFS.COMMENT,
+						RDFVocabulary.RDFS.LABEL,
+						RDFVocabulary.RDFS.SEE_ALSO,
+						RDFVocabulary.RDFS.IS_DEFINED_BY
+					}, new RDFResource(ont.IRI), out List<OWLAnnotation> ontologyAnnotations);
+                ont.Annotations = ontologyAnnotations;
             }
 
             void LoadAsymmetricObjectProperties(OWLOntology ont)
@@ -644,7 +625,14 @@ namespace OWLSharp.Ontology
 							OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties() {
 								ObjectPropertyExpressions = adjpMembers	};
 
-							LoadAxiomAnnotations(ont, typeAllDisjointPropertiesTriple, disjointObjectProperties);
+							LoadIRIAnnotations(ont,	new List<RDFResource>() {
+								RDFVocabulary.OWL.DEPRECATED,
+								RDFVocabulary.RDFS.COMMENT,
+								RDFVocabulary.RDFS.LABEL,
+								RDFVocabulary.RDFS.SEE_ALSO,
+								RDFVocabulary.RDFS.IS_DEFINED_BY
+							}, adjpCollectionRepresentative, out List<OWLAnnotation> typeAllDisjointPropertiesAnnotations);
+							disjointObjectProperties.Annotations = typeAllDisjointPropertiesAnnotations;
 
 							ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
 						}
@@ -680,7 +668,30 @@ namespace OWLSharp.Ontology
                     axiom.Annotations.Add(annotation);
                 }
             }
-            void LoadNestedAnnotation(OWLOntology ont, RDFTriple annotationTriple, OWLAnnotation annotation)
+            void LoadIRIAnnotations(OWLOntology ont, List<RDFResource> annotationProperties, RDFResource iri, out List<OWLAnnotation> annotations)
+			{
+				annotations = new List<OWLAnnotation>();
+
+				foreach (OWLDeclaration annPropDeclaration in ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp
+                                                                                                  && !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
+                    annotationProperties.Add(((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI());
+
+                foreach (RDFResource workingAnnotationProperty in annotationProperties)
+                {
+                    OWLAnnotationProperty annotationProperty = new OWLAnnotationProperty(workingAnnotationProperty);
+                    foreach (RDFTriple annotationTriple in graph[iri, workingAnnotationProperty, null, null])
+                    {
+                        OWLAnnotation annotation = annotationTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                            ? new OWLAnnotation(annotationProperty, (RDFResource)annotationTriple.Object)
+                            : new OWLAnnotation(annotationProperty, new OWLLiteral((RDFLiteral)annotationTriple.Object));
+
+                        LoadNestedAnnotation(ont, annotationTriple, annotation);
+
+                        annotations.Add(annotation);
+                    }
+                }
+			}
+			void LoadNestedAnnotation(OWLOntology ont, RDFTriple annotationTriple, OWLAnnotation annotation)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
