@@ -631,8 +631,8 @@ namespace OWLSharp.Ontology
 								RDFVocabulary.RDFS.LABEL,
 								RDFVocabulary.RDFS.SEE_ALSO,
 								RDFVocabulary.RDFS.IS_DEFINED_BY
-							}, adjpCollectionRepresentative, out List<OWLAnnotation> typeAllDisjointPropertiesAnnotations);
-							disjointObjectProperties.Annotations = typeAllDisjointPropertiesAnnotations;
+							}, adjpCollectionRepresentative, out List<OWLAnnotation> adjpAnnotations);
+							disjointObjectProperties.Annotations = adjpAnnotations;
 
 							ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
 						}
