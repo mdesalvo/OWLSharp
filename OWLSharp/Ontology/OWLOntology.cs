@@ -487,7 +487,7 @@ namespace OWLSharp.Ontology
                 {
                     OWLInverseObjectProperties inverseObjectProperties = new OWLInverseObjectProperties();
 
-                    RDFResource IOPL, OPL, IOPR, OPR;
+                    RDFResource IOPL/*InverseOfPropertyLeft*/, OPL/*ObjectPropertyLeft*/, IOPR/*InverseOfPropertyRight*/, OPR/*ObjectPropertyRight*/;
                     switch (resultRow["?CASE"].ToString())
                     {
                         case "OO":
