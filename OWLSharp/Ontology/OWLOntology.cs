@@ -570,6 +570,87 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(equivalentObjectProperties);
                 }
             }
+			void LoadDisjointObjectProperties(OWLOntology ont)
+			{
+				//Load axioms built with owl:propertyDisjointWith
+				foreach (RDFTriple propDisjointWithTriple in graph[null, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null])
+                {
+					OWLObjectPropertyExpression leftOPE, rightOPE;
+                    
+					//Left
+					if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+                    {
+                        if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+                            leftOPE = new OWLObjectProperty((RDFResource)propDisjointWithTriple.Subject);
+                        else
+                            continue; //Discard equivalent data properties, or equivalent untyped properties
+                    }   
+                    else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        leftOPE = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
+                    }
+
+					//Right
+					if (graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+					{
+						if (graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+							rightOPE = new OWLObjectProperty((RDFResource)propDisjointWithTriple.Object);
+						else
+							continue; //Discard equivalent data properties, or equivalent untyped properties
+					}
+					else
+                    {
+                        RDFResource inverseOf = (RDFResource)graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+                        rightOPE = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
+                    }
+
+					if (leftOPE != null && rightOPE != null)
+					{
+						OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties() {
+							ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() { leftOPE, rightOPE } }; 
+
+						LoadAxiomAnnotations(ont, propDisjointWithTriple, disjointObjectProperties);
+
+                    	ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
+					}
+                }
+			
+				//Load axioms built with owl:AllDisjointProperties
+				foreach (RDFTriple typeAllDisjointPropertiesTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
+				{
+					if (graph[(RDFResource)typeAllDisjointPropertiesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
+						 .FirstOrDefault()?.Object is RDFResource adjpCollectionRepresentative)
+					{
+						List<OWLObjectPropertyExpression> adjpMembers = new List<OWLObjectPropertyExpression>();
+
+						RDFCollection adjpCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, adjpCollectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+						foreach (RDFResource adjpMember in adjpCollection.Items.Cast<RDFResource>())
+							if (graph[adjpMember, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
+							{
+								if (graph[adjpMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+									adjpMembers.Add(new OWLObjectProperty(adjpMember));
+								else
+									continue; //Discard equivalent data properties, or equivalent untyped properties
+							}
+							else
+							{
+								RDFResource inverseOf = (RDFResource)graph[adjpMember, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
+								adjpMembers.Add(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+							}
+
+						if (adjpMembers.Count >= 2)
+						{
+							OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties() {
+								ObjectPropertyExpressions = adjpMembers	};
+
+							LoadAxiomAnnotations(ont, typeAllDisjointPropertiesTriple, disjointObjectProperties);
+
+							ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
+						}
+					}
+				}
+			}
 
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
@@ -651,6 +732,7 @@ namespace OWLSharp.Ontology
             LoadFunctionalObjectProperties(ontology);
 			LoadInverseObjectProperties(ontology);
 			LoadEquivalentObjectProperties(ontology);
+			LoadDisjointObjectProperties(ontology);
 
             return ontology;
         }
