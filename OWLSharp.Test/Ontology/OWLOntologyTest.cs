@@ -1496,29 +1496,29 @@ namespace OWLSharp.Ontology.Test
                 {
                     Annotations = []
                 });
-            //       ontology.ObjectPropertyAxioms.Add(
-            //           new OWLInverseObjectProperties(
-            //               new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))), 
-            //               new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))))
-            //               {
-            //                   Annotations = [
-            //                       new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-            //                       {
-            //                           Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-            //                       },
-            //                       new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-            //                       {
-            //                           Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-            //                       }
-            //                   ]
-            //               });
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLInverseObjectProperties(
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))),
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))))
+                {
+                    Annotations = [
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                                   {
+                                       Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                                   },
+                                   new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                                   {
+                                       Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                                   }
+                        ]
+                });
             RDFGraph graph = ontology.ToRDFGraph();
             OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
-            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 3);
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 4);
 			Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLInverseObjectProperties invObjProps0
                             && invObjProps0.LeftObjectPropertyExpression is OWLObjectProperty objPropA1
                             && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
@@ -1549,10 +1549,23 @@ namespace OWLSharp.Ontology.Test
                              && string.Equals(invObjProps2.Annotations[1].ValueIRI, "ex:comment2")
                               && invObjProps2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && invObjProps2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-            
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLInverseObjectProperties invObjProps3
+                           && invObjProps3.LeftObjectPropertyExpression is OWLObjectInverseOf objInvOfObjPropA4
+                           && objInvOfObjPropA4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA4"))
+                           && invObjProps3.RightObjectPropertyExpression is OWLObjectInverseOf objInvOfObjPropB4
+                           && objInvOfObjPropB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
+                           && invObjProps3.Annotations.Count == 2
+                            && invObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(invObjProps3.Annotations[0].ValueIRI, "ex:comment1")
+                             && invObjProps3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && invObjProps3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                            && invObjProps3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(invObjProps3.Annotations[1].ValueIRI, "ex:comment2")
+                             && invObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && invObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldReadEquivalentObjectPropertyAxiomFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
