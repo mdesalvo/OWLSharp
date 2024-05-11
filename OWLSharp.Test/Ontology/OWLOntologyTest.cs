@@ -1806,6 +1806,20 @@ namespace OWLSharp.Ontology.Test
                              && string.Equals(disjObjProps3.Annotations[1].ValueIRI, "ex:comment2")
                               && disjObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && disjObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+			Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLDisjointObjectProperties disjObjProps4
+                            && disjObjProps4.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA5
+                            && objPropA5.GetIRI().Equals(new RDFResource("ex:objPropA5"))
+							&& disjObjProps4.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB5
+                            && objPropB5.GetIRI().Equals(new RDFResource("ex:objPropB5"))
+							&& disjObjProps4.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC5
+                            && objPropC5.GetIRI().Equals(new RDFResource("ex:objPropC5"))
+							&& disjObjProps4.ObjectPropertyExpressions[3] is OWLObjectInverseOf objInvOfD5
+                            && objInvOfD5.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropD5"))
+                             && disjObjProps4.Annotations.Count == 1
+                             && disjObjProps4.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(disjObjProps4.Annotations.Single().ValueIRI, "ex:title")
+                              && disjObjProps4.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && disjObjProps4.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         }
         #endregion
 
