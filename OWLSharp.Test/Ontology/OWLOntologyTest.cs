@@ -1792,6 +1792,20 @@ namespace OWLSharp.Ontology.Test
                              && string.Equals(disjObjProps2.Annotations[1].ValueIRI, "ex:comment2")
                               && disjObjProps2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && disjObjProps2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+			Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLDisjointObjectProperties disjObjProps3
+                            && disjObjProps3.ObjectPropertyExpressions[0] is OWLObjectInverseOf objInvOfA4
+                            && objInvOfA4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA4"))
+							&& disjObjProps3.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB4
+                            && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
+                            && disjObjProps3.Annotations.Count == 2
+                             && disjObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(disjObjProps3.Annotations[0].ValueIRI, "ex:comment1")
+                              && disjObjProps3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && disjObjProps3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                             && disjObjProps3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(disjObjProps3.Annotations[1].ValueIRI, "ex:comment2")
+                              && disjObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && disjObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
         #endregion
 
