@@ -1754,7 +1754,16 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 5);
-			
+			Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLDisjointObjectProperties disjObjProps
+                            && disjObjProps.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA1
+                            && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
+							&& disjObjProps.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB1
+                            && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
+                             && disjObjProps.Annotations.Count == 1
+                             && disjObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(disjObjProps.Annotations.Single().ValueIRI, "ex:title")
+                              && disjObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && disjObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         }
         #endregion
 
