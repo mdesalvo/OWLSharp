@@ -1703,8 +1703,8 @@ namespace OWLSharp.Ontology.Test
                          });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLDisjointObjectProperties([
-                    new OWLObjectProperty(new RDFResource("ex:objPropA2")),
-					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB2"))),])
+                    new OWLObjectProperty(new RDFResource("ex:objPropA3")),
+					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))),])
                          {
                              Annotations = [
                                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
@@ -1779,10 +1779,10 @@ namespace OWLSharp.Ontology.Test
                               && disjObjProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && disjObjProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
 			Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLDisjointObjectProperties disjObjProps2
-                            && disjObjProps2.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA2
-                            && objPropA2.GetIRI().Equals(new RDFResource("ex:objPropA2"))
-							&& disjObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB2
-                            && objInvOfB2.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB2"))
+                            && disjObjProps2.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA3
+                            && objPropA3.GetIRI().Equals(new RDFResource("ex:objPropA3"))
+							&& disjObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB3
+                            && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
                             && disjObjProps2.Annotations.Count == 2
                              && disjObjProps2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                              && string.Equals(disjObjProps2.Annotations[0].ValueIRI, "ex:comment1")
