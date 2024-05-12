@@ -217,6 +217,7 @@ namespace OWLSharp.Ontology
         public static OWLOntology FromRDFGraph(RDFGraph graph)
         {
             #region Utilities
+			//Ontology
             void LoadOntology(out OWLOntology ont)
             {
                 string ontIRI = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null]
@@ -279,6 +280,7 @@ namespace OWLSharp.Ontology
                 ont.Annotations = ontologyAnnotations;
             }
 
+			//ObjectPropertyAxioms
 			void LoadFunctionalObjectProperties(OWLOntology ont)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
@@ -725,6 +727,7 @@ namespace OWLSharp.Ontology
                 }
             }
 
+			//Annotations
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
