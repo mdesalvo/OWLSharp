@@ -1912,7 +1912,7 @@ namespace OWLSharp.Ontology.Test
                     Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                         {
-                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT--ltr")))
 						}
                     ]
                 });
@@ -1937,6 +1937,20 @@ namespace OWLSharp.Ontology.Test
                              && string.Equals(subObjProps.Annotations.Single().ValueIRI, "ex:title")
                               && subObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && subObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+			Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLSubObjectPropertyOf subObjProps1
+                            && subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA6
+                            && objPropA6.GetIRI().Equals(new RDFResource("ex:objPropA6"))
+							&& subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB6
+                            && objInvOfB6.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB6"))
+							&& subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC6
+                            && objPropC6.GetIRI().Equals(new RDFResource("ex:objPropC6"))
+							&& subObjProps1.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfD6
+                            && objInvOfD6.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropD6"))
+                             && subObjProps1.Annotations.Count == 1
+                             && subObjProps1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(subObjProps1.Annotations.Single().ValueIRI, "ex:title")
+                              && subObjProps1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && subObjProps1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT--ltr")));
         }
         #endregion
 
