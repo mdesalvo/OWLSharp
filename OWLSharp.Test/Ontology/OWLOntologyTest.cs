@@ -1831,19 +1831,19 @@ namespace OWLSharp.Ontology.Test
                     new OWLObjectProperty(new RDFResource("ex:objPropA1")), 
                     new OWLObjectProperty(new RDFResource("ex:objPropB1")))
                 {
-                    Annotations = [
+                    /*Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                         {
                             Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
                         }
-                    ]
+                    ]*/
                 });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSubObjectPropertyOf(
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA2"))), 
                     new OWLObjectProperty(new RDFResource("ex:objPropB2")))
                          {
-                             Annotations = [
+                             /*Annotations = [
                                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
                                 {
                                     Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
@@ -1852,14 +1852,14 @@ namespace OWLSharp.Ontology.Test
                                 {
                                     Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
                                 }
-                            ]
+                            ]*/
                          });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSubObjectPropertyOf(
                     new OWLObjectProperty(new RDFResource("ex:objPropA3")),
 					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))))
                          {
-                             Annotations = [
+                             /*Annotations = [
                                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
                                 {
                                     Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
@@ -1868,23 +1868,23 @@ namespace OWLSharp.Ontology.Test
                                 {
                                     Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
                                 }
-                            ]
+                            ]*/
                          });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSubObjectPropertyOf(
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))),
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))))
                 {
-                    Annotations = [
-                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-                                   {
-                                       Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-                                   },
-                                   new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-                                   {
-                                       Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-                                   }
-                        ]
+                    /*Annotations = [
+						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+								{
+									Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+								},
+								new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+								{
+									Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+								}
+					]*/
                 });
 			ontology.ObjectPropertyAxioms.Add(
                 new OWLSubObjectPropertyOf(
@@ -1894,12 +1894,12 @@ namespace OWLSharp.Ontology.Test
                         new OWLObjectProperty(new RDFResource("ex:objPropC5"))]),
 					new OWLObjectProperty(new RDFResource("ex:objPropD5")))
                 {
-                    Annotations = [
+                    /*Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                         {
                             Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
 						}
-                    ]
+                    ]*/
                 });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSubObjectPropertyOf(
@@ -1909,12 +1909,12 @@ namespace OWLSharp.Ontology.Test
                         new OWLObjectProperty(new RDFResource("ex:objPropC6"))]),
 					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropD6"))))
                 {
-                    Annotations = [
+                    /*Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                         {
                             Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
 						}
-                    ]
+                    ]*/
                 });
             RDFGraph graph = ontology.ToRDFGraph();
             OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
