@@ -517,38 +517,41 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
                 {
-                    OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties() {
-						ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>()	};
+                    OWLObjectPropertyExpression leftOPE = null, rightOPE = null;
 
-					//Left
+                    //Left
                     if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
 					{
 						if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
-							equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectProperty((RDFResource)equivPropTriple.Subject));
-						else continue; //Discard equivalent data properties, or equivalent untyped properties
+                            leftOPE = new OWLObjectProperty((RDFResource)equivPropTriple.Subject);
 					}
 					else
                     {
                         RDFResource inverseOf = (RDFResource)graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
-                        equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                        leftOPE = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
                     }
 
 					//Right
 					if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
 					{
 						if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
-							equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectProperty((RDFResource)equivPropTriple.Object));
-						else continue; //Discard equivalent data properties, or equivalent untyped properties
+                            rightOPE = new OWLObjectProperty((RDFResource)equivPropTriple.Object);
 					}
 					else
                     {
                         RDFResource inverseOf = (RDFResource)graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
-                        equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
+                        rightOPE = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
                     }
 
-                    LoadAxiomAnnotations(ont, equivPropTriple, equivalentObjectProperties);
+                    if (leftOPE != null && rightOPE != null)
+                    {
+                        OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties() {
+                            ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() { leftOPE, rightOPE } };
 
-                    ont.ObjectPropertyAxioms.Add(equivalentObjectProperties);
+                        LoadAxiomAnnotations(ont, equivPropTriple, equivalentObjectProperties);
+
+                        ont.ObjectPropertyAxioms.Add(equivalentObjectProperties);
+                    }
                 }
             }
 			void LoadDisjointObjectProperties(OWLOntology ont)
@@ -636,80 +639,85 @@ namespace OWLSharp.Ontology
 				//Load axioms built with owl:propertyChainAxiom
 				foreach (RDFTriple propertyChainAxiomTriple in graph[null, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, null, null])
 				{
-					OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf();
+                    OWLObjectPropertyChain objectPropertyChain = new OWLObjectPropertyChain() {
+                        ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() };
+                    OWLObjectPropertyExpression rightOPE = null;
 
-					//Left
-					OWLObjectPropertyChain objectPropertyChain = new OWLObjectPropertyChain() {
-						ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>()	};
+                    //Left                    
 					RDFCollection chainAxiomMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)propertyChainAxiomTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO);
 					foreach (RDFResource chainAxiomMember in chainAxiomMembers.Items.Cast<RDFResource>())
-					{
 						if (graph[chainAxiomMember, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
 						{
 							if (graph[chainAxiomMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 								objectPropertyChain.ObjectPropertyExpressions.Add(new OWLObjectProperty(chainAxiomMember));
-							else continue; //Discard data properties, or untyped properties
 						}
 						else
 						{
 							RDFResource inverseOf = (RDFResource)graph[chainAxiomMember, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
 							objectPropertyChain.ObjectPropertyExpressions.Add(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
 						}
-					}
-					subObjectPropertyOf.SubObjectPropertyChain = objectPropertyChain;
 
 					//Right
 					if (graph[(RDFResource)propertyChainAxiomTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
 					{
 						if (graph[(RDFResource)propertyChainAxiomTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
-							subObjectPropertyOf.SuperObjectPropertyExpression = new OWLObjectProperty((RDFResource)propertyChainAxiomTriple.Subject);
-						else continue; //Discard sub data properties, or sub untyped properties
+                            rightOPE = new OWLObjectProperty((RDFResource)propertyChainAxiomTriple.Subject);
 					}
 					else
                     {
                         RDFResource inverseOf = (RDFResource)graph[(RDFResource)propertyChainAxiomTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
-                        subObjectPropertyOf.SuperObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
+                        rightOPE = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
                     }
 
-					LoadAxiomAnnotations(ont, propertyChainAxiomTriple, subObjectPropertyOf);
+                    if (objectPropertyChain.ObjectPropertyExpressions.Count >= 2 && rightOPE != null)
+                    {
+                        OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf() {
+                            SubObjectPropertyChain = objectPropertyChain, SuperObjectPropertyExpression = rightOPE };
 
-                    ont.ObjectPropertyAxioms.Add(subObjectPropertyOf);
+                        LoadAxiomAnnotations(ont, propertyChainAxiomTriple, subObjectPropertyOf);
+
+                        ont.ObjectPropertyAxioms.Add(subObjectPropertyOf);
+                    }
 				}
 
 				//Load axioms built with rdfs:subPropertyOf
                 foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
                 {
-                    OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf();
+                    OWLObjectPropertyExpression leftOPE = null, rightOPE = null;
 
-					//Left
+                    //Left
 					if (graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
 					{
 						if (graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
-							subObjectPropertyOf.SubObjectPropertyExpression = new OWLObjectProperty((RDFResource)subPropTriple.Subject);
-						else continue; //Discard sub data properties, or sub untyped properties
+                            leftOPE = new OWLObjectProperty((RDFResource)subPropTriple.Subject);
 					}
 					else
 					{
 						RDFResource inverseOf = (RDFResource)graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
-						subObjectPropertyOf.SubObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
+                        leftOPE = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
 					}
 
 					//Right
 					if (graph[(RDFResource)subPropTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
 					{
 						if (graph[(RDFResource)subPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
-							subObjectPropertyOf.SuperObjectPropertyExpression = new OWLObjectProperty((RDFResource)subPropTriple.Object);
-						else continue; //Discard sub data properties, or sub untyped properties
+                            rightOPE = new OWLObjectProperty((RDFResource)subPropTriple.Object);
 					}
 					else
                     {
                         RDFResource inverseOf = (RDFResource)graph[(RDFResource)subPropTriple.Object, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
-                        subObjectPropertyOf.SuperObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
+                        rightOPE = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
                     }
 
-                    LoadAxiomAnnotations(ont, subPropTriple, subObjectPropertyOf);
+                    if (leftOPE != null && rightOPE != null)
+                    {
+                        OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf() {
+                            SubObjectPropertyExpression = leftOPE, SuperObjectPropertyExpression = rightOPE };
 
-                    ont.ObjectPropertyAxioms.Add(subObjectPropertyOf);
+                        LoadAxiomAnnotations(ont, subPropTriple, subObjectPropertyOf);
+
+                        ont.ObjectPropertyAxioms.Add(subObjectPropertyOf);
+                    }
                 }
             }
             //TODO: ObjectPropertyDomain, ObjectPropertyRange
