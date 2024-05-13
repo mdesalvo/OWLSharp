@@ -727,7 +727,6 @@ namespace OWLSharp.Ontology
             //TODO: ObjectPropertyDomain, ObjectPropertyRange
 
             //DataPropertyAxioms
-            //TODO: SubDataPropertyOf, DataPropertyDomain, DataPropertyRange
             void LoadFunctionalDataProperties(OWLOntology ont)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
@@ -826,6 +825,30 @@ namespace OWLSharp.Ontology
                         }
                     }
             }
+            void LoadSubDataProperties(OWLOntology ont)
+            {
+                foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
+                {
+                    OWLSubDataPropertyOf subDataPropertyOf = new OWLSubDataPropertyOf();
+
+                    //Left
+                    if (graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                        subDataPropertyOf.SubDataProperty = new OWLDataProperty((RDFResource)subPropTriple.Subject);
+                    else
+                        continue; //Discard sub object properties, or sub untyped properties
+
+                    //Right
+                    if (graph[(RDFResource)subPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                        subDataPropertyOf.SuperDataProperty = new OWLDataProperty((RDFResource)subPropTriple.Object);
+                    else
+                        continue; //Discard sub object properties, or sub untyped properties
+
+                    LoadAxiomAnnotations(ont, subPropTriple, subDataPropertyOf);
+
+                    ont.DataPropertyAxioms.Add(subDataPropertyOf);
+                }
+            }
+            //TODO: DataPropertyDomain, DataPropertyRange
 
             //ClassAxioms
             //TODO: EquivalentClasses, DisjointClasses, DisjointUnionOf, SubClassOf
@@ -958,6 +981,7 @@ namespace OWLSharp.Ontology
             LoadFunctionalDataProperties(ontology);
             LoadEquivalentDataProperties(ontology);
             LoadDisjointDataProperties(ontology);
+            LoadSubDataProperties(ontology);
 
             return ontology;
         }
