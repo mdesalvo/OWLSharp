@@ -729,7 +729,7 @@ namespace OWLSharp.Ontology
             //TODO: ObjectPropertyDomain, ObjectPropertyRange
 
             //DataPropertyAxioms
-            //TODO: EquivalentDataProperties, DisjointDataProperties, SubDataPropertyOf, DataPropertyDomain, DataPropertyRange
+            //TODO: DisjointDataProperties, SubDataPropertyOf, DataPropertyDomain, DataPropertyRange
             void LoadFunctionalDataProperties(OWLOntology ont)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
@@ -741,6 +741,30 @@ namespace OWLSharp.Ontology
 
                         ont.DataPropertyAxioms.Add(functionalDataProperty);
                     }
+            }
+            void LoadEquivalentDataProperties(OWLOntology ont)
+            {
+                foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
+                {
+                    OWLEquivalentDataProperties equivalentDataProperties = new OWLEquivalentDataProperties() {
+                        DataProperties = new List<OWLDataProperty>() };
+
+                    //Left
+                    if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                        equivalentDataProperties.DataProperties.Add(new OWLDataProperty((RDFResource)equivPropTriple.Subject));
+                    else
+                        continue; //Discard equivalent object properties, or equivalent untyped properties
+
+                    //Right
+                    if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                        equivalentDataProperties.DataProperties.Add(new OWLDataProperty((RDFResource)equivPropTriple.Object));
+                    else
+                        continue; //Discard equivalent object properties, or equivalent untyped properties
+
+                    LoadAxiomAnnotations(ont, equivPropTriple, equivalentDataProperties);
+
+                    ont.DataPropertyAxioms.Add(equivalentDataProperties);
+                }
             }
 
             //ClassAxioms
@@ -868,6 +892,7 @@ namespace OWLSharp.Ontology
 
             //DataPropertyAxioms
             LoadFunctionalDataProperties(ontology);
+            LoadEquivalentDataProperties(ontology);
 
             return ontology;
         }

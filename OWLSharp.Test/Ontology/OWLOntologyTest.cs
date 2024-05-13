@@ -2061,6 +2061,69 @@ namespace OWLSharp.Ontology.Test
                               && funcDtProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && funcDtProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
+
+        [TestMethod]
+        public void ShouldReadEquivalentDataPropertyAxiomFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DataPropertyAxioms.Add(
+                new OWLEquivalentDataProperties(
+                    [new OWLDataProperty(new RDFResource("ex:dtPropA1")), new OWLDataProperty(new RDFResource("ex:dtPropB1"))])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                        }
+                    ]
+                });
+            ontology.DataPropertyAxioms.Add(
+                new OWLEquivalentDataProperties(
+                    [new OWLDataProperty(new RDFResource("ex:dtPropA2")), new OWLDataProperty(new RDFResource("ex:dtPropB2"))])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                        },
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 2);
+            Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLEquivalentDataProperties equivDtProps
+                            && equivDtProps.DataProperties[0] is OWLDataProperty dtPropA1
+                            && dtPropA1.GetIRI().Equals(new RDFResource("ex:dtPropA1"))
+                            && equivDtProps.DataProperties[1] is OWLDataProperty dtPropB1
+                            && dtPropB1.GetIRI().Equals(new RDFResource("ex:dtPropB1"))
+                             && equivDtProps.Annotations.Count == 1
+                             && equivDtProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(equivDtProps.Annotations.Single().ValueIRI, "ex:title")
+                              && equivDtProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && equivDtProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+            Assert.IsTrue(ontology2.DataPropertyAxioms[1] is OWLEquivalentDataProperties equivDtProps1
+                            && equivDtProps1.DataProperties[0] is OWLDataProperty dtPropA2
+                            && dtPropA2.GetIRI().Equals(new RDFResource("ex:dtPropA2"))
+                            && equivDtProps1.DataProperties[1] is OWLDataProperty dtPropB2
+                            && dtPropB2.GetIRI().Equals(new RDFResource("ex:dtPropB2"))
+                            && equivDtProps1.Annotations.Count == 2
+                             && equivDtProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(equivDtProps1.Annotations[0].ValueIRI, "ex:comment1")
+                              && equivDtProps1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && equivDtProps1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                             && equivDtProps1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(equivDtProps1.Annotations[1].ValueIRI, "ex:comment2")
+                              && equivDtProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && equivDtProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+        }
         #endregion
 
         [TestCleanup]
