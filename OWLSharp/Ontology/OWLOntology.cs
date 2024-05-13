@@ -720,8 +720,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            //TODO: ObjectPropertyDomain, ObjectPropertyRange
-
+            
             //DataPropertyAxioms
             void LoadFunctionalDataProperties(OWLOntology ont)
             {
@@ -841,17 +840,14 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            //TODO: DataPropertyDomain, DataPropertyRange
 
             //ClassAxioms
-            //TODO: EquivalentClasses, DisjointClasses, DisjointUnionOf, SubClassOf
 
             //HasKeyAxiom
 
             //DatatypeDefinition
 
             //AssertionAxioms
-            //TODO: ClassAssertion, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
             void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
@@ -951,7 +947,6 @@ namespace OWLSharp.Ontology
             }
 
             //AnnotationAxioms
-            //TODO: AnnotationAssertion, SubAnnotationPropertyOf, AnnotationPropertyDomain, AnnotationPropertyRange
 
             //Annotations
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
@@ -1066,16 +1061,27 @@ namespace OWLSharp.Ontology
 			LoadEquivalentObjectProperties(ontology);
 			LoadDisjointObjectProperties(ontology);
 			LoadSubObjectProperties(ontology);
+            //TODO: ObjectPropertyDomain, ObjectPropertyRange
 
             //DataPropertyAxioms
             LoadFunctionalDataProperties(ontology);
             LoadEquivalentDataProperties(ontology);
             LoadDisjointDataProperties(ontology);
             LoadSubDataProperties(ontology);
+            //TODO: DataPropertyDomain, DataPropertyRange
+
+            //TODO: ClassAxioms
+
+            //TODO: HasKeyAxiom
+
+            //TODO: DatatypeDefinition
 
             //AssertionAxioms
             LoadSameIndividual(ontology);
             LoadDifferentIndividuals(ontology);
+            //TODO: ClassAssertion, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+
+            //TODO: AnnotationAxioms
 
             return ontology;
         }
