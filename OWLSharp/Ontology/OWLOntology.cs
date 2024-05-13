@@ -285,12 +285,12 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
                 {
-                    OWLFunctionalObjectProperty functionalObjectProperty;
+                    OWLFunctionalObjectProperty functionalObjectProperty = null;
+
                     if (graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                     {
                         if (graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
                             functionalObjectProperty = new OWLFunctionalObjectProperty(new OWLObjectProperty((RDFResource)funcPropTriple.Subject));
-                        else continue; //Discard functional data properties, or functional untyped properties
                     }   
                     else
                     {
@@ -298,9 +298,12 @@ namespace OWLSharp.Ontology
                         functionalObjectProperty = new OWLFunctionalObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(inverseOf)));
                     }
 
-                    LoadAxiomAnnotations(ont, funcPropTriple, functionalObjectProperty);
+					if (functionalObjectProperty != null)
+					{
+						LoadAxiomAnnotations(ont, funcPropTriple, functionalObjectProperty);
 
-                    ont.ObjectPropertyAxioms.Add(functionalObjectProperty);
+                    	ont.ObjectPropertyAxioms.Add(functionalObjectProperty);
+					}
                 }
             }
             void LoadInverseFunctionalObjectProperties(OWLOntology ont)
@@ -308,6 +311,7 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple invfuncPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null])
                 {
                     OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty;
+
                     if (graph[(RDFResource)invfuncPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                         inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(new OWLObjectProperty((RDFResource)invfuncPropTriple.Subject));
                     else
@@ -326,6 +330,7 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple symPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null])
                 {
                     OWLSymmetricObjectProperty symmetricObjectProperty;
+
                     if (graph[(RDFResource)symPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                         symmetricObjectProperty = new OWLSymmetricObjectProperty(new OWLObjectProperty((RDFResource)symPropTriple.Subject));
                     else
@@ -344,6 +349,7 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple asymPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
                 {
                     OWLAsymmetricObjectProperty asymmetricObjectProperty;
+
                     if (graph[(RDFResource)asymPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                         asymmetricObjectProperty = new OWLAsymmetricObjectProperty(new OWLObjectProperty((RDFResource)asymPropTriple.Subject));
                     else
@@ -362,6 +368,7 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple refPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.REFLEXIVE_PROPERTY, null])
                 {
                     OWLReflexiveObjectProperty reflexiveObjectProperty;
+
                     if (graph[(RDFResource)refPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                         reflexiveObjectProperty = new OWLReflexiveObjectProperty(new OWLObjectProperty((RDFResource)refPropTriple.Subject));
                     else
@@ -380,6 +387,7 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple irrefPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.IRREFLEXIVE_PROPERTY, null])
                 {
                     OWLIrreflexiveObjectProperty irreflexiveObjectProperty;
+
                     if (graph[(RDFResource)irrefPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                         irreflexiveObjectProperty = new OWLIrreflexiveObjectProperty(new OWLObjectProperty((RDFResource)irrefPropTriple.Subject));
                     else
@@ -398,6 +406,7 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple transPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null])
                 {
                     OWLTransitiveObjectProperty transitiveObjectProperty;
+
                     if (graph[(RDFResource)transPropTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                         transitiveObjectProperty = new OWLTransitiveObjectProperty(new OWLObjectProperty((RDFResource)transPropTriple.Subject));
                     else
