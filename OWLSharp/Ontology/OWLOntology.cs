@@ -844,28 +844,31 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
                 {
-                    OWLSameIndividual sameIndividual = new OWLSameIndividual() {
-                         IndividualExpressions = new List<OWLIndividualExpression>() };
+                    OWLIndividualExpression leftIDVEXP = null, rightIDVEXP = null;
 
                     //Left
                     RDFResource subjectIdv = (RDFResource)sameAsTriple.Subject;
                     if (subjectIdv.IsBlank)
-                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6)));
+                        leftIDVEXP = new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6));
                     else if (graph[subjectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual(subjectIdv));
-                    else continue; //Discard undeclared individuals
+                        leftIDVEXP = new OWLNamedIndividual(subjectIdv);
 
                     //Right
                     RDFResource objectIdv = (RDFResource)sameAsTriple.Object;
                     if (objectIdv.IsBlank)
-                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(objectIdv.ToString().Substring(6)));
+                        rightIDVEXP = new OWLAnonymousIndividual(objectIdv.ToString().Substring(6));
                     else if (graph[objectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual(objectIdv));
-                    else continue; //Discard undeclared individuals
+                        rightIDVEXP = new OWLNamedIndividual(objectIdv);
 
-                    LoadAxiomAnnotations(ont, sameAsTriple, sameIndividual);
+                    if (leftIDVEXP != null && rightIDVEXP != null)
+                    {
+                        OWLSameIndividual sameIndividual = new OWLSameIndividual() {
+                            IndividualExpressions = new List<OWLIndividualExpression>() { leftIDVEXP, rightIDVEXP } };
 
-                    ont.AssertionAxioms.Add(sameIndividual);
+                        LoadAxiomAnnotations(ont, sameAsTriple, sameIndividual);
+
+                        ont.AssertionAxioms.Add(sameIndividual);
+                    }
                 }
             }
             void LoadDifferentIndividuals(OWLOntology ont)
