@@ -954,6 +954,40 @@ namespace OWLSharp.Ontology
                         }
                     }
             }
+			void LoadObjectPropertyAssertions(OWLOntology ont)
+            {
+                foreach (RDFTriple objPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
+					foreach (RDFTriple objPropAsnTriple in graph[null, (RDFResource)objPropTriple.Subject, null, null])
+					{
+						OWLIndividualExpression leftIE = null, rightIE = null;
+
+						//Left
+						RDFResource subjectIdv = (RDFResource)objPropAsnTriple.Subject;
+						if (subjectIdv.IsBlank)
+							leftIE = new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6));
+						else if (graph[subjectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+							leftIE = new OWLNamedIndividual(subjectIdv);
+
+						//Right
+						RDFResource objectIdv = (RDFResource)objPropAsnTriple.Object;
+						if (objectIdv.IsBlank)
+							rightIE = new OWLAnonymousIndividual(objectIdv.ToString().Substring(6));
+						else if (graph[objectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+							rightIE = new OWLNamedIndividual(objectIdv);
+
+						if (leftIE != null && rightIE != null)
+						{
+							OWLObjectPropertyAssertion objPropAsn = new OWLObjectPropertyAssertion() {
+								 ObjectPropertyExpression = new OWLObjectProperty((RDFResource)objPropAsnTriple.Predicate),
+								 SourceIndividualExpression = leftIE,
+								 TargetIndividualExpression = rightIE };
+
+							LoadAxiomAnnotations(ont, objPropAsnTriple, objPropAsn);
+
+							ont.AssertionAxioms.Add(objPropAsn);
+						}
+					}
+            }
 
             //AnnotationAxioms
 
@@ -1088,7 +1122,8 @@ namespace OWLSharp.Ontology
             //AssertionAxioms
             LoadSameIndividual(ontology);
             LoadDifferentIndividuals(ontology);
-            //TODO: ClassAssertion, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+			LoadObjectPropertyAssertions(ontology);
+            //TODO: ClassAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
 
             //TODO: AnnotationAxioms
 
