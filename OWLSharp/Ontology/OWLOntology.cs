@@ -765,17 +765,15 @@ namespace OWLSharp.Ontology
                 //Load axioms built with owl:propertyDisjointWith
                 foreach (RDFTriple propDisjointWithTriple in graph[null, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null])
                 {
-                    OWLDataProperty leftDP, rightDP;
+                    OWLDataProperty leftDP = null, rightDP = null;
 
                     //Left
                     if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         leftDP = new OWLDataProperty((RDFResource)propDisjointWithTriple.Subject);
-                    else continue; //Discard disjoint data properties, or disjoint untyped properties
 
                     //Right
                     if (graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         rightDP = new OWLDataProperty((RDFResource)propDisjointWithTriple.Object);
-                    else continue; //Discard disjoint data properties, or disjoint untyped properties
 
                     if (leftDP != null && rightDP != null)
                     {
@@ -799,7 +797,6 @@ namespace OWLSharp.Ontology
                         foreach (RDFResource adjpMember in adjpCollection.Items.Cast<RDFResource>())
                             if (graph[adjpMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                                 adjpMembers.Add(new OWLDataProperty(adjpMember));
-                            else continue; //Discard disjoint object properties, or disjoint untyped properties
 
                         if (adjpMembers.Count >= 2)
                         {
@@ -823,21 +820,25 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
                 {
-                    OWLSubDataPropertyOf subDataPropertyOf = new OWLSubDataPropertyOf();
+                    OWLDataProperty leftDP = null, rightDP = null;
 
                     //Left
                     if (graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        subDataPropertyOf.SubDataProperty = new OWLDataProperty((RDFResource)subPropTriple.Subject);
-                    else continue; //Discard sub object properties, or sub untyped properties
+                        leftDP = new OWLDataProperty((RDFResource)subPropTriple.Subject);
 
                     //Right
                     if (graph[(RDFResource)subPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        subDataPropertyOf.SuperDataProperty = new OWLDataProperty((RDFResource)subPropTriple.Object);
-                    else continue; //Discard sub object properties, or sub untyped properties
+                        rightDP = new OWLDataProperty((RDFResource)subPropTriple.Object);
 
-                    LoadAxiomAnnotations(ont, subPropTriple, subDataPropertyOf);
+                    if (leftDP != null && rightDP != null)
+                    {
+                        OWLSubDataPropertyOf subDataPropertyOf = new OWLSubDataPropertyOf() {
+                            SubDataProperty = leftDP, SuperDataProperty = rightDP };
 
-                    ont.DataPropertyAxioms.Add(subDataPropertyOf);
+                        LoadAxiomAnnotations(ont, subPropTriple, subDataPropertyOf);
+
+                        ont.DataPropertyAxioms.Add(subDataPropertyOf);
+                    }
                 }
             }
             //TODO: DataPropertyDomain, DataPropertyRange
