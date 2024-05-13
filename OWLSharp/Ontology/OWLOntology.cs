@@ -900,7 +900,7 @@ namespace OWLSharp.Ontology
                     }
                 }
 
-                //Load axioms built with owl:AllDiffenet
+                //Load axioms built with owl:AllDifferent
                 foreach (RDFTriple allDifferentTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DIFFERENT, null])
                     if (graph[(RDFResource)allDifferentTriple.Subject, RDFVocabulary.OWL.DISTINCT_MEMBERS, null, null]
                          .FirstOrDefault()?.Object is RDFResource adiffCollectionRepresentative)
