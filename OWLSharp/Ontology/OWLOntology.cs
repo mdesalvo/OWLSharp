@@ -290,8 +290,7 @@ namespace OWLSharp.Ontology
                     {
                         if (graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
                             functionalObjectProperty = new OWLFunctionalObjectProperty(new OWLObjectProperty((RDFResource)funcPropTriple.Subject));
-                        else
-                            continue; //Discard functional data properties, or functional untyped properties
+                        else continue; //Discard functional data properties, or functional untyped properties
                     }   
                     else
                     {
@@ -482,9 +481,10 @@ namespace OWLSharp.Ontology
                             break;
                         case "IO":
                             IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
-                            if (ioplLookup.Contains(IOPL.PatternMemberID))
-                                continue;
+                            #region IOPL Guard
+                            if (ioplLookup.Contains(IOPL.PatternMemberID)) continue;
                             ioplLookup.Add(IOPL.PatternMemberID);
+                            #endregion
                             OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
                             OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
                             inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPL));
@@ -525,8 +525,7 @@ namespace OWLSharp.Ontology
 					{
 						if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 							equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectProperty((RDFResource)equivPropTriple.Subject));
-						else
-							continue; //Discard equivalent data properties, or equivalent untyped properties
+						else continue; //Discard equivalent data properties, or equivalent untyped properties
 					}
 					else
                     {
@@ -539,8 +538,7 @@ namespace OWLSharp.Ontology
 					{
 						if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 							equivalentObjectProperties.ObjectPropertyExpressions.Add(new OWLObjectProperty((RDFResource)equivPropTriple.Object));
-						else
-							continue; //Discard equivalent data properties, or equivalent untyped properties
+						else continue; //Discard equivalent data properties, or equivalent untyped properties
 					}
 					else
                     {
@@ -565,8 +563,7 @@ namespace OWLSharp.Ontology
                     {
                         if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
                             leftOPE = new OWLObjectProperty((RDFResource)propDisjointWithTriple.Subject);
-                        else
-                            continue; //Discard disjoint data properties, or disjoint untyped properties
+                        else continue; //Discard disjoint data properties, or disjoint untyped properties
                     }   
                     else
                     {
@@ -579,8 +576,7 @@ namespace OWLSharp.Ontology
 					{
 						if (graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 							rightOPE = new OWLObjectProperty((RDFResource)propDisjointWithTriple.Object);
-						else
-							continue; //Discard disjoint data properties, or disjoint untyped properties
+						else continue; //Discard disjoint data properties, or disjoint untyped properties
                     }
 					else
                     {
@@ -612,8 +608,7 @@ namespace OWLSharp.Ontology
 							{
 								if (graph[adjpMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 									adjpMembers.Add(new OWLObjectProperty(adjpMember));
-								else
-									continue; //Discard disjoint data properties, or disjoint untyped properties
+								else continue; //Discard disjoint data properties, or disjoint untyped properties
                             }
 							else
 							{
@@ -656,8 +651,7 @@ namespace OWLSharp.Ontology
 						{
 							if (graph[chainAxiomMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 								objectPropertyChain.ObjectPropertyExpressions.Add(new OWLObjectProperty(chainAxiomMember));
-							else
-								continue; //Discard data properties, or untyped properties
+							else continue; //Discard data properties, or untyped properties
 						}
 						else
 						{
@@ -672,8 +666,7 @@ namespace OWLSharp.Ontology
 					{
 						if (graph[(RDFResource)propertyChainAxiomTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 							subObjectPropertyOf.SuperObjectPropertyExpression = new OWLObjectProperty((RDFResource)propertyChainAxiomTriple.Subject);
-						else
-							continue; //Discard sub data properties, or sub untyped properties
+						else continue; //Discard sub data properties, or sub untyped properties
 					}
 					else
                     {
@@ -696,8 +689,7 @@ namespace OWLSharp.Ontology
 					{
 						if (graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 							subObjectPropertyOf.SubObjectPropertyExpression = new OWLObjectProperty((RDFResource)subPropTriple.Subject);
-						else
-							continue; //Discard sub data properties, or sub untyped properties
+						else continue; //Discard sub data properties, or sub untyped properties
 					}
 					else
 					{
@@ -710,8 +702,7 @@ namespace OWLSharp.Ontology
 					{
 						if (graph[(RDFResource)subPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 							subObjectPropertyOf.SuperObjectPropertyExpression = new OWLObjectProperty((RDFResource)subPropTriple.Object);
-						else
-							continue; //Discard sub data properties, or sub untyped properties
+						else continue; //Discard sub data properties, or sub untyped properties
 					}
 					else
                     {
@@ -749,14 +740,12 @@ namespace OWLSharp.Ontology
                     //Left
                     if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         equivalentDataProperties.DataProperties.Add(new OWLDataProperty((RDFResource)equivPropTriple.Subject));
-                    else
-                        continue; //Discard equivalent object properties, or equivalent untyped properties
+                    else continue; //Discard equivalent object properties, or equivalent untyped properties
 
                     //Right
                     if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         equivalentDataProperties.DataProperties.Add(new OWLDataProperty((RDFResource)equivPropTriple.Object));
-                    else
-                        continue; //Discard equivalent object properties, or equivalent untyped properties
+                    else continue; //Discard equivalent object properties, or equivalent untyped properties
 
                     LoadAxiomAnnotations(ont, equivPropTriple, equivalentDataProperties);
 
@@ -773,14 +762,12 @@ namespace OWLSharp.Ontology
                     //Left
                     if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         leftDP = new OWLDataProperty((RDFResource)propDisjointWithTriple.Subject);
-                    else
-                        continue; //Discard disjoint data properties, or disjoint untyped properties
+                    else continue; //Discard disjoint data properties, or disjoint untyped properties
 
                     //Right
                     if (graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         rightDP = new OWLDataProperty((RDFResource)propDisjointWithTriple.Object);
-                    else
-                        continue; //Discard disjoint data properties, or disjoint untyped properties
+                    else continue; //Discard disjoint data properties, or disjoint untyped properties
 
                     if (leftDP != null && rightDP != null)
                     {
@@ -804,8 +791,7 @@ namespace OWLSharp.Ontology
                         foreach (RDFResource adjpMember in adjpCollection.Items.Cast<RDFResource>())
                             if (graph[adjpMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                                 adjpMembers.Add(new OWLDataProperty(adjpMember));
-                            else
-                                continue; //Discard disjoint object properties, or disjoint untyped properties
+                            else continue; //Discard disjoint object properties, or disjoint untyped properties
 
                         if (adjpMembers.Count >= 2)
                         {
@@ -834,14 +820,12 @@ namespace OWLSharp.Ontology
                     //Left
                     if (graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         subDataPropertyOf.SubDataProperty = new OWLDataProperty((RDFResource)subPropTriple.Subject);
-                    else
-                        continue; //Discard sub object properties, or sub untyped properties
+                    else continue; //Discard sub object properties, or sub untyped properties
 
                     //Right
                     if (graph[(RDFResource)subPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                         subDataPropertyOf.SuperDataProperty = new OWLDataProperty((RDFResource)subPropTriple.Object);
-                    else
-                        continue; //Discard sub object properties, or sub untyped properties
+                    else continue; //Discard sub object properties, or sub untyped properties
 
                     LoadAxiomAnnotations(ont, subPropTriple, subDataPropertyOf);
 
@@ -858,7 +842,33 @@ namespace OWLSharp.Ontology
             //DatatypeDefinition
 
             //AssertionAxioms
-            //TODO: ClassAssertion, SameIndividual, DifferentIndividuals, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+            //TODO: ClassAssertion, DifferentIndividuals, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+            void LoadSameIndividual(OWLOntology ont)
+            {
+                foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
+                {
+                    OWLSameIndividual sameIndividual = new OWLSameIndividual() {
+                         IndividualExpressions = new List<OWLIndividualExpression>() };
+
+                    //Left
+                    if (((RDFResource)sameAsTriple.Subject).IsBlank)
+                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(sameAsTriple.Subject.ToString().Substring(6)));
+                    else if (graph[(RDFResource)sameAsTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual((RDFResource)sameAsTriple.Subject));
+                    else continue; //Discard undeclared individuals
+
+                    //Left
+                    if (((RDFResource)sameAsTriple.Object).IsBlank)
+                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(sameAsTriple.Object.ToString().Substring(6)));
+                    else if (graph[(RDFResource)sameAsTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual((RDFResource)sameAsTriple.Object));
+                    else continue; //Discard undeclared individuals
+
+                    LoadAxiomAnnotations(ont, sameAsTriple, sameIndividual);
+
+                    ont.AssertionAxioms.Add(sameIndividual);
+                }
+            }
 
             //AnnotationAxioms
             //TODO: AnnotationAssertion, SubAnnotationPropertyOf, AnnotationPropertyDomain, AnnotationPropertyRange
@@ -982,6 +992,9 @@ namespace OWLSharp.Ontology
             LoadEquivalentDataProperties(ontology);
             LoadDisjointDataProperties(ontology);
             LoadSubDataProperties(ontology);
+
+            //AssertionAxioms
+            LoadSameIndividual(ontology);
 
             return ontology;
         }

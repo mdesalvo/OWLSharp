@@ -31,7 +31,8 @@ namespace OWLSharp.Ontology.Expressions.Test
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual();
 
             Assert.IsNotNull(anonIdv);
-            Assert.IsTrue(Guid.TryParse(anonIdv.NodeID, out Guid _));
+            Assert.IsTrue(anonIdv.NodeID.StartsWith("ANON"));
+            Assert.IsTrue(Guid.TryParse(anonIdv.NodeID[4..], out Guid _));
         }
 
         [TestMethod]

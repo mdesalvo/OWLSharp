@@ -30,7 +30,7 @@ namespace OWLSharp.Ontology.Expressions
 
         #region Ctors
         public OWLAnonymousIndividual()
-            => NodeID = Guid.NewGuid().ToString("N");
+            => NodeID = $"ANON{Guid.NewGuid():N}";
         public OWLAnonymousIndividual(string xsdNCName)
         {
             try
