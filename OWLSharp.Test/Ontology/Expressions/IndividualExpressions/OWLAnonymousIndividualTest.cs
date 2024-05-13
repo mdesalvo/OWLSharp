@@ -17,6 +17,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Test;
 using RDFSharp.Model;
+using System;
 
 namespace OWLSharp.Ontology.Expressions.Test
 {
@@ -26,6 +27,15 @@ namespace OWLSharp.Ontology.Expressions.Test
         #region Tests
         [TestMethod]
         public void ShouldCreateAnonymousIndividual()
+        {
+            OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual();
+
+            Assert.IsNotNull(anonIdv);
+            Assert.IsTrue(Guid.TryParse(anonIdv.NodeID, out Guid _));
+        }
+
+        [TestMethod]
+        public void ShouldCreateAnonymousIndividualWithNCName()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
 

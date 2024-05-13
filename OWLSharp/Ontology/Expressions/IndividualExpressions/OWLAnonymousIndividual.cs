@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Expressions
@@ -24,16 +25,17 @@ namespace OWLSharp.Ontology.Expressions
     {
         #region Properties
         [XmlAttribute("nodeID", DataType="NCName")]
-        public string NodeID { get; set; }			
+        public string NodeID { get; set; }
         #endregion
 
         #region Ctors
-        internal OWLAnonymousIndividual() { }
-        public OWLAnonymousIndividual(string anonymousName)
+        public OWLAnonymousIndividual()
+            => NodeID = Guid.NewGuid().ToString("N");
+        public OWLAnonymousIndividual(string xsdNCName)
         {
             try
             {
-                RDFTypedLiteral xsdNCNameLiteral = new RDFTypedLiteral(anonymousName, RDFModelEnums.RDFDatatypes.XSD_NCNAME);
+                RDFTypedLiteral xsdNCNameLiteral = new RDFTypedLiteral(xsdNCName, RDFModelEnums.RDFDatatypes.XSD_NCNAME);
                 NodeID = xsdNCNameLiteral.Value;
             }
             catch { throw new OWLException("Cannot create OWLAnonymousIndividual because given \"anonymousName\" parameter is null or is not a valid xsd:NCName"); }
