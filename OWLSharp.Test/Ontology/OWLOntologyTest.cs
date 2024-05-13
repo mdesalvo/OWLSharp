@@ -2365,6 +2365,159 @@ namespace OWLSharp.Ontology.Test
                               && sameIdvs3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && sameIdvs3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
+
+        [TestMethod]
+        public void ShouldReadDifferentIndividualsAxiomFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.AssertionAxioms.Add(
+                new OWLDifferentIndividuals([
+                    new OWLNamedIndividual(new RDFResource("ex:IDVA")),
+                    new OWLNamedIndividual(new RDFResource("ex:IDVB"))])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                        }
+                    ]
+                });
+            ontology.AssertionAxioms.Add(
+                new OWLDifferentIndividuals([
+                   new OWLAnonymousIndividual("ANONIDV1"),
+                   new OWLNamedIndividual(new RDFResource("ex:IDVC"))])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                        },
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                        }
+                    ]
+                });
+            ontology.AssertionAxioms.Add(
+                new OWLDifferentIndividuals([
+                    new OWLNamedIndividual(new RDFResource("ex:IDVD")),
+                    new OWLAnonymousIndividual("ANONIDV2")])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                        },
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                        }
+                    ]
+                });
+            ontology.AssertionAxioms.Add(
+                new OWLDifferentIndividuals([
+                    new OWLAnonymousIndividual(),
+                    new OWLAnonymousIndividual("ANONIDV3")])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                        },
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                        }
+                    ]
+                });
+            ontology.AssertionAxioms.Add(
+                new OWLDifferentIndividuals([
+                    new OWLNamedIndividual(new RDFResource("ex:IDVF")),
+                    new OWLNamedIndividual(new RDFResource("ex:IDVG")),
+                    new OWLNamedIndividual(new RDFResource("ex:IDVH")),
+                    new OWLAnonymousIndividual("ANONIDV4")])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AssertionAxioms.Count == 5);
+            Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLDifferentIndividuals diffIdvs
+                            && diffIdvs.IndividualExpressions[0] is OWLNamedIndividual idvA
+                            && idvA.GetIRI().Equals(new RDFResource("ex:IDVA"))
+                            && diffIdvs.IndividualExpressions[1] is OWLNamedIndividual idvB
+                            && idvB.GetIRI().Equals(new RDFResource("ex:IDVB"))
+                             && diffIdvs.Annotations.Count == 1
+                             && diffIdvs.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(diffIdvs.Annotations.Single().ValueIRI, "ex:title")
+                              && diffIdvs.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && diffIdvs.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+            Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLDifferentIndividuals diffIdvs1
+                            && diffIdvs1.IndividualExpressions[0] is OWLAnonymousIndividual anonIdv1
+                            && anonIdv1.GetIRI().Equals(new RDFResource("bnode:ANONIDV1"))
+                            && diffIdvs1.IndividualExpressions[1] is OWLNamedIndividual idvC
+                            && idvC.GetIRI().Equals(new RDFResource("ex:IDVC"))
+                            && diffIdvs1.Annotations.Count == 2
+                             && diffIdvs1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(diffIdvs1.Annotations[0].ValueIRI, "ex:comment1")
+                              && diffIdvs1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && diffIdvs1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                             && diffIdvs1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(diffIdvs1.Annotations[1].ValueIRI, "ex:comment2")
+                              && diffIdvs1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && diffIdvs1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+            Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLDifferentIndividuals diffIdvs2
+                            && diffIdvs2.IndividualExpressions[0] is OWLNamedIndividual idvD
+                            && idvD.GetIRI().Equals(new RDFResource("ex:IDVD"))
+                            && diffIdvs2.IndividualExpressions[1] is OWLAnonymousIndividual anonIdv2
+                            && anonIdv2.GetIRI().Equals(new RDFResource("bnode:ANONIDV2"))
+                            && diffIdvs2.Annotations.Count == 2
+                             && diffIdvs2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(diffIdvs2.Annotations[0].ValueIRI, "ex:comment1")
+                              && diffIdvs2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && diffIdvs2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                             && diffIdvs2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(diffIdvs2.Annotations[1].ValueIRI, "ex:comment2")
+                              && diffIdvs2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && diffIdvs2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+            Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLDifferentIndividuals diffIdvs3
+                            && diffIdvs3.IndividualExpressions[0] is OWLAnonymousIndividual fullAnonIdv
+                            && fullAnonIdv.GetIRI().IsBlank //Full anonymous
+                            && diffIdvs3.IndividualExpressions[1] is OWLAnonymousIndividual anonIdv3
+                            && anonIdv3.GetIRI().Equals(new RDFResource("bnode:ANONIDV3"))
+                            && diffIdvs3.Annotations.Count == 2
+                             && diffIdvs3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(diffIdvs3.Annotations[0].ValueIRI, "ex:comment1")
+                              && diffIdvs3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && diffIdvs3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                             && diffIdvs3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(diffIdvs3.Annotations[1].ValueIRI, "ex:comment2")
+                              && diffIdvs3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && diffIdvs3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+            Assert.IsTrue(ontology2.AssertionAxioms[4] is OWLDifferentIndividuals diffIdvs4
+                            && diffIdvs4.IndividualExpressions[0] is OWLNamedIndividual idvF
+                            && idvF.GetIRI().Equals(new RDFResource("ex:IDVF"))
+                            && diffIdvs4.IndividualExpressions[1] is OWLNamedIndividual idvG
+                            && idvG.GetIRI().Equals(new RDFResource("ex:IDVG"))
+                            && diffIdvs4.IndividualExpressions[2] is OWLNamedIndividual idvH
+                            && idvH.GetIRI().Equals(new RDFResource("ex:IDVH"))
+                            && diffIdvs4.IndividualExpressions[3] is OWLAnonymousIndividual anonIdv4
+                            && anonIdv4.GetIRI().Equals(new RDFResource("bnode:ANONIDV4"))
+                             && diffIdvs4.Annotations.Count == 1
+                             && diffIdvs4.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(diffIdvs4.Annotations.Single().ValueIRI, "ex:title")
+                              && diffIdvs4.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && diffIdvs4.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+        }
         #endregion
 
         [TestCleanup]

@@ -556,14 +556,13 @@ namespace OWLSharp.Ontology
 				//Load axioms built with owl:propertyDisjointWith
 				foreach (RDFTriple propDisjointWithTriple in graph[null, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null])
                 {
-					OWLObjectPropertyExpression leftOPE, rightOPE;
+					OWLObjectPropertyExpression leftOPE = null, rightOPE = null;
                     
 					//Left
 					if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                     {
                         if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
                             leftOPE = new OWLObjectProperty((RDFResource)propDisjointWithTriple.Subject);
-                        else continue; //Discard disjoint data properties, or disjoint untyped properties
                     }   
                     else
                     {
@@ -576,7 +575,6 @@ namespace OWLSharp.Ontology
 					{
 						if (graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 							rightOPE = new OWLObjectProperty((RDFResource)propDisjointWithTriple.Object);
-						else continue; //Discard disjoint data properties, or disjoint untyped properties
                     }
 					else
                     {
@@ -608,7 +606,6 @@ namespace OWLSharp.Ontology
 							{
 								if (graph[adjpMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
 									adjpMembers.Add(new OWLObjectProperty(adjpMember));
-								else continue; //Discard disjoint data properties, or disjoint untyped properties
                             }
 							else
 							{
@@ -842,7 +839,7 @@ namespace OWLSharp.Ontology
             //DatatypeDefinition
 
             //AssertionAxioms
-            //TODO: ClassAssertion, DifferentIndividuals, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+            //TODO: ClassAssertion, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
             void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
@@ -870,6 +867,72 @@ namespace OWLSharp.Ontology
 
                     ont.AssertionAxioms.Add(sameIndividual);
                 }
+            }
+            void LoadDifferentIndividuals(OWLOntology ont)
+            {
+                //Load axioms built with owl:differentFrom
+                foreach (RDFTriple differentFromTriple in graph[null, RDFVocabulary.OWL.DIFFERENT_FROM, null, null])
+                {
+                    OWLIndividualExpression leftIDVEXP = null, rightIDVEXP = null;
+
+                    //Left
+                    RDFResource subjectIdv = (RDFResource)differentFromTriple.Subject;
+                    if (subjectIdv.IsBlank)
+                        leftIDVEXP = new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6));
+                    else if (graph[subjectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        leftIDVEXP = new OWLNamedIndividual(subjectIdv);
+
+                    //Right
+                    RDFResource objectIdv = (RDFResource)differentFromTriple.Object;
+                    if (objectIdv.IsBlank)
+                        rightIDVEXP = new OWLAnonymousIndividual(objectIdv.ToString().Substring(6));
+                    else if (graph[objectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        rightIDVEXP = new OWLNamedIndividual(objectIdv);
+
+                    if (leftIDVEXP != null && rightIDVEXP != null)
+                    {
+                        OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals() {
+                            IndividualExpressions = new List<OWLIndividualExpression>() { leftIDVEXP, rightIDVEXP } };
+
+                        LoadAxiomAnnotations(ont, differentFromTriple, differentIndividuals);
+
+                        ont.AssertionAxioms.Add(differentIndividuals);
+                    }
+                }
+
+                //Load axioms built with owl:AllDiffenet
+                foreach (RDFTriple allDifferentTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DIFFERENT, null])
+                    if (graph[(RDFResource)allDifferentTriple.Subject, RDFVocabulary.OWL.DISTINCT_MEMBERS, null, null]
+                         .FirstOrDefault()?.Object is RDFResource adiffCollectionRepresentative)
+                    {
+                        List<OWLIndividualExpression> adiffMembers = new List<OWLIndividualExpression>();
+
+                        RDFCollection adiffCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, adiffCollectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+                        foreach (RDFResource adiffMember in adiffCollection.Items.Cast<RDFResource>())
+                        {
+                            if (adiffMember.IsBlank)
+                                adiffMembers.Add(new OWLAnonymousIndividual(adiffMember.ToString().Substring(6)));
+                            else if (graph[adiffMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                                adiffMembers.Add(new OWLNamedIndividual(adiffMember));
+                        }                            
+
+                        if (adiffMembers.Count >= 2)
+                        {
+                            OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals() {
+                                IndividualExpressions = adiffMembers };
+
+                            LoadIRIAnnotations(ont, new List<RDFResource>() {
+                                RDFVocabulary.OWL.DEPRECATED,
+                                RDFVocabulary.RDFS.COMMENT,
+                                RDFVocabulary.RDFS.LABEL,
+                                RDFVocabulary.RDFS.SEE_ALSO,
+                                RDFVocabulary.RDFS.IS_DEFINED_BY
+                            }, (RDFResource)allDifferentTriple.Subject, out List<OWLAnnotation> adjpAnnotations);
+                            differentIndividuals.Annotations = adjpAnnotations;
+
+                            ont.AssertionAxioms.Add(differentIndividuals);
+                        }
+                    }
             }
 
             //AnnotationAxioms
@@ -997,6 +1060,7 @@ namespace OWLSharp.Ontology
 
             //AssertionAxioms
             LoadSameIndividual(ontology);
+            LoadDifferentIndividuals(ontology);
 
             return ontology;
         }
