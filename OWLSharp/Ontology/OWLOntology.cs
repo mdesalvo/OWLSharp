@@ -851,17 +851,19 @@ namespace OWLSharp.Ontology
                          IndividualExpressions = new List<OWLIndividualExpression>() };
 
                     //Left
-                    if (((RDFResource)sameAsTriple.Subject).IsBlank)
-                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(sameAsTriple.Subject.ToString().Substring(6)));
-                    else if (graph[(RDFResource)sameAsTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual((RDFResource)sameAsTriple.Subject));
+                    RDFResource subjectIdv = (RDFResource)sameAsTriple.Subject;
+                    if (subjectIdv.IsBlank)
+                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6)));
+                    else if (graph[subjectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual(subjectIdv));
                     else continue; //Discard undeclared individuals
 
-                    //Left
-                    if (((RDFResource)sameAsTriple.Object).IsBlank)
-                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(sameAsTriple.Object.ToString().Substring(6)));
-                    else if (graph[(RDFResource)sameAsTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual((RDFResource)sameAsTriple.Object));
+                    //Right
+                    RDFResource objectIdv = (RDFResource)sameAsTriple.Object;
+                    if (objectIdv.IsBlank)
+                        sameIndividual.IndividualExpressions.Add(new OWLAnonymousIndividual(objectIdv.ToString().Substring(6)));
+                    else if (graph[objectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        sameIndividual.IndividualExpressions.Add(new OWLNamedIndividual(objectIdv));
                     else continue; //Discard undeclared individuals
 
                     LoadAxiomAnnotations(ont, sameAsTriple, sameIndividual);
