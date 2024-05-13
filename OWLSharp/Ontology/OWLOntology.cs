@@ -739,22 +739,25 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
                 {
-                    OWLEquivalentDataProperties equivalentDataProperties = new OWLEquivalentDataProperties() {
-                        DataProperties = new List<OWLDataProperty>() };
-
+                    OWLDataProperty leftDP = null, rightDP = null;
+                    
                     //Left
                     if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        equivalentDataProperties.DataProperties.Add(new OWLDataProperty((RDFResource)equivPropTriple.Subject));
-                    else continue; //Discard equivalent object properties, or equivalent untyped properties
+                        leftDP = new OWLDataProperty((RDFResource)equivPropTriple.Subject);
 
                     //Right
                     if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        equivalentDataProperties.DataProperties.Add(new OWLDataProperty((RDFResource)equivPropTriple.Object));
-                    else continue; //Discard equivalent object properties, or equivalent untyped properties
+                        rightDP = new OWLDataProperty((RDFResource)equivPropTriple.Object);
 
-                    LoadAxiomAnnotations(ont, equivPropTriple, equivalentDataProperties);
+                    if (leftDP != null && rightDP != null)
+                    {
+                        OWLEquivalentDataProperties equivalentDataProperties = new OWLEquivalentDataProperties() {
+                            DataProperties = new List<OWLDataProperty>() { leftDP, rightDP } };
 
-                    ont.DataPropertyAxioms.Add(equivalentDataProperties);
+                        LoadAxiomAnnotations(ont, equivPropTriple, equivalentDataProperties);
+
+                        ont.DataPropertyAxioms.Add(equivalentDataProperties);
+                    }
                 }
             }
             void LoadDisjointDataProperties(OWLOntology ont)
