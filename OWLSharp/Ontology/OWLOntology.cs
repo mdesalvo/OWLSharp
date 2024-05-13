@@ -726,6 +726,23 @@ namespace OWLSharp.Ontology
                     ont.ObjectPropertyAxioms.Add(subObjectPropertyOf);
                 }
             }
+            //TODO: ObjectPropertyDomain, ObjectPropertyRange
+
+            //DataPropertyAxioms
+            //TODO: FunctionalDataProperty, EquivalentDataProperties, DisjointDataProperties, SubDataPropertyOf, DataPropertyDomain, DataPropertyRange
+
+            //ClassAxioms
+            //TODO: EquivalentClasses, DisjointClasses, DisjointUnionOf, SubClassOf
+
+            //HasKeyAxiom
+
+            //DatatypeDefinition
+
+            //AssertionAxioms
+            //TODO: ClassAssertion, SameIndividual, DifferentIndividuals, ObjectPropertyAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+
+            //AnnotationAxioms
+            //TODO: AnnotationAssertion, SubAnnotationPropertyOf, AnnotationPropertyDomain, AnnotationPropertyRange
 
 			//Annotations
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
