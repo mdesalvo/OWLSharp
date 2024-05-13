@@ -1123,7 +1123,7 @@ namespace OWLSharp.Ontology
             LoadSameIndividual(ontology);
             LoadDifferentIndividuals(ontology);
 			LoadObjectPropertyAssertions(ontology);
-            //TODO: ClassAssertion, NegativeObjectPrpertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+            //TODO: ClassAssertion, NegativeObjectPropertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
 
             //TODO: AnnotationAxioms
 
