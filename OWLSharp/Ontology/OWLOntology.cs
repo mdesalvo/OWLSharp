@@ -729,7 +729,19 @@ namespace OWLSharp.Ontology
             //TODO: ObjectPropertyDomain, ObjectPropertyRange
 
             //DataPropertyAxioms
-            //TODO: FunctionalDataProperty, EquivalentDataProperties, DisjointDataProperties, SubDataPropertyOf, DataPropertyDomain, DataPropertyRange
+            //TODO: EquivalentDataProperties, DisjointDataProperties, SubDataPropertyOf, DataPropertyDomain, DataPropertyRange
+            void LoadFunctionalDataProperties(OWLOntology ont)
+            {
+                foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
+                    if (graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                    {
+                        OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(new OWLDataProperty((RDFResource)funcPropTriple.Subject));
+
+                        LoadAxiomAnnotations(ont, funcPropTriple, functionalDataProperty);
+
+                        ont.DataPropertyAxioms.Add(functionalDataProperty);
+                    }
+            }
 
             //ClassAxioms
             //TODO: EquivalentClasses, DisjointClasses, DisjointUnionOf, SubClassOf
@@ -744,7 +756,7 @@ namespace OWLSharp.Ontology
             //AnnotationAxioms
             //TODO: AnnotationAssertion, SubAnnotationPropertyOf, AnnotationPropertyDomain, AnnotationPropertyRange
 
-			//Annotations
+            //Annotations
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
@@ -853,6 +865,9 @@ namespace OWLSharp.Ontology
 			LoadEquivalentObjectProperties(ontology);
 			LoadDisjointObjectProperties(ontology);
 			LoadSubObjectProperties(ontology);
+
+            //DataPropertyAxioms
+            LoadFunctionalDataProperties(ontology);
 
             return ontology;
         }
