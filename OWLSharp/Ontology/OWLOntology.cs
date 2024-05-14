@@ -730,21 +730,8 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
                 {
-                    OWLIndividualExpression leftIE = null, rightIE = null;
-
-                    //Left
-                    RDFResource subjectIdv = (RDFResource)sameAsTriple.Subject;
-                    if (subjectIdv.IsBlank)
-                        leftIE = new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6));
-                    else if (graph[subjectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        leftIE = new OWLNamedIndividual(subjectIdv);
-
-                    //Right
-                    RDFResource objectIdv = (RDFResource)sameAsTriple.Object;
-                    if (objectIdv.IsBlank)
-                        rightIE = new OWLAnonymousIndividual(objectIdv.ToString().Substring(6));
-                    else if (graph[objectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        rightIE = new OWLNamedIndividual(objectIdv);
+                    LoadIndividualExpression(ont, (RDFResource)sameAsTriple.Subject, out OWLIndividualExpression leftIE);
+                    LoadIndividualExpression(ont, (RDFResource)sameAsTriple.Object, out OWLIndividualExpression rightIE);
 
                     if (leftIE != null && rightIE != null)
                     {
@@ -762,21 +749,8 @@ namespace OWLSharp.Ontology
                 //Load axioms built with owl:differentFrom
                 foreach (RDFTriple differentFromTriple in graph[null, RDFVocabulary.OWL.DIFFERENT_FROM, null, null])
                 {
-                    OWLIndividualExpression leftIE = null, rightIE = null;
-
-                    //Left
-                    RDFResource subjectIdv = (RDFResource)differentFromTriple.Subject;
-                    if (subjectIdv.IsBlank)
-                        leftIE = new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6));
-                    else if (graph[subjectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        leftIE = new OWLNamedIndividual(subjectIdv);
-
-                    //Right
-                    RDFResource objectIdv = (RDFResource)differentFromTriple.Object;
-                    if (objectIdv.IsBlank)
-                        rightIE = new OWLAnonymousIndividual(objectIdv.ToString().Substring(6));
-                    else if (graph[objectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        rightIE = new OWLNamedIndividual(objectIdv);
+                    LoadIndividualExpression(ont, (RDFResource)differentFromTriple.Subject, out OWLIndividualExpression leftIE);
+                    LoadIndividualExpression(ont, (RDFResource)differentFromTriple.Object, out OWLIndividualExpression rightIE);
 
                     if (leftIE != null && rightIE != null)
                     {
@@ -799,10 +773,9 @@ namespace OWLSharp.Ontology
                         RDFCollection adiffCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, adiffCollectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                         foreach (RDFResource adiffMember in adiffCollection.Items.Cast<RDFResource>())
                         {
-                            if (adiffMember.IsBlank)
-                                adiffMembers.Add(new OWLAnonymousIndividual(adiffMember.ToString().Substring(6)));
-                            else if (graph[adiffMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                                adiffMembers.Add(new OWLNamedIndividual(adiffMember));
+                            LoadIndividualExpression(ont, adiffMember, out OWLIndividualExpression idvex);
+                            if (idvex != null)
+                                adiffMembers.Add(idvex);
                         }                            
 
                         if (adiffMembers.Count >= 2)
@@ -830,28 +803,15 @@ namespace OWLSharp.Ontology
                     OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)objPropTriple.Subject);
                     foreach (RDFTriple objPropAsnTriple in graph[null, (RDFResource)objPropTriple.Subject, null, null])
 					{
-						OWLIndividualExpression sourceIE = null, targetIE = null;
+                        LoadIndividualExpression(ont, (RDFResource)objPropAsnTriple.Subject, out OWLIndividualExpression leftIE);
+                        LoadIndividualExpression(ont, (RDFResource)objPropAsnTriple.Object, out OWLIndividualExpression rightIE);
 
-						//Left
-						RDFResource sourceIdv = (RDFResource)objPropAsnTriple.Subject;
-						if (sourceIdv.IsBlank)
-							sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
-						else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-							sourceIE = new OWLNamedIndividual(sourceIdv);
-
-						//Right
-						RDFResource targetIdv = (RDFResource)objPropAsnTriple.Object;
-						if (targetIdv.IsBlank)
-							targetIE = new OWLAnonymousIndividual(targetIdv.ToString().Substring(6));
-						else if (graph[targetIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-							targetIE = new OWLNamedIndividual(targetIdv);
-
-						if (sourceIE != null && targetIE != null)
+                        if (leftIE != null && rightIE != null)
 						{
 							OWLObjectPropertyAssertion objPropAsn = new OWLObjectPropertyAssertion() {
 								 ObjectPropertyExpression = objProp,
-								 SourceIndividualExpression = sourceIE,
-								 TargetIndividualExpression = targetIE };
+								 SourceIndividualExpression = leftIE,
+								 TargetIndividualExpression = rightIE };
 
 							LoadAxiomAnnotations(ont, objPropAsnTriple, objPropAsn);
 
@@ -875,23 +835,10 @@ namespace OWLSharp.Ontology
                 RDFSelectQueryResult result = query.ApplyToGraph(graph);
                 foreach (DataRow resultRow in result.SelectResults.Rows)
                 {
-                    //Left
-                    OWLIndividualExpression sourceIE = null;
-                    RDFResource sourceIdv = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?SIDV"].ToString());
-                    if (sourceIdv.IsBlank)
-                        sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
-                    else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        sourceIE = new OWLNamedIndividual(sourceIdv);
+                    LoadIndividualExpression(ont, (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?SIDV"].ToString()), out OWLIndividualExpression leftIE);
+                    LoadIndividualExpression(ont, (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?TIDV"].ToString()), out OWLIndividualExpression rightIE);
 
-                    //Right
-                    OWLIndividualExpression targetIE = null;
-                    RDFResource targetIdv = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?TIDV"].ToString());
-                    if (targetIdv.IsBlank)
-                        targetIE = new OWLAnonymousIndividual(targetIdv.ToString().Substring(6));
-                    else if (graph[targetIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        targetIE = new OWLNamedIndividual(targetIdv);
-
-                    if (sourceIE != null && targetIE != null)
+                    if (leftIE != null && rightIE != null)
                     {
                         RDFResource axiomIRI = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?NASN"].ToString());
                         OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OBJP"].ToString()));
@@ -899,8 +846,8 @@ namespace OWLSharp.Ontology
                         OWLNegativeObjectPropertyAssertion negObjPropAsn = new OWLNegativeObjectPropertyAssertion()
                         {
                             ObjectPropertyExpression = objProp,
-                            SourceIndividualExpression = sourceIE,
-                            TargetIndividualExpression = targetIE
+                            SourceIndividualExpression = leftIE,
+                            TargetIndividualExpression = rightIE
                         };
 
                         LoadIRIAnnotations(ont, new List<RDFResource>() {
@@ -923,21 +870,14 @@ namespace OWLSharp.Ontology
                     OWLDataProperty dtProp = new OWLDataProperty((RDFResource)dtPropTriple.Subject);
                     foreach (RDFTriple dtPropAsnTriple in graph[null, (RDFResource)dtPropTriple.Subject, null, null])
                     {
-                        OWLIndividualExpression sourceIE = null;
+                        LoadIndividualExpression(ont, (RDFResource)dtPropAsnTriple.Subject, out OWLIndividualExpression leftIE);
 
-                        //Left
-                        RDFResource sourceIdv = (RDFResource)dtPropAsnTriple.Subject;
-                        if (sourceIdv.IsBlank)
-                            sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
-                        else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                            sourceIE = new OWLNamedIndividual(sourceIdv);
-
-                        if (sourceIE != null)
+                        if (leftIE != null)
                         {
                             OWLDataPropertyAssertion dtPropAsn = new OWLDataPropertyAssertion()
                             {
                                 DataProperty = dtProp,
-                                IndividualExpression = sourceIE,
+                                IndividualExpression = leftIE,
                                 Literal = new OWLLiteral((RDFLiteral)dtPropAsnTriple.Object)
                             };
 
@@ -963,15 +903,9 @@ namespace OWLSharp.Ontology
                 RDFSelectQueryResult result = query.ApplyToGraph(graph);
                 foreach (DataRow resultRow in result.SelectResults.Rows)
                 {
-                    //Left
-                    OWLIndividualExpression sourceIE = null;
-                    RDFResource sourceIdv = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?SIDV"].ToString());
-                    if (sourceIdv.IsBlank)
-                        sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
-                    else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-                        sourceIE = new OWLNamedIndividual(sourceIdv);
+                    LoadIndividualExpression(ont, (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?SIDV"].ToString()), out OWLIndividualExpression leftIE);
 
-                    if (sourceIE != null)
+                    if (leftIE != null)
                     {
                         RDFResource axiomIRI = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?NASN"].ToString());
                         OWLDataProperty dtProp = new OWLDataProperty((RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?DTP"].ToString()));
@@ -980,7 +914,7 @@ namespace OWLSharp.Ontology
                         OWLNegativeDataPropertyAssertion negDtPropAsn = new OWLNegativeDataPropertyAssertion()
                         {
                             DataProperty = dtProp,
-                            IndividualExpression = sourceIE,
+                            IndividualExpression = leftIE,
                             Literal = litVal
                         };
 
@@ -1104,6 +1038,14 @@ namespace OWLSharp.Ontology
                 dpex = null;
                 if (graph[dtIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                     dpex = new OWLDataProperty(dtIRI);
+            }
+            void LoadIndividualExpression(OWLOntology ont, RDFResource idvIRI, out OWLIndividualExpression idvex)
+            {
+                idvex = null;
+                if (idvIRI.IsBlank)
+                    idvex = new OWLAnonymousIndividual(idvIRI.ToString().Substring(6));
+                else if (graph[idvIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                    idvex = new OWLNamedIndividual(idvIRI);
             }
             #endregion
 
