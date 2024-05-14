@@ -957,7 +957,9 @@ namespace OWLSharp.Ontology
 			void LoadObjectPropertyAssertions(OWLOntology ont)
             {
                 foreach (RDFTriple objPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
-					foreach (RDFTriple objPropAsnTriple in graph[null, (RDFResource)objPropTriple.Subject, null, null])
+                {
+                    OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)objPropTriple.Subject);
+                    foreach (RDFTriple objPropAsnTriple in graph[null, (RDFResource)objPropTriple.Subject, null, null])
 					{
 						OWLIndividualExpression leftIE = null, rightIE = null;
 
@@ -978,7 +980,7 @@ namespace OWLSharp.Ontology
 						if (leftIE != null && rightIE != null)
 						{
 							OWLObjectPropertyAssertion objPropAsn = new OWLObjectPropertyAssertion() {
-								 ObjectPropertyExpression = new OWLObjectProperty((RDFResource)objPropAsnTriple.Predicate),
+								 ObjectPropertyExpression = objProp,
 								 SourceIndividualExpression = leftIE,
 								 TargetIndividualExpression = rightIE };
 
@@ -987,6 +989,7 @@ namespace OWLSharp.Ontology
 							ont.AssertionAxioms.Add(objPropAsn);
 						}
 					}
+                }
             }
 
             //AnnotationAxioms
