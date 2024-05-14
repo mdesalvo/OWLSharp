@@ -1029,7 +1029,7 @@ namespace OWLSharp.Ontology
 
                         OWLNegativeObjectPropertyAssertion negObjPropAsn = new OWLNegativeObjectPropertyAssertion()
                         {
-                            ObjectPropertyExpression = new OWLObjectProperty((RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OBJP"].ToString())),
+                            ObjectPropertyExpression = objProp,
                             SourceIndividualExpression = sourceIE,
                             TargetIndividualExpression = targetIE
                         };
@@ -1076,6 +1076,55 @@ namespace OWLSharp.Ontology
 
                             ont.AssertionAxioms.Add(dtPropAsn);
                         }
+                    }
+                }
+            }
+            void LoadNegativeDataPropertyAssertions(OWLOntology ont)
+            {
+                RDFSelectQuery query = new RDFSelectQuery()
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION))
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.SOURCE_INDIVIDUAL, new RDFVariable("?SIDV")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.ASSERTION_PROPERTY, new RDFVariable("?DTP")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.TARGET_VALUE, new RDFVariable("?TVAL")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?DTP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?SIDV")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?DTP")))
+                        .AddFilter(new RDFIsLiteralFilter(new RDFVariable("?TVAL"))));
+                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                foreach (DataRow resultRow in result.SelectResults.Rows)
+                {
+                    //Left
+                    OWLIndividualExpression sourceIE = null;
+                    RDFResource sourceIdv = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?SIDV"].ToString());
+                    if (sourceIdv.IsBlank)
+                        sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
+                    else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        sourceIE = new OWLNamedIndividual(sourceIdv);
+
+                    if (sourceIE != null)
+                    {
+                        RDFResource axiomIRI = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?NASN"].ToString());
+                        OWLDataProperty dtProp = new OWLDataProperty((RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?DTP"].ToString()));
+                        OWLLiteral litVal = new OWLLiteral((RDFLiteral)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?TVAL"].ToString()));
+
+                        OWLNegativeDataPropertyAssertion negDtPropAsn = new OWLNegativeDataPropertyAssertion()
+                        {
+                            DataProperty = dtProp,
+                            IndividualExpression = sourceIE,
+                            Literal = litVal
+                        };
+
+                        LoadIRIAnnotations(ont, new List<RDFResource>() {
+                            RDFVocabulary.OWL.DEPRECATED,
+                            RDFVocabulary.RDFS.COMMENT,
+                            RDFVocabulary.RDFS.LABEL,
+                            RDFVocabulary.RDFS.SEE_ALSO,
+                            RDFVocabulary.RDFS.IS_DEFINED_BY
+                        }, axiomIRI, out List<OWLAnnotation> nasnAnnotations);
+                        negDtPropAsn.Annotations = nasnAnnotations;
+
+                        ont.AssertionAxioms.Add(negDtPropAsn);
                     }
                 }
             }
@@ -1216,7 +1265,8 @@ namespace OWLSharp.Ontology
 			LoadObjectPropertyAssertions(ontology);
             LoadNegativeObjectPropertyAssertions(ontology);
             LoadDataPropertyAssertions(ontology);
-            //TODO: ClassAssertion, NegativeDataPropertyAssertion
+            LoadNegativeDataPropertyAssertions(ontology);
+            //TODO: ClassAssertion
 
             //TODO: AnnotationAxioms
 
