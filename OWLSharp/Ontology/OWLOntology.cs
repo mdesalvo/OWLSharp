@@ -619,8 +619,8 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
                 {
-                    LoadDataProperty(ont, (RDFResource)funcPropTriple.Subject, out OWLDataProperty dp);
-                    if (dp != null)
+                    LoadDataPropertyExpression(ont, (RDFResource)funcPropTriple.Subject, out OWLDataPropertyExpression dpex);
+                    if (dpex is OWLDataProperty dp)
                     {
                         OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(dp);
 
@@ -634,10 +634,10 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
                 {
-                    LoadDataProperty(ont, (RDFResource)equivPropTriple.Subject, out OWLDataProperty leftDP);
-                    LoadDataProperty(ont, (RDFResource)equivPropTriple.Object, out OWLDataProperty rightDP);
+                    LoadDataPropertyExpression(ont, (RDFResource)equivPropTriple.Subject, out OWLDataPropertyExpression leftDPex);
+                    LoadDataPropertyExpression(ont, (RDFResource)equivPropTriple.Object, out OWLDataPropertyExpression rightDPex);
 
-                    if (leftDP != null && rightDP != null)
+                    if (leftDPex is OWLDataProperty leftDP && rightDPex is OWLDataProperty rightDP)
                     {
                         OWLEquivalentDataProperties equivalentDataProperties = new OWLEquivalentDataProperties() {
                             DataProperties = new List<OWLDataProperty>() { leftDP, rightDP } };
@@ -653,10 +653,10 @@ namespace OWLSharp.Ontology
                 //Load axioms built with owl:propertyDisjointWith
                 foreach (RDFTriple propDisjointWithTriple in graph[null, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null])
                 {
-                    LoadDataProperty(ont, (RDFResource)propDisjointWithTriple.Subject, out OWLDataProperty leftDP);
-                    LoadDataProperty(ont, (RDFResource)propDisjointWithTriple.Object, out OWLDataProperty rightDP);
+                    LoadDataPropertyExpression(ont, (RDFResource)propDisjointWithTriple.Subject, out OWLDataPropertyExpression leftDPex);
+                    LoadDataPropertyExpression(ont, (RDFResource)propDisjointWithTriple.Object, out OWLDataPropertyExpression rightDPex);
 
-                    if (leftDP != null && rightDP != null)
+                    if (leftDPex is OWLDataProperty leftDP && rightDPex is OWLDataProperty rightDP)
                     {
                         OWLDisjointDataProperties disjointDataProperties = new OWLDisjointDataProperties() {
                             DataProperties = new List<OWLDataProperty>() { leftDP, rightDP } };
@@ -677,8 +677,8 @@ namespace OWLSharp.Ontology
                         RDFCollection adjpCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, adjpCollectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                         foreach (RDFResource adjpMember in adjpCollection.Items.Cast<RDFResource>())
                         {
-                            LoadDataProperty(ont, adjpMember, out OWLDataProperty dp);
-                            if (dp != null)
+                            LoadDataPropertyExpression(ont, adjpMember, out OWLDataPropertyExpression dpex);
+                            if (dpex is OWLDataProperty dp)
                                 adjpMembers.Add(dp);
                         }
 
@@ -704,10 +704,10 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
                 {
-                    LoadDataProperty(ont, (RDFResource)subPropTriple.Subject, out OWLDataProperty leftDP);
-                    LoadDataProperty(ont, (RDFResource)subPropTriple.Object, out OWLDataProperty rightDP);
+                    LoadDataPropertyExpression(ont, (RDFResource)subPropTriple.Subject, out OWLDataPropertyExpression leftDPex);
+                    LoadDataPropertyExpression(ont, (RDFResource)subPropTriple.Object, out OWLDataPropertyExpression rightDPex);
 
-                    if (leftDP != null && rightDP != null)
+                    if (leftDPex is OWLDataProperty leftDP && rightDPex is OWLDataProperty rightDP)
                     {
                         OWLSubDataPropertyOf subDataPropertyOf = new OWLSubDataPropertyOf() {
                             SubDataProperty = leftDP, SuperDataProperty = rightDP };
@@ -1099,11 +1099,11 @@ namespace OWLSharp.Ontology
                     opex = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
                 }
             }
-            void LoadDataProperty(OWLOntology ont, RDFResource dtIRI, out OWLDataProperty dp)
+            void LoadDataPropertyExpression(OWLOntology ont, RDFResource dtIRI, out OWLDataPropertyExpression dpex)
             {
-                dp = null;
+                dpex = null;
                 if (graph[dtIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                    dp = new OWLDataProperty(dtIRI);
+                    dpex = new OWLDataProperty(dtIRI);
             }
             #endregion
 
