@@ -991,6 +991,62 @@ namespace OWLSharp.Ontology
 					}
                 }
             }
+            void LoadNegativeObjectPropertyAssertions(OWLOntology ont)
+            {
+                RDFSelectQuery query = new RDFSelectQuery()
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION))
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.SOURCE_INDIVIDUAL, new RDFVariable("?SIDV")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.ASSERTION_PROPERTY, new RDFVariable("?OBJP")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.TARGET_INDIVIDUAL, new RDFVariable("?TIDV")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?OBJP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?SIDV")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?OBJP")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?TIDV"))));
+                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                foreach (DataRow resultRow in result.SelectResults.Rows)
+                {
+                    //Left
+                    OWLIndividualExpression sourceIE = null;
+                    RDFResource sourceIdv = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?SIDV"].ToString());
+                    if (sourceIdv.IsBlank)
+                        sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
+                    else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        sourceIE = new OWLNamedIndividual(sourceIdv);
+
+                    //Right
+                    OWLIndividualExpression targetIE = null;
+                    RDFResource targetIdv = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?TIDV"].ToString());
+                    if (targetIdv.IsBlank)
+                        targetIE = new OWLAnonymousIndividual(targetIdv.ToString().Substring(6));
+                    else if (graph[targetIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                        targetIE = new OWLNamedIndividual(targetIdv);
+
+                    if (sourceIE != null && targetIE != null)
+                    {
+                        RDFResource axiomIRI = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?NASN"].ToString());
+                        OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OBJP"].ToString()));
+
+                        OWLNegativeObjectPropertyAssertion negObjPropAsn = new OWLNegativeObjectPropertyAssertion()
+                        {
+                            ObjectPropertyExpression = new OWLObjectProperty((RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OBJP"].ToString())),
+                            SourceIndividualExpression = sourceIE,
+                            TargetIndividualExpression = targetIE
+                        };
+
+                        LoadIRIAnnotations(ont, new List<RDFResource>() {
+                                RDFVocabulary.OWL.DEPRECATED,
+                                RDFVocabulary.RDFS.COMMENT,
+                                RDFVocabulary.RDFS.LABEL,
+                                RDFVocabulary.RDFS.SEE_ALSO,
+                                RDFVocabulary.RDFS.IS_DEFINED_BY
+                            }, axiomIRI, out List<OWLAnnotation> nasnAnnotations);
+                        negObjPropAsn.Annotations = nasnAnnotations;
+
+                        ont.AssertionAxioms.Add(negObjPropAsn);
+                    }
+                }
+            }
 
             //AnnotationAxioms
 
@@ -1126,7 +1182,8 @@ namespace OWLSharp.Ontology
             LoadSameIndividual(ontology);
             LoadDifferentIndividuals(ontology);
 			LoadObjectPropertyAssertions(ontology);
-            //TODO: ClassAssertion, NegativeObjectPropertyAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+            LoadNegativeObjectPropertyAssertions(ontology);
+            //TODO: ClassAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
 
             //TODO: AnnotationAxioms
 
