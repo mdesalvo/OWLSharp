@@ -2926,6 +2926,39 @@ namespace OWLSharp.Ontology.Test
                               && dtPropAsn2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && dtPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
+
+        [TestMethod]
+        public void ShouldReadSubAnnotationPropertyOfAxiomFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.AnnotationAxioms.Add(
+                new OWLSubAnnotationPropertyOf(
+                    new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE),
+                    new OWLAnnotationProperty(RDFVocabulary.DC.TITLE))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLSubAnnotationPropertyOf subanProps
+                            && subanProps.SubAnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                            && subanProps.SuperAnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && subanProps.Annotations.Count == 1
+                             && subanProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(subanProps.Annotations.Single().ValueIRI, "ex:title")
+                              && subanProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && subanProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
         #endregion
 
         [TestCleanup]
