@@ -1065,14 +1065,11 @@ namespace OWLSharp.Ontology
                 throw new OWLException("Cannot read ontology from graph because: no ontology declaration available in RDF data!");
             #endregion
 
-			//Ontology
-            LoadOntology(out OWLOntology ontology);
+			LoadOntology(out OWLOntology ontology);
             LoadImports(ontology);
             LoadPrefixes(ontology);
             LoadDeclarations(ontology);
-            LoadOntologyAnnotations(ontology);
-			
-			//ObjectPropertyAxioms
+            LoadOntologyAnnotations(ontology);			
 			LoadFunctionalObjectProperties(ontology);
             LoadInverseFunctionalObjectProperties(ontology);
 			LoadSymmetricObjectProperties(ontology);
@@ -1085,21 +1082,14 @@ namespace OWLSharp.Ontology
 			LoadDisjointObjectProperties(ontology);
 			LoadSubObjectProperties(ontology);
             //TODO: ObjectPropertyDomain, ObjectPropertyRange
-
-            //DataPropertyAxioms
             LoadFunctionalDataProperties(ontology);
             LoadEquivalentDataProperties(ontology);
             LoadDisjointDataProperties(ontology);
             LoadSubDataProperties(ontology);
             //TODO: DataPropertyDomain, DataPropertyRange
-
-            //TODO: ClassAxioms
-
-            //TODO: HasKeyAxiom
-
+            //TODO: SubClassOf, EquivalentClasses, DisjointClasses, DisjointUnion
+            //TODO: HasKey
             //TODO: DatatypeDefinition
-
-            //AssertionAxioms
             LoadSameIndividual(ontology);
             LoadDifferentIndividuals(ontology);
 			LoadObjectPropertyAssertions(ontology);
@@ -1107,8 +1097,6 @@ namespace OWLSharp.Ontology
             LoadDataPropertyAssertions(ontology);
             LoadNegativeDataPropertyAssertions(ontology);
             //TODO: ClassAssertion
-
-            //AnnotationAxioms
             LoadSubAnnotationProperties(ontology);
             //TODO: AnnotationAssertion, AnnotationPropertyDomain, AnnotationPropertyRange
 
