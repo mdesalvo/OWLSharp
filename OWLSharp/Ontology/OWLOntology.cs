@@ -961,28 +961,28 @@ namespace OWLSharp.Ontology
                     OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)objPropTriple.Subject);
                     foreach (RDFTriple objPropAsnTriple in graph[null, (RDFResource)objPropTriple.Subject, null, null])
 					{
-						OWLIndividualExpression leftIE = null, rightIE = null;
+						OWLIndividualExpression sourceIE = null, targetIE = null;
 
 						//Left
-						RDFResource subjectIdv = (RDFResource)objPropAsnTriple.Subject;
-						if (subjectIdv.IsBlank)
-							leftIE = new OWLAnonymousIndividual(subjectIdv.ToString().Substring(6));
-						else if (graph[subjectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-							leftIE = new OWLNamedIndividual(subjectIdv);
+						RDFResource sourceIdv = (RDFResource)objPropAsnTriple.Subject;
+						if (sourceIdv.IsBlank)
+							sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
+						else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+							sourceIE = new OWLNamedIndividual(sourceIdv);
 
 						//Right
-						RDFResource objectIdv = (RDFResource)objPropAsnTriple.Object;
-						if (objectIdv.IsBlank)
-							rightIE = new OWLAnonymousIndividual(objectIdv.ToString().Substring(6));
-						else if (graph[objectIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
-							rightIE = new OWLNamedIndividual(objectIdv);
+						RDFResource targetIdv = (RDFResource)objPropAsnTriple.Object;
+						if (targetIdv.IsBlank)
+							targetIE = new OWLAnonymousIndividual(targetIdv.ToString().Substring(6));
+						else if (graph[targetIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+							targetIE = new OWLNamedIndividual(targetIdv);
 
-						if (leftIE != null && rightIE != null)
+						if (sourceIE != null && targetIE != null)
 						{
 							OWLObjectPropertyAssertion objPropAsn = new OWLObjectPropertyAssertion() {
 								 ObjectPropertyExpression = objProp,
-								 SourceIndividualExpression = leftIE,
-								 TargetIndividualExpression = rightIE };
+								 SourceIndividualExpression = sourceIE,
+								 TargetIndividualExpression = targetIE };
 
 							LoadAxiomAnnotations(ont, objPropAsnTriple, objPropAsn);
 
@@ -1044,6 +1044,38 @@ namespace OWLSharp.Ontology
                         negObjPropAsn.Annotations = nasnAnnotations;
 
                         ont.AssertionAxioms.Add(negObjPropAsn);
+                    }
+                }
+            }
+            void LoadDataPropertyAssertions(OWLOntology ont)
+            {
+                foreach (RDFTriple dtPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null])
+                {
+                    OWLDataProperty dtProp = new OWLDataProperty((RDFResource)dtPropTriple.Subject);
+                    foreach (RDFTriple dtPropAsnTriple in graph[null, (RDFResource)dtPropTriple.Subject, null, null])
+                    {
+                        OWLIndividualExpression sourceIE = null;
+
+                        //Left
+                        RDFResource sourceIdv = (RDFResource)dtPropAsnTriple.Subject;
+                        if (sourceIdv.IsBlank)
+                            sourceIE = new OWLAnonymousIndividual(sourceIdv.ToString().Substring(6));
+                        else if (graph[sourceIdv, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                            sourceIE = new OWLNamedIndividual(sourceIdv);
+
+                        if (sourceIE != null)
+                        {
+                            OWLDataPropertyAssertion dtPropAsn = new OWLDataPropertyAssertion()
+                            {
+                                DataProperty = dtProp,
+                                IndividualExpression = sourceIE,
+                                Literal = new OWLLiteral((RDFLiteral)dtPropAsnTriple.Object)
+                            };
+
+                            LoadAxiomAnnotations(ont, dtPropAsnTriple, dtPropAsn);
+
+                            ont.AssertionAxioms.Add(dtPropAsn);
+                        }
                     }
                 }
             }
@@ -1183,7 +1215,8 @@ namespace OWLSharp.Ontology
             LoadDifferentIndividuals(ontology);
 			LoadObjectPropertyAssertions(ontology);
             LoadNegativeObjectPropertyAssertions(ontology);
-            //TODO: ClassAssertion, DataPropertyAssertion, NegativeDataPropertyAssertion
+            LoadDataPropertyAssertions(ontology);
+            //TODO: ClassAssertion, NegativeDataPropertyAssertion
 
             //TODO: AnnotationAxioms
 
