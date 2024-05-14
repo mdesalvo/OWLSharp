@@ -1095,8 +1095,36 @@ namespace OWLSharp.Ontology
             void LoadClassExpression(OWLOntology ont, RDFResource clsIRI, out OWLClassExpression clsex)
             {
                 clsex = null;
-                //TODO
+				RDFGraph clsGraph = graph[clsIRI, null, null, null];
 
+				#region Restriction
+				if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount > 0) 
+				{
+					//TODO
+				}
+				#endregion
+
+				#region Composite
+				else if (clsGraph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount > 0
+						 || clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
+						 || clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
+						 || clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0)
+				{
+					//TODO
+				}
+				#endregion
+
+				#region Enumerate
+				else if (clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
+				{
+					//TODO
+				}
+				#endregion
+
+				#region Class				
+				else if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0)
+					clsex = new OWLClass(clsIRI);
+				#endregion
             }
             #endregion
 
