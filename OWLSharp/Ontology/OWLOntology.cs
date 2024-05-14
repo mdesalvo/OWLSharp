@@ -970,10 +970,10 @@ namespace OWLSharp.Ontology
 			{
 				annotations = new List<OWLAnnotation>();
 
-				foreach (OWLDeclaration annPropDeclaration in ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty daxAnnProp
-                                                                                                  && !daxAnnProp.GetIRI().Equals(RDFVocabulary.OWL.VERSION_IRI)))
+				foreach (RDFTriple annPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null]
+                                                     .Where(ap => !ap.Equals(RDFVocabulary.OWL.VERSION_IRI)))
                 {
-                    RDFResource annPropIRI = ((OWLAnnotationProperty)annPropDeclaration.Expression).GetIRI();
+                    RDFResource annPropIRI = (RDFResource)annPropTriple.Subject;
                     if (!annotationProperties.Any(ap => ap.Equals(annPropIRI)))
                         annotationProperties.Add(annPropIRI);
                 }   
