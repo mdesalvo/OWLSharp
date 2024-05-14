@@ -611,6 +611,42 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
+            void LoadObjectPropertyDomain(OWLOntology ont)
+            {
+                foreach (RDFTriple domainTriple in graph[null, RDFVocabulary.RDFS.DOMAIN, null, null])
+                {
+                    LoadObjectPropertyExpression(ont, (RDFResource)domainTriple.Subject, out OWLObjectPropertyExpression objEXP);
+                    LoadClassExpression(ont, (RDFResource)domainTriple.Object, out OWLClassExpression clsEXP);
+
+                    if (objEXP != null && clsEXP != null)
+                    {
+                        OWLObjectPropertyDomain objectPropertyDomain = new OWLObjectPropertyDomain() {
+                             ObjectPropertyExpression = objEXP, ClassExpression = clsEXP };
+
+                        LoadAxiomAnnotations(ont, domainTriple, objectPropertyDomain);
+
+                        ont.ObjectPropertyAxioms.Add(objectPropertyDomain);
+                    }
+                }
+            }
+            void LoadObjectPropertyRange(OWLOntology ont)
+            {
+                foreach (RDFTriple rangeTriple in graph[null, RDFVocabulary.RDFS.RANGE, null, null])
+                {
+                    LoadObjectPropertyExpression(ont, (RDFResource)rangeTriple.Subject, out OWLObjectPropertyExpression objEXP);
+                    LoadClassExpression(ont, (RDFResource)rangeTriple.Object, out OWLClassExpression clsEXP);
+
+                    if (objEXP != null && clsEXP != null)
+                    {
+                        OWLObjectPropertyRange objectPropertyRange = new OWLObjectPropertyRange() {
+                            ObjectPropertyExpression = objEXP, ClassExpression = clsEXP };
+
+                        LoadAxiomAnnotations(ont, rangeTriple, objectPropertyRange);
+
+                        ont.ObjectPropertyAxioms.Add(objectPropertyRange);
+                    }
+                }
+            }
             void LoadFunctionalDataProperties(OWLOntology ont)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
@@ -1056,6 +1092,12 @@ namespace OWLSharp.Ontology
                 else if (graph[idvIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
                     idvex = new OWLNamedIndividual(idvIRI);
             }
+            void LoadClassExpression(OWLOntology ont, RDFResource clsIRI, out OWLClassExpression clsex)
+            {
+                clsex = null;
+                //TODO
+
+            }
             #endregion
 
             #region Guards
@@ -1081,7 +1123,8 @@ namespace OWLSharp.Ontology
 			LoadEquivalentObjectProperties(ontology);
 			LoadDisjointObjectProperties(ontology);
 			LoadSubObjectProperties(ontology);
-            //TODO: ObjectPropertyDomain, ObjectPropertyRange
+            LoadObjectPropertyDomain(ontology);
+            LoadObjectPropertyRange(ontology);
             LoadFunctionalDataProperties(ontology);
             LoadEquivalentDataProperties(ontology);
             LoadDisjointDataProperties(ontology);
