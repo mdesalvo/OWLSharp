@@ -618,28 +618,24 @@ namespace OWLSharp.Ontology
             void LoadFunctionalDataProperties(OWLOntology ont)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
-                    if (graph[(RDFResource)funcPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                {
+                    LoadDataProperty(ont, (RDFResource)funcPropTriple.Subject, out OWLDataProperty dp);
+                    if (dp != null)
                     {
-                        OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(new OWLDataProperty((RDFResource)funcPropTriple.Subject));
+                        OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(dp);
 
                         LoadAxiomAnnotations(ont, funcPropTriple, functionalDataProperty);
 
                         ont.DataPropertyAxioms.Add(functionalDataProperty);
                     }
+                }
             }
             void LoadEquivalentDataProperties(OWLOntology ont)
             {
                 foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
                 {
-                    OWLDataProperty leftDP = null, rightDP = null;
-                    
-                    //Left
-                    if (graph[(RDFResource)equivPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        leftDP = new OWLDataProperty((RDFResource)equivPropTriple.Subject);
-
-                    //Right
-                    if (graph[(RDFResource)equivPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        rightDP = new OWLDataProperty((RDFResource)equivPropTriple.Object);
+                    LoadDataProperty(ont, (RDFResource)equivPropTriple.Subject, out OWLDataProperty leftDP);
+                    LoadDataProperty(ont, (RDFResource)equivPropTriple.Object, out OWLDataProperty rightDP);
 
                     if (leftDP != null && rightDP != null)
                     {
@@ -657,15 +653,8 @@ namespace OWLSharp.Ontology
                 //Load axioms built with owl:propertyDisjointWith
                 foreach (RDFTriple propDisjointWithTriple in graph[null, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null])
                 {
-                    OWLDataProperty leftDP = null, rightDP = null;
-
-                    //Left
-                    if (graph[(RDFResource)propDisjointWithTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        leftDP = new OWLDataProperty((RDFResource)propDisjointWithTriple.Subject);
-
-                    //Right
-                    if (graph[(RDFResource)propDisjointWithTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        rightDP = new OWLDataProperty((RDFResource)propDisjointWithTriple.Object);
+                    LoadDataProperty(ont, (RDFResource)propDisjointWithTriple.Subject, out OWLDataProperty leftDP);
+                    LoadDataProperty(ont, (RDFResource)propDisjointWithTriple.Object, out OWLDataProperty rightDP);
 
                     if (leftDP != null && rightDP != null)
                     {
@@ -687,8 +676,11 @@ namespace OWLSharp.Ontology
 
                         RDFCollection adjpCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, adjpCollectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
                         foreach (RDFResource adjpMember in adjpCollection.Items.Cast<RDFResource>())
-                            if (graph[adjpMember, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                                adjpMembers.Add(new OWLDataProperty(adjpMember));
+                        {
+                            LoadDataProperty(ont, adjpMember, out OWLDataProperty dp);
+                            if (dp != null)
+                                adjpMembers.Add(dp);
+                        }
 
                         if (adjpMembers.Count >= 2)
                         {
@@ -712,15 +704,8 @@ namespace OWLSharp.Ontology
             {
                 foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
                 {
-                    OWLDataProperty leftDP = null, rightDP = null;
-
-                    //Left
-                    if (graph[(RDFResource)subPropTriple.Subject, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        leftDP = new OWLDataProperty((RDFResource)subPropTriple.Subject);
-
-                    //Right
-                    if (graph[(RDFResource)subPropTriple.Object, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
-                        rightDP = new OWLDataProperty((RDFResource)subPropTriple.Object);
+                    LoadDataProperty(ont, (RDFResource)subPropTriple.Subject, out OWLDataProperty leftDP);
+                    LoadDataProperty(ont, (RDFResource)subPropTriple.Object, out OWLDataProperty rightDP);
 
                     if (leftDP != null && rightDP != null)
                     {
@@ -1113,6 +1098,12 @@ namespace OWLSharp.Ontology
                     RDFResource inverseOf = (RDFResource)graph[opexIRI, RDFVocabulary.OWL.INVERSE_OF, null, null].First().Object;
                     opex = new OWLObjectInverseOf(new OWLObjectProperty(inverseOf));
                 }
+            }
+            void LoadDataProperty(OWLOntology ont, RDFResource dtIRI, out OWLDataProperty dp)
+            {
+                dp = null;
+                if (graph[dtIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                    dp = new OWLDataProperty(dtIRI);
             }
             #endregion
 
