@@ -1101,28 +1101,30 @@ namespace OWLSharp.Ontology
 				#region Restriction
 				if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount > 0)
                 {
-                    //ObjectAllValuesFrom
-                    LoadObjectAllValuesFromRestriction(ont, clsIRI, out OWLObjectAllValuesFrom objAVF);
-                    if (objAVF != null)
+                    #region AllValuesFrom
+                    if (clsGraph[null, RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object is RDFResource allValuesFrom)
                     {
-                        clex = objAVF;
-                        return;
+                        LoadObjectAllValuesFromRestriction(ont, clsIRI, allValuesFrom, out OWLObjectAllValuesFrom objAVF);
+                        if (objAVF != null)
+                        {
+                            clex = objAVF;
+                            return;
+                        }
+                        LoadDataAllValuesFromRestriction(ont, clsIRI, allValuesFrom, out OWLDataAllValuesFrom dtAVF);
+                        if (dtAVF != null)
+                        {
+                            clex = dtAVF;
+                            return;
+                        }
                     }
-
-                    //DataAllValuesFrom
-                    LoadDataAllValuesFromRestriction(ont, clsIRI, out OWLDataAllValuesFrom dtAVF);
-                    if (dtAVF != null)
-                    {
-                        clex = dtAVF;
-                        return;
-                    }
+                    #endregion
 
                     //TODO
                 }
-				#endregion
+                #endregion
 
-				#region Composite
-				if (clsGraph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount > 0
+                #region Composite
+                if (clsGraph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount > 0
 					 || clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
 					 || clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
 					 || clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0)
@@ -1143,11 +1145,12 @@ namespace OWLSharp.Ontology
 					clex = new OWLClass(clsIRI);
 				#endregion
             }
-            void LoadObjectAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectAllValuesFrom objAVF)
+            void LoadObjectAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLObjectAllValuesFrom objAVF)
             {
                 objAVF = null;
-                if (graph[clsIRI, RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object is RDFResource allValuesFrom
-                     && graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null].FirstOrDefault()?.Object is RDFResource onProperty)
+
+                RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
+                if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
                 {
                     LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
                     if (onPropertyOPEX != null)
@@ -1158,27 +1161,25 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadDataAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, out OWLDataAllValuesFrom dtAVF)
+            void LoadDataAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLDataAllValuesFrom dtAVF)
             {
                 dtAVF = null;
-                if (graph[clsIRI, RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object is RDFResource allValuesFrom)
+
+                LoadDataRangeExpression(ont, allValuesFrom, out OWLDataRangeExpression allValuesFromDREX);
+                if (allValuesFromDREX == null)
+                    return;
+                
+                foreach (RDFResource onProperty in graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null]
+                                                    .Select(t => t.Object)
+                                                    .OfType<RDFResource>())
                 {
-                    foreach (RDFResource onProperty in graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null]
-                                                        .Select(t => t.Object)
-                                                        .OfType<RDFResource>())
+                    LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
+                    if (onPropertyDPEX != null)
                     {
-                        LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
-                        if (onPropertyDPEX != null)
-                        {
-                            LoadDataRangeExpression(ont, allValuesFrom, out OWLDataRangeExpression allValuesFromDREX);
-                            if (allValuesFromDREX != null)
-                            {
-                                if (dtAVF == null)
-                                    dtAVF = new OWLDataAllValuesFrom() { DataProperties = new List<OWLDataProperty>() };
-                                dtAVF.DataProperties.Add((OWLDataProperty)onPropertyDPEX);
-                                dtAVF.DataRangeExpression = allValuesFromDREX;
-                            }   
-                        }
+                        if (dtAVF == null)
+                            dtAVF = new OWLDataAllValuesFrom() { DataProperties = new List<OWLDataProperty>() };
+                        dtAVF.DataProperties.Add((OWLDataProperty)onPropertyDPEX);
+                        dtAVF.DataRangeExpression = allValuesFromDREX;
                     }
                 }
             }
