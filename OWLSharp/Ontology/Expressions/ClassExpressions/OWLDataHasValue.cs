@@ -24,10 +24,10 @@ namespace OWLSharp.Ontology.Expressions
     public class OWLDataHasValue : OWLClassExpression
     {
         #region Properties
-        [XmlElement(ElementName="DataProperty", Order=1)]
+        [XmlElement(Order=1)]
         public OWLDataProperty DataProperty { get; set; }
 
-        [XmlElement(ElementName="Literal", Order=2)]
+        [XmlElement(Order=2)]
         public OWLLiteral Literal { get; set; }
         #endregion
 
@@ -48,8 +48,8 @@ namespace OWLSharp.Ontology.Expressions
 
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
-            graph = graph.UnionWith(DataProperty.ToRDFGraph());
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.HAS_VALUE, Literal.GetLiteral()));
+			graph = graph.UnionWith(DataProperty.ToRDFGraph());
 
             return graph;
         }
