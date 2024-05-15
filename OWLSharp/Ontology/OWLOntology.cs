@@ -1119,6 +1119,24 @@ namespace OWLSharp.Ontology
                     }
                     #endregion
 
+                    #region SomeValuesFrom
+                    if (clsGraph[null, RDFVocabulary.OWL.SOME_VALUES_FROM, null, null].FirstOrDefault()?.Object is RDFResource someValuesFrom)
+                    {
+                        LoadObjectSomeValuesFromRestriction(ont, clsIRI, someValuesFrom, out OWLObjectSomeValuesFrom objSVF);
+                        if (objSVF != null)
+                        {
+                            clex = objSVF;
+                            return;
+                        }
+                        LoadDataSomeValuesFromRestriction(ont, clsIRI, someValuesFrom, out OWLDataSomeValuesFrom dtSVF);
+                        if (dtSVF != null)
+                        {
+                            clex = dtSVF;
+                            return;
+                        }
+                    }
+                    #endregion
+
                     //TODO
                 }
                 #endregion
@@ -1161,6 +1179,22 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
+            void LoadObjectSomeValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLObjectSomeValuesFrom objSVF)
+            {
+                objSVF = null;
+
+                RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
+                if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
+                {
+                    LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
+                    if (onPropertyOPEX != null)
+                    {
+                        LoadClassExpression(ont, someValuesFrom, out OWLClassExpression someValuesFromCLEX);
+                        if (someValuesFromCLEX != null)
+                            objSVF = new OWLObjectSomeValuesFrom(onPropertyOPEX, someValuesFromCLEX);
+                    }
+                }
+            }
             void LoadDataAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLDataAllValuesFrom dtAVF)
             {
                 dtAVF = null;
@@ -1180,6 +1214,28 @@ namespace OWLSharp.Ontology
                             dtAVF = new OWLDataAllValuesFrom() { DataProperties = new List<OWLDataProperty>() };
                         dtAVF.DataProperties.Add((OWLDataProperty)onPropertyDPEX);
                         dtAVF.DataRangeExpression = allValuesFromDREX;
+                    }
+                }
+            }
+            void LoadDataSomeValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLDataSomeValuesFrom dtSVF)
+            {
+                dtSVF = null;
+
+                LoadDataRangeExpression(ont, someValuesFrom, out OWLDataRangeExpression someValuesFromDREX);
+                if (someValuesFromDREX == null)
+                    return;
+
+                foreach (RDFResource onProperty in graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null]
+                                                    .Select(t => t.Object)
+                                                    .OfType<RDFResource>())
+                {
+                    LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
+                    if (onPropertyDPEX != null)
+                    {
+                        if (dtSVF == null)
+                            dtSVF = new OWLDataSomeValuesFrom() { DataProperties = new List<OWLDataProperty>() };
+                        dtSVF.DataProperties.Add((OWLDataProperty)onPropertyDPEX);
+                        dtSVF.DataRangeExpression = someValuesFromDREX;
                     }
                 }
             }
