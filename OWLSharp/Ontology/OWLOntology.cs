@@ -1257,7 +1257,8 @@ namespace OWLSharp.Ontology
 				#endregion
 
 				#region Enumerate
-				if (clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
+				if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
+					&& clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
 				{
 					//TODO
 				}
