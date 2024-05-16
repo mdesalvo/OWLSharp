@@ -24,7 +24,6 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -1228,11 +1227,32 @@ namespace OWLSharp.Ontology
                 #endregion
 
                 #region Composite
-                if (clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
-					 || clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
-					 || clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0)
+                if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
+					&& (clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
+					 	|| clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
+					 	|| clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0))
 				{
-					//TODO
+					//UnionOf
+					LoadObjectUnionOfClass(ont, clsIRI, out OWLObjectUnionOf objUNOF);
+					if (objUNOF != null)
+					{
+						clex = objUNOF;
+						return;
+					}
+					//IntersectionOf
+					LoadObjectIntersectionOfClass(ont, clsIRI, out OWLObjectIntersectionOf objINTOF);
+					if (objINTOF != null)
+					{
+						clex = objINTOF;
+						return;
+					}
+					//ComplementOf
+					LoadObjectComplementOfClass(ont, clsIRI, out OWLObjectComplementOf objCMPOF);
+					if (objCMPOF != null)
+					{
+						clex = objCMPOF;
+						return;
+					}
 				}
 				#endregion
 
@@ -1562,7 +1582,52 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadDataRangeExpression(OWLOntology ont, RDFResource drIRI, out OWLDataRangeExpression drex)
+            void LoadObjectUnionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectUnionOf objUNIONOF)
+			{
+				objUNIONOF = null;
+
+				if (graph[clsIRI, RDFVocabulary.OWL.UNION_OF, null, null].FirstOrDefault()?.Object is RDFResource unionOf)
+				{
+					List<OWLClassExpression> objectUnionOfMembers = new List<OWLClassExpression>();
+					RDFCollection unionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, unionOf, RDFModelEnums.RDFTripleFlavors.SPO);
+					foreach (RDFResource unionOfMember in unionOfMembers.Cast<RDFResource>())
+					{
+						LoadClassExpression(ont, unionOfMember, out OWLClassExpression clsExp);
+						if (clsExp != null)
+							objectUnionOfMembers.Add(clsExp);
+					}
+					objUNIONOF = new OWLObjectUnionOf(objectUnionOfMembers);
+				}
+			}
+			void LoadObjectIntersectionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectIntersectionOf objINTERSECTIONOF)
+			{
+				objINTERSECTIONOF = null;
+
+				if (graph[clsIRI, RDFVocabulary.OWL.INTERSECTION_OF, null, null].FirstOrDefault()?.Object is RDFResource intersectionOf)
+				{
+					List<OWLClassExpression> objectIntersectionOfMembers = new List<OWLClassExpression>();
+					RDFCollection intersectionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, intersectionOf, RDFModelEnums.RDFTripleFlavors.SPO);
+					foreach (RDFResource intersectionOfMember in objectIntersectionOfMembers.Cast<RDFResource>())
+					{
+						LoadClassExpression(ont, intersectionOfMember, out OWLClassExpression clsExp);
+						if (clsExp != null)
+							objectIntersectionOfMembers.Add(clsExp);
+					}
+					objINTERSECTIONOF = new OWLObjectIntersectionOf(objectIntersectionOfMembers);
+				}
+			}
+			void LoadObjectComplementOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectComplementOf objCOMPLEMENTOF)
+			{
+				objCOMPLEMENTOF = null;
+
+				if (graph[clsIRI, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].FirstOrDefault()?.Object is RDFResource complementOf)
+				{
+					LoadClassExpression(ont, complementOf, out OWLClassExpression clsExp);
+					if (clsExp != null)
+						objCOMPLEMENTOF = new OWLObjectComplementOf(clsExp);
+				}
+			}
+			void LoadDataRangeExpression(OWLOntology ont, RDFResource drIRI, out OWLDataRangeExpression drex)
             {
                 drex = null;
                 //TODO
