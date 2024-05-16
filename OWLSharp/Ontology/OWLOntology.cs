@@ -1228,8 +1228,7 @@ namespace OWLSharp.Ontology
                 #endregion
 
                 #region Composite
-                if (clsGraph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount > 0
-					 || clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
+                if (clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
 					 || clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
 					 || clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0)
 				{
