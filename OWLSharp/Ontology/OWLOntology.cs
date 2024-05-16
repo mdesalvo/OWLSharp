@@ -1187,7 +1187,24 @@ namespace OWLSharp.Ontology
                     }
                     #endregion
 
-                    //TODO
+                    #region MinCardinality
+                    if (clsGraph[null, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].TriplesCount > 0
+                         || clsGraph[null, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0)
+                    {
+                        LoadObjectMinCardinalityRestriction(ont, clsIRI, out OWLObjectMinCardinality objMINCR);
+                        if (objMINCR != null)
+                        {
+                            clex = objMINCR;
+                            return;
+                        }
+                        LoadDataMinCardinalityRestriction(ont, clsIRI, out OWLDataMinCardinality dtMINCR);
+                        if (dtMINCR != null)
+                        {
+                            clex = dtMINCR;
+                            return;
+                        }
+                    }
+                    #endregion
                 }
                 #endregion
 
@@ -1308,6 +1325,38 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
+            void LoadObjectMinCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectMinCardinality objMINCR)
+            {
+                objMINCR = null;
+
+                RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
+                if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
+                {
+                    LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
+                    if (onPropertyOPEX == null)
+                        return;
+
+                    //Cardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minCardLit
+                         && minCardLit.HasDecimalDatatype()
+                         && uint.TryParse(minCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint minCardinality))
+                    {
+                        objMINCR = new OWLObjectMinCardinality(onPropertyOPEX, minCardinality);
+                        return;
+                    }
+
+                    //QualifiedCardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minQCardLit
+                              && minQCardLit.HasDecimalDatatype()
+                              && uint.TryParse(minQCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint minQCardinality)
+                              && graph[clsIRI, RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object is RDFResource onClass)
+                    {
+                        LoadClassExpression(ont, onClass, out OWLClassExpression onClassEX);
+                        if (onClassEX != null)
+                            objMINCR = new OWLObjectMinCardinality(onPropertyOPEX, minQCardinality, onClassEX);
+                    }
+                }
+            }
             void LoadDataAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLDataAllValuesFrom dtAVF)
             {
                 dtAVF = null;
@@ -1396,6 +1445,38 @@ namespace OWLSharp.Ontology
                         LoadDataRangeExpression(ont, onDataRange, out OWLDataRangeExpression onDataRangeEX);
                         if (onDataRangeEX != null)
                             dtEXCR = new OWLDataExactCardinality((OWLDataProperty)onPropertyDPEX, exactQCardinality, onDataRangeEX);
+                    }
+                }
+            }
+            void LoadDataMinCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLDataMinCardinality dtMINCR)
+            {
+                dtMINCR = null;
+
+                RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
+                if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
+                {
+                    LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
+                    if (onPropertyDPEX == null)
+                        return;
+
+                    //Cardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minCardLit
+                         && minCardLit.HasDecimalDatatype()
+                         && uint.TryParse(minCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint minCardinality))
+                    {
+                        dtMINCR = new OWLDataMinCardinality((OWLDataProperty)onPropertyDPEX, minCardinality);
+                        return;
+                    }
+
+                    //QualifiedCardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minQCardLit
+                              && minQCardLit.HasDecimalDatatype()
+                              && uint.TryParse(minQCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint minQCardinality)
+                              && graph[clsIRI, RDFVocabulary.OWL.ON_DATARANGE, null, null].FirstOrDefault()?.Object is RDFResource onDataRange)
+                    {
+                        LoadDataRangeExpression(ont, onDataRange, out OWLDataRangeExpression onDataRangeEX);
+                        if (onDataRangeEX != null)
+                            dtMINCR = new OWLDataMinCardinality((OWLDataProperty)onPropertyDPEX, minQCardinality, onDataRangeEX);
                     }
                 }
             }
