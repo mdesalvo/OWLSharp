@@ -1563,7 +1563,6 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-
             void LoadDataRangeExpression(OWLOntology ont, RDFResource drIRI, out OWLDataRangeExpression drex)
             {
                 drex = null;
