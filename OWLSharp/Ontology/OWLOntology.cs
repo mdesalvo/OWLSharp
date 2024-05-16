@@ -21,6 +21,7 @@ using RDFSharp.Query;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -1165,7 +1166,26 @@ namespace OWLSharp.Ontology
                             return;
                         }
 					}
-					#endregion
+                    #endregion
+
+                    #region ExactCardinality
+                    if (clsGraph[null, RDFVocabulary.OWL.CARDINALITY, null, null].TriplesCount > 0
+                         || clsGraph[null, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].TriplesCount > 0)
+                    {
+                        LoadObjectExactCardinalityRestriction(ont, clsIRI, out OWLObjectExactCardinality objEXCR);
+                        if (objEXCR != null)
+                        {
+                            clex = objEXCR;
+                            return;
+                        }
+                        LoadDataExactCardinalityRestriction(ont, clsIRI, out OWLDataExactCardinality dtEXCR);
+                        if (dtEXCR != null)
+                        {
+                            clex = dtEXCR;
+                            return;
+                        }
+                    }
+                    #endregion
 
                     //TODO
                 }
@@ -1256,6 +1276,38 @@ namespace OWLSharp.Ontology
 					}
                 }
             }
+            void LoadObjectExactCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectExactCardinality objEXCR)
+            {
+                objEXCR = null;
+
+                RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
+                if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
+                {
+                    LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
+                    if (onPropertyOPEX == null)
+                        return;
+
+                    //Cardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactCardLit 
+                         && exactCardLit.HasDecimalDatatype()
+                         && uint.TryParse(exactCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint exactCardinality))
+                    {
+                        objEXCR = new OWLObjectExactCardinality(onPropertyOPEX, exactCardinality);
+                        return;
+                    }
+
+                    //QualifiedCardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactQCardLit
+                              && exactQCardLit.HasDecimalDatatype()
+                              && uint.TryParse(exactQCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint exactQCardinality)
+                              && graph[clsIRI, RDFVocabulary.OWL.ON_CLASS, null, null].FirstOrDefault()?.Object is RDFResource onClass)
+                    {
+                        LoadClassExpression(ont, onClass, out OWLClassExpression onClassEX);
+                        if (onClassEX != null)
+                            objEXCR = new OWLObjectExactCardinality(onPropertyOPEX, exactQCardinality, onClassEX);
+                    }
+                }
+            }
             void LoadDataAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLDataAllValuesFrom dtAVF)
             {
                 dtAVF = null;
@@ -1313,6 +1365,38 @@ namespace OWLSharp.Ontology
                     
 					if (graph[clsIRI, RDFVocabulary.OWL.HAS_VALUE, null, null].FirstOrDefault()?.Object is RDFLiteral hasValueLIT)
 						dtHV = new OWLDataHasValue((OWLDataProperty)onPropertyDPEX, new OWLLiteral(hasValueLIT));
+                }
+            }
+            void LoadDataExactCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLDataExactCardinality dtEXCR)
+            {
+                dtEXCR = null;
+
+                RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
+                if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
+                {
+                    LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
+                    if (onPropertyDPEX == null)
+                        return;
+
+                    //Cardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactCardLit
+                         && exactCardLit.HasDecimalDatatype()
+                         && uint.TryParse(exactCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint exactCardinality))
+                    {
+                        dtEXCR = new OWLDataExactCardinality((OWLDataProperty)onPropertyDPEX, exactCardinality);
+                        return;
+                    }
+
+                    //QualifiedCardinality
+                    if (graph[clsIRI, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactQCardLit
+                              && exactQCardLit.HasDecimalDatatype()
+                              && uint.TryParse(exactQCardLit.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint exactQCardinality)
+                              && graph[clsIRI, RDFVocabulary.OWL.ON_DATARANGE, null, null].FirstOrDefault()?.Object is RDFResource onDataRange)
+                    {
+                        LoadDataRangeExpression(ont, onDataRange, out OWLDataRangeExpression onDataRangeEX);
+                        if (onDataRangeEX != null)
+                            dtEXCR = new OWLDataExactCardinality((OWLDataProperty)onPropertyDPEX, exactQCardinality, onDataRangeEX);
+                    }
                 }
             }
             void LoadDataRangeExpression(OWLOntology ont, RDFResource drIRI, out OWLDataRangeExpression drex)
