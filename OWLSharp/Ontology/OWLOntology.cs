@@ -1265,12 +1265,14 @@ namespace OWLSharp.Ontology
 				if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
 					&& clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
 				{
+					#region OneOf
 					LoadObjectOneOfClass(ont, clsIRI, out OWLObjectOneOf objONEOF);
 					if (objONEOF != null)
 					{
 						clex = objONEOF;
 						return;
 					}
+					#endregion
 				}
 				#endregion
 
