@@ -1232,27 +1232,32 @@ namespace OWLSharp.Ontology
 					 	|| clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
 					 	|| clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0))
 				{
-					//UnionOf
+					#region UnionOf
 					LoadObjectUnionOfClass(ont, clsIRI, out OWLObjectUnionOf objUNOF);
 					if (objUNOF != null)
 					{
 						clex = objUNOF;
 						return;
 					}
-					//IntersectionOf
+					#endregion
+
+					#region IntersectionOf
 					LoadObjectIntersectionOfClass(ont, clsIRI, out OWLObjectIntersectionOf objINTOF);
 					if (objINTOF != null)
 					{
 						clex = objINTOF;
 						return;
 					}
-					//ComplementOf
+					#endregion
+
+					#region ComplementOf
 					LoadObjectComplementOfClass(ont, clsIRI, out OWLObjectComplementOf objCMPOF);
 					if (objCMPOF != null)
 					{
 						clex = objCMPOF;
 						return;
 					}
+					#endregion
 				}
 				#endregion
 
@@ -1260,7 +1265,12 @@ namespace OWLSharp.Ontology
 				if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
 					&& clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
 				{
-					//TODO
+					LoadObjectOneOfClass(ont, clsIRI, out OWLObjectOneOf objONEOF);
+					if (objONEOF != null)
+					{
+						clex = objONEOF;
+						return;
+					}
 				}
 				#endregion
 
@@ -1583,9 +1593,9 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadObjectUnionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectUnionOf objUNIONOF)
+            void LoadObjectUnionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectUnionOf objUNOF)
 			{
-				objUNIONOF = null;
+				objUNOF = null;
 
 				if (graph[clsIRI, RDFVocabulary.OWL.UNION_OF, null, null].FirstOrDefault()?.Object is RDFResource unionOf)
 				{
@@ -1597,12 +1607,12 @@ namespace OWLSharp.Ontology
 						if (clsExp != null)
 							objectUnionOfMembers.Add(clsExp);
 					}
-					objUNIONOF = new OWLObjectUnionOf(objectUnionOfMembers);
+					objUNOF = new OWLObjectUnionOf(objectUnionOfMembers);
 				}
 			}
-			void LoadObjectIntersectionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectIntersectionOf objINTERSECTIONOF)
+			void LoadObjectIntersectionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectIntersectionOf objINTOF)
 			{
-				objINTERSECTIONOF = null;
+				objINTOF = null;
 
 				if (graph[clsIRI, RDFVocabulary.OWL.INTERSECTION_OF, null, null].FirstOrDefault()?.Object is RDFResource intersectionOf)
 				{
@@ -1614,18 +1624,35 @@ namespace OWLSharp.Ontology
 						if (clsExp != null)
 							objectIntersectionOfMembers.Add(clsExp);
 					}
-					objINTERSECTIONOF = new OWLObjectIntersectionOf(objectIntersectionOfMembers);
+					objINTOF = new OWLObjectIntersectionOf(objectIntersectionOfMembers);
 				}
 			}
-			void LoadObjectComplementOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectComplementOf objCOMPLEMENTOF)
+			void LoadObjectComplementOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectComplementOf objCMPOF)
 			{
-				objCOMPLEMENTOF = null;
+				objCMPOF = null;
 
 				if (graph[clsIRI, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].FirstOrDefault()?.Object is RDFResource complementOf)
 				{
 					LoadClassExpression(ont, complementOf, out OWLClassExpression clsExp);
 					if (clsExp != null)
-						objCOMPLEMENTOF = new OWLObjectComplementOf(clsExp);
+						objCMPOF = new OWLObjectComplementOf(clsExp);
+				}
+			}
+			void LoadObjectOneOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectOneOf objONEOF)
+			{
+				objONEOF = null;
+
+				if (graph[clsIRI, RDFVocabulary.OWL.ONE_OF, null, null].FirstOrDefault()?.Object is RDFResource oneOf)
+				{
+					List<OWLIndividualExpression> objectOneOfMembers = new List<OWLIndividualExpression>();
+					RDFCollection oneOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOf, RDFModelEnums.RDFTripleFlavors.SPO);
+					foreach (RDFResource oneOfMember in objectOneOfMembers.Cast<RDFResource>())
+					{
+						LoadIndividualExpression(ont, oneOfMember, out OWLIndividualExpression idvExp);
+						if (idvExp != null)
+							objectOneOfMembers.Add(idvExp);
+					}
+					objONEOF = new OWLObjectOneOf(objectOneOfMembers);
 				}
 			}
 			void LoadDataRangeExpression(OWLOntology ont, RDFResource drIRI, out OWLDataRangeExpression drex)

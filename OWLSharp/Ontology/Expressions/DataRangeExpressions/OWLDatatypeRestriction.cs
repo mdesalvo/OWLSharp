@@ -26,7 +26,7 @@ namespace OWLSharp.Ontology.Expressions
     public class OWLDatatypeRestriction : OWLDataRangeExpression
     {
         #region Properties
-        [XmlElement("Datatype", Order=1)]
+        [XmlElement(Order=1)]
         public OWLDatatype Datatype { get; set; }
 
         [XmlElement("FacetRestriction", Order=2)]
