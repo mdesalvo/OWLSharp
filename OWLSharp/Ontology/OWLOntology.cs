@@ -1624,7 +1624,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLClassExpression> objectIntersectionOfMembers = new List<OWLClassExpression>();
                      RDFCollection intersectionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, intersectionOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource intersectionOfMember in objectIntersectionOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource intersectionOfMember in intersectionOfMembers.Cast<RDFResource>())
                      {
                          LoadClassExpression(ont, intersectionOfMember, out OWLClassExpression clsExp);
                          if (clsExp != null)
@@ -1771,7 +1771,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLDataRangeExpression> dtIntersectionOfMembers = new List<OWLDataRangeExpression>();
                      RDFCollection intersectionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, intersectionOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource intersectionOfMember in dtIntersectionOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource intersectionOfMember in intersectionOfMembers.Cast<RDFResource>())
                      {
                          LoadDataRangeExpression(ont, intersectionOfMember, out OWLDataRangeExpression dtExp);
                          if (dtExp != null)
