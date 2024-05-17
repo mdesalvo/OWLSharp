@@ -54,14 +54,6 @@ namespace OWLSharp.Ontology.Expressions.Test
                  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDatatypeRestrictionBecauseNullFacetRestrictions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDatatypeRestriction(new OWLDatatype(RDFVocabulary.XSD.STRING), null));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDatatypeRestrictionBecauseEmptyFacetRestrictions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDatatypeRestriction(new OWLDatatype(RDFVocabulary.XSD.STRING), []));
-
-        [TestMethod]
         public void ShouldThrowExceptionOnCreatingDatatypeRestrictionBecauseFoundNullFacetRestriction()
             => Assert.ThrowsException<OWLException>(() => new OWLDatatypeRestriction(new OWLDatatype(RDFVocabulary.XSD.STRING), [null]));
 
@@ -146,6 +138,19 @@ namespace OWLSharp.Ontology.Expressions.Test
 			//Statics (TODO: wait for RDFSharp-3.12)
 			Assert.IsTrue(graph[null, OWLFacetRestriction.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
 			Assert.IsTrue(graph[null, OWLFacetRestriction.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+        }
+
+        [TestMethod]
+        public void ShouldConvertUnfacetedDatatypeRestrictionToGraph()
+        {
+            OWLDatatypeRestriction equivToStringFacet = new OWLDatatypeRestriction(
+                new OWLDatatype(RDFVocabulary.XSD.STRING), null);
+            RDFGraph graph = equivToStringFacet.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
         }
         #endregion
     }    

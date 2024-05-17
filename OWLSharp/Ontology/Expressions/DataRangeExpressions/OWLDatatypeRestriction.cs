@@ -38,11 +38,7 @@ namespace OWLSharp.Ontology.Expressions
         public OWLDatatypeRestriction(OWLDatatype datatypeIRI, List<OWLFacetRestriction> facetRestrictions)
         {
             #region Guards
-            if (facetRestrictions == null)
-                throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter is null");
-            if (facetRestrictions.Count == 0)
-                throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter must contain at least 1 elements");
-            if (facetRestrictions.Any(fr => fr == null))
+            if (facetRestrictions?.Any(fr => fr == null) ?? false)
                 throw new OWLException("Cannot create OWLDatatypeRestriction because given \"facetRestrictions\" parameter contains a null element");
             #endregion
 
@@ -57,20 +53,25 @@ namespace OWLSharp.Ontology.Expressions
 			RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
-			RDFCollection facetsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
-			foreach (OWLFacetRestriction facetRestriction in FacetRestrictions)
-			{
-				RDFResource facetRepresentative = new RDFResource();
-				facetsCollection.AddItem(facetRepresentative);
-                graph.AddTriple(new RDFTriple(facetRepresentative, new RDFResource(facetRestriction.FacetIRI), facetRestriction.Literal.GetLiteral()));
-            }
-            graph.AddCollection(facetsCollection);				
-			graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
-			graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_DATATYPE, Datatype.GetIRI()));
-			graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsCollection.ReificationSubject));
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
             graph = graph.UnionWith(Datatype.ToRDFGraph());
+            if (FacetRestrictions?.Count > 0)
+            {
+                RDFCollection facetsRestrictions = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+                foreach (OWLFacetRestriction facetRestriction in FacetRestrictions)
+                {
+                    RDFResource facetRepresentative = new RDFResource();
+                    facetsRestrictions.AddItem(facetRepresentative);
+                    graph.AddTriple(new RDFTriple(facetRepresentative, new RDFResource(facetRestriction.FacetIRI), facetRestriction.Literal.GetLiteral()));
+                }
+                graph.AddCollection(facetsRestrictions);
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_DATATYPE, Datatype.GetIRI()));
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsRestrictions.ReificationSubject));
+            }
+			else
+                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.EQUIVALENT_CLASS, Datatype.GetIRI()));
 
-			return graph;
+            return graph;
 		}
 		#endregion
     }

@@ -1715,23 +1715,34 @@ namespace OWLSharp.Ontology
                 }
                 #endregion
 
-                #region DatatypeRestriction
-                if (drGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount > 0
-                     && drGraph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].FirstOrDefault()?.Object is RDFResource withRestrictions
-                     && drGraph[null, RDFVocabulary.OWL.ON_DATATYPE, null, null].FirstOrDefault()?.Object is RDFResource onDatatype)
+                #region DatatypeRestriction/Datatype
+                if (drGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount > 0)
                 {
-                    LoadDatatypeRestriction(ont, drIRI, onDatatype, withRestrictions, out OWLDatatypeRestriction dtRST);
-                    if (dtRST != null)
+                    #region DatatypeRestriction (Faceted)
+                    if (drGraph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].FirstOrDefault()?.Object is RDFResource withRestrictions
+                         && drGraph[null, RDFVocabulary.OWL.ON_DATATYPE, null, null].FirstOrDefault()?.Object is RDFResource onDatatype)
                     {
-                        drex = dtRST;
+                        LoadDatatypeRestriction(ont, drIRI, onDatatype, withRestrictions, out OWLDatatypeRestriction dtRST);
+                        if (dtRST != null)
+                        {
+                            drex = dtRST;
+                            return;
+                        }
+                    }
+                    #endregion
+
+                    #region DatatypeRestriction (Alias)
+                    else if (drGraph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null].FirstOrDefault()?.Object is RDFResource equivalentDatatype)
+                    {
+                        drex = new OWLDatatypeRestriction(new OWLDatatype(equivalentDatatype), null);
                         return;
                     }
-                }
-                #endregion
+                    #endregion
 
-                #region Datatype
-                if (drGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount > 0)
+                    #region Datatype
                     drex = new OWLDatatype(drIRI);
+                    #endregion
+                }   
                 #endregion
             }
              void LoadDataUnionOf(OWLOntology ont, RDFResource dtIRI, out OWLDataUnionOf dtUNOF)
@@ -1825,8 +1836,10 @@ namespace OWLSharp.Ontology
                     if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinExclusiveDT
                         && fctMinExclusiveDT.HasDecimalDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinExclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                }
-            }
+                 }
+
+                 dtRST = new OWLDatatypeRestriction(new OWLDatatype(onDatatype), facetRestrictions);
+             }
             #endregion
 
             #region Guards
