@@ -83,14 +83,10 @@ namespace OWLSharp.Ontology.Expressions
         public static readonly RDFResource MIN_LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minLength"));
         public static readonly RDFResource MAX_LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxLength"));
         public static readonly RDFResource PATTERN = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "pattern"));
-        public static readonly RDFResource ENUMERATION = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "enumeration"));
         public static readonly RDFResource MAX_INCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxInclusive"));
         public static readonly RDFResource MAX_EXCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxExclusive"));
         public static readonly RDFResource MIN_EXCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minExclusive"));
         public static readonly RDFResource MIN_INCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minInclusive"));
-        public static readonly RDFResource TOTAL_DIGITS = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "totalDigits"));
-        public static readonly RDFResource FRACTION_DIGITS = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "fractionDigits"));
-        public static readonly RDFResource ASSERTION = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "assertion"));
         #endregion
 
         #region Properties
