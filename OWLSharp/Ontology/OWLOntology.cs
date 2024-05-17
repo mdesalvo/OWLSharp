@@ -1607,7 +1607,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLClassExpression> objectUnionOfMembers = new List<OWLClassExpression>();
                      RDFCollection unionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, unionOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource unionOfMember in unionOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource unionOfMember in unionOfMembers.Items.Cast<RDFResource>())
                      {
                          LoadClassExpression(ont, unionOfMember, out OWLClassExpression clsExp);
                          if (clsExp != null)
@@ -1624,7 +1624,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLClassExpression> objectIntersectionOfMembers = new List<OWLClassExpression>();
                      RDFCollection intersectionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, intersectionOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource intersectionOfMember in intersectionOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource intersectionOfMember in intersectionOfMembers.Items.Cast<RDFResource>())
                      {
                          LoadClassExpression(ont, intersectionOfMember, out OWLClassExpression clsExp);
                          if (clsExp != null)
@@ -1652,7 +1652,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLIndividualExpression> objectOneOfMembers = new List<OWLIndividualExpression>();
                      RDFCollection oneOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource oneOfMember in oneOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource oneOfMember in oneOfMembers.Items.Cast<RDFResource>())
                      {
                          LoadIndividualExpression(ont, oneOfMember, out OWLIndividualExpression idvExp);
                          if (idvExp != null)
@@ -1754,7 +1754,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLDataRangeExpression> dtUnionOfMembers = new List<OWLDataRangeExpression>();
                      RDFCollection unionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, unionOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource unionOfMember in unionOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource unionOfMember in unionOfMembers.Items.Cast<RDFResource>())
                      {
                          LoadDataRangeExpression(ont, unionOfMember, out OWLDataRangeExpression dtExp);
                          if (dtExp != null)
@@ -1771,7 +1771,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLDataRangeExpression> dtIntersectionOfMembers = new List<OWLDataRangeExpression>();
                      RDFCollection intersectionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, intersectionOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource intersectionOfMember in intersectionOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource intersectionOfMember in intersectionOfMembers.Items.Cast<RDFResource>())
                      {
                          LoadDataRangeExpression(ont, intersectionOfMember, out OWLDataRangeExpression dtExp);
                          if (dtExp != null)
@@ -1799,7 +1799,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLLiteral> dataOneOfMembers = new List<OWLLiteral>();
                      RDFCollection oneOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOf, RDFModelEnums.RDFTripleFlavors.SPL);
-                     foreach (RDFLiteral oneOfMember in oneOfMembers.Cast<RDFLiteral>())
+                     foreach (RDFLiteral oneOfMember in oneOfMembers.Items.Cast<RDFLiteral>())
                          dataOneOfMembers.Add(new OWLLiteral(oneOfMember));
                      dtONEOF = new OWLDataOneOf(dataOneOfMembers);
                  }
@@ -1810,7 +1810,7 @@ namespace OWLSharp.Ontology
              
                  List<OWLFacetRestriction> facetRestrictions = new List<OWLFacetRestriction>();
                  RDFCollection facetRestrictionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, withRestrictions, RDFModelEnums.RDFTripleFlavors.SPO);
-                 foreach (RDFResource facetRestrictionMember in facetRestrictionMembers.Cast<RDFResource>())
+                 foreach (RDFResource facetRestrictionMember in facetRestrictionMembers.Items.Cast<RDFResource>())
                  {
                     //Statics (TODO: wait for RDFSharp-3.12)
                     if (graph[facetRestrictionMember, OWLFacetRestriction.LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctLengthDT)
