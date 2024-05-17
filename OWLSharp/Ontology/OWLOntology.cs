@@ -248,7 +248,8 @@ namespace OWLSharp.Ontology
 
                 foreach (RDFTriple typeClass in typeGraph[null, null, RDFVocabulary.OWL.CLASS, null]
                                                  .UnionWith(typeGraph[null, null, RDFVocabulary.OWL.DEPRECATED_CLASS, null])
-                                                 .UnionWith(typeGraph[null, null, RDFVocabulary.RDFS.CLASS, null]))
+                                                 .UnionWith(typeGraph[null, null, RDFVocabulary.RDFS.CLASS, null])
+                                                 .Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass((RDFResource)typeClass.Subject)));
 
                 foreach (RDFTriple typeDatatype in typeGraph[null, null, RDFVocabulary.RDFS.DATATYPE, null])
@@ -1651,7 +1652,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLIndividualExpression> objectOneOfMembers = new List<OWLIndividualExpression>();
                      RDFCollection oneOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOf, RDFModelEnums.RDFTripleFlavors.SPO);
-                     foreach (RDFResource oneOfMember in objectOneOfMembers.Cast<RDFResource>())
+                     foreach (RDFResource oneOfMember in oneOfMembers.Cast<RDFResource>())
                      {
                          LoadIndividualExpression(ont, oneOfMember, out OWLIndividualExpression idvExp);
                          if (idvExp != null)
@@ -1798,7 +1799,7 @@ namespace OWLSharp.Ontology
                  {
                      List<OWLLiteral> dataOneOfMembers = new List<OWLLiteral>();
                      RDFCollection oneOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOf, RDFModelEnums.RDFTripleFlavors.SPL);
-                     foreach (RDFLiteral oneOfMember in dataOneOfMembers.Cast<RDFLiteral>())
+                     foreach (RDFLiteral oneOfMember in oneOfMembers.Cast<RDFLiteral>())
                          dataOneOfMembers.Add(new OWLLiteral(oneOfMember));
                      dtONEOF = new OWLDataOneOf(dataOneOfMembers);
                  }
