@@ -1718,7 +1718,7 @@ namespace OWLSharp.Ontology
                 #region DatatypeRestriction/Datatype
                 if (drGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount > 0)
                 {
-                    #region DatatypeRestriction (Faceted)
+                    #region DatatypeRestriction (Faceted Datatype)
                     if (drGraph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].FirstOrDefault()?.Object is RDFResource withRestrictions
                          && drGraph[null, RDFVocabulary.OWL.ON_DATATYPE, null, null].FirstOrDefault()?.Object is RDFResource onDatatype)
                     {
@@ -1731,7 +1731,7 @@ namespace OWLSharp.Ontology
                     }
                     #endregion
 
-                    #region DatatypeRestriction (Alias)
+                    #region DatatypeRestriction (Alias Datatype)
                     else if (drGraph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null].FirstOrDefault()?.Object is RDFResource equivalentDatatype)
                     {
                         drex = new OWLDatatypeRestriction(new OWLDatatype(equivalentDatatype), null);
