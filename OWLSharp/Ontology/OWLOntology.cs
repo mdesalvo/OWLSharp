@@ -1104,13 +1104,13 @@ namespace OWLSharp.Ontology
                     #region AllValuesFrom
                     if (clsGraph[null, RDFVocabulary.OWL.ALL_VALUES_FROM, null, null].FirstOrDefault()?.Object is RDFResource allValuesFrom)
                     {
-                        LoadObjectAllValuesFromRestriction(ont, clsIRI, allValuesFrom, out OWLObjectAllValuesFrom objAVF);
+                        LoadObjectAllValuesFrom(ont, clsIRI, allValuesFrom, out OWLObjectAllValuesFrom objAVF);
                         if (objAVF != null)
                         {
                             clex = objAVF;
                             return;
                         }
-                        LoadDataAllValuesFromRestriction(ont, clsIRI, allValuesFrom, out OWLDataAllValuesFrom dtAVF);
+                        LoadDataAllValuesFrom(ont, clsIRI, allValuesFrom, out OWLDataAllValuesFrom dtAVF);
                         if (dtAVF != null)
                         {
                             clex = dtAVF;
@@ -1122,13 +1122,13 @@ namespace OWLSharp.Ontology
                     #region SomeValuesFrom
                     if (clsGraph[null, RDFVocabulary.OWL.SOME_VALUES_FROM, null, null].FirstOrDefault()?.Object is RDFResource someValuesFrom)
                     {
-                        LoadObjectSomeValuesFromRestriction(ont, clsIRI, someValuesFrom, out OWLObjectSomeValuesFrom objSVF);
+                        LoadObjectSomeValuesFrom(ont, clsIRI, someValuesFrom, out OWLObjectSomeValuesFrom objSVF);
                         if (objSVF != null)
                         {
                             clex = objSVF;
                             return;
                         }
-                        LoadDataSomeValuesFromRestriction(ont, clsIRI, someValuesFrom, out OWLDataSomeValuesFrom dtSVF);
+                        LoadDataSomeValuesFrom(ont, clsIRI, someValuesFrom, out OWLDataSomeValuesFrom dtSVF);
                         if (dtSVF != null)
                         {
                             clex = dtSVF;
@@ -1140,7 +1140,7 @@ namespace OWLSharp.Ontology
                     #region HasSelf
                     if (clsGraph[null, RDFVocabulary.OWL.HAS_SELF, null, RDFTypedLiteral.True].TriplesCount > 0)
                     {
-                        LoadObjectHasSelfRestriction(ont, clsIRI, out OWLObjectHasSelf objHS);
+                        LoadObjectHasSelf(ont, clsIRI, out OWLObjectHasSelf objHS);
                         if (objHS != null)
                         {
                             clex = objHS;
@@ -1152,13 +1152,13 @@ namespace OWLSharp.Ontology
 					#region HasValue
 					if (clsGraph[null, RDFVocabulary.OWL.HAS_VALUE, null, null].TriplesCount > 0)
 					{
-						LoadObjectHasValueRestriction(ont, clsIRI, out OWLObjectHasValue objHV);
+						LoadObjectHasValue(ont, clsIRI, out OWLObjectHasValue objHV);
                         if (objHV != null)
                         {
                             clex = objHV;
                             return;
                         }
-						LoadDataHasValueRestriction(ont, clsIRI, out OWLDataHasValue dtHV);
+						LoadDataHasValue(ont, clsIRI, out OWLDataHasValue dtHV);
                         if (dtHV != null)
                         {
                             clex = dtHV;
@@ -1171,13 +1171,13 @@ namespace OWLSharp.Ontology
                     if (clsGraph[null, RDFVocabulary.OWL.CARDINALITY, null, null].TriplesCount > 0
                          || clsGraph[null, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].TriplesCount > 0)
                     {
-                        LoadObjectExactCardinalityRestriction(ont, clsIRI, out OWLObjectExactCardinality objEXCR);
+                        LoadObjectExactCardinality(ont, clsIRI, out OWLObjectExactCardinality objEXCR);
                         if (objEXCR != null)
                         {
                             clex = objEXCR;
                             return;
                         }
-                        LoadDataExactCardinalityRestriction(ont, clsIRI, out OWLDataExactCardinality dtEXCR);
+                        LoadDataExactCardinality(ont, clsIRI, out OWLDataExactCardinality dtEXCR);
                         if (dtEXCR != null)
                         {
                             clex = dtEXCR;
@@ -1190,13 +1190,13 @@ namespace OWLSharp.Ontology
                     if (clsGraph[null, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].TriplesCount > 0
                          || clsGraph[null, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0)
                     {
-                        LoadObjectMinCardinalityRestriction(ont, clsIRI, out OWLObjectMinCardinality objMINCR);
+                        LoadObjectMinCardinality(ont, clsIRI, out OWLObjectMinCardinality objMINCR);
                         if (objMINCR != null)
                         {
                             clex = objMINCR;
                             return;
                         }
-                        LoadDataMinCardinalityRestriction(ont, clsIRI, out OWLDataMinCardinality dtMINCR);
+                        LoadDataMinCardinality(ont, clsIRI, out OWLDataMinCardinality dtMINCR);
                         if (dtMINCR != null)
                         {
                             clex = dtMINCR;
@@ -1209,13 +1209,13 @@ namespace OWLSharp.Ontology
                     if (clsGraph[null, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].TriplesCount > 0
                          || clsGraph[null, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].TriplesCount > 0)
                     {
-                        LoadObjectMaxCardinalityRestriction(ont, clsIRI, out OWLObjectMaxCardinality objMAXCR);
+                        LoadObjectMaxCardinality(ont, clsIRI, out OWLObjectMaxCardinality objMAXCR);
                         if (objMAXCR != null)
                         {
                             clex = objMAXCR;
                             return;
                         }
-                        LoadDataMaxCardinalityRestriction(ont, clsIRI, out OWLDataMaxCardinality dtMAXCR);
+                        LoadDataMaxCardinality(ont, clsIRI, out OWLDataMaxCardinality dtMAXCR);
                         if (dtMAXCR != null)
                         {
                             clex = dtMAXCR;
@@ -1228,12 +1228,12 @@ namespace OWLSharp.Ontology
 
                 #region Composite
                 if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
-					&& (clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
-					 	|| clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
-					 	|| clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0))
+					 && (clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
+					 	  || clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
+					 	  || clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0))
 				{
 					#region UnionOf
-					LoadObjectUnionOfClass(ont, clsIRI, out OWLObjectUnionOf objUNOF);
+					LoadObjectUnionOf(ont, clsIRI, out OWLObjectUnionOf objUNOF);
 					if (objUNOF != null)
 					{
 						clex = objUNOF;
@@ -1242,7 +1242,7 @@ namespace OWLSharp.Ontology
 					#endregion
 
 					#region IntersectionOf
-					LoadObjectIntersectionOfClass(ont, clsIRI, out OWLObjectIntersectionOf objINTOF);
+					LoadObjectIntersectionOf(ont, clsIRI, out OWLObjectIntersectionOf objINTOF);
 					if (objINTOF != null)
 					{
 						clex = objINTOF;
@@ -1251,7 +1251,7 @@ namespace OWLSharp.Ontology
 					#endregion
 
 					#region ComplementOf
-					LoadObjectComplementOfClass(ont, clsIRI, out OWLObjectComplementOf objCMPOF);
+					LoadObjectComplementOf(ont, clsIRI, out OWLObjectComplementOf objCMPOF);
 					if (objCMPOF != null)
 					{
 						clex = objCMPOF;
@@ -1263,10 +1263,10 @@ namespace OWLSharp.Ontology
 
 				#region Enumerate
 				if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
-					&& clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
+					 && clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
 				{
 					#region OneOf
-					LoadObjectOneOfClass(ont, clsIRI, out OWLObjectOneOf objONEOF);
+					LoadObjectOneOf(ont, clsIRI, out OWLObjectOneOf objONEOF);
 					if (objONEOF != null)
 					{
 						clex = objONEOF;
@@ -1281,7 +1281,7 @@ namespace OWLSharp.Ontology
 					clex = new OWLClass(clsIRI);
 				#endregion
             }
-            void LoadObjectAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLObjectAllValuesFrom objAVF)
+            void LoadObjectAllValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLObjectAllValuesFrom objAVF)
             {
                 objAVF = null;
 
@@ -1297,7 +1297,7 @@ namespace OWLSharp.Ontology
 						objAVF = new OWLObjectAllValuesFrom(onPropertyOPEX, allValuesFromCLEX);
                 }
             }
-            void LoadObjectSomeValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLObjectSomeValuesFrom objSVF)
+            void LoadObjectSomeValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLObjectSomeValuesFrom objSVF)
             {
                 objSVF = null;
 
@@ -1313,7 +1313,7 @@ namespace OWLSharp.Ontology
 						objSVF = new OWLObjectSomeValuesFrom(onPropertyOPEX, someValuesFromCLEX);
                 }
             }
-            void LoadObjectHasSelfRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectHasSelf objHS)
+            void LoadObjectHasSelf(OWLOntology ont, RDFResource clsIRI, out OWLObjectHasSelf objHS)
             {
                 objHS = null;
 
@@ -1325,7 +1325,7 @@ namespace OWLSharp.Ontology
                         objHS = new OWLObjectHasSelf(onPropertyOPEX);
                 }
             }
-			void LoadObjectHasValueRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectHasValue objHV)
+			void LoadObjectHasValue(OWLOntology ont, RDFResource clsIRI, out OWLObjectHasValue objHV)
             {
                 objHV = null;
 
@@ -1344,7 +1344,7 @@ namespace OWLSharp.Ontology
 					}
                 }
             }
-            void LoadObjectExactCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectExactCardinality objEXCR)
+            void LoadObjectExactCardinality(OWLOntology ont, RDFResource clsIRI, out OWLObjectExactCardinality objEXCR)
             {
                 objEXCR = null;
 
@@ -1376,7 +1376,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadObjectMinCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectMinCardinality objMINCR)
+            void LoadObjectMinCardinality(OWLOntology ont, RDFResource clsIRI, out OWLObjectMinCardinality objMINCR)
             {
                 objMINCR = null;
 
@@ -1408,7 +1408,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadObjectMaxCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLObjectMaxCardinality objMAXCR)
+            void LoadObjectMaxCardinality(OWLOntology ont, RDFResource clsIRI, out OWLObjectMaxCardinality objMAXCR)
             {
                 objMAXCR = null;
 
@@ -1440,7 +1440,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadDataAllValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLDataAllValuesFrom dtAVF)
+            void LoadDataAllValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLDataAllValuesFrom dtAVF)
             {
                 dtAVF = null;
 
@@ -1462,7 +1462,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadDataSomeValuesFromRestriction(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLDataSomeValuesFrom dtSVF)
+            void LoadDataSomeValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLDataSomeValuesFrom dtSVF)
             {
                 dtSVF = null;
 
@@ -1484,7 +1484,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-			void LoadDataHasValueRestriction(OWLOntology ont, RDFResource clsIRI, out OWLDataHasValue dtHV)
+			void LoadDataHasValue(OWLOntology ont, RDFResource clsIRI, out OWLDataHasValue dtHV)
             {
                 dtHV = null;
 
@@ -1499,7 +1499,7 @@ namespace OWLSharp.Ontology
 						dtHV = new OWLDataHasValue((OWLDataProperty)onPropertyDPEX, new OWLLiteral(hasValueLIT));
                 }
             }
-            void LoadDataExactCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLDataExactCardinality dtEXCR)
+            void LoadDataExactCardinality(OWLOntology ont, RDFResource clsIRI, out OWLDataExactCardinality dtEXCR)
             {
                 dtEXCR = null;
 
@@ -1531,7 +1531,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadDataMinCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLDataMinCardinality dtMINCR)
+            void LoadDataMinCardinality(OWLOntology ont, RDFResource clsIRI, out OWLDataMinCardinality dtMINCR)
             {
                 dtMINCR = null;
 
@@ -1563,7 +1563,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadDataMaxCardinalityRestriction(OWLOntology ont, RDFResource clsIRI, out OWLDataMaxCardinality dtMAXCR)
+            void LoadDataMaxCardinality(OWLOntology ont, RDFResource clsIRI, out OWLDataMaxCardinality dtMAXCR)
             {
                 dtMAXCR = null;
 
@@ -1595,7 +1595,7 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadObjectUnionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectUnionOf objUNOF)
+            void LoadObjectUnionOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectUnionOf objUNOF)
 			{
 				objUNOF = null;
 
@@ -1612,7 +1612,7 @@ namespace OWLSharp.Ontology
 					objUNOF = new OWLObjectUnionOf(objectUnionOfMembers);
 				}
 			}
-			void LoadObjectIntersectionOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectIntersectionOf objINTOF)
+			void LoadObjectIntersectionOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectIntersectionOf objINTOF)
 			{
 				objINTOF = null;
 
@@ -1629,7 +1629,7 @@ namespace OWLSharp.Ontology
 					objINTOF = new OWLObjectIntersectionOf(objectIntersectionOfMembers);
 				}
 			}
-			void LoadObjectComplementOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectComplementOf objCMPOF)
+			void LoadObjectComplementOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectComplementOf objCMPOF)
 			{
 				objCMPOF = null;
 
@@ -1640,7 +1640,7 @@ namespace OWLSharp.Ontology
 						objCMPOF = new OWLObjectComplementOf(clsExp);
 				}
 			}
-			void LoadObjectOneOfClass(OWLOntology ont, RDFResource clsIRI, out OWLObjectOneOf objONEOF)
+			void LoadObjectOneOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectOneOf objONEOF)
 			{
 				objONEOF = null;
 
@@ -1660,7 +1660,124 @@ namespace OWLSharp.Ontology
 			void LoadDataRangeExpression(OWLOntology ont, RDFResource drIRI, out OWLDataRangeExpression drex)
             {
                 drex = null;
-                //TODO
+                RDFGraph drGraph = graph[drIRI, null, null, null];
+
+                #region Composite
+                if (drGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount > 0
+                     && (drGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
+                          || drGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
+                          || drGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0))
+                {
+                    #region UnionOf
+                    LoadDataUnionOf(ont, drIRI, out OWLDataUnionOf dtUNOF);
+                    if (dtUNOF != null)
+                    {
+                        drex = dtUNOF;
+                        return;
+                    }
+                    #endregion
+
+                    #region IntersectionOf
+                    LoadDataIntersectionOf(ont, drIRI, out OWLDataIntersectionOf dtINTOF);
+                    if (dtINTOF != null)
+                    {
+                        drex = dtINTOF;
+                        return;
+                    }
+                    #endregion
+
+                    #region ComplementOf
+                    LoadDataComplementOf(ont, drIRI, out OWLDataComplementOf dtCMPOF);
+                    if (dtCMPOF != null)
+                    {
+                        drex = dtCMPOF;
+                        return;
+                    }
+                    #endregion
+                }
+                #endregion
+
+                #region Enumerate
+                if (drGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount > 0
+                     && drGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
+                {
+                    #region OneOf
+                    LoadDataOneOf(ont, drIRI, out OWLDataOneOf dtONEOF);
+                    if (dtONEOF != null)
+                    {
+                        drex = dtONEOF;
+                        return;
+                    }
+                    #endregion
+                }
+                #endregion
+
+                #region DatatypeRestriction
+
+                #endregion
+
+                #region Datatype
+                if (drGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount > 0)
+                    drex = new OWLDatatype(drIRI);
+                #endregion
+            }
+            void LoadDataUnionOf(OWLOntology ont, RDFResource dtIRI, out OWLDataUnionOf dtUNOF)
+            {
+                dtUNOF = null;
+
+                if (graph[dtIRI, RDFVocabulary.OWL.UNION_OF, null, null].FirstOrDefault()?.Object is RDFResource unionOf)
+                {
+                    List<OWLDataRangeExpression> dtUnionOfMembers = new List<OWLDataRangeExpression>();
+                    RDFCollection unionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, unionOf, RDFModelEnums.RDFTripleFlavors.SPO);
+                    foreach (RDFResource unionOfMember in unionOfMembers.Cast<RDFResource>())
+                    {
+                        LoadDataRangeExpression(ont, unionOfMember, out OWLDataRangeExpression dtExp);
+                        if (dtExp != null)
+                            dtUnionOfMembers.Add(dtExp);
+                    }
+                    dtUNOF = new OWLDataUnionOf(dtUnionOfMembers);
+                }
+            }
+            void LoadDataIntersectionOf(OWLOntology ont, RDFResource dtIRI, out OWLDataIntersectionOf dtINTOF)
+            {
+                dtINTOF = null;
+
+                if (graph[dtIRI, RDFVocabulary.OWL.INTERSECTION_OF, null, null].FirstOrDefault()?.Object is RDFResource intersectionOf)
+                {
+                    List<OWLDataRangeExpression> dtIntersectionOfMembers = new List<OWLDataRangeExpression>();
+                    RDFCollection intersectionOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, intersectionOf, RDFModelEnums.RDFTripleFlavors.SPO);
+                    foreach (RDFResource intersectionOfMember in dtIntersectionOfMembers.Cast<RDFResource>())
+                    {
+                        LoadDataRangeExpression(ont, intersectionOfMember, out OWLDataRangeExpression dtExp);
+                        if (dtExp != null)
+                            dtIntersectionOfMembers.Add(dtExp);
+                    }
+                    dtINTOF = new OWLDataIntersectionOf(dtIntersectionOfMembers);
+                }
+            }
+            void LoadDataComplementOf(OWLOntology ont, RDFResource dtIRI, out OWLDataComplementOf dtCMPOF)
+            {
+                dtCMPOF = null;
+
+                if (graph[dtIRI, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].FirstOrDefault()?.Object is RDFResource complementOf)
+                {
+                    LoadDataRangeExpression(ont, complementOf, out OWLDataRangeExpression dtExp);
+                    if (dtExp != null)
+                        dtCMPOF = new OWLDataComplementOf(dtExp);
+                }
+            }
+            void LoadDataOneOf(OWLOntology ont, RDFResource drIRI, out OWLDataOneOf dtONEOF)
+            {
+                dtONEOF = null;
+
+                if (graph[drIRI, RDFVocabulary.OWL.ONE_OF, null, null].FirstOrDefault()?.Object is RDFResource oneOf)
+                {
+                    List<OWLLiteral> dataOneOfMembers = new List<OWLLiteral>();
+                    RDFCollection oneOfMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, oneOf, RDFModelEnums.RDFTripleFlavors.SPL);
+                    foreach (RDFLiteral oneOfMember in dataOneOfMembers.Cast<RDFLiteral>())
+                        dataOneOfMembers.Add(new OWLLiteral(oneOfMember));
+                    dtONEOF = new OWLDataOneOf(dataOneOfMembers);
+                }
             }
             #endregion
 
