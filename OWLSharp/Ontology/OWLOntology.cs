@@ -1812,29 +1812,21 @@ namespace OWLSharp.Ontology
                  foreach (RDFResource facetRestrictionMember in facetRestrictionMembers.Cast<RDFResource>())
                  {
                     //Statics (TODO: wait for RDFSharp-3.12)
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctLengthDT
-                         && fctLengthDT.HasDecimalDatatype())
+                    if (graph[facetRestrictionMember, OWLFacetRestriction.LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctLengthDT)
                          facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctLengthDT), OWLFacetRestriction.LENGTH));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinLengthDT
-                         && fctMinLengthDT.HasDecimalDatatype())
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinLengthDT)
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinLengthDT), OWLFacetRestriction.MIN_LENGTH));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxLengthDT
-                         && fctMaxLengthDT.HasDecimalDatatype())
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxLengthDT)
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxLengthDT), OWLFacetRestriction.MAX_LENGTH));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.PATTERN, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctPatternDT
-                         && fctPatternDT.HasStringDatatype())
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.PATTERN, null, null].FirstOrDefault()?.Object is RDFLiteral fctPatternDT)
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctPatternDT), OWLFacetRestriction.PATTERN));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxInclusiveDT
-                         && fctMaxInclusiveDT.HasDecimalDatatype())
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxInclusiveDT)
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxInclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxExclusiveDT
-                        && fctMaxExclusiveDT.HasDecimalDatatype())
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxExclusiveDT)
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxExclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinInclusiveDT
-                        && fctMinInclusiveDT.HasDecimalDatatype())
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinInclusiveDT)
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinInclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinExclusiveDT
-                        && fctMinExclusiveDT.HasDecimalDatatype())
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinExclusiveDT)
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinExclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
                  }
 
