@@ -1815,25 +1815,25 @@ namespace OWLSharp.Ontology
                     if (graph[facetRestrictionMember, OWLFacetRestriction.LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctLengthDT
                          && fctLengthDT.HasDecimalDatatype())
                          facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctLengthDT), OWLFacetRestriction.LENGTH));
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinLengthDT
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinLengthDT
                          && fctMinLengthDT.HasDecimalDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinLengthDT), OWLFacetRestriction.MIN_LENGTH));
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxLengthDT
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_LENGTH, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxLengthDT
                          && fctMaxLengthDT.HasDecimalDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxLengthDT), OWLFacetRestriction.MAX_LENGTH));
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.PATTERN, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctPatternDT
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.PATTERN, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctPatternDT
                          && fctPatternDT.HasStringDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctPatternDT), OWLFacetRestriction.PATTERN));
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxInclusiveDT
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxInclusiveDT
                          && fctMaxInclusiveDT.HasDecimalDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxInclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxExclusiveDT
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMaxExclusiveDT
                         && fctMaxExclusiveDT.HasDecimalDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxExclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinInclusiveDT
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinInclusiveDT
                         && fctMinInclusiveDT.HasDecimalDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinInclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinExclusiveDT
+                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFTypedLiteral fctMinExclusiveDT
                         && fctMinExclusiveDT.HasDecimalDatatype())
                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinExclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
                  }
