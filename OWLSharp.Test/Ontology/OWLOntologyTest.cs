@@ -2006,6 +2006,79 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
+        public void ShouldReadObjectPropertyDomainGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLObjectPropertyDomain(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                    new OWLClass(RDFVocabulary.FOAF.PERSON))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLObjectPropertyDomain(
+                    new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                    new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE), 
+                        2, new OWLObjectSomeValuesFrom(new OWLObjectProperty(RDFVocabulary.FOAF.PROJECT), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                        },
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 2);
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLObjectPropertyDomain objPropDom
+                            && objPropDom.ObjectPropertyExpression is OWLObjectProperty foafKnows
+                            && foafKnows.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                            && objPropDom.ClassExpression is OWLClass foafPerson
+                            && foafPerson.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
+                             && objPropDom.Annotations.Count == 1
+                             && objPropDom.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(objPropDom.Annotations.Single().ValueIRI, "ex:title")
+                              && objPropDom.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && objPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLObjectPropertyDomain objPropDom1
+                            && objPropDom1.ObjectPropertyExpression is OWLObjectInverseOf invOfFoafKnows
+                            && invOfFoafKnows.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                            && objPropDom1.ClassExpression is OWLObjectMaxCardinality max2Title
+                            && max2Title.ObjectPropertyExpression is OWLObjectProperty max2TitleObjProp
+                            && max2TitleObjProp.GetIRI().Equals(RDFVocabulary.FOAF.TITLE)
+                            && max2Title.Cardinality == "2"
+                            && max2Title.ClassExpression is OWLObjectSomeValuesFrom max2TitleClsExp
+                            && max2TitleClsExp.ObjectPropertyExpression is OWLObjectProperty foafProject
+                            && foafProject.GetIRI().Equals(RDFVocabulary.FOAF.PROJECT)
+                            && max2TitleClsExp.ClassExpression is OWLClass foafOrganization
+                            && foafOrganization.GetIRI().Equals(RDFVocabulary.FOAF.ORGANIZATION)
+                             && objPropDom1.Annotations.Count == 2
+                             && objPropDom1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(objPropDom1.Annotations[0].ValueIRI, "ex:comment1")
+                              && objPropDom1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && objPropDom1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
+                             && objPropDom1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                             && string.Equals(objPropDom1.Annotations[1].ValueIRI, "ex:comment2")
+                              && objPropDom1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                              && objPropDom1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
+        }
+
+        [TestMethod]
         public void ShouldReadFunctionalDataPropertyAxiomFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
