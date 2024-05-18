@@ -923,7 +923,6 @@ namespace OWLSharp.Ontology
             }
             void LoadClassAssertions(OWLOntology ont)
 			{
-				RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
 				RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
                         .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, new RDFVariable("?CLS")))
@@ -936,18 +935,20 @@ namespace OWLSharp.Ontology
                         .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?IDV"), new RDFVariable("?CLS"))))
 						.AddFilter(new RDFBooleanNotFilter(new RDFInFilter(new RDFVariable("?CLS"), new List<RDFPatternMember>() {
 							RDFVocabulary.RDF.LIST, RDFVocabulary.RDFS.CLASS, RDFVocabulary.OWL.CLASS, RDFVocabulary.OWL.DEPRECATED_CLASS, RDFVocabulary.OWL.RESTRICTION }))));
-                RDFSelectQueryResult result = query.ApplyToGraph(typeGraph);
+                RDFSelectQueryResult result = query.ApplyToGraph(graph);
                 foreach (DataRow resultRow in result.SelectResults.Rows)
                 {
-					LoadClassExpression(ont, (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?CLS"].ToString()), out OWLClassExpression clsEx);
-                    LoadIndividualExpression(ont, (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IDV"].ToString()), out OWLIndividualExpression idvEx);
+					RDFResource clsIRI = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?CLS"].ToString());
+					RDFResource idvIRI = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IDV"].ToString());
+					LoadClassExpression(ont, clsIRI, out OWLClassExpression clsEx);
+                    LoadIndividualExpression(ont, idvIRI, out OWLIndividualExpression idvEx);
 
                     if (idvEx != null && clsEx != null)
                     {
                         OWLClassAssertion classAssertion = new OWLClassAssertion() {
                             ClassExpression = clsEx, IndividualExpression = idvEx };
 
-                        LoadAxiomAnnotations(ont, new RDFTriple(idvEx.GetIRI(), RDFVocabulary.RDF.TYPE, clsEx.GetIRI()), classAssertion);
+                        LoadAxiomAnnotations(ont, new RDFTriple(idvIRI, RDFVocabulary.RDF.TYPE, clsIRI), classAssertion);
 
                         ont.AssertionAxioms.Add(classAssertion);
                     }
