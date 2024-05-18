@@ -916,7 +916,39 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadNegativeDataPropertyAssertions(OWLOntology ont)
+            void LoadClassAssertions(OWLOntology ont)
+			{
+				RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
+				RDFSelectQuery query = new RDFSelectQuery()
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, new RDFVariable("?CLS")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.CLASS).UnionWithNext())
+						.AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS).UnionWithNext())
+						.AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DEPRECATED_CLASS).UnionWithNext())
+						.AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?IDV")))
+                        .AddFilter(new RDFIsUriFilter(new RDFVariable("?CLS")))
+                        .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?IDV"), new RDFVariable("?CLS"))))
+						.AddFilter(new RDFBooleanNotFilter(new RDFInFilter(new RDFVariable("?CLS"), new List<RDFPatternMember>() {
+							RDFVocabulary.RDF.LIST, RDFVocabulary.RDFS.CLASS, RDFVocabulary.OWL.CLASS, RDFVocabulary.OWL.DEPRECATED_CLASS, RDFVocabulary.OWL.RESTRICTION }))));
+                RDFSelectQueryResult result = query.ApplyToGraph(typeGraph);
+                foreach (DataRow resultRow in result.SelectResults.Rows)
+                {
+					LoadClassExpression(ont, (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?CLS"].ToString()), out OWLClassExpression clsEx);
+                    LoadIndividualExpression(ont, (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IDV"].ToString()), out OWLIndividualExpression idvEx);
+
+                    if (idvEx != null && clsEx != null)
+                    {
+                        OWLClassAssertion classAssertion = new OWLClassAssertion() {
+                            ClassExpression = clsEx, IndividualExpression = idvEx };
+
+                        LoadAxiomAnnotations(ont, new RDFTriple(idvEx.GetIRI(), RDFVocabulary.RDF.TYPE, clsEx.GetIRI()), classAssertion);
+
+                        ont.AssertionAxioms.Add(classAssertion);
+                    }
+                }
+			}
+			void LoadNegativeDataPropertyAssertions(OWLOntology ont)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
@@ -1908,7 +1940,7 @@ namespace OWLSharp.Ontology
             LoadNegativeObjectPropertyAssertions(ontology);
             LoadDataPropertyAssertions(ontology);
             LoadNegativeDataPropertyAssertions(ontology);
-            //TODO: ClassAssertion
+            LoadClassAssertions(ontology);
             LoadSubAnnotationProperties(ontology);
 			LoadAnnotationPropertyDomain(ontology);
             LoadAnnotationPropertyRange(ontology);
