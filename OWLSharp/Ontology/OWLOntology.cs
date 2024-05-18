@@ -977,7 +977,41 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            //Annotations
+            void LoadAnnotationPropertyDomain(OWLOntology ont)
+            {
+                foreach (RDFTriple domainTriple in graph[null, RDFVocabulary.RDFS.DOMAIN, null, null])
+                {
+                    LoadAnnotationPropertyExpression(ont, (RDFResource)domainTriple.Subject, out OWLAnnotationPropertyExpression annEXP);
+
+                    if (annEXP is OWLAnnotationProperty annProp && domainTriple.Object is RDFResource domainObject)
+                    {
+                        OWLAnnotationPropertyDomain annotationPropertyDomain = new OWLAnnotationPropertyDomain() {
+                             AnnotationProperty = annProp, IRI = domainObject.ToString() };
+
+                        LoadAxiomAnnotations(ont, domainTriple, annotationPropertyDomain);
+
+                        ont.AnnotationAxioms.Add(annotationPropertyDomain);
+                    }
+                }
+            }
+            void LoadAnnotationPropertyRange(OWLOntology ont)
+            {
+                foreach (RDFTriple rangeTriple in graph[null, RDFVocabulary.RDFS.RANGE, null, null])
+                {
+                    LoadAnnotationPropertyExpression(ont, (RDFResource)rangeTriple.Subject, out OWLAnnotationPropertyExpression annEXP);
+
+                    if (annEXP is OWLAnnotationProperty annProp && rangeTriple.Object is RDFResource rangeObject)
+                    {
+                        OWLAnnotationPropertyRange annotationPropertyRange = new OWLAnnotationPropertyRange() {
+                            AnnotationProperty = annProp, IRI = rangeObject.ToString() };
+
+                        LoadAxiomAnnotations(ont, rangeTriple, annotationPropertyRange);
+
+                        ont.AnnotationAxioms.Add(annotationPropertyRange);
+                    }
+                }
+            }
+			//Annotations
             void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
@@ -1876,7 +1910,9 @@ namespace OWLSharp.Ontology
             LoadNegativeDataPropertyAssertions(ontology);
             //TODO: ClassAssertion
             LoadSubAnnotationProperties(ontology);
-            //TODO: AnnotationAssertion, AnnotationPropertyDomain, AnnotationPropertyRange
+			LoadAnnotationPropertyDomain(ontology);
+            LoadAnnotationPropertyRange(ontology);
+            //TODO: AnnotationAssertion
 
             return ontology;
         }

@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
@@ -1045,7 +1046,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadAsymmetricObjectPropertyAxiomFromGraph()
+        public void ShouldReadAsymmetricObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1104,7 +1105,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadSymmetricObjectPropertyAxiomFromGraph()
+        public void ShouldReadSymmetricObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1163,7 +1164,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadIrreflexiveObjectPropertyAxiomFromGraph()
+        public void ShouldReadIrreflexiveObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1222,7 +1223,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadReflexiveObjectPropertyAxiomFromGraph()
+        public void ShouldReadReflexiveObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1281,7 +1282,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadTransitiveObjectPropertyAxiomFromGraph()
+        public void ShouldReadTransitiveObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1340,7 +1341,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadInverseFunctionalObjectPropertyAxiomFromGraph()
+        public void ShouldReadInverseFunctionalObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1399,7 +1400,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadFunctionalObjectPropertyAxiomFromGraph()
+        public void ShouldReadFunctionalObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1458,7 +1459,7 @@ namespace OWLSharp.Ontology.Test
         }
 
 		[TestMethod]
-        public void ShouldReadInverseObjectPropertyAxiomFromGraph()
+        public void ShouldReadInverseObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1566,7 +1567,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadEquivalentObjectPropertyAxiomFromGraph()
+        public void ShouldReadEquivalentObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1670,7 +1671,7 @@ namespace OWLSharp.Ontology.Test
         }
 
 		[TestMethod]
-        public void ShouldReadDisjointObjectPropertyAxiomFromGraph()
+        public void ShouldReadDisjointObjectPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1823,7 +1824,7 @@ namespace OWLSharp.Ontology.Test
         }
 
 		[TestMethod]
-        public void ShouldReadSubObjectPropertyOfAxiomFromGraph()
+        public void ShouldReadSubObjectPropertyOfFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -2370,7 +2371,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadFunctionalDataPropertyAxiomFromGraph()
+        public void ShouldReadFunctionalDataPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2427,7 +2428,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadEquivalentDataPropertyAxiomFromGraph()
+        public void ShouldReadEquivalentDataPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2490,7 +2491,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadDisjointDataPropertyAxiomFromGraph()
+        public void ShouldReadDisjointDataPropertyFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2553,7 +2554,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadSubDataPropertyOfAxiomFromGraph()
+        public void ShouldReadSubDataPropertyOfFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2614,7 +2615,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadSameIndividualAxiomFromGraph()
+        public void ShouldReadSameIndividualFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -2731,7 +2732,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadDifferentIndividualsAxiomFromGraph()
+        public void ShouldReadDifferentIndividualsFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3292,7 +3293,7 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
-        public void ShouldReadSubAnnotationPropertyOfAxiomFromGraph()
+        public void ShouldReadSubAnnotationPropertyOfFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AnnotationAxioms.Add(
@@ -3323,6 +3324,59 @@ namespace OWLSharp.Ontology.Test
                               && subanProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && subanProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
+
+		[TestMethod]
+        public void ShouldReadAnnotationPropertyDomainFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationPropertyDomain(
+                    new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE),
+                    RDFVocabulary.FOAF.PERSON)
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+			ontology.AnnotationAxioms.Add(
+                new OWLAnnotationPropertyDomain(
+                    new OWLAnnotationProperty(RDFVocabulary.DC.TITLE),
+                    new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 2);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationPropertyDomain anPropDom
+                            && anPropDom.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                            && string.Equals(anPropDom.IRI, RDFVocabulary.FOAF.PERSON.ToString())
+                             && anPropDom.Annotations.Count == 1
+                             && anPropDom.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(anPropDom.Annotations.Single().ValueIRI, "ex:title")
+                              && anPropDom.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && anPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+			Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyDomain anPropDom1
+                            && anPropDom1.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                            && string.Equals(anPropDom1.IRI,RDFVocabulary.FOAF.PERSON.ToString())
+                             && anPropDom1.Annotations.Count == 1
+                             && anPropDom1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(anPropDom1.Annotations.Single().ValueIRI, "ex:title")
+                              && anPropDom1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && anPropDom1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+		}
         #endregion
 
         [TestCleanup]
