@@ -3359,7 +3359,7 @@ namespace OWLSharp.Ontology.Test
                             && clsAsn1.ClassExpression is OWLObjectUnionOf objUnOf
 							&& objUnOf.ClassExpressions.Count == 2
 							&& objUnOf.ClassExpressions[0] is OWLObjectHasValue objHV
-							&& objHV.ObjectPropertyExpression is OWLObjectPropertyExpression objHVObjProp
+							&& objHV.ObjectPropertyExpression is OWLObjectProperty objHVObjProp
 							&& objHVObjProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
 							&& objHV.IndividualExpression is OWLAnonymousIndividual anonIDV1
 							&& anonIDV1.GetIRI().Equals(new RDFResource("bnode:AnonIDV1"))
