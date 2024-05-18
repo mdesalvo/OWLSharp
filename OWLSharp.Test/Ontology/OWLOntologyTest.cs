@@ -3377,7 +3377,61 @@ namespace OWLSharp.Ontology.Test
                               && anPropDom1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && anPropDom1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
 		}
-        #endregion
+        
+		
+		[TestMethod]
+        public void ShouldReadAnnotationPropertyRangeFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationPropertyRange(
+                    new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE),
+                    RDFVocabulary.FOAF.PERSON)
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+			ontology.AnnotationAxioms.Add(
+                new OWLAnnotationPropertyRange(
+                    new OWLAnnotationProperty(RDFVocabulary.DC.TITLE),
+                    new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 2);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationPropertyRange anPropRng
+                            && anPropRng.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                            && string.Equals(anPropRng.IRI, RDFVocabulary.FOAF.PERSON.ToString())
+                             && anPropRng.Annotations.Count == 1
+                             && anPropRng.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(anPropRng.Annotations.Single().ValueIRI, "ex:title")
+                              && anPropRng.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && anPropRng.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+			Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyRange anPropRng1
+                            && anPropRng1.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                            && string.Equals(anPropRng1.IRI,RDFVocabulary.FOAF.PERSON.ToString())
+                             && anPropRng1.Annotations.Count == 1
+                             && anPropRng1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(anPropRng1.Annotations.Single().ValueIRI, "ex:title")
+                              && anPropRng1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && anPropRng1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+		}
+		#endregion
 
         [TestCleanup]
         public void Cleanup()
