@@ -3292,6 +3292,110 @@ namespace OWLSharp.Ontology.Test
                               && dtPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
 
+		[TestMethod]
+        public void ShouldReadClassAssertionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.AssertionAxioms.Add(
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLNamedIndividual(new RDFResource("ex:IDV1")))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            ontology.AssertionAxioms.Add(
+                new OWLClassAssertion(
+                    new OWLObjectUnionOf([
+						new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLAnonymousIndividual("AnonIDV1")),
+						new OWLObjectOneOf([new OWLNamedIndividual(new RDFResource("ex:IDV2")), new OWLNamedIndividual(new RDFResource("ex:IDV3"))])
+					]),
+                    new OWLNamedIndividual(new RDFResource("ex:IDV4")))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+			ontology.AssertionAxioms.Add(
+                new OWLClassAssertion(
+                    new OWLDataExactCardinality(
+						new OWLDataProperty(RDFVocabulary.FOAF.AGE), 1,  new OWLDatatypeRestriction(
+							new OWLDatatype(RDFVocabulary.XSD.STRING),
+							[new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
+							new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)])),
+                    new OWLNamedIndividual(new RDFResource("ex:IDV5")))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AssertionAxioms.Count == 3);
+            Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLClassAssertion clsAsn
+                            && clsAsn.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
+                            && clsAsn.IndividualExpression is OWLNamedIndividual exIdv1
+                            && exIdv1.GetIRI().Equals(new RDFResource("ex:IDV1"))
+                             && clsAsn.Annotations.Count == 1
+                             && clsAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(clsAsn.Annotations.Single().ValueIRI, "ex:title")
+                              && clsAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && clsAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+            Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLClassAssertion clsAsn1
+                            && clsAsn1.ClassExpression is OWLObjectUnionOf objUnOf
+							&& objUnOf.ClassExpressions.Count == 2
+							&& objUnOf.ClassExpressions[0] is OWLObjectHasValue objHV
+							&& objHV.ObjectPropertyExpression is OWLObjectPropertyExpression objHVObjProp
+							&& objHVObjProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+							&& objHV.IndividualExpression is OWLAnonymousIndividual anonIDV1
+							&& anonIDV1.GetIRI().Equals(new RDFResource("bnode:AnonIDV1"))
+							&& objUnOf.ClassExpressions[1] is OWLObjectOneOf objOneOf
+							&& objOneOf.IndividualExpressions.Count == 2
+							&& objOneOf.IndividualExpressions[0] is OWLNamedIndividual exIdv2
+							&& exIdv2.GetIRI().Equals(new RDFResource("ex:IDV2"))
+							&& objOneOf.IndividualExpressions[1] is OWLNamedIndividual exIdv3
+							&& exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
+                            && clsAsn1.IndividualExpression is OWLNamedIndividual exIdv4
+                            && exIdv4.GetIRI().Equals(new RDFResource("ex:IDV4"))
+                             && clsAsn1.Annotations.Count == 1
+                             && clsAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(clsAsn1.Annotations.Single().ValueIRI, "ex:title")
+                              && clsAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && clsAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+			Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLClassAssertion clsAsn2
+                            && clsAsn2.ClassExpression is OWLDataExactCardinality dtExCard
+							&& dtExCard.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
+							&& dtExCard.Cardinality == "1"
+							&& dtExCard.DataRangeExpression is OWLDatatypeRestriction dtRestr
+							&& dtRestr.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
+							&& dtRestr.FacetRestrictions.Count == 2
+							&& string.Equals(dtRestr.FacetRestrictions[0].FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+							&& dtRestr.FacetRestrictions[0].Literal.GetLiteral().Equals(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT))
+							&& string.Equals(dtRestr.FacetRestrictions[1].FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+							&& dtRestr.FacetRestrictions[1].Literal.GetLiteral().Equals(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT))
+                            && clsAsn2.IndividualExpression is OWLNamedIndividual exIdv5
+                            && exIdv5.GetIRI().Equals(new RDFResource("ex:IDV5"))
+                            && clsAsn2.Annotations.Count == 1
+                             && clsAsn2.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(clsAsn2.Annotations.Single().ValueIRI, "ex:title")
+                              && clsAsn2.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && clsAsn2.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
         [TestMethod]
         public void ShouldReadSubAnnotationPropertyOfFromGraph()
         {
