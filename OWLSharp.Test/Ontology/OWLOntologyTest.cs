@@ -3326,8 +3326,6 @@ namespace OWLSharp.Ontology.Test
                               && dtPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
 
-
-
 		[TestMethod]
         public void ShouldReadDataPropertyRangeGraph()
         {
