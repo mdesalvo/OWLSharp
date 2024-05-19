@@ -759,7 +759,43 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-            void LoadSameIndividual(OWLOntology ont)
+            void LoadDataPropertyDomain(OWLOntology ont)
+            {
+                foreach (RDFTriple domainTriple in graph[null, RDFVocabulary.RDFS.DOMAIN, null, null])
+                {
+                    LoadDataPropertyExpression(ont, (RDFResource)domainTriple.Subject, out OWLDataPropertyExpression dtEXP);
+                    LoadClassExpression(ont, (RDFResource)domainTriple.Object, out OWLClassExpression clsEXP);
+
+                    if (dtEXP is OWLDataProperty dp && clsEXP != null)
+                    {
+                        OWLDataPropertyDomain dataPropertyDomain = new OWLDataPropertyDomain() {
+                             DataProperty = dp, ClassExpression = clsEXP };
+
+                        LoadAxiomAnnotations(ont, domainTriple, dataPropertyDomain);
+
+                        ont.DataPropertyAxioms.Add(dataPropertyDomain);
+                    }
+                }
+            }
+            void LoadDataPropertyRange(OWLOntology ont)
+            {
+                foreach (RDFTriple rangeTriple in graph[null, RDFVocabulary.RDFS.RANGE, null, null])
+                {
+                    LoadDataPropertyExpression(ont, (RDFResource)rangeTriple.Subject, out OWLDataPropertyExpression dtEXP);
+                    LoadDataRangeExpression(ont, (RDFResource)rangeTriple.Object, out OWLDataRangeExpression drEXP);
+
+                    if (dtEXP is OWLDataProperty dp && drEXP != null)
+                    {
+                        OWLDataPropertyRange dataPropertyRange = new OWLDataPropertyRange() {
+                            DataProperty = dp, DataRangeExpression = drEXP };
+
+                        LoadAxiomAnnotations(ont, rangeTriple, dataPropertyRange);
+
+                        ont.DataPropertyAxioms.Add(dataPropertyRange);
+                    }
+                }
+            }
+			void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
                 {
@@ -1936,7 +1972,8 @@ namespace OWLSharp.Ontology
             LoadEquivalentDataProperties(ontology);
             LoadDisjointDataProperties(ontology);
             LoadSubDataProperties(ontology);
-            //TODO: DataPropertyDomain, DataPropertyRange
+            LoadDataPropertyDomain(ontology);
+            LoadDataPropertyRange(ontology);
             //TODO: SubClassOf, EquivalentClasses, DisjointClasses, DisjointUnion
             //TODO: HasKey
             //TODO: DatatypeDefinition
