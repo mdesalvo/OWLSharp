@@ -2815,6 +2815,47 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
+        public void ShouldReadDatatypeDefinitionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
+                         new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms[0].Datatype.GetIRI().Equals(new RDFResource("ex:length6to10"))
+                            && ontology2.DatatypeDefinitionAxioms[0].DataRangeExpression is OWLDatatypeRestriction dtRest
+                            && dtRest.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
+                            && dtRest.FacetRestrictions.Count == 2
+                            && string.Equals(dtRest.FacetRestrictions[0].FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+                            && dtRest.FacetRestrictions[0].Literal.GetLiteral().Equals(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT))
+                            && string.Equals(dtRest.FacetRestrictions[1].FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+                            && dtRest.FacetRestrictions[1].Literal.GetLiteral().Equals(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT))
+                             && ontology2.DatatypeDefinitionAxioms[0].Annotations.Count == 1
+                             && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().ValueIRI, "ex:title")
+                              && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+        }
+
+        [TestMethod]
         public void ShouldReadSameIndividualFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));

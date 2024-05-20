@@ -946,6 +946,31 @@ namespace OWLSharp.Ontology
                     ont.KeyAxioms.Add(hasKey);
                 }
             }
+            void LoadDatatypeDefinition(OWLOntology ont)
+            {
+                foreach (RDFTriple datatypeTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null]
+                                                      .Where(t => !((RDFResource)t.Subject).IsBlank))                
+                {
+                    RDFResource equivalentDatatype = graph[(RDFResource)datatypeTriple.Subject, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
+                                                      .FirstOrDefault()?.Object as RDFResource;
+                    if (equivalentDatatype == null)
+                        continue;
+
+                    LoadDataRangeExpression(ont, equivalentDatatype, out OWLDataRangeExpression drex);
+                    if (!(drex is OWLDatatypeRestriction dtRest))
+                        continue;
+
+                    OWLDatatypeDefinition datatypeDefinition = new OWLDatatypeDefinition()
+                    {
+                        Datatype = new OWLDatatype((RDFResource)datatypeTriple.Subject),
+                        DataRangeExpression = dtRest
+                    };
+
+                    LoadAxiomAnnotations(ont, datatypeTriple, datatypeDefinition);
+
+                    ont.DatatypeDefinitionAxioms.Add(datatypeDefinition);
+                }
+            }
             void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
@@ -2130,7 +2155,7 @@ namespace OWLSharp.Ontology
             LoadDisjointClasses(ontology);
             LoadDisjointUnion(ontology);
             LoadHasKey(ontology);
-            //TODO: DatatypeDefinition
+            LoadDatatypeDefinition(ontology);
             LoadSameIndividual(ontology);
             LoadDifferentIndividuals(ontology);
 			LoadObjectPropertyAssertions(ontology);
