@@ -2615,6 +2615,39 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
+        public void ShouldReadSubClassOfFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.ClassAxioms.Add(
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLClass(RDFVocabulary.FOAF.AGENT))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
+            Assert.IsTrue(ontology2.ClassAxioms[0] is OWLSubClassOf subClsOf
+                            && subClsOf.SubClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
+                            && subClsOf.SuperClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
+                             && subClsOf.Annotations.Count == 1
+                             && subClsOf.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(subClsOf.Annotations.Single().ValueIRI, "ex:title")
+                              && subClsOf.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && subClsOf.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
         public void ShouldReadSameIndividualFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));

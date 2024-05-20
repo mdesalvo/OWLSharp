@@ -795,7 +795,28 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
-			void LoadSameIndividual(OWLOntology ont)
+			void LoadSubClassOf(OWLOntology ont)
+            {
+                foreach (RDFTriple subClassTriple in graph[null, RDFVocabulary.RDFS.SUB_CLASS_OF, null, null])
+                {
+                    LoadClassExpression(ont, (RDFResource)subClassTriple.Subject, out OWLClassExpression leftCLEX);
+                    LoadClassExpression(ont, (RDFResource)subClassTriple.Object, out OWLClassExpression rightCLEX);
+
+                    if (leftCLEX != null && rightCLEX != null)
+                    {
+                        OWLSubClassOf subClassOf = new OWLSubClassOf()
+                        {
+                            SubClassExpression = leftCLEX,
+                            SuperClassExpression = rightCLEX
+                        };
+
+                        LoadAxiomAnnotations(ont, subClassTriple, subClassOf);
+
+                        ont.ClassAxioms.Add(subClassOf);
+                    }
+                }
+            }
+            void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
                 {
@@ -1974,7 +1995,8 @@ namespace OWLSharp.Ontology
             LoadSubDataProperties(ontology);
             LoadDataPropertyDomain(ontology);
             LoadDataPropertyRange(ontology);
-            //TODO: SubClassOf, EquivalentClasses, DisjointClasses, DisjointUnion
+            LoadSubClassOf(ontology);
+            //TODO: EquivalentClasses, DisjointClasses, DisjointUnion
             //TODO: HasKey
             //TODO: DatatypeDefinition
             LoadSameIndividual(ontology);
