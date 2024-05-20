@@ -914,6 +914,38 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
+            void LoadHasKey(OWLOntology ont)
+            {
+                foreach (RDFTriple hasKeyTriple in graph[null, RDFVocabulary.OWL.HAS_KEY, null, null])
+                {
+                    LoadClassExpression(ont, (RDFResource)hasKeyTriple.Subject, out OWLClassExpression clsExp);
+                    if (!(clsExp is OWLClass classIRI))
+                        continue;
+
+                    List<OWLObjectPropertyExpression> haskeyOPMembers = new List<OWLObjectPropertyExpression>();
+                    List<OWLDataProperty> haskeyDPMembers = new List<OWLDataProperty>();
+                    RDFCollection haskeyMembersCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)hasKeyTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO);
+                    foreach (RDFResource hasKeyMember in haskeyMembersCollection.Items.Cast<RDFResource>())
+                    {
+                        LoadObjectPropertyExpression(ont, hasKeyMember, out OWLObjectPropertyExpression objPropMember);
+                        if (objPropMember != null)
+                        {
+                            haskeyOPMembers.Add(objPropMember);
+                            continue;
+                        }
+                        LoadDataPropertyExpression(ont, hasKeyMember, out OWLDataPropertyExpression dtPropMember);
+                        if (dtPropMember is OWLDataProperty dtProp)
+                            haskeyDPMembers.Add(dtProp);
+                    }
+
+                    OWLHasKey hasKey = new OWLHasKey() {
+                         ClassExpression = clsExp, ObjectPropertyExpressions = haskeyOPMembers, DataProperties = haskeyDPMembers };
+
+                    LoadAxiomAnnotations(ont, hasKeyTriple, hasKey);
+
+                    ont.KeyAxioms.Add(hasKey);
+                }
+            }
             void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
@@ -2097,7 +2129,7 @@ namespace OWLSharp.Ontology
             LoadEquivalentClasses(ontology);
             LoadDisjointClasses(ontology);
             LoadDisjointUnion(ontology);
-            //TODO: HasKey
+            LoadHasKey(ontology);
             //TODO: DatatypeDefinition
             LoadSameIndividual(ontology);
             LoadDifferentIndividuals(ontology);

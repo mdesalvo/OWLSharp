@@ -2777,6 +2777,44 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
+        public void ShouldReadHasKeyFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(new RDFResource("ex:clsA")),
+                    [new OWLObjectProperty(new RDFResource("ex:op1")), new OWLObjectProperty(new RDFResource("ex:op2"))],
+                    [new OWLDataProperty(new RDFResource("ex:dp1")), new OWLDataProperty(new RDFResource("ex:dp2"))])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
+            Assert.IsTrue(ontology2.KeyAxioms[0].ClassExpression is OWLClass clsA && clsA.GetIRI().Equals(new RDFResource("ex:clsA"))
+                            && ontology2.KeyAxioms[0].ObjectPropertyExpressions.Count == 2
+                            && ontology2.KeyAxioms[0].ObjectPropertyExpressions[0] is OWLObjectProperty op1 && op1.GetIRI().Equals(new RDFResource("ex:op1"))
+                            && ontology2.KeyAxioms[0].ObjectPropertyExpressions[1] is OWLObjectProperty op2 && op2.GetIRI().Equals(new RDFResource("ex:op2"))
+                            && ontology2.KeyAxioms[0].DataProperties.Count == 2
+                            && ontology2.KeyAxioms[0].DataProperties[0] is OWLDataProperty dp1 && dp1.GetIRI().Equals(new RDFResource("ex:dp1"))
+                            && ontology2.KeyAxioms[0].DataProperties[1] is OWLDataProperty dp2 && dp2.GetIRI().Equals(new RDFResource("ex:dp2"))
+                             && ontology2.KeyAxioms[0].Annotations.Count == 1
+                             && ontology2.KeyAxioms[0].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(ontology2.KeyAxioms[0].Annotations.Single().ValueIRI, "ex:title")
+                              && ontology2.KeyAxioms[0].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && ontology2.KeyAxioms[0].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+        }
+
+        [TestMethod]
         public void ShouldReadSameIndividualFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
