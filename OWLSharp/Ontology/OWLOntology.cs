@@ -886,6 +886,34 @@ namespace OWLSharp.Ontology
                         }
                     }
             }
+            void LoadDisjointUnion(OWLOntology ont)
+            {
+                foreach (RDFTriple disjointUnionOfTriple in graph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null])
+                {
+                    LoadClassExpression(ont, (RDFResource)disjointUnionOfTriple.Subject, out OWLClassExpression clsExp);
+                    if (!(clsExp is OWLClass classIRI))
+                        continue;
+
+                    List<OWLClassExpression> disjointUnionMembers = new List<OWLClassExpression>();
+                    RDFCollection disjointUnionMembersCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)disjointUnionOfTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO);
+                    foreach (RDFResource disjointUnionMember in disjointUnionMembersCollection.Items.Cast<RDFResource>())
+                    {
+                        LoadClassExpression(ont, disjointUnionMember, out OWLClassExpression clsMemberExp);
+                        if (clsMemberExp != null)
+                            disjointUnionMembers.Add(clsMemberExp);
+                    }
+
+                    if (disjointUnionMembers.Count >= 2)
+                    {
+                        OWLDisjointUnion disjointUnion = new OWLDisjointUnion() {
+                            ClassIRI = classIRI, ClassExpressions = disjointUnionMembers };
+
+                        LoadAxiomAnnotations(ont, disjointUnionOfTriple, disjointUnion);
+
+                        ont.ClassAxioms.Add(disjointUnion);
+                    }
+                }
+            }
             void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
@@ -2068,7 +2096,7 @@ namespace OWLSharp.Ontology
             LoadSubClassOf(ontology);
             LoadEquivalentClasses(ontology);
             LoadDisjointClasses(ontology);
-            //TODO: DisjointUnion
+            LoadDisjointUnion(ontology);
             //TODO: HasKey
             //TODO: DatatypeDefinition
             LoadSameIndividual(ontology);

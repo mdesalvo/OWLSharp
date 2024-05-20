@@ -2741,6 +2741,42 @@ namespace OWLSharp.Ontology.Test
         }
 
         [TestMethod]
+        public void ShouldReadDisjointUnionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.ClassAxioms.Add(
+                new OWLDisjointUnion(
+                    new OWLClass(new RDFResource("ex:clsA")),
+                    [ new OWLClass(new RDFResource("ex:clsB")), new OWLClass(new RDFResource("ex:clsC"))])
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
+            Assert.IsTrue(ontology2.ClassAxioms[0] is OWLDisjointUnion disjUnion
+                            && disjUnion.ClassIRI.GetIRI().Equals(new RDFResource("ex:clsA"))
+                            && disjUnion.ClassExpressions[0] is OWLClass exClsB 
+                            && exClsB.GetIRI().Equals(new RDFResource("ex:clsB"))
+                            && disjUnion.ClassExpressions[1] is OWLClass exClsC 
+                            && exClsC.GetIRI().Equals(new RDFResource("ex:clsC"))
+                             && disjUnion.Annotations.Count == 1
+                             && disjUnion.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(disjUnion.Annotations.Single().ValueIRI, "ex:title")
+                              && disjUnion.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && disjUnion.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+        }
+
+        [TestMethod]
         public void ShouldReadSameIndividualFromGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
