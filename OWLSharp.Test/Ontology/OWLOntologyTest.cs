@@ -3862,7 +3862,223 @@ namespace OWLSharp.Ontology.Test
                               && anPropRng1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && anPropRng1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
 		}
-		#endregion
+
+        [TestMethod]
+        public void ShouldReadClassAnnotationAssertionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.SEE_ALSO),
+                    RDFVocabulary.FOAF.PERSON,
+                    new RDFResource("ex:Person"))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
+                            && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.SEE_ALSO)
+                            && string.Equals(annAsn.SubjectIRI, RDFVocabulary.FOAF.PERSON.ToString())
+                            && string.Equals(annAsn.ValueIRI, "ex:Person")
+                             && annAsn.Annotations.Count == 1
+                             && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                              && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
+        public void ShouldReadDatatypeAnnotationAssertionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INTEGER)));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    RDFVocabulary.XSD.INTEGER,
+                    new OWLLiteral(new RDFPlainLiteral("integer numbers")))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
+                            && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(annAsn.SubjectIRI, RDFVocabulary.XSD.INTEGER.ToString())
+                            && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "integer numbers")
+                             && annAsn.Annotations.Count == 1
+                             && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                              && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
+        public void ShouldReadObjectPropertyAnnotationAssertionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    RDFVocabulary.FOAF.KNOWS,
+                    new OWLLiteral(new RDFPlainLiteral("knows anyone")))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
+                            && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(annAsn.SubjectIRI, RDFVocabulary.FOAF.KNOWS.ToString())
+                            && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "knows anyone")
+                             && annAsn.Annotations.Count == 1
+                             && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                              && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
+        public void ShouldReadDataPropertyAnnotationAssertionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    RDFVocabulary.FOAF.AGE,
+                    new OWLLiteral(new RDFPlainLiteral("age")))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
+                            && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(annAsn.SubjectIRI, RDFVocabulary.FOAF.AGE.ToString())
+                            && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "age")
+                             && annAsn.Annotations.Count == 1
+                             && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                              && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
+        public void ShouldReadAnnotationPropertyAnnotationAssertionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    RDFVocabulary.RDFS.COMMENT,
+                    new OWLLiteral(new RDFPlainLiteral("comment")))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
+                            && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(annAsn.SubjectIRI, RDFVocabulary.RDFS.COMMENT.ToString())
+                            && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "comment")
+                             && annAsn.Annotations.Count == 1
+                             && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                              && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+
+        [TestMethod]
+        public void ShouldReadIndividualAnnotationAssertionFromGraph()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.SEE_ALSO),
+                    new RDFResource("ex:Idv1"),
+                    new RDFResource("ex:Person"))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                });
+            RDFGraph graph = ontology.ToRDFGraph();
+            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
+                            && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.SEE_ALSO)
+                            && string.Equals(annAsn.SubjectIRI, "ex:Idv1")
+                            && string.Equals(annAsn.ValueIRI, "ex:Person")
+                             && annAsn.Annotations.Count == 1
+                             && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                              && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
+        #endregion
 
         [TestCleanup]
         public void Cleanup()

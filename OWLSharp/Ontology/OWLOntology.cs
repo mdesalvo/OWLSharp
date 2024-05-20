@@ -1208,6 +1208,143 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
+            void LoadAnnotationAssertions(OWLOntology ont)
+            {
+                #region Fetch Declarations
+                List<OWLClass> declaredClasses = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLClass)
+                                                                      .Select(dax => (OWLClass)dax.Expression)
+                                                                      .ToList();
+                List<OWLDatatype> declaredDatatypes = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLDatatype)
+                                                                           .Select(dax => (OWLDatatype)dax.Expression)
+                                                                           .ToList();
+                List<OWLObjectProperty> declaredObjectProperties = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLObjectProperty)
+                                                                                        .Select(dax => (OWLObjectProperty)dax.Expression)
+                                                                                        .ToList();
+                List<OWLDataProperty> declaredDataProperties = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLDataProperty)
+                                                                                      .Select(dax => (OWLDataProperty)dax.Expression)
+                                                                                      .ToList();
+                List<OWLAnnotationProperty> declaredAnnotationProperties = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty)
+                                                                                                .Select(dax => (OWLAnnotationProperty)dax.Expression)
+                                                                                                .ToList();
+                List<OWLNamedIndividual> declaredIndividuals = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLNamedIndividual)
+                                                                                    .Select(dax => (OWLNamedIndividual)dax.Expression)
+                                                                                    .ToList();
+                #endregion
+
+                declaredAnnotationProperties.ForEach(annProp =>
+                {
+                    RDFResource annPropIRI = annProp.GetIRI();
+                    RDFGraph annPropGraph = graph[null, annPropIRI, null, null];
+
+                    //Class Annotations
+                    declaredClasses.ForEach(cls =>
+                    {
+                        RDFResource clsIRI = cls.GetIRI();
+                        foreach (RDFTriple clsAnnPropTriple in annPropGraph[clsIRI, null, null, null])
+                        {
+                            OWLAnnotationAssertion annAsn;
+                            if (clsAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                                annAsn = new OWLAnnotationAssertion(annProp, clsIRI, (RDFResource)clsAnnPropTriple.Object);
+                            else
+                                annAsn = new OWLAnnotationAssertion(annProp, clsIRI, new OWLLiteral((RDFLiteral)clsAnnPropTriple.Object));
+
+                            LoadAxiomAnnotations(ont, clsAnnPropTriple, annAsn);
+
+                            ont.AnnotationAxioms.Add(annAsn);
+                        }
+                    });
+
+                    //Datatype Annotations
+                    declaredDatatypes.ForEach(dt =>
+                    {
+                        RDFResource dtIRI = dt.GetIRI();
+                        foreach (RDFTriple dtAnnPropTriple in annPropGraph[dtIRI, null, null, null])
+                        {
+                            OWLAnnotationAssertion annAsn;
+                            if (dtAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                                annAsn = new OWLAnnotationAssertion(annProp, dtIRI, (RDFResource)dtAnnPropTriple.Object);
+                            else
+                                annAsn = new OWLAnnotationAssertion(annProp, dtIRI, new OWLLiteral((RDFLiteral)dtAnnPropTriple.Object));
+
+                            LoadAxiomAnnotations(ont, dtAnnPropTriple, annAsn);
+
+                            ont.AnnotationAxioms.Add(annAsn);
+                        }
+                    });
+
+                    //ObjectProperty Annotations
+                    declaredObjectProperties.ForEach(op =>
+                    {
+                        RDFResource opIRI = op.GetIRI();
+                        foreach (RDFTriple opAnnPropTriple in annPropGraph[opIRI, null, null, null])
+                        {
+                            OWLAnnotationAssertion annAsn;
+                            if (opAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                                annAsn = new OWLAnnotationAssertion(annProp, opIRI, (RDFResource)opAnnPropTriple.Object);
+                            else
+                                annAsn = new OWLAnnotationAssertion(annProp, opIRI, new OWLLiteral((RDFLiteral)opAnnPropTriple.Object));
+
+                            LoadAxiomAnnotations(ont, opAnnPropTriple, annAsn);
+
+                            ont.AnnotationAxioms.Add(annAsn);
+                        }
+                    });
+
+                    //DataProperty Annotations
+                    declaredDataProperties.ForEach(dp =>
+                    {
+                        RDFResource dpIRI = dp.GetIRI();
+                        foreach (RDFTriple dpAnnPropTriple in annPropGraph[dpIRI, null, null, null])
+                        {
+                            OWLAnnotationAssertion annAsn;
+                            if (dpAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                                annAsn = new OWLAnnotationAssertion(annProp, dpIRI, (RDFResource)dpAnnPropTriple.Object);
+                            else
+                                annAsn = new OWLAnnotationAssertion(annProp, dpIRI, new OWLLiteral((RDFLiteral)dpAnnPropTriple.Object));
+
+                            LoadAxiomAnnotations(ont, dpAnnPropTriple, annAsn);
+
+                            ont.AnnotationAxioms.Add(annAsn);
+                        }
+                    });
+
+                    //AnnotationProperty Annotations
+                    declaredAnnotationProperties.ForEach(ap =>
+                    {
+                        RDFResource apIRI = ap.GetIRI();
+                        foreach (RDFTriple apAnnPropTriple in annPropGraph[apIRI, null, null, null])
+                        {
+                            OWLAnnotationAssertion annAsn;
+                            if (apAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                                annAsn = new OWLAnnotationAssertion(annProp, apIRI, (RDFResource)apAnnPropTriple.Object);
+                            else
+                                annAsn = new OWLAnnotationAssertion(annProp, apIRI, new OWLLiteral((RDFLiteral)apAnnPropTriple.Object));
+
+                            LoadAxiomAnnotations(ont, apAnnPropTriple, annAsn);
+
+                            ont.AnnotationAxioms.Add(annAsn);
+                        }
+                    });
+
+                    //Individual Annotations
+                    declaredIndividuals.ForEach(idv =>
+                    {
+                        RDFResource idvIRI = idv.GetIRI();
+                        foreach (RDFTriple idvAnnPropTriple in annPropGraph[idvIRI, null, null, null])
+                        {
+                            OWLAnnotationAssertion annAsn;
+                            if (idvAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
+                                annAsn = new OWLAnnotationAssertion(annProp, idvIRI, (RDFResource)idvAnnPropTriple.Object);
+                            else
+                                annAsn = new OWLAnnotationAssertion(annProp, idvIRI, new OWLLiteral((RDFLiteral)idvAnnPropTriple.Object));
+
+                            LoadAxiomAnnotations(ont, idvAnnPropTriple, annAsn);
+
+                            ont.AnnotationAxioms.Add(annAsn);
+                        }
+                    });
+                });
+            }
             void LoadSubAnnotationProperties(OWLOntology ont)
             {
                 foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
@@ -2162,10 +2299,10 @@ namespace OWLSharp.Ontology
             LoadDataPropertyAssertions(ontology);
             LoadNegativeDataPropertyAssertions(ontology);
             LoadClassAssertions(ontology);
+            LoadAnnotationAssertions(ontology);
             LoadSubAnnotationProperties(ontology);
 			LoadAnnotationPropertyDomain(ontology);
             LoadAnnotationPropertyRange(ontology);
-            //TODO: AnnotationAssertion
 
             return ontology;
         }
