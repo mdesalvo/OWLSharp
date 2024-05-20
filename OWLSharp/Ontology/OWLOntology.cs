@@ -956,13 +956,13 @@ namespace OWLSharp.Ontology
                         continue;
 
                     LoadDataRangeExpression(ont, equivalentDatatype, out OWLDataRangeExpression drex);
-                    if (!(drex is OWLDatatypeRestriction dtRest))
+                    if (drex == null)
                         continue;
 
                     OWLDatatypeDefinition datatypeDefinition = new OWLDatatypeDefinition()
                     {
                         Datatype = new OWLDatatype((RDFResource)datatypeTriple.Subject),
-                        DataRangeExpression = dtRest
+                        DataRangeExpression = drex
                     };
 
                     LoadAxiomAnnotations(ont, datatypeTriple, datatypeDefinition);
