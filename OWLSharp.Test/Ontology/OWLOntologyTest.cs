@@ -2833,13 +2833,25 @@ namespace OWLSharp.Ontology.Test
                         }
                     ]
                 });
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:string")),
+                    new OWLDatatype(RDFVocabulary.XSD.STRING))
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                        }
+                    ]
+                });
             RDFGraph graph = ontology.ToRDFGraph();
             OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
-            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 2);
             Assert.IsTrue(ontology2.DatatypeDefinitionAxioms[0].Datatype.GetIRI().Equals(new RDFResource("ex:length6to10"))
                             && ontology2.DatatypeDefinitionAxioms[0].DataRangeExpression is OWLDatatypeRestriction dtRest
                             && dtRest.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
@@ -2853,6 +2865,13 @@ namespace OWLSharp.Ontology.Test
                              && string.Equals(ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().ValueIRI, "ex:title")
                               && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms[1].Datatype.GetIRI().Equals(new RDFResource("ex:string"))
+                            && ontology2.DatatypeDefinitionAxioms[1].DataRangeExpression is OWLDatatype xsdString && xsdString.GetIRI().Equals(RDFVocabulary.XSD.STRING)
+                             && ontology2.DatatypeDefinitionAxioms[1].Annotations.Count == 1
+                             && ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().ValueIRI, "ex:title")
+                              && ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                              && ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         }
 
         [TestMethod]
