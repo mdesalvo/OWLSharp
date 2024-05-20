@@ -951,9 +951,8 @@ namespace OWLSharp.Ontology
                 foreach (RDFTriple datatypeTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null]
                                                       .Where(t => !((RDFResource)t.Subject).IsBlank))                
                 {
-                    RDFResource equivalentDatatype = graph[(RDFResource)datatypeTriple.Subject, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
-                                                      .FirstOrDefault()?.Object as RDFResource;
-                    if (equivalentDatatype == null)
+                    if (!(graph[(RDFResource)datatypeTriple.Subject, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
+                           .FirstOrDefault()?.Object is RDFResource equivalentDatatype))
                         continue;
 
                     LoadDataRangeExpression(ont, equivalentDatatype, out OWLDataRangeExpression drex);
