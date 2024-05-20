@@ -834,6 +834,58 @@ namespace OWLSharp.Ontology
                     }
                 }
             }
+            void LoadDisjointClasses(OWLOntology ont)
+            {
+                //Load axioms built with owl:disjointWith
+                foreach (RDFTriple disjointWithTriple in graph[null, RDFVocabulary.OWL.DISJOINT_WITH, null, null])
+                {
+                    LoadClassExpression(ont, (RDFResource)disjointWithTriple.Subject, out OWLClassExpression leftCLE);
+                    LoadClassExpression(ont, (RDFResource)disjointWithTriple.Object, out OWLClassExpression rightCLE);
+
+                    if (leftCLE != null && rightCLE != null)
+                    {
+                        OWLDisjointClasses disjointClasses = new OWLDisjointClasses() {
+                            ClassExpressions = new List<OWLClassExpression>() { leftCLE, rightCLE } };
+
+                        LoadAxiomAnnotations(ont, disjointWithTriple, disjointClasses);
+
+                        ont.ClassAxioms.Add(disjointClasses);
+                    }
+                }
+
+                //Load axioms built with owl:AllDisjointClasses
+                foreach (RDFTriple allDisjointClassesTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES, null])
+                    if (graph[(RDFResource)allDisjointClassesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
+                         .FirstOrDefault()?.Object is RDFResource adjcCollectionRepresentative)
+                    {
+                        List<OWLClassExpression> adjcMembers = new List<OWLClassExpression>();
+
+                        RDFCollection adjcCollection = RDFModelUtilities.DeserializeCollectionFromGraph(graph, adjcCollectionRepresentative, RDFModelEnums.RDFTripleFlavors.SPO);
+                        foreach (RDFResource adjcMember in adjcCollection.Items.Cast<RDFResource>())
+                        {
+                            LoadClassExpression(ont, adjcMember, out OWLClassExpression clex);
+                            if (clex != null)
+                                adjcMembers.Add(clex);
+                        }
+
+                        if (adjcMembers.Count >= 2)
+                        {
+                            OWLDisjointClasses disjointClasses = new OWLDisjointClasses() {
+                                ClassExpressions = adjcMembers };
+
+                            LoadIRIAnnotations(ont, new List<RDFResource>() {
+                                RDFVocabulary.OWL.DEPRECATED,
+                                RDFVocabulary.RDFS.COMMENT,
+                                RDFVocabulary.RDFS.LABEL,
+                                RDFVocabulary.RDFS.SEE_ALSO,
+                                RDFVocabulary.RDFS.IS_DEFINED_BY
+                            }, (RDFResource)allDisjointClassesTriple.Subject, out List<OWLAnnotation> adjcAnnotations);
+                            disjointClasses.Annotations = adjcAnnotations;
+
+                            ont.ClassAxioms.Add(disjointClasses);
+                        }
+                    }
+            }
             void LoadSameIndividual(OWLOntology ont)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
@@ -2015,7 +2067,8 @@ namespace OWLSharp.Ontology
             LoadDataPropertyRange(ontology);
             LoadSubClassOf(ontology);
             LoadEquivalentClasses(ontology);
-            //TODO: DisjointClasses, DisjointUnion
+            LoadDisjointClasses(ontology);
+            //TODO: DisjointUnion
             //TODO: HasKey
             //TODO: DatatypeDefinition
             LoadSameIndividual(ontology);
