@@ -2361,6 +2361,9 @@ namespace OWLSharp.Ontology
             importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
             importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
             importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
+            importedOntology.Prefixes.ForEach(pfx => {
+                if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
+                    Prefixes.Add(pfx); });
         }
         #endregion
     }

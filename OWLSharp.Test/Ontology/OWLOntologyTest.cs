@@ -4226,6 +4226,7 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 41);
             Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
             Assert.IsTrue(ontology.KeyAxioms.Count == 0);
+            Assert.IsTrue(ontology.Prefixes.Count == 7);
         }
         #endregion
 
