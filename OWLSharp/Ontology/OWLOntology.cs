@@ -2336,7 +2336,7 @@ namespace OWLSharp.Ontology
 							return OWLSerializer.Deserialize(streamReader.ReadToEnd());
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				throw new OWLException($"Cannot read ontology from stream because: {ex.Message}", ex);
 			}
@@ -2346,24 +2346,31 @@ namespace OWLSharp.Ontology
         {
             #region Guards
             if (importUri == null)
-                throw new OWLException("Cannot import ontology from Uri because given \"importUri\" parameter is null");
+                throw new OWLException("Cannot import ontology because given \"importUri\" parameter is null");
             #endregion
 
-            RDFGraph importedGraph = RDFGraph.FromUri(importUri, timeoutMilliseconds);
-            OWLOntology importedOntology = FromRDFGraph(importedGraph);
+            try
+            {
+                RDFGraph importedGraph = RDFGraph.FromUri(importUri, timeoutMilliseconds);
+                OWLOntology importedOntology = FromRDFGraph(importedGraph);
 
-            Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.OWL.IMPORTS), new RDFResource(importedOntology.IRI)));
-            importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
-            importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
-            importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ClassAxioms.Add(ax); });
-            importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; DataPropertyAxioms.Add(ax); });
-            importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport = true; DatatypeDefinitionAxioms.Add(ax); });
-            importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
-            importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
-            importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
-            importedOntology.Prefixes.ForEach(pfx => {
-                if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
-                    Prefixes.Add(pfx); });
+                Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.OWL.IMPORTS), new RDFResource(importedOntology.IRI)));
+                importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
+                importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
+                importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ClassAxioms.Add(ax); });
+                importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; DataPropertyAxioms.Add(ax); });
+                importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport = true; DatatypeDefinitionAxioms.Add(ax); });
+                importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
+                importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
+                importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
+                importedOntology.Prefixes.ForEach(pfx => {
+                    if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
+                        Prefixes.Add(pfx); });
+            }
+            catch (Exception ex)
+            {
+                throw new OWLException($"Cannot import ontology because: {ex.Message}", ex);
+            }
         }
         #endregion
     }

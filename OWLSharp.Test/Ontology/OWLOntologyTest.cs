@@ -4228,6 +4228,13 @@ namespace OWLSharp.Ontology.Test
             Assert.IsTrue(ontology.KeyAxioms.Count == 0);
             Assert.IsTrue(ontology.Prefixes.Count == 7);
         }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnImportingOntology()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
+            Assert.ThrowsException<OWLException>(() => ontology.Import(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), 10));
+        }
         #endregion
 
         [TestCleanup]
