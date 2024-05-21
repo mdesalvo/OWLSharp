@@ -23,7 +23,7 @@ namespace OWLSharp
             /// <summary>
             /// OWL2/XML serialization
             /// </summary>
-            Owl2Xml = 1
+            OWL2XML = 1
         };
     }
 }

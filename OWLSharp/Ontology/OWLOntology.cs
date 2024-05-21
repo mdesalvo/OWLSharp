@@ -201,7 +201,7 @@ namespace OWLSharp.Ontology
 			{
 				switch (owlFormat)
 				{
-					case OWLEnums.OWLFormats.Owl2Xml:
+					case OWLEnums.OWLFormats.OWL2XML:
 					default:						
 						string ontology = OWLSerializer.Serialize(this);
 						using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
@@ -2330,7 +2330,7 @@ namespace OWLSharp.Ontology
 			{
 				switch (owlFormat)
 				{
-					case OWLEnums.OWLFormats.Owl2Xml:
+					case OWLEnums.OWLFormats.OWL2XML:
 					default:						
 						using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
 							return OWLSerializer.Deserialize(streamReader.ReadToEnd());

@@ -588,7 +588,7 @@ namespace OWLSharp.Ontology.Test
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
 			
 			//Write to file
-			ontology.ToFile(OWLEnums.OWLFormats.Owl2Xml, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx"));
+			ontology.ToFile(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx"));
 			Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx")));
 
 			//Read from file and deserialize to test content
@@ -623,7 +623,7 @@ namespace OWLSharp.Ontology.Test
 
 		[TestMethod]
 		public void ShouldThrowExceptionOnWritingOntologyToFileBecauseNullPath()
-			=> Assert.ThrowsException<OWLException>(() => new OWLOntology().ToFile(OWLEnums.OWLFormats.Owl2Xml, null));
+			=> Assert.ThrowsException<OWLException>(() => new OWLOntology().ToFile(OWLEnums.OWLFormats.OWL2XML, null));
 
 		[TestMethod]
 		public void ShouldWriteOntologyToStream()
@@ -672,7 +672,7 @@ namespace OWLSharp.Ontology.Test
 			
 			//Write to stream
 			MemoryStream stream = new MemoryStream();
-			ontology.ToStream(OWLEnums.OWLFormats.Owl2Xml, stream);
+			ontology.ToStream(OWLEnums.OWLFormats.OWL2XML, stream);
 
 			//Read from stream and deserialize to test content
 			string fileContent;
@@ -709,7 +709,7 @@ namespace OWLSharp.Ontology.Test
 
 		[TestMethod]
 		public void ShouldThrowExceptionOnWritingOntologyToStreamBecauseNullStream()
-			=> Assert.ThrowsException<OWLException>(() => new OWLOntology().ToStream(OWLEnums.OWLFormats.Owl2Xml, null));
+			=> Assert.ThrowsException<OWLException>(() => new OWLOntology().ToStream(OWLEnums.OWLFormats.OWL2XML, null));
 
 		[TestMethod]
 		public void ShouldReadOntologyFromFile()
@@ -757,10 +757,10 @@ namespace OWLSharp.Ontology.Test
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
 			
 			//Write to file
-			ontology.ToFile(OWLEnums.OWLFormats.Owl2Xml, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFile.owx"));
+			ontology.ToFile(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFile.owx"));
 			
 			//Read from file
-			OWLOntology ontology2 = OWLOntology.FromFile(OWLEnums.OWLFormats.Owl2Xml, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFile.owx"));
+			OWLOntology ontology2 = OWLOntology.FromFile(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFile.owx"));
 
 			Assert.IsNotNull(ontology2);
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -791,11 +791,11 @@ namespace OWLSharp.Ontology.Test
 
 		[TestMethod]
 		public void ShouldThrowExceptionOnReadingOntologyFromFileBecauseNullPath()
-			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromFile(OWLEnums.OWLFormats.Owl2Xml, null));
+			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromFile(OWLEnums.OWLFormats.OWL2XML, null));
 
 		[TestMethod]
 		public void ShouldThrowExceptionOnReadingOntologyFromFileBecauseUnexistingPath()
-			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromFile(OWLEnums.OWLFormats.Owl2Xml, "test/test"));
+			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromFile(OWLEnums.OWLFormats.OWL2XML, "test/test"));
 
 		[TestMethod]
 		public void ShouldReadOntologyFromStream()
@@ -844,10 +844,10 @@ namespace OWLSharp.Ontology.Test
 			
 			//Write to stream
 			MemoryStream stream = new MemoryStream();
-			ontology.ToStream(OWLEnums.OWLFormats.Owl2Xml, stream);
+			ontology.ToStream(OWLEnums.OWLFormats.OWL2XML, stream);
 
 			//Read from stream
-			OWLOntology ontology2 = OWLOntology.FromStream(OWLEnums.OWLFormats.Owl2Xml, new MemoryStream(stream.ToArray()));
+			OWLOntology ontology2 = OWLOntology.FromStream(OWLEnums.OWLFormats.OWL2XML, new MemoryStream(stream.ToArray()));
 
 			Assert.IsNotNull(ontology2);
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -878,7 +878,7 @@ namespace OWLSharp.Ontology.Test
 
 		[TestMethod]
 		public void ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStream()
-			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromStream(OWLEnums.OWLFormats.Owl2Xml, null));
+			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromStream(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
         public void ShouldReadOntologyHeaderFromGraph()
