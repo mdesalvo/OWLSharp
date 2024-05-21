@@ -4210,6 +4210,23 @@ namespace OWLSharp.Ontology.Test
                               && annAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && annAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
+
+        [TestMethod]
+        public void ShouldImportOntology()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
+            ontology.Import(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI));
+
+            Assert.IsTrue(ontology.Annotations.Count == 1);
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 51);
+            Assert.IsTrue(ontology.ClassAxioms.Count == 4);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 32);
+            Assert.IsTrue(ontology.DataPropertyAxioms.Count == 0);
+            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 41);
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
+            Assert.IsTrue(ontology.KeyAxioms.Count == 0);
+        }
         #endregion
 
         [TestCleanup]

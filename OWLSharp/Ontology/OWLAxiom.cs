@@ -26,6 +26,9 @@ namespace OWLSharp.Ontology
         [XmlIgnore]
         public bool IsInference { get; set; }
 
+        [XmlIgnore]
+        public bool IsImport { get; set; }
+
         [XmlElement("Annotation", Order=1)]
         public List<OWLAnnotation> Annotations { get; set; }
         #endregion

@@ -2341,6 +2341,27 @@ namespace OWLSharp.Ontology
 				throw new OWLException($"Cannot read ontology from stream because: {ex.Message}", ex);
 			}
         }
+
+        public void Import(Uri importUri, int timeoutMilliseconds=20000)
+        {
+            #region Guards
+            if (importUri == null)
+                throw new OWLException("Cannot import ontology from Uri because given \"importUri\" parameter is null");
+            #endregion
+
+            RDFGraph importedGraph = RDFGraph.FromUri(importUri, timeoutMilliseconds);
+            OWLOntology importedOntology = FromRDFGraph(importedGraph);
+
+            Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.OWL.IMPORTS), new RDFResource(importedOntology.IRI)));
+            importedOntology.AnnotationAxioms.ForEach(ax => AnnotationAxioms.Add(ax));
+            importedOntology.AssertionAxioms.ForEach(ax => AssertionAxioms.Add(ax));
+            importedOntology.ClassAxioms.ForEach(ax => ClassAxioms.Add(ax));
+            importedOntology.DataPropertyAxioms.ForEach(ax => DataPropertyAxioms.Add(ax));
+            importedOntology.DatatypeDefinitionAxioms.ForEach(ax => DatatypeDefinitionAxioms.Add(ax));
+            importedOntology.DeclarationAxioms.ForEach(ax => DeclarationAxioms.Add(ax));
+            importedOntology.KeyAxioms.ForEach(ax => KeyAxioms.Add(ax));
+            importedOntology.ObjectPropertyAxioms.ForEach(ax => ObjectPropertyAxioms.Add(ax));
+        }
         #endregion
     }
 }
