@@ -18,7 +18,7 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology
+namespace OWLSharp.Ontology.Axioms
 {
     public class OWLAxiom 
     {

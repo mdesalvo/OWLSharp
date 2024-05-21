@@ -16,7 +16,7 @@
 
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology
+namespace OWLSharp.Ontology.Expressions
 {
     public class OWLExpression 
 	{
