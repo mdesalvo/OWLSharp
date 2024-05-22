@@ -17,6 +17,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Modeler;
@@ -4242,6 +4244,15 @@ namespace OWLSharp.Test.Modeler
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
             Assert.ThrowsException<OWLException>(() => ontology.Import(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), 10));
         }
+
+		[TestMethod]
+		public void ShouldLoadSampleOntology()
+		{
+			Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("OWLSharp.Test.SampleOntology.owx");
+            OWLOntology sampleOntology = OWLOntology.FromStream(OWLEnums.OWLFormats.OWL2XML, stream);
+			//TODO
+			
+		}
         #endregion
 
         [TestCleanup]
