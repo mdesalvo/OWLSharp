@@ -15,11 +15,11 @@
 */
 
 using RDFSharp.Model;
+using OWLSharp.Modeler;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using System.Xml;
-using OWLSharp.Ontology;
 using System.Collections.Generic;
 using System.Linq;
 
