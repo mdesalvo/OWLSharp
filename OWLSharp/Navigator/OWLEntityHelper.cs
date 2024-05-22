@@ -27,35 +27,53 @@ namespace OWLSharp.Navigator
         internal static List<RDFResource> EmptyList => Enumerable.Empty<RDFResource>().ToList();
 
         #region Methods
-        public static List<RDFResource> GetDeclaredClasses(this OWLOntology ontology)
+        public static List<RDFResource> GetClasses(this OWLOntology ontology)
             => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLClass)
                                           .Select(dax => ((OWLClass)dax.Expression).GetIRI())
                                           .ToList() ?? EmptyList;
 
-        public static List<RDFResource> GetDeclaredDatatypes(this OWLOntology ontology)
+        public static bool CheckHasClass(this OWLOntology ontology, RDFResource classIRI)
+            => ontology?.DeclarationAxioms.Any(dax => dax.Expression is OWLClass daxCls && daxCls.GetIRI().Equals(classIRI)) ?? false;
+
+        public static List<RDFResource> GetDatatypes(this OWLOntology ontology)
            => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLDatatype)
                                          .Select(dax => ((OWLDatatype)dax.Expression).GetIRI())
                                          .ToList() ?? EmptyList;
 
-        public static List<RDFResource> GetDeclaredDataProperties(this OWLOntology ontology)
+        public static bool CheckHasDatatype(this OWLOntology ontology, RDFResource datatypeIRI)
+            => ontology?.DeclarationAxioms.Any(dax => dax.Expression is OWLDatatype daxDtt && daxDtt.GetIRI().Equals(datatypeIRI)) ?? false;
+
+        public static List<RDFResource> GetDataProperties(this OWLOntology ontology)
            => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLDataProperty)
                                          .Select(dax => ((OWLDataProperty)dax.Expression).GetIRI())
                                          .ToList() ?? EmptyList;
 
-        public static List<RDFResource> GetDeclaredObjectProperties(this OWLOntology ontology)
+        public static bool CheckHasDataProperty(this OWLOntology ontology, RDFResource dataPropertyIRI)
+            => ontology?.DeclarationAxioms.Any(dax => dax.Expression is OWLDataProperty daxDtp && daxDtp.GetIRI().Equals(dataPropertyIRI)) ?? false;
+
+        public static List<RDFResource> GetObjectProperties(this OWLOntology ontology)
           => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLObjectProperty)
                                         .Select(dax => ((OWLObjectProperty)dax.Expression).GetIRI())
                                         .ToList() ?? EmptyList;
 
-        public static List<RDFResource> GetDeclaredAnnotationProperties(this OWLOntology ontology)
+        public static bool CheckHasObjectProperty(this OWLOntology ontology, RDFResource objectPropertyIRI)
+            => ontology?.DeclarationAxioms.Any(dax => dax.Expression is OWLObjectProperty daxObp && daxObp.GetIRI().Equals(objectPropertyIRI)) ?? false;
+
+        public static List<RDFResource> GetAnnotationProperties(this OWLOntology ontology)
            => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty)
                                          .Select(dax => ((OWLAnnotationProperty)dax.Expression).GetIRI())
                                          .ToList() ?? EmptyList;
 
-        public static List<RDFResource> GetDeclaredNamedIndividuals(this OWLOntology ontology)
+        public static bool CheckHasAnnotationProperty(this OWLOntology ontology, RDFResource annotationPropertyIRI)
+            => ontology?.DeclarationAxioms.Any(dax => dax.Expression is OWLAnnotationProperty daxAnp && daxAnp.GetIRI().Equals(annotationPropertyIRI)) ?? false;
+
+        public static List<RDFResource> GetNamedIndividuals(this OWLOntology ontology)
           => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLNamedIndividual)
                                         .Select(dax => ((OWLNamedIndividual)dax.Expression).GetIRI())
                                         .ToList() ?? EmptyList;
+
+        public static bool CheckHasNamedIndividual(this OWLOntology ontology, RDFResource namedIndividualIRI)
+            => ontology?.DeclarationAxioms.Any(dax => dax.Expression is OWLNamedIndividual daxIdv && daxIdv.GetIRI().Equals(namedIndividualIRI)) ?? false;
         #endregion
     }
 }
