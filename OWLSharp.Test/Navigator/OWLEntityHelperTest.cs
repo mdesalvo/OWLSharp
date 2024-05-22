@@ -47,6 +47,8 @@ namespace OWLSharp.Test.Navigator
             Assert.IsTrue(cls.Any(c => c.Equals(RDFVocabulary.FOAF.AGENT)));
             Assert.IsTrue(cls.Any(c => c.Equals(RDFVocabulary.FOAF.ORGANIZATION)));
             Assert.IsTrue(cls.Any(c => c.Equals(RDFVocabulary.FOAF.PERSON)));
+
+            Assert.IsTrue((null as OWLOntology).GetDeclaredClasses().Count == 0);
         }
         #endregion
     }
