@@ -24,12 +24,18 @@ namespace OWLSharp.Navigator
 {
     public static class OWLEntityHelper
     {
+        internal static List<RDFResource> EmptyList 
+            => Enumerable.Empty<RDFResource>().ToList();
+
         #region Methods
         public static List<RDFResource> GetDeclaredClasses(this OWLOntology ontology)
             => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLClass daxCls)
                                           .Select(dax => ((OWLClass)dax.Expression).GetIRI())
-                                          .ToList() 
-                ?? Enumerable.Empty<RDFResource>().ToList();
+                                          .ToList() ?? EmptyList;
+        public static List<RDFResource> GetDeclaredDatatypes(this OWLOntology ontology)
+           => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLDatatype daxDtt)
+                                          .Select(dax => ((OWLDatatype)dax.Expression).GetIRI())
+                                          .ToList() ?? EmptyList;
         #endregion
     }
 }

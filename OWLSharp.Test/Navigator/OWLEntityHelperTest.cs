@@ -50,6 +50,27 @@ namespace OWLSharp.Test.Navigator
 
             Assert.IsTrue((null as OWLOntology).GetDeclaredClasses().Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldGetDeclaredDatatypes()
+        {
+            OWLOntology ont = new OWLOntology(new Uri("ex:ont"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INTEGER)),
+                    new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.STRING)),
+                    new OWLDeclaration(new OWLDatatype(RDFVocabulary.GEOSPARQL.WKT_LITERAL))
+                ]
+            };
+            List<RDFResource> dts = ont.GetDeclaredDatatypes();
+
+            Assert.IsTrue(dts.Count == 3);
+            Assert.IsTrue(dts.Any(c => c.Equals(RDFVocabulary.XSD.INTEGER)));
+            Assert.IsTrue(dts.Any(c => c.Equals(RDFVocabulary.XSD.STRING)));
+            Assert.IsTrue(dts.Any(c => c.Equals(RDFVocabulary.GEOSPARQL.WKT_LITERAL)));
+
+            Assert.IsTrue((null as OWLOntology).GetDeclaredDatatypes().Count == 0);
+        }
         #endregion
     }
 }
