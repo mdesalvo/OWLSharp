@@ -47,7 +47,4 @@
     </PackageReference>
     <PackageReference Include="RDFSharp" Version="3.11.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Navigator\" />
-  </ItemGroup>
 </Project>
