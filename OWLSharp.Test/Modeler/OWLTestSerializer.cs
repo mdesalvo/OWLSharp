@@ -17,8 +17,9 @@
 using System.IO;
 using System.Xml.Serialization;
 using System.Xml;
+using OWLSharp.Modeler;
 
-namespace OWLSharp.Test
+namespace OWLSharp.Test.Modeler
 {
     public static class OWLTestSerializer<T> where T : class
     {

@@ -15,7 +15,6 @@
 */
 
 using RDFSharp.Model;
-using OWLSharp.Modeler;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -23,7 +22,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp
+namespace OWLSharp.Modeler
 {
     internal static class OWLSerializer
     {
@@ -32,7 +31,7 @@ namespace OWLSharp
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             //Hide hard-coded .NET prefixes (e.g: xsi)
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
-            //Initialize standard Semantic Web prefixes
+            //Initialize Semantic Web prefixes
             xmlSerializerNamespaces.Add(RDFVocabulary.OWL.PREFIX, RDFVocabulary.OWL.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.RDF.PREFIX, RDFVocabulary.RDF.BASE_URI);
