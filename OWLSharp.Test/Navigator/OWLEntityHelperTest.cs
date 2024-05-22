@@ -71,6 +71,90 @@ namespace OWLSharp.Test.Navigator
 
             Assert.IsTrue((null as OWLOntology).GetDeclaredDatatypes().Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldGetDeclaredDataProperties()
+        {
+            OWLOntology ont = new OWLOntology(new Uri("ex:ont"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.TITLE)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEO.LAT_LONG))
+                ]
+            };
+            List<RDFResource> dps = ont.GetDeclaredDataProperties();
+
+            Assert.IsTrue(dps.Count == 3);
+            Assert.IsTrue(dps.Any(c => c.Equals(RDFVocabulary.FOAF.AGE)));
+            Assert.IsTrue(dps.Any(c => c.Equals(RDFVocabulary.FOAF.TITLE)));
+            Assert.IsTrue(dps.Any(c => c.Equals(RDFVocabulary.GEO.LAT_LONG)));
+
+            Assert.IsTrue((null as OWLOntology).GetDeclaredDataProperties().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldGetDeclaredObjectProperties()
+        {
+            OWLOntology ont = new OWLOntology(new Uri("ex:ont"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME))
+                ]
+            };
+            List<RDFResource> ops = ont.GetDeclaredObjectProperties();
+
+            Assert.IsTrue(ops.Count == 3);
+            Assert.IsTrue(ops.Any(c => c.Equals(RDFVocabulary.FOAF.KNOWS)));
+            Assert.IsTrue(ops.Any(c => c.Equals(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)));
+            Assert.IsTrue(ops.Any(c => c.Equals(RDFVocabulary.TIME.HAS_TIME)));
+
+            Assert.IsTrue((null as OWLOntology).GetDeclaredObjectProperties().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldGetDeclaredAnnotationProperties()
+        {
+            OWLOntology ont = new OWLOntology(new Uri("ex:ont"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE)),
+                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL))
+                ]
+            };
+            List<RDFResource> aps = ont.GetDeclaredAnnotationProperties();
+
+            Assert.IsTrue(aps.Count == 3);
+            Assert.IsTrue(aps.Any(c => c.Equals(RDFVocabulary.DC.TITLE)));
+            Assert.IsTrue(aps.Any(c => c.Equals(RDFVocabulary.RDFS.COMMENT)));
+            Assert.IsTrue(aps.Any(c => c.Equals(RDFVocabulary.RDFS.LABEL)));
+
+            Assert.IsTrue((null as OWLOntology).GetDeclaredAnnotationProperties().Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldGetDeclaredNamedIndividuals()
+        {
+            OWLOntology ont = new OWLOntology(new Uri("ex:ont"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IDV1"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IDV2"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IDV3")))
+                ]
+            };
+            List<RDFResource> ids = ont.GetDeclaredNamedIndividuals();
+
+            Assert.IsTrue(ids.Count == 3);
+            Assert.IsTrue(ids.Any(c => c.Equals(new RDFResource("ex:IDV1"))));
+            Assert.IsTrue(ids.Any(c => c.Equals(new RDFResource("ex:IDV2"))));
+            Assert.IsTrue(ids.Any(c => c.Equals(new RDFResource("ex:IDV3"))));
+
+            Assert.IsTrue((null as OWLOntology).GetDeclaredNamedIndividuals().Count == 0);
+        }
         #endregion
     }
 }

@@ -24,18 +24,38 @@ namespace OWLSharp.Navigator
 {
     public static class OWLEntityHelper
     {
-        internal static List<RDFResource> EmptyList 
-            => Enumerable.Empty<RDFResource>().ToList();
+        internal static List<RDFResource> EmptyList => Enumerable.Empty<RDFResource>().ToList();
 
         #region Methods
         public static List<RDFResource> GetDeclaredClasses(this OWLOntology ontology)
-            => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLClass daxCls)
+            => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLClass)
                                           .Select(dax => ((OWLClass)dax.Expression).GetIRI())
                                           .ToList() ?? EmptyList;
+
         public static List<RDFResource> GetDeclaredDatatypes(this OWLOntology ontology)
-           => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLDatatype daxDtt)
-                                          .Select(dax => ((OWLDatatype)dax.Expression).GetIRI())
-                                          .ToList() ?? EmptyList;
+           => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLDatatype)
+                                         .Select(dax => ((OWLDatatype)dax.Expression).GetIRI())
+                                         .ToList() ?? EmptyList;
+
+        public static List<RDFResource> GetDeclaredDataProperties(this OWLOntology ontology)
+           => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLDataProperty)
+                                         .Select(dax => ((OWLDataProperty)dax.Expression).GetIRI())
+                                         .ToList() ?? EmptyList;
+
+        public static List<RDFResource> GetDeclaredObjectProperties(this OWLOntology ontology)
+          => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLObjectProperty)
+                                        .Select(dax => ((OWLObjectProperty)dax.Expression).GetIRI())
+                                        .ToList() ?? EmptyList;
+
+        public static List<RDFResource> GetDeclaredAnnotationProperties(this OWLOntology ontology)
+           => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty)
+                                         .Select(dax => ((OWLAnnotationProperty)dax.Expression).GetIRI())
+                                         .ToList() ?? EmptyList;
+
+        public static List<RDFResource> GetDeclaredNamedIndividuals(this OWLOntology ontology)
+          => ontology?.DeclarationAxioms.Where(dax => dax.Expression is OWLNamedIndividual)
+                                        .Select(dax => ((OWLNamedIndividual)dax.Expression).GetIRI())
+                                        .ToList() ?? EmptyList;
         #endregion
     }
 }
