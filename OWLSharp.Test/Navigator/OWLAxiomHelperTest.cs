@@ -14,7 +14,14 @@
    limitations under the License.
 */
 
+using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Modeler;
+using OWLSharp.Modeler.Axioms;
+using OWLSharp.Modeler.Expressions;
+using OWLSharp.Navigator;
+using RDFSharp.Model;
 
 namespace OWLSharp.Test.Navigator
 {
@@ -22,7 +29,19 @@ namespace OWLSharp.Test.Navigator
     public class OWLAxiomHelperTest
     {
         #region Tests
-        
+        [TestMethod]
+		public void ShouldGetSubClassesOf()
+		{
+			OWLOntology ont = new OWLOntology(new Uri("ex:ont"));
+			ont.ClassAxioms.Add(new OWLSubClassOf(new OWLClass(new RDFResource("ex:ClsB")), new OWLClass(new RDFResource("ex:ClsA"))));
+			ont.ClassAxioms.Add(new OWLSubClassOf(new OWLClass(new RDFResource("ex:ClsC")), new OWLClass(new RDFResource("ex:ClsB"))));
+			List<RDFResource> subClassesOfClsA = ont.GetSubClassesOf(new RDFResource("ex:ClsA"));
+
+			Assert.IsNotNull(subClassesOfClsA);
+			Assert.IsTrue(subClassesOfClsA.Count == 2);
+			Assert.IsTrue(subClassesOfClsA[0].Equals(new RDFResource("ex:ClsB")));
+			Assert.IsTrue(subClassesOfClsA[1].Equals(new RDFResource("ex:ClsC")));
+		}
         #endregion
     }
 }
