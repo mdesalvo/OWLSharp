@@ -38,7 +38,7 @@ namespace OWLSharp.Ontology.Expressions
         public OWLLiteral(RDFLiteral literal)
         {
             Value = literal?.Value ?? string.Empty;
-            DatatypeIRI = literal is RDFTypedLiteral tLit ? RDFModelUtilities.GetDatatypeFromEnum(tLit.Datatype) : null;
+            DatatypeIRI = literal is RDFTypedLiteral tLit ? tLit.Datatype.ToString() : null;
             Language = literal is RDFPlainLiteral pLit && pLit.HasLanguage() ? pLit.Language : null;
         }
         #endregion
@@ -47,7 +47,7 @@ namespace OWLSharp.Ontology.Expressions
 		public RDFLiteral GetLiteral()
 		{
 			if (DatatypeIRI != null)
-				return new RDFTypedLiteral(Value, RDFModelUtilities.GetDatatypeFromString(DatatypeIRI));
+				return new RDFTypedLiteral(Value, RDFDatatypeRegister.GetDatatype(DatatypeIRI));
 			else
 				return new RDFPlainLiteral(Value, Language);
 		}
