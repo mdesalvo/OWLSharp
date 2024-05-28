@@ -79,17 +79,6 @@ namespace OWLSharp.Ontology.Expressions
     [XmlRoot("FacetRestriction")]
     public class OWLFacetRestriction
     {
-        #region Statics (TODO: wait for RDFSharp-3.12)
-        public static readonly RDFResource LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "length"));
-        public static readonly RDFResource MIN_LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minLength"));
-        public static readonly RDFResource MAX_LENGTH = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxLength"));
-        public static readonly RDFResource PATTERN = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "pattern"));
-        public static readonly RDFResource MAX_INCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxInclusive"));
-        public static readonly RDFResource MAX_EXCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "maxExclusive"));
-        public static readonly RDFResource MIN_EXCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minExclusive"));
-        public static readonly RDFResource MIN_INCLUSIVE = new RDFResource(string.Concat(RDFVocabulary.XSD.BASE_URI, "minInclusive"));
-        #endregion
-
         #region Properties
         [XmlElement]
         public OWLLiteral Literal { get; set; }

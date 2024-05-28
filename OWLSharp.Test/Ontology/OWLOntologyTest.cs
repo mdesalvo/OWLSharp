@@ -97,8 +97,8 @@ namespace OWLSharp.Test.Ontology
 					new OWLDatatype(new RDFResource("ex:length6to10")),
 					new OWLDatatypeRestriction(
 						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH) ])));
+						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
 			ontology.KeyAxioms.Add(
 				new OWLHasKey(
 					new OWLClass(RDFVocabulary.FOAF.AGENT),
@@ -463,8 +463,8 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
 			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
 			Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, OWLFacetRestriction.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
-			Assert.IsTrue(graph[null, OWLFacetRestriction.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.XSD.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+			Assert.IsTrue(graph[null, RDFVocabulary.XSD.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
 		}
 
 		[TestMethod]
@@ -578,8 +578,8 @@ namespace OWLSharp.Test.Ontology
 					new OWLDatatype(new RDFResource("ex:length6to10")),
 					new OWLDatatypeRestriction(
 						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH) ])));
+						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
 			ontology.KeyAxioms.Add(
 				new OWLHasKey(
 					new OWLClass(RDFVocabulary.FOAF.AGENT),
@@ -661,8 +661,8 @@ namespace OWLSharp.Test.Ontology
 					new OWLDatatype(new RDFResource("ex:length6to10")),
 					new OWLDatatypeRestriction(
 						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH) ])));
+						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
 			ontology.KeyAxioms.Add(
 				new OWLHasKey(
 					new OWLClass(RDFVocabulary.FOAF.AGENT),
@@ -747,8 +747,8 @@ namespace OWLSharp.Test.Ontology
 					new OWLDatatype(new RDFResource("ex:length6to10")),
 					new OWLDatatypeRestriction(
 						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH) ])));
+						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
 			ontology.KeyAxioms.Add(
 				new OWLHasKey(
 					new OWLClass(RDFVocabulary.FOAF.AGENT),
@@ -833,8 +833,8 @@ namespace OWLSharp.Test.Ontology
 					new OWLDatatype(new RDFResource("ex:length6to10")),
 					new OWLDatatypeRestriction(
 						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH) ])));
+						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
 			ontology.KeyAxioms.Add(
 				new OWLHasKey(
 					new OWLClass(RDFVocabulary.FOAF.AGENT),
@@ -2826,8 +2826,8 @@ namespace OWLSharp.Test.Ontology
                     new OWLDatatype(new RDFResource("ex:length6to10")),
                     new OWLDatatypeRestriction(
                         new OWLDatatype(RDFVocabulary.XSD.STRING),
-                        [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-                         new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]))
+                        [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                         new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))
                 {
                     Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
@@ -2859,9 +2859,9 @@ namespace OWLSharp.Test.Ontology
                             && ontology2.DatatypeDefinitionAxioms[0].DataRangeExpression is OWLDatatypeRestriction dtRest
                             && dtRest.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
                             && dtRest.FacetRestrictions.Count == 2
-                            && string.Equals(dtRest.FacetRestrictions[0].FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+                            && string.Equals(dtRest.FacetRestrictions[0].FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
                             && dtRest.FacetRestrictions[0].Literal.GetLiteral().Equals(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT))
-                            && string.Equals(dtRest.FacetRestrictions[1].FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+                            && string.Equals(dtRest.FacetRestrictions[1].FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
                             && dtRest.FacetRestrictions[1].Literal.GetLiteral().Equals(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT))
                              && ontology2.DatatypeDefinitionAxioms[0].Annotations.Count == 1
                              && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
@@ -3659,8 +3659,8 @@ namespace OWLSharp.Test.Ontology
                     new OWLDataExactCardinality(
 						new OWLDataProperty(RDFVocabulary.FOAF.AGE), 1,  new OWLDatatypeRestriction(
 							new OWLDatatype(RDFVocabulary.XSD.STRING),
-							[new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-							new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)])),
+							[new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+							new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])),
                     new OWLNamedIndividual(new RDFResource("ex:IDV5")))
                 {
                     Annotations = [
@@ -3714,9 +3714,9 @@ namespace OWLSharp.Test.Ontology
 							&& dtExCard.DataRangeExpression is OWLDatatypeRestriction dtRestr
 							&& dtRestr.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
 							&& dtRestr.FacetRestrictions.Count == 2
-							&& string.Equals(dtRestr.FacetRestrictions[0].FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+							&& string.Equals(dtRestr.FacetRestrictions[0].FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
 							&& dtRestr.FacetRestrictions[0].Literal.GetLiteral().Equals(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT))
-							&& string.Equals(dtRestr.FacetRestrictions[1].FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+							&& string.Equals(dtRestr.FacetRestrictions[1].FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
 							&& dtRestr.FacetRestrictions[1].Literal.GetLiteral().Equals(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT))
                             && clsAsn2.IndividualExpression is OWLNamedIndividual exIdv5
                             && exIdv5.GetIRI().Equals(new RDFResource("ex:IDV5"))

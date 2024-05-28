@@ -2232,23 +2232,22 @@ namespace OWLSharp.Ontology
                  RDFCollection facetRestrictionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, withRestrictions, RDFModelEnums.RDFTripleFlavors.SPO);
                  foreach (RDFResource facetRestrictionMember in facetRestrictionMembers.Items.Cast<RDFResource>())
                  {
-                    //Statics (TODO: wait for RDFSharp-3.12)
-                    if (graph[facetRestrictionMember, OWLFacetRestriction.LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctLengthDT)
-                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctLengthDT), OWLFacetRestriction.LENGTH));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinLengthDT)
-                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinLengthDT), OWLFacetRestriction.MIN_LENGTH));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxLengthDT)
-                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxLengthDT), OWLFacetRestriction.MAX_LENGTH));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.PATTERN, null, null].FirstOrDefault()?.Object is RDFLiteral fctPatternDT)
-                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctPatternDT), OWLFacetRestriction.PATTERN));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxInclusiveDT)
-                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxInclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MAX_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxExclusiveDT)
-                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxExclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinInclusiveDT)
-                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinInclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
-                    else if (graph[facetRestrictionMember, OWLFacetRestriction.MIN_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinExclusiveDT)
-                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinExclusiveDT), OWLFacetRestriction.MAX_INCLUSIVE));
+                    if (graph[facetRestrictionMember, RDFVocabulary.XSD.LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctLengthDT)
+                         facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctLengthDT), RDFVocabulary.XSD.LENGTH));
+                    else if (graph[facetRestrictionMember, RDFVocabulary.XSD.MIN_LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinLengthDT)
+                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinLengthDT), RDFVocabulary.XSD.MIN_LENGTH));
+                    else if (graph[facetRestrictionMember, RDFVocabulary.XSD.MAX_LENGTH, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxLengthDT)
+                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxLengthDT), RDFVocabulary.XSD.MAX_LENGTH));
+                    else if (graph[facetRestrictionMember, RDFVocabulary.XSD.PATTERN, null, null].FirstOrDefault()?.Object is RDFLiteral fctPatternDT)
+                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctPatternDT), RDFVocabulary.XSD.PATTERN));
+                    else if (graph[facetRestrictionMember, RDFVocabulary.XSD.MAX_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxInclusiveDT)
+                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxInclusiveDT), RDFVocabulary.XSD.MAX_INCLUSIVE));
+                    else if (graph[facetRestrictionMember, RDFVocabulary.XSD.MAX_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMaxExclusiveDT)
+                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMaxExclusiveDT), RDFVocabulary.XSD.MAX_INCLUSIVE));
+                    else if (graph[facetRestrictionMember, RDFVocabulary.XSD.MIN_INCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinInclusiveDT)
+                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinInclusiveDT), RDFVocabulary.XSD.MAX_INCLUSIVE));
+                    else if (graph[facetRestrictionMember, RDFVocabulary.XSD.MIN_EXCLUSIVE, null, null].FirstOrDefault()?.Object is RDFLiteral fctMinExclusiveDT)
+                        facetRestrictions.Add(new OWLFacetRestriction(new OWLLiteral(fctMinExclusiveDT), RDFVocabulary.XSD.MAX_INCLUSIVE));
                  }
 
                  dtRST = new OWLDatatypeRestriction(new OWLDatatype(onDatatype), facetRestrictions);

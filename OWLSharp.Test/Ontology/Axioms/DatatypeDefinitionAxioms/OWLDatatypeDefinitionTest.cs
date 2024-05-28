@@ -35,8 +35,8 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDatatype(new RDFResource("ex:length6to10")),
                 new OWLDatatypeRestriction(
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]));
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]));
 
             Assert.IsNotNull(length6to10DT);
             Assert.IsNotNull(length6to10DT.Datatype);
@@ -45,10 +45,10 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue(length6to10DT.DataRangeExpression is OWLDatatypeRestriction dtRestr 
                             && string.Equals(dtRestr.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString())
                             && dtRestr.FacetRestrictions.Count == 2
-                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "6")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString()))
-                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "10")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
         }
@@ -59,8 +59,8 @@ namespace OWLSharp.Test.Ontology.Axioms
                 null,
                 new OWLDatatypeRestriction(
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)])));
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDatatypeDefinitionBecauseNullDataRangeExpression()
@@ -74,8 +74,8 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDatatype(new RDFResource("ex:length6to10")),
                 new OWLDatatypeRestriction(
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]));
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]));
 
             string serializedXML = OWLTestSerializer<OWLDatatypeDefinition>.Serialize(length6to10DT);
 
@@ -92,8 +92,8 @@ namespace OWLSharp.Test.Ontology.Axioms
                     new OWLDatatype(new RDFResource("ex:length6to10")),
                     new OWLDatatypeRestriction(
                         new OWLDatatype(RDFVocabulary.XSD.STRING),
-                        [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-                         new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)])));
+                        [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                         new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])));
 
             string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
 
@@ -125,10 +125,10 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue(length6to10DT.DataRangeExpression is OWLDatatypeRestriction dtRestr
                             && string.Equals(dtRestr.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString())
                             && dtRestr.FacetRestrictions.Count == 2
-                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "6")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString()))
-                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "10")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
         }
@@ -168,10 +168,10 @@ namespace OWLSharp.Test.Ontology.Axioms
                             && dtDef.DataRangeExpression is OWLDatatypeRestriction dtRestr
                             && string.Equals(dtRestr.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString())
                             && dtRestr.FacetRestrictions.Count == 2
-                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MIN_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "6")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString()))
-                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, OWLFacetRestriction.MAX_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "10")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
             Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Single() is OWLDatatypeDefinition dtDef1
@@ -188,8 +188,8 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDatatype(new RDFResource("ex:length6to10")),
                 new OWLDatatypeRestriction(
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]));
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]));
             RDFGraph graph = length6to10DT.ToRDFGraph();
 
             Assert.IsNotNull(graph);
@@ -201,8 +201,8 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, OWLFacetRestriction.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
-            Assert.IsTrue(graph[null, OWLFacetRestriction.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
         }
 
         [TestMethod]
@@ -212,8 +212,8 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDatatype(new RDFResource("ex:length6to10")),
                 new OWLDatatypeRestriction(
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), OWLFacetRestriction.MAX_LENGTH)]))
+                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))
             {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
@@ -230,8 +230,8 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, OWLFacetRestriction.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
-            Assert.IsTrue(graph[null, OWLFacetRestriction.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
             //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
