@@ -30,16 +30,20 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldFilterDeclarationAxioms()
         {
-            OWLOntology ontology = new OWLOntology();
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INTEGER)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.STRING)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR)));
-            ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))));
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+                    new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INTEGER)),
+                    new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.STRING)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")))
+                ]
+            };
 
             List<OWLDeclaration> classDeclarations = ontology.FilterDeclarationAxioms<OWLClass>();
             Assert.IsTrue(classDeclarations.Count == 3);
