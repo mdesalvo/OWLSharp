@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology.Expressions
 {
     [XmlRoot("AnnotationProperty")]
-    public class OWLAnnotationProperty : OWLAnnotationPropertyExpression
+    public class OWLAnnotationProperty : OWLAnnotationPropertyExpression, IOWLEntity
     {
         #region Properties
         [XmlAttribute("IRI", DataType="anyURI")]

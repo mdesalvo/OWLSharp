@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology.Expressions
 {
     [XmlRoot("NamedIndividual")]
-    public class OWLNamedIndividual : OWLIndividualExpression
+    public class OWLNamedIndividual : OWLIndividualExpression, IOWLEntity
     {
         #region Properties
         [XmlAttribute("IRI", DataType="anyURI")]

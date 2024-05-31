@@ -44,4 +44,8 @@ namespace OWLSharp.Ontology.Expressions
     public class OWLIndividualExpression : OWLExpression { }
 
     public class OWLLiteralExpression : OWLExpression { }
+
+    //Entity
+
+    public interface IOWLEntity { }
 }
