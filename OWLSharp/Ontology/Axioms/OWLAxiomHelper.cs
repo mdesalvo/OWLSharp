@@ -23,22 +23,22 @@ namespace OWLSharp.Ontology.Axioms
     public static class OWLAxiomHelper 
     {
         #region Methods
-        public static List<OWLDeclaration> FilterDeclarationAxioms<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
+        public static List<OWLDeclaration> GetDeclarationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
             => ontology?.DeclarationAxioms.Where(ax => ax.Expression is T).ToList() ?? new List<OWLDeclaration>();
 
-        public static List<T> FilterClassAxioms<T>(this OWLOntology ontology) where T : OWLClassAxiom
+        public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
             => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
 
-        public static List<T> FilterDataPropertyAxioms<T>(this OWLOntology ontology) where T : OWLDataPropertyAxiom
+        public static List<T> GetDataPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLDataPropertyAxiom
             => ontology?.DataPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
 
-        public static List<T> FilterObjectPropertyAxioms<T>(this OWLOntology ontology) where T : OWLObjectPropertyAxiom
+        public static List<T> GetObjectPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLObjectPropertyAxiom
             => ontology?.ObjectPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
 
-        public static List<T> FilterAnnotationAxioms<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
+        public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
             => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
 
-        public static List<T> FilterAssertionAxioms<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
+        public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
             => ontology?.AssertionAxioms.OfType<T>().ToList() ?? new List<T>();
         #endregion
     }

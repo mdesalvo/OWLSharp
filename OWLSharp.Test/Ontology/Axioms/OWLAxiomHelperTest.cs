@@ -45,22 +45,22 @@ namespace OWLSharp.Test.Ontology.Axioms
                 ]
             };
 
-            List<OWLDeclaration> classDeclarations = ontology.FilterDeclarationAxioms<OWLClass>();
+            List<OWLDeclaration> classDeclarations = ontology.GetDeclarationAxiomsOfType<OWLClass>();
             Assert.IsTrue(classDeclarations.Count == 3);
 
-            List<OWLDeclaration> datatypeDeclarations = ontology.FilterDeclarationAxioms<OWLDatatype>();
+            List<OWLDeclaration> datatypeDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDatatype>();
             Assert.IsTrue(datatypeDeclarations.Count == 2);
 
-            List<OWLDeclaration> objectPropertyDeclarations = ontology.FilterDeclarationAxioms<OWLObjectProperty>();
+            List<OWLDeclaration> objectPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>();
             Assert.IsTrue(objectPropertyDeclarations.Count == 1);
 
-            List<OWLDeclaration> dataPropertyDeclarations = ontology.FilterDeclarationAxioms<OWLDataProperty>();
+            List<OWLDeclaration> dataPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDataProperty>();
             Assert.IsTrue(dataPropertyDeclarations.Count == 1);
 
-            List<OWLDeclaration> annotationPropertyDeclarations = ontology.FilterDeclarationAxioms<OWLAnnotationProperty>();
+            List<OWLDeclaration> annotationPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>();
             Assert.IsTrue(annotationPropertyDeclarations.Count == 1);
 
-            List<OWLDeclaration> individualDeclarations = ontology.FilterDeclarationAxioms<OWLNamedIndividual>();
+            List<OWLDeclaration> individualDeclarations = ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>();
             Assert.IsTrue(individualDeclarations.Count == 1);
         }
         #endregion
