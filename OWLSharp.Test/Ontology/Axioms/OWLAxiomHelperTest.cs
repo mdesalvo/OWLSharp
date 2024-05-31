@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Ontology.Axioms
     {
         #region Tests
         [TestMethod]
-        public void ShouldFilterDeclarationAxioms()
+        public void ShouldGetDeclarationAxioms()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -63,6 +63,32 @@ namespace OWLSharp.Test.Ontology.Axioms
             List<OWLDeclaration> individualDeclarations = ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>();
             Assert.IsTrue(individualDeclarations.Count == 1);
         }
-        #endregion
+        
+		[TestMethod]
+		public void ShouldGetClassAxioms()
+		{
+			OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)),
+					new OWLEquivalentClasses([ new OWLClass(RDFVocabulary.FOAF.AGENT), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]),
+					new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.AGENT), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION), new OWLClass(RDFVocabulary.FOAF.PERSON) ]),
+					new OWLDisjointUnion(new OWLClass(RDFVocabulary.FOAF.AGENT), [ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
+                ]
+            };
+
+            List<OWLSubClassOf> subClassOf = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
+            Assert.IsTrue(subClassOf.Count == 1);
+
+            List<OWLEquivalentClasses> equivalentClasses = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
+            Assert.IsTrue(equivalentClasses.Count == 1);
+
+            List<OWLDisjointClasses> disjointClasses = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
+            Assert.IsTrue(disjointClasses.Count == 1);
+
+            List<OWLDisjointUnion> disjointUnion = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
+            Assert.IsTrue(disjointUnion.Count == 1);
+		}
+		#endregion
     }
 }
