@@ -185,6 +185,32 @@ namespace OWLSharp.Test.Ontology.Axioms
 			List<OWLAsymmetricObjectProperty> asymmetricObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>();
             Assert.IsTrue(asymmetricObjectProperty.Count == 1);
 		}
+		
+		[TestMethod]
+		public void ShouldGetAnnotationPropertyAxioms()
+		{
+			OWLOntology ontology = new OWLOntology()
+            {
+                AnnotationAxioms = [
+                    new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:Subj"), new RDFResource("ex:Obj")),
+					new OWLAnnotationPropertyDomain(new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT), RDFVocabulary.FOAF.PERSON),
+					new OWLAnnotationPropertyRange(new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT), RDFVocabulary.FOAF.PERSON),
+					new OWLSubAnnotationPropertyOf(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLAnnotationProperty(RDFVocabulary.DC.TITLE))
+                ]
+            };
+
+            List<OWLAnnotationAssertion> annotationAssertion = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
+            Assert.IsTrue(annotationAssertion.Count == 1);
+
+			List<OWLAnnotationPropertyDomain> annotationPropertyDomain = ontology.GetAnnotationAxiomsOfType<OWLAnnotationPropertyDomain>();
+            Assert.IsTrue(annotationPropertyDomain.Count == 1);
+
+			List<OWLAnnotationPropertyRange> annotationPropertyRange = ontology.GetAnnotationAxiomsOfType<OWLAnnotationPropertyRange>();
+            Assert.IsTrue(annotationPropertyRange.Count == 1);
+
+			List<OWLSubAnnotationPropertyOf> subAnnotationProperty = ontology.GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>();
+            Assert.IsTrue(subAnnotationProperty.Count == 1);
+		}		
 		#endregion
     }
 }
