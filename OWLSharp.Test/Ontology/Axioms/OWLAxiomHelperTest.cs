@@ -187,7 +187,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		}
 		
 		[TestMethod]
-		public void ShouldGetAnnotationPropertyAxioms()
+		public void ShouldGetAnnotationAxioms()
 		{
 			OWLOntology ontology = new OWLOntology()
             {
@@ -210,7 +210,45 @@ namespace OWLSharp.Test.Ontology.Axioms
 
 			List<OWLSubAnnotationPropertyOf> subAnnotationProperty = ontology.GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>();
             Assert.IsTrue(subAnnotationProperty.Count == 1);
-		}		
+		}
+
+		[TestMethod]
+		public void ShouldGetAssertionAxioms()
+		{
+			OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.AGENT), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+					new OWLDataPropertyAssertion(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+					new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Alice")), new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLNamedIndividual(new RDFResource("ex:Carl")) ]),
+					new OWLNegativeDataPropertyAssertion(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+					new OWLNegativeObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Alice")), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+					new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Alice")), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
+					new OWLSameIndividual([ new OWLNamedIndividual(new RDFResource("ex:Alice")), new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLNamedIndividual(new RDFResource("ex:Carl")) ])
+                ]
+            };
+
+            List<OWLClassAssertion> classAssertion = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+            Assert.IsTrue(classAssertion.Count == 1);
+
+			List<OWLDataPropertyAssertion> dataPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+            Assert.IsTrue(dataPropertyAssertion.Count == 1);
+
+			List<OWLDifferentIndividuals> differentIndividuals = ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>();
+            Assert.IsTrue(differentIndividuals.Count == 1);
+
+			List<OWLNegativeDataPropertyAssertion> negativeDataPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>();
+            Assert.IsTrue(negativeDataPropertyAssertion.Count == 1);
+
+			List<OWLNegativeObjectPropertyAssertion> negativeObjectPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>();
+            Assert.IsTrue(negativeObjectPropertyAssertion.Count == 1);
+
+			List<OWLObjectPropertyAssertion> objectPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+            Assert.IsTrue(objectPropertyAssertion.Count == 1);
+
+			List<OWLSameIndividual> sameIndividual = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
+            Assert.IsTrue(sameIndividual.Count == 1);
+		}
 		#endregion
     }
 }
