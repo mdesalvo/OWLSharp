@@ -76,6 +76,11 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(cls);
             Assert.IsTrue(string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
             Assert.IsNull(cls.AbbreviatedIRI);
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            cls.GetIRI();
+            Assert.IsFalse(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(cls.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/Person"));
         }
 
         [TestMethod]
@@ -97,6 +102,11 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(cls);
             Assert.IsNull(cls.IRI);
             Assert.IsTrue(string.Equals(cls.AbbreviatedIRI, new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI)));
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            cls.GetIRI();
+            Assert.IsFalse(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(cls.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/Person"));
         }
 
 		[TestMethod]

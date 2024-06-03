@@ -76,6 +76,11 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(annotation);
             Assert.IsTrue(string.Equals(annotation.IRI, RDFVocabulary.DC.CREATOR.ToString()));
             Assert.IsNull(annotation.AbbreviatedIRI);
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(annotation.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            annotation.GetIRI();
+            Assert.IsFalse(annotation.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(annotation.ExpressionIRI.ToString().Equals("http://purl.org/dc/elements/1.1/creator"));
         }
 
         [TestMethod]
@@ -97,6 +102,11 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(annotation);
             Assert.IsNull(annotation.IRI);
             Assert.IsTrue(string.Equals(annotation.AbbreviatedIRI, new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI)));
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(annotation.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            annotation.GetIRI();
+            Assert.IsFalse(annotation.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(annotation.ExpressionIRI.ToString().Equals("http://purl.org/dc/elements/1.1/creator"));
         }
 
 		[TestMethod]

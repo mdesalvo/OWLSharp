@@ -28,11 +28,11 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldCreateIRIObjectProperty()
         {
-            OWLObjectProperty dp = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
+            OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
 
-            Assert.IsNotNull(dp);
-            Assert.IsTrue(string.Equals(dp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsNull(dp.AbbreviatedIRI);
+            Assert.IsNotNull(op);
+            Assert.IsTrue(string.Equals(op.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsNull(op.AbbreviatedIRI);
         }
 
         [TestMethod]
@@ -46,11 +46,11 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldCreateQualifiedNameObjectProperty()
         {
-            OWLObjectProperty dp = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
+            OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
 
-            Assert.IsNotNull(dp);
-            Assert.IsNull(dp.IRI);
-            Assert.IsTrue(string.Equals(dp.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
+            Assert.IsNotNull(op);
+            Assert.IsNull(op.IRI);
+            Assert.IsTrue(string.Equals(op.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
         }
 
         [TestMethod]
@@ -60,8 +60,8 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldSerializeIRIObjectProperty()
         {
-            OWLObjectProperty dp = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
-            string serializedXML = OWLTestSerializer<OWLObjectProperty>.Serialize(dp);
+            OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
+            string serializedXML = OWLTestSerializer<OWLObjectProperty>.Serialize(op);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />"));
@@ -70,19 +70,24 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIObjectProperty()
         {
-            OWLObjectProperty dp = OWLTestSerializer<OWLObjectProperty>.Deserialize(
+            OWLObjectProperty op = OWLTestSerializer<OWLObjectProperty>.Deserialize(
 @"<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />");
 
-            Assert.IsNotNull(dp);
-            Assert.IsTrue(string.Equals(dp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsNull(dp.AbbreviatedIRI);
+            Assert.IsNotNull(op);
+            Assert.IsTrue(string.Equals(op.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsNull(op.AbbreviatedIRI);
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(op.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            op.GetIRI();
+            Assert.IsFalse(op.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(op.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/knows"));
         }
 
         [TestMethod]
         public void ShouldSerializeQualifiedNameObjectProperty()
         {
-            OWLObjectProperty dp = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLTestSerializer<OWLObjectProperty>.Serialize(dp);
+            OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
+            string serializedXML = OWLTestSerializer<OWLObjectProperty>.Serialize(op);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:knows"" />"));
@@ -91,12 +96,17 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameObjectProperty()
         {
-            OWLObjectProperty dp = OWLTestSerializer<OWLObjectProperty>.Deserialize(
+            OWLObjectProperty op = OWLTestSerializer<OWLObjectProperty>.Deserialize(
 @"<ObjectProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:knows"" />");
 
-            Assert.IsNotNull(dp);
-            Assert.IsNull(dp.IRI);
-            Assert.IsTrue(string.Equals(dp.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
+            Assert.IsNotNull(op);
+            Assert.IsNull(op.IRI);
+            Assert.IsTrue(string.Equals(op.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(op.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            op.GetIRI();
+            Assert.IsFalse(op.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(op.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/knows"));
         }
 
 		[TestMethod]

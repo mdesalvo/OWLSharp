@@ -43,18 +43,26 @@ namespace OWLSharp.Ontology.Expressions
             #endregion
 
             IRI = iri.ToString();
+            ExpressionIRI = iri;
         }
         public OWLDatatype(XmlQualifiedName abbreviatedIri)
-            => AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLDatatype because given \"abbreviatedIri\" parameter is null");
+        {
+            AbbreviatedIRI = abbreviatedIri ?? throw new OWLException("Cannot create OWLDatatype because given \"abbreviatedIri\" parameter is null");
+            ExpressionIRI = new RDFResource(string.Concat(abbreviatedIri.Namespace, abbreviatedIri.Name));
+        }
         #endregion
 
         #region Methods
         public override RDFResource GetIRI()
         {
-            string iri = IRI;
-            if (string.IsNullOrEmpty(iri))
-                iri = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
-            return new RDFResource(iri);
+            if (ExpressionIRI == null || ExpressionIRI.IsBlank)
+            {
+                string iri = IRI;
+                if (string.IsNullOrEmpty(iri))
+                    iri = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
+                ExpressionIRI = new RDFResource(iri);
+            }
+            return ExpressionIRI;
         }
 
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)

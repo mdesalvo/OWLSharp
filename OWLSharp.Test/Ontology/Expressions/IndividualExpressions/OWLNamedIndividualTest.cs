@@ -71,11 +71,16 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldDeserializeIRINamedIndividual()
         {
             OWLNamedIndividual idv = OWLTestSerializer<OWLNamedIndividual>.Deserialize(
-@"<NamedIndividual IRI=""http://xmlns.com/foaf/0.1/age"" />");
+@"<NamedIndividual IRI=""ex:Mark"" />");
 
             Assert.IsNotNull(idv);
-            Assert.IsTrue(string.Equals(idv.IRI, RDFVocabulary.FOAF.AGE.ToString()));
+            Assert.IsTrue(string.Equals(idv.IRI, "ex:Mark"));
             Assert.IsNull(idv.AbbreviatedIRI);
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(idv.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            idv.GetIRI();
+            Assert.IsFalse(idv.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(idv.ExpressionIRI.ToString().Equals("ex:Mark"));
         }
 
         [TestMethod]
@@ -97,6 +102,11 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(idv);
             Assert.IsNull(idv.IRI);
             Assert.IsTrue(string.Equals(idv.AbbreviatedIRI, new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI)));
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(idv.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            idv.GetIRI();
+            Assert.IsFalse(idv.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(idv.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/age"));
         }
 
 		[TestMethod]

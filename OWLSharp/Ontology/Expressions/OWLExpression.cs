@@ -15,14 +15,26 @@
 */
 
 using RDFSharp.Model;
+using System;
+using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Expressions
 {
     public class OWLExpression 
 	{
+        #region Properties
+        [XmlIgnore]
+        internal RDFResource ExpressionIRI { get; set; }
+        #endregion
+
+        #region Ctors
+        internal OWLExpression()
+            => ExpressionIRI = new RDFResource($"bnode:ex{Guid.NewGuid():N}");
+        #endregion
+
         #region Methods
         public virtual RDFResource GetIRI()
-            => new RDFResource();
+            => ExpressionIRI;
 
         internal virtual RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 			=> new RDFGraph();

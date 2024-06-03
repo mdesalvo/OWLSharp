@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Runtime.Intrinsics.Arm;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Expressions;
@@ -76,6 +77,11 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(dt);
             Assert.IsTrue(string.Equals(dt.IRI, RDFVocabulary.XSD.STRING.ToString()));
             Assert.IsNull(dt.AbbreviatedIRI);
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(dt.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            dt.GetIRI();
+            Assert.IsFalse(dt.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(dt.ExpressionIRI.ToString().Equals("http://www.w3.org/2001/XMLSchema#string"));
         }
 
         [TestMethod]
@@ -97,6 +103,11 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(dt);
             Assert.IsNull(dt.IRI);
             Assert.IsTrue(string.Equals(dt.AbbreviatedIRI, new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI)));
+            //Test stabilization of ExpressionIRI
+            Assert.IsTrue(dt.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            dt.GetIRI();
+            Assert.IsFalse(dt.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(dt.ExpressionIRI.ToString().Equals("http://www.w3.org/2001/XMLSchema#string"));
         }
 
 		[TestMethod]
