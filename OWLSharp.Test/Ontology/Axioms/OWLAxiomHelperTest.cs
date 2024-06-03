@@ -62,6 +62,8 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             List<OWLDeclaration> individualDeclarations = ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>();
             Assert.IsTrue(individualDeclarations.Count == 1);
+
+            Assert.IsTrue((null as OWLOntology).GetDeclarationAxiomsOfType<OWLClass>().Count == 0);
         }
         
 		[TestMethod]
@@ -88,7 +90,9 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             List<OWLDisjointUnion> disjointUnion = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
             Assert.IsTrue(disjointUnion.Count == 1);
-		}
+
+            Assert.IsTrue((null as OWLOntology).GetClassAxiomsOfType<OWLSubClassOf>().Count == 0);
+        }
 
 		[TestMethod]
 		public void ShouldGetDataPropertyAxioms()
@@ -122,7 +126,9 @@ namespace OWLSharp.Test.Ontology.Axioms
 
 			List<OWLDataPropertyDomain> dataPropertyDomain = ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>();
             Assert.IsTrue(dataPropertyDomain.Count == 1);
-		}
+
+            Assert.IsTrue((null as OWLOntology).GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>().Count == 0);
+        }
 
 		[TestMethod]
 		public void ShouldGetObjectPropertyAxioms()
@@ -184,7 +190,9 @@ namespace OWLSharp.Test.Ontology.Axioms
 
 			List<OWLAsymmetricObjectProperty> asymmetricObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>();
             Assert.IsTrue(asymmetricObjectProperty.Count == 1);
-		}
+
+            Assert.IsTrue((null as OWLOntology).GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Count == 0);
+        }
 		
 		[TestMethod]
 		public void ShouldGetAnnotationAxioms()
@@ -210,7 +218,9 @@ namespace OWLSharp.Test.Ontology.Axioms
 
 			List<OWLSubAnnotationPropertyOf> subAnnotationProperty = ontology.GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>();
             Assert.IsTrue(subAnnotationProperty.Count == 1);
-		}
+
+            Assert.IsTrue((null as OWLOntology).GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 0);
+        }
 
 		[TestMethod]
 		public void ShouldGetAssertionAxioms()
@@ -248,7 +258,9 @@ namespace OWLSharp.Test.Ontology.Axioms
 
 			List<OWLSameIndividual> sameIndividual = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
             Assert.IsTrue(sameIndividual.Count == 1);
-		}
+
+            Assert.IsTrue((null as OWLOntology).GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 0);
+        }
 		#endregion
     }
 }
