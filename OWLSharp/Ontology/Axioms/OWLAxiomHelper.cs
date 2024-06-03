@@ -23,23 +23,31 @@ namespace OWLSharp.Ontology.Axioms
     public static class OWLAxiomHelper 
     {
         #region Methods
+
+        //Declarations
         public static List<OWLDeclaration> GetDeclarationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
             => ontology?.DeclarationAxioms.Where(ax => ax.Expression is T).ToList() ?? new List<OWLDeclaration>();
 
+        //ClassAxioms
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
             => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        //DataPropertyAxioms
         public static List<T> GetDataPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLDataPropertyAxiom
             => ontology?.DataPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        //ObjectPropertyAxioms
         public static List<T> GetObjectPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLObjectPropertyAxiom
             => ontology?.ObjectPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        //AnnotationAxioms
         public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
             => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        //AssertionAxioms
         public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
             => ontology?.AssertionAxioms.OfType<T>().ToList() ?? new List<T>();
+
         #endregion
     }
 }
