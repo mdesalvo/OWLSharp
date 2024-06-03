@@ -124,6 +124,35 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue(ontology.GetSubClassesOf(null).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldGetSubClassesOfDirectOnly()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
+                ]
+            };
+
+            List<OWLClassExpression> subClassesOfCls1 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true);
+            Assert.IsTrue(subClassesOfCls1.Count == 1);
+
+            List<OWLClassExpression> subClassesOfCls2 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls2")), true);
+            Assert.IsTrue(subClassesOfCls2.Count == 1);
+
+            List<OWLClassExpression> subClassesOfCls3 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls3")), true);
+            Assert.IsTrue(subClassesOfCls3.Count == 1);
+
+            List<OWLClassExpression> subClassesOfCls4 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls4")), true);
+            Assert.IsTrue(subClassesOfCls4.Count == 0);
+
+            Assert.IsTrue(ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls5")), true).Count == 0);
+            Assert.IsTrue(ontology.GetSubClassesOf(null, true).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true).Count == 0);
+        }
         #endregion
 
         #region Tests (DataPropertyAxioms)
