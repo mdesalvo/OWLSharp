@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Ontology.Axioms
     [TestClass]
     public class OWLAxiomHelperTest
     {
-        #region Tests
+        #region Tests (DeclarationAxioms)
         [TestMethod]
         public void ShouldGetDeclarationAxioms()
         {
@@ -65,8 +65,10 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             Assert.IsTrue((null as OWLOntology).GetDeclarationAxiomsOfType<OWLClass>().Count == 0);
         }
-        
-		[TestMethod]
+        #endregion
+
+        #region Tests (ClassAxioms)
+        [TestMethod]
 		public void ShouldGetClassAxioms()
 		{
 			OWLOntology ontology = new OWLOntology()
@@ -93,8 +95,10 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             Assert.IsTrue((null as OWLOntology).GetClassAxiomsOfType<OWLSubClassOf>().Count == 0);
         }
+        #endregion
 
-		[TestMethod]
+        #region Tests (DataPropertyAxioms)
+        [TestMethod]
 		public void ShouldGetDataPropertyAxioms()
 		{
 			OWLOntology ontology = new OWLOntology()
@@ -129,8 +133,10 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             Assert.IsTrue((null as OWLOntology).GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>().Count == 0);
         }
+        #endregion
 
-		[TestMethod]
+        #region Tests (ObjectPropertyAxioms)
+        [TestMethod]
 		public void ShouldGetObjectPropertyAxioms()
 		{
 			OWLOntology ontology = new OWLOntology()
@@ -193,8 +199,10 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             Assert.IsTrue((null as OWLOntology).GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Count == 0);
         }
-		
-		[TestMethod]
+        #endregion
+
+        #region Tests (AnnotationAxioms)
+        [TestMethod]
 		public void ShouldGetAnnotationAxioms()
 		{
 			OWLOntology ontology = new OWLOntology()
@@ -221,8 +229,10 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             Assert.IsTrue((null as OWLOntology).GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 0);
         }
+        #endregion
 
-		[TestMethod]
+        #region Tests (AssertionAxioms)
+        [TestMethod]
 		public void ShouldGetAssertionAxioms()
 		{
 			OWLOntology ontology = new OWLOntology()

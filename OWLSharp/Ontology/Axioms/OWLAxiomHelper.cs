@@ -15,6 +15,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,6 +31,41 @@ namespace OWLSharp.Ontology.Axioms
         #region ClassAxioms
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
             => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
+        
+        public static List<OWLClassExpression> GetSubClassesOf(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
+        {
+            #region Utilities
+            List<OWLClassExpression> FindSubClassesOf(RDFResource classExprIRI, List<OWLSubClassOf> axioms, HashSet<long> visitContext)
+            {
+                List<OWLClassExpression> subResult = new List<OWLClassExpression>();
+
+                #region VisitContext
+                if (!visitContext.Contains(classExprIRI.PatternMemberID))
+                    visitContext.Add(classExprIRI.PatternMemberID);
+                else
+                    return subResult;
+                #endregion
+
+                //Direct
+                foreach (OWLSubClassOf axiom in axioms.Where(ax => ax.SuperClassExpression.GetIRI().Equals(classExprIRI)))
+                    subResult.Add(axiom.SubClassExpression);
+
+                //Indirect
+                if (!directOnly)
+                {
+                    foreach (OWLClassExpression subClass in subResult.ToList())
+                        subResult.AddRange(FindSubClassesOf(subClass.GetIRI(), axioms, visitContext));
+                }
+
+                return subResult;
+            }
+            #endregion
+
+            List<OWLClassExpression> result = new List<OWLClassExpression>();
+            if (ontology != null && classExpr != null)
+                result.AddRange(FindSubClassesOf(classExpr.GetIRI(), GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+            return result;
+        }
         #endregion
 
         #region DataPropertyAxioms
