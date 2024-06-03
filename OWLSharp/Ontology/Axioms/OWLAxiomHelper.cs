@@ -31,7 +31,7 @@ namespace OWLSharp.Ontology.Axioms
         #region ClassAxioms
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
             => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
-        
+
         public static List<OWLClassExpression> GetSubClassesOf(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
         {
             #region Utilities
@@ -64,6 +64,42 @@ namespace OWLSharp.Ontology.Axioms
             List<OWLClassExpression> result = new List<OWLClassExpression>();
             if (ontology != null && classExpr != null)
                 result.AddRange(FindSubClassesOf(classExpr.GetIRI(), GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+            return result;
+        }
+
+		public static List<OWLClassExpression> GetEquivalentClasses(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
+        {
+            #region Utilities
+            List<OWLClassExpression> FindEquivalentClasses(RDFResource classExprIRI, List<OWLEquivalentClasses> axioms, HashSet<long> visitContext)
+            {
+                List<OWLClassExpression> subResult = new List<OWLClassExpression>();
+
+                #region VisitContext
+                if (!visitContext.Contains(classExprIRI.PatternMemberID))
+                    visitContext.Add(classExprIRI.PatternMemberID);
+                else
+                    return subResult;
+                #endregion
+
+                //Direct
+                foreach (OWLEquivalentClasses axiom in axioms.Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(classExprIRI))))
+                    subResult.AddRange(axiom.ClassExpressions);
+
+                //Indirect
+                if (!directOnly)
+                {
+                    foreach (OWLClassExpression equivalentClass in subResult.ToList())
+                        subResult.AddRange(FindEquivalentClasses(equivalentClass.GetIRI(), axioms, visitContext));
+                }
+
+				subResult.RemoveAll(res => res.GetIRI().Equals(classExprIRI));
+                return OWLExpressionHelper.RemoveDuplicates(subResult);
+            }
+            #endregion
+
+            List<OWLClassExpression> result = new List<OWLClassExpression>();
+            if (ontology != null && classExpr != null)
+                result.AddRange(FindEquivalentClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLEquivalentClasses>(ontology), new HashSet<long>()));
             return result;
         }
         #endregion
