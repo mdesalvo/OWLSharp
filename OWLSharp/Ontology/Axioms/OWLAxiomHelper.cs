@@ -46,16 +46,17 @@ namespace OWLSharp.Ontology.Axioms
                     return subResults;
                 #endregion
 
-				//Direct
-                foreach (OWLSubClassOf axiom in axioms.Where(ax => ax.SuperClassExpression.GetIRI().Equals(classExprIRI)))
+				#region Discovery
+				foreach (OWLSubClassOf axiom in axioms.Where(ax => ax.SuperClassExpression.GetIRI().Equals(classExprIRI)))
                     subResults.Add(axiom.SubClassExpression);
 
-				//Indirect (rdfs:subClassOf transitivity)
-                if (!directOnly)
+				if (!directOnly)
                 {
+					//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
                     foreach (OWLClassExpression subClass in subResults.ToList())
                         subResults.AddRange(FindSubClassesOf(subClass.GetIRI(), axioms, visitContext));
                 }
+				#endregion
 
                 return subResults;
             }
@@ -66,9 +67,13 @@ namespace OWLSharp.Ontology.Axioms
 			{
 				results.AddRange(FindSubClassesOf(classExpr.GetIRI(), GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
 
-				//Indirect (owl:equivalentClass)
 				if (!directOnly)
 				{
+					//EquivalentClass(C1,ObjectUnionOf(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
+					foreach (OWLObjectUnionOf objectUnion in GetEquivalentClasses(ontology, classExpr, directOnly).OfType<OWLObjectUnionOf>())
+						results.AddRange(objectUnion.ClassExpressions);
+
+					//SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
 					foreach (OWLClassExpression result in results.ToList())
 						results.AddRange(GetEquivalentClasses(ontology, result, directOnly));
 				}
@@ -90,16 +95,17 @@ namespace OWLSharp.Ontology.Axioms
                     return subResults;
                 #endregion
 
-				//Direct
-                foreach (OWLEquivalentClasses axiom in axioms.Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(classExprIRI))))
+				#region Discovery
+				foreach (OWLEquivalentClasses axiom in axioms.Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(classExprIRI))))
                     subResults.AddRange(axiom.ClassExpressions);
 
-				//Indirect
-                if (!directOnly)
+				if (!directOnly)
                 {
+					//EquivalentClass(C1,C2) ^ EquivalentClass(C2,C3) -> EquivalentClass(C1,C3)
                     foreach (OWLClassExpression equivalentClass in subResults.ToList())
                         subResults.AddRange(FindEquivalentClasses(equivalentClass.GetIRI(), axioms, visitContext));
                 }
+				#endregion
 
 				subResults.RemoveAll(res => res.GetIRI().Equals(classExprIRI));
                 return OWLExpressionHelper.RemoveDuplicates(subResults);
