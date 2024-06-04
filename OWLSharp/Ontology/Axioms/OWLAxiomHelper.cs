@@ -46,11 +46,11 @@ namespace OWLSharp.Ontology.Axioms
                     return subResults;
                 #endregion
 
-                //Direct
+				//Direct
                 foreach (OWLSubClassOf axiom in axioms.Where(ax => ax.SuperClassExpression.GetIRI().Equals(classExprIRI)))
                     subResults.Add(axiom.SubClassExpression);
 
-                //Indirect
+				//Indirect (rdfs:subClassOf transitivity)
                 if (!directOnly)
                 {
                     foreach (OWLClassExpression subClass in subResults.ToList())
@@ -63,7 +63,16 @@ namespace OWLSharp.Ontology.Axioms
 
             List<OWLClassExpression> results = new List<OWLClassExpression>();
             if (ontology != null && classExpr != null)
-                results.AddRange(FindSubClassesOf(classExpr.GetIRI(), GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+			{
+				results.AddRange(FindSubClassesOf(classExpr.GetIRI(), GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+
+				//Indirect (owl:equivalentClass)
+				if (!directOnly)
+				{
+					foreach (OWLClassExpression result in results.ToList())
+						results.AddRange(GetEquivalentClasses(ontology, result, directOnly));
+				}
+			}
             return results;
         }
 
@@ -81,11 +90,11 @@ namespace OWLSharp.Ontology.Axioms
                     return subResults;
                 #endregion
 
-                //Direct
+				//Direct
                 foreach (OWLEquivalentClasses axiom in axioms.Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(classExprIRI))))
                     subResults.AddRange(axiom.ClassExpressions);
 
-                //Indirect
+				//Indirect
                 if (!directOnly)
                 {
                     foreach (OWLClassExpression equivalentClass in subResults.ToList())

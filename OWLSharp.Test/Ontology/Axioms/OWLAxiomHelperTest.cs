@@ -125,6 +125,37 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue((null as OWLOntology).GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }
 
+		[TestMethod]
+        public void ShouldGetSubClassesOfWithEquivalentClassesDiscovery()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
+					new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls5"))]),
+					new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls6"))])
+                ]
+            };
+
+            List<OWLClassExpression> subClassesOfCls1 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
+            Assert.IsTrue(subClassesOfCls1.Count == 5);
+
+            List<OWLClassExpression> subClassesOfCls2 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
+            Assert.IsTrue(subClassesOfCls2.Count == 4);
+
+            List<OWLClassExpression> subClassesOfCls3 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls3")));
+            Assert.IsTrue(subClassesOfCls3.Count == 2);
+
+            List<OWLClassExpression> subClassesOfCls4 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
+            Assert.IsTrue(subClassesOfCls4.Count == 0);
+
+            Assert.IsTrue(ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls5"))).Count == 0);
+            Assert.IsTrue(ontology.GetSubClassesOf(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
+        }
+
         [TestMethod]
         public void ShouldGetSubClassesOfDirectOnly()
         {
