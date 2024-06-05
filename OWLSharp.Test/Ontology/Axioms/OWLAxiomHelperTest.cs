@@ -239,6 +239,18 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             List<OWLClassExpression> equivalentClassesOfCls1 = ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")));
             Assert.IsTrue(equivalentClassesOfCls1.Count == 4);
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls4"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls1"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls4"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls2"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls5"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls2"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls5"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls4"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls5"))));
+            Assert.IsTrue(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls1"))));
 
             List<OWLClassExpression> equivalentClassesOfCls2 = ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls2")));
             Assert.IsTrue(equivalentClassesOfCls2.Count == 4);
@@ -251,6 +263,9 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             Assert.IsTrue(ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls6"))).Count == 0);
             Assert.IsTrue(ontology.GetEquivalentClasses(null).Count == 0);
+            Assert.IsFalse(ontology.CheckAreEquivalentClasses(null, new OWLClass(new RDFResource("ex:Cls1"))));
+            Assert.IsFalse(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), null));
+            Assert.IsFalse((null as OWLOntology).CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2"))));
             Assert.IsTrue((null as OWLOntology).GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }
 

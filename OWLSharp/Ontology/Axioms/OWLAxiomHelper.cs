@@ -84,7 +84,10 @@ namespace OWLSharp.Ontology.Axioms
             return results;
         }
 
-		public static List<OWLClassExpression> GetEquivalentClasses(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
+        public static bool CheckAreEquivalentClasses(this OWLOntology ontology, OWLClassExpression leftClassExpr, OWLClassExpression rightClassExpr, bool directOnly=false)
+            => ontology != null && leftClassExpr != null && rightClassExpr != null && GetEquivalentClasses(ontology, leftClassExpr, directOnly).Any(cex => cex.GetIRI().Equals(rightClassExpr.GetIRI()));
+
+        public static List<OWLClassExpression> GetEquivalentClasses(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
         {
             #region Utilities
             List<OWLClassExpression> FindEquivalentClasses(RDFResource classExprIRI, List<OWLEquivalentClasses> axioms, HashSet<long> visitContext)
