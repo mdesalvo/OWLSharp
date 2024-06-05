@@ -181,6 +181,8 @@ namespace OWLSharp.Test.Ontology.Axioms
 
             List<OWLClassExpression> subClassesOfCls1 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
             Assert.IsTrue(subClassesOfCls1.Count == 5);
+            Assert.IsTrue(ontology.CheckIsSubClassOf(new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls1"))));
+            Assert.IsTrue(ontology.CheckIsSubClassOf(new OWLClass(new RDFResource("ex:Cls6")), new OWLClass(new RDFResource("ex:Cls1"))));
 
             List<OWLClassExpression> subClassesOfCls2 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
             Assert.IsTrue(subClassesOfCls2.Count == 2);
