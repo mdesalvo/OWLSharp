@@ -63,10 +63,6 @@ namespace OWLSharp.Ontology.Axioms
 
                 return subResults;
             }
-            List<OWLDisjointUnion> GetDisjointUnionAxiomsOfClass()
-                => GetClassAxiomsOfType<OWLDisjointUnion>(ontology)
-                    .Where(ax => ax.ClassIRI.GetIRI().Equals(classExpr.GetIRI()))
-                    .ToList();
             #endregion
 
             List<OWLClassExpression> results = new List<OWLClassExpression>();
@@ -76,13 +72,13 @@ namespace OWLSharp.Ontology.Axioms
 
 				if (!directOnly)
 				{
+					//DisjointUnionOf(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
+                    foreach (OWLDisjointUnion disjointUnion in GetClassAxiomsOfType<OWLDisjointUnion>(ontology).Where(ax => ax.ClassIRI.GetIRI().Equals(classExpr.GetIRI())))
+                        results.AddRange(disjointUnion.ClassExpressions);
+
 					//EquivalentClass(C1,ObjectUnionOf(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
 					foreach (OWLObjectUnionOf objectUnion in GetEquivalentClasses(ontology, classExpr, directOnly).OfType<OWLObjectUnionOf>())
 						results.AddRange(objectUnion.ClassExpressions);
-
-                    //DisjointUnionOf(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
-                    foreach (OWLDisjointUnion disjointUnion in GetDisjointUnionAxiomsOfClass())
-                        results.AddRange(disjointUnion.ClassExpressions);
 
                     //SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
                     foreach (OWLClassExpression result in results.ToList())
