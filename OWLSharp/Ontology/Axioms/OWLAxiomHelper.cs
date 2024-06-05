@@ -32,6 +32,9 @@ namespace OWLSharp.Ontology.Axioms
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
             => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        public static bool IsSubClassOf(this OWLOntology ontology, OWLClassExpression subClassExpr, OWLClassExpression superClassExpr, bool directOnly = false)
+            => ontology != null && subClassExpr != null && superClassExpr != null && GetSubClassesOf(ontology, superClassExpr, directOnly).Any(cex => cex.GetIRI().Equals(subClassExpr.GetIRI()));
+
         public static List<OWLClassExpression> GetSubClassesOf(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
         {
             #region Utilities
