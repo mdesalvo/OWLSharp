@@ -329,41 +329,6 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }
 
-        /*
-		[TestMethod]
-        public void ShouldGetSuperClassesOfWithEquivalentObjectUnionOfDiscovery()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                ClassAxioms = [
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
-					new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls1")), 
-						new OWLObjectUnionOf([new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls6"))]) ])
-                ]
-            };
-
-            List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
-            Assert.IsTrue(superClassesOfCls1.Count == 5);
-            Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls1"))));
-            Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls6")), new OWLClass(new RDFResource("ex:Cls1"))));
-
-            List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
-            Assert.IsTrue(superClassesOfCls2.Count == 2);
-
-            List<OWLClassExpression> superClassesOfCls3 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls3")));
-            Assert.IsTrue(superClassesOfCls3.Count == 1);
-
-            List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
-            Assert.IsTrue(superClassesOfCls4.Count == 0);
-
-            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5"))).Count == 0);
-            Assert.IsTrue(ontology.GetSuperClassesOf(null).Count == 0);
-            Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
-        }
-        */
-
         [TestMethod]
         public void ShouldGetSuperClassesOfWithDisjointUnionOfDiscovery()
         {
