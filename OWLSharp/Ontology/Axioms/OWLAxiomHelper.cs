@@ -86,7 +86,7 @@ namespace OWLSharp.Ontology.Axioms
 						subClasses.AddRange(objectUnion.ClassExpressions);
 				}
 			}
-            return subClasses;
+            return OWLExpressionHelper.RemoveDuplicates(subClasses);
         }
 
 		public static bool CheckIsSuperClassOf(this OWLOntology ontology, OWLClassExpression superClassExpr, OWLClassExpression subClassExpr, bool directOnly=false)
@@ -139,7 +139,7 @@ namespace OWLSharp.Ontology.Axioms
 						superClasses.Add(disjointUnion.ClassIRI);
 				}
 			}
-            return superClasses;
+            return OWLExpressionHelper.RemoveDuplicates(superClasses);
         }
 
         public static bool CheckAreEquivalentClasses(this OWLOntology ontology, OWLClassExpression leftClassExpr, OWLClassExpression rightClassExpr, bool directOnly=false)
