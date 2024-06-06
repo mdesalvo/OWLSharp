@@ -261,6 +261,173 @@ namespace OWLSharp.Test.Ontology.Axioms
         }
 
 		[TestMethod]
+        public void ShouldGetSuperClassesOf()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
+                ]
+            };
+
+            List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
+            Assert.IsTrue(superClassesOfCls1.Count == 0);
+
+            List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
+            Assert.IsTrue(superClassesOfCls2.Count == 1);
+            Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2"))));
+
+            List<OWLClassExpression> superClassesOfCls3 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls3")));
+            Assert.IsTrue(superClassesOfCls3.Count == 2);
+            Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls3"))));
+			Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls3"))));
+
+            List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
+            Assert.IsTrue(superClassesOfCls4.Count == 3);
+			Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls4"))));
+			Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls4"))));
+			Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls4"))));
+
+            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5"))).Count == 0);
+            Assert.IsTrue(ontology.GetSuperClassesOf(null).Count == 0);
+            Assert.IsFalse(ontology.CheckIsSuperClassOf(null, new OWLClass(new RDFResource("ex:Cls2"))));
+            Assert.IsFalse(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls2")), null));
+            Assert.IsFalse((null as OWLOntology).CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))));
+            Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
+        }
+
+		[TestMethod]
+        public void ShouldGetSuperClassesOfWithEquivalentClassesDiscovery()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
+					new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls5"))]),
+					new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls6"))])
+                ]
+            };
+
+            List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
+            Assert.IsTrue(superClassesOfCls1.Count == 0);
+
+            List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
+            Assert.IsTrue(superClassesOfCls2.Count == 1);
+
+            List<OWLClassExpression> superClassesOfCls3 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls3")));
+            Assert.IsTrue(superClassesOfCls3.Count == 2);
+
+            List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
+            Assert.IsTrue(superClassesOfCls4.Count == 4);
+
+            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5"))).Count == 0);
+            Assert.IsTrue(ontology.GetSuperClassesOf(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
+        }
+
+        /*
+		[TestMethod]
+        public void ShouldGetSuperClassesOfWithEquivalentObjectUnionOfDiscovery()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
+					new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls1")), 
+						new OWLObjectUnionOf([new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls6"))]) ])
+                ]
+            };
+
+            List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
+            Assert.IsTrue(superClassesOfCls1.Count == 5);
+            Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls1"))));
+            Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls6")), new OWLClass(new RDFResource("ex:Cls1"))));
+
+            List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
+            Assert.IsTrue(superClassesOfCls2.Count == 2);
+
+            List<OWLClassExpression> superClassesOfCls3 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls3")));
+            Assert.IsTrue(superClassesOfCls3.Count == 1);
+
+            List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
+            Assert.IsTrue(superClassesOfCls4.Count == 0);
+
+            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5"))).Count == 0);
+            Assert.IsTrue(ontology.GetSuperClassesOf(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
+        }
+        */
+
+        [TestMethod]
+        public void ShouldGetSuperClassesOfWithDisjointUnionOfDiscovery()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
+                    new OWLDisjointUnion(new OWLClass(new RDFResource("ex:Cls4")),
+                        [ new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls6")) ])
+                ]
+            };
+
+            List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
+            Assert.IsTrue(superClassesOfCls1.Count == 0);
+            
+            List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
+            Assert.IsTrue(superClassesOfCls2.Count == 1);
+
+            List<OWLClassExpression> superClassesOfCls3 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls3")));
+            Assert.IsTrue(superClassesOfCls3.Count == 2);
+
+            List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
+            Assert.IsTrue(superClassesOfCls4.Count == 3);
+
+			List<OWLClassExpression> superClassesOfCls5 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5")));
+            Assert.IsTrue(superClassesOfCls5.Count == 1);
+			Assert.IsTrue(ontology.CheckIsSuperClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls5"))));
+            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls7"))).Count == 0);
+            Assert.IsTrue(ontology.GetSuperClassesOf(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldGetSuperClassesOfDirectOnly()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
+                ]
+            };
+
+            List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true);
+            Assert.IsTrue(superClassesOfCls1.Count == 0);
+
+            List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")), true);
+            Assert.IsTrue(superClassesOfCls2.Count == 1);
+
+            List<OWLClassExpression> superClassesOfCls3 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls3")), true);
+            Assert.IsTrue(superClassesOfCls3.Count == 1);
+
+            List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")), true);
+            Assert.IsTrue(superClassesOfCls4.Count == 1);
+
+            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5")), true).Count == 0);
+            Assert.IsTrue(ontology.GetSuperClassesOf(null, true).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true).Count == 0);
+        }
+
+		[TestMethod]
         public void ShouldGetEquivalentClasses()
         {
             OWLOntology ontology = new OWLOntology()

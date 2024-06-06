@@ -40,52 +40,106 @@ namespace OWLSharp.Ontology.Axioms
             #region Utilities
             List<OWLClassExpression> FindSubClassesOf(RDFResource classExprIRI, List<OWLSubClassOf> axioms, HashSet<long> visitContext)
             {
-                List<OWLClassExpression> subResults = new List<OWLClassExpression>();
+                List<OWLClassExpression> foundSubClasses = new List<OWLClassExpression>();
 
                 #region VisitContext
                 if (!visitContext.Contains(classExprIRI.PatternMemberID))
                     visitContext.Add(classExprIRI.PatternMemberID);
                 else
-                    return subResults;
+                    return foundSubClasses;
                 #endregion
 
 				#region Discovery
 				foreach (OWLSubClassOf axiom in axioms.Where(ax => ax.SuperClassExpression.GetIRI().Equals(classExprIRI)))
-                    subResults.Add(axiom.SubClassExpression);
+                    foundSubClasses.Add(axiom.SubClassExpression);
 
 				if (!directOnly)
                 {
 					//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
-                    foreach (OWLClassExpression subClass in subResults.ToList())
-                        subResults.AddRange(FindSubClassesOf(subClass.GetIRI(), axioms, visitContext));
+                    foreach (OWLClassExpression subClass in foundSubClasses.ToList())
+                        foundSubClasses.AddRange(FindSubClassesOf(subClass.GetIRI(), axioms, visitContext));
                 }
 				#endregion
 
-                return subResults;
+                return foundSubClasses;
             }
             #endregion
 
-            List<OWLClassExpression> results = new List<OWLClassExpression>();
+            List<OWLClassExpression> subClasses = new List<OWLClassExpression>();
             if (ontology != null && classExpr != null)
 			{
-				results.AddRange(FindSubClassesOf(classExpr.GetIRI(), GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+				RDFResource clsExprIRI = classExpr.GetIRI();
+				subClasses.AddRange(FindSubClassesOf(clsExprIRI, GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
 
 				if (!directOnly)
 				{
+					//SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
+                    foreach (OWLClassExpression subClass in subClasses.ToList())
+						subClasses.AddRange(GetEquivalentClasses(ontology, subClass, directOnly));
+
 					//DisjointUnionOf(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
-                    foreach (OWLDisjointUnion disjointUnion in GetClassAxiomsOfType<OWLDisjointUnion>(ontology).Where(ax => ax.ClassIRI.GetIRI().Equals(classExpr.GetIRI())))
-                        results.AddRange(disjointUnion.ClassExpressions);
+                    foreach (OWLDisjointUnion disjointUnion in GetClassAxiomsOfType<OWLDisjointUnion>(ontology).Where(ax => ax.ClassIRI.GetIRI().Equals(clsExprIRI)))
+                        subClasses.AddRange(disjointUnion.ClassExpressions);
 
 					//EquivalentClass(C1,ObjectUnionOf(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
 					foreach (OWLObjectUnionOf objectUnion in GetEquivalentClasses(ontology, classExpr, directOnly).OfType<OWLObjectUnionOf>())
-						results.AddRange(objectUnion.ClassExpressions);
-
-                    //SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
-                    foreach (OWLClassExpression result in results.ToList())
-						results.AddRange(GetEquivalentClasses(ontology, result, directOnly));
+						subClasses.AddRange(objectUnion.ClassExpressions);
 				}
 			}
-            return results;
+            return subClasses;
+        }
+
+		public static bool CheckIsSuperClassOf(this OWLOntology ontology, OWLClassExpression superClassExpr, OWLClassExpression subClassExpr, bool directOnly=false)
+            => ontology != null && superClassExpr != null && subClassExpr != null && GetSuperClassesOf(ontology, subClassExpr, directOnly).Any(cex => cex.GetIRI().Equals(superClassExpr.GetIRI()));
+
+		public static List<OWLClassExpression> GetSuperClassesOf(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
+        {
+            #region Utilities
+            List<OWLClassExpression> FindSuperClassesOf(RDFResource classExprIRI, List<OWLSubClassOf> axioms, HashSet<long> visitContext)
+            {
+                List<OWLClassExpression> foundSuperClasses = new List<OWLClassExpression>();
+
+                #region VisitContext
+                if (!visitContext.Contains(classExprIRI.PatternMemberID))
+                    visitContext.Add(classExprIRI.PatternMemberID);
+                else
+                    return foundSuperClasses;
+                #endregion
+
+				#region Discovery
+				foreach (OWLSubClassOf axiom in axioms.Where(ax => ax.SubClassExpression.GetIRI().Equals(classExprIRI)))
+                    foundSuperClasses.Add(axiom.SuperClassExpression);
+
+				if (!directOnly)
+                {
+					//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+                    foreach (OWLClassExpression superClass in foundSuperClasses.ToList())
+                        foundSuperClasses.AddRange(FindSuperClassesOf(superClass.GetIRI(), axioms, visitContext));
+                }
+				#endregion
+
+                return foundSuperClasses;
+            }
+            #endregion
+
+            List<OWLClassExpression> superClasses = new List<OWLClassExpression>();
+            if (ontology != null && classExpr != null)
+			{
+				RDFResource clsExprIRI = classExpr.GetIRI();
+				superClasses.AddRange(FindSuperClassesOf(clsExprIRI, GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+
+				if (!directOnly)
+				{
+					//SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
+                    foreach (OWLClassExpression superClass in superClasses.ToList())
+						superClasses.AddRange(GetEquivalentClasses(ontology, superClass, directOnly));
+
+					//DisjointUnionOf(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
+                    foreach (OWLDisjointUnion disjointUnion in GetClassAxiomsOfType<OWLDisjointUnion>(ontology).Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(clsExprIRI))))
+						superClasses.Add(disjointUnion.ClassIRI);
+				}
+			}
+            return superClasses;
         }
 
         public static bool CheckAreEquivalentClasses(this OWLOntology ontology, OWLClassExpression leftClassExpr, OWLClassExpression rightClassExpr, bool directOnly=false)
@@ -96,69 +150,76 @@ namespace OWLSharp.Ontology.Axioms
             #region Utilities
             List<OWLClassExpression> FindEquivalentClasses(RDFResource classExprIRI, List<OWLEquivalentClasses> axioms, HashSet<long> visitContext)
             {
-                List<OWLClassExpression> subResults = new List<OWLClassExpression>();
+                List<OWLClassExpression> foundEquivalentClasses = new List<OWLClassExpression>();
 
                 #region VisitContext
                 if (!visitContext.Contains(classExprIRI.PatternMemberID))
                     visitContext.Add(classExprIRI.PatternMemberID);
                 else
-                    return subResults;
+                    return foundEquivalentClasses;
                 #endregion
 
 				#region Discovery
 				foreach (OWLEquivalentClasses axiom in axioms.Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(classExprIRI))))
-                    subResults.AddRange(axiom.ClassExpressions);
+                    foundEquivalentClasses.AddRange(axiom.ClassExpressions);
 
 				if (!directOnly)
                 {
 					//EquivalentClass(C1,C2) ^ EquivalentClass(C2,C3) -> EquivalentClass(C1,C3)
-                    foreach (OWLClassExpression equivalentClass in subResults.ToList())
-                        subResults.AddRange(FindEquivalentClasses(equivalentClass.GetIRI(), axioms, visitContext));
+                    foreach (OWLClassExpression equivalentClass in foundEquivalentClasses.ToList())
+                        foundEquivalentClasses.AddRange(FindEquivalentClasses(equivalentClass.GetIRI(), axioms, visitContext));
                 }
 				#endregion
 
-				subResults.RemoveAll(res => res.GetIRI().Equals(classExprIRI));
-                return OWLExpressionHelper.RemoveDuplicates(subResults);
+				foundEquivalentClasses.RemoveAll(res => res.GetIRI().Equals(classExprIRI));
+                return OWLExpressionHelper.RemoveDuplicates(foundEquivalentClasses);
             }
             #endregion
 
-            List<OWLClassExpression> results = new List<OWLClassExpression>();
+            List<OWLClassExpression> equivalentClasses = new List<OWLClassExpression>();
             if (ontology != null && classExpr != null)
-                results.AddRange(FindEquivalentClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLEquivalentClasses>(ontology), new HashSet<long>()));
-            return results;
+                equivalentClasses.AddRange(FindEquivalentClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLEquivalentClasses>(ontology), new HashSet<long>()));
+            return equivalentClasses;
         }
 
-        public static bool CheckAreDisjointClasses(this OWLOntology ontology, OWLClassExpression leftClassExpr, OWLClassExpression rightClassExpr)
-            => ontology != null && leftClassExpr != null && rightClassExpr != null && GetDisjointClasses(ontology, leftClassExpr).Any(cex => cex.GetIRI().Equals(rightClassExpr.GetIRI()));
+        public static bool CheckAreDisjointClasses(this OWLOntology ontology, OWLClassExpression leftClassExpr, OWLClassExpression rightClassExpr, bool directOnly=false)
+            => ontology != null && leftClassExpr != null && rightClassExpr != null && GetDisjointClasses(ontology, leftClassExpr, directOnly).Any(cex => cex.GetIRI().Equals(rightClassExpr.GetIRI()));
 
-        public static List<OWLClassExpression> GetDisjointClasses(this OWLOntology ontology, OWLClassExpression classExpr)
+        public static List<OWLClassExpression> GetDisjointClasses(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
         {
             #region Utilities
             List<OWLClassExpression> FindDisjointClasses(RDFResource classExprIRI, List<OWLDisjointClasses> axioms, HashSet<long> visitContext)
             {
-                List<OWLClassExpression> subResults = new List<OWLClassExpression>();
+                List<OWLClassExpression> foundDisjointClasses = new List<OWLClassExpression>();
 
                 #region VisitContext
                 if (!visitContext.Contains(classExprIRI.PatternMemberID))
                     visitContext.Add(classExprIRI.PatternMemberID);
                 else
-                    return subResults;
+                    return foundDisjointClasses;
                 #endregion
 
                 #region Discovery
                 foreach (OWLDisjointClasses axiom in axioms.Where(ax => ax.ClassExpressions.Any(cex => cex.GetIRI().Equals(classExprIRI))))
-                    subResults.AddRange(axiom.ClassExpressions);
+                    foundDisjointClasses.AddRange(axiom.ClassExpressions);
                 #endregion
 
-                subResults.RemoveAll(res => res.GetIRI().Equals(classExprIRI));
-                return OWLExpressionHelper.RemoveDuplicates(subResults);
+                foundDisjointClasses.RemoveAll(res => res.GetIRI().Equals(classExprIRI));
+                return OWLExpressionHelper.RemoveDuplicates(foundDisjointClasses);
             }
             #endregion
 
-            List<OWLClassExpression> results = new List<OWLClassExpression>();
+            List<OWLClassExpression> disjointClasses = new List<OWLClassExpression>();
             if (ontology != null && classExpr != null)
-                results.AddRange(FindDisjointClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLDisjointClasses>(ontology), new HashSet<long>()));
-            return results;
+			{
+				disjointClasses.AddRange(FindDisjointClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLDisjointClasses>(ontology), new HashSet<long>()));
+
+				if (!directOnly)
+				{
+					//TODO: Is disjoint with any disjoint of its superclasses
+				}
+			}
+            return disjointClasses;
         }
         #endregion
 
