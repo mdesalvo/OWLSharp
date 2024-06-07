@@ -34,11 +34,6 @@ namespace OWLSharp.Ontology.Axioms
             => ontology?.ObjectPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
         #endregion
 
-        #region AnnotationAxioms
-        public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
-            => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
-        #endregion
-
         #region AssertionAxioms
         public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
             => ontology?.AssertionAxioms.OfType<T>().ToList() ?? new List<T>();

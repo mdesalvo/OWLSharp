@@ -132,36 +132,6 @@ namespace OWLSharp.Test.Ontology.Axioms
         }
         #endregion
 
-        #region Tests (AnnotationAxioms)
-        [TestMethod]
-		public void ShouldGetAnnotationAxioms()
-		{
-			OWLOntology ontology = new OWLOntology()
-            {
-                AnnotationAxioms = [
-                    new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:Subj"), new RDFResource("ex:Obj")),
-					new OWLAnnotationPropertyDomain(new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT), RDFVocabulary.FOAF.PERSON),
-					new OWLAnnotationPropertyRange(new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT), RDFVocabulary.FOAF.PERSON),
-					new OWLSubAnnotationPropertyOf(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLAnnotationProperty(RDFVocabulary.DC.TITLE))
-                ]
-            };
-
-            List<OWLAnnotationAssertion> annotationAssertion = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
-            Assert.IsTrue(annotationAssertion.Count == 1);
-
-			List<OWLAnnotationPropertyDomain> annotationPropertyDomain = ontology.GetAnnotationAxiomsOfType<OWLAnnotationPropertyDomain>();
-            Assert.IsTrue(annotationPropertyDomain.Count == 1);
-
-			List<OWLAnnotationPropertyRange> annotationPropertyRange = ontology.GetAnnotationAxiomsOfType<OWLAnnotationPropertyRange>();
-            Assert.IsTrue(annotationPropertyRange.Count == 1);
-
-			List<OWLSubAnnotationPropertyOf> subAnnotationProperty = ontology.GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>();
-            Assert.IsTrue(subAnnotationProperty.Count == 1);
-
-            Assert.IsTrue((null as OWLOntology).GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 0);
-        }
-        #endregion
-
         #region Tests (AssertionAxioms)
         [TestMethod]
 		public void ShouldGetAssertionAxioms()
