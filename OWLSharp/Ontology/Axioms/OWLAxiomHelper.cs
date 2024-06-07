@@ -212,14 +212,18 @@ namespace OWLSharp.Ontology.Axioms
             List<OWLClassExpression> disjointClasses = new List<OWLClassExpression>();
             if (ontology != null && classExpr != null)
 			{
-				disjointClasses.AddRange(FindDisjointClasses(classExpr.GetIRI(), GetClassAxiomsOfType<OWLDisjointClasses>(ontology), new HashSet<long>()));
+				HashSet<long> visitContext = new HashSet<long>();
+				List<OWLDisjointClasses> disjointClassAxioms = GetClassAxiomsOfType<OWLDisjointClasses>(ontology);
+				disjointClasses.AddRange(FindDisjointClasses(classExpr.GetIRI(), disjointClassAxioms, visitContext));
 
 				if (!directOnly)
 				{
-					//TODO: Is disjoint with any disjoint of its superclasses
+					//SubClassOf(C1,C2) ^ DisjointWith(C2,C3) -> DisjointWith(C1,C3)
+					foreach (OWLClassExpression superClass in GetSuperClassesOf(ontology, classExpr, directOnly))
+						disjointClasses.AddRange(FindDisjointClasses(superClass.GetIRI(), disjointClassAxioms, visitContext));
 				}
 			}
-            return disjointClasses;
+            return OWLExpressionHelper.RemoveDuplicates(disjointClasses);
         }
         #endregion
 
