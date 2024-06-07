@@ -467,6 +467,31 @@ namespace OWLSharp.Test.Ontology.Axioms
         }
         
 		[TestMethod]
+        public void ShouldGetDisjointClassesWithEquivalentClassesDiscovery()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+					new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2"))]),
+                    new OWLDisjointClasses([ new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls3")) ]),
+					new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls1"))),
+                ]
+            };
+
+            List<OWLClassExpression> disjointClassesOfCls1 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls1")));
+            Assert.IsTrue(disjointClassesOfCls1.Count == 1);
+            
+            List<OWLClassExpression> disjointClassesOfCls2 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls2")));
+            Assert.IsTrue(disjointClassesOfCls2.Count == 1);
+
+            List<OWLClassExpression> disjointClassesOfCls3 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls3")));
+            Assert.IsTrue(disjointClassesOfCls3.Count == 1);
+
+            List<OWLClassExpression> disjointOfCls4 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls4")));
+            Assert.IsTrue(disjointOfCls4.Count == 1);
+        }
+
+		[TestMethod]
         public void ShouldGetDisjointClassesWithSubClassOfDiscovery()
         {
             OWLOntology ontology = new OWLOntology()

@@ -213,6 +213,10 @@ namespace OWLSharp.Ontology.Axioms
 
 				if (!directOnly)
 				{
+					//EquivalentClasses(C1,C2) ^ DisjointWith(C2,C3) -> DisjointWith(C1,C3)
+					foreach (OWLClassExpression equivalentClass in GetEquivalentClasses(ontology, classExpr, directOnly))
+						disjointClasses.AddRange(FindDisjointClasses(equivalentClass.GetIRI(), disjointClassAxioms, visitContext));
+
 					//SubClassOf(C1,C2) ^ DisjointWith(C2,C3) -> DisjointWith(C1,C3)
 					foreach (OWLClassExpression superClass in GetSuperClassesOf(ontology, classExpr, directOnly))
 						disjointClasses.AddRange(FindDisjointClasses(superClass.GetIRI(), disjointClassAxioms, visitContext));
