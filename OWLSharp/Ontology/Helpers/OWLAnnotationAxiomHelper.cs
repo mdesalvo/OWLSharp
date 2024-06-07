@@ -16,14 +16,15 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OWLSharp.Ontology.Axioms;
 
-namespace OWLSharp.Ontology.Axioms
+namespace OWLSharp.Ontology.Helpers
 {
-	public static class OWLObjectPropertyAxiomHelper
+	public static class OWLAnnotationAxiomHelper
 	{
 		#region Methods
-		public static List<T> GetObjectPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLObjectPropertyAxiom
-            => ontology?.ObjectPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
+		public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
+            => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
 		#endregion
 	}
 }

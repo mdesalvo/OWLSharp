@@ -18,8 +18,9 @@ using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
+using OWLSharp.Ontology.Axioms;
 
-namespace OWLSharp.Ontology.Axioms
+namespace OWLSharp.Ontology.Helpers
 {
     public static class OWLClassAxiomHelper 
     {

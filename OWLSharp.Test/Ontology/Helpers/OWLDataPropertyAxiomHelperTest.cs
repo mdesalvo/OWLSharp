@@ -19,9 +19,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Helpers;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology.Axioms
+namespace OWLSharp.Test.Ontology.Helpers
 {
     [TestClass]
     public class OWLDataPropertyAxiomHelperTest

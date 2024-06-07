@@ -17,8 +17,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Axioms;
 
-namespace OWLSharp.Ontology.Axioms
+namespace OWLSharp.Ontology.Helpers
 {
 	public static class OWLDeclarationHelper
 	{
