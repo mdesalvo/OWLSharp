@@ -19,10 +19,12 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
+using System;
 using System.Collections.Generic;
 
 namespace OWLSharp.Test.Ontology.Axioms
 {
+	[Obsolete]
     [TestClass]
     public class OWLAxiomHelperTest
     {

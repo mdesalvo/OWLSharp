@@ -15,11 +15,13 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Ontology.Axioms
 {
+	[Obsolete]
     public static class OWLAxiomHelper 
     {
         #region Declarations
