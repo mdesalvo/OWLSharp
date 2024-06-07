@@ -28,47 +28,6 @@ namespace OWLSharp.Test.Ontology.Axioms
     [TestClass]
     public class OWLAxiomHelperTest
     {
-        #region Tests (DeclarationAxioms)
-        [TestMethod]
-        public void ShouldGetDeclarationAxioms()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                DeclarationAxioms = [
-                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
-                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
-                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
-                    new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INTEGER)),
-                    new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.STRING)),
-                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")))
-                ]
-            };
-
-            List<OWLDeclaration> classDeclarations = ontology.GetDeclarationAxiomsOfType<OWLClass>();
-            Assert.IsTrue(classDeclarations.Count == 3);
-
-            List<OWLDeclaration> datatypeDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDatatype>();
-            Assert.IsTrue(datatypeDeclarations.Count == 2);
-
-            List<OWLDeclaration> objectPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>();
-            Assert.IsTrue(objectPropertyDeclarations.Count == 1);
-
-            List<OWLDeclaration> dataPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDataProperty>();
-            Assert.IsTrue(dataPropertyDeclarations.Count == 1);
-
-            List<OWLDeclaration> annotationPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>();
-            Assert.IsTrue(annotationPropertyDeclarations.Count == 1);
-
-            List<OWLDeclaration> individualDeclarations = ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>();
-            Assert.IsTrue(individualDeclarations.Count == 1);
-
-            Assert.IsTrue((null as OWLOntology).GetDeclarationAxiomsOfType<OWLClass>().Count == 0);
-        }
-        #endregion
-
         #region Tests (DataPropertyAxioms)
         [TestMethod]
 		public void ShouldGetDataPropertyAxioms()

@@ -24,11 +24,6 @@ namespace OWLSharp.Ontology.Axioms
 	[Obsolete]
     public static class OWLAxiomHelper 
     {
-        #region Declarations
-        public static List<OWLDeclaration> GetDeclarationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity
-            => ontology?.DeclarationAxioms.Where(ax => ax.Expression is T).ToList() ?? new List<OWLDeclaration>();
-        #endregion
-
         #region DataPropertyAxioms
         public static List<T> GetDataPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLDataPropertyAxiom
             => ontology?.DataPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
