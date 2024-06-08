@@ -213,6 +213,9 @@ namespace OWLSharp.Ontology.Helpers
 			}
             return OWLExpressionHelper.RemoveDuplicates(disjointDataProperties);
         }
+		
+		public static bool CheckHasFunctionalDataProperty(this OWLOntology ontology, OWLDataProperty dataProperty)
+            => ontology != null && dataProperty != null && GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>(ontology).Any(fdp => fdp.DataProperty.GetIRI().Equals(dataProperty.GetIRI()));
 		#endregion
 	}
 }

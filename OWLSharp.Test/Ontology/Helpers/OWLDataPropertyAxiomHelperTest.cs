@@ -424,6 +424,24 @@ namespace OWLSharp.Test.Ontology.Helpers
             List<OWLDataProperty> disjointOfDtp4 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp4")));
             Assert.IsTrue(disjointOfDtp4.Count == 1);
         }
+
+		[TestMethod]
+        public void ShouldCheckHasFunctionalDataProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DataPropertyAxioms = [
+					new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:FuncDtp"))),
+					new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:FuncDtp")), new OWLDataProperty(new RDFResource("ex:Dtp2"))),
+                    new OWLDisjointDataProperties([ new OWLDataProperty(new RDFResource("ex:Dtp1")), new OWLDataProperty(new RDFResource("ex:Dtp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:FuncDtp"))));
+			Assert.IsFalse(ontology.CheckHasFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:Dtp2"))));
+			Assert.IsFalse(ontology.CheckHasFunctionalDataProperty(null));
+			Assert.IsFalse((null as OWLOntology).CheckHasFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:FuncDtp"))));
+        }
 		#endregion
 	}
 }
