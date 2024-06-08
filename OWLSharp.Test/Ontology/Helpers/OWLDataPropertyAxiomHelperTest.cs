@@ -63,6 +63,104 @@ namespace OWLSharp.Test.Ontology.Helpers
 
             Assert.IsTrue((null as OWLOntology).GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>().Count == 0);
         }
+		
+		[TestMethod]
+        public void ShouldGetSubDataPropertiesOf()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DataPropertyAxioms = [
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp3")), new OWLDataProperty(new RDFResource("ex:Dtp2"))),
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp3"))),
+                ]
+            };
+
+            List<OWLDataProperty> subDataPropertiesOfDtp1 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1")));
+            Assert.IsTrue(subDataPropertiesOfDtp1.Count == 3);
+            Assert.IsTrue(ontology.CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))));
+            Assert.IsTrue(ontology.CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp3")), new OWLDataProperty(new RDFResource("ex:Dtp1"))));
+            Assert.IsTrue(ontology.CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp1"))));
+
+            List<OWLDataProperty> subDataPropertiesOfDtp2 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp2")));
+            Assert.IsTrue(subDataPropertiesOfDtp2.Count == 2);
+            Assert.IsTrue(ontology.CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp3")), new OWLDataProperty(new RDFResource("ex:Dtp2"))));
+            Assert.IsTrue(ontology.CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp2"))));
+
+            List<OWLDataProperty> subDataPropertiesOfDtp3 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp3")));
+            Assert.IsTrue(subDataPropertiesOfDtp3.Count == 1);
+            Assert.IsTrue(ontology.CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp3"))));
+
+            List<OWLDataProperty> subDataPropertiesOfDtp4 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp4")));
+            Assert.IsTrue(subDataPropertiesOfDtp4.Count == 0);
+
+            Assert.IsTrue(ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp5"))).Count == 0);
+            Assert.IsTrue(ontology.GetSubDataPropertiesOf(null).Count == 0);
+            Assert.IsFalse(ontology.CheckIsSubDataPropertyOf(null, new OWLDataProperty(new RDFResource("ex:Dtp2"))));
+            Assert.IsFalse(ontology.CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), null));
+            Assert.IsFalse((null as OWLOntology).CheckIsSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))));
+            Assert.IsTrue((null as OWLOntology).GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1"))).Count == 0);
+        }
+
+		[TestMethod]
+        public void ShouldGetSubDataPropertiesOfWithEquivalentDataPropertiesDiscovery()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DataPropertyAxioms = [
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp3")), new OWLDataProperty(new RDFResource("ex:Dtp2"))),
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp3"))),
+					new OWLEquivalentDataProperties([new OWLDataProperty(new RDFResource("ex:Dtp3")), new OWLDataProperty(new RDFResource("ex:Dtp5"))]),
+					new OWLEquivalentDataProperties([new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp6"))])
+                ]
+            };
+
+            List<OWLDataProperty> subDataPropertiesOfDtp1 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1")));
+            Assert.IsTrue(subDataPropertiesOfDtp1.Count == 5);
+
+            List<OWLDataProperty> subDataPropertiesOfDtp2 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp2")));
+            Assert.IsTrue(subDataPropertiesOfDtp2.Count == 4);
+
+            List<OWLDataProperty> subDataPropertiesOfDtp3 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp3")));
+            Assert.IsTrue(subDataPropertiesOfDtp3.Count == 2);
+
+            List<OWLDataProperty> subDataPropertiesOfDtp4 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp4")));
+            Assert.IsTrue(subDataPropertiesOfDtp4.Count == 0);
+
+            Assert.IsTrue(ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp5"))).Count == 0);
+            Assert.IsTrue(ontology.GetSubDataPropertiesOf(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1"))).Count == 0);
+        }
+
+		[TestMethod]
+        public void ShouldGetSubDataPropertiesOfDirectOnly()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DataPropertyAxioms = [
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp3")), new OWLDataProperty(new RDFResource("ex:Dtp2"))),
+                    new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp3"))),
+                ]
+            };
+
+            List<OWLDataProperty> subDataPropertiesOfDtp1 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1")), true);
+            Assert.IsTrue(subDataPropertiesOfDtp1.Count == 1);
+
+            List<OWLDataProperty> subDataPropertiesOfDtp2 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), true);
+            Assert.IsTrue(subDataPropertiesOfDtp2.Count == 1);
+
+            List<OWLDataProperty> subDataPropertiesOfDtp3 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp3")), true);
+            Assert.IsTrue(subDataPropertiesOfDtp3.Count == 1);
+
+            List<OWLDataProperty> subDataPropertiesOfDtp4 = ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), true);
+            Assert.IsTrue(subDataPropertiesOfDtp4.Count == 0);
+
+            Assert.IsTrue(ontology.GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp5")), true).Count == 0);
+            Assert.IsTrue(ontology.GetSubDataPropertiesOf(null, true).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1")), true).Count == 0);
+        }
 		#endregion
 	}
 }
