@@ -78,6 +78,55 @@ namespace OWLSharp.Ontology.Helpers
             return OWLExpressionHelper.RemoveDuplicates(subObjPropExprs);
         }
 
+		public static bool CheckIsSuperObjectPropertyOf(this OWLOntology ontology, OWLObjectPropertyExpression superObjPropExpr, OWLObjectPropertyExpression subObjPropExpr, bool directOnly=false)
+            => ontology != null && superObjPropExpr != null && subObjPropExpr != null && GetSuperObjectPropertiesOf(ontology, subObjPropExpr, directOnly).Any(opex => opex.GetIRI().Equals(superObjPropExpr.GetIRI()));
+
+		public static List<OWLObjectPropertyExpression> GetSuperObjectPropertiesOf(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, bool directOnly=false)
+        {
+            #region Utilities
+            List<OWLObjectPropertyExpression> FindSuperObjectPropertiesOf(RDFResource objPropExprIRI, List<OWLSubObjectPropertyOf> axioms, HashSet<long> visitContext)
+            {
+                List<OWLObjectPropertyExpression> foundSuperObjPropExprs = new List<OWLObjectPropertyExpression>();
+
+                #region VisitContext
+                if (!visitContext.Contains(objPropExprIRI.PatternMemberID))
+                    visitContext.Add(objPropExprIRI.PatternMemberID);
+                else
+                    return foundSuperObjPropExprs;
+                #endregion
+
+				#region Discovery
+				foreach (OWLSubObjectPropertyOf axiom in axioms.Where(ax => ax.SubObjectPropertyExpression.GetIRI().Equals(objPropExprIRI)))
+                    foundSuperObjPropExprs.Add(axiom.SuperObjectPropertyExpression);
+
+				if (!directOnly)
+                {
+					//SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
+                    foreach (OWLObjectPropertyExpression superObjPropExpr in foundSuperObjPropExprs.ToList())
+                        foundSuperObjPropExprs.AddRange(FindSuperObjectPropertiesOf(superObjPropExpr.GetIRI(), axioms, visitContext));
+                }
+				#endregion
+
+                return foundSuperObjPropExprs;
+            }
+            #endregion
+
+            List<OWLObjectPropertyExpression> superObjPropExprs = new List<OWLObjectPropertyExpression>();
+            if (ontology != null && objPropExpr != null)
+			{
+				RDFResource objPropExprIRI = objPropExpr.GetIRI();
+				superObjPropExprs.AddRange(FindSuperObjectPropertiesOf(objPropExprIRI, GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology), new HashSet<long>()));
+
+				if (!directOnly)
+				{
+					//SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
+                    foreach (OWLObjectPropertyExpression superObjPropExpr in superObjPropExprs.ToList())
+						superObjPropExprs.AddRange(GetEquivalentObjectProperties(ontology, superObjPropExpr, directOnly));
+				}
+			}
+            return OWLExpressionHelper.RemoveDuplicates(superObjPropExprs);
+        }
+
 		public static bool CheckAreEquivalentObjectProperties(this OWLOntology ontology, OWLObjectPropertyExpression leftObjPropExpr, OWLObjectPropertyExpression rightObjPropExpr, bool directOnly=false)
             => ontology != null && leftObjPropExpr != null && rightObjPropExpr != null && GetEquivalentObjectProperties(ontology, leftObjPropExpr, directOnly).Any(oex => oex.GetIRI().Equals(rightObjPropExpr.GetIRI()));
 
