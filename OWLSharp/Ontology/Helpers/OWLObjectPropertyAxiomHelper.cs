@@ -166,6 +166,54 @@ namespace OWLSharp.Ontology.Helpers
                 equivObjPropExprs.AddRange(FindEquivalentObjectProperties(objPropExpr.GetIRI(), GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>(ontology), new HashSet<long>()));
             return equivObjPropExprs;
         }
-		#endregion
-	}
+
+        public static bool CheckAreDisjointObjectProperties(this OWLOntology ontology, OWLObjectPropertyExpression leftObjPropExpr, OWLObjectPropertyExpression rightObjPropExpr, bool directOnly = false)
+            => ontology != null && leftObjPropExpr != null && rightObjPropExpr != null && GetDisjointObjectProperties(ontology, leftObjPropExpr, directOnly).Any(opex => opex.GetIRI().Equals(rightObjPropExpr.GetIRI()));
+
+        public static List<OWLObjectPropertyExpression> GetDisjointObjectProperties(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, bool directOnly=false)
+        {
+            #region Utilities
+            List<OWLObjectPropertyExpression> FindDisjointObjectProperties(RDFResource objPropExprIRI, List<OWLDisjointObjectProperties> axioms, HashSet<long> visitContext)
+            {
+                List<OWLObjectPropertyExpression> foundDisjObjPropExprs = new List<OWLObjectPropertyExpression>();
+
+                #region VisitContext
+                if (!visitContext.Contains(objPropExprIRI.PatternMemberID))
+                    visitContext.Add(objPropExprIRI.PatternMemberID);
+                else
+                    return foundDisjObjPropExprs;
+                #endregion
+
+                #region Discovery
+                foreach (OWLDisjointObjectProperties axiom in axioms.Where(ax => ax.ObjectPropertyExpressions.Any(opex => opex.GetIRI().Equals(objPropExprIRI))))
+                    foundDisjObjPropExprs.AddRange(axiom.ObjectPropertyExpressions);
+                #endregion
+
+                foundDisjObjPropExprs.RemoveAll(res => res.GetIRI().Equals(objPropExprIRI));
+                return OWLExpressionHelper.RemoveDuplicates(foundDisjObjPropExprs);
+            }
+            #endregion
+
+            List<OWLObjectPropertyExpression> disjObjPropExprs = new List<OWLObjectPropertyExpression>();
+            if (ontology != null && objPropExpr != null)
+            {
+                HashSet<long> visitContext = new HashSet<long>();
+                List<OWLDisjointObjectProperties> disjointObjectPropertyAxioms = GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>(ontology);
+                disjObjPropExprs.AddRange(FindDisjointObjectProperties(objPropExpr.GetIRI(), disjointObjectPropertyAxioms, visitContext));
+
+                if (!directOnly)
+                {
+                    //EquivalentObjectProperties(P1,P2) ^ PropertyDisjointWith(P2,P3) -> PropertyDisjointWith(P1,P3)
+                    foreach (OWLObjectPropertyExpression equivObjPropExpr in GetEquivalentObjectProperties(ontology, objPropExpr, directOnly))
+                        disjObjPropExprs.AddRange(FindDisjointObjectProperties(equivObjPropExpr.GetIRI(), disjointObjectPropertyAxioms, visitContext));
+
+                    //SubObjectPropertyOf(P1,P2) ^ PropertyDisjointWith(P2,P3) -> PropertyDisjointWith(P1,P3)
+                    foreach (OWLObjectPropertyExpression superObjPropExpr in GetSuperObjectPropertiesOf(ontology, objPropExpr, directOnly))
+                        disjObjPropExprs.AddRange(FindDisjointObjectProperties(superObjPropExpr.GetIRI(), disjointObjectPropertyAxioms, visitContext));
+                }
+            }
+            return OWLExpressionHelper.RemoveDuplicates(disjObjPropExprs);
+        }
+        #endregion
+    }
 }
