@@ -452,6 +452,132 @@ namespace OWLSharp.Test.Ontology.Helpers
             List<OWLObjectPropertyExpression> disjointOfObp4 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp4")));
             Assert.IsTrue(disjointOfObp4.Count == 1);
         }
+
+        [TestMethod]
+        public void ShouldCheckHasFunctionalObjectProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:FuncObp"))),
+                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:FuncObp")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
+                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:FuncObp"))));
+            Assert.IsFalse(ontology.CheckHasFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:Obp2"))));
+            Assert.IsFalse(ontology.CheckHasFunctionalObjectProperty(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:FuncObp"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasInverseFunctionalObjectProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:InvFuncObp"))),
+                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:InvFuncObp")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
+                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:InvFuncObp"))));
+            Assert.IsFalse(ontology.CheckHasInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:Obp2"))));
+            Assert.IsFalse(ontology.CheckHasInverseFunctionalObjectProperty(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:InvFuncObp"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasSymmetricObjectProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:SymObp"))),
+                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:SymObp")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
+                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:SymObp"))));
+            Assert.IsFalse(ontology.CheckHasSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:Obp2"))));
+            Assert.IsFalse(ontology.CheckHasSymmetricObjectProperty(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:SymObp"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasAsymmetricObjectProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:AsymObp"))),
+                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:AsymObp")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
+                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:AsymObp"))));
+            Assert.IsFalse(ontology.CheckHasAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:Obp2"))));
+            Assert.IsFalse(ontology.CheckHasAsymmetricObjectProperty(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:AsymObp"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasReflexiveObjectProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLReflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:ReflObp"))),
+                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:ReflObp")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
+                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasReflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:ReflObp"))));
+            Assert.IsFalse(ontology.CheckHasReflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:Obp2"))));
+            Assert.IsFalse(ontology.CheckHasReflexiveObjectProperty(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasReflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:ReflObp"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasIrreflexiveObjectProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:IrreflObp"))),
+                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:IrreflObp")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
+                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:IrreflObp"))));
+            Assert.IsFalse(ontology.CheckHasIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:Obp2"))));
+            Assert.IsFalse(ontology.CheckHasIrreflexiveObjectProperty(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:IrreflObp"))));
+        }
+
+        [TestMethod]
+        public void ShouldCheckHasTransitiveObjectProperty()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))),
+                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:TransObp")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
+                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
+                ]
+            };
+
+            Assert.IsTrue(ontology.CheckHasTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))));
+            Assert.IsFalse(ontology.CheckHasTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:Obp2"))));
+            Assert.IsFalse(ontology.CheckHasTransitiveObjectProperty(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))));
+        }
         #endregion
     }
 }

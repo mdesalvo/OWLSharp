@@ -214,6 +214,27 @@ namespace OWLSharp.Ontology.Helpers
             }
             return OWLExpressionHelper.RemoveDuplicates(disjObjPropExprs);
         }
+
+        public static bool CheckHasFunctionalObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+            => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>(ontology).Any(fop => fop.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
+
+        public static bool CheckHasInverseFunctionalObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+            => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>(ontology).Any(ifop => ifop.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
+
+        public static bool CheckHasSymmetricObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+            => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>(ontology).Any(sop => sop.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
+
+        public static bool CheckHasAsymmetricObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+            => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>(ontology).Any(asop => asop.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
+
+        public static bool CheckHasReflexiveObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+            => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>(ontology).Any(rop => rop.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
+
+        public static bool CheckHasIrreflexiveObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+            => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLIrreflexiveObjectProperty>(ontology).Any(irop => irop.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
+
+        public static bool CheckHasTransitiveObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
+            => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>(ontology).Any(top => top.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
         #endregion
     }
 }
