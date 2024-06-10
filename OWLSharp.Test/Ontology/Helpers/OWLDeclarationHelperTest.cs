@@ -49,6 +49,10 @@ namespace OWLSharp.Test.Ontology.Helpers
 
             List<OWLDeclaration> classDeclarations = ontology.GetDeclarationAxiomsOfType<OWLClass>();
             Assert.IsTrue(classDeclarations.Count == 3);
+			Assert.IsTrue(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
+			Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.DOCUMENT)));
+			Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(null));
+			Assert.IsFalse((null as OWLOntology).CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
 
             List<OWLDeclaration> datatypeDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDatatype>();
             Assert.IsTrue(datatypeDeclarations.Count == 2);
