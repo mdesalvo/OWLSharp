@@ -17,6 +17,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using OWLSharp.Ontology.Axioms;
+using OWLSharp.Ontology.Expressions;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Helpers
 {
@@ -25,6 +27,46 @@ namespace OWLSharp.Ontology.Helpers
 		#region Methods
 		public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
             => ontology?.AssertionAxioms.OfType<T>().ToList() ?? new List<T>();
+
+		public static bool CheckIsSameIndividual(this OWLOntology ontology, OWLIndividualExpression leftIdvExpr, OWLIndividualExpression rightIdvExpr, bool directOnly=false)
+            => ontology != null && leftIdvExpr != null && rightIdvExpr != null && GetSameIndividuals(ontology, leftIdvExpr, directOnly).Any(iex => iex.GetIRI().Equals(rightIdvExpr.GetIRI()));
+
+        public static List<OWLIndividualExpression> GetSameIndividuals(this OWLOntology ontology, OWLIndividualExpression idvExpr, bool directOnly=false)
+        {
+            #region Utilities
+            List<OWLIndividualExpression> FindSameIndividuals(RDFResource idvExprIRI, List<OWLSameIndividual> axioms, HashSet<long> visitContext)
+            {
+                List<OWLIndividualExpression> foundSameIndividuals = new List<OWLIndividualExpression>();
+
+                #region VisitContext
+                if (!visitContext.Contains(idvExprIRI.PatternMemberID))
+                    visitContext.Add(idvExprIRI.PatternMemberID);
+                else
+                    return foundSameIndividuals;
+                #endregion
+
+				#region Discovery
+				foreach (OWLSameIndividual axiom in axioms.Where(ax => ax.IndividualExpressions.Any(iex => iex.GetIRI().Equals(idvExprIRI))))
+                    foundSameIndividuals.AddRange(axiom.IndividualExpressions);
+
+				if (!directOnly)
+                {
+					//SameAs(I1,I2) ^ SameAs(I2,I3) -> SameAs(I1,I3)
+                    foreach (OWLIndividualExpression sameIndividual in foundSameIndividuals.ToList())
+                        foundSameIndividuals.AddRange(FindSameIndividuals(sameIndividual.GetIRI(), axioms, visitContext));
+                }
+				#endregion
+
+				foundSameIndividuals.RemoveAll(res => res.GetIRI().Equals(idvExprIRI));
+                return OWLExpressionHelper.RemoveDuplicates(foundSameIndividuals);
+            }
+            #endregion
+
+            List<OWLIndividualExpression> sameIndividuals = new List<OWLIndividualExpression>();
+            if (ontology != null && idvExpr != null)
+                sameIndividuals.AddRange(FindSameIndividuals(idvExpr.GetIRI(), GetAssertionAxiomsOfType<OWLSameIndividual>(ontology), new HashSet<long>()));
+            return sameIndividuals;
+        }
 		#endregion
 	}
 }
