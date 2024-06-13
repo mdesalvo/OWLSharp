@@ -67,6 +67,39 @@ namespace OWLSharp.Ontology.Helpers
                 sameIndividuals.AddRange(FindSameIndividuals(idvExpr.GetIRI(), GetAssertionAxiomsOfType<OWLSameIndividual>(ontology), new HashSet<long>()));
             return sameIndividuals;
         }
-		#endregion
-	}
+
+        public static bool CheckAreDifferentIndividuals(this OWLOntology ontology, OWLIndividualExpression leftIdvExpr, OWLIndividualExpression rightIdvExpr, bool directOnly=false)
+            => ontology != null && leftIdvExpr != null && rightIdvExpr != null && GetDifferentIndividuals(ontology, leftIdvExpr, directOnly).Any(iex => iex.GetIRI().Equals(rightIdvExpr.GetIRI()));
+
+        public static List<OWLIndividualExpression> GetDifferentIndividuals(this OWLOntology ontology, OWLIndividualExpression idvExpr, bool directOnly=false)
+        {
+            #region Utilities
+            List<OWLIndividualExpression> FindDifferentIndividuals(RDFResource idvExprIRI, List<OWLDifferentIndividuals> axioms, HashSet<long> visitContext)
+            {
+                List<OWLIndividualExpression> foundDifferentIndividuals = new List<OWLIndividualExpression>();
+
+                #region VisitContext
+                if (!visitContext.Contains(idvExprIRI.PatternMemberID))
+                    visitContext.Add(idvExprIRI.PatternMemberID);
+                else
+                    return foundDifferentIndividuals;
+                #endregion
+
+                #region Discovery
+                foreach (OWLDifferentIndividuals axiom in axioms.Where(ax => ax.IndividualExpressions.Any(iex => iex.GetIRI().Equals(idvExprIRI))))
+                    foundDifferentIndividuals.AddRange(axiom.IndividualExpressions);
+                #endregion
+
+                foundDifferentIndividuals.RemoveAll(res => res.GetIRI().Equals(idvExprIRI));
+                return OWLExpressionHelper.RemoveDuplicates(foundDifferentIndividuals);
+            }
+            #endregion
+
+            List<OWLIndividualExpression> differentIndividuals = new List<OWLIndividualExpression>();
+            if (ontology != null && idvExpr != null)
+                differentIndividuals.AddRange(FindDifferentIndividuals(idvExpr.GetIRI(), GetAssertionAxiomsOfType<OWLDifferentIndividuals>(ontology), new HashSet<long>()));
+            return differentIndividuals;
+        }
+        #endregion
+    }
 }

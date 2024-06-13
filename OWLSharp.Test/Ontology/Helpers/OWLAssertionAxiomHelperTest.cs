@@ -140,6 +140,43 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue(ontology.GetSameIndividuals(null, true).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), true).Count == 0);
         }
-		#endregion
-	}
+
+        [TestMethod]
+        public void ShouldGetDifferentIndividuals()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv3")) ]),
+                    new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv4")) ]),
+                    new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv5")) ]),
+                ]
+            };
+
+            List<OWLIndividualExpression> differentIndividualsOfIdv1 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), true);
+            Assert.IsTrue(differentIndividualsOfIdv1.Count == 3);
+            Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2"))));
+            Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
+            Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv3"))));
+            Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv3")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
+            Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv4"))));
+            Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv4")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
+            Assert.IsFalse(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv5"))));
+            Assert.IsFalse(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv5")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
+
+            List<OWLIndividualExpression> differentIndividualsOfIdv2 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv2")), true);
+            Assert.IsTrue(differentIndividualsOfIdv2.Count == 3);
+
+            List<OWLIndividualExpression> differentIndividualsOfIdv3 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv3")), true);
+            Assert.IsTrue(differentIndividualsOfIdv3.Count == 2);
+
+            List<OWLIndividualExpression> differentIndividualsOfIdv4 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv4")), true);
+            Assert.IsTrue(differentIndividualsOfIdv4.Count == 1);
+
+            Assert.IsTrue(ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv6")), true).Count == 0);
+            Assert.IsTrue(ontology.GetDifferentIndividuals(null, true).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), true).Count == 0);
+        }
+        #endregion
+    }
 }
