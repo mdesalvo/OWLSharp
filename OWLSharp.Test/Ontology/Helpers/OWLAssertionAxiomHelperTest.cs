@@ -177,6 +177,37 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue(ontology.GetDifferentIndividuals(null, true).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), true).Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldGetAssertions()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:Dtp1")), new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLLiteral(new RDFPlainLiteral("hello"))),
+                    new OWLNegativeDataPropertyAssertion(new OWLDataProperty(new RDFResource("ex:NDtp1")), new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLLiteral(new RDFPlainLiteral("hello"))),
+                    new OWLObjectPropertyAssertion(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2"))),
+                    new OWLNegativeObjectPropertyAssertion(new OWLObjectProperty(new RDFResource("ex:NObp1")), new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2")))
+                ]
+            };
+
+            Assert.IsTrue(ontology.GetDataAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 1);
+            Assert.IsTrue(ontology.GetNegativeDataAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 1);
+            Assert.IsTrue(ontology.GetObjectAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 1);
+            Assert.IsTrue(ontology.GetNegativeObjectAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 1);
+            Assert.IsTrue(ontology.GetObjectAssertionsToIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv2"))).Count == 1);
+            Assert.IsTrue(ontology.GetNegativeObjectAssertionsToIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv2"))).Count == 1);
+            Assert.IsTrue(ontology.GetDataAssertionsOfIndividual(null).Count == 0);
+            Assert.IsTrue(ontology.GetNegativeDataAssertionsOfIndividual(null).Count == 0);
+            Assert.IsTrue(ontology.GetObjectAssertionsOfIndividual(null).Count == 0);
+            Assert.IsTrue(ontology.GetNegativeObjectAssertionsOfIndividual(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetDataAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetNegativeDataAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetObjectAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetNegativeObjectAssertionsOfIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetObjectAssertionsToIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv2"))).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetNegativeObjectAssertionsToIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv2"))).Count == 0);
+        }
         #endregion
     }
 }
