@@ -103,78 +103,57 @@ namespace OWLSharp.Ontology.Helpers
 
         public static List<OWLDataPropertyAssertion> GetDataPropertyAssertions(this OWLOntology ontology, OWLDataProperty dataProperty, OWLIndividualExpression idvExpr, OWLLiteral literal)
             => GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology).Where(ax =>
-                   ((dataProperty == null || ax.DataProperty.GetIRI().Equals(dataProperty.GetIRI()))
+                   (dataProperty == null || ax.DataProperty.GetIRI().Equals(dataProperty.GetIRI()))
                       && (idvExpr == null || ax.IndividualExpression.GetIRI().Equals(idvExpr.GetIRI())) 
-                      && (literal == null || ax.Literal.GetLiteral().Equals(literal.GetLiteral())))).ToList();
+                      && (literal == null || ax.Literal.GetLiteral().Equals(literal.GetLiteral()))).ToList();
 
         public static List<OWLNegativeDataPropertyAssertion> GetNegativeDataPropertyAssertions(this OWLOntology ontology, OWLDataProperty dataProperty, OWLIndividualExpression idvExpr, OWLLiteral literal)
             => GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>(ontology).Where(ax =>
-                   ((dataProperty == null || ax.DataProperty.GetIRI().Equals(dataProperty.GetIRI()))
+                   (dataProperty == null || ax.DataProperty.GetIRI().Equals(dataProperty.GetIRI()))
                       && (idvExpr == null || ax.IndividualExpression.GetIRI().Equals(idvExpr.GetIRI()))
-                      && (literal == null || ax.Literal.GetLiteral().Equals(literal.GetLiteral())))).ToList();
+                      && (literal == null || ax.Literal.GetLiteral().Equals(literal.GetLiteral()))).ToList();
 
         public static List<OWLObjectPropertyAssertion> GetObjectPropertyAssertions(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, OWLIndividualExpression sourceIdvExpr, OWLIndividualExpression targetIdvExpr)
             => GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology).Where(ax =>
-                    ((objPropExpr == null || ax.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()))
+                    (objPropExpr == null || ax.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()))
                      && (sourceIdvExpr == null || ax.SourceIndividualExpression.GetIRI().Equals(sourceIdvExpr.GetIRI()))
-                     && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI())))).ToList();
+                     && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI()))).ToList();
 
         public static List<OWLNegativeObjectPropertyAssertion> GetNegativeObjectPropertyAssertions(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, OWLIndividualExpression sourceIdvExpr, OWLIndividualExpression targetIdvExpr)
             => GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>(ontology).Where(ax =>
-                    ((objPropExpr == null || ax.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()))
+                    (objPropExpr == null || ax.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()))
                      && (sourceIdvExpr == null || ax.SourceIndividualExpression.GetIRI().Equals(sourceIdvExpr.GetIRI()))
-                     && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI())))).ToList();
+                     && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI()))).ToList();
         
-        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, bool directOnly=false)
+        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClass owlClass, bool directOnly=false)
         {
-            List<OWLIndividualExpression> clsExprIndividuals = new List<OWLIndividualExpression>();
-            if (ontology != null && clsExpr != null)
+            List<OWLIndividualExpression> clsIndividuals = new List<OWLIndividualExpression>();
+            if (ontology != null && owlClass != null)
             {
                 //Direct
                 List<OWLClassAssertion> classAssertionAxioms = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
-                clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(clsExpr.GetIRI()))
+                clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(owlClass.GetIRI()))
                                                                 .Select(ax => ax.IndividualExpression));
             
                 //Indirect
                 if (!directOnly)
                 {
-                    #region Indirect
-                    if (clsExpr.IsObjectRestriction)
-                    {
-                        //TODO
-                    }
-                    else if (clsExpr.IsDataRestriction)
-                    {
-                        //TODO
-                    }
-                    else if (clsExpr.IsComposite)
-                    {
-                        //TODO
-                    }
-                    else if (clsExpr.IsEnumerate)
-                    { 
-                        clsExprIndividuals.AddRange(((OWLObjectOneOf)clsExpr).IndividualExpressions);
-                    }
-                    else if (clsExpr.IsClass)
-                    {
-                        //Type(IDV,C2) ^ SubClassOf(C2,C1) -> Type(IDV,C1)
-                        foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(clsExpr, directOnly))
-                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
-                                                                            .Select(ax => ax.IndividualExpression));
+					//Type(IDV,C2) ^ SubClassOf(C2,C1) -> Type(IDV,C1)
+					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(owlClass, directOnly))
+						clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
+																		.Select(ax => ax.IndividualExpression));
 
-                        //Type(IDV,C2) ^ EquivalentClasses(C2,C1) -> Type(IDV,C1)
-                        foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(clsExpr, directOnly))
-                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
-                                                                            .Select(ax => ax.IndividualExpression));
+					//Type(IDV,C2) ^ EquivalentClasses(C2,C1) -> Type(IDV,C1)
+					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(owlClass, directOnly))
+						clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
+																		.Select(ax => ax.IndividualExpression));
 
-                        //Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
-                        foreach (OWLIndividualExpression idvExpr in clsExprIndividuals.ToList())
-                            clsExprIndividuals.AddRange(ontology.GetSameIndividuals(idvExpr));
-                    }
-                    #endregion
+					//Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
+					foreach (OWLIndividualExpression idvExpr in clsIndividuals.ToList())
+						clsIndividuals.AddRange(ontology.GetSameIndividuals(idvExpr));
                 }
             }
-            return OWLExpressionHelper.RemoveDuplicates(clsExprIndividuals);
+            return OWLExpressionHelper.RemoveDuplicates(clsIndividuals);
         }
         #endregion
     }

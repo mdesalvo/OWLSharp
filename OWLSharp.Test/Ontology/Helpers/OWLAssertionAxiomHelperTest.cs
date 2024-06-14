@@ -180,7 +180,7 @@ namespace OWLSharp.Test.Ontology.Helpers
         }
 
         [TestMethod]
-        public void ShouldGetPropertyAssertions()
+        public void ShouldGetAssertions()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -235,32 +235,7 @@ namespace OWLSharp.Test.Ontology.Helpers
         }
 
         [TestMethod]
-        public void ShouldGetIndividualsOfObjectEnumerate()
-        {
-            OWLObjectOneOf objOneOf = new OWLObjectOneOf([
-                new OWLNamedIndividual(new RDFResource("ex:IDV1")), new OWLNamedIndividual(new RDFResource("ex:IDV2")) ]);
-            OWLOntology ontology = new OWLOntology()
-            {
-                AssertionAxioms = [
-                    new OWLClassAssertion(objOneOf, new OWLNamedIndividual(new RDFResource("ex:IDV3")))
-                ]
-            };
-
-            List<OWLIndividualExpression> idvExprs = ontology.GetIndividualsOf(objOneOf);
-
-            Assert.IsTrue(idvExprs.Count == 3);
-            Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV1"))));
-            Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV2"))));
-            Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV3"))));
-
-            List<OWLIndividualExpression> idvExprsDirectOnly = ontology.GetIndividualsOf(objOneOf, true);
-
-            Assert.IsTrue(idvExprsDirectOnly.Count == 1);
-            Assert.IsTrue(idvExprsDirectOnly.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV3"))));
-        }
-
-        [TestMethod]
-        public void ShouldGetIndividualsOfClass()
+        public void ShouldGetIndividualsOf()
         {
             OWLOntology ontology = new OWLOntology()
             {
