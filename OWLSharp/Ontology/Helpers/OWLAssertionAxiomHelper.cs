@@ -159,7 +159,7 @@ namespace OWLSharp.Ontology.Helpers
                     #endregion
                 }
             }
-            return clsExprIndividuals;
+            return OWLExpressionHelper.RemoveDuplicates(clsExprIndividuals);
         }
         #endregion
     }
