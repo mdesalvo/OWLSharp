@@ -101,23 +101,29 @@ namespace OWLSharp.Ontology.Helpers
             return differentIndividuals;
         }
 
-        public static List<OWLDataPropertyAssertion> GetDataAssertionsOfIndividual(this OWLOntology ontology, OWLIndividualExpression idvExpr)
-            => GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology).Where(ax => ax.IndividualExpression.GetIRI().Equals(idvExpr?.GetIRI())).ToList();
+        public static List<OWLDataPropertyAssertion> GetDataPropertyAssertions(this OWLOntology ontology, OWLDataProperty dataProperty, OWLIndividualExpression idvExpr, OWLLiteral literal)
+            => GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology).Where(ax =>
+                   ((dataProperty == null || ax.DataProperty.GetIRI().Equals(dataProperty.GetIRI()))
+                      && (idvExpr == null || ax.IndividualExpression.GetIRI().Equals(idvExpr.GetIRI())) 
+                      && (literal == null || ax.Literal.GetLiteral().Equals(literal.GetLiteral())))).ToList();
 
-        public static List<OWLNegativeDataPropertyAssertion> GetNegativeDataAssertionsOfIndividual(this OWLOntology ontology, OWLIndividualExpression idvExpr)
-            => GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>(ontology).Where(ax => ax.IndividualExpression.GetIRI().Equals(idvExpr?.GetIRI())).ToList();
+        public static List<OWLNegativeDataPropertyAssertion> GetNegativeDataPropertyAssertions(this OWLOntology ontology, OWLDataProperty dataProperty, OWLIndividualExpression idvExpr, OWLLiteral literal)
+            => GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>(ontology).Where(ax =>
+                   ((dataProperty == null || ax.DataProperty.GetIRI().Equals(dataProperty.GetIRI()))
+                      && (idvExpr == null || ax.IndividualExpression.GetIRI().Equals(idvExpr.GetIRI()))
+                      && (literal == null || ax.Literal.GetLiteral().Equals(literal.GetLiteral())))).ToList();
 
-        public static List<OWLObjectPropertyAssertion> GetObjectAssertionsOfIndividual(this OWLOntology ontology, OWLIndividualExpression idvExpr)
-            => GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology).Where(ax => ax.SourceIndividualExpression.GetIRI().Equals(idvExpr?.GetIRI())).ToList();
+        public static List<OWLObjectPropertyAssertion> GetObjectPropertyAssertions(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, OWLIndividualExpression sourceIdvExpr, OWLIndividualExpression targetIdvExpr)
+            => GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology).Where(ax =>
+                    ((objPropExpr == null || ax.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()))
+                     && (sourceIdvExpr == null || ax.SourceIndividualExpression.GetIRI().Equals(sourceIdvExpr.GetIRI()))
+                     && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI())))).ToList();
 
-        public static List<OWLObjectPropertyAssertion> GetObjectAssertionsToIndividual(this OWLOntology ontology, OWLIndividualExpression idvExpr)
-            => GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology).Where(ax => ax.TargetIndividualExpression.GetIRI().Equals(idvExpr?.GetIRI())).ToList();
-
-        public static List<OWLNegativeObjectPropertyAssertion> GetNegativeObjectAssertionsOfIndividual(this OWLOntology ontology, OWLIndividualExpression idvExpr)
-            => GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>(ontology).Where(ax => ax.SourceIndividualExpression.GetIRI().Equals(idvExpr?.GetIRI())).ToList();
-
-        public static List<OWLNegativeObjectPropertyAssertion> GetNegativeObjectAssertionsToIndividual(this OWLOntology ontology, OWLIndividualExpression idvExpr)
-            => GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>(ontology).Where(ax => ax.TargetIndividualExpression.GetIRI().Equals(idvExpr?.GetIRI())).ToList();
+        public static List<OWLNegativeObjectPropertyAssertion> GetNegativeObjectPropertyAssertions(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, OWLIndividualExpression sourceIdvExpr, OWLIndividualExpression targetIdvExpr)
+            => GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>(ontology).Where(ax =>
+                    ((objPropExpr == null || ax.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()))
+                     && (sourceIdvExpr == null || ax.SourceIndividualExpression.GetIRI().Equals(sourceIdvExpr.GetIRI()))
+                     && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI())))).ToList();
         #endregion
     }
 }
