@@ -281,6 +281,10 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue(cats.Count == 1);
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
 
+            List<OWLIndividualExpression> domesticFelines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DomesticFeline")));
+            Assert.IsTrue(domesticFelines.Count == 1);
+            Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
+
             List<OWLIndividualExpression> parrots = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Parrot")));
             Assert.IsTrue(parrots.Count == 2);
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
