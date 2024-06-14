@@ -179,7 +179,7 @@ namespace OWLSharp.Test.Ontology.Helpers
         }
 
         [TestMethod]
-        public void ShouldGetAssertions()
+        public void ShouldGetPropertyAssertions()
         {
             OWLOntology ontology = new OWLOntology()
             {
