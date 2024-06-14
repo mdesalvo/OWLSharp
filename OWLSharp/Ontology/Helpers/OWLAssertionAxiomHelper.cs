@@ -157,9 +157,9 @@ namespace OWLSharp.Ontology.Helpers
                     }
                     else if (clsExpr.IsClass)
                     {
-                        foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(clsExpr, directOnly)
-                                                                          .Union(ontology.GetEquivalentClasses(clsExpr, directOnly)))
-                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
+                        foreach (OWLClassExpression subOrEquivClsExpr in ontology.GetSubClassesOf(clsExpr, directOnly)
+                                                                                 .Union(ontology.GetEquivalentClasses(clsExpr, directOnly)))
+                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subOrEquivClsExpr.GetIRI()))
                                                                             .Select(ax => ax.IndividualExpression));
 
                         foreach (OWLIndividualExpression idvExpr in clsExprIndividuals.ToList())
