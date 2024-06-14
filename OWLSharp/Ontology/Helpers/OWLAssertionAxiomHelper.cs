@@ -157,11 +157,17 @@ namespace OWLSharp.Ontology.Helpers
                     }
                     else if (clsExpr.IsClass)
                     {
-                        foreach (OWLClassExpression subOrEquivClsExpr in ontology.GetSubClassesOf(clsExpr, directOnly)
-                                                                                 .Union(ontology.GetEquivalentClasses(clsExpr, directOnly)))
-                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subOrEquivClsExpr.GetIRI()))
+                        //Type(IDV,C2) ^ SubClassOf(C2,C1) -> Type(IDV,C1)
+                        foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(clsExpr, directOnly))
+                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
                                                                             .Select(ax => ax.IndividualExpression));
 
+                        //Type(IDV,C2) ^ EquivalentClasses(C2,C1) -> Type(IDV,C1)
+                        foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(clsExpr, directOnly))
+                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
+                                                                            .Select(ax => ax.IndividualExpression));
+
+                        //Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
                         foreach (OWLIndividualExpression idvExpr in clsExprIndividuals.ToList())
                             clsExprIndividuals.AddRange(ontology.GetSameIndividuals(idvExpr));
                     }
