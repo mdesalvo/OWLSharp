@@ -124,6 +124,45 @@ namespace OWLSharp.Ontology.Helpers
                     ((objPropExpr == null || ax.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()))
                      && (sourceIdvExpr == null || ax.SourceIndividualExpression.GetIRI().Equals(sourceIdvExpr.GetIRI()))
                      && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI())))).ToList();
+        
+        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, bool directOnly=false)
+        {
+            List<OWLIndividualExpression> clsExprIndividuals = new List<OWLIndividualExpression>();
+            if (ontology != null && clsExpr != null)
+            {
+                //Direct
+                clsExprIndividuals.AddRange(GetAssertionAxiomsOfType<OWLClassAssertion>(ontology).Where(ax => ax.ClassExpression.GetIRI().Equals(clsExpr.GetIRI()))
+                                                                                                 .Select(ax => ax.IndividualExpression));
+            
+                //Indirect
+                if (!directOnly)
+                {
+                    #region Indirect
+                    if (clsExpr.IsObjectRestriction)
+                    {
+                        //TODO
+                    }
+                    else if (clsExpr.IsDataRestriction)
+                    {
+                        //TODO
+                    }
+                    else if (clsExpr.IsComposite)
+                    {
+                        //TODO
+                    }
+                    else if (clsExpr.IsEnumerate)
+                    {
+                        //TODO
+                    }
+                    else if (clsExpr.IsClass)
+                    {
+                        //TODO
+                    }
+                    #endregion
+                }
+            }
+            return clsExprIndividuals;
+        }
         #endregion
     }
 }
