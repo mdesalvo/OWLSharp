@@ -245,12 +245,18 @@ namespace OWLSharp.Test.Ontology.Helpers
                     new OWLClassAssertion(objOneOf, new OWLNamedIndividual(new RDFResource("ex:IDV3")))
                 ]
             };
+
             List<OWLIndividualExpression> idvExprs = ontology.GetIndividualsOf(objOneOf);
 
             Assert.IsTrue(idvExprs.Count == 3);
             Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV1"))));
             Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV2"))));
             Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV3"))));
+
+            List<OWLIndividualExpression> idvExprsDirectOnly = ontology.GetIndividualsOf(objOneOf, true);
+
+            Assert.IsTrue(idvExprsDirectOnly.Count == 1);
+            Assert.IsTrue(idvExprsDirectOnly.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV3"))));
         }
         #endregion
     }
