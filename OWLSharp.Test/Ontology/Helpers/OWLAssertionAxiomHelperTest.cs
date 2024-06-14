@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
@@ -231,6 +232,25 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue((null as OWLOntology).GetNegativeDataPropertyAssertions(new OWLDataProperty(new RDFResource("ex:NDtp1")), null, null).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetObjectPropertyAssertions(new OWLObjectProperty(new RDFResource("ex:Obp1")), null, null).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetNegativeObjectPropertyAssertions(new OWLObjectProperty(new RDFResource("ex:NObp1")), null, null).Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldGetIndividualsOfObjectEnumerate()
+        {
+            OWLObjectOneOf objOneOf = new OWLObjectOneOf([
+                new OWLNamedIndividual(new RDFResource("ex:IDV1")), new OWLNamedIndividual(new RDFResource("ex:IDV2")) ]);
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLClassAssertion(objOneOf, new OWLNamedIndividual(new RDFResource("ex:IDV3")))
+                ]
+            };
+            List<OWLIndividualExpression> idvExprs = ontology.GetIndividualsOf(objOneOf);
+
+            Assert.IsTrue(idvExprs.Count == 3);
+            Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV1"))));
+            Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV2"))));
+            Assert.IsTrue(idvExprs.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:IDV3"))));
         }
         #endregion
     }
