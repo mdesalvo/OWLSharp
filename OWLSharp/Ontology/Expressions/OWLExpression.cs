@@ -45,9 +45,57 @@ namespace OWLSharp.Ontology.Expressions
 
     public class OWLAnnotationPropertyExpression : OWLExpression { }
 
-    public class OWLClassExpression : OWLExpression { }
+    public class OWLClassExpression : OWLExpression 
+    {
+        #region Properties
+        [XmlIgnore]
+        internal bool IsClass => this is OWLClass;
 
-    public class OWLDataRangeExpression : OWLExpression { }
+        [XmlIgnore]
+        internal bool IsComposite => this is OWLObjectUnionOf
+                                      || this is OWLObjectIntersectionOf
+                                      || this is OWLObjectComplementOf;
+
+        [XmlIgnore]
+        internal bool IsEnumerate => this is OWLObjectOneOf;
+
+        [XmlIgnore]
+        internal bool IsObjectRestriction => this is OWLObjectAllValuesFrom
+                                              || this is OWLObjectSomeValuesFrom
+                                              || this is OWLObjectHasValue
+                                              || this is OWLObjectHasSelf
+                                              || this is OWLObjectExactCardinality
+                                              || this is OWLObjectMinCardinality
+                                              || this is OWLObjectMaxCardinality;
+
+        [XmlIgnore]
+        internal bool IsDataRestriction => this is OWLDataAllValuesFrom
+                                            || this is OWLDataSomeValuesFrom
+                                            || this is OWLDataHasValue
+                                            || this is OWLDataExactCardinality
+                                            || this is OWLDataMinCardinality
+                                            || this is OWLDataMaxCardinality;
+        #endregion
+    }
+
+    public class OWLDataRangeExpression : OWLExpression 
+    {
+        #region Properties
+        [XmlIgnore]
+        internal bool IsDatatype => this is OWLDatatype;
+
+        [XmlIgnore]
+        internal bool IsComposite => this is OWLDataUnionOf
+                                      || this is OWLDataIntersectionOf
+                                      || this is OWLDataComplementOf;
+
+        [XmlIgnore]
+        internal bool IsEnumerate => this is OWLDataOneOf;
+
+        [XmlIgnore]
+        internal bool IsDatatypeRestriction => this is OWLDatatypeRestriction;
+        #endregion
+    }
 
     public class OWLDataPropertyExpression : OWLExpression { }
 
