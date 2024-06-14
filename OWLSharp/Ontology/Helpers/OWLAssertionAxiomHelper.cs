@@ -131,8 +131,9 @@ namespace OWLSharp.Ontology.Helpers
             if (ontology != null && clsExpr != null)
             {
                 //Direct
-                clsExprIndividuals.AddRange(GetAssertionAxiomsOfType<OWLClassAssertion>(ontology).Where(ax => ax.ClassExpression.GetIRI().Equals(clsExpr.GetIRI()))
-                                                                                                 .Select(ax => ax.IndividualExpression));
+                List<OWLClassAssertion> classAssertionAxioms = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
+                clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(clsExpr.GetIRI()))
+                                                                .Select(ax => ax.IndividualExpression));
             
                 //Indirect
                 if (!directOnly)
@@ -151,10 +152,21 @@ namespace OWLSharp.Ontology.Helpers
                         //TODO
                     }
                     else if (clsExpr.IsEnumerate)
+                    { 
                         clsExprIndividuals.AddRange(((OWLObjectOneOf)clsExpr).IndividualExpressions);
+                    }
                     else if (clsExpr.IsClass)
                     {
-                        //TODO
+                        foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(clsExpr, directOnly))
+                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
+                                                                            .Select(ax => ax.IndividualExpression));
+
+                        foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(clsExpr, directOnly))
+                            clsExprIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
+                                                                            .Select(ax => ax.IndividualExpression));
+
+                        foreach (OWLIndividualExpression idvExpr in clsExprIndividuals.ToList())
+                            clsExprIndividuals.AddRange(ontology.GetSameIndividuals(idvExpr));
                     }
                     #endregion
                 }
