@@ -151,9 +151,7 @@ namespace OWLSharp.Ontology.Helpers
                         //TODO
                     }
                     else if (clsExpr.IsEnumerate)
-                    {
-                        //TODO
-                    }
+                        clsExprIndividuals.AddRange(((OWLObjectOneOf)clsExpr).IndividualExpressions);
                     else if (clsExpr.IsClass)
                     {
                         //TODO
