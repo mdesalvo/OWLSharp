@@ -125,35 +125,101 @@ namespace OWLSharp.Ontology.Helpers
                      && (sourceIdvExpr == null || ax.SourceIndividualExpression.GetIRI().Equals(sourceIdvExpr.GetIRI()))
                      && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI()))).ToList();
         
-        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClass owlClass, bool directOnly=false)
+        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
         {
-            List<OWLIndividualExpression> clsIndividuals = new List<OWLIndividualExpression>();
-            if (ontology != null && owlClass != null)
-            {
-                //Direct
-                List<OWLClassAssertion> classAssertionAxioms = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
-                clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(owlClass.GetIRI()))
-                                                            .Select(ax => ax.IndividualExpression));
+			#region Utilities
+			List<OWLIndividualExpression> FindIndividualsOf(OWLClassExpression visitingClsExpr, List<OWLClassAssertion> axioms, HashSet<long> visitContext)
+			{
+				List<OWLIndividualExpression> foundVisitingClsExprIndividuals = new List<OWLIndividualExpression>();
+				RDFResource visitingClsExprIRI = visitingClsExpr.GetIRI();
+
+				#region VisitContext
+				if (!visitContext.Contains(visitingClsExprIRI.PatternMemberID))
+                    visitContext.Add(visitingClsExprIRI.PatternMemberID);
+                else
+                    return foundVisitingClsExprIndividuals;
+                #endregion
+
+				#region Discovery
+				foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(visitingClsExprIRI))
+                                                    		   .Select(ax => ax.IndividualExpression));
             
-                //Indirect
                 if (!directOnly)
                 {
 					//Type(IDV,C1) ^ SubClassOf(C1,C2) -> Type(IDV,C2)
-					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(owlClass, directOnly))
-						clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
-																	.Select(ax => ax.IndividualExpression));
+					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr, directOnly))
+						foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
+																	   .Select(ax => ax.IndividualExpression));
 
 					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
-					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(owlClass, directOnly))
-						clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
-																	.Select(ax => ax.IndividualExpression));
-
-					//Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
-					foreach (OWLIndividualExpression idvExpr in clsIndividuals.ToList())
-						clsIndividuals.AddRange(ontology.GetSameIndividuals(idvExpr));
+					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
+					{
+						#region Equivalency
+						if (equivClsExpr.IsClass)
+						{
+							foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(equivClsExpr, axioms, visitContext));
+						}
+						else if (equivClsExpr.IsEnumerate)
+						{
+							foundVisitingClsExprIndividuals.AddRange(((OWLObjectOneOf)equivClsExpr).IndividualExpressions);
+						}
+						else if (equivClsExpr.IsComposite)
+						{
+							if (equivClsExpr is OWLObjectUnionOf objUnionOf)
+							{
+								foreach (OWLClassExpression objUnionOfElement in objUnionOf.ClassExpressions)
+									foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(objUnionOfElement, axioms, visitContext));
+							}
+							else if (equivClsExpr is OWLObjectIntersectionOf objIntersectionOf)
+							{
+								bool isFirstIntersectionElement = true;
+								foreach (OWLClassExpression objIntersectionOfElement in objIntersectionOf.ClassExpressions)
+								{
+									List<OWLIndividualExpression> objIntersectionOfElementIdvExprs = FindIndividualsOf(objIntersectionOfElement, axioms, visitContext);
+									if (isFirstIntersectionElement)
+									{
+										isFirstIntersectionElement = false;
+										foundVisitingClsExprIndividuals.AddRange(objIntersectionOfElementIdvExprs);
+									}
+									else
+									{
+										foundVisitingClsExprIndividuals.RemoveAll(iex => !objIntersectionOfElementIdvExprs.Any(objIntOfElmIdv => objIntOfElmIdv.GetIRI().Equals(iex.GetIRI())));
+									}
+								}
+							}
+							else if (equivClsExpr is OWLObjectComplementOf objComplementOf)
+								foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(objComplementOf, axioms, visitContext));
+						}
+						else if (equivClsExpr.IsObjectRestriction)
+						{
+							//TODO
+						}
+						else if (equivClsExpr.IsDataRestriction)
+						{
+							//TODO
+						}
+						#endregion
+					}
                 }
-            }
-            return OWLExpressionHelper.RemoveDuplicates(clsIndividuals);
+				#endregion
+
+				return foundVisitingClsExprIndividuals;
+			}
+			#endregion
+
+            List<OWLIndividualExpression> clsExprIndividuals = new List<OWLIndividualExpression>();
+            if (ontology != null && classExpr != null)
+			{
+				clsExprIndividuals.AddRange(FindIndividualsOf(classExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology), new HashSet<long>()));
+
+				if (!directOnly)
+				{
+					//Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
+					foreach (OWLIndividualExpression idvExpr in clsExprIndividuals.ToList())
+						clsExprIndividuals.AddRange(ontology.GetSameIndividuals(idvExpr));
+				}
+			}				
+            return OWLExpressionHelper.RemoveDuplicates(clsExprIndividuals);
         }
         #endregion
     }
