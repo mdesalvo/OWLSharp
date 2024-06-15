@@ -154,6 +154,8 @@ namespace OWLSharp.Ontology.Helpers
 					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
 					{
+						RDFResource equivClsExprIRI = equivClsExpr.GetIRI();
+
 						#region Class
 						if (equivClsExpr.IsClass)
 							foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(equivClsExpr, axioms, visitContext));
@@ -199,10 +201,10 @@ namespace OWLSharp.Ontology.Helpers
 						#region ObjectRestriction
 						else if (equivClsExpr.IsObjectRestriction)
 						{
-							foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
+							foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
 																	   	   .Select(ax => ax.IndividualExpression));
 
-							//[Exact|Max]Cardinalities and AllValuesFrom restrictions can only be answered with their explicitly assigned individuals
+							//[Exact|Max]Cardinality and AllValuesFrom restrictions can only be answered with their assigned individuals (OWA)
 							if (equivClsExpr is OWLObjectExactCardinality || equivClsExpr is OWLObjectMaxCardinality || equivClsExpr is OWLObjectAllValuesFrom)
 								continue;	
 							else
