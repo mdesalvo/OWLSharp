@@ -154,17 +154,13 @@ namespace OWLSharp.Ontology.Helpers
 					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
 					{
-						#region Equivalency
 						if (equivClsExpr.IsClass)
-						{
 							foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(equivClsExpr, axioms, visitContext));
-						}
 						else if (equivClsExpr.IsEnumerate)
-						{
 							foundVisitingClsExprIndividuals.AddRange(((OWLObjectOneOf)equivClsExpr).IndividualExpressions);
-						}
 						else if (equivClsExpr.IsComposite)
 						{
+							#region Composite
 							if (equivClsExpr is OWLObjectUnionOf objUnionOf)
 							{
 								foreach (OWLClassExpression objUnionOfElement in objUnionOf.ClassExpressions)
@@ -189,6 +185,7 @@ namespace OWLSharp.Ontology.Helpers
 							}
 							else if (equivClsExpr is OWLObjectComplementOf objComplementOf)
 								foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(objComplementOf, axioms, visitContext));
+							#endregion
 						}
 						else if (equivClsExpr.IsObjectRestriction)
 						{
@@ -198,7 +195,6 @@ namespace OWLSharp.Ontology.Helpers
 						{
 							//TODO
 						}
-						#endregion
 					}
                 }
 				#endregion
@@ -215,8 +211,8 @@ namespace OWLSharp.Ontology.Helpers
 				if (!directOnly)
 				{
 					//Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
-					foreach (OWLIndividualExpression idvExpr in clsExprIndividuals.ToList())
-						clsExprIndividuals.AddRange(ontology.GetSameIndividuals(idvExpr));
+					foreach (OWLIndividualExpression clsExprIndividual in clsExprIndividuals.ToList())
+						clsExprIndividuals.AddRange(ontology.GetSameIndividuals(clsExprIndividual));
 				}
 			}				
             return OWLExpressionHelper.RemoveDuplicates(clsExprIndividuals);
