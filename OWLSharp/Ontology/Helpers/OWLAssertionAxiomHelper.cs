@@ -133,20 +133,20 @@ namespace OWLSharp.Ontology.Helpers
                 //Direct
                 List<OWLClassAssertion> classAssertionAxioms = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
                 clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(owlClass.GetIRI()))
-                                                                .Select(ax => ax.IndividualExpression));
+                                                            .Select(ax => ax.IndividualExpression));
             
                 //Indirect
                 if (!directOnly)
                 {
-					//Type(IDV,C2) ^ SubClassOf(C2,C1) -> Type(IDV,C1)
+					//Type(IDV,C1) ^ SubClassOf(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(owlClass, directOnly))
 						clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
-																		.Select(ax => ax.IndividualExpression));
+																	.Select(ax => ax.IndividualExpression));
 
-					//Type(IDV,C2) ^ EquivalentClasses(C2,C1) -> Type(IDV,C1)
+					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(owlClass, directOnly))
 						clsIndividuals.AddRange(classAssertionAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
-																		.Select(ax => ax.IndividualExpression));
+																	.Select(ax => ax.IndividualExpression));
 
 					//Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
 					foreach (OWLIndividualExpression idvExpr in clsIndividuals.ToList())
