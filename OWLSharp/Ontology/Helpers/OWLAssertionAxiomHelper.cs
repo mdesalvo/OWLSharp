@@ -125,7 +125,7 @@ namespace OWLSharp.Ontology.Helpers
                      && (sourceIdvExpr == null || ax.SourceIndividualExpression.GetIRI().Equals(sourceIdvExpr.GetIRI()))
                      && (targetIdvExpr == null || ax.TargetIndividualExpression.GetIRI().Equals(targetIdvExpr.GetIRI()))).ToList();
         
-        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression classExpr, bool directOnly=false)
+        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClass owlClass, bool directOnly=false)
         {
 			#region Utilities
 			List<OWLIndividualExpression> FindIndividualsOf(OWLClassExpression visitingClsExpr, List<OWLClassAssertion> axioms, HashSet<long> visitContext)
@@ -154,13 +154,19 @@ namespace OWLSharp.Ontology.Helpers
 					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
 					{
+						#region Class
 						if (equivClsExpr.IsClass)
 							foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(equivClsExpr, axioms, visitContext));
+						#endregion
+						
+						#region Enumerate
 						else if (equivClsExpr.IsEnumerate)
 							foundVisitingClsExprIndividuals.AddRange(((OWLObjectOneOf)equivClsExpr).IndividualExpressions);
+						#endregion
+
+						#region Composite
 						else if (equivClsExpr.IsComposite)
 						{
-							#region Composite
 							if (equivClsExpr is OWLObjectUnionOf objUnionOf)
 							{
 								foreach (OWLClassExpression objUnionOfElement in objUnionOf.ClassExpressions)
@@ -184,17 +190,48 @@ namespace OWLSharp.Ontology.Helpers
 								}
 							}
 							else if (equivClsExpr is OWLObjectComplementOf objComplementOf)
+							{
 								foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(objComplementOf, axioms, visitContext));
-							#endregion
+							}
 						}
+						#endregion
+
+						#region ObjectRestriction
 						else if (equivClsExpr.IsObjectRestriction)
 						{
-							//TODO
+							foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExpr.GetIRI()))
+																	   	   .Select(ax => ax.IndividualExpression));
+
+							//[Exact|Max]Cardinalities and AllValuesFrom restrictions can only be answered with their explicitly assigned individuals
+							if (equivClsExpr is OWLObjectExactCardinality || equivClsExpr is OWLObjectMaxCardinality || equivClsExpr is OWLObjectAllValuesFrom)
+								continue;	
+							else
+							{
+								/*								
+								 this is OWLObjectSomeValuesFrom
+								|| this is OWLObjectHasValue
+								|| this is OWLObjectHasSelf
+								|| 
+								|| this is OWLObjectMinCardinality
+								|| 
+								*/
+							}
 						}
+						#endregion
+
+						#region DataRestriction
 						else if (equivClsExpr.IsDataRestriction)
 						{
-							//TODO
+							/*
+								this is OWLDataAllValuesFrom
+								|| this is OWLDataSomeValuesFrom
+								|| this is OWLDataHasValue
+								|| this is OWLDataExactCardinality
+								|| this is OWLDataMinCardinality
+								|| this is OWLDataMaxCardinality;
+							*/
 						}
+						#endregion
 					}
                 }
 				#endregion
@@ -203,19 +240,19 @@ namespace OWLSharp.Ontology.Helpers
 			}
 			#endregion
 
-            List<OWLIndividualExpression> clsExprIndividuals = new List<OWLIndividualExpression>();
-            if (ontology != null && classExpr != null)
+            List<OWLIndividualExpression> classIndividuals = new List<OWLIndividualExpression>();
+            if (ontology != null && owlClass != null)
 			{
-				clsExprIndividuals.AddRange(FindIndividualsOf(classExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology), new HashSet<long>()));
+				classIndividuals.AddRange(FindIndividualsOf(owlClass, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology), new HashSet<long>()));
 
 				if (!directOnly)
 				{
 					//Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
-					foreach (OWLIndividualExpression clsExprIndividual in clsExprIndividuals.ToList())
-						clsExprIndividuals.AddRange(ontology.GetSameIndividuals(clsExprIndividual));
+					foreach (OWLIndividualExpression classIndividual in classIndividuals.ToList())
+						classIndividuals.AddRange(ontology.GetSameIndividuals(classIndividual));
 				}
 			}				
-            return OWLExpressionHelper.RemoveDuplicates(clsExprIndividuals);
+            return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
         }
         #endregion
     }
