@@ -204,7 +204,7 @@ namespace OWLSharp.Ontology.Helpers
 							foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
 																	   	   .Select(ax => ax.IndividualExpression));
 
-							//[Exact|Max]Cardinality and AllValuesFrom restrictions can only be answered with their assigned individuals (OWA)
+							//Object[Exact|Max]Cardinality and ObjectAllValuesFrom restrictions can only be answered with their assigned individuals (OWA)
 							if (equivClsExpr is OWLObjectExactCardinality || equivClsExpr is OWLObjectMaxCardinality || equivClsExpr is OWLObjectAllValuesFrom)
 								continue;	
 							else
@@ -213,9 +213,7 @@ namespace OWLSharp.Ontology.Helpers
 								 this is OWLObjectSomeValuesFrom
 								|| this is OWLObjectHasValue
 								|| this is OWLObjectHasSelf
-								|| 
 								|| this is OWLObjectMinCardinality
-								|| 
 								*/
 							}
 						}
@@ -224,14 +222,20 @@ namespace OWLSharp.Ontology.Helpers
 						#region DataRestriction
 						else if (equivClsExpr.IsDataRestriction)
 						{
-							/*
-								this is OWLDataAllValuesFrom
-								|| this is OWLDataSomeValuesFrom
+							foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
+																	   	   .Select(ax => ax.IndividualExpression));
+
+							//Data[Exact|Max]Cardinality and DataAllValuesFrom restrictions can only be answered with their assigned individuals (OWA)
+							if (equivClsExpr is OWLDataExactCardinality || equivClsExpr is OWLDataMaxCardinality || equivClsExpr is OWLDataAllValuesFrom)
+								continue;	
+							else
+							{
+								/*								
+								 this is OWLDataSomeValuesFrom
 								|| this is OWLDataHasValue
-								|| this is OWLDataExactCardinality
 								|| this is OWLDataMinCardinality
-								|| this is OWLDataMaxCardinality;
-							*/
+								*/
+							}
 						}
 						#endregion
 					}
