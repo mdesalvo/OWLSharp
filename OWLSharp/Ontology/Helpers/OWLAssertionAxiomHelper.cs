@@ -234,13 +234,13 @@ namespace OWLSharp.Ontology.Helpers
 										if (shouldSwitchObjPropIdvs)
 										{
 											if (objPropAssertion.SourceIndividualExpression.GetIRI().Equals(objHasValueIdvExprIRI)
-												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objHasValueIdvExprIRI)))
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertion.SourceIndividualExpression.GetIRI())))
 												 foundVisitingClsExprIndividuals.Add(objPropAssertion.TargetIndividualExpression);
 										}
 										else
 										{
 											if (objPropAssertion.TargetIndividualExpression.GetIRI().Equals(objHasValueIdvExprIRI)
-												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objHasValueIdvExprIRI)))
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertion.TargetIndividualExpression.GetIRI())))
 												 foundVisitingClsExprIndividuals.Add(objPropAssertion.SourceIndividualExpression);
 										}
 									}
