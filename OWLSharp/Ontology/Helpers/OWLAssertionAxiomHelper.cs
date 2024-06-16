@@ -244,7 +244,6 @@ namespace OWLSharp.Ontology.Helpers
 												 foundVisitingClsExprIndividuals.Add(objPropAssertion.SourceIndividualExpression);
 										}
 									}
-									#endregion
 								}
 								#endregion
 
