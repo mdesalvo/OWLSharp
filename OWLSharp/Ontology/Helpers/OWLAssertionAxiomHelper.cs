@@ -192,40 +192,40 @@ namespace OWLSharp.Ontology.Helpers
 
 									//Compute object property assertions in scope of OHV restriction property
 									bool shouldSwitchObjPropIdvs = false;
-									List<OWLObjectPropertyAssertion> objPropAssertions;
+									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions;
 									if (objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objHasValueInvOf)
 									{
 										shouldSwitchObjPropIdvs = true;
-										objPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasValueInvOf.ObjectProperty.GetIRI())).ToList();
+										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasValueInvOf.ObjectProperty.GetIRI())).ToList();
 									}
 									else
-										objPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasValue.ObjectPropertyExpression.GetIRI())).ToList();
+										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasValue.ObjectPropertyExpression.GetIRI())).ToList();
 									
 									//Compute same individuals of OHV restriction value
 									List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(objHasValue.IndividualExpression);
 
 									//Compute individuals satisfying OHV restriction
-									foreach (OWLObjectPropertyAssertion objPropAssertion in objPropAssertions)
+									foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
 									{
-										OWLIndividualExpression objPropAssertionSourceIdvExpr = objPropAssertion.SourceIndividualExpression;
-										OWLIndividualExpression objPropAssertionTargetIdvExpr = objPropAssertion.TargetIndividualExpression;
-										if (objPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOfAsn)
+										OWLIndividualExpression inScopeObjPropAssertionSourceIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
+										OWLIndividualExpression inScopeObjPropAssertionTargetIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
+										if (inScopeObjPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOfAsn)
 										{
-											objPropAssertionSourceIdvExpr = objPropAssertion.TargetIndividualExpression;
-											objPropAssertionTargetIdvExpr = objPropAssertion.SourceIndividualExpression;;
+											inScopeObjPropAssertionSourceIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
+											inScopeObjPropAssertionTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;;
 										}
 
 										if (shouldSwitchObjPropIdvs)
 										{
-											if (objPropAssertionSourceIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
-												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertionSourceIdvExpr.GetIRI())))
-												 foundVisitingClsExprIndividuals.Add(objPropAssertionTargetIdvExpr);
+											if (inScopeObjPropAssertionSourceIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(inScopeObjPropAssertionSourceIdvExpr.GetIRI())))
+												 foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertionTargetIdvExpr);
 										}
 										else
 										{
-											if (objPropAssertionTargetIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
-												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertionTargetIdvExpr.GetIRI())))
-												 foundVisitingClsExprIndividuals.Add(objPropAssertionSourceIdvExpr);
+											if (inScopeObjPropAssertionTargetIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(inScopeObjPropAssertionTargetIdvExpr.GetIRI())))
+												 foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertionSourceIdvExpr);
 										}
 									}
 								}
