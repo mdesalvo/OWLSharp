@@ -207,17 +207,25 @@ namespace OWLSharp.Ontology.Helpers
 									//Compute individuals satisfying OHV restriction
 									foreach (OWLObjectPropertyAssertion objPropAssertion in objPropAssertions)
 									{
+										OWLIndividualExpression objPropAssertionSourceIdvExpr = objPropAssertion.SourceIndividualExpression;
+										OWLIndividualExpression objPropAssertionTargetIdvExpr = objPropAssertion.TargetIndividualExpression;
+										if (objPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOfAsn)
+										{
+											objPropAssertionSourceIdvExpr = objPropAssertion.TargetIndividualExpression;
+											objPropAssertionTargetIdvExpr = objPropAssertion.SourceIndividualExpression;;
+										}
+
 										if (shouldSwitchObjPropIdvs)
 										{
-											if (objPropAssertion.SourceIndividualExpression.GetIRI().Equals(objHasValueIdvExprIRI)
-												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertion.SourceIndividualExpression.GetIRI())))
-												 foundVisitingClsExprIndividuals.Add(objPropAssertion.TargetIndividualExpression);
+											if (objPropAssertionSourceIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertionSourceIdvExpr.GetIRI())))
+												 foundVisitingClsExprIndividuals.Add(objPropAssertionTargetIdvExpr);
 										}
 										else
 										{
-											if (objPropAssertion.TargetIndividualExpression.GetIRI().Equals(objHasValueIdvExprIRI)
-												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertion.TargetIndividualExpression.GetIRI())))
-												 foundVisitingClsExprIndividuals.Add(objPropAssertion.SourceIndividualExpression);
+											if (objPropAssertionTargetIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objPropAssertionTargetIdvExpr.GetIRI())))
+												 foundVisitingClsExprIndividuals.Add(objPropAssertionSourceIdvExpr);
 										}
 									}
 								}
