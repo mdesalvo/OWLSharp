@@ -204,14 +204,53 @@ namespace OWLSharp.Ontology.Helpers
 							foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
 																	   	   .Select(ax => ax.IndividualExpression));
 
-							//Object[Exact|Max]Cardinality and ObjectAllValuesFrom restrictions can only be answered with their assigned individuals (OWA)
+							//Object[Exact|Max]Cardinality and ObjectAllValuesFrom can only be answered with their assigned individuals (OWA)
 							if (equivClsExpr is OWLObjectExactCardinality || equivClsExpr is OWLObjectMaxCardinality || equivClsExpr is OWLObjectAllValuesFrom)
 								continue;	
 							else
 							{
+								#region ObjectHasValue
+								if (equivClsExpr is OWLObjectHasValue objHasValue)
+								{
+									#region Assertion Filter
+									bool shouldSwitchObjPropIdvs = false;
+									List<OWLObjectPropertyAssertion> objPropAssertions;
+									if (objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objHasValueInvOf)
+									{
+										shouldSwitchObjPropIdvs = true;
+										objPropAssertions = GetObjectPropertyAssertions(ontology, objHasValueInvOf.ObjectProperty, null, null);
+									}
+									else
+										objPropAssertions = GetObjectPropertyAssertions(ontology, objHasValue.ObjectPropertyExpression, null, null);
+									#endregion
+
+									#region Same Individuals
+									List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(objHasValue.IndividualExpression);
+									RDFResource objHasValueIdvExprIRI = objHasValue.IndividualExpression.GetIRI();
+									#endregion
+
+									#region Compute ObjectHasValue
+									foreach (OWLObjectPropertyAssertion objPropAssertion in objPropAssertions)
+									{
+										if (shouldSwitchObjPropIdvs)
+										{
+											if (objPropAssertion.SourceIndividualExpression.GetIRI().Equals(objHasValueIdvExprIRI)
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objHasValueIdvExprIRI)))
+												 foundVisitingClsExprIndividuals.Add(objPropAssertion.TargetIndividualExpression);
+										}
+										else
+										{
+											if (objPropAssertion.TargetIndividualExpression.GetIRI().Equals(objHasValueIdvExprIRI)
+												 || sameIndividuals.Any(idv => idv.GetIRI().Equals(objHasValueIdvExprIRI)))
+												 foundVisitingClsExprIndividuals.Add(objPropAssertion.SourceIndividualExpression);
+										}
+									}
+									#endregion
+								}
+								#endregion
+
 								/*								
 								 this is OWLObjectSomeValuesFrom
-								|| this is OWLObjectHasValue
 								|| this is OWLObjectHasSelf
 								|| this is OWLObjectMinCardinality
 								*/
@@ -225,7 +264,7 @@ namespace OWLSharp.Ontology.Helpers
 							foundVisitingClsExprIndividuals.AddRange(axioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
 																	   	   .Select(ax => ax.IndividualExpression));
 
-							//Data[Exact|Max]Cardinality and DataAllValuesFrom restrictions can only be answered with their assigned individuals (OWA)
+							//Data[Exact|Max]Cardinality and DataAllValuesFrom can only be answered with their assigned individuals (OWA)
 							if (equivClsExpr is OWLDataExactCardinality || equivClsExpr is OWLDataMaxCardinality || equivClsExpr is OWLDataAllValuesFrom)
 								continue;	
 							else
