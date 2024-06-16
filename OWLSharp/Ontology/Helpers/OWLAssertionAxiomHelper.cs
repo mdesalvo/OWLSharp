@@ -209,7 +209,7 @@ namespace OWLSharp.Ontology.Helpers
 									{
 										OWLIndividualExpression inScopeObjPropAssertionSourceIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
 										OWLIndividualExpression inScopeObjPropAssertionTargetIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
-										if (inScopeObjPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOfAsn)
+										if (inScopeObjPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf)
 										{
 											inScopeObjPropAssertionSourceIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
 											inScopeObjPropAssertionTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;;
