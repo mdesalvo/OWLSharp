@@ -214,7 +214,7 @@ namespace OWLSharp.Ontology.Helpers
 								{
 									RDFResource objHasValueIdvExprIRI = objHasValue.IndividualExpression.GetIRI();
 
-									//Compute object property assertions in scope of OHV restriction
+									//Compute object property assertions in scope of OHV restriction property
 									bool shouldSwitchObjPropIdvs = false;
 									List<OWLObjectPropertyAssertion> objPropAssertions;
 									if (objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objHasValueInvOf)
@@ -225,7 +225,7 @@ namespace OWLSharp.Ontology.Helpers
 									else
 										objPropAssertions = GetObjectPropertyAssertions(ontology, objHasValue.ObjectPropertyExpression, null, null);
 									
-									//Compute same individuals of OHV restriction individual
+									//Compute same individuals of OHV restriction value
 									List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(objHasValue.IndividualExpression);
 
 									//Compute individuals satisfying OHV restriction
