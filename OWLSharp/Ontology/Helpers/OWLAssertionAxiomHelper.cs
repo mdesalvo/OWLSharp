@@ -228,12 +228,32 @@ namespace OWLSharp.Ontology.Helpers
 												 foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertionSourceIdvExpr);
 										}
 									}
+									continue;
+								}
+								#endregion
+
+								#region ObjectHasSelf
+								if (equivClsExpr is OWLObjectHasSelf objHasSelf)
+								{
+									//Compute object property assertions in scope of OHS restriction property
+									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions;
+									if (objHasSelf.ObjectPropertyExpression is OWLObjectInverseOf objHasSelfInvOf)
+										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasSelfInvOf.ObjectProperty.GetIRI())).ToList();
+									else
+										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasSelf.ObjectPropertyExpression.GetIRI())).ToList();
+									
+									//Compute individuals satisfying OHS restriction
+									foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
+									{
+										if (inScopeObjPropAssertion.SourceIndividualExpression.GetIRI().Equals(inScopeObjPropAssertion.TargetIndividualExpression.GetIRI()))
+											foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertion.SourceIndividualExpression);
+									}
+									continue;
 								}
 								#endregion
 
 								/*								
 								 this is OWLObjectSomeValuesFrom
-								|| this is OWLObjectHasSelf
 								|| this is OWLObjectMinCardinality
 								*/
 							}
