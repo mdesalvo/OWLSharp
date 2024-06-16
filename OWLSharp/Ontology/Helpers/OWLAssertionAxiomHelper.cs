@@ -190,6 +190,9 @@ namespace OWLSharp.Ontology.Helpers
 								{
 									RDFResource objHasValueIdvExprIRI = objHasValue.IndividualExpression.GetIRI();
 
+									//Compute same individuals of OHV restriction value
+									List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(objHasValue.IndividualExpression);
+
 									//Compute object property assertions in scope of OHV restriction property
 									bool shouldSwitchObjPropIdvs = false;
 									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions;
@@ -200,9 +203,6 @@ namespace OWLSharp.Ontology.Helpers
 									}
 									else
 										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasValue.ObjectPropertyExpression.GetIRI())).ToList();
-									
-									//Compute same individuals of OHV restriction value
-									List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(objHasValue.IndividualExpression);
 
 									//Compute individuals satisfying OHV restriction
 									foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
