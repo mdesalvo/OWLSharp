@@ -228,6 +228,7 @@ namespace OWLSharp.Ontology.Helpers
 												 foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertionSourceIdvExpr);
 										}
 									}
+
 									continue;
 								}
 								#endregion
@@ -248,6 +249,7 @@ namespace OWLSharp.Ontology.Helpers
 										if (inScopeObjPropAssertion.SourceIndividualExpression.GetIRI().Equals(inScopeObjPropAssertion.TargetIndividualExpression.GetIRI()))
 											foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertion.SourceIndividualExpression);
 									}
+
 									continue;
 								}
 								#endregion
