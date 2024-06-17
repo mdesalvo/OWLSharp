@@ -267,7 +267,6 @@ namespace OWLSharp.Ontology.Helpers
 
 										//Initialize individual counter
 										RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI(); 
-										RDFResource inScopeObjPropAsnTargetIdvExprIRI = inScopeObjPropAsnTargetIdvExpr.GetIRI(); 
 										if (!occurrenceRegistry.ContainsKey(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID))
 											occurrenceRegistry.Add(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID, (inScopeObjPropAsnSourceIdvExpr, 0));
 										long occurrencyCounter = occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID].Item2;
