@@ -105,6 +105,7 @@ namespace OWLSharp.Ontology.Helpers
         {
 			List<OWLClassAssertion> classAssertions = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
 			List<OWLObjectPropertyAssertion> objectPropertyAssertions = GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology);
+			List<OWLDataPropertyAssertion> dataPropertyAssertions = GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
 
             #region Utilities
             List<OWLIndividualExpression> FindIndividualsOf(OWLClassExpression visitingClsExpr, HashSet<long> visitContext)
@@ -259,13 +260,30 @@ namespace OWLSharp.Ontology.Helpers
 								continue;	
 							else
 							{
-								/*								
+                                #region DataHasValue
+                                if (equivClsExpr is OWLDataHasValue dtHasValue)
+                                {
+                                    RDFLiteral dtHasValueLiteral = dtHasValue.Literal.GetLiteral();
+
+                                    //Compute object property assertions in scope of OHV restriction
+                                    List<OWLDataPropertyAssertion> inScopeDtPropAssertions = SelectDataAssertionsByDPEX(dataPropertyAssertions, dtHasValue.DataProperty);
+
+                                    //Compute individuals satisfying OHV restriction
+                                    foreach (OWLDataPropertyAssertion inScopeDtPropAssertion in inScopeDtPropAssertions)
+                                    {
+                                        if (inScopeDtPropAssertion.Literal.GetLiteral().Equals(dtHasValueLiteral))
+                                            foundVisitingClsExprIndividuals.Add(inScopeDtPropAssertion.IndividualExpression);
+                                    }
+                                    continue;
+                                }
+                                #endregion
+
+                                /*								
 								 this is OWLDataSomeValuesFrom
-								|| this is OWLDataHasValue
 								|| this is OWLDataMinCardinality
 								*/
-							}
-						}
+                            }
+                        }
 						#endregion
 					}
                 }
@@ -303,6 +321,9 @@ namespace OWLSharp.Ontology.Helpers
                         (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(objPropExpr.GetIRI()))
                      || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(objPropExpr.GetIRI()))).ToList();
         }
+
+        internal static List<OWLDataPropertyAssertion> SelectDataAssertionsByDPEX(List<OWLDataPropertyAssertion> dtPropAsnAxioms, OWLDataProperty dtProp)
+			=> dtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
         #endregion
     }
 }
