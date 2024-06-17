@@ -635,6 +635,36 @@ namespace OWLSharp.Test.Ontology.Helpers
             //DirectOnly
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SelfFriends")), true).Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldGetIndividualsOfObjectHasSelfRestrictionWithInverseAssertion()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("ex:hasFriend")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")))
+                ],
+                ClassAxioms = [
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("ex:SelfFriends")),
+                        new OWLObjectHasSelf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))) ]),
+                ]
+            };
+
+            List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SelfFriends")));
+            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
+
+            //DirectOnly
+            Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SelfFriends")), true).Count == 0);
+        }
         #endregion
     }
 }
