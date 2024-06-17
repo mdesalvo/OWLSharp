@@ -191,7 +191,7 @@ namespace OWLSharp.Ontology.Helpers
 
 									//Compute object property assertions in scope of OHV restriction
 									bool shouldSwitchObjPropIdvs = objHasValue.ObjectPropertyExpression is OWLObjectInverseOf;
-									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = FilterObjectPropertyAssertionsByOPEX(opAsnAxioms, objHasValue.ObjectPropertyExpression);
+									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(opAsnAxioms, objHasValue.ObjectPropertyExpression);
 
                                     //Compute individuals satisfying OHV restriction
                                     foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
@@ -226,7 +226,7 @@ namespace OWLSharp.Ontology.Helpers
 								if (equivClsExpr is OWLObjectHasSelf objHasSelf)
 								{
                                     //Compute object property assertions in scope of OHS restriction
-                                    List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = FilterObjectPropertyAssertionsByOPEX(opAsnAxioms, objHasSelf.ObjectPropertyExpression);
+                                    List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(opAsnAxioms, objHasSelf.ObjectPropertyExpression);
 
                                     //Compute individuals satisfying OHS restriction
                                     foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
@@ -295,7 +295,7 @@ namespace OWLSharp.Ontology.Helpers
         #endregion
 
         #region Utilities
-        internal static List<OWLObjectPropertyAssertion> FilterObjectPropertyAssertionsByOPEX(List<OWLObjectPropertyAssertion> objPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
+        internal static List<OWLObjectPropertyAssertion> SelectObjectAssertionsByOPEX(List<OWLObjectPropertyAssertion> objPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
         {
             if (objPropExpr is OWLObjectInverseOf objPropExprInvOf)
                 return objPropAsnAxioms.Where(ax =>
