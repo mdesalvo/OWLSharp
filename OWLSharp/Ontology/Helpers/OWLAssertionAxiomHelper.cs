@@ -167,10 +167,6 @@ namespace OWLSharp.Ontology.Helpers
 									}
 								}
 							}
-							else if (equivClsExpr is OWLObjectComplementOf objComplementOf)
-							{
-								foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(objComplementOf, clsAsnAxioms, opAsnAxioms, visitContext));
-							}
 						}
 						#endregion
 
