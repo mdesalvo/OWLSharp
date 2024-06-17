@@ -553,6 +553,58 @@ namespace OWLSharp.Test.Ontology.Helpers
             //DirectOnly
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:OwnersOfFelix")), true).Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldGetIndividualsOfObjectHasValueRestrictionWithInverseRestriction()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("ex:hasCat")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                        new OWLNamedIndividual(new RDFResource("ex:Felix")))
+                ],
+                ClassAxioms = [
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("ex:InverseOwnersOfFelix")),
+                        new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ]),
+                ]
+            };
+            string ont = OWLSerializer.Serialize(ontology);
+            List<OWLIndividualExpression> inverseOwnersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:InverseOwnersOfFelix")));
+            Assert.IsTrue(inverseOwnersOfFelix.Count == 1);
+            Assert.IsTrue(inverseOwnersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
+
+            //DirectOnly
+            Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:InverseOwnersOfFelix")), true).Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldGetIndividualsOfObjectHasValueRestrictionWithInverseAssertionAndInverseRestriction()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),
+                        new OWLNamedIndividual(new RDFResource("ex:Felix")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
+                ],
+                ClassAxioms = [
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("ex:DoubleInverseOwnersOfFelix")),
+                        new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ]),
+                ]
+            };
+            string ont = OWLSerializer.Serialize(ontology);
+            List<OWLIndividualExpression> doubleinverseOwnersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DoubleInverseOwnersOfFelix")));
+            Assert.IsTrue(doubleinverseOwnersOfFelix.Count == 1);
+            Assert.IsTrue(doubleinverseOwnersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
+
+            //DirectOnly
+            Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DoubleInverseOwnersOfFelix")), true).Count == 0);
+        }
         #endregion
     }
 }
