@@ -512,9 +512,9 @@ namespace OWLSharp.Test.Ontology.Helpers
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:Parrot")), new OWLNamedIndividual(new RDFResource("ex:Paco"))),
                     new OWLSameIndividual([ new OWLNamedIndividual(new RDFResource("ex:Paco")), new OWLNamedIndividual(new RDFResource("ex:PaquitoTheParrot")) ]),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:hasCat")), 
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")), 
-                        new OWLNamedIndividual(new RDFResource("ex:Felix"))),
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))), 
+                        new OWLNamedIndividual(new RDFResource("ex:Felix")), 
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("ex:hasParrot")),
                         new OWLNamedIndividual(new RDFResource("ex:Stiv")),
@@ -531,7 +531,10 @@ namespace OWLSharp.Test.Ontology.Helpers
                         new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasParrot")),new OWLNamedIndividual(new RDFResource("ex:Paco"))) ]),
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:OwnersOfPaquitoTheParrot")),
-                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasParrot")),new OWLNamedIndividual(new RDFResource("ex:PaquitoTheParrot"))) ])
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasParrot")),new OWLNamedIndividual(new RDFResource("ex:PaquitoTheParrot"))) ]),
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("ex:OwnersOfFelix")),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasCat")),new OWLNamedIndividual(new RDFResource("ex:Felix"))) ]),
                 ]
             };
 
@@ -567,6 +570,10 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue(ownersOfPaquitoTheParrot.Count == 1);
             Assert.IsTrue(ownersOfPaquitoTheParrot.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Stiv"))));
 
+            List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:OwnersOfFelix")));
+            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
+
             //DirectOnly
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Cat")), true).Count == 1);
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DomesticFeline")), true).Count == 0);
@@ -574,6 +581,8 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Animal")), true).Count == 0);
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:LivingEntity")), true).Count == 0);
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:OwnersOfPaco")), true).Count == 0);
+            Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:OwnersOfPaquitoTheParrot")), true).Count == 0);
+            Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:OwnersOfFelix")), true).Count == 0);
         }
         #endregion
     }

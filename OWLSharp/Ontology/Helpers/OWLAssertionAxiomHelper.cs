@@ -195,20 +195,24 @@ namespace OWLSharp.Ontology.Helpers
 									if (objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objHasValueInvOf)
 									{
 										shouldSwitchObjPropIdvs = true;
-										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasValueInvOf.ObjectProperty.GetIRI())).ToList();
+										inScopeObjPropAssertions = opAsnAxioms.Where(ax => 
+											(ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(objHasValueInvOf.ObjectProperty.GetIRI()))
+											 || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(objHasValueInvOf.ObjectProperty.GetIRI()))).ToList();
 									}
 									else
-										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasValue.ObjectPropertyExpression.GetIRI())).ToList();
+                                        inScopeObjPropAssertions = opAsnAxioms.Where(ax =>
+                                            (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(objHasValue.ObjectPropertyExpression.GetIRI()))
+                                             || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(objHasValue.ObjectPropertyExpression.GetIRI()))).ToList();
 
-									//Compute individuals satisfying OHV restriction
-									foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
+                                    //Compute individuals satisfying OHV restriction
+                                    foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
 									{
 										OWLIndividualExpression inScopeObjPropAssertionSourceIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
 										OWLIndividualExpression inScopeObjPropAssertionTargetIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
 										if (inScopeObjPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf)
 										{
 											inScopeObjPropAssertionSourceIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
-											inScopeObjPropAssertionTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;;
+											inScopeObjPropAssertionTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
 										}
 
 										if (shouldSwitchObjPropIdvs)
@@ -232,15 +236,19 @@ namespace OWLSharp.Ontology.Helpers
 								#region ObjectHasSelf
 								if (equivClsExpr is OWLObjectHasSelf objHasSelf)
 								{
-									//Compute object property assertions in scope of OHS restriction property
-									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions;
-									if (objHasSelf.ObjectPropertyExpression is OWLObjectInverseOf objHasSelfInvOf)
-										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasSelfInvOf.ObjectProperty.GetIRI())).ToList();
-									else
-										inScopeObjPropAssertions = opAsnAxioms.Where(ax => ax.ObjectPropertyExpression.GetIRI().Equals(objHasSelf.ObjectPropertyExpression.GetIRI())).ToList();
-									
-									//Compute individuals satisfying OHS restriction
-									foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
+                                    //Compute object property assertions in scope of OHV restriction property
+                                    List<OWLObjectPropertyAssertion> inScopeObjPropAssertions;
+                                    if (objHasSelf.ObjectPropertyExpression is OWLObjectInverseOf objHasSelfInvOf)
+                                        inScopeObjPropAssertions = opAsnAxioms.Where(ax =>
+                                            (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(objHasSelfInvOf.ObjectProperty.GetIRI()))
+                                             || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(objHasSelfInvOf.ObjectProperty.GetIRI()))).ToList();
+                                    else
+                                        inScopeObjPropAssertions = opAsnAxioms.Where(ax =>
+                                            (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(objHasSelf.ObjectPropertyExpression.GetIRI()))
+                                             || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(objHasSelf.ObjectPropertyExpression.GetIRI()))).ToList();
+
+                                    //Compute individuals satisfying OHS restriction
+                                    foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
 									{
 										if (inScopeObjPropAssertion.SourceIndividualExpression.GetIRI().Equals(inScopeObjPropAssertion.TargetIndividualExpression.GetIRI()))
 											foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertion.SourceIndividualExpression);
