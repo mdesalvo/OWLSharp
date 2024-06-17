@@ -103,8 +103,11 @@ namespace OWLSharp.Ontology.Helpers
 
         public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClass owlClass, bool directOnly=false)
         {
-			#region Utilities
-			List<OWLIndividualExpression> FindIndividualsOf(OWLClassExpression visitingClsExpr, List<OWLClassAssertion> clsAsnAxioms, List<OWLObjectPropertyAssertion> opAsnAxioms, HashSet<long> visitContext)
+			List<OWLClassAssertion> classAssertions = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
+			List<OWLObjectPropertyAssertion> objectPropertyAssertions = GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology);
+
+            #region Utilities
+            List<OWLIndividualExpression> FindIndividualsOf(OWLClassExpression visitingClsExpr, HashSet<long> visitContext)
 			{
 				List<OWLIndividualExpression> foundVisitingClsExprIndividuals = new List<OWLIndividualExpression>();
 				RDFResource visitingClsExprIRI = visitingClsExpr.GetIRI();
@@ -117,15 +120,15 @@ namespace OWLSharp.Ontology.Helpers
                 #endregion
 
 				#region Discovery
-				foundVisitingClsExprIndividuals.AddRange(clsAsnAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(visitingClsExprIRI))
-																	 .Select(ax => ax.IndividualExpression));
+				foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(visitingClsExprIRI))
+																		.Select(ax => ax.IndividualExpression));
             
                 if (!directOnly)
                 {
 					//Type(IDV,C1) ^ SubClassOf(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr, directOnly))
-						foundVisitingClsExprIndividuals.AddRange(clsAsnAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
-																			 .Select(ax => ax.IndividualExpression));
+						foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
+																				.Select(ax => ax.IndividualExpression));
 
 					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
@@ -134,7 +137,7 @@ namespace OWLSharp.Ontology.Helpers
 
 						#region Class
 						if (equivClsExpr.IsClass)
-							foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(equivClsExpr, clsAsnAxioms, opAsnAxioms, visitContext));
+							foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(equivClsExpr, visitContext));
 						#endregion
 						
 						#region Enumerate
@@ -148,14 +151,14 @@ namespace OWLSharp.Ontology.Helpers
 							if (equivClsExpr is OWLObjectUnionOf objUnionOf)
 							{
 								foreach (OWLClassExpression objUnionOfElement in objUnionOf.ClassExpressions)
-									foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(objUnionOfElement, clsAsnAxioms, opAsnAxioms, visitContext));
+									foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(objUnionOfElement, visitContext));
 							}
 							else if (equivClsExpr is OWLObjectIntersectionOf objIntersectionOf)
 							{
 								bool isFirstIntersectionElement = true;
 								foreach (OWLClassExpression objIntersectionOfElement in objIntersectionOf.ClassExpressions)
 								{
-									List<OWLIndividualExpression> objIntersectionOfElementIdvExprs = FindIndividualsOf(objIntersectionOfElement, clsAsnAxioms, opAsnAxioms, visitContext);
+									List<OWLIndividualExpression> objIntersectionOfElementIdvExprs = FindIndividualsOf(objIntersectionOfElement, visitContext);
 									if (isFirstIntersectionElement)
 									{
 										isFirstIntersectionElement = false;
@@ -173,8 +176,8 @@ namespace OWLSharp.Ontology.Helpers
 						#region ObjectRestriction
 						else if (equivClsExpr.IsObjectRestriction)
 						{
-							foundVisitingClsExprIndividuals.AddRange(clsAsnAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
-																	   	   		 .Select(ax => ax.IndividualExpression));
+							foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
+																	   	   			.Select(ax => ax.IndividualExpression));
 
 							//Object[Exact|Max]Cardinality and ObjectAllValuesFrom can only be answered with their assigned individuals (OWA)
 							if (equivClsExpr is OWLObjectExactCardinality || equivClsExpr is OWLObjectMaxCardinality || equivClsExpr is OWLObjectAllValuesFrom)
@@ -191,7 +194,7 @@ namespace OWLSharp.Ontology.Helpers
 
 									//Compute object property assertions in scope of OHV restriction
 									bool shouldSwitchObjPropIdvs = objHasValue.ObjectPropertyExpression is OWLObjectInverseOf;
-									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(opAsnAxioms, objHasValue.ObjectPropertyExpression);
+									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasValue.ObjectPropertyExpression);
 
                                     //Compute individuals satisfying OHV restriction
                                     foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
@@ -217,7 +220,6 @@ namespace OWLSharp.Ontology.Helpers
 												 foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertionSourceIdvExpr);
 										}
 									}
-
 									continue;
 								}
 								#endregion
@@ -226,7 +228,7 @@ namespace OWLSharp.Ontology.Helpers
 								if (equivClsExpr is OWLObjectHasSelf objHasSelf)
 								{
                                     //Compute object property assertions in scope of OHS restriction
-                                    List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(opAsnAxioms, objHasSelf.ObjectPropertyExpression);
+                                    List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasSelf.ObjectPropertyExpression);
 
                                     //Compute individuals satisfying OHS restriction
                                     foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
@@ -234,7 +236,6 @@ namespace OWLSharp.Ontology.Helpers
 										if (inScopeObjPropAssertion.SourceIndividualExpression.GetIRI().Equals(inScopeObjPropAssertion.TargetIndividualExpression.GetIRI()))
 											foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertion.SourceIndividualExpression);
 									}
-
 									continue;
 								}
 								#endregion
@@ -250,8 +251,8 @@ namespace OWLSharp.Ontology.Helpers
 						#region DataRestriction
 						else if (equivClsExpr.IsDataRestriction)
 						{
-							foundVisitingClsExprIndividuals.AddRange(clsAsnAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
-																	   	   		 .Select(ax => ax.IndividualExpression));
+							foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
+																	   	   			.Select(ax => ax.IndividualExpression));
 
 							//Data[Exact|Max]Cardinality and DataAllValuesFrom can only be answered with their assigned individuals (OWA)
 							if (equivClsExpr is OWLDataExactCardinality || equivClsExpr is OWLDataMaxCardinality || equivClsExpr is OWLDataAllValuesFrom)
@@ -277,11 +278,7 @@ namespace OWLSharp.Ontology.Helpers
             List<OWLIndividualExpression> classIndividuals = new List<OWLIndividualExpression>();
             if (ontology != null && owlClass != null)
 			{
-				classIndividuals.AddRange(FindIndividualsOf(
-					owlClass, 
-					GetAssertionAxiomsOfType<OWLClassAssertion>(ontology), 
-					GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology), 
-					new HashSet<long>()));
+				classIndividuals.AddRange(FindIndividualsOf(owlClass, new HashSet<long>()));
 
 				if (!directOnly)
 				{
