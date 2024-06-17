@@ -118,14 +118,14 @@ namespace OWLSharp.Ontology.Helpers
 
 				#region Discovery
 				foundVisitingClsExprIndividuals.AddRange(clsAsnAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(visitingClsExprIRI))
-                                                    		   .Select(ax => ax.IndividualExpression));
+																	 .Select(ax => ax.IndividualExpression));
             
                 if (!directOnly)
                 {
 					//Type(IDV,C1) ^ SubClassOf(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr, directOnly))
 						foundVisitingClsExprIndividuals.AddRange(clsAsnAxioms.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
-																	   .Select(ax => ax.IndividualExpression));
+																			 .Select(ax => ax.IndividualExpression));
 
 					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
