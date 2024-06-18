@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -222,11 +223,13 @@ namespace OWLSharp.Ontology.Helpers
 												 foundVisitingClsExprIndividuals.Add(inScopeObjPropAsnSourceIdvExpr);
 										}
 									}
+
+									continue;
 								}
 								#endregion
 
 								#region ObjectHasSelf
-								else if (equivClsExpr is OWLObjectHasSelf objHasSelf)
+								if (equivClsExpr is OWLObjectHasSelf objHasSelf)
 								{
                                     //Compute object property assertions in scope of OHS restriction
                                     List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasSelf.ObjectPropertyExpression);
@@ -237,24 +240,37 @@ namespace OWLSharp.Ontology.Helpers
 										if (inScopeObjPropAssertion.SourceIndividualExpression.GetIRI().Equals(inScopeObjPropAssertion.TargetIndividualExpression.GetIRI()))
 											foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertion.SourceIndividualExpression);
 									}
+
+									continue;
 								}
 								#endregion
 
-								#region ObjectMinCardinality
-								else if (equivClsExpr is OWLObjectMinCardinality objMinCard 
-											&& int.TryParse(objMinCard.Cardinality, NumberStyles.Integer, CultureInfo.InvariantCulture, out int objMinCardThreshold))
+								#region ObjectMinCardinality, ObjectSomeValuesFrom
+								if (equivClsExpr is OWLObjectMinCardinality || equivClsExpr is OWLObjectSomeValuesFrom)
 								{
-									//Compute object property assertions in scope of OMNC restriction
-									bool shouldSwitchObjPropIdvs = objMinCard.ObjectPropertyExpression is OWLObjectInverseOf;
-									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objMinCard.ObjectPropertyExpression);
-								
-									//Compute qualified individuals eventually in scope of OMNC restriction
-									bool isQualified = objMinCard.ClassExpression != null;
-									List<OWLIndividualExpression> qualifiedIdvExprs = isQualified ? ontology.GetIndividualsOf(objMinCard.ClassExpression, directOnly)
+									//ObjectSomeValuesFrom is an OWL-DL syntactic shortcut for qualified ObjectMinCardinality(1)
+									//so we threat them the same way, fetching restricted object property and qualified class
+									OWLObjectPropertyExpression onPropExpr = 
+										(equivClsExpr as OWLObjectMinCardinality)?.ObjectPropertyExpression ?? 
+										(equivClsExpr as OWLObjectSomeValuesFrom)?.ObjectPropertyExpression;
+                                    OWLClassExpression onClassExpr = 
+										(equivClsExpr as OWLObjectMinCardinality)?.ClassExpression ?? 
+										(equivClsExpr as OWLObjectSomeValuesFrom)?.ClassExpression;
+									int objMinCardValue = 1;
+									if (equivClsExpr is OWLObjectMinCardinality objMNC && !int.TryParse(objMNC.Cardinality, NumberStyles.Integer, CultureInfo.InvariantCulture, out objMinCardValue))
+										throw new OWLException($"Cannot get individuals of class expression {clsExpr.GetIRI()} because it is equivalent to an ObjectMinCardinality class expression specifying an invalid Cardinality value!");
+
+									//Compute object property assertions in scope of OMNC/OSVF restriction
+									bool shouldSwitchObjPropIdvs = onPropExpr is OWLObjectInverseOf;
+									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, onPropExpr);
+
+                                    //Compute qualified individuals eventually in scope of OMNC/OSVF restriction
+                                    bool isQualified = (equivClsExpr is OWLObjectMinCardinality objMinCard && objMinCard.ClassExpression != null);
+									List<OWLIndividualExpression> qualifiedIdvExprs = isQualified ? ontology.GetIndividualsOf(onClassExpr, directOnly)
 																						  		  : Enumerable.Empty<OWLIndividualExpression>().ToList();
 
-									//Compute individuals participating to OMNC restriction
-									var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
+                                    //Compute individuals participating to OMNC/OSVF restriction
+                                    var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
                                     foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
 									{
 										OWLIndividualExpression inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
@@ -278,59 +294,16 @@ namespace OWLSharp.Ontology.Helpers
 											occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID] = (inScopeObjPropAsnSourceIdvExpr, occurrencyCounter + 1);
 									}
 
-									//Filter individuals satisfying OMNC restriction
-									var occurrenceRegistryEnumerator = occurrenceRegistry.Values.GetEnumerator();
+                                    //Filter individuals satisfying OMNC/OSVF restriction
+                                    var occurrenceRegistryEnumerator = occurrenceRegistry.Values.GetEnumerator();
 									while (occurrenceRegistryEnumerator.MoveNext())
 									{
-										if (occurrenceRegistryEnumerator.Current.Item2 >= objMinCardThreshold)
+										if (occurrenceRegistryEnumerator.Current.Item2 >= objMinCardValue)
 											foundVisitingClsExprIndividuals.Add(occurrenceRegistryEnumerator.Current.Item1);
 									}
+
+									continue;
 								}
-								#endregion
-
-								#region ObjectSomeValuesFrom
-								else if (equivClsExpr is OWLObjectSomeValuesFrom objSVFrom)
-								{
-									//Compute object property assertions in scope of OSVF restriction
-									bool shouldSwitchObjPropIdvs = objSVFrom.ObjectPropertyExpression is OWLObjectInverseOf;
-									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objSVFrom.ObjectPropertyExpression);
-
-                                    //Compute qualified individuals eventually in scope of OSVF restriction
-                                    List<OWLIndividualExpression> qualifiedIdvExprs = ontology.GetIndividualsOf(objSVFrom.ClassExpression, directOnly);
-
-                                    //Compute individuals participating to OSVF restriction
-                                    var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
-                                    foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
-                                    {
-                                        OWLIndividualExpression inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
-                                        OWLIndividualExpression inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
-                                        if (inScopeObjPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf)
-                                        {
-                                            inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
-                                            inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
-                                        }
-                                        if (shouldSwitchObjPropIdvs)
-                                            (inScopeObjPropAsnTargetIdvExpr, inScopeObjPropAsnSourceIdvExpr) = (inScopeObjPropAsnSourceIdvExpr, inScopeObjPropAsnTargetIdvExpr);
-                                        
-                                        //Initialize individual counter
-                                        RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI();
-                                        if (!occurrenceRegistry.ContainsKey(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID))
-                                            occurrenceRegistry.Add(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID, (inScopeObjPropAsnSourceIdvExpr, 0));
-                                        long occurrencyCounter = occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID].Item2;
-
-                                        //Collect occurrence of individual
-                                        if (qualifiedIdvExprs.Any(qiex => qiex.GetIRI().Equals(inScopeObjPropAsnTargetIdvExpr.GetIRI())))
-                                            occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID] = (inScopeObjPropAsnSourceIdvExpr, occurrencyCounter + 1);
-                                    }
-
-                                    //Filter individuals satisfying OSVF restriction
-                                    var occurrenceRegistryEnumerator = occurrenceRegistry.Values.GetEnumerator();
-                                    while (occurrenceRegistryEnumerator.MoveNext())
-                                    {
-                                        if (occurrenceRegistryEnumerator.Current.Item2 >= 1)
-                                            foundVisitingClsExprIndividuals.Add(occurrenceRegistryEnumerator.Current.Item1);
-                                    }
-                                }
 								#endregion
 							}
 						}
