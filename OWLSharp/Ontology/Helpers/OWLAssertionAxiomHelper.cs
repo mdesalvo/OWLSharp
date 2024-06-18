@@ -375,7 +375,7 @@ namespace OWLSharp.Ontology.Helpers
                                         long occurrencyCounter = occurrenceRegistry[inScopeDtPropAsnIdvExprIRI.PatternMemberID].Item2;
 
                                         //Collect occurrence of individual
-                                        if (!isQualified || CheckIsLiteralOf(ontology, dtMNC.DataRangeExpression, inScopeDtPropAssertion.Literal))
+                                        if (!isQualified || CheckIsLiteralOf(ontology, onDataRangeExpr, inScopeDtPropAssertion.Literal))
                                             occurrenceRegistry[inScopeDtPropAsnIdvExprIRI.PatternMemberID] = (inScopeDtPropAssertion.IndividualExpression, occurrencyCounter + 1);
                                     }
 
