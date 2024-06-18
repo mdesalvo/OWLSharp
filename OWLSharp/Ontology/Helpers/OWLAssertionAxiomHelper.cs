@@ -342,17 +342,29 @@ namespace OWLSharp.Ontology.Helpers
 								#endregion
 
 								#region DataMinCardinality
-								if (equivClsExpr is OWLDataMinCardinality dtMNC)
+								if (equivClsExpr is OWLDataMinCardinality || equivClsExpr is OWLDataSomeValuesFrom)
 								{
-                                    int dtMinCardValue = 1;
-                                    if (!int.TryParse(dtMNC.Cardinality, NumberStyles.Integer, CultureInfo.InvariantCulture, out dtMinCardValue))
-                                        throw new OWLException($"Cannot get individuals of class expression {clsExpr.GetIRI()} because it is equivalent to a DataMinCardinality class expression specifying an invalid Cardinality value!");
+									//DataSomeValuesFrom is an OWL-DL syntactic shortcut for qualified DataMinCardinality(1)
+									//so we threat them the same way, fetching restricted data property and qualified datarange
+									List<OWLDataPropertyExpression> onPropExprs = new List<OWLDataPropertyExpression>();
+									if (equivClsExpr is OWLDataMinCardinality dtMinCard)
+										onPropExprs.Add(dtMinCard.DataProperty);
+									else if (equivClsExpr is OWLDataSomeValuesFrom dtSVF) 
+										onPropExprs.AddRange(dtSVF.DataProperties);
+                                    OWLDataRangeExpression onDataRangeExpr = 
+										(equivClsExpr as OWLDataMinCardinality)?.DataRangeExpression ?? 
+										(equivClsExpr as OWLDataSomeValuesFrom)?.DataRangeExpression;
+									int dtMinCardValue = 1;
+									if (equivClsExpr is OWLDataMinCardinality dtMNC && !int.TryParse(dtMNC.Cardinality, NumberStyles.Integer, CultureInfo.InvariantCulture, out dtMinCardValue))
+										throw new OWLException($"Cannot get individuals of class expression {clsExpr.GetIRI()} because it is equivalent to a DataMinCardinality class expression specifying an invalid Cardinality value!");
 
-                                    //Compute data property assertions in scope of DMNC restriction
-                                    bool isQualified = dtMNC.DataRangeExpression != null;
-                                    List<OWLDataPropertyAssertion> inScopeDtPropAssertions = SelectDataAssertionsByDPEX(dataPropertyAssertions, dtMNC.DataProperty);
+                                    //Compute data property assertions in scope of DMNC/DSVF restriction
+                                    bool isQualified = onDataRangeExpr != null;
+                                    List<OWLDataPropertyAssertion> inScopeDtPropAssertions = new List<OWLDataPropertyAssertion>();
+									foreach (OWLDataProperty onPropExpr in onPropExprs)
+										inScopeDtPropAssertions.AddRange(SelectDataAssertionsByDPEX(dataPropertyAssertions, onPropExpr));
 
-                                    //Compute individuals participating to DMNC restriction
+                                    //Compute individuals participating to DMNC/DSVF restriction
                                     var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
                                     foreach (OWLDataPropertyAssertion inScopeDtPropAssertion in inScopeDtPropAssertions)
 									{
@@ -367,7 +379,7 @@ namespace OWLSharp.Ontology.Helpers
                                             occurrenceRegistry[inScopeDtPropAsnIdvExprIRI.PatternMemberID] = (inScopeDtPropAssertion.IndividualExpression, occurrencyCounter + 1);
                                     }
 
-                                    //Filter individuals satisfying DMNC restriction
+                                    //Filter individuals satisfying DMNC/DSVF restriction
                                     var occurrenceRegistryEnumerator = occurrenceRegistry.Values.GetEnumerator();
                                     while (occurrenceRegistryEnumerator.MoveNext())
                                     {
@@ -377,15 +389,6 @@ namespace OWLSharp.Ontology.Helpers
 
                                     continue;
 								}
-                                #endregion
-
-                                #region DataSomeValuesFrom
-                                if (equivClsExpr is OWLDataSomeValuesFrom dtSVFrom)
-                                {
-									//TODO
-
-                                    continue;
-                                }
                                 #endregion
                             }
                         }
