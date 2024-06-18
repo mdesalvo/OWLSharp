@@ -357,7 +357,6 @@ namespace OWLSharp.Ontology.Helpers
                                         if (inScopeDtPropAssertion.Literal.GetLiteral().Equals(dtHasValueLiteral))
                                             foundVisitingClsExprIndividuals.Add(inScopeDtPropAssertion.IndividualExpression);
                                     }
-                                    continue;
                                 }
                                 #endregion
 
