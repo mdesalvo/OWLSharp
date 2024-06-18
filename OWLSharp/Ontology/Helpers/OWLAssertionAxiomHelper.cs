@@ -292,7 +292,41 @@ namespace OWLSharp.Ontology.Helpers
 									//Compute object property assertions in scope of OSVF restriction
 									bool shouldSwitchObjPropIdvs = objSVFrom.ObjectPropertyExpression is OWLObjectInverseOf;
 									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objSVFrom.ObjectPropertyExpression);
-								}
+
+                                    //Compute qualified individuals eventually in scope of OSVF restriction
+                                    List<OWLIndividualExpression> qualifiedIdvExprs = ontology.GetIndividualsOf(objSVFrom.ClassExpression, directOnly);
+
+                                    //Compute individuals participating to OSVF restriction
+                                    var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
+                                    foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
+                                    {
+                                        OWLIndividualExpression inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
+                                        OWLIndividualExpression inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
+                                        if (inScopeObjPropAssertion.ObjectPropertyExpression is OWLObjectInverseOf)
+                                        {
+                                            inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
+                                            inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
+                                        }
+
+                                        //Initialize individual counter
+                                        RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI();
+                                        if (!occurrenceRegistry.ContainsKey(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID))
+                                            occurrenceRegistry.Add(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID, (inScopeObjPropAsnSourceIdvExpr, 0));
+                                        long occurrencyCounter = occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID].Item2;
+
+                                        //Collect occurrence of individual
+                                        if (qualifiedIdvExprs.Any(qiex => qiex.GetIRI().Equals(inScopeObjPropAsnTargetIdvExpr.GetIRI())))
+                                            occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID] = (inScopeObjPropAsnSourceIdvExpr, occurrencyCounter + 1);
+                                    }
+
+                                    //Filter individuals satisfying OSVF restriction
+                                    var occurrenceRegistryEnumerator = occurrenceRegistry.Values.GetEnumerator();
+                                    while (occurrenceRegistryEnumerator.MoveNext())
+                                    {
+                                        if (occurrenceRegistryEnumerator.Current.Item2 >= 1)
+                                            foundVisitingClsExprIndividuals.Add(occurrenceRegistryEnumerator.Current.Item1);
+                                    }
+                                }
 								#endregion
 							}
 						}
