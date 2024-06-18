@@ -837,6 +837,48 @@ namespace OWLSharp.Test.Ontology.Helpers
         }
 
         [TestMethod]
+        public void ShouldGetIndividualsOfObjectSomeValuesFromRestrictionWithInverseAssertion()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("ex:hasFriend")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                        new OWLNamedIndividual(new RDFResource("ex:John"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("ex:hasFriend")),
+                        new OWLNamedIndividual(new RDFResource("ex:John")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                    new OWLClassAssertion(new OWLClass(new RDFResource("ex:Human")),
+                                          new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLClassAssertion(new OWLClass(new RDFResource("ex:Human")),
+                                          new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                    new OWLClassAssertion(new OWLClass(new RDFResource("ex:Man")),
+                                          new OWLNamedIndividual(new RDFResource("ex:John")))
+                ],
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Man")), new OWLClass(new RDFResource("ex:Human"))),
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("ex:HasSomeHumanFriends")),
+                        new OWLObjectSomeValuesFrom(new OWLObjectProperty(new RDFResource("ex:hasFriend")), new OWLClass(new RDFResource("ex:Human"))) ]),
+                ]
+            };
+
+            List<OWLIndividualExpression> havingSomeHumanFriends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasSomeHumanFriends")));
+            Assert.IsTrue(havingSomeHumanFriends.Count == 2);
+            Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
+            Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:John"))));
+
+            //DirectOnly
+            Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasSomeHumanFriends")), true).Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldGetIndividualsOfDataHasValueRestriction()
         {
             OWLOntology ontology = new OWLOntology()
