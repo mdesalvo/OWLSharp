@@ -341,7 +341,7 @@ namespace OWLSharp.Ontology.Helpers
                                 }
 								#endregion
 
-								#region DataMinCardinality
+								#region DataMinCardinality, DataSomeValuesFrom
 								if (equivClsExpr is OWLDataMinCardinality || equivClsExpr is OWLDataSomeValuesFrom)
 								{
 									//DataSomeValuesFrom is an OWL-DL syntactic shortcut for qualified DataMinCardinality(1)
