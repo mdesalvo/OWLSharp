@@ -142,16 +142,22 @@ namespace OWLSharp.Ontology.Helpers
 
 						#region Class
 						if (equivClsExpr.IsClass)
+						{
 							foundVisitingClsExprIndividuals.AddRange(FindIndividualsOf(equivClsExpr, visitContext));
+							continue;
+						}
 						#endregion
 						
 						#region Enumerate
-						else if (equivClsExpr.IsEnumerate)
+						if (equivClsExpr.IsEnumerate)
+						{
 							foundVisitingClsExprIndividuals.AddRange(((OWLObjectOneOf)equivClsExpr).IndividualExpressions);
+							continue;
+						}
 						#endregion
 
 						#region Composite
-						else if (equivClsExpr.IsComposite)
+						if (equivClsExpr.IsComposite)
 						{
 							if (equivClsExpr is OWLObjectUnionOf objUnionOf)
 							{
@@ -175,11 +181,12 @@ namespace OWLSharp.Ontology.Helpers
 									}
 								}
 							}
+							continue;
 						}
 						#endregion
 
 						#region ObjectRestriction
-						else if (equivClsExpr.IsObjectRestriction)
+						if (equivClsExpr.IsObjectRestriction)
 						{
 							foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
 																	   	   			.Select(ax => ax.IndividualExpression));
@@ -225,7 +232,6 @@ namespace OWLSharp.Ontology.Helpers
 												 foundVisitingClsExprIndividuals.Add(inScopeObjPropAsnSourceIdvExpr);
 										}
 									}
-
 									continue;
 								}
 								#endregion
@@ -242,7 +248,6 @@ namespace OWLSharp.Ontology.Helpers
 										if (inScopeObjPropAssertion.SourceIndividualExpression.GetIRI().Equals(inScopeObjPropAssertion.TargetIndividualExpression.GetIRI()))
 											foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertion.SourceIndividualExpression);
 									}
-
 									continue;
 								}
 								#endregion
@@ -303,7 +308,6 @@ namespace OWLSharp.Ontology.Helpers
 										if (occurrenceRegistryEnumerator.Current.Item2 >= objMinCardValue)
 											foundVisitingClsExprIndividuals.Add(occurrenceRegistryEnumerator.Current.Item1);
 									}
-
 									continue;
 								}
 								#endregion
@@ -312,7 +316,7 @@ namespace OWLSharp.Ontology.Helpers
 						#endregion
 
 						#region DataRestriction
-						else if (equivClsExpr.IsDataRestriction)
+						if (equivClsExpr.IsDataRestriction)
 						{
 							foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
 																	   	   			.Select(ax => ax.IndividualExpression));
@@ -336,7 +340,6 @@ namespace OWLSharp.Ontology.Helpers
                                         if (inScopeDtPropAssertion.Literal.GetLiteral().Equals(dtHasValueLiteral))
                                             foundVisitingClsExprIndividuals.Add(inScopeDtPropAssertion.IndividualExpression);
                                     }
-
 									continue;
                                 }
 								#endregion
@@ -346,11 +349,11 @@ namespace OWLSharp.Ontology.Helpers
 								{
 									//DataSomeValuesFrom is an OWL-DL syntactic shortcut for qualified DataMinCardinality(1)
 									//so we threat them the same way, fetching restricted data property and qualified datarange
-									List<OWLDataPropertyExpression> onPropExprs = new List<OWLDataPropertyExpression>();
+									List<OWLDataProperty> onProps = new List<OWLDataProperty>();
 									if (equivClsExpr is OWLDataMinCardinality dtMinCard)
-										onPropExprs.Add(dtMinCard.DataProperty);
+										onProps.Add(dtMinCard.DataProperty);
 									else if (equivClsExpr is OWLDataSomeValuesFrom dtSVF) 
-										onPropExprs.AddRange(dtSVF.DataProperties);
+										onProps.AddRange(dtSVF.DataProperties);
                                     OWLDataRangeExpression onDataRangeExpr = 
 										(equivClsExpr as OWLDataMinCardinality)?.DataRangeExpression ?? 
 										(equivClsExpr as OWLDataSomeValuesFrom)?.DataRangeExpression;
@@ -361,8 +364,8 @@ namespace OWLSharp.Ontology.Helpers
                                     //Compute data property assertions in scope of DMNC/DSVF restriction
                                     bool isQualified = onDataRangeExpr != null;
                                     List<OWLDataPropertyAssertion> inScopeDtPropAssertions = new List<OWLDataPropertyAssertion>();
-									foreach (OWLDataProperty onPropExpr in onPropExprs)
-										inScopeDtPropAssertions.AddRange(SelectDataAssertionsByDPEX(dataPropertyAssertions, onPropExpr));
+									foreach (OWLDataProperty onProp in onProps)
+										inScopeDtPropAssertions.AddRange(SelectDataAssertionsByDPEX(dataPropertyAssertions, onProp));
 
                                     //Compute individuals participating to DMNC/DSVF restriction
                                     var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
@@ -386,7 +389,6 @@ namespace OWLSharp.Ontology.Helpers
                                         if (occurrenceRegistryEnumerator.Current.Item2 >= dtMinCardValue)
                                             foundVisitingClsExprIndividuals.Add(occurrenceRegistryEnumerator.Current.Item1);
                                     }
-
                                     continue;
 								}
                                 #endregion
