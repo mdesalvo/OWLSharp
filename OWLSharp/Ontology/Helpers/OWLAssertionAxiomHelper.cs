@@ -265,7 +265,7 @@ namespace OWLSharp.Ontology.Helpers
 									List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, onPropExpr);
 
                                     //Compute qualified individuals eventually in scope of OMNC/OSVF restriction
-                                    bool isQualified = (equivClsExpr is OWLObjectMinCardinality objMinCard && objMinCard.ClassExpression != null);
+                                    bool isQualified = onClassExpr != null;
 									List<OWLIndividualExpression> qualifiedIdvExprs = isQualified ? ontology.GetIndividualsOf(onClassExpr, directOnly)
 																						  		  : Enumerable.Empty<OWLIndividualExpression>().ToList();
 
