@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -102,6 +101,9 @@ namespace OWLSharp.Ontology.Helpers
                 differentIndividuals.AddRange(FindDifferentIndividuals(idvExpr.GetIRI(), GetAssertionAxiomsOfType<OWLDifferentIndividuals>(ontology), new HashSet<long>()));
             return differentIndividuals;
         }
+
+		public static bool CheckIsIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, bool directOnly=false)
+			=> ontology != null && clsExpr != null && idvExpr != null && GetIndividualsOf(ontology, clsExpr, directOnly).Any(iex => iex.GetIRI().Equals(idvExpr.GetIRI()));
 
         public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, bool directOnly=false)
         {
@@ -361,7 +363,7 @@ namespace OWLSharp.Ontology.Helpers
                                         long occurrencyCounter = occurrenceRegistry[inScopeDtPropAsnIdvExprIRI.PatternMemberID].Item2;
 
                                         //Collect occurrence of individual
-                                        if (!isQualified) //TODO: || logic for checking if literal is compatible with required dtMNC.DataRangeExpression
+                                        if (!isQualified || CheckIsLiteralOf(ontology, dtMNC.DataRangeExpression, inScopeDtPropAssertion.Literal))
                                             occurrenceRegistry[inScopeDtPropAsnIdvExprIRI.PatternMemberID] = (inScopeDtPropAssertion.IndividualExpression, occurrencyCounter + 1);
                                     }
 
@@ -410,6 +412,16 @@ namespace OWLSharp.Ontology.Helpers
 			}				
             return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
         }
+
+		public static bool CheckIsLiteralOf(this OWLOntology ontology, OWLDataRangeExpression drExpr, OWLLiteral literal, bool directOnly=false)
+		{
+			if (ontology != null && drExpr != null && literal != null)
+			{
+				//TODO
+
+			}
+			return false;
+		}
         #endregion
 
         #region Utilities
