@@ -313,6 +313,12 @@ namespace OWLSharp.Ontology.Helpers
                                             inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
                                             inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
                                         }
+                                        if (shouldSwitchObjPropIdvs)
+                                        {
+                                            OWLIndividualExpression bufIdvExpr = inScopeObjPropAsnSourceIdvExpr;
+                                            inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAsnTargetIdvExpr;
+                                            inScopeObjPropAsnTargetIdvExpr = bufIdvExpr;
+                                        }
 
                                         //Initialize individual counter
                                         RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI();
