@@ -265,14 +265,10 @@ namespace OWLSharp.Ontology.Helpers
 											inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
 										}
 										if (shouldSwitchObjPropIdvs)
-										{
-											OWLIndividualExpression bufIdvExpr = inScopeObjPropAsnSourceIdvExpr;
-											inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAsnTargetIdvExpr;
-											inScopeObjPropAsnTargetIdvExpr = bufIdvExpr;
-                                        }
-
-										//Initialize individual counter
-										RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI(); 
+										    (inScopeObjPropAsnTargetIdvExpr, inScopeObjPropAsnSourceIdvExpr) = (inScopeObjPropAsnSourceIdvExpr, inScopeObjPropAsnTargetIdvExpr);
+                                        
+                                        //Initialize individual counter
+                                        RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI(); 
 										if (!occurrenceRegistry.ContainsKey(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID))
 											occurrenceRegistry.Add(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID, (inScopeObjPropAsnSourceIdvExpr, 0));
 										long occurrencyCounter = occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID].Item2;
@@ -314,12 +310,8 @@ namespace OWLSharp.Ontology.Helpers
                                             inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
                                         }
                                         if (shouldSwitchObjPropIdvs)
-                                        {
-                                            OWLIndividualExpression bufIdvExpr = inScopeObjPropAsnSourceIdvExpr;
-                                            inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAsnTargetIdvExpr;
-                                            inScopeObjPropAsnTargetIdvExpr = bufIdvExpr;
-                                        }
-
+                                            (inScopeObjPropAsnTargetIdvExpr, inScopeObjPropAsnSourceIdvExpr) = (inScopeObjPropAsnSourceIdvExpr, inScopeObjPropAsnTargetIdvExpr);
+                                        
                                         //Initialize individual counter
                                         RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI();
                                         if (!occurrenceRegistry.ContainsKey(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID))
