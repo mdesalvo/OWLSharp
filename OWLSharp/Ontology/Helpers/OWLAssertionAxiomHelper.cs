@@ -334,13 +334,28 @@ namespace OWLSharp.Ontology.Helpers
                                         if (inScopeDtPropAssertion.Literal.GetLiteral().Equals(dtHasValueLiteral))
                                             foundVisitingClsExprIndividuals.Add(inScopeDtPropAssertion.IndividualExpression);
                                     }
+
+									continue;
                                 }
+								#endregion
+
+								#region DataMinCardinality
+								if (equivClsExpr is OWLDataMinCardinality dtMinCard)
+								{
+									//TODO
+
+									continue;
+								}
                                 #endregion
 
-                                /*								
-								 this is OWLDataSomeValuesFrom
-								|| this is OWLDataMinCardinality
-								*/
+                                #region DataSomeValuesFrom
+                                if (equivClsExpr is OWLDataSomeValuesFrom dtSVFrom)
+                                {
+									//TODO
+
+                                    continue;
+                                }
+                                #endregion
                             }
                         }
 						#endregion
