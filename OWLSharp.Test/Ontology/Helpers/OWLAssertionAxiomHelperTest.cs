@@ -795,6 +795,40 @@ namespace OWLSharp.Test.Ontology.Helpers
         }
 
         [TestMethod]
+        public void ShouldGetIndividualsOfObjectMinCardinalityRestrictionWithInverseRestriction()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("ex:hasFriend")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("ex:hasFriend")),
+                        new OWLNamedIndividual(new RDFResource("ex:John")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("ex:hasFriend")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+                        new OWLNamedIndividual(new RDFResource("ex:John")))
+                ],
+                ClassAxioms = [
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("ex:HasAtLeast2Friends")),
+                        new OWLObjectMinCardinality(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))), 2) ]),
+                ]
+            };
+
+            List<OWLIndividualExpression> havingAtLeast2Friends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasAtLeast2Friends")));
+            Assert.IsTrue(havingAtLeast2Friends.Count == 1);
+            Assert.IsTrue(havingAtLeast2Friends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
+
+            //DirectOnly
+            Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasAtLeast2Friends")), true).Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldGetIndividualsOfObjectSomeValuesFromRestriction()
         {
             OWLOntology ontology = new OWLOntology()
