@@ -340,11 +340,40 @@ namespace OWLSharp.Ontology.Helpers
 								#endregion
 
 								#region DataMinCardinality
-								if (equivClsExpr is OWLDataMinCardinality dtMinCard)
+								if (equivClsExpr is OWLDataMinCardinality dtMNC)
 								{
-									//TODO
+                                    int dtMinCardValue = 1;
+                                    if (!int.TryParse(dtMNC.Cardinality, NumberStyles.Integer, CultureInfo.InvariantCulture, out dtMinCardValue))
+                                        throw new OWLException($"Cannot get individuals of class expression {clsExpr.GetIRI()} because it is equivalent to a DataMinCardinality class expression specifying an invalid Cardinality value!");
 
-									continue;
+                                    //Compute data property assertions in scope of DMNC restriction
+                                    bool isQualified = dtMNC.DataRangeExpression != null;
+                                    List<OWLDataPropertyAssertion> inScopeDtPropAssertions = SelectDataAssertionsByDPEX(dataPropertyAssertions, dtMNC.DataProperty);
+
+                                    //Compute individuals participating to DMNC restriction
+                                    var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
+                                    foreach (OWLDataPropertyAssertion inScopeDtPropAssertion in inScopeDtPropAssertions)
+									{
+                                        //Initialize individual counter
+                                        RDFResource inScopeDtPropAsnIdvExprIRI = inScopeDtPropAssertion.IndividualExpression.GetIRI();
+                                        if (!occurrenceRegistry.ContainsKey(inScopeDtPropAsnIdvExprIRI.PatternMemberID))
+                                            occurrenceRegistry.Add(inScopeDtPropAsnIdvExprIRI.PatternMemberID, (inScopeDtPropAssertion.IndividualExpression, 0));
+                                        long occurrencyCounter = occurrenceRegistry[inScopeDtPropAsnIdvExprIRI.PatternMemberID].Item2;
+
+                                        //Collect occurrence of individual
+                                        if (!isQualified) //TODO: || logic for checking if literal is compatible with required dtMNC.DataRangeExpression
+                                            occurrenceRegistry[inScopeDtPropAsnIdvExprIRI.PatternMemberID] = (inScopeDtPropAssertion.IndividualExpression, occurrencyCounter + 1);
+                                    }
+
+                                    //Filter individuals satisfying DMNC restriction
+                                    var occurrenceRegistryEnumerator = occurrenceRegistry.Values.GetEnumerator();
+                                    while (occurrenceRegistryEnumerator.MoveNext())
+                                    {
+                                        if (occurrenceRegistryEnumerator.Current.Item2 >= dtMinCardValue)
+                                            foundVisitingClsExprIndividuals.Add(occurrenceRegistryEnumerator.Current.Item1);
+                                    }
+
+                                    continue;
 								}
                                 #endregion
 
