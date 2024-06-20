@@ -441,7 +441,7 @@ namespace OWLSharp.Ontology.Helpers
 					if (rdfLiteral is RDFPlainLiteral)
 						return false;
 
-					//Typed literals are instances of declared datatype
+					//Typed literals are instances of explicit datatype
 					return string.Equals(((RDFTypedLiteral)rdfLiteral).Datatype.ToString(), drExprIRI.ToString());
                 }
                 #endregion
@@ -449,14 +449,25 @@ namespace OWLSharp.Ontology.Helpers
                 #region Enumerate
                 if (drExpr.IsEnumerate)
 				{
-                    return ((OWLDataOneOf)drExpr).Literals.Any(lit => lit.GetLiteral().Equals(rdfLiteral));
+					return ((OWLDataOneOf)drExpr).Literals.Any(lit => lit.GetLiteral().Equals(rdfLiteral));
                 }
                 #endregion
 
                 #region Composite
                 if (drExpr.IsComposite)
 				{
-                    //TODO
+                    if (drExpr is OWLDataUnionOf dtUnionOf)
+					{
+						return dtUnionOf.DataRangeExpressions.Any(drex => ontology.CheckIsLiteralOf(drex, literal));
+					}
+					else if (drExpr is OWLDataIntersectionOf dtIntersectionOf)
+					{
+						return dtIntersectionOf.DataRangeExpressions.All(drex => ontology.CheckIsLiteralOf(drex, literal));
+					}
+					else if (drExpr is OWLDataComplementOf dtComplementOf)
+					{
+						return !ontology.CheckIsLiteralOf(dtComplementOf, literal);
+					}
                 }
                 #endregion
 
