@@ -422,10 +422,35 @@ namespace OWLSharp.Ontology.Helpers
 		{
 			if (ontology != null && drExpr != null && literal != null)
 			{
-				//TODO
+                #region Datatype
+                if (drExpr.IsDatatype)
+				{
+                    //TODO
+                }
+                #endregion
 
+                #region Enumerate
+                if (drExpr.IsEnumerate)
+				{
+                    //TODO
+                }
+                #endregion
+
+                #region Composite
+                if (drExpr.IsComposite)
+				{
+                    //TODO
+                }
+                #endregion
+
+                #region DatatypeRestriction
+                if (drExpr.IsDatatypeRestriction)
+				{
+					//TODO
+				}
+				#endregion
 			}
-			return false;
+            return false;
 		}
         #endregion
 
