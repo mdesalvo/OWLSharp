@@ -428,12 +428,12 @@ namespace OWLSharp.Ontology.Helpers
                 #region Datatype
                 if (drExpr.IsDatatype)
 				{
-					//Literals are basically instances of rdfs:Literal
+					//Literals are instances of rdfs:Literal
 					if (drExprIRI.Equals(RDFVocabulary.RDFS.LITERAL))
 						return true;
 
 					//Plain literals are instances of rdf:langString when having language,
-					//otherwise they are basically instances of rdf:PlainLiteral 
+					//otherwise they are instances of rdf:PlainLiteral 
 					if (drExprIRI.Equals(RDFVocabulary.RDF.LANG_STRING))
 						return rdfLiteral is RDFPlainLiteral rdfPlainLiteral && rdfPlainLiteral.HasLanguage();
 					if (drExprIRI.Equals(RDFVocabulary.RDF.PLAIN_LITERAL))
@@ -441,7 +441,7 @@ namespace OWLSharp.Ontology.Helpers
 					if (rdfLiteral is RDFPlainLiteral)
 						return false;
 
-					//Typed literals are instances of their datatype
+					//Typed literals are instances of declared datatype
 					return string.Equals(((RDFTypedLiteral)rdfLiteral).Datatype.ToString(), drExprIRI.ToString());
                 }
                 #endregion
@@ -449,7 +449,7 @@ namespace OWLSharp.Ontology.Helpers
                 #region Enumerate
                 if (drExpr.IsEnumerate)
 				{
-                    //TODO
+                    return ((OWLDataOneOf)drExpr).Literals.Any(lit => lit.GetLiteral().Equals(rdfLiteral));
                 }
                 #endregion
 
