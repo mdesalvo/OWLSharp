@@ -422,10 +422,21 @@ namespace OWLSharp.Ontology.Helpers
 		{
 			if (ontology != null && drExpr != null && literal != null)
 			{
+				RDFLiteral rdfLiteral = literal.GetLiteral();
+                RDFResource drExprIRI = drExpr.GetIRI();
+
                 #region Datatype
                 if (drExpr.IsDatatype)
 				{
-                    //TODO
+					//Literals are basically rdfs:Literal
+					if (drExprIRI.Equals(RDFVocabulary.RDFS.LITERAL))
+						return true;
+
+					//Plain literals are rdf:langString when having language
+					if (drExpr.Equals(RDFVocabulary.RDF.LANG_STRING))
+						return rdfLiteral is RDFPlainLiteral rdfPlainLiteral && rdfPlainLiteral.HasLanguage();
+
+					//TODO
                 }
                 #endregion
 
