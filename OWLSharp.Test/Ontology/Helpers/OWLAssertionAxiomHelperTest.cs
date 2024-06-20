@@ -981,6 +981,24 @@ namespace OWLSharp.Test.Ontology.Helpers
             //DirectOnly
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Having25Years")), true).Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldCheckIsLiteralOf()
+        {
+            Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDFS.LITERAL), new OWLLiteral(new RDFPlainLiteral("hello"))));
+            Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDFS.LITERAL), new OWLLiteral(new RDFPlainLiteral("hello","en-US"))));
+            Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDFS.LITERAL), new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+            Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.LANG_STRING), new OWLLiteral(new RDFPlainLiteral("hello", "en-US"))));
+            Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.LANG_STRING), new OWLLiteral(new RDFPlainLiteral("hello"))));
+            Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.LANG_STRING), new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+            Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.PLAIN_LITERAL), new OWLLiteral(new RDFPlainLiteral("hello"))));
+            Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.PLAIN_LITERAL), new OWLLiteral(new RDFPlainLiteral("hello", "en-US"))));
+            Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.PLAIN_LITERAL), new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+            Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.XSD.DOUBLE), new OWLLiteral(new RDFPlainLiteral("hello"))));
+            Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.XSD.DOUBLE), new OWLLiteral(new RDFPlainLiteral("hello", "en-US"))));
+            Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.XSD.DOUBLE), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+            Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.XSD.DOUBLE), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
+        }
         #endregion
     }
 }
