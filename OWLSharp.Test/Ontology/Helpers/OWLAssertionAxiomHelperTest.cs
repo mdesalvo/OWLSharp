@@ -999,7 +999,7 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.XSD.DOUBLE), new OWLLiteral(new RDFPlainLiteral("hello", "en-US"))));
             Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.XSD.DOUBLE), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
             Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.XSD.DOUBLE), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
-			//DataOneOf
+			//Enumerate
 			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDataOneOf([ 
 				new OWLLiteral(new RDFPlainLiteral("hello")), 
 				new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
@@ -1024,6 +1024,47 @@ namespace OWLSharp.Test.Ontology.Helpers
 				new OWLLiteral(new RDFPlainLiteral("hello")), 
 				new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
 				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ]), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INT))));
+			//Composite
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDataUnionOf([
+				new OWLDataOneOf([ 
+					new OWLLiteral(new RDFPlainLiteral("hello")), 
+					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
+					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ]),
+				new OWLDatatype(RDFVocabulary.XSD.BOOLEAN) ]), new OWLLiteral(RDFTypedLiteral.False)));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDataUnionOf([
+				new OWLDataOneOf([ 
+					new OWLLiteral(new RDFPlainLiteral("hello")), 
+					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
+					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ]),
+				new OWLDatatype(RDFVocabulary.XSD.BOOLEAN) ]), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_FLOAT))));
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDataIntersectionOf([
+				new OWLDataOneOf([ 
+					new OWLLiteral(new RDFPlainLiteral("hello")), 
+					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
+					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ]),
+				new OWLDatatype(RDFVocabulary.XSD.INTEGER) ]), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDataIntersectionOf([
+				new OWLDataOneOf([ 
+					new OWLLiteral(new RDFPlainLiteral("hello")), 
+					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
+					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ]),
+				new OWLDatatype(RDFVocabulary.XSD.INTEGER) ]), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_FLOAT))));
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDataIntersectionOf([
+				new OWLDataOneOf([ 
+					new OWLLiteral(new RDFPlainLiteral("hello")), 
+					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
+					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ]),
+				new OWLDatatype(RDFVocabulary.XSD.INTEGER) ]), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDataComplementOf(
+				new OWLDataOneOf([ 
+					new OWLLiteral(new RDFPlainLiteral("hello")), 
+					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
+					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ])), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_FLOAT))));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDataComplementOf(
+				new OWLDataOneOf([ 
+					new OWLLiteral(new RDFPlainLiteral("hello")), 
+					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
+					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ])), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 		}
         #endregion
     }
