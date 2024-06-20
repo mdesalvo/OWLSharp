@@ -466,7 +466,7 @@ namespace OWLSharp.Ontology.Helpers
 					}
 					else if (drExpr is OWLDataComplementOf dtComplementOf)
 					{
-						return !ontology.CheckIsLiteralOf(dtComplementOf, literal);
+						return !ontology.CheckIsLiteralOf(dtComplementOf.DataRangeExpression, literal);
 					}
                 }
                 #endregion
