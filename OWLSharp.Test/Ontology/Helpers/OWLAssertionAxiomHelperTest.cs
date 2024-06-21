@@ -1081,6 +1081,17 @@ namespace OWLSharp.Test.Ontology.Helpers
 						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.LENGTH)
 					]),
 				new OWLLiteral(new RDFTypedLiteral("abc", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.STRING),
+					[ 
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("^a", RDFModelEnums.RDFDatatypes.XSD_STRING)), RDFVocabulary.XSD.PATTERN)
+					]),
+				new OWLLiteral(new RDFTypedLiteral("abc", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.STRING), null),
+				new OWLLiteral(new RDFTypedLiteral("abc", RDFModelEnums.RDFDatatypes.XSD_STRING))));
 		}
         #endregion
     }
