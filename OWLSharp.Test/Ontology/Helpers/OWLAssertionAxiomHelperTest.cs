@@ -1099,6 +1099,38 @@ namespace OWLSharp.Test.Ontology.Helpers
 						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("3", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.LENGTH)
 					]),
 				new OWLLiteral(new RDFPlainLiteral("abc")))); //Plain literals have no chances against datatype restrictions (even if virtually compatible)
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.DOUBLE),
+					[ 
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_EXCLUSIVE),
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MAX_EXCLUSIVE)
+					]),
+				new OWLLiteral(new RDFTypedLiteral("8.35", RDFModelEnums.RDFDatatypes.XSD_FLOAT))));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.DOUBLE),
+					[ 
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_EXCLUSIVE),
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MAX_EXCLUSIVE)
+					]),
+				new OWLLiteral(new RDFTypedLiteral("6.0", RDFModelEnums.RDFDatatypes.XSD_FLOAT))));
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.DOUBLE),
+					[ 
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_INCLUSIVE),
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MAX_INCLUSIVE)
+					]),
+				new OWLLiteral(new RDFTypedLiteral("8.35", RDFModelEnums.RDFDatatypes.XSD_FLOAT))));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.FLOAT),
+					[ 
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_INCLUSIVE),
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MAX_INCLUSIVE)
+					]),
+				new OWLLiteral(new RDFTypedLiteral("5.99", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
 		}
         #endregion
     }
