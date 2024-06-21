@@ -472,14 +472,12 @@ namespace OWLSharp.Ontology.Helpers
 						return false;
 
 					OWLDatatypeRestriction dtRestr = (OWLDatatypeRestriction)drExpr;
-					RDFTypedLiteral typedLiteral = (RDFTypedLiteral)rdfLiteral;
+					RDFTypedLiteral rdfTypedLiteral = (RDFTypedLiteral)rdfLiteral;
 
 					//We must build the RDF datatype corresponding to the OWL datatype restriction
 					RDFDatatype drExprDatatype = new RDFDatatype(drExprIRI.URI, RDFModelUtilities.GetEnumFromDatatype(dtRestr.Datatype.GetIRI().ToString()), null);
 					foreach (OWLFacetRestriction dtRestrFacet in dtRestr.FacetRestrictions ?? Enumerable.Empty<OWLFacetRestriction>())
 					{
-						RDFLiteral dtRestrFacetLiteral = dtRestrFacet.Literal.GetLiteral();
-
 						//Numeric
 						if ((string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.LENGTH.ToString())
 							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
@@ -488,7 +486,7 @@ namespace OWLSharp.Ontology.Helpers
 							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_INCLUSIVE.ToString())
 							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString())
 							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString())) 
-							  && dtRestrFacetLiteral is RDFTypedLiteral dtRestrFacetTypedLiteralNF
+							  && dtRestrFacet.Literal.GetLiteral() is RDFTypedLiteral dtRestrFacetTypedLiteralNF
 							  && dtRestrFacetTypedLiteralNF.HasDecimalDatatype()
 							  && uint.TryParse(dtRestrFacetTypedLiteralNF.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dtRestrFacetTypedLiteralValue))
 						{
@@ -511,7 +509,7 @@ namespace OWLSharp.Ontology.Helpers
 
 						//Pattern
 						if (string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.PATTERN.ToString())
-							 && dtRestrFacetLiteral is RDFTypedLiteral dtRestrFacetTypedLiteralPF
+							 && dtRestrFacet.Literal.GetLiteral() is RDFTypedLiteral dtRestrFacetTypedLiteralPF
 							 && dtRestrFacetTypedLiteralPF.Datatype.URI.Equals(RDFVocabulary.XSD.STRING.URI))
 						{
 							drExprDatatype.Facets.Add(new RDFPatternFacet(dtRestrFacetTypedLiteralPF.Value));
@@ -522,10 +520,10 @@ namespace OWLSharp.Ontology.Helpers
 					//Then we try validate the given literal against the reconstructed RDF datatype
 					try
 					{
-						new RDFTypedLiteral(typedLiteral.Value, drExprDatatype);
+						_ = new RDFTypedLiteral(rdfTypedLiteral.Value, drExprDatatype);
 						return true;
 					}
-					catch { /* NO-OP since we'll return false */ }
+					catch { /* NO-OP */ }
 				}
 				#endregion
 			}
