@@ -17,6 +17,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
@@ -466,9 +467,14 @@ namespace OWLSharp.Ontology.Helpers
                 #region DatatypeRestriction
                 if (drExpr.IsDatatypeRestriction)
 				{
+					//No way to check a plain literal against a datarange expression
+					if (rdfLiteral is RDFPlainLiteral)
+						return false;
+
 					OWLDatatypeRestriction dtRestr = (OWLDatatypeRestriction)drExpr;
-					
-					//We must transform the OWL datatype restriction into its equivalent RDF datatype representation
+					RDFTypedLiteral typedLiteral = (RDFTypedLiteral)rdfLiteral;
+
+					//We must build the RDF datatype corresponding to the OWL datatype restriction
 					RDFDatatype drExprDatatype = new RDFDatatype(drExprIRI.URI, RDFModelUtilities.GetEnumFromDatatype(dtRestr.Datatype.GetIRI().ToString()), null);
 					foreach (OWLFacetRestriction dtRestrFacet in dtRestr.FacetRestrictions ?? Enumerable.Empty<OWLFacetRestriction>())
 					{
@@ -482,7 +488,7 @@ namespace OWLSharp.Ontology.Helpers
 												|| string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString());
 						RDFLiteral dtRestrFacetLiteral = dtRestrFacet.Literal.GetLiteral();
 
-						//Numeric XSD facets must specify a positive integer value
+						//Numeric
 						if (isNumericFacet 
 							 && dtRestrFacetLiteral is RDFTypedLiteral dtRestrFacetTypedLiteralNF
 							 && dtRestrFacetTypedLiteralNF.HasDecimalDatatype()
@@ -505,15 +511,23 @@ namespace OWLSharp.Ontology.Helpers
 							continue;
 						}
 
-						//Pattern XSD facets must specify a string value
+						//Pattern
 						if (isPatternFacet
 							 && dtRestrFacetLiteral is RDFTypedLiteral dtRestrFacetTypedLiteralPF
-							 && dtRestrFacetTypedLiteralPF.HasStringDatatype())
+							 && dtRestrFacetTypedLiteralPF.Datatype.URI.Equals(RDFVocabulary.XSD.STRING.URI))
 						{
 							drExprDatatype.Facets.Add(new RDFPatternFacet(dtRestrFacetTypedLiteralPF.Value));
 							continue;
 						}
 					}	
+				
+					//Then we try validate the given literal against the reconstructed RDF datatype
+					try
+					{
+						new RDFTypedLiteral(typedLiteral.Value, drExprDatatype);
+						return true;
+					}
+					catch { /* NO-OP since we'll return false */ }
 				}
 				#endregion
 			}
