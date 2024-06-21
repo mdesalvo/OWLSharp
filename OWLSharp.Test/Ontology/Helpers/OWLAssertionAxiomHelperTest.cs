@@ -1092,6 +1092,13 @@ namespace OWLSharp.Test.Ontology.Helpers
 				new OWLDatatypeRestriction(
 					new OWLDatatype(RDFVocabulary.XSD.STRING), null),
 				new OWLLiteral(new RDFTypedLiteral("abc", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.STRING),
+					[ 
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("3", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.LENGTH)
+					]),
+				new OWLLiteral(new RDFPlainLiteral("abc")))); //Plain literals have no chances against datatype restrictions (even if virtually compatible)
 		}
         #endregion
     }
