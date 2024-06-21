@@ -419,6 +419,38 @@ namespace OWLSharp.Ontology.Helpers
             return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
         }
 
+		public static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, bool directOnly=false)
+		{
+			bool answer = false;
+
+			if (ontology != null && clsExpr != null && idvExpr != null)
+			{
+				RDFResource idvExprIRI = idvExpr.GetIRI();
+				RDFResource clsExprIRI = clsExpr.GetIRI();
+
+				foreach (OWLClassAssertion idvExprClassAsn in GetAssertionAxiomsOfType<OWLClassAssertion>(ontology)
+																.Where(ax => ax.IndividualExpression.GetIRI().Equals(idvExprIRI)))
+				{
+					//Direct
+					if (idvExprClassAsn.ClassExpression is OWLObjectComplementOf directObjComplOf && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
+					{
+						answer = true;
+						break;
+					}
+	
+					//Indirect
+					if (OWLClassAxiomHelper.GetEquivalentClasses(ontology, idvExprClassAsn.ClassExpression, directOnly)
+										   .Any(cex => cex is OWLObjectComplementOf indirectObjComplOf && indirectObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI)))
+					{
+						answer = true;
+						break;
+					}
+				}
+			}
+
+			return answer;
+		}
+
 		public static bool CheckIsLiteralOf(this OWLOntology ontology, OWLDataRangeExpression drExpr, OWLLiteral literal)
 		{
 			if (ontology != null && drExpr != null && literal != null)

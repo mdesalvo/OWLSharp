@@ -982,6 +982,30 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue(ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Having25Years")), true).Count == 0);
         }
 
+		[TestMethod]
+        public void ShouldCheckIsNegativeIndividualOf()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLClassAssertion(new OWLClass(new RDFResource("ex:NotMyAnymal")), new OWLNamedIndividual(new RDFResource("ex:Fuffy"))),
+                    new OWLClassAssertion(new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cat"))), new OWLNamedIndividual(new RDFResource("ex:Snoopy"))),
+                ],
+                ClassAxioms = [
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cat")), new OWLClass(new RDFResource("ex:Animal"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:PersianCat")), new OWLClass(new RDFResource("ex:Cat"))),
+                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Animal")), new OWLClass(new RDFResource("ex:LivingEntity"))),
+                    new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:Cat")), new OWLClass(new RDFResource("ex:DomesticFeline")) ]),
+                    new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:MyAnimals")), new OWLObjectOneOf([ new OWLNamedIndividual(new RDFResource("ex:Fuffy")), new OWLNamedIndividual(new RDFResource("ex:Felix")), new OWLNamedIndividual(new RDFResource("ex:Paco")) ]) ]),
+                    new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:NotMyAnymal")), new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:MyAnimals"))) ])
+                ]
+            };
+
+			Assert.IsTrue(ontology.CheckIsNegativeIndividualOf(new OWLClass(new RDFResource("ex:MyAnimals")), new OWLNamedIndividual(new RDFResource("ex:Fuffy")))); //There is a subtle contradiction in this, but it will be detected during ontology validation: Fuffy is ex:NotMyAnimal but is also ex:MyAnimals which is its complement...
+			Assert.IsTrue(ontology.CheckIsNegativeIndividualOf(new OWLClass(new RDFResource("ex:Cat")), new OWLNamedIndividual(new RDFResource("ex:Snoopy"))));
+			Assert.IsFalse(ontology.CheckIsNegativeIndividualOf(new OWLClass(new RDFResource("ex:Animal")), new OWLNamedIndividual(new RDFResource("ex:Snoopy"))));
+		}
+
         [TestMethod]
         public void ShouldCheckIsLiteralOf()
         {
