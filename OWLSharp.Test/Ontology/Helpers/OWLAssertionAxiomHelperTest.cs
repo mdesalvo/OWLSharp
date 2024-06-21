@@ -1065,6 +1065,15 @@ namespace OWLSharp.Test.Ontology.Helpers
 					new OWLLiteral(new RDFPlainLiteral("hello")), 
 					new OWLLiteral(new RDFPlainLiteral("hi", "en-US")), 
 					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)) ])), new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+			//DatatypeRestriction
+			Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(
+				new OWLDatatypeRestriction(
+					new OWLDatatype(RDFVocabulary.XSD.STRING),
+					[ 
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MIN_LENGTH),
+						new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INTEGER)), RDFVocabulary.XSD.MAX_LENGTH)
+					]),
+				new OWLLiteral(new RDFTypedLiteral("abcdef", RDFModelEnums.RDFDatatypes.XSD_STRING))));
 		}
         #endregion
     }
