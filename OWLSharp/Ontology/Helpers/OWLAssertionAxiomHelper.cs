@@ -478,21 +478,19 @@ namespace OWLSharp.Ontology.Helpers
 					RDFDatatype drExprDatatype = new RDFDatatype(drExprIRI.URI, RDFModelUtilities.GetEnumFromDatatype(dtRestr.Datatype.GetIRI().ToString()), null);
 					foreach (OWLFacetRestriction dtRestrFacet in dtRestr.FacetRestrictions ?? Enumerable.Empty<OWLFacetRestriction>())
 					{
-						bool isPatternFacet = string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.PATTERN.ToString());
-						bool isNumericFacet = string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.LENGTH.ToString())
-												|| string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
-												|| string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
-												|| string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString())
-												|| string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_INCLUSIVE.ToString())
-												|| string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString())
-												|| string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString());
 						RDFLiteral dtRestrFacetLiteral = dtRestrFacet.Literal.GetLiteral();
 
 						//Numeric
-						if (isNumericFacet 
-							 && dtRestrFacetLiteral is RDFTypedLiteral dtRestrFacetTypedLiteralNF
-							 && dtRestrFacetTypedLiteralNF.HasDecimalDatatype()
-							 && uint.TryParse(dtRestrFacetTypedLiteralNF.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dtRestrFacetTypedLiteralValue))
+						if ((string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.LENGTH.ToString())
+							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
+							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
+							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString())
+							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_INCLUSIVE.ToString())
+							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString())
+							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString())) 
+							  && dtRestrFacetLiteral is RDFTypedLiteral dtRestrFacetTypedLiteralNF
+							  && dtRestrFacetTypedLiteralNF.HasDecimalDatatype()
+							  && uint.TryParse(dtRestrFacetTypedLiteralNF.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dtRestrFacetTypedLiteralValue))
 						{
 							if (string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.LENGTH.ToString()))
 								drExprDatatype.Facets.Add(new RDFLengthFacet(dtRestrFacetTypedLiteralValue));
@@ -512,7 +510,7 @@ namespace OWLSharp.Ontology.Helpers
 						}
 
 						//Pattern
-						if (isPatternFacet
+						if (string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.PATTERN.ToString())
 							 && dtRestrFacetLiteral is RDFTypedLiteral dtRestrFacetTypedLiteralPF
 							 && dtRestrFacetTypedLiteralPF.Datatype.URI.Equals(RDFVocabulary.XSD.STRING.URI))
 						{
