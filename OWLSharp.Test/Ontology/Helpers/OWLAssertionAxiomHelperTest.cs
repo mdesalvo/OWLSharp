@@ -985,6 +985,10 @@ namespace OWLSharp.Test.Ontology.Helpers
         [TestMethod]
         public void ShouldCheckIsLiteralOf()
         {
+			Assert.IsFalse((null as OWLOntology).CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDFS.LITERAL), new OWLLiteral(new RDFPlainLiteral("hello"))));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(null, new OWLLiteral(new RDFPlainLiteral("hello"))));
+			Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDFS.LITERAL), null));
+
 			//Datatype
             Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDFS.LITERAL), new OWLLiteral(new RDFPlainLiteral("hello"))));
             Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDFS.LITERAL), new OWLLiteral(new RDFPlainLiteral("hello","en-US"))));

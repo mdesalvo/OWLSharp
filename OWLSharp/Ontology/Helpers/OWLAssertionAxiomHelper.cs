@@ -419,7 +419,7 @@ namespace OWLSharp.Ontology.Helpers
             return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
         }
 
-		public static bool CheckIsLiteralOf(this OWLOntology ontology, OWLDataRangeExpression drExpr, OWLLiteral literal, bool directOnly=false)
+		public static bool CheckIsLiteralOf(this OWLOntology ontology, OWLDataRangeExpression drExpr, OWLLiteral literal)
 		{
 			if (ontology != null && drExpr != null && literal != null)
 			{
