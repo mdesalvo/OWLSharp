@@ -20,10 +20,12 @@ namespace OWLSharp
     {
         public enum OWLFormats
         {
-            /// <summary>
-            /// OWL2/XML serialization
-            /// </summary>
             OWL2XML = 1
         };
+
+		public enum OWLReasonerRules
+		{
+			SubClassOfEntailment = 1
+		}
     }
 }
