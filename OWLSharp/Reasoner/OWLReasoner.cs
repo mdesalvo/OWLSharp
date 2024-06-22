@@ -14,6 +14,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OWLSharp.Ontology;
+using OWLSharp.Reasoner.Rules;
 
 namespace OWLSharp.Reasoner
 {

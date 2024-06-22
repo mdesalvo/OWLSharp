@@ -15,11 +15,10 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
-using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Reasoner
+namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSubClassOfEntailmentRule
     {
@@ -27,6 +26,7 @@ namespace OWLSharp.Reasoner
         {
             OWLReasonerReport report = new OWLReasonerReport();
 
+			//Scan declared classes
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
