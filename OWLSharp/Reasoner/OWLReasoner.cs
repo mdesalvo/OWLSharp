@@ -21,12 +21,12 @@ namespace OWLSharp.Reasoner
     public class OWLReasoner
     {
         #region Properties
-        public List<OWLEnums.OWLReasonerRules> Rules { get; set; }
+        public List<OWLEnums.OWLReasonerRules> StandardRules { get; set; }
         #endregion
 
         #region Ctors
         public OWLReasoner()
-			=> Rules = new List<OWLEnums.OWLReasonerRules>();
+			=> StandardRules = new List<OWLEnums.OWLReasonerRules>();
         #endregion
 
         #region Methods
@@ -40,15 +40,15 @@ namespace OWLSharp.Reasoner
 
                 //Initialize inference registry
                 Dictionary<string, OWLReasonerReport> inferenceRegistry = new Dictionary<string, OWLReasonerReport>();
-				Rules.ForEach(reasonerRule => inferenceRegistry.Add(reasonerRule.ToString(), null));
+				StandardRules.ForEach(standardRule => inferenceRegistry.Add(standardRule.ToString(), null));
 
-                //Execute rules
-                Parallel.ForEach(Rules, 
-                    reasonerRule =>
+                //Execute standard rules
+                Parallel.ForEach(StandardRules, 
+                    standardRule =>
                     {
-                        OWLEvents.RaiseInfo($"Launching reasoner rule '{reasonerRule}'");
+                        OWLEvents.RaiseInfo($"Launching standard reasoner rule '{standardRule}'");
 
-                        switch (reasonerRule)
+                        switch (standardRule)
                         {
                             case OWLEnums.OWLReasonerRules.SubClassOfEntailment:
 								inferenceRegistry[OWLEnums.OWLReasonerRules.SubClassOfEntailment.ToString()] = OWLSubClassOfEntailmentRule.ExecuteRule(ontology);
@@ -58,7 +58,7 @@ namespace OWLSharp.Reasoner
 								break;
                         }
 
-                        OWLEvents.RaiseInfo($"Completed reasoner rule '{reasonerRule}': got {inferenceRegistry[reasonerRule.ToString()].Inferences.Count} inferences");
+                        OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': got {inferenceRegistry[standardRule.ToString()].Inferences.Count} inferences");
                     });
 
                 //Process inference registry
