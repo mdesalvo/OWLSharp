@@ -39,8 +39,7 @@ namespace OWLSharp.Reasoner
 
                 //Initialize inference registry
                 Dictionary<string, OWLReasonerReport> inferenceRegistry = new Dictionary<string, OWLReasonerReport>();
-                foreach (OWLEnums.OWLReasonerRules reasonerRule in Rules)
-                    inferenceRegistry.Add(reasonerRule.ToString(), null);
+				Rules.ForEach(reasonerRule => inferenceRegistry.Add(reasonerRule.ToString(), null));
 
                 //Execute rules
                 Parallel.ForEach(Rules, 
