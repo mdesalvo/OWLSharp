@@ -26,7 +26,8 @@ namespace OWLSharp
 		public enum OWLReasonerRules
 		{
 			SubClassOfEntailment = 1,
-			EquivalentClassesEntailment = 2
+			EquivalentClassesEntailment = 2,
+			DisjointClassesEntailment = 3
 		}
     }
 }

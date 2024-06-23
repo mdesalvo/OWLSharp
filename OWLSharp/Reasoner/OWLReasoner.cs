@@ -56,6 +56,9 @@ namespace OWLSharp.Reasoner
 							case OWLEnums.OWLReasonerRules.EquivalentClassesEntailment:
 								inferenceRegistry[OWLEnums.OWLReasonerRules.EquivalentClassesEntailment.ToString()] = OWLEquivalentClassesEntailmentRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLReasonerRules.DisjointClassesEntailment:
+								inferenceRegistry[OWLEnums.OWLReasonerRules.DisjointClassesEntailment.ToString()] = OWLDisjointClassesEntailmentRule.ExecuteRule(ontology);
+								break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': got {inferenceRegistry[standardRule.ToString()].Inferences.Count} inferences");
