@@ -26,7 +26,7 @@ namespace OWLSharp.Reasoner.Rules
         {
             OWLReasonerReport report = new OWLReasonerReport();
 
-			//Scan declared classes
+			//EquivalentClass(C1,C2) ^ EquivalentClass(C2,C3) -> EquivalentClass(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{

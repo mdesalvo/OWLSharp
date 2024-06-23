@@ -26,7 +26,8 @@ namespace OWLSharp.Reasoner.Rules
         {
             OWLReasonerReport report = new OWLReasonerReport();
 
-			//Scan declared classes
+			//EquivalentClasses(C1,C2) ^ DisjointWith(C2,C3) -> DisjointWith(C1,C3)
+			//SubClassOf(C1,C2) ^ DisjointWith(C2,C3) -> DisjointWith(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
@@ -41,14 +42,25 @@ namespace OWLSharp.Reasoner.Rules
                 }
 			}
 
-			//Scan DisjointUnion axioms
 			foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
 			{
+				//DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)
 				OWLReasonerInference inference = new OWLReasonerInference(
 					nameof(OWLDisjointClassesEntailmentRule), 
 					new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true });
 
 				report.Inferences.Add(inference);
+
+				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1)
+				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C3,C1)
+				foreach (OWLClassExpression disjointUnionClassExpression in disjointUnion.ClassExpressions)
+				{
+					OWLReasonerInference subClassInference = new OWLReasonerInference(
+						nameof(OWLDisjointClassesEntailmentRule), 
+						new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference=true });
+
+					report.Inferences.Add(inference);
+				}
 			}
 
             return report;
