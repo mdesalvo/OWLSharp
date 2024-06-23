@@ -41,6 +41,16 @@ namespace OWLSharp.Reasoner.Rules
                 }
 			}
 
+			//Scan DisjointUnion axioms
+			foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
+			{
+				OWLReasonerInference inference = new OWLReasonerInference(
+					nameof(OWLDisjointClassesEntailmentRule), 
+					new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true });
+
+				report.Inferences.Add(inference);
+			}
+
             return report;
         }
     }
