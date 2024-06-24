@@ -22,9 +22,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLEquivalentClassesEntailmentRule
     {
-        internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            OWLReasonerReport report = new OWLReasonerReport();
+            List<OWLInference> inferences = new List<OWLInference>();
 
 			//EquivalentClass(C1,C2) ^ EquivalentClass(C2,C3) -> EquivalentClass(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
@@ -33,15 +33,15 @@ namespace OWLSharp.Reasoner.Rules
 				List<OWLClassExpression> inferredEquivalentClasses = ontology.GetEquivalentClasses(declaredClass);
                 foreach (OWLClassExpression inferredEquivalentClass in inferredEquivalentClasses)
                 {
-                    OWLReasonerInference inference = new OWLReasonerInference(
+                    OWLInference inference = new OWLInference(
                         nameof(OWLEquivalentClassesEntailmentRule), 
 						new OWLEquivalentClasses(new List<OWLClassExpression>() { declaredClass, inferredEquivalentClass }) { IsInference=true });
 
-                    report.Inferences.Add(inference);
+                    inferences.Add(inference);
                 }
 			}
 
-            return report;
+            return inferences;
         }
     }
 }

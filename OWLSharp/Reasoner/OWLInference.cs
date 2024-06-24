@@ -16,7 +16,7 @@ using OWLSharp.Ontology.Axioms;
 
 namespace OWLSharp.Reasoner
 {
-    public class OWLReasonerInference
+    public class OWLInference
     {
         #region Properties
         public string RuleName { get; internal set; }
@@ -25,9 +25,9 @@ namespace OWLSharp.Reasoner
         #endregion
 
         #region Ctors
-        public OWLReasonerInference(string ruleName, OWLAxiom content)
+        public OWLInference(string ruleName, OWLAxiom content)
         {
-            RuleName = ruleName;
+            RuleName = ruleName ?? throw new OWLException("Cannot create inference because given \"ruleName\" parameter is null");
             Content = content ?? throw new OWLException("Cannot create inference because given \"content\" parameter is null");
         }
         #endregion

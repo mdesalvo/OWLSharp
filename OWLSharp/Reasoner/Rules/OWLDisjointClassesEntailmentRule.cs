@@ -22,9 +22,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLDisjointClassesEntailmentRule
     {
-        internal static OWLReasonerReport ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            OWLReasonerReport report = new OWLReasonerReport();
+            List<OWLInference> inferences = new List<OWLInference>();
 
 			//EquivalentClasses(C1,C2) ^ DisjointWith(C2,C3) -> DisjointWith(C1,C3)
 			//SubClassOf(C1,C2) ^ DisjointWith(C2,C3) -> DisjointWith(C1,C3)
@@ -34,35 +34,35 @@ namespace OWLSharp.Reasoner.Rules
 				List<OWLClassExpression> inferredDisjointClasses = ontology.GetDisjointClasses(declaredClass);
                 foreach (OWLClassExpression inferredDisjointClass in inferredDisjointClasses)
                 {
-                    OWLReasonerInference inference = new OWLReasonerInference(
+                    OWLInference inference = new OWLInference(
                         nameof(OWLDisjointClassesEntailmentRule), 
 						new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, inferredDisjointClass }) { IsInference=true });
 
-                    report.Inferences.Add(inference);
+                    inferences.Add(inference);
                 }
 			}
 
 			foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
 			{
 				//DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)
-				OWLReasonerInference inference = new OWLReasonerInference(
+				OWLInference inference = new OWLInference(
 					nameof(OWLDisjointClassesEntailmentRule), 
 					new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true });
 
-				report.Inferences.Add(inference);
+				inferences.Add(inference);
 
 				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
 				foreach (OWLClassExpression disjointUnionClassExpression in disjointUnion.ClassExpressions)
 				{
-					OWLReasonerInference subClassInference = new OWLReasonerInference(
+					OWLInference subClassInference = new OWLInference(
 						nameof(OWLDisjointClassesEntailmentRule), 
 						new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference=true });
 
-					report.Inferences.Add(inference);
+					inferences.Add(inference);
 				}
 			}
 
-            return report;
+            return inferences;
         }
     }
 }
