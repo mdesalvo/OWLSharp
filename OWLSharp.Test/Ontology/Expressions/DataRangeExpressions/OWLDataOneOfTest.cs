@@ -16,6 +16,7 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -55,7 +56,7 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLDataOneOf dataOneOf = new OWLDataOneOf([
                 new OWLLiteral(new RDFPlainLiteral("hello","en")),
                 new OWLLiteral(new RDFPlainLiteral("ciao","it"))]);
-            string serializedXML = OWLTestSerializer<OWLDataOneOf>.Serialize(dataOneOf);
+            string serializedXML = OWLSerializer.Serialize(dataOneOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataOneOf><Literal xml:lang=""EN"">hello</Literal><Literal xml:lang=""IT"">ciao</Literal></DataOneOf>"));
@@ -64,7 +65,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataOneOf()
         {
-            OWLDataOneOf dataOneOf = OWLTestSerializer<OWLDataOneOf>.Deserialize(
+            OWLDataOneOf dataOneOf = OWLSerializer.Deserialize<OWLDataOneOf>(
 @"<DataOneOf>
   <Literal xml:lang=""EN"">hello</Literal>
   <Literal xml:lang=""IT"">ciao</Literal>

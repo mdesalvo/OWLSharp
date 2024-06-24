@@ -17,6 +17,7 @@
 using System.Runtime.Intrinsics.Arm;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -62,7 +63,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRIDatatype()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
-            string serializedXML = OWLTestSerializer<OWLDatatype>.Serialize(dt);
+            string serializedXML = OWLSerializer.Serialize(dt);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />"));
@@ -71,7 +72,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIDatatype()
         {
-            OWLDatatype dt = OWLTestSerializer<OWLDatatype>.Deserialize(
+            OWLDatatype dt = OWLSerializer.Deserialize<OWLDatatype>(
 @"<Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />");
 
             Assert.IsNotNull(dt);
@@ -88,7 +89,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameDatatype()
         {
             OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
-            string serializedXML = OWLTestSerializer<OWLDatatype>.Serialize(dt);
+            string serializedXML = OWLSerializer.Serialize(dt);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Datatype xmlns:q1=""http://www.w3.org/2001/XMLSchema#"" abbreviatedIRI=""q1:string"" />"));
@@ -97,7 +98,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameDatatype()
         {
-            OWLDatatype dt = OWLTestSerializer<OWLDatatype>.Deserialize(
+            OWLDatatype dt = OWLSerializer.Deserialize<OWLDatatype>(
 @"<Datatype xmlns:q1=""http://www.w3.org/2001/XMLSchema#"" abbreviatedIRI=""q1:string"" />");
 
             Assert.IsNotNull(dt);

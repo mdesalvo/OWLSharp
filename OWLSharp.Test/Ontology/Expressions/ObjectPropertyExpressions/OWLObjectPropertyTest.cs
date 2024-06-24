@@ -16,6 +16,7 @@
 
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -61,7 +62,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRIObjectProperty()
         {
             OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
-            string serializedXML = OWLTestSerializer<OWLObjectProperty>.Serialize(op);
+            string serializedXML = OWLSerializer.Serialize(op);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />"));
@@ -70,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIObjectProperty()
         {
-            OWLObjectProperty op = OWLTestSerializer<OWLObjectProperty>.Deserialize(
+            OWLObjectProperty op = OWLSerializer.Deserialize<OWLObjectProperty>(
 @"<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />");
 
             Assert.IsNotNull(op);
@@ -87,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameObjectProperty()
         {
             OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLTestSerializer<OWLObjectProperty>.Serialize(op);
+            string serializedXML = OWLSerializer.Serialize(op);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:knows"" />"));
@@ -96,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameObjectProperty()
         {
-            OWLObjectProperty op = OWLTestSerializer<OWLObjectProperty>.Deserialize(
+            OWLObjectProperty op = OWLSerializer.Deserialize<OWLObjectProperty>(
 @"<ObjectProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:knows"" />");
 
             Assert.IsNotNull(op);

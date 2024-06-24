@@ -16,6 +16,7 @@
 
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -61,7 +62,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRIDataProperty()
         {
             OWLDataProperty dp = new OWLDataProperty(RDFVocabulary.FOAF.AGE);
-            string serializedXML = OWLTestSerializer<OWLDataProperty>.Serialize(dp);
+            string serializedXML = OWLSerializer.Serialize(dp);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />"));
@@ -70,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIDataProperty()
         {
-            OWLDataProperty dp = OWLTestSerializer<OWLDataProperty>.Deserialize(
+            OWLDataProperty dp = OWLSerializer.Deserialize<OWLDataProperty>(
 @"<DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />");
 
             Assert.IsNotNull(dp);
@@ -87,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameDataProperty()
         {
             OWLDataProperty dp = new OWLDataProperty(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLTestSerializer<OWLDataProperty>.Serialize(dp);
+            string serializedXML = OWLSerializer.Serialize(dp);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:age"" />"));
@@ -96,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameDataProperty()
         {
-            OWLDataProperty dp = OWLTestSerializer<OWLDataProperty>.Deserialize(
+            OWLDataProperty dp = OWLSerializer.Deserialize<OWLDataProperty>(
 @"<DataProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:age"" />");
 
             Assert.IsNotNull(dp);

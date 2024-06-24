@@ -94,7 +94,51 @@ namespace OWLSharp.Ontology
                 }
             }
         }
-    }
+    
+		internal static string Serialize<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
+        {
+            //Hide hard-coded .NET prefixes (e.g: xsi)
+			if (xmlSerializerNamespaces == null)
+            	xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            xmlSerializerNamespaces.Add(string.Empty, string.Empty);
+            
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            using (UTF8StringWriter stringWriter = new UTF8StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(stringWriter, 
+                    new XmlWriterSettings()
+                    {
+                        Encoding = stringWriter.Encoding,
+                        Indent = false,
+                        NewLineHandling = NewLineHandling.None,
+                        OmitXmlDeclaration = true
+                    }))
+                {
+                    xmlSerializer.Serialize(writer, objectToSerialize, xmlSerializerNamespaces);
+                    return stringWriter.ToString();
+                }
+            }
+        }
+
+        internal static T Deserialize<T>(string objectToDeserialize) where T : class
+        {
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            using (StringReader stringReader = new StringReader(objectToDeserialize))
+            {
+                using (XmlReader reader = XmlReader.Create(stringReader,
+                    new XmlReaderSettings()
+                    {
+                        DtdProcessing = DtdProcessing.Parse,
+                        IgnoreComments = true,
+                        IgnoreWhitespace = true,
+                        IgnoreProcessingInstructions = true
+                    }))
+                {
+                    return (T)xmlSerializer.Deserialize(reader);
+                }
+            }
+        }
+	}
 
     internal class UTF8StringWriter : StringWriter
     {

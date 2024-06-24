@@ -16,6 +16,7 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -67,7 +68,7 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLDataAllValuesFrom dataAllValuesFrom = new OWLDataAllValuesFrom(
                 [ new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())) ],
                 new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLTestSerializer<OWLDataAllValuesFrom>.Serialize(dataAllValuesFrom);
+            string serializedXML = OWLSerializer.Serialize(dataAllValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataAllValuesFrom><DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataAllValuesFrom>"));
@@ -76,7 +77,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataAllValuesFrom()
         {
-            OWLDataAllValuesFrom dataAllValuesFrom = OWLTestSerializer<OWLDataAllValuesFrom>.Deserialize(
+            OWLDataAllValuesFrom dataAllValuesFrom = OWLSerializer.Deserialize<OWLDataAllValuesFrom>(
 @"<DataAllValuesFrom>
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />

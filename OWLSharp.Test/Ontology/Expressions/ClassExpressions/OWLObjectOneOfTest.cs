@@ -16,6 +16,7 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -57,7 +58,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         {
             OWLObjectOneOf ObjectOneOf = new OWLObjectOneOf([
                 new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
-            string serializedXML = OWLTestSerializer<OWLObjectOneOf>.Serialize(ObjectOneOf);
+            string serializedXML = OWLSerializer.Serialize(ObjectOneOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectOneOf><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></ObjectOneOf>"));
@@ -66,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectOneOf()
         {
-            OWLObjectOneOf ObjectOneOf = OWLTestSerializer<OWLObjectOneOf>.Deserialize(
+            OWLObjectOneOf ObjectOneOf = OWLSerializer.Deserialize<OWLObjectOneOf>(
 @"<ObjectOneOf>
   <NamedIndividual IRI=""ex:Bob"" />
   <AnonymousIndividual nodeID=""AnonIdv"" />

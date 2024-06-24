@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLTransitiveObjectProperty transitiveObjectProperty = new OWLTransitiveObjectProperty(
 				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            string serializedXML = OWLTestSerializer<OWLTransitiveObjectProperty>.Serialize(transitiveObjectProperty);
+            string serializedXML = OWLSerializer.Serialize(transitiveObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<TransitiveObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></TransitiveObjectProperty>"));
@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLTransitiveObjectProperty transitiveObjectProperty = new OWLTransitiveObjectProperty(
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLTestSerializer<OWLTransitiveObjectProperty>.Serialize(transitiveObjectProperty);
+            string serializedXML = OWLSerializer.Serialize(transitiveObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<TransitiveObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></TransitiveObjectProperty>"));
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.ObjectPropertyAxioms.Add(
                 new OWLTransitiveObjectProperty(
 					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><TransitiveObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></TransitiveObjectProperty></Ontology>"));
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.ObjectPropertyAxioms.Add(
                 new OWLTransitiveObjectProperty(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><TransitiveObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></TransitiveObjectProperty></Ontology>"));
@@ -110,7 +110,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeTransitiveObjectProperty()
         {
-            OWLTransitiveObjectProperty transitiveObjectProperty = OWLTestSerializer<OWLTransitiveObjectProperty>.Deserialize(
+            OWLTransitiveObjectProperty transitiveObjectProperty = OWLSerializer.Deserialize<OWLTransitiveObjectProperty>(
 @"<TransitiveObjectProperty>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </TransitiveObjectProperty>");
@@ -124,7 +124,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeTransitiveObjectInverseOf()
         {
-            OWLTransitiveObjectProperty transitiveObjectProperty = OWLTestSerializer<OWLTransitiveObjectProperty>.Deserialize(
+            OWLTransitiveObjectProperty transitiveObjectProperty = OWLSerializer.Deserialize<OWLTransitiveObjectProperty>(
 @"<TransitiveObjectProperty>
   <ObjectInverseOf>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />

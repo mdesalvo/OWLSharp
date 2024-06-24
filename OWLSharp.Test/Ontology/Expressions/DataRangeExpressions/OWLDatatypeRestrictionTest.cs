@@ -16,6 +16,7 @@
 
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -85,7 +86,7 @@ namespace OWLSharp.Test.Ontology.Expressions
                 new OWLDatatype(RDFVocabulary.XSD.STRING),
                 [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
                  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]);
-            string serializedXML = OWLTestSerializer<OWLDatatypeRestriction>.Serialize(length6to10Facet);
+            string serializedXML = OWLSerializer.Serialize(length6to10Facet);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DatatypeRestriction><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal></FacetRestriction><FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal></FacetRestriction></DatatypeRestriction>"));
@@ -94,7 +95,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDatatypeRestriction()
         {
-            OWLDatatypeRestriction length6to10Facet = OWLTestSerializer<OWLDatatypeRestriction>.Deserialize(
+            OWLDatatypeRestriction length6to10Facet = OWLSerializer.Deserialize<OWLDatatypeRestriction>(
 @"<DatatypeRestriction>
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
   <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">

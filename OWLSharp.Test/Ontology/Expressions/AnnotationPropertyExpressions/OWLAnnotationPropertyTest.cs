@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System.Xml;
@@ -61,7 +62,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRIAnnotationProperty()
         {
             OWLAnnotationProperty annotation = new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR);
-            string serializedXML = OWLTestSerializer<OWLAnnotationProperty>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />"));
@@ -70,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIAnnotationProperty()
         {
-            OWLAnnotationProperty annotation = OWLTestSerializer<OWLAnnotationProperty>.Deserialize(
+            OWLAnnotationProperty annotation = OWLSerializer.Deserialize<OWLAnnotationProperty>(
 @"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />");
 
             Assert.IsNotNull(annotation);
@@ -87,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameAnnotationProperty()
         {
             OWLAnnotationProperty annotation = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
-            string serializedXML = OWLTestSerializer<OWLAnnotationProperty>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />"));
@@ -96,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameAnnotationProperty()
         {
-            OWLAnnotationProperty annotation = OWLTestSerializer<OWLAnnotationProperty>.Deserialize(
+            OWLAnnotationProperty annotation = OWLSerializer.Deserialize<OWLAnnotationProperty>(
 @"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />");
 
             Assert.IsNotNull(annotation);

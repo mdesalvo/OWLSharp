@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
 				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
 				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
-            string serializedXML = OWLTestSerializer<OWLDifferentIndividuals>.Serialize(differentIndividuals);
+            string serializedXML = OWLSerializer.Serialize(differentIndividuals);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></DifferentIndividuals>"));
@@ -80,7 +80,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
 				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
 				  new OWLAnonymousIndividual("AnonIdv") ]));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></DifferentIndividuals></Ontology>"));
@@ -89,7 +89,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
         public void ShouldDeserializeNamedIndividuals()
         {
-            OWLDifferentIndividuals differentIndividuals = OWLTestSerializer<OWLDifferentIndividuals>.Deserialize(
+            OWLDifferentIndividuals differentIndividuals = OWLSerializer.Deserialize<OWLDifferentIndividuals>(
 @"<DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></DifferentIndividuals>");
         
 			Assert.IsNotNull(differentIndividuals);

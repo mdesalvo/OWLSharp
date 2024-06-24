@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -66,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataMaxCardinality()
         {
             OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
-            string serializedXML = OWLTestSerializer<OWLDataMaxCardinality>.Serialize(dataMaxCardinality);
+            string serializedXML = OWLSerializer.Serialize(dataMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataMaxCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /></DataMaxCardinality>"));
@@ -75,7 +76,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataMaxCardinality()
         {
-            OWLDataMaxCardinality dataMaxCardinality = OWLTestSerializer<OWLDataMaxCardinality>.Deserialize(
+            OWLDataMaxCardinality dataMaxCardinality = OWLSerializer.Deserialize<OWLDataMaxCardinality>(
 @"<DataMaxCardinality cardinality=""1"">
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
 </DataMaxCardinality>");
@@ -91,7 +92,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataMaxQualifiedCardinality()
         {
             OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLTestSerializer<OWLDataMaxCardinality>.Serialize(dataMaxCardinality);
+            string serializedXML = OWLSerializer.Serialize(dataMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataMaxCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataMaxCardinality>"));
@@ -100,7 +101,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataMaxQualifiedCardinality()
         {
-            OWLDataMaxCardinality dataMaxCardinality = OWLTestSerializer<OWLDataMaxCardinality>.Deserialize(
+            OWLDataMaxCardinality dataMaxCardinality = OWLSerializer.Deserialize<OWLDataMaxCardinality>(
 @"<DataMaxCardinality cardinality=""1"">
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />

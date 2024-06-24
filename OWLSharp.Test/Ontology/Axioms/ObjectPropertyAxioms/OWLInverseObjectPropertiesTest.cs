@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLInverseObjectProperties InverseObjectProperties = new OWLInverseObjectProperties(
                 new OWLObjectProperty(new RDFResource("ex:hasWife")),
                 new OWLObjectProperty(new RDFResource("ex:isWifeOf")));
-            string serializedXML = OWLTestSerializer<OWLInverseObjectProperties>.Serialize(InverseObjectProperties);
+            string serializedXML = OWLSerializer.Serialize(InverseObjectProperties);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<InverseObjectProperties><ObjectProperty IRI=""ex:hasWife"" /><ObjectProperty IRI=""ex:isWifeOf"" /></InverseObjectProperties>"));
@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLInverseObjectProperties InverseObjectProperties = new OWLInverseObjectProperties(
                 new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:isWifeOf"))),
                 new OWLObjectProperty(new RDFResource("ex:isWifeOf")));
-            string serializedXML = OWLTestSerializer<OWLInverseObjectProperties>.Serialize(InverseObjectProperties);
+            string serializedXML = OWLSerializer.Serialize(InverseObjectProperties);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<InverseObjectProperties><ObjectInverseOf><ObjectProperty IRI=""ex:isWifeOf"" /></ObjectInverseOf><ObjectProperty IRI=""ex:isWifeOf"" /></InverseObjectProperties>"));
@@ -87,7 +87,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLInverseObjectProperties(
                     new OWLObjectProperty(new RDFResource("ex:hasWife")),
                     new OWLObjectProperty(new RDFResource("ex:isWifeOf"))));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><InverseObjectProperties><ObjectProperty IRI=""ex:hasWife"" /><ObjectProperty IRI=""ex:isWifeOf"" /></InverseObjectProperties></Ontology>"));
@@ -96,7 +96,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeInverseObjectProperties()
         {
-            OWLInverseObjectProperties inverseObjectProperties = OWLTestSerializer<OWLInverseObjectProperties>.Deserialize(
+            OWLInverseObjectProperties inverseObjectProperties = OWLSerializer.Deserialize<OWLInverseObjectProperties>(
 @"<InverseObjectProperties>
   <ObjectProperty IRI=""ex:hasWife"" />
   <ObjectProperty IRI=""ex:isWifeOf"" />
@@ -114,7 +114,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeInverseObjectPropertiesWithFirstInverse()
         {
-            OWLInverseObjectProperties inverseObjectProperties = OWLTestSerializer<OWLInverseObjectProperties>.Deserialize(
+            OWLInverseObjectProperties inverseObjectProperties = OWLSerializer.Deserialize<OWLInverseObjectProperties>(
 @"<InverseObjectProperties>
   <ObjectInverseOf>
     <ObjectProperty IRI=""ex:isWifeOf"" />

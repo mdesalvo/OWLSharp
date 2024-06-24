@@ -60,7 +60,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLDataPropertyDomain dataPropertyDomain = new OWLDataPropertyDomain(
 				new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
 				new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLTestSerializer<OWLDataPropertyDomain>.Serialize(dataPropertyDomain);
+            string serializedXML = OWLSerializer.Serialize(dataPropertyDomain);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataPropertyDomain><DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></DataPropertyDomain>"));
@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDataPropertyDomain(
 					new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
 					new OWLClass(RDFVocabulary.FOAF.PERSON)));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DataPropertyDomain><DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></DataPropertyDomain></Ontology>"));
@@ -83,7 +83,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeDataPropertyDomain()
         {
-            OWLDataPropertyDomain dataPropertyDomain = OWLTestSerializer<OWLDataPropertyDomain>.Deserialize(
+            OWLDataPropertyDomain dataPropertyDomain = OWLSerializer.Deserialize<OWLDataPropertyDomain>(
 @"<DataPropertyDomain>
   <DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />

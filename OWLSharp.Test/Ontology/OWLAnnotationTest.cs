@@ -56,7 +56,7 @@ namespace OWLSharp.Test.Ontology
             OWLAnnotation annotation = new OWLAnnotation(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("http://example.org/seeThis"));
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>http://example.org/seeThis</IRI></Annotation>"));
@@ -70,7 +70,7 @@ namespace OWLSharp.Test.Ontology
                 new RDFResource("http://example.org/seeThis"));
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation, xmlSerializerNamespaces);
+            string serializedXML = OWLSerializer.Serialize(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><IRI>http://example.org/seeThis</IRI></Annotation>"));          
@@ -92,7 +92,7 @@ namespace OWLSharp.Test.Ontology
                             new OWLLiteral(new RDFPlainLiteral("annotation!", "en-US")))
                     }
             };
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal xml:lang=""EN-US"">annotation!</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>http://example.org/seeThat</IRI></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>http://example.org/seeThis</IRI></Annotation>"));          
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeIRIAnnotation()
         {
-            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+            OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <IRI>http://example.org/seeThis</IRI>
@@ -117,7 +117,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeIRIAnnotationWithAbbreviatedProperty()
         {
-            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+            OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
   <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
   <IRI>http://example.org/seeThis</IRI>
@@ -133,7 +133,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeIRIAnnotationWithNestedAnnotations()
         {
-            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+            OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <Annotation>
     <Annotation>
@@ -189,7 +189,7 @@ namespace OWLSharp.Test.Ontology
             OWLAnnotation annotation = new OWLAnnotation(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new XmlQualifiedName("seeThis","http://example.org/"));
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI></Annotation>"));          
@@ -203,7 +203,7 @@ namespace OWLSharp.Test.Ontology
                 new XmlQualifiedName("seeThis","http://example.org/"));
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation, xmlSerializerNamespaces);
+            string serializedXML = OWLSerializer.Serialize(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI></Annotation>"));          
@@ -225,7 +225,7 @@ namespace OWLSharp.Test.Ontology
                             new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)))
                     }
             };
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#positiveInteger"">25</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThat</AbbreviatedIRI></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AbbreviatedIRI xmlns:q2=""http://example.org/"">q2:seeThis</AbbreviatedIRI></Annotation>"));          
@@ -234,7 +234,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeAbbreviatedIRIAnnotation()
         {
-          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+          OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI>
@@ -250,7 +250,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeAbbreviatedIRIAnnotationWithAbbreviatedProperty()
         {
-          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+          OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
   <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
   <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI>
@@ -266,7 +266,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeAbbreviatedIRIAnnotationWithNestedAnnotations()
         {
-          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+          OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <Annotation>
     <Annotation>
@@ -322,7 +322,7 @@ namespace OWLSharp.Test.Ontology
             OWLAnnotation annotation = new OWLAnnotation(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLAnonymousIndividual("AnonIdv"));
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AnonymousIndividual nodeID=""AnonIdv"" /></Annotation>"));          
@@ -336,7 +336,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLAnonymousIndividual("AnonIdv"));
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation, xmlSerializerNamespaces);
+            string serializedXML = OWLSerializer.Serialize(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><AnonymousIndividual nodeID=""AnonIdv"" /></Annotation>"));          
@@ -358,7 +358,7 @@ namespace OWLSharp.Test.Ontology
                             new OWLLiteral(new RDFPlainLiteral("annotation!", "en-US")))
                     }
             };
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal xml:lang=""EN-US"">annotation!</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AnonymousIndividual nodeID=""AnonIdv2"" /></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AnonymousIndividual nodeID=""AnonIdv"" /></Annotation>"));          
@@ -367,7 +367,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividualAnnotation()
         {
-          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+          OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <AnonymousIndividual nodeID=""AnonIdv"" />
@@ -383,7 +383,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividualAnnotationWithAbbreviatedProperty()
         {
-          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+          OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
   <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
   <AnonymousIndividual nodeID=""AnonIdv"" />
@@ -399,7 +399,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividualAnnotationWithNestedAnnotations()
         {
-          OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+          OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <Annotation>
     <Annotation>
@@ -455,7 +455,7 @@ namespace OWLSharp.Test.Ontology
             OWLAnnotation annotation = new OWLAnnotation(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLLiteral(new RDFPlainLiteral("Lit!")));
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>Lit!</Literal></Annotation>"));          
@@ -469,7 +469,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLLiteral(new RDFPlainLiteral("Lit!")));
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(RDFVocabulary.RDFS.PREFIX, RDFVocabulary.RDFS.BASE_URI);
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation, xmlSerializerNamespaces);
+            string serializedXML = OWLSerializer.Serialize(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><Literal>Lit!</Literal></Annotation>"));
@@ -491,7 +491,7 @@ namespace OWLSharp.Test.Ontology
                             new OWLLiteral(new RDFPlainLiteral("annotation!", "en-US")))
                     }
             };
-            string serializedXML = OWLTestSerializer<OWLAnnotation>.Serialize(annotation);
+            string serializedXML = OWLSerializer.Serialize(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal xml:lang=""EN-US"">annotation!</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>Lit!2</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>Lit!</Literal></Annotation>"));          
@@ -500,7 +500,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeLiteralAnnotation()
         {
-            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+            OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <Literal>Lit!</Literal>
@@ -516,7 +516,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeLiteralAnnotationWithAbbreviatedProperty()
         {
-            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+            OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
   <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
   <Literal>Lit!</Literal>
@@ -532,7 +532,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeLiteralAnnotationWithNestedAnnotations()
         {
-            OWLAnnotation annotation = OWLTestSerializer<OWLAnnotation>.Deserialize(
+            OWLAnnotation annotation = OWLSerializer.Deserialize<OWLAnnotation>(
 @"<Annotation>
   <Annotation>
     <Annotation>

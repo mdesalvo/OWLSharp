@@ -72,7 +72,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLDisjointUnion disjointUnion = new OWLDisjointUnion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]);
-            string serializedXML = OWLTestSerializer<OWLDisjointUnion>.Serialize(disjointUnion);
+            string serializedXML = OWLSerializer.Serialize(disjointUnion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DisjointUnion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointUnion>"));
@@ -86,7 +86,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDisjointUnion(
                     new OWLClass(RDFVocabulary.FOAF.AGENT),
                     [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DisjointUnion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointUnion></Ontology>"));
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeDisjointUnion()
         {
-            OWLDisjointUnion disjointUnion = OWLTestSerializer<OWLDisjointUnion>.Deserialize(
+            OWLDisjointUnion disjointUnion = OWLSerializer.Deserialize<OWLDisjointUnion>(
 @"<DisjointUnion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointUnion>");
 
             Assert.IsNotNull(disjointUnion);

@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -67,7 +68,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectExactCardinality()
         {
             OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
-            string serializedXML = OWLTestSerializer<OWLObjectExactCardinality>.Serialize(objectExactCardinality);
+            string serializedXML = OWLSerializer.Serialize(objectExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectExactCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectExactCardinality>"));
@@ -76,7 +77,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectExactCardinality()
         {
-            OWLObjectExactCardinality objectExactCardinality = OWLTestSerializer<OWLObjectExactCardinality>.Deserialize(
+            OWLObjectExactCardinality objectExactCardinality = OWLSerializer.Deserialize<OWLObjectExactCardinality>(
 @"<ObjectExactCardinality cardinality=""1"">
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </ObjectExactCardinality>");
@@ -93,7 +94,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectExactQualifiedCardinality()
         {
             OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLTestSerializer<OWLObjectExactCardinality>.Serialize(objectExactCardinality);
+            string serializedXML = OWLSerializer.Serialize(objectExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectExactCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectExactCardinality>"));
@@ -102,7 +103,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectExactQualifiedCardinality()
         {
-            OWLObjectExactCardinality objectExactCardinality = OWLTestSerializer<OWLObjectExactCardinality>.Deserialize(
+            OWLObjectExactCardinality objectExactCardinality = OWLSerializer.Deserialize<OWLObjectExactCardinality>(
 @"<ObjectExactCardinality cardinality=""1"">
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />

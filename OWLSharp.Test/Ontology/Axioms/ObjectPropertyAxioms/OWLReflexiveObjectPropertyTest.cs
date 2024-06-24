@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLReflexiveObjectProperty reflexiveObjectProperty = new OWLReflexiveObjectProperty(
 				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            string serializedXML = OWLTestSerializer<OWLReflexiveObjectProperty>.Serialize(reflexiveObjectProperty);
+            string serializedXML = OWLSerializer.Serialize(reflexiveObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ReflexiveObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ReflexiveObjectProperty>"));
@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLReflexiveObjectProperty reflexiveObjectProperty = new OWLReflexiveObjectProperty(
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLTestSerializer<OWLReflexiveObjectProperty>.Serialize(reflexiveObjectProperty);
+            string serializedXML = OWLSerializer.Serialize(reflexiveObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ReflexiveObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></ReflexiveObjectProperty>"));
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.ObjectPropertyAxioms.Add(
                 new OWLReflexiveObjectProperty(
 					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ReflexiveObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ReflexiveObjectProperty></Ontology>"));
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.ObjectPropertyAxioms.Add(
                 new OWLReflexiveObjectProperty(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ReflexiveObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></ReflexiveObjectProperty></Ontology>"));
@@ -110,7 +110,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeReflexiveObjectProperty()
         {
-            OWLReflexiveObjectProperty reflexiveObjectProperty = OWLTestSerializer<OWLReflexiveObjectProperty>.Deserialize(
+            OWLReflexiveObjectProperty reflexiveObjectProperty = OWLSerializer.Deserialize<OWLReflexiveObjectProperty>(
 @"<ReflexiveObjectProperty>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </ReflexiveObjectProperty>");
@@ -124,7 +124,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeReflexiveObjectInverseOf()
         {
-            OWLReflexiveObjectProperty reflexiveObjectProperty = OWLTestSerializer<OWLReflexiveObjectProperty>.Deserialize(
+            OWLReflexiveObjectProperty reflexiveObjectProperty = OWLSerializer.Deserialize<OWLReflexiveObjectProperty>(
 @"<ReflexiveObjectProperty>
   <ObjectInverseOf>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />

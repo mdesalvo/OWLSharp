@@ -16,6 +16,7 @@
 
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -61,7 +62,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRINamedIndividual()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
-            string serializedXML = OWLTestSerializer<OWLNamedIndividual>.Serialize(idv);
+            string serializedXML = OWLSerializer.Serialize(idv);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<NamedIndividual IRI=""http://xmlns.com/foaf/0.1/age"" />"));
@@ -70,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRINamedIndividual()
         {
-            OWLNamedIndividual idv = OWLTestSerializer<OWLNamedIndividual>.Deserialize(
+            OWLNamedIndividual idv = OWLSerializer.Deserialize<OWLNamedIndividual>(
 @"<NamedIndividual IRI=""ex:Mark"" />");
 
             Assert.IsNotNull(idv);
@@ -87,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameNamedIndividual()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLTestSerializer<OWLNamedIndividual>.Serialize(idv);
+            string serializedXML = OWLSerializer.Serialize(idv);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<NamedIndividual xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:age"" />"));
@@ -96,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameNamedIndividual()
         {
-            OWLNamedIndividual idv = OWLTestSerializer<OWLNamedIndividual>.Deserialize(
+            OWLNamedIndividual idv = OWLSerializer.Deserialize<OWLNamedIndividual>(
 @"<NamedIndividual xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:age"" />");
 
             Assert.IsNotNull(idv);

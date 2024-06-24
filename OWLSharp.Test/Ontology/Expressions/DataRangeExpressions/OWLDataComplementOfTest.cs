@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -43,7 +44,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataComplementOf()
         {
             OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLTestSerializer<OWLDataComplementOf>.Serialize(dataComplementOf);
+            string serializedXML = OWLSerializer.Serialize(dataComplementOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataComplementOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataComplementOf>"));
@@ -52,7 +53,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataComplementOf()
         {
-            OWLDataComplementOf dataComplementOf = OWLTestSerializer<OWLDataComplementOf>.Deserialize(
+            OWLDataComplementOf dataComplementOf = OWLSerializer.Deserialize<OWLDataComplementOf>(
 @"<DataComplementOf>
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
 </DataComplementOf>");

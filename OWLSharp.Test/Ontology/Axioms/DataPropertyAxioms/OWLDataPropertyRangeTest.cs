@@ -60,7 +60,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLDataPropertyRange dataPropertyRange = new OWLDataPropertyRange(
 				new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
 				new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLTestSerializer<OWLDataPropertyRange>.Serialize(dataPropertyRange);
+            string serializedXML = OWLSerializer.Serialize(dataPropertyRange);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataPropertyRange><DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataPropertyRange>"));
@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDataPropertyRange(
 					new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
 					new OWLDatatype(RDFVocabulary.XSD.STRING)));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DataPropertyRange><DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataPropertyRange></Ontology>"));
@@ -83,7 +83,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeDataPropertyRange()
         {
-            OWLDataPropertyRange dataPropertyRange = OWLTestSerializer<OWLDataPropertyRange>.Deserialize(
+            OWLDataPropertyRange dataPropertyRange = OWLSerializer.Deserialize<OWLDataPropertyRange>(
 @"<DataPropertyRange>
   <DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />

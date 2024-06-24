@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -42,7 +43,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectInverseOf()
         {
             OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            string serializedXML = OWLTestSerializer<OWLObjectInverseOf>.Serialize(objectInverseOf);
+            string serializedXML = OWLSerializer.Serialize(objectInverseOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf>"));
@@ -51,7 +52,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectInverseOf()
         {
-            OWLObjectInverseOf objectInverseOf = OWLTestSerializer<OWLObjectInverseOf>.Deserialize(
+            OWLObjectInverseOf objectInverseOf = OWLSerializer.Deserialize<OWLObjectInverseOf>(
 @"<ObjectInverseOf>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </ObjectInverseOf>");

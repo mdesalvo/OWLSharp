@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -66,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataMinCardinality()
         {
             OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
-            string serializedXML = OWLTestSerializer<OWLDataMinCardinality>.Serialize(dataMinCardinality);
+            string serializedXML = OWLSerializer.Serialize(dataMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataMinCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /></DataMinCardinality>"));
@@ -75,7 +76,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataMinCardinality()
         {
-            OWLDataMinCardinality dataMinCardinality = OWLTestSerializer<OWLDataMinCardinality>.Deserialize(
+            OWLDataMinCardinality dataMinCardinality = OWLSerializer.Deserialize<OWLDataMinCardinality>(
 @"<DataMinCardinality cardinality=""1"">
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
 </DataMinCardinality>");
@@ -91,7 +92,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataMinQualifiedCardinality()
         {
             OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLTestSerializer<OWLDataMinCardinality>.Serialize(dataMinCardinality);
+            string serializedXML = OWLSerializer.Serialize(dataMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataMinCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataMinCardinality>"));
@@ -100,7 +101,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataMinQualifiedCardinality()
         {
-            OWLDataMinCardinality dataMinCardinality = OWLTestSerializer<OWLDataMinCardinality>.Deserialize(
+            OWLDataMinCardinality dataMinCardinality = OWLSerializer.Deserialize<OWLDataMinCardinality>(
 @"<DataMinCardinality cardinality=""1"">
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />

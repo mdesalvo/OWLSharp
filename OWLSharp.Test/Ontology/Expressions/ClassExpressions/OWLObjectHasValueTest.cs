@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -64,7 +65,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectHasValue()
         {
             OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Bob")));
-            string serializedXML = OWLTestSerializer<OWLObjectHasValue>.Serialize(objectHasValue);
+            string serializedXML = OWLSerializer.Serialize(objectHasValue);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectHasValue><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectHasValue>"));
@@ -74,7 +75,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectHasValueWithAnonymousIndividual()
         {
             OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLAnonymousIndividual("AnonIdv"));
-            string serializedXML = OWLTestSerializer<OWLObjectHasValue>.Serialize(objectHasValue);
+            string serializedXML = OWLSerializer.Serialize(objectHasValue);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectHasValue><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><AnonymousIndividual nodeID=""AnonIdv"" /></ObjectHasValue>"));
@@ -83,7 +84,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectHasValue()
         {
-            OWLObjectHasValue objectHasValue = OWLTestSerializer<OWLObjectHasValue>.Deserialize(
+            OWLObjectHasValue objectHasValue = OWLSerializer.Deserialize<OWLObjectHasValue>(
 @"<ObjectHasValue>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <NamedIndividual IRI=""ex:Bob"" />
@@ -101,7 +102,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectHasValueWithAnonymousIndividual()
         {
-            OWLObjectHasValue objectHasValue = OWLTestSerializer<OWLObjectHasValue>.Deserialize(
+            OWLObjectHasValue objectHasValue = OWLSerializer.Deserialize<OWLObjectHasValue>(
 @"<ObjectHasValue>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <AnonymousIndividual nodeID=""AnonIdv"" />

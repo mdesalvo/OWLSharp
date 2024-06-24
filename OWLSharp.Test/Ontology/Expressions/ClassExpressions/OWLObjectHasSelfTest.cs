@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -54,7 +55,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectHasSelf()
         {
             OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            string serializedXML = OWLTestSerializer<OWLObjectHasSelf>.Serialize(objectHasSelf);
+            string serializedXML = OWLSerializer.Serialize(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectHasSelf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectHasSelf>"));
@@ -64,7 +65,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectHasSelfWithObjectInverseOfOf()
         {
             OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLTestSerializer<OWLObjectHasSelf>.Serialize(objectHasSelf);
+            string serializedXML = OWLSerializer.Serialize(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectHasSelf><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></ObjectHasSelf>"));
@@ -73,7 +74,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectHasSelf()
         {
-            OWLObjectHasSelf objectHasSelf = OWLTestSerializer<OWLObjectHasSelf>.Deserialize(
+            OWLObjectHasSelf objectHasSelf = OWLSerializer.Deserialize<OWLObjectHasSelf>(
 @"<ObjectHasSelf>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </ObjectHasSelf>");
@@ -87,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectHasSelfWithObjectInverseOf()
         {
-            OWLObjectHasSelf objectHasSelf = OWLTestSerializer<OWLObjectHasSelf>.Deserialize(
+            OWLObjectHasSelf objectHasSelf = OWLSerializer.Deserialize<OWLObjectHasSelf>(
 @"<ObjectHasSelf>
   <ObjectInverseOf>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />

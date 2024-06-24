@@ -67,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLObjectPropertyDomain ObjectPropertyDomain = new OWLObjectPropertyDomain(
 				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
 				new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLTestSerializer<OWLObjectPropertyDomain>.Serialize(ObjectPropertyDomain);
+            string serializedXML = OWLSerializer.Serialize(ObjectPropertyDomain);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectPropertyDomain><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectPropertyDomain>"));
@@ -79,7 +79,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLObjectPropertyDomain ObjectPropertyDomain = new OWLObjectPropertyDomain(
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLTestSerializer<OWLObjectPropertyDomain>.Serialize(ObjectPropertyDomain);
+            string serializedXML = OWLSerializer.Serialize(ObjectPropertyDomain);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectPropertyDomain><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectPropertyDomain>"));
@@ -93,7 +93,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLObjectPropertyDomain(
 					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
 					new OWLClass(RDFVocabulary.FOAF.PERSON)));
-            string serializedXML = OWLTestSerializer<OWLOntology>.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ObjectPropertyDomain><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectPropertyDomain></Ontology>"));
@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeObjectPropertyDomain()
         {
-            OWLObjectPropertyDomain objectPropertyDomain = OWLTestSerializer<OWLObjectPropertyDomain>.Deserialize(
+            OWLObjectPropertyDomain objectPropertyDomain = OWLSerializer.Deserialize<OWLObjectPropertyDomain>(
 @"<ObjectPropertyDomain>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
@@ -120,7 +120,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeObjectPropertyDomainWithInverseOf()
         {
-            OWLObjectPropertyDomain objectPropertyDomain = OWLTestSerializer<OWLObjectPropertyDomain>.Deserialize(
+            OWLObjectPropertyDomain objectPropertyDomain = OWLSerializer.Deserialize<OWLObjectPropertyDomain>(
 @"<ObjectPropertyDomain>
   <ObjectInverseOf>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />

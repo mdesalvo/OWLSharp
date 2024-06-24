@@ -16,6 +16,7 @@
 
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -61,7 +62,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRIClass()
         {
             OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
-            string serializedXML = OWLTestSerializer<OWLClass>.Serialize(cls);
+            string serializedXML = OWLSerializer.Serialize(cls);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Class IRI=""http://xmlns.com/foaf/0.1/Person"" />"));
@@ -70,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIClass()
         {
-            OWLClass cls = OWLTestSerializer<OWLClass>.Deserialize(
+            OWLClass cls = OWLSerializer.Deserialize<OWLClass>(
 @"<Class IRI=""http://xmlns.com/foaf/0.1/Person"" />");
 
             Assert.IsNotNull(cls);
@@ -87,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameClass()
         {
             OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLTestSerializer<OWLClass>.Serialize(cls);
+            string serializedXML = OWLSerializer.Serialize(cls);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Class xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:Person"" />"));
@@ -96,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameClass()
         {
-            OWLClass cls = OWLTestSerializer<OWLClass>.Deserialize(
+            OWLClass cls = OWLSerializer.Deserialize<OWLClass>(
 @"<Class xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:Person"" />");
 
             Assert.IsNotNull(cls);

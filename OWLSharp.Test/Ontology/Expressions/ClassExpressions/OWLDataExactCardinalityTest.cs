@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -66,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataExactCardinality()
         {
             OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
-            string serializedXML = OWLTestSerializer<OWLDataExactCardinality>.Serialize(dataExactCardinality);
+            string serializedXML = OWLSerializer.Serialize(dataExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataExactCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /></DataExactCardinality>"));
@@ -75,7 +76,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataExactCardinality()
         {
-            OWLDataExactCardinality dataExactCardinality = OWLTestSerializer<OWLDataExactCardinality>.Deserialize(
+            OWLDataExactCardinality dataExactCardinality = OWLSerializer.Deserialize<OWLDataExactCardinality>(
 @"<DataExactCardinality cardinality=""1"">
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
 </DataExactCardinality>");
@@ -91,7 +92,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataExactQualifiedCardinality()
         {
             OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLTestSerializer<OWLDataExactCardinality>.Serialize(dataExactCardinality);
+            string serializedXML = OWLSerializer.Serialize(dataExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataExactCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataExactCardinality>"));
@@ -100,7 +101,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataExactQualifiedCardinality()
         {
-            OWLDataExactCardinality dataExactCardinality = OWLTestSerializer<OWLDataExactCardinality>.Deserialize(
+            OWLDataExactCardinality dataExactCardinality = OWLSerializer.Deserialize<OWLDataExactCardinality>(
 @"<DataExactCardinality cardinality=""1"">
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />

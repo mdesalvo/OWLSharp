@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System;
@@ -56,7 +57,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeAnonymousIndividual()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-            string serializedXML = OWLTestSerializer<OWLAnonymousIndividual>.Serialize(anonIdv);
+            string serializedXML = OWLSerializer.Serialize(anonIdv);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnonymousIndividual nodeID=""AnonIdv"" />"));
@@ -65,7 +66,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividual()
         {
-            OWLAnonymousIndividual anonIdv = OWLTestSerializer<OWLAnonymousIndividual>.Deserialize(
+            OWLAnonymousIndividual anonIdv = OWLSerializer.Deserialize<OWLAnonymousIndividual>(
 @"<AnonymousIndividual nodeID=""AnonIdv"" />");
 
             Assert.IsNotNull(anonIdv);

@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
@@ -56,7 +57,7 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLObjectAllValuesFrom objectAllValuesFrom = new OWLObjectAllValuesFrom(
                 new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
                 new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLTestSerializer<OWLObjectAllValuesFrom>.Serialize(objectAllValuesFrom);
+            string serializedXML = OWLSerializer.Serialize(objectAllValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectAllValuesFrom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectAllValuesFrom>"));
@@ -65,7 +66,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectAllValuesFrom()
         {
-            OWLObjectAllValuesFrom objectAllValuesFrom = OWLTestSerializer<OWLObjectAllValuesFrom>.Deserialize(
+            OWLObjectAllValuesFrom objectAllValuesFrom = OWLSerializer.Deserialize<OWLObjectAllValuesFrom>(
 @"<ObjectAllValuesFrom>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
