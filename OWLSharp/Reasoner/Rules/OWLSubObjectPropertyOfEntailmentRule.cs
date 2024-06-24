@@ -26,8 +26,8 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLInference> report = new List<OWLInference>();
 
-            //SubObjectPropertyOf(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP3) -> SubObjectPropertyOf(OP1,OP3)
-            //SubObjectPropertyOf(OP1,OP2) ^ EquivalentObjectProperties(OP2,OP3) -> SubObjectPropertyOf(OP1,OP3)
+            //SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
+            //SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
                                                                      	 .Select(ax => (OWLObjectProperty)ax.Expression))
 			{
