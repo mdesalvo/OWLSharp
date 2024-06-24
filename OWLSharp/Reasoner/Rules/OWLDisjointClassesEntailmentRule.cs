@@ -51,8 +51,7 @@ namespace OWLSharp.Reasoner.Rules
 
 				report.Inferences.Add(inference);
 
-				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1)
-				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C3,C1)
+				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
 				foreach (OWLClassExpression disjointUnionClassExpression in disjointUnion.ClassExpressions)
 				{
 					OWLReasonerInference subClassInference = new OWLReasonerInference(

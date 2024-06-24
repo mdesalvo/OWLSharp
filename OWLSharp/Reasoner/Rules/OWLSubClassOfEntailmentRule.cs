@@ -28,8 +28,7 @@ namespace OWLSharp.Reasoner.Rules
 
 			//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
 			//SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
-			//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1)
-			//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C3,C1)
+			//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
