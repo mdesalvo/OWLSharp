@@ -70,7 +70,7 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
 				{
-					//SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperty(P2,P3) -> SubObjectPropertyOf(P1,P3)
+					//SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
                     foreach (OWLObjectPropertyExpression subObjPropExpr in subObjPropExprs.ToList())
 						subObjPropExprs.AddRange(GetEquivalentObjectProperties(ontology, subObjPropExpr, directOnly));
 				}
@@ -150,7 +150,7 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
                 {
-					//EquivalentObjectProperty(P1,P2) ^ EquivalentObjectProperty(P2,P3) -> EquivalentObjectProperty(P1,P3)
+					//EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
                     foreach (OWLObjectPropertyExpression equivObjPropExpr in foundEquivObjPropExprs.ToList())
                         foundEquivObjPropExprs.AddRange(FindEquivalentObjectProperties(equivObjPropExpr.GetIRI(), axioms, visitContext));
                 }
@@ -203,11 +203,11 @@ namespace OWLSharp.Ontology.Helpers
 
                 if (!directOnly)
                 {
-                    //EquivalentObjectProperties(P1,P2) ^ PropertyDisjointWith(P2,P3) -> PropertyDisjointWith(P1,P3)
+                    //EquivalentObjectProperties(P1,P2) ^ DisjointObjectProperties(P2,P3) -> DisjointObjectProperties(P1,P3)
                     foreach (OWLObjectPropertyExpression equivObjPropExpr in GetEquivalentObjectProperties(ontology, objPropExpr, directOnly))
                         disjObjPropExprs.AddRange(FindDisjointObjectProperties(equivObjPropExpr.GetIRI(), disjointObjectPropertyAxioms, visitContext));
 
-                    //SubObjectPropertyOf(P1,P2) ^ PropertyDisjointWith(P2,P3) -> PropertyDisjointWith(P1,P3)
+                    //SubObjectPropertyOf(P1,P2) ^ DisjointObjectProperties(P2,P3) -> DisjointObjectProperties(P1,P3)
                     foreach (OWLObjectPropertyExpression superObjPropExpr in GetSuperObjectPropertiesOf(ontology, objPropExpr, directOnly))
                         disjObjPropExprs.AddRange(FindDisjointObjectProperties(superObjPropExpr.GetIRI(), disjointObjectPropertyAxioms, visitContext));
                 }

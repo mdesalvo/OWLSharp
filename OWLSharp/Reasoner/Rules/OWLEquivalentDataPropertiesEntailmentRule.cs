@@ -20,24 +20,22 @@ using System.Linq;
 
 namespace OWLSharp.Reasoner.Rules
 {
-    internal static class OWLSubClassOfEntailmentRule
+    internal static class OWLEquivalentDataPropertiesEntailmentRule
     {
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             List<OWLInference> report = new List<OWLInference>();
 
-			//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
-			//SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
-			//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
-            foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
-													   .Select(ax => (OWLClass)ax.Expression))
+            //EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)
+            foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
+                                                                     .Select(ax => (OWLDataProperty)ax.Expression))
 			{
-				List<OWLClassExpression> inferredSuperClasses = ontology.GetSuperClassesOf(declaredClass);
-                foreach (OWLClassExpression inferredSuperClass in inferredSuperClasses)
+				List<OWLDataProperty> inferredEquivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
+                foreach (OWLDataProperty inferredEquivalentDataProperty in inferredEquivalentDataProperties)
                 {
                     OWLInference inference = new OWLInference(
-                        nameof(OWLSubClassOfEntailmentRule), 
-						new OWLSubClassOf(declaredClass, inferredSuperClass) { IsInference=true });
+                        nameof(OWLEquivalentDataPropertiesEntailmentRule), 
+						new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, inferredEquivalentDataProperty }) { IsInference=true });
 
                     report.Add(inference);
                 }

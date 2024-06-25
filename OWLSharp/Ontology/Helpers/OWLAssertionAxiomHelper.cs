@@ -52,7 +52,7 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
                 {
-					//SameAs(I1,I2) ^ SameAs(I2,I3) -> SameAs(I1,I3)
+					//SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)
                     foreach (OWLIndividualExpression sameIndividual in foundSameIndividuals.ToList())
                         foundSameIndividuals.AddRange(FindSameIndividuals(sameIndividual.GetIRI(), axioms, visitContext));
                 }
@@ -130,12 +130,12 @@ namespace OWLSharp.Ontology.Helpers
             
                 if (!directOnly)
                 {
-					//Type(IDV,C1) ^ SubClassOf(C1,C2) -> Type(IDV,C2)
+					//IsA(IDV,C1) ^ SubClassOf(C1,C2) -> IsA(IDV,C2)
 					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr, directOnly))
 						foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
 																				.Select(ax => ax.IndividualExpression));
 
-					//Type(IDV,C1) ^ EquivalentClasses(C1,C2) -> Type(IDV,C2)
+					//IsA(IDV,C1) ^ EquivalentClasses(C1,C2) -> IsA(IDV,C2)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
 					{
 						RDFResource equivClsExprIRI = equivClsExpr.GetIRI();
@@ -410,7 +410,7 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
 				{
-					//Type(IDV1,C) ^ SameAs(IDV1,IDV2) -> Type(IDV2,C)
+					//IsA(IDV1,C) ^ SameIndividual(IDV1,IDV2) -> IsA(IDV2,C)
 					foreach (OWLIndividualExpression classIndividual in classIndividuals.ToList())
 						classIndividuals.AddRange(ontology.GetSameIndividuals(classIndividual));
 				}
@@ -431,7 +431,8 @@ namespace OWLSharp.Ontology.Helpers
 																.Where(ax => ax.IndividualExpression.GetIRI().Equals(idvExprIRI)))
 				{
 					//Direct
-					if (idvExprClassAsn.ClassExpression is OWLObjectComplementOf directObjComplOf && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
+					if (idvExprClassAsn.ClassExpression is OWLObjectComplementOf directObjComplOf 
+						 && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
 					{
 						answer = true;
 						break;

@@ -30,6 +30,7 @@ namespace OWLSharp
 			DisjointClassesEntailment = 3,
             SubDataPropertyOfEntailment = 4,
 			SubObjectPropertyOfEntailment = 5,
+			EquivalentDataPropertiesEntailment = 6,
         }
     }
 }

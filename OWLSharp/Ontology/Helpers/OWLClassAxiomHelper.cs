@@ -69,7 +69,7 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
 				{
-					//SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
+					//SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
                     foreach (OWLClassExpression subClassExpr in subClassExprs.ToList())
 						subClassExprs.AddRange(GetEquivalentClasses(ontology, subClassExpr, directOnly));
 
@@ -77,7 +77,7 @@ namespace OWLSharp.Ontology.Helpers
                     foreach (OWLDisjointUnion disjointUnion in GetClassAxiomsOfType<OWLDisjointUnion>(ontology).Where(ax => ax.ClassIRI.GetIRI().Equals(clsExprIRI)))
                         subClassExprs.AddRange(disjointUnion.ClassExpressions);
 
-					//EquivalentClass(C1,ObjectUnionOf(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
+					//EquivalentClasses(C1,ObjectUnionOf(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
 					foreach (OWLObjectUnionOf objectUnionOf in GetEquivalentClasses(ontology, classExpr, directOnly).OfType<OWLObjectUnionOf>())
 						subClassExprs.AddRange(objectUnionOf.ClassExpressions);
 				}

@@ -69,7 +69,7 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
 				{
-					//SubDataPropertyOf(P1,P2) ^ EquivalentDataProperty(P2,P3) -> SubDataPropertyOf(P1,P3)
+					//SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
                     foreach (OWLDataProperty subDataProperty in subDataProperties.ToList())
 						subDataProperties.AddRange(GetEquivalentDataProperties(ontology, subDataProperty, directOnly));
 				}
@@ -149,7 +149,7 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
                 {
-					//EquivalentDataProperty(P1,P2) ^ EquivalentDataProperty(P2,P3) -> EquivalentDataProperty(P1,P3)
+					//EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)
                     foreach (OWLDataProperty equivalentDataProperty in foundEquivalentDataProperties.ToList())
                         foundEquivalentDataProperties.AddRange(FindEquivalentDataProperties(equivalentDataProperty.GetIRI(), axioms, visitContext));
                 }
@@ -202,11 +202,11 @@ namespace OWLSharp.Ontology.Helpers
 
 				if (!directOnly)
 				{
-					//EquivalentDataProperties(P1,P2) ^ PropertyDisjointWith(P2,P3) -> PropertyDisjointWith(P1,P3)
+					//EquivalentDataProperties(P1,P2) ^ DisjointDataProperties(P2,P3) -> DisjointDataProperties(P1,P3)
 					foreach (OWLDataProperty equivalentDataProperty in GetEquivalentDataProperties(ontology, dataProperty, directOnly))
 						disjointDataProperties.AddRange(FindDisjointDataProperties(equivalentDataProperty.GetIRI(), disjointDataPropertyAxioms, visitContext));
 
-					//SubDataPropertyOf(P1,P2) ^ PropertyDisjointWith(P2,P3) -> PropertyDisjointWith(P1,P3)
+					//SubDataPropertyOf(P1,P2) ^ DisjointDataProperties(P2,P3) -> DisjointDataProperties(P1,P3)
 					foreach (OWLDataProperty superDataProperty in GetSuperDataPropertiesOf(ontology, dataProperty, directOnly))
 						disjointDataProperties.AddRange(FindDisjointDataProperties(superDataProperty.GetIRI(), disjointDataPropertyAxioms, visitContext));
 				}
