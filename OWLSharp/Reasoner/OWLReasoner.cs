@@ -69,6 +69,9 @@ namespace OWLSharp.Reasoner
 							case OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment.ToString()] = OWLEquivalentDataPropertiesEntailmentRule.ExecuteRule(ontology);
                                 break;
+							case OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment.ToString()] = OWLEquivalentObjectPropertiesEntailmentRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': got {inferenceRegistry[standardRule.ToString()].Count} inferences");
