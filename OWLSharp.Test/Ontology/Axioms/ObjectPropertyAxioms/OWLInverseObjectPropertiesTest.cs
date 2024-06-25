@@ -87,7 +87,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLInverseObjectProperties(
                     new OWLObjectProperty(new RDFResource("ex:hasWife")),
                     new OWLObjectProperty(new RDFResource("ex:isWifeOf"))));
-            string serializedXML = OWLSerializer.Serialize(ontology);
+            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><InverseObjectProperties><ObjectProperty IRI=""ex:hasWife"" /><ObjectProperty IRI=""ex:isWifeOf"" /></InverseObjectProperties></Ontology>"));

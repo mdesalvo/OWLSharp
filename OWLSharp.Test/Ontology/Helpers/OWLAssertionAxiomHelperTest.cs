@@ -573,7 +573,7 @@ namespace OWLSharp.Test.Ontology.Helpers
                         new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ]),
                 ]
             };
-            string ont = OWLSerializer.Serialize(ontology);
+            string ont = OWLSerializer.Serialize<OWLOntology>(ontology);
             List<OWLIndividualExpression> inverseOwnersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:InverseOwnersOfFelix")));
             Assert.IsTrue(inverseOwnersOfFelix.Count == 1);
             Assert.IsTrue(inverseOwnersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
@@ -599,7 +599,7 @@ namespace OWLSharp.Test.Ontology.Helpers
                         new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ]),
                 ]
             };
-            string ont = OWLSerializer.Serialize(ontology);
+            string ont = OWLSerializer.Serialize<OWLOntology>(ontology);
             List<OWLIndividualExpression> doubleinverseOwnersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DoubleInverseOwnersOfFelix")));
             Assert.IsTrue(doubleinverseOwnersOfFelix.Count == 1);
             Assert.IsTrue(doubleinverseOwnersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
