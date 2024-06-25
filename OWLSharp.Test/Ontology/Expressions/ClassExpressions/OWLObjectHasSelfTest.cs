@@ -55,7 +55,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectHasSelf()
         {
             OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            string serializedXML = OWLSerializer.Serialize(objectHasSelf);
+            string serializedXML = OWLSerializer.SerializeObject(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectHasSelf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectHasSelf>"));
@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectHasSelfWithObjectInverseOfOf()
         {
             OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLSerializer.Serialize(objectHasSelf);
+            string serializedXML = OWLSerializer.SerializeObject(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectHasSelf><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></ObjectHasSelf>"));
@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectHasSelf()
         {
-            OWLObjectHasSelf objectHasSelf = OWLSerializer.Deserialize<OWLObjectHasSelf>(
+            OWLObjectHasSelf objectHasSelf = OWLSerializer.DeserializeObject<OWLObjectHasSelf>(
 @"<ObjectHasSelf>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </ObjectHasSelf>");
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectHasSelfWithObjectInverseOf()
         {
-            OWLObjectHasSelf objectHasSelf = OWLSerializer.Deserialize<OWLObjectHasSelf>(
+            OWLObjectHasSelf objectHasSelf = OWLSerializer.DeserializeObject<OWLObjectHasSelf>(
 @"<ObjectHasSelf>
   <ObjectInverseOf>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />

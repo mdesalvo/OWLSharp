@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                 new OWLNamedIndividual(new RDFResource("ex:Alice")),
 				new OWLNamedIndividual(new RDFResource("ex:Bob")));
-            string serializedXML = OWLSerializer.Serialize(objectPropertyAssertion);
+            string serializedXML = OWLSerializer.SerializeObject(objectPropertyAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectPropertyAssertion><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion>"));
@@ -93,7 +93,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 					{
 						Annotations = [ new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR), new OWLLiteral(new RDFPlainLiteral("Steve","en"))) ]
 					});
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ObjectPropertyAssertion><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN"">Steve</Literal></Annotation><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion></Ontology>"));
@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
         public void ShouldDeserializeNamedIndividualObjectPropertyAssertion()
         {
-            OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.Deserialize<OWLObjectPropertyAssertion>(
+            OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.DeserializeObject<OWLObjectPropertyAssertion>(
 @"<ObjectPropertyAssertion><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion>");
         
 			Assert.IsNotNull(objectPropertyAssertion);
@@ -120,7 +120,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
         public void ShouldDeserializeNamedIndividualObjectPropertyAssertionViaOntology()
         {
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
     <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -161,7 +161,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLNamedIndividual(new RDFResource("ex:Alice")),
 				new OWLNamedIndividual(new RDFResource("ex:Bob")));
-            string serializedXML = OWLSerializer.Serialize(objectPropertyAssertion);
+            string serializedXML = OWLSerializer.SerializeObject(objectPropertyAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion>"));
@@ -179,7 +179,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 					{
 						Annotations = [ new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR), new OWLLiteral(new RDFPlainLiteral("Steve","en"))) ]
 					});
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ObjectPropertyAssertion><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN"">Steve</Literal></Annotation><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion></Ontology>"));
@@ -188,7 +188,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
         public void ShouldDeserializeNamedIndividualInverseObjectPropertyAssertion()
         {
-            OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.Deserialize<OWLObjectPropertyAssertion>(
+            OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.DeserializeObject<OWLObjectPropertyAssertion>(
 @"<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion>");
         
 			Assert.IsNotNull(objectPropertyAssertion);
@@ -206,7 +206,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
         public void ShouldDeserializeNamedIndividualInverseObjectPropertyAssertionViaOntology()
         {
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <Ontology>
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -249,7 +249,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLAnonymousIndividual("Alice"),
 				new OWLNamedIndividual(new RDFResource("ex:Bob")));
-            string serializedXML = OWLSerializer.Serialize(objectPropertyAssertion);
+            string serializedXML = OWLSerializer.SerializeObject(objectPropertyAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><AnonymousIndividual nodeID=""Alice"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectPropertyAssertion>"));
@@ -267,7 +267,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 					{
 						Annotations = [ new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR), new OWLLiteral(new RDFPlainLiteral("Steve","en"))) ]
 					});
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><ObjectPropertyAssertion><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN"">Steve</Literal></Annotation><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><NamedIndividual IRI=""ex:Alice"" /><AnonymousIndividual nodeID=""Bob"" /></ObjectPropertyAssertion></Ontology>"));
@@ -276,7 +276,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
         public void ShouldDeserializeAnonymousIndividualInverseObjectPropertyAssertion()
         {
-            OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.Deserialize<OWLObjectPropertyAssertion>(
+            OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.DeserializeObject<OWLObjectPropertyAssertion>(
 @"<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf><AnonymousIndividual nodeID=""Alice"" /><AnonymousIndividual nodeID=""Bob"" /></ObjectPropertyAssertion>");
         
 			Assert.IsNotNull(objectPropertyAssertion);
@@ -294,7 +294,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
         public void ShouldDeserializeAnonymousIndividualInverseObjectPropertyAssertionViaOntology()
         {
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <Ontology>
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />

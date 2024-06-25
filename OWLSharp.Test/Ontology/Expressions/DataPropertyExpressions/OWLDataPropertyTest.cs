@@ -62,7 +62,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRIDataProperty()
         {
             OWLDataProperty dp = new OWLDataProperty(RDFVocabulary.FOAF.AGE);
-            string serializedXML = OWLSerializer.Serialize(dp);
+            string serializedXML = OWLSerializer.SerializeObject(dp);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />"));
@@ -71,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIDataProperty()
         {
-            OWLDataProperty dp = OWLSerializer.Deserialize<OWLDataProperty>(
+            OWLDataProperty dp = OWLSerializer.DeserializeObject<OWLDataProperty>(
 @"<DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />");
 
             Assert.IsNotNull(dp);
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameDataProperty()
         {
             OWLDataProperty dp = new OWLDataProperty(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLSerializer.Serialize(dp);
+            string serializedXML = OWLSerializer.SerializeObject(dp);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:age"" />"));
@@ -97,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameDataProperty()
         {
-            OWLDataProperty dp = OWLSerializer.Deserialize<OWLDataProperty>(
+            OWLDataProperty dp = OWLSerializer.DeserializeObject<OWLDataProperty>(
 @"<DataProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:age"" />");
 
             Assert.IsNotNull(dp);

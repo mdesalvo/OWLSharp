@@ -40,7 +40,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		public void ShouldSerializeClassDeclaration()
 		{
 			OWLDeclaration declaration = new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT));
-			string serializedXML = OWLSerializer.Serialize(declaration);
+			string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></Declaration>"));
@@ -49,7 +49,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
 		public void ShouldDeserializeClassDeclaration()
 		{
-			OWLDeclaration declaration = OWLSerializer.Deserialize<OWLDeclaration>(
+			OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
 @"<Declaration><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></Declaration>");
 
 			Assert.IsNotNull(declaration);
@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		public void ShouldSerializeDatatypeDeclaration()
 		{
 			OWLDeclaration declaration = new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INT));
-			string serializedXML = OWLSerializer.Serialize(declaration);
+			string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><Datatype IRI=""http://www.w3.org/2001/XMLSchema#int"" /></Declaration>"));
@@ -82,7 +82,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
 		public void ShouldDeserializeDatatypeDeclaration()
 		{
-			OWLDeclaration declaration = OWLSerializer.Deserialize<OWLDeclaration>(
+			OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
 @"<Declaration><Datatype IRI=""http://www.w3.org/2001/XMLSchema#int"" /></Declaration>");
 
 			Assert.IsNotNull(declaration);
@@ -106,7 +106,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		public void ShouldSerializeObjectPropertyDeclaration()
 		{
 			OWLDeclaration declaration = new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-			string serializedXML = OWLSerializer.Serialize(declaration);
+			string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></Declaration>"));
@@ -115,7 +115,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
 		public void ShouldDeserializeObjectPropertyDeclaration()
 		{
-			OWLDeclaration declaration = OWLSerializer.Deserialize<OWLDeclaration>(
+			OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
 @"<Declaration><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></Declaration>");
 
 			Assert.IsNotNull(declaration);
@@ -139,7 +139,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		public void ShouldSerializeDataPropertyDeclaration()
 		{
 			OWLDeclaration declaration = new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE));
-			string serializedXML = OWLSerializer.Serialize(declaration);
+			string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></Declaration>"));
@@ -148,7 +148,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
 		public void ShouldDeserializeDataPropertyDeclaration()
 		{
-			OWLDeclaration declaration = OWLSerializer.Deserialize<OWLDeclaration>(
+			OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
 @"<Declaration><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></Declaration>");
 
 			Assert.IsNotNull(declaration);
@@ -172,7 +172,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		public void ShouldSerializeAnnotationPropertyDeclaration()
 		{
 			OWLDeclaration declaration = new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR));
-			string serializedXML = OWLSerializer.Serialize(declaration);
+			string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /></Declaration>"));
@@ -181,7 +181,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
 		public void ShouldDeserializeAnnotationPropertyDeclaration()
 		{
-			OWLDeclaration declaration = OWLSerializer.Deserialize<OWLDeclaration>(
+			OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
 @"<Declaration><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /></Declaration>");
 
 			Assert.IsNotNull(declaration);
@@ -205,7 +205,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		public void ShouldSerializeNamedIndividualDeclaration()
 		{
 			OWLDeclaration declaration = new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")));
-			string serializedXML = OWLSerializer.Serialize(declaration);
+			string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Declaration><NamedIndividual IRI=""ex:Mark"" /></Declaration>"));
@@ -214,7 +214,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
 		public void ShouldDeserializeNamedIndividualDeclaration()
 		{
-			OWLDeclaration declaration = OWLSerializer.Deserialize<OWLDeclaration>(
+			OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
 @"<Declaration><NamedIndividual IRI=""ex:Mark"" /></Declaration>");
 
 			Assert.IsNotNull(declaration);

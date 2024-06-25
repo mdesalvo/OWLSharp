@@ -108,7 +108,7 @@ namespace OWLSharp.Test.Ontology
 				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
 			ontology.AnnotationAxioms.Add(
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			string serializedXML = OWLSerializer.Serialize(ontology);
+			string serializedXML = OWLSerializer.SerializeOntology(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -196,7 +196,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldDeserializeOntology()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -308,7 +308,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -344,7 +344,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithDeclarationToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -363,7 +363,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithClassAxiomToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -385,7 +385,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithObjectPropertyAxiomToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -407,7 +407,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithDataPropertyAxiomToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -429,7 +429,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithDatatypeDefinitionAxiomToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<Ontology>
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
@@ -470,7 +470,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithHasKeyAxiomToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -499,7 +499,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithAssertionAxiomToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -525,7 +525,7 @@ namespace OWLSharp.Test.Ontology
 		[TestMethod]
 		public void ShouldConvertOntologyWithAnnotationAxiomToGraph()
 		{
-			OWLOntology ontology = OWLSerializer.Deserialize(
+			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -595,7 +595,7 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx")));
 
 			//Read from file and deserialize to test content
-			OWLOntology ontology2 = OWLSerializer.Deserialize(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx")));
+			OWLOntology ontology2 = OWLSerializer.DeserializeOntology(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx")));
 
 			Assert.IsNotNull(ontology2);
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -681,7 +681,7 @@ namespace OWLSharp.Test.Ontology
 			string fileContent;
             using (StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray())))
                 fileContent = reader.ReadToEnd();
-			OWLOntology ontology2 = OWLSerializer.Deserialize(fileContent);
+			OWLOntology ontology2 = OWLSerializer.DeserializeOntology(fileContent);
 
 			Assert.IsNotNull(ontology2);
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));

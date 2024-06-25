@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         {
            OWLDataUnionOf dataUnionOf = new OWLDataUnionOf(
                 [ new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.ANY_URI) ]);
-            string serializedXML = OWLSerializer.Serialize(dataUnionOf);
+            string serializedXML = OWLSerializer.SerializeObject(dataUnionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataUnionOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" /></DataUnionOf>"));
@@ -67,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataUnionOf()
         {
-            OWLDataUnionOf dataUnionOf = OWLSerializer.Deserialize<OWLDataUnionOf>(
+            OWLDataUnionOf dataUnionOf = OWLSerializer.DeserializeObject<OWLDataUnionOf>(
 @"<DataUnionOf>
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" />

@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         {
             OWLObjectUnionOf objectUnionOf = new OWLObjectUnionOf(
                  [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)]);
-            string serializedXML = OWLSerializer.Serialize(objectUnionOf);
+            string serializedXML = OWLSerializer.SerializeObject(objectUnionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectUnionOf><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectUnionOf>"));
@@ -67,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectUnionOf()
         {
-            OWLObjectUnionOf objectUnionOf = OWLSerializer.Deserialize<OWLObjectUnionOf>(
+            OWLObjectUnionOf objectUnionOf = OWLSerializer.DeserializeObject<OWLObjectUnionOf>(
 @"<ObjectUnionOf>
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />

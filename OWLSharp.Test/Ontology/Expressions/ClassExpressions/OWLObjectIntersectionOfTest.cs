@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         {
             OWLObjectIntersectionOf objectIntersectionOf = new OWLObjectIntersectionOf(
                  [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)]);
-            string serializedXML = OWLSerializer.Serialize(objectIntersectionOf);
+            string serializedXML = OWLSerializer.SerializeObject(objectIntersectionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectIntersectionOf><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectIntersectionOf>"));
@@ -67,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectIntersectionOf()
         {
-            OWLObjectIntersectionOf objectIntersectionOf = OWLSerializer.Deserialize<OWLObjectIntersectionOf>(
+            OWLObjectIntersectionOf objectIntersectionOf = OWLSerializer.DeserializeObject<OWLObjectIntersectionOf>(
 @"<ObjectIntersectionOf>
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />

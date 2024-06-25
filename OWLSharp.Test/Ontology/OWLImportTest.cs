@@ -45,7 +45,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldSerializeImport()
         {
             OWLImport import = new OWLImport(new RDFResource(RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLSerializer.Serialize(import);
+            string serializedXML = OWLSerializer.SerializeObject(import);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Import>http://xmlns.com/foaf/0.1/</Import>"));
@@ -54,7 +54,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod] 
         public void ShouldDeserializeImport()
         {
-            OWLImport import = OWLSerializer.Deserialize<OWLImport>(
+            OWLImport import = OWLSerializer.DeserializeObject<OWLImport>(
 @"<Import>http://xmlns.com/foaf/0.1/</Import>");
 
             Assert.IsNotNull(import);

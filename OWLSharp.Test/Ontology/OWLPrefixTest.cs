@@ -42,7 +42,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldSerializePrefix()
         {
             OWLPrefix prefix = new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX));
-            string serializedXML = OWLSerializer.Serialize(prefix);
+            string serializedXML = OWLSerializer.SerializeObject(prefix);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />"));
@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod] 
         public void ShouldDeserializePrefix()
         {
-            OWLPrefix prefix = OWLSerializer.Deserialize<OWLPrefix>(
+            OWLPrefix prefix = OWLSerializer.DeserializeObject<OWLPrefix>(
 @"<Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />");
 
             Assert.IsNotNull(prefix);

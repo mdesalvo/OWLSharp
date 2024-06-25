@@ -60,7 +60,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLDataPropertyRange dataPropertyRange = new OWLDataPropertyRange(
 				new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
 				new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLSerializer.Serialize(dataPropertyRange);
+            string serializedXML = OWLSerializer.SerializeObject(dataPropertyRange);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataPropertyRange><DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataPropertyRange>"));
@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLDataPropertyRange(
 					new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
 					new OWLDatatype(RDFVocabulary.XSD.STRING)));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DataPropertyRange><DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataPropertyRange></Ontology>"));
@@ -83,7 +83,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeDataPropertyRange()
         {
-            OWLDataPropertyRange dataPropertyRange = OWLSerializer.Deserialize<OWLDataPropertyRange>(
+            OWLDataPropertyRange dataPropertyRange = OWLSerializer.DeserializeObject<OWLDataPropertyRange>(
 @"<DataPropertyRange>
   <DataProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
@@ -100,7 +100,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeDataPropertyRangeViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />

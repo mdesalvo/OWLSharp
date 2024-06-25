@@ -44,7 +44,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectComplementOf()
         {
             OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT));
-            string serializedXML = OWLSerializer.Serialize(objectComplementOf);
+            string serializedXML = OWLSerializer.SerializeObject(objectComplementOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectComplementOf><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectComplementOf>"));
@@ -53,7 +53,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectComplementOf()
         {
-            OWLObjectComplementOf objectComplementOf = OWLSerializer.Deserialize<OWLObjectComplementOf>(
+            OWLObjectComplementOf objectComplementOf = OWLSerializer.DeserializeObject<OWLObjectComplementOf>(
 @"<ObjectComplementOf>
   <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
 </ObjectComplementOf>");

@@ -62,7 +62,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeIRIAnnotationProperty()
         {
             OWLAnnotationProperty annotation = new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR);
-            string serializedXML = OWLSerializer.Serialize(annotation);
+            string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />"));
@@ -71,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeIRIAnnotationProperty()
         {
-            OWLAnnotationProperty annotation = OWLSerializer.Deserialize<OWLAnnotationProperty>(
+            OWLAnnotationProperty annotation = OWLSerializer.DeserializeObject<OWLAnnotationProperty>(
 @"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />");
 
             Assert.IsNotNull(annotation);
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeQualifiedNameAnnotationProperty()
         {
             OWLAnnotationProperty annotation = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
-            string serializedXML = OWLSerializer.Serialize(annotation);
+            string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />"));
@@ -97,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeQualifiedNameAnnotationProperty()
         {
-            OWLAnnotationProperty annotation = OWLSerializer.Deserialize<OWLAnnotationProperty>(
+            OWLAnnotationProperty annotation = OWLSerializer.DeserializeObject<OWLAnnotationProperty>(
 @"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />");
 
             Assert.IsNotNull(annotation);

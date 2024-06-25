@@ -50,7 +50,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeDataHasValue()
         {
             OWLDataHasValue dataHasValue = new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello","en")));
-            string serializedXML = OWLSerializer.Serialize(dataHasValue);
+            string serializedXML = OWLSerializer.SerializeObject(dataHasValue);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataHasValue><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Literal xml:lang=""EN"">hello</Literal></DataHasValue>"));
@@ -59,7 +59,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataHasValue()
         {
-            OWLDataHasValue dataHasValue = OWLSerializer.Deserialize<OWLDataHasValue>(
+            OWLDataHasValue dataHasValue = OWLSerializer.DeserializeObject<OWLDataHasValue>(
 @"<DataHasValue>
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
   <Literal xml:lang=""EN"">hello</Literal>

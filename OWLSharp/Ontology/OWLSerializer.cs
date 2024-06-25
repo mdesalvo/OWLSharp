@@ -26,7 +26,7 @@ namespace OWLSharp.Ontology
 {
     internal static class OWLSerializer
     {
-        internal static string Serialize(OWLOntology ontology)
+        internal static string SerializeOntology(OWLOntology ontology)
         {
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
             //Hide hard-coded .NET prefixes (e.g: xsi)
@@ -65,7 +65,7 @@ namespace OWLSharp.Ontology
             }
         }
 
-        internal static OWLOntology Deserialize(string ontology)
+        internal static OWLOntology DeserializeOntology(string ontology)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (StringReader stringReader = new StringReader(ontology))
@@ -95,7 +95,7 @@ namespace OWLSharp.Ontology
             }
         }
     
-		internal static string Serialize<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
+		internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
         {
             //Hide hard-coded .NET prefixes (e.g: xsi)
 			if (xmlSerializerNamespaces == null)
@@ -120,7 +120,7 @@ namespace OWLSharp.Ontology
             }
         }
 
-        internal static T Deserialize<T>(string objectToDeserialize) where T : class
+        internal static T DeserializeObject<T>(string objectToDeserialize) where T : class
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             using (StringReader stringReader = new StringReader(objectToDeserialize))

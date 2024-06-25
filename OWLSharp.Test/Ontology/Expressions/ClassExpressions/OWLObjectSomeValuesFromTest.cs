@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
                 new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
                 new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLSerializer.Serialize(objectSomeValuesFrom);
+            string serializedXML = OWLSerializer.SerializeObject(objectSomeValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectSomeValuesFrom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectSomeValuesFrom>"));
@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectSomeValuesFrom()
         {
-            OWLObjectSomeValuesFrom objectSomeValuesFrom = OWLSerializer.Deserialize<OWLObjectSomeValuesFrom>(
+            OWLObjectSomeValuesFrom objectSomeValuesFrom = OWLSerializer.DeserializeObject<OWLObjectSomeValuesFrom>(
 @"<ObjectSomeValuesFrom>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />

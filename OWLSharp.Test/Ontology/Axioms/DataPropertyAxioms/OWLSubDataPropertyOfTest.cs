@@ -60,7 +60,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             OWLSubDataPropertyOf subDataPropertyOf = new OWLSubDataPropertyOf(
                 new OWLDataProperty(RDFVocabulary.DC.DCTERMS.TITLE),
                 new OWLDataProperty(RDFVocabulary.DC.TITLE));
-            string serializedXML = OWLSerializer.Serialize(subDataPropertyOf);
+            string serializedXML = OWLSerializer.SerializeObject(subDataPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<SubDataPropertyOf><DataProperty IRI=""http://purl.org/dc/terms/title"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" /></SubDataPropertyOf>"));
@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLSubDataPropertyOf(
                     new OWLDataProperty(RDFVocabulary.DC.DCTERMS.TITLE),
                     new OWLDataProperty(RDFVocabulary.DC.TITLE)));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><SubDataPropertyOf><DataProperty IRI=""http://purl.org/dc/terms/title"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" /></SubDataPropertyOf></Ontology>"));
@@ -83,7 +83,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeSubDataPropertyOf()
         {
-            OWLSubDataPropertyOf subDataPropertyOf = OWLSerializer.Deserialize<OWLSubDataPropertyOf>(
+            OWLSubDataPropertyOf subDataPropertyOf = OWLSerializer.DeserializeObject<OWLSubDataPropertyOf>(
 @"<SubDataPropertyOf>
   <DataProperty IRI=""http://purl.org/dc/terms/title"" />
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" />
@@ -99,7 +99,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeSubDataPropertyOfViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -146,7 +146,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLSubDataPropertyOf(
                     new OWLDataProperty(RDFVocabulary.DC.DCTERMS.CREATOR),
                     new OWLDataProperty(RDFVocabulary.DC.CREATOR)));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" /><SubDataPropertyOf><Annotation><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN-US--RTL"">contributor</Literal></Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><IRI>ex:AnnValue</IRI></Annotation><DataProperty IRI=""http://purl.org/dc/terms/title"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" /></SubDataPropertyOf><SubDataPropertyOf><DataProperty IRI=""http://purl.org/dc/terms/creator"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /></SubDataPropertyOf></Ontology>"));
@@ -155,7 +155,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeMultipleAndNestedDataAssertionsViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />

@@ -68,7 +68,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectMinCardinality()
         {
             OWLObjectMinCardinality objectMinCardinality = new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
-            string serializedXML = OWLSerializer.Serialize(objectMinCardinality);
+            string serializedXML = OWLSerializer.SerializeObject(objectMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectMinCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectMinCardinality>"));
@@ -77,7 +77,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectMinCardinality()
         {
-            OWLObjectMinCardinality objectMinCardinality = OWLSerializer.Deserialize<OWLObjectMinCardinality>(
+            OWLObjectMinCardinality objectMinCardinality = OWLSerializer.DeserializeObject<OWLObjectMinCardinality>(
 @"<ObjectMinCardinality cardinality=""1"">
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </ObjectMinCardinality>");
@@ -94,7 +94,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectMinQualifiedCardinality()
         {
             OWLObjectMinCardinality objectMinCardinality = new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLSerializer.Serialize(objectMinCardinality);
+            string serializedXML = OWLSerializer.SerializeObject(objectMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectMinCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectMinCardinality>"));
@@ -103,7 +103,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectMinQualifiedCardinality()
         {
-            OWLObjectMinCardinality objectMinCardinality = OWLSerializer.Deserialize<OWLObjectMinCardinality>(
+            OWLObjectMinCardinality objectMinCardinality = OWLSerializer.DeserializeObject<OWLObjectMinCardinality>(
 @"<ObjectMinCardinality cardinality=""1"">
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />

@@ -56,7 +56,7 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLDataOneOf dataOneOf = new OWLDataOneOf([
                 new OWLLiteral(new RDFPlainLiteral("hello","en")),
                 new OWLLiteral(new RDFPlainLiteral("ciao","it"))]);
-            string serializedXML = OWLSerializer.Serialize(dataOneOf);
+            string serializedXML = OWLSerializer.SerializeObject(dataOneOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataOneOf><Literal xml:lang=""EN"">hello</Literal><Literal xml:lang=""IT"">ciao</Literal></DataOneOf>"));
@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataOneOf()
         {
-            OWLDataOneOf dataOneOf = OWLSerializer.Deserialize<OWLDataOneOf>(
+            OWLDataOneOf dataOneOf = OWLSerializer.DeserializeObject<OWLDataOneOf>(
 @"<DataOneOf>
   <Literal xml:lang=""EN"">hello</Literal>
   <Literal xml:lang=""IT"">ciao</Literal>

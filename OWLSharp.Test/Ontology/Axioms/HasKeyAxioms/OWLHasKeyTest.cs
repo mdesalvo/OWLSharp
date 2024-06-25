@@ -52,7 +52,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLObjectProperty(RDFVocabulary.FOAF.FOCUS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
-            string serializedXML = OWLSerializer.Serialize(hasKey);
+            string serializedXML = OWLSerializer.SerializeObject(hasKey);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<HasKey><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/focus"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></HasKey>"));
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology.Axioms
 		[TestMethod]
 		public void ShouldDeserializeHasKey()
 		{
-			OWLHasKey hasKey = OWLSerializer.Deserialize<OWLHasKey>(
+			OWLHasKey hasKey = OWLSerializer.DeserializeObject<OWLHasKey>(
 @"<HasKey><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/focus"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></HasKey>");
 
             Assert.IsNotNull(hasKey);

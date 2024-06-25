@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         {
            OWLDataIntersectionOf dataIntersectionOf = new OWLDataIntersectionOf(
                 [ new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.ANY_URI) ]);
-            string serializedXML = OWLSerializer.Serialize(dataIntersectionOf);
+            string serializedXML = OWLSerializer.SerializeObject(dataIntersectionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataIntersectionOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" /></DataIntersectionOf>"));
@@ -67,7 +67,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataIntersectionOf()
         {
-            OWLDataIntersectionOf dataIntersectionOf = OWLSerializer.Deserialize<OWLDataIntersectionOf>(
+            OWLDataIntersectionOf dataIntersectionOf = OWLSerializer.DeserializeObject<OWLDataIntersectionOf>(
 @"<DataIntersectionOf>
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" />

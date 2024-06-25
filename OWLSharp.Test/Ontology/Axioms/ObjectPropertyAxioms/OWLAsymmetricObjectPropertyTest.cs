@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLAsymmetricObjectProperty asymmetricObjectProperty = new OWLAsymmetricObjectProperty(
 				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            string serializedXML = OWLSerializer.Serialize(asymmetricObjectProperty);
+            string serializedXML = OWLSerializer.SerializeObject(asymmetricObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AsymmetricObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></AsymmetricObjectProperty>"));
@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLAsymmetricObjectProperty asymmetricObjectProperty = new OWLAsymmetricObjectProperty(
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLSerializer.Serialize(asymmetricObjectProperty);
+            string serializedXML = OWLSerializer.SerializeObject(asymmetricObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AsymmetricObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></AsymmetricObjectProperty>"));
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.ObjectPropertyAxioms.Add(
                 new OWLAsymmetricObjectProperty(
 					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><AsymmetricObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></AsymmetricObjectProperty></Ontology>"));
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.ObjectPropertyAxioms.Add(
                 new OWLAsymmetricObjectProperty(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><AsymmetricObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></AsymmetricObjectProperty></Ontology>"));
@@ -110,7 +110,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAsymmetricObjectProperty()
         {
-            OWLAsymmetricObjectProperty asymmetricObjectProperty = OWLSerializer.Deserialize<OWLAsymmetricObjectProperty>(
+            OWLAsymmetricObjectProperty asymmetricObjectProperty = OWLSerializer.DeserializeObject<OWLAsymmetricObjectProperty>(
 @"<AsymmetricObjectProperty>
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </AsymmetricObjectProperty>");
@@ -124,7 +124,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAsymmetricObjectInverseOf()
         {
-            OWLAsymmetricObjectProperty asymmetricObjectProperty = OWLSerializer.Deserialize<OWLAsymmetricObjectProperty>(
+            OWLAsymmetricObjectProperty asymmetricObjectProperty = OWLSerializer.DeserializeObject<OWLAsymmetricObjectProperty>(
 @"<AsymmetricObjectProperty>
   <ObjectInverseOf>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
@@ -140,7 +140,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAsymmetricObjectPropertyViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -171,7 +171,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAsymmetricObjectInverseOfViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />

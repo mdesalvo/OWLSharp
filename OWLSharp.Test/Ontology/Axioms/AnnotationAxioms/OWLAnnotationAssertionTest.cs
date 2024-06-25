@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj"));
-            string serializedXML = OWLSerializer.Serialize(annotationAssertion);
+            string serializedXML = OWLSerializer.SerializeObject(annotationAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationAssertion><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>ex:Subj</IRI><IRI>ex:Obj</IRI></AnnotationAssertion>"));
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                     new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                     new RDFResource("ex:Subj"),
                     new RDFResource("ex:Obj")));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><AnnotationAssertion><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>ex:Subj</IRI><IRI>ex:Obj</IRI></AnnotationAssertion></Ontology>"));
@@ -97,7 +97,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAnnotationIRIAssertion()
         {
-            OWLAnnotationAssertion annotationAssertion = OWLSerializer.Deserialize<OWLAnnotationAssertion>(
+            OWLAnnotationAssertion annotationAssertion = OWLSerializer.DeserializeObject<OWLAnnotationAssertion>(
 @"<AnnotationAssertion>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <IRI>ex:Subj</IRI>
@@ -116,7 +116,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAnnotationIRIAssertionViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -185,7 +185,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new OWLLiteral(new RDFPlainLiteral("hello", "en")));
-            string serializedXML = OWLSerializer.Serialize(annotationAssertion);
+            string serializedXML = OWLSerializer.SerializeObject(annotationAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnnotationAssertion><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>ex:Subj</IRI><Literal xml:lang=""EN"">hello</Literal></AnnotationAssertion>"));
@@ -200,7 +200,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                     new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                     new RDFResource("ex:Subj"),
                     new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><AnnotationAssertion><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>ex:Subj</IRI><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal></AnnotationAssertion></Ontology>"));
@@ -209,7 +209,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAnnotationLiteralAssertion()
         {
-            OWLAnnotationAssertion annotationAssertion = OWLSerializer.Deserialize<OWLAnnotationAssertion>(
+            OWLAnnotationAssertion annotationAssertion = OWLSerializer.DeserializeObject<OWLAnnotationAssertion>(
 @"<AnnotationAssertion>
   <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
   <IRI>ex:Subj</IRI>
@@ -229,7 +229,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeAnnotationLiteralAssertionViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -280,7 +280,7 @@ namespace OWLSharp.Test.Ontology.Axioms
                     new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                     new RDFResource("ex:Subj"),
                     new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><AnnotationAssertion><Annotation><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN-US--RTL"">contributor</Literal></Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><IRI>ex:AnnValue</IRI></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>ex:Subj</IRI><IRI>ex:Obj</IRI></AnnotationAssertion><AnnotationAssertion><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>ex:Subj</IRI><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal></AnnotationAssertion></Ontology>"));
@@ -289,7 +289,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeMultipleAndNestedAnnotationAssertionsViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />

@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLDisjointClasses disjointClasses = new OWLDisjointClasses(
                 [ new OWLClass(RDFVocabulary.FOAF.AGENT), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]);
-            string serializedXML = OWLSerializer.Serialize(disjointClasses);
+            string serializedXML = OWLSerializer.SerializeObject(disjointClasses);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DisjointClasses><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointClasses>"));
@@ -71,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.ClassAxioms.Add(
                 new OWLDisjointClasses(
                 [ new OWLClass(RDFVocabulary.FOAF.AGENT), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DisjointClasses><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointClasses></Ontology>"));
@@ -80,7 +80,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeDisjointClasses()
         {
-            OWLDisjointClasses disjointClasses = OWLSerializer.Deserialize<OWLDisjointClasses>(
+            OWLDisjointClasses disjointClasses = OWLSerializer.DeserializeObject<OWLDisjointClasses>(
 @"<DisjointClasses>
   <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeDisjointClassesViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />

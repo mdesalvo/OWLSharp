@@ -68,7 +68,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectMaxCardinality()
         {
             OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
-            string serializedXML = OWLSerializer.Serialize(objectMaxCardinality);
+            string serializedXML = OWLSerializer.SerializeObject(objectMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectMaxCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectMaxCardinality>"));
@@ -77,7 +77,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectMaxCardinality()
         {
-            OWLObjectMaxCardinality objectMaxCardinality = OWLSerializer.Deserialize<OWLObjectMaxCardinality>(
+            OWLObjectMaxCardinality objectMaxCardinality = OWLSerializer.DeserializeObject<OWLObjectMaxCardinality>(
 @"<ObjectMaxCardinality cardinality=""1"">
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
 </ObjectMaxCardinality>");
@@ -94,7 +94,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeObjectMaxQualifiedCardinality()
         {
             OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLSerializer.Serialize(objectMaxCardinality);
+            string serializedXML = OWLSerializer.SerializeObject(objectMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectMaxCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectMaxCardinality>"));
@@ -103,7 +103,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectMaxQualifiedCardinality()
         {
-            OWLObjectMaxCardinality objectMaxCardinality = OWLSerializer.Deserialize<OWLObjectMaxCardinality>(
+            OWLObjectMaxCardinality objectMaxCardinality = OWLSerializer.DeserializeObject<OWLObjectMaxCardinality>(
 @"<ObjectMaxCardinality cardinality=""1"">
   <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />

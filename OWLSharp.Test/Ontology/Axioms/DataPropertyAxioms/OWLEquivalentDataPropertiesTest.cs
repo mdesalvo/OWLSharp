@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         {
             OWLEquivalentDataProperties EquivalentDataProperties = new OWLEquivalentDataProperties(
                 [ new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLDataProperty(RDFVocabulary.FOAF.TITLE) ]);
-            string serializedXML = OWLSerializer.Serialize(EquivalentDataProperties);
+            string serializedXML = OWLSerializer.SerializeObject(EquivalentDataProperties);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<EquivalentDataProperties><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/title"" /></EquivalentDataProperties>"));
@@ -71,7 +71,7 @@ namespace OWLSharp.Test.Ontology.Axioms
             ontology.DataPropertyAxioms.Add(
                 new OWLEquivalentDataProperties(
                 [ new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLDataProperty(RDFVocabulary.FOAF.TITLE) ]));
-            string serializedXML = OWLSerializer.Serialize<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><EquivalentDataProperties><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/title"" /></EquivalentDataProperties></Ontology>"));
@@ -80,7 +80,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeEquivalentDataProperties()
         {
-            OWLEquivalentDataProperties EquivalentDataProperties = OWLSerializer.Deserialize<OWLEquivalentDataProperties>(
+            OWLEquivalentDataProperties EquivalentDataProperties = OWLSerializer.DeserializeObject<OWLEquivalentDataProperties>(
 @"<EquivalentDataProperties>
   <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
   <DataProperty IRI=""http://xmlns.com/foaf/0.1/title"" />
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Ontology.Axioms
         [TestMethod]
         public void ShouldDeserializeEquivalentDataPropertiesViaOntology()
         {
-            OWLOntology ontology = OWLSerializer.Deserialize(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />

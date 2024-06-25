@@ -68,7 +68,7 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLDataSomeValuesFrom dataSomeValuesFrom = new OWLDataSomeValuesFrom(
                 [ new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())) ],
                 new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLSerializer.Serialize(dataSomeValuesFrom);
+            string serializedXML = OWLSerializer.SerializeObject(dataSomeValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataSomeValuesFrom><DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataSomeValuesFrom>"));
@@ -77,7 +77,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeDataSomeValuesFrom()
         {
-            OWLDataSomeValuesFrom dataSomeValuesFrom = OWLSerializer.Deserialize<OWLDataSomeValuesFrom>(
+            OWLDataSomeValuesFrom dataSomeValuesFrom = OWLSerializer.DeserializeObject<OWLDataSomeValuesFrom>(
 @"<DataSomeValuesFrom>
   <DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />
   <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />

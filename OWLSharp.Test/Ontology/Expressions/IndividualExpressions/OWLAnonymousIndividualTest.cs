@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldSerializeAnonymousIndividual()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-            string serializedXML = OWLSerializer.Serialize(anonIdv);
+            string serializedXML = OWLSerializer.SerializeObject(anonIdv);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<AnonymousIndividual nodeID=""AnonIdv"" />"));
@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividual()
         {
-            OWLAnonymousIndividual anonIdv = OWLSerializer.Deserialize<OWLAnonymousIndividual>(
+            OWLAnonymousIndividual anonIdv = OWLSerializer.DeserializeObject<OWLAnonymousIndividual>(
 @"<AnonymousIndividual nodeID=""AnonIdv"" />");
 
             Assert.IsNotNull(anonIdv);
