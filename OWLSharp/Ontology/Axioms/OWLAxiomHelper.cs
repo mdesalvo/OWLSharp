@@ -29,7 +29,7 @@ namespace OWLSharp.Ontology.Axioms
                 HashSet<string> lookup = new HashSet<string>();
                 axioms.ForEach(axiom =>
                 {
-					string axiomID = axiom.GetID();
+					string axiomID = axiom.GetXML();
                     if (!lookup.Contains(axiomID))
                     {
                         lookup.Add(axiomID);

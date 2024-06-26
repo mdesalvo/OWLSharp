@@ -37,7 +37,7 @@ namespace OWLSharp.Reasoner
 
             if (ontology != null)
             {
-                OWLEvents.RaiseInfo($"Reasoner is going to be applied to Ontology '{ontology.IRI}': this may require intensive processing, depending on size and complexity of domain knowledge and rules");
+                OWLEvents.RaiseInfo($"Reasoner is going to be applied to ontology '{ontology.IRI}': this may require intensive processing, depending on size and complexity of domain knowledge and rules");
 
                 //Initialize inference registry
                 Dictionary<string, List<OWLAxiom>> inferenceRegistry = new Dictionary<string, List<OWLAxiom>>();
@@ -90,7 +90,7 @@ namespace OWLSharp.Reasoner
                 foreach (KeyValuePair<string, List<OWLAxiom>> inferenceRegistryEntries in inferenceRegistry)
                     inferences.AddRange(inferenceRegistryEntries.Value);
 
-                OWLEvents.RaiseInfo($"Reasoner has been applied to Ontology '{ontology.IRI}': got {inferences.Count} inferences");
+                OWLEvents.RaiseInfo($"Reasoner has been applied to ontology '{ontology.IRI}': got {inferences.Count} inferences");
             }
 
             return OWLAxiomHelper.RemoveDuplicates(inferences);

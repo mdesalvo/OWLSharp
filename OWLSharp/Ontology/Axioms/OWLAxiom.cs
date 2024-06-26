@@ -71,7 +71,7 @@ namespace OWLSharp.Ontology.Axioms
         public bool IsImport { get; set; }
 
         [XmlIgnore]
-        internal string AxiomID { get; set; }
+        internal string AxiomXML { get; set; }
         #endregion
 
         #region Ctors
@@ -80,11 +80,11 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        internal virtual string GetID()
+        internal virtual string GetXML()
         {
-            if (AxiomID == null)
-                AxiomID = OWLSerializer.SerializeObject(this);
-            return AxiomID;
+            if (AxiomXML == null)
+                AxiomXML = OWLSerializer.SerializeObject(this);
+            return AxiomXML;
         }
 
         public virtual RDFGraph ToRDFGraph()
