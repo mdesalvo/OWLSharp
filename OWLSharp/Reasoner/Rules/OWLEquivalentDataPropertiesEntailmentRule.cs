@@ -22,9 +22,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLEquivalentDataPropertiesEntailmentRule
     {
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLInference> report = new List<OWLInference>();
+            List<OWLAxiom> inferences = new List<OWLAxiom>();
 
             //EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
@@ -32,16 +32,10 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLDataProperty> inferredEquivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
                 foreach (OWLDataProperty inferredEquivalentDataProperty in inferredEquivalentDataProperties)
-                {
-                    OWLInference inference = new OWLInference(
-                        nameof(OWLEquivalentDataPropertiesEntailmentRule), 
-						new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, inferredEquivalentDataProperty }) { IsInference=true });
-
-                    report.Add(inference);
-                }
+                    inferences.Add(new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, inferredEquivalentDataProperty }) { IsInference = true });
 			}
 
-            return report;
+            return inferences;
         }
     }
 }

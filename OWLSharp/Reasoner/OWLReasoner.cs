@@ -31,16 +31,16 @@ namespace OWLSharp.Reasoner
         #endregion
 
         #region Methods
-        public List<OWLInference> ApplyToOntology(OWLOntology ontology)
+        public List<OWLAxiom> ApplyToOntology(OWLOntology ontology)
         {
-            List<OWLInference> inferences = new List<OWLInference>();
+            List<OWLAxiom> inferences = new List<OWLAxiom>();
 
             if (ontology != null)
             {
                 OWLEvents.RaiseInfo($"Reasoner is going to be applied to Ontology '{ontology.IRI}': this may require intensive processing, depending on size and complexity of domain knowledge and rules");
 
                 //Initialize inference registry
-                Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>();
+                Dictionary<string, List<OWLAxiom>> inferenceRegistry = new Dictionary<string, List<OWLAxiom>>();
 				StandardRules.ForEach(standardRule => inferenceRegistry.Add(standardRule.ToString(), null));
 
                 //Execute standard rules
@@ -78,29 +78,14 @@ namespace OWLSharp.Reasoner
                     });
 
                 //Process inference registry
-                foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntries in inferenceRegistry)
+                foreach (KeyValuePair<string, List<OWLAxiom>> inferenceRegistryEntries in inferenceRegistry)
                     inferences.AddRange(inferenceRegistryEntries.Value);
 
                 OWLEvents.RaiseInfo($"Reasoner has been applied to Ontology '{ontology.IRI}': got {inferences.Count} inferences");
             }
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
-
-        public void MergeInferences(OWLOntology ontology, List<OWLInference> inferences)
-            => inferences?.ForEach(inf =>
-               {
-                   if (inf.Content is OWLAnnotationAxiom annAxInf)
-                       ontology?.AnnotationAxioms.Add(annAxInf);
-                   else if (inf.Content is OWLAssertionAxiom asnAxInf)
-                       ontology?.AssertionAxioms.Add(asnAxInf);
-                   else if (inf.Content is OWLClassAxiom clsAxInf)
-                       ontology?.ClassAxioms.Add(clsAxInf);
-                   else if (inf.Content is OWLDataPropertyAxiom dpAxInf)
-                       ontology?.DataPropertyAxioms.Add(dpAxInf);
-                   else if (inf.Content is OWLObjectPropertyAxiom opAxInf)
-                       ontology?.ObjectPropertyAxioms.Add(opAxInf);
-               });
         #endregion
     }
 }

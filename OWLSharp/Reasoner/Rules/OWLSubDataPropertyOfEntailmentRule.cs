@@ -22,9 +22,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSubDataPropertyOfEntailmentRule
     {
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLInference> report = new List<OWLInference>();
+            List<OWLAxiom> inferences = new List<OWLAxiom>();
 
             //SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
             //SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
@@ -33,16 +33,10 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLDataProperty> inferredSuperDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
                 foreach (OWLDataProperty inferredSuperDataProperty in inferredSuperDataProperties)
-                {
-                    OWLInference inference = new OWLInference(
-                        nameof(OWLSubDataPropertyOfEntailmentRule), 
-						new OWLSubDataPropertyOf(declaredDataProperty, inferredSuperDataProperty) { IsInference=true });
-
-                    report.Add(inference);
-                }
+                    inferences.Add(new OWLSubDataPropertyOf(declaredDataProperty, inferredSuperDataProperty) { IsInference = true });
 			}
 
-            return report;
+            return inferences;
         }
     }
 }

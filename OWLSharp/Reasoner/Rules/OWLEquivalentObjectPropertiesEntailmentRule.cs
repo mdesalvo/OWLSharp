@@ -22,9 +22,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLEquivalentObjectPropertiesEntailmentRule
     {
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLInference> report = new List<OWLInference>();
+            List<OWLAxiom> inferences = new List<OWLAxiom>();
 
             //EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
@@ -32,24 +32,12 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLObjectPropertyExpression> inferredEquivalentObjectPropertyExpressions = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
                 foreach (OWLObjectProperty inferredEquivalentObjectProperty in inferredEquivalentObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                {
-                    OWLInference inference = new OWLInference(
-                        nameof(OWLEquivalentObjectPropertiesEntailmentRule), 
-						new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, inferredEquivalentObjectProperty }) { IsInference=true });
-
-                    report.Add(inference);
-                }
-				foreach (OWLObjectInverseOf inferredEquivalentObjectInverseOf in inferredEquivalentObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                {
-                    OWLInference inference = new OWLInference(
-                        nameof(OWLEquivalentObjectPropertiesEntailmentRule), 
-						new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, inferredEquivalentObjectInverseOf }) { IsInference=true });
-
-                    report.Add(inference);
-                }
+                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, inferredEquivalentObjectProperty }) { IsInference = true });
+                foreach (OWLObjectInverseOf inferredEquivalentObjectInverseOf in inferredEquivalentObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
+                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, inferredEquivalentObjectInverseOf }) { IsInference = true });
 			}
 
-            return report;
+            return inferences;
         }
     }
 }

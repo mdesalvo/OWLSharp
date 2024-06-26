@@ -22,9 +22,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSubClassOfEntailmentRule
     {
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLInference> report = new List<OWLInference>();
+            List<OWLAxiom> inferences = new List<OWLAxiom>();
 
 			//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
 			//SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
@@ -34,16 +34,10 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLClassExpression> inferredSuperClasses = ontology.GetSuperClassesOf(declaredClass);
                 foreach (OWLClassExpression inferredSuperClass in inferredSuperClasses)
-                {
-                    OWLInference inference = new OWLInference(
-                        nameof(OWLSubClassOfEntailmentRule), 
-						new OWLSubClassOf(declaredClass, inferredSuperClass) { IsInference=true });
-
-                    report.Add(inference);
-                }
+                    inferences.Add(new OWLSubClassOf(declaredClass, inferredSuperClass) { IsInference = true });
 			}
 
-            return report;
+            return inferences;
         }
     }
 }

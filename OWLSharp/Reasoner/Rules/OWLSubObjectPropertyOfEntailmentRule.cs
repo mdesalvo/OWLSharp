@@ -22,9 +22,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSubObjectPropertyOfEntailmentRule
     {
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLInference> report = new List<OWLInference>();
+            List<OWLAxiom> inferences = new List<OWLAxiom>();
 
             //SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
             //SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
@@ -33,24 +33,12 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLObjectPropertyExpression> inferredSuperObjectPropertyExpressions = ontology.GetSuperObjectPropertiesOf(declaredObjectProperty);
                 foreach (OWLObjectProperty inferredSuperObjectProperty in inferredSuperObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                {
-                    OWLInference inference = new OWLInference(
-                        nameof(OWLSubObjectPropertyOfEntailmentRule), 
-						new OWLSubObjectPropertyOf(declaredObjectProperty, inferredSuperObjectProperty) { IsInference=true });
-
-                    report.Add(inference);
-                }
-				foreach (OWLObjectInverseOf inferredSuperObjectInverseOf in inferredSuperObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                {
-                    OWLInference inference = new OWLInference(
-                        nameof(OWLSubObjectPropertyOfEntailmentRule), 
-						new OWLSubObjectPropertyOf(declaredObjectProperty, inferredSuperObjectInverseOf) { IsInference=true });
-
-                    report.Add(inference);
-                }
+                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, inferredSuperObjectProperty) { IsInference = true });
+                foreach (OWLObjectInverseOf inferredSuperObjectInverseOf in inferredSuperObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
+                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, inferredSuperObjectInverseOf) { IsInference = true });
 			}
 
-            return report;
+            return inferences;
         }
     }
 }

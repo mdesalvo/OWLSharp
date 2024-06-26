@@ -29,6 +29,9 @@ namespace OWLSharp.Ontology.Axioms
         [XmlIgnore]
         public bool IsImport { get; set; }
 
+        [XmlIgnore]
+        internal string AxiomID { get; set; }
+
         [XmlElement("Annotation", Order=1)]
         public List<OWLAnnotation> Annotations { get; set; }
         #endregion
@@ -39,6 +42,13 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
+        public virtual string GetID()
+        {
+            if (AxiomID == null)
+                AxiomID = OWLSerializer.SerializeObject(this);
+            return AxiomID;
+        }
+
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
         #endregion
