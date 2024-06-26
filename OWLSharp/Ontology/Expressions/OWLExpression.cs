@@ -20,6 +20,37 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Expressions
 {
+    [XmlInclude(typeof(OWLAnnotationProperty))]
+    [XmlInclude(typeof(OWLAnonymousIndividual))]
+    [XmlInclude(typeof(OWLClass))]
+    [XmlInclude(typeof(OWLDataAllValuesFrom))]
+    [XmlInclude(typeof(OWLDataComplementOf))]
+    [XmlInclude(typeof(OWLDataExactCardinality))]
+    [XmlInclude(typeof(OWLDataHasValue))]
+    [XmlInclude(typeof(OWLDataIntersectionOf))]
+    [XmlInclude(typeof(OWLDataMaxCardinality))]
+    [XmlInclude(typeof(OWLDataMinCardinality))]
+    [XmlInclude(typeof(OWLDataOneOf))]
+    [XmlInclude(typeof(OWLDataProperty))]
+    [XmlInclude(typeof(OWLDataSomeValuesFrom))]
+    [XmlInclude(typeof(OWLDataUnionOf))]
+    [XmlInclude(typeof(OWLDatatype))]
+    [XmlInclude(typeof(OWLDatatypeRestriction))]
+    [XmlInclude(typeof(OWLLiteral))]
+    [XmlInclude(typeof(OWLNamedIndividual))]
+    [XmlInclude(typeof(OWLObjectAllValuesFrom))]
+    [XmlInclude(typeof(OWLObjectComplementOf))]
+    [XmlInclude(typeof(OWLObjectExactCardinality))]
+    [XmlInclude(typeof(OWLObjectHasSelf))]
+    [XmlInclude(typeof(OWLObjectHasValue))]
+    [XmlInclude(typeof(OWLObjectIntersectionOf))]
+    [XmlInclude(typeof(OWLObjectInverseOf))]
+    [XmlInclude(typeof(OWLObjectMaxCardinality))]
+    [XmlInclude(typeof(OWLObjectMinCardinality))]
+    [XmlInclude(typeof(OWLObjectOneOf))]
+    [XmlInclude(typeof(OWLObjectProperty))]
+    [XmlInclude(typeof(OWLObjectSomeValuesFrom))]
+    [XmlInclude(typeof(OWLObjectUnionOf))]
     public class OWLExpression 
 	{
         #region Properties
