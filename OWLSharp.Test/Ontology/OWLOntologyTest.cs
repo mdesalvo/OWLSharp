@@ -4244,15 +4244,6 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
             Assert.ThrowsException<OWLException>(() => ontology.Import(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), 10));
         }
-
-		[TestMethod]
-		public void ShouldLoadSampleOntology()
-		{
-			Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("OWLSharp.Test.SampleOntology.owx");
-            OWLOntology sampleOntology = OWLOntology.FromStream(OWLEnums.OWLFormats.OWL2XML, stream);
-			//TODO
-			
-		}
         #endregion
 
         [TestCleanup]

@@ -20,9 +20,6 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-		<EmbeddedResource Include="SampleOntology.owx" />
-	</ItemGroup>
-	<ItemGroup>
 		<ProjectReference Include="..\OWLSharp\OWLSharp.csproj" />
 	</ItemGroup>
 </Project>
