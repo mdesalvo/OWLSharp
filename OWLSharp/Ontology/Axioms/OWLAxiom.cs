@@ -80,12 +80,15 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        public virtual string GetID()
+        internal virtual string GetID()
         {
             if (AxiomID == null)
                 AxiomID = OWLSerializer.SerializeObject(this);
             return AxiomID;
         }
+
+        public override string ToString()
+            => GetID();
 
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
