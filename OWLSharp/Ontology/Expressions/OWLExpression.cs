@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Expressions
 {
+    //Register here all derived types of OWLExpression
     [XmlInclude(typeof(OWLAnnotationProperty))]
     [XmlInclude(typeof(OWLAnonymousIndividual))]
     [XmlInclude(typeof(OWLClass))]

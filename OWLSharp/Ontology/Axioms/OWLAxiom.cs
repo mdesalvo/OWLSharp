@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Axioms
 {
+    //Register here all derived types of OWLAxiom
     [XmlInclude(typeof(OWLAnnotationAssertion))]
     [XmlInclude(typeof(OWLAnnotationPropertyDomain))]
     [XmlInclude(typeof(OWLAnnotationPropertyRange))]
