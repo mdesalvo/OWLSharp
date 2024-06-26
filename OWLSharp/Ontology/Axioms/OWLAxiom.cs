@@ -61,6 +61,9 @@ namespace OWLSharp.Ontology.Axioms
     public class OWLAxiom 
     {
         #region Properties
+        [XmlElement("Annotation", Order=1)]
+        public List<OWLAnnotation> Annotations { get; set; }
+
         [XmlIgnore]
         public bool IsInference { get; set; }
 
@@ -69,9 +72,6 @@ namespace OWLSharp.Ontology.Axioms
 
         [XmlIgnore]
         internal string AxiomID { get; set; }
-
-        [XmlElement("Annotation", Order=1)]
-        public List<OWLAnnotation> Annotations { get; set; }
         #endregion
 
         #region Ctors
@@ -86,9 +86,6 @@ namespace OWLSharp.Ontology.Axioms
                 AxiomID = OWLSerializer.SerializeObject(this);
             return AxiomID;
         }
-
-        public override string ToString()
-            => GetID();
 
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
