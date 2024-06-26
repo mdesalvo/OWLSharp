@@ -32,6 +32,8 @@ namespace OWLSharp
 			SubObjectPropertyOfEntailment = 5,
 			EquivalentDataPropertiesEntailment = 6,
 			EquivalentObjectPropertiesEntailment = 7,
+            DisjointDataPropertiesEntailment = 8,
+            DisjointObjectPropertiesEntailment = 9,
         }
     }
 }
