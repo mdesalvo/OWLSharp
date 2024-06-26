@@ -30,11 +30,11 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
             															 .Select(ax => (OWLObjectProperty)ax.Expression))
 			{
-				List<OWLObjectPropertyExpression> inferredEquivalentObjectPropertyExpressions = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
-                foreach (OWLObjectProperty inferredEquivalentObjectProperty in inferredEquivalentObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, inferredEquivalentObjectProperty }) { IsInference = true });
-                foreach (OWLObjectInverseOf inferredEquivalentObjectInverseOf in inferredEquivalentObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, inferredEquivalentObjectInverseOf }) { IsInference = true });
+				List<OWLObjectPropertyExpression> equivalentObjectPropertyExpressions = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
+                foreach (OWLObjectProperty equivalentObjectProperty in equivalentObjectPropertyExpressions.OfType<OWLObjectProperty>())
+                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, equivalentObjectProperty }) { IsInference = true });
+                foreach (OWLObjectInverseOf equivalentObjectInverseOf in equivalentObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
+                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, equivalentObjectInverseOf }) { IsInference = true });
 			}
 
             return inferences;

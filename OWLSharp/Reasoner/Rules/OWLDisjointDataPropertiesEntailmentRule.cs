@@ -31,9 +31,9 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
 			{
-				List<OWLDataProperty> inferredDisjointDataProperties = ontology.GetDisjointDataProperties(declaredDataProperty);
-                foreach (OWLDataProperty inferredDisjointDataProperty in inferredDisjointDataProperties)
-                    inferences.Add(new OWLDisjointDataProperties(new List<OWLDataProperty>() { declaredDataProperty, inferredDisjointDataProperty }) { IsInference = true });
+				List<OWLDataProperty> disjointDataProperties = ontology.GetDisjointDataProperties(declaredDataProperty);
+                foreach (OWLDataProperty disjointDataProperty in disjointDataProperties)
+                    inferences.Add(new OWLDisjointDataProperties(new List<OWLDataProperty>() { declaredDataProperty, disjointDataProperty }) { IsInference = true });
 			}
 
             return inferences;

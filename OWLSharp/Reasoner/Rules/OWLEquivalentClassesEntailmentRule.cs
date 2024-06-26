@@ -30,9 +30,9 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
-				List<OWLClassExpression> inferredEquivalentClasses = ontology.GetEquivalentClasses(declaredClass);
-                foreach (OWLClassExpression inferredEquivalentClass in inferredEquivalentClasses)
-                    inferences.Add(new OWLEquivalentClasses(new List<OWLClassExpression>() { declaredClass, inferredEquivalentClass }) { IsInference = true });
+				List<OWLClassExpression> equivalentClasses = ontology.GetEquivalentClasses(declaredClass);
+                foreach (OWLClassExpression equivalentClass in equivalentClasses)
+                    inferences.Add(new OWLEquivalentClasses(new List<OWLClassExpression>() { declaredClass, equivalentClass }) { IsInference = true });
 			}
 
             return inferences;

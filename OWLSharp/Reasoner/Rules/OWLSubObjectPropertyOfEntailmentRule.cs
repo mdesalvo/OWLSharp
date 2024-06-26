@@ -31,11 +31,11 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
                                                                      	 .Select(ax => (OWLObjectProperty)ax.Expression))
 			{
-				List<OWLObjectPropertyExpression> inferredSuperObjectPropertyExpressions = ontology.GetSuperObjectPropertiesOf(declaredObjectProperty);
-                foreach (OWLObjectProperty inferredSuperObjectProperty in inferredSuperObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, inferredSuperObjectProperty) { IsInference = true });
-                foreach (OWLObjectInverseOf inferredSuperObjectInverseOf in inferredSuperObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, inferredSuperObjectInverseOf) { IsInference = true });
+				List<OWLObjectPropertyExpression> superObjectPropertyExpressions = ontology.GetSuperObjectPropertiesOf(declaredObjectProperty);
+                foreach (OWLObjectProperty superObjectProperty in superObjectPropertyExpressions.OfType<OWLObjectProperty>())
+                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectProperty) { IsInference = true });
+                foreach (OWLObjectInverseOf superObjectInverseOf in superObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
+                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectInverseOf) { IsInference = true });
 			}
 
             return inferences;

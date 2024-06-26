@@ -31,9 +31,9 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
 			{
-				List<OWLDataProperty> inferredSuperDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
-                foreach (OWLDataProperty inferredSuperDataProperty in inferredSuperDataProperties)
-                    inferences.Add(new OWLSubDataPropertyOf(declaredDataProperty, inferredSuperDataProperty) { IsInference = true });
+				List<OWLDataProperty> superDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
+                foreach (OWLDataProperty superDataProperty in superDataProperties)
+                    inferences.Add(new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference = true });
 			}
 
             return inferences;

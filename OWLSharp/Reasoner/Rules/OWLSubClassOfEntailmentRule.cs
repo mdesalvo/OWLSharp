@@ -32,9 +32,9 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
-				List<OWLClassExpression> inferredSuperClasses = ontology.GetSuperClassesOf(declaredClass);
-                foreach (OWLClassExpression inferredSuperClass in inferredSuperClasses)
-                    inferences.Add(new OWLSubClassOf(declaredClass, inferredSuperClass) { IsInference = true });
+				List<OWLClassExpression> superClasses = ontology.GetSuperClassesOf(declaredClass);
+                foreach (OWLClassExpression superClass in superClasses)
+                    inferences.Add(new OWLSubClassOf(declaredClass, superClass) { IsInference = true });
 			}
 
             return inferences;

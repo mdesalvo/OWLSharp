@@ -31,9 +31,9 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
-				List<OWLClassExpression> inferredDisjointClasses = ontology.GetDisjointClasses(declaredClass);
-                foreach (OWLClassExpression inferredDisjointClass in inferredDisjointClasses)
-					inferences.Add(new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, inferredDisjointClass }) { IsInference = true });
+				List<OWLClassExpression> disjointClasses = ontology.GetDisjointClasses(declaredClass);
+                foreach (OWLClassExpression disjointClass in disjointClasses)
+					inferences.Add(new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, disjointClass }) { IsInference = true });
 			}
 
 			foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())

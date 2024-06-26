@@ -30,9 +30,9 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
 			{
-				List<OWLDataProperty> inferredEquivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
-                foreach (OWLDataProperty inferredEquivalentDataProperty in inferredEquivalentDataProperties)
-                    inferences.Add(new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, inferredEquivalentDataProperty }) { IsInference = true });
+				List<OWLDataProperty> equivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
+                foreach (OWLDataProperty equivalentDataProperty in equivalentDataProperties)
+                    inferences.Add(new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, equivalentDataProperty }) { IsInference = true });
 			}
 
             return inferences;
