@@ -21,23 +21,23 @@ namespace OWLSharp.Ontology.Expressions
 	public static class OWLExpressionHelper
 	{
 		#region Methods
-		public static List<T> RemoveDuplicates<T>(List<T> elements) where T : OWLExpression
+		public static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
         {
-            List<T> results = new List<T>();
-            if (elements?.Count > 0)
+            List<T> deduplicatedExpressions = new List<T>();
+            if (expressions?.Count > 0)
             {
                 HashSet<long> lookup = new HashSet<long>();
-                elements.ForEach(element =>
+                expressions.ForEach(expression =>
                 {
-					long elementID = element.GetIRI().PatternMemberID;
-                    if (!lookup.Contains(elementID))
+					long expressionID = expression.GetIRI().PatternMemberID;
+                    if (!lookup.Contains(expressionID))
                     {
-                        lookup.Add(elementID);
-                        results.Add(element);
+                        lookup.Add(expressionID);
+                        deduplicatedExpressions.Add(expression);
                     }
                 });
             }
-            return results;
+            return deduplicatedExpressions;
         }
 		#endregion
 	}

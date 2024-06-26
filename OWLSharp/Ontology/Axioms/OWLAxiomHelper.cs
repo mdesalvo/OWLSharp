@@ -21,23 +21,23 @@ namespace OWLSharp.Ontology.Axioms
 	public static class OWLAxiomHelper
 	{
 		#region Methods
-		public static List<T> RemoveDuplicates<T>(List<T> elements) where T : OWLAxiom
+		public static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
         {
-            List<T> results = new List<T>();
-            if (elements?.Count > 0)
+            List<T> deduplicatedAxioms = new List<T>();
+            if (axioms?.Count > 0)
             {
                 HashSet<string> lookup = new HashSet<string>();
-                elements.ForEach(element =>
+                axioms.ForEach(axiom =>
                 {
-					string elementID = element.GetID();
-                    if (!lookup.Contains(elementID))
+					string axiomID = axiom.GetID();
+                    if (!lookup.Contains(axiomID))
                     {
-                        lookup.Add(elementID);
-                        results.Add(element);
+                        lookup.Add(axiomID);
+                        deduplicatedAxioms.Add(axiom);
                     }
                 });
             }
-            return results;
+            return deduplicatedAxioms;
         }
 		#endregion
 	}
