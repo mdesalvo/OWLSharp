@@ -80,10 +80,10 @@ namespace OWLSharp.Ontology.Axioms
         #endregion
 
         #region Methods
-        internal virtual string GetXML()
+        internal virtual string GetXML(XmlSerializerNamespaces xmlSerializerNamespaces=null)
         {
             if (AxiomXML == null)
-                AxiomXML = OWLSerializer.SerializeObject(this);
+                AxiomXML = OWLSerializer.SerializeObject(this, xmlSerializerNamespaces);
             return AxiomXML;
         }
 

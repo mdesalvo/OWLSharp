@@ -93,7 +93,7 @@ namespace OWLSharp.Reasoner
                 OWLEvents.RaiseInfo($"Reasoner has been applied to ontology '{ontology.IRI}': got {inferences.Count} inferences");
             }
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return OWLAxiomHelper.RemoveDuplicates(inferences, ontology.Prefixes);
         }
         #endregion
     }
