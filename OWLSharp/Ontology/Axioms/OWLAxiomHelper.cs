@@ -22,18 +22,15 @@ namespace OWLSharp.Ontology.Axioms
 	public static class OWLAxiomHelper
 	{
 		#region Methods
-		public static List<T> RemoveDuplicates<T>(List<T> axioms, List<OWLPrefix> prefixes=null) where T : OWLAxiom
+		public static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
         {
             List<T> deduplicatedAxioms = new List<T>();
             if (axioms?.Count > 0)
             {
-				XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
-				prefixes?.ForEach(pfx => xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI));
-
                 HashSet<string> lookup = new HashSet<string>();
                 axioms.ForEach(axiom =>
                 {
-					string axiomID = axiom.GetXML(xmlSerializerNamespaces);
+					string axiomID = axiom.GetXML();
                     if (!lookup.Contains(axiomID))
                     {
                         lookup.Add(axiomID);
