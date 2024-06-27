@@ -81,32 +81,32 @@ namespace OWLSharp.Ontology.Expressions
     {
         #region Properties
         [XmlIgnore]
-        internal bool IsClass => this is OWLClass;
+        public bool IsClass => this is OWLClass;
 
         [XmlIgnore]
-        internal bool IsComposite => this is OWLObjectUnionOf
-                                      || this is OWLObjectIntersectionOf
-                                      || this is OWLObjectComplementOf;
+        public bool IsComposite => this is OWLObjectUnionOf
+                                    || this is OWLObjectIntersectionOf
+                                    || this is OWLObjectComplementOf;
 
         [XmlIgnore]
-        internal bool IsEnumerate => this is OWLObjectOneOf;
+        public bool IsEnumerate => this is OWLObjectOneOf;
 
         [XmlIgnore]
-        internal bool IsObjectRestriction => this is OWLObjectAllValuesFrom
-                                              || this is OWLObjectSomeValuesFrom
-                                              || this is OWLObjectHasValue
-                                              || this is OWLObjectHasSelf
-                                              || this is OWLObjectExactCardinality
-                                              || this is OWLObjectMinCardinality
-                                              || this is OWLObjectMaxCardinality;
+        public bool IsObjectRestriction => this is OWLObjectAllValuesFrom
+                                            || this is OWLObjectSomeValuesFrom
+                                            || this is OWLObjectHasValue
+                                            || this is OWLObjectHasSelf
+                                            || this is OWLObjectExactCardinality
+                                            || this is OWLObjectMinCardinality
+                                            || this is OWLObjectMaxCardinality;
 
         [XmlIgnore]
-        internal bool IsDataRestriction => this is OWLDataAllValuesFrom
-                                            || this is OWLDataSomeValuesFrom
-                                            || this is OWLDataHasValue
-                                            || this is OWLDataExactCardinality
-                                            || this is OWLDataMinCardinality
-                                            || this is OWLDataMaxCardinality;
+        public bool IsDataRestriction => this is OWLDataAllValuesFrom
+                                          || this is OWLDataSomeValuesFrom
+                                          || this is OWLDataHasValue
+                                          || this is OWLDataExactCardinality
+                                          || this is OWLDataMinCardinality
+                                          || this is OWLDataMaxCardinality;
         #endregion
     }
 
@@ -114,18 +114,18 @@ namespace OWLSharp.Ontology.Expressions
     {
         #region Properties
         [XmlIgnore]
-        internal bool IsDatatype => this is OWLDatatype;
+        public bool IsDatatype => this is OWLDatatype;
 
         [XmlIgnore]
-        internal bool IsComposite => this is OWLDataUnionOf
-                                      || this is OWLDataIntersectionOf
-                                      || this is OWLDataComplementOf;
+        public bool IsComposite => this is OWLDataUnionOf
+                                    || this is OWLDataIntersectionOf
+                                    || this is OWLDataComplementOf;
 
         [XmlIgnore]
-        internal bool IsEnumerate => this is OWLDataOneOf;
+        public bool IsEnumerate => this is OWLDataOneOf;
 
         [XmlIgnore]
-        internal bool IsDatatypeRestriction => this is OWLDatatypeRestriction;
+        public bool IsDatatypeRestriction => this is OWLDatatypeRestriction;
         #endregion
     }
 
