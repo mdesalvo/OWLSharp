@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
@@ -70,6 +71,54 @@ namespace OWLSharp.Test.Ontology.Axioms
             Assert.IsTrue(OWLAxiomHelper.RemoveDuplicates(new List<OWLAxiom>()).Count == 0);
             Assert.IsTrue(OWLAxiomHelper.RemoveDuplicates(null as List<OWLAxiom>).Count == 0);
         }
-        #endregion
+        
+		[TestMethod]
+        public void ShouldRemoveDuplicatesWithPrefixes()
+        {
+			OWLOntology ont = new OWLOntology();
+			ont.Prefixes.Add(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+
+            List<OWLAxiom> axioms = [
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new RDFResource("ex:Subj"),
+                    new RDFResource("ex:Obj")),
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                new OWLSubClassOf(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                new OWLEquivalentClasses(
+                    [ new OWLClass(RDFVocabulary.FOAF.AGENT),
+                      new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+                      new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    ]),
+                new OWLEquivalentClasses(
+                    [ new OWLClass(RDFVocabulary.FOAF.AGENT),
+                      new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+                      new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    ]),
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                         new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])),
+                new OWLFunctionalObjectProperty(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                new OWLFunctionalObjectProperty(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                new OWLAnnotationAssertion(
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                    new RDFResource("ex:Subj"),
+                    new RDFResource("ex:Obj")),
+            ];
+
+            Assert.IsTrue(OWLAxiomHelper.RemoveDuplicates(axioms, ont.Prefixes).Count == 5);
+            Assert.IsTrue(OWLAxiomHelper.RemoveDuplicates(new List<OWLAxiom>(), ont.Prefixes).Count == 0);
+            Assert.IsTrue(OWLAxiomHelper.RemoveDuplicates(null as List<OWLAxiom>, ont.Prefixes).Count == 0);
+        }
+		#endregion
     }
 }
