@@ -141,6 +141,45 @@ namespace OWLSharp.Test.Reasoner.Rules
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Stiv"));
         }
+
+		[TestMethod]
+        public void ShouldEntailInverseOfFunctionalPropertyAndInverseOfObjectPropertyAssertionCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                ],
+                ObjectPropertyAxioms = [
+                    new OWLFunctionalObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
+                ],
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                ]
+            };
+            List<OWLAxiom> inferences = OWLFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0] is OWLSameIndividual inf
+                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
+                            && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mark"));
+        }
         #endregion
     }
 }
