@@ -30,15 +30,15 @@ namespace OWLSharp.Reasoner.Rules
             Dictionary<string, List<OWLIndividualExpression>> litLookup = new Dictionary<string, List<OWLIndividualExpression>>();
 
             //FunctionalDataProperty(FDP) ^ DataPropertyAssertion(FDP,IDV1,LIT) ^ DataPropertyAssertion(FDP,IDV2,LIT) -> SameIndividual(IDV1,IDV2)
-            foreach (OWLFunctionalDataProperty funcDP in ontology.GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>())
+            foreach (OWLFunctionalDataProperty fdp in ontology.GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>())
             {
                 litLookup.Clear();
-                foreach (OWLDataPropertyAssertion funcDPAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, funcDP.DataProperty))
+                foreach (OWLDataPropertyAssertion fdpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, fdp.DataProperty))
                 {
-                    string funcDPAsnLit = funcDPAsn.Literal.GetLiteral().ToString();
-                    if (!litLookup.ContainsKey(funcDPAsnLit))
-                        litLookup.Add(funcDPAsnLit, new List<OWLIndividualExpression>());
-                    litLookup[funcDPAsnLit].Add(funcDPAsn.IndividualExpression);
+                    string lit = fdpAsn.Literal.GetLiteral().ToString();
+                    if (!litLookup.ContainsKey(lit))
+                        litLookup.Add(lit, new List<OWLIndividualExpression>());
+                    litLookup[lit].Add(fdpAsn.IndividualExpression);
                 }
                 foreach (List<OWLIndividualExpression> litLookupEntry in litLookup.Values.Where(idvExprs => idvExprs.Count > 1))
                     inferences.Add(new OWLSameIndividual(litLookupEntry));
