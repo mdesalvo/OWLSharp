@@ -37,7 +37,7 @@ namespace OWLSharp.Reasoner.Rules
                 {
                     OWLIndividualExpression fopAsnSourceIdvExpr = fopAsn.SourceIndividualExpression;
                     OWLIndividualExpression fopAsnTargetIdvExpr = fopAsn.TargetIndividualExpression;
-                    if (fopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
+                    if (fop.ObjectPropertyExpression is OWLObjectInverseOf || fopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
                     {
                         fopAsnSourceIdvExpr = fopAsn.TargetIndividualExpression;
                         fopAsnTargetIdvExpr = fopAsn.SourceIndividualExpression;
