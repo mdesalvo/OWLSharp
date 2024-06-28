@@ -32,7 +32,7 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(declaredIndividual);
                 foreach (OWLIndividualExpression sameIndividual in sameIndividuals)
-                    inferences.Add(new OWLSameIndividual(new List<OWLIndividualExpression>() { declaredIndividual, sameIndividual }) { IsInference = true });
+                    inferences.Add(new OWLSameIndividual(new List<OWLIndividualExpression>() { declaredIndividual, sameIndividual }) { IsInference=true });
 			}
 
             return inferences;

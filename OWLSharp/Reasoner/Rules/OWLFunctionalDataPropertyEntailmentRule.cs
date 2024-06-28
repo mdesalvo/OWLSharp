@@ -41,7 +41,7 @@ namespace OWLSharp.Reasoner.Rules
                     litLookup[lit].Add(fdpAsn.IndividualExpression);
                 }
                 foreach (List<OWLIndividualExpression> litLookupEntry in litLookup.Values.Where(idvExprs => idvExprs.Count > 1))
-                    inferences.Add(new OWLSameIndividual(litLookupEntry));
+                    inferences.Add(new OWLSameIndividual(litLookupEntry) { IsInference=true });
             }
 
             return inferences;

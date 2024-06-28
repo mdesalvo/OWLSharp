@@ -33,9 +33,9 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
                 foreach (OWLObjectProperty disjointObjectProperty in disjointObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                    inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectProperty }) { IsInference = true });
+                    inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectProperty }) { IsInference=true });
                 foreach (OWLObjectInverseOf disjointObjectInverseOf in disjointObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                    inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectInverseOf }) { IsInference = true });
+                    inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectInverseOf }) { IsInference=true });
 			}
 
             return inferences;

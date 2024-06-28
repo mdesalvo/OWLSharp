@@ -33,9 +33,9 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLObjectPropertyExpression> superObjectPropertyExpressions = ontology.GetSuperObjectPropertiesOf(declaredObjectProperty);
                 foreach (OWLObjectProperty superObjectProperty in superObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectProperty) { IsInference = true });
+                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectProperty) { IsInference=true });
                 foreach (OWLObjectInverseOf superObjectInverseOf in superObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectInverseOf) { IsInference = true });
+                    inferences.Add(new OWLSubObjectPropertyOf(declaredObjectProperty, superObjectInverseOf) { IsInference=true });
 			}
 
             return inferences;

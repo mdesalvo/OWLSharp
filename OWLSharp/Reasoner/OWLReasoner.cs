@@ -22,7 +22,7 @@ namespace OWLSharp.Reasoner
     public class OWLReasoner
     {
         #region Properties
-        public List<OWLEnums.OWLReasonerRules> StandardRules { get; set; }
+        public List<OWLEnums.OWLReasonerRules> StandardRules { get; internal set; }
         #endregion
 
         #region Ctors

@@ -49,7 +49,7 @@ namespace OWLSharp.Reasoner.Rules
                     idvxLookup[idvx].Add(fopAsnSourceIdvExpr);
                 }
                 foreach (List<OWLIndividualExpression> idvxLookupEntry in idvxLookup.Values.Where(idvExprs => idvExprs.Count > 1))
-                    inferences.Add(new OWLSameIndividual(idvxLookupEntry));
+                    inferences.Add(new OWLSameIndividual(idvxLookupEntry) { IsInference=true });
             }
 
             return inferences;

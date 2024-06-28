@@ -33,7 +33,7 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLDataProperty> disjointDataProperties = ontology.GetDisjointDataProperties(declaredDataProperty);
                 foreach (OWLDataProperty disjointDataProperty in disjointDataProperties)
-                    inferences.Add(new OWLDisjointDataProperties(new List<OWLDataProperty>() { declaredDataProperty, disjointDataProperty }) { IsInference = true });
+                    inferences.Add(new OWLDisjointDataProperties(new List<OWLDataProperty>() { declaredDataProperty, disjointDataProperty }) { IsInference=true });
 			}
 
             return inferences;

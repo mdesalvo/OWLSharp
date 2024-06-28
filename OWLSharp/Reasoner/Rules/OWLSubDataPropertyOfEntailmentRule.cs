@@ -33,7 +33,7 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLDataProperty> superDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
                 foreach (OWLDataProperty superDataProperty in superDataProperties)
-                    inferences.Add(new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference = true });
+                    inferences.Add(new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference=true });
 			}
 
             return inferences;

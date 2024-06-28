@@ -33,17 +33,17 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLClassExpression> disjointClasses = ontology.GetDisjointClasses(declaredClass);
                 foreach (OWLClassExpression disjointClass in disjointClasses)
-					inferences.Add(new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, disjointClass }) { IsInference = true });
+					inferences.Add(new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, disjointClass }) { IsInference=true });
 			}
 
 			foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
 			{
 				//DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)
-				inferences.Add(new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference = true });
+				inferences.Add(new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true });
 
 				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
 				foreach (OWLClassExpression disjointUnionClassExpression in disjointUnion.ClassExpressions)
-					inferences.Add(new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference = true });
+					inferences.Add(new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference=true });
 			}
 
             return inferences;

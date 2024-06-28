@@ -32,9 +32,9 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLObjectPropertyExpression> equivalentObjectPropertyExpressions = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
                 foreach (OWLObjectProperty equivalentObjectProperty in equivalentObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, equivalentObjectProperty }) { IsInference = true });
+                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, equivalentObjectProperty }) { IsInference=true });
                 foreach (OWLObjectInverseOf equivalentObjectInverseOf in equivalentObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, equivalentObjectInverseOf }) { IsInference = true });
+                    inferences.Add(new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, equivalentObjectInverseOf }) { IsInference=true });
 			}
 
             return inferences;

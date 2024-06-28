@@ -34,7 +34,7 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLClassExpression> superClasses = ontology.GetSuperClassesOf(declaredClass);
                 foreach (OWLClassExpression superClass in superClasses)
-                    inferences.Add(new OWLSubClassOf(declaredClass, superClass) { IsInference = true });
+                    inferences.Add(new OWLSubClassOf(declaredClass, superClass) { IsInference=true });
 			}
 
             return inferences;
