@@ -29,7 +29,7 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
             Dictionary<string, List<OWLIndividualExpression>> idvxLookup = new Dictionary<string, List<OWLIndividualExpression>>();
 
-            //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDVX) ^ ObjectPropertyAssertion(FOP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
+            //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDVX,IDV1) ^ ObjectPropertyAssertion(FOP,IDVX,IDV2) -> SameIndividual(IDV1,IDV2)
             foreach (OWLFunctionalObjectProperty fop in ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>())
             {
                 idvxLookup.Clear();
@@ -43,10 +43,10 @@ namespace OWLSharp.Reasoner.Rules
                         fopAsnTargetIdvExpr = fopAsn.SourceIndividualExpression;
                     }
 
-                    string idvx = fopAsnTargetIdvExpr.GetIRI().ToString();
+                    string idvx = fopAsnSourceIdvExpr.GetIRI().ToString();
                     if (!idvxLookup.ContainsKey(idvx))
                         idvxLookup.Add(idvx, new List<OWLIndividualExpression>());
-                    idvxLookup[idvx].Add(fopAsnSourceIdvExpr);
+                    idvxLookup[idvx].Add(fopAsnTargetIdvExpr);
                 }
                 foreach (List<OWLIndividualExpression> idvxLookupEntry in idvxLookup.Values.Where(idvExprs => idvExprs.Count > 1))
                     inferences.Add(new OWLSameIndividual(idvxLookupEntry) { IsInference=true });

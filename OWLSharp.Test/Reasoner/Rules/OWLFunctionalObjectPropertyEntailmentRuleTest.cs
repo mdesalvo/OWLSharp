@@ -60,7 +60,7 @@ namespace OWLSharp.Test.Reasoner.Rules
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
             Assert.IsTrue(inferences.Count == 1);
             Assert.IsTrue(inferences[0] is OWLSameIndividual inf 
-                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "ex:Mark")
+                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "ex:John")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "ex:Stiv"));
         }
 
@@ -99,8 +99,8 @@ namespace OWLSharp.Test.Reasoner.Rules
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
             Assert.IsTrue(inferences.Count == 1);
             Assert.IsTrue(inferences[0] is OWLSameIndividual inf
-                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "ex:John")
-                            && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "ex:Mark"));
+                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "ex:Mark")
+                            && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "ex:Stiv"));
         }
         #endregion
     }
