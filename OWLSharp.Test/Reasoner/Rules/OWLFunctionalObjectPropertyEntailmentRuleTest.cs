@@ -63,6 +63,45 @@ namespace OWLSharp.Test.Reasoner.Rules
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "ex:Mark")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "ex:Stiv"));
         }
+
+        [TestMethod]
+        public void ShouldEntailInverseOfFunctionalObjectPropertyCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+                ],
+                ObjectPropertyAxioms = [
+                    new OWLFunctionalObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
+                ],
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("ex:John")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("ex:John")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                ]
+            };
+            List<OWLAxiom> inferences = OWLFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0] is OWLSameIndividual inf
+                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "ex:John")
+                            && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "ex:Mark"));
+        }
         #endregion
     }
 }
