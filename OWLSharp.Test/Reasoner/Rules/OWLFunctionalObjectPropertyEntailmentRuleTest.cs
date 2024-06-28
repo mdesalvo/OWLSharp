@@ -48,6 +48,10 @@ namespace OWLSharp.Test.Reasoner.Rules
                         new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                         new OWLNamedIndividual(new RDFResource("ex:Stiv")),
                         new OWLNamedIndividual(new RDFResource("ex:John"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
                 ]
             };
             List<OWLAxiom> inferences = OWLFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
