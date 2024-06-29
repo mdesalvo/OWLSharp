@@ -43,7 +43,7 @@ namespace OWLSharp.Reasoner.Rules
 																						   					  .Select(ax => ax.LeftObjectPropertyExpression)).ToList();
 				invsOfDeclaredObjectProperty.RemoveAll(opex => opex.GetIRI().Equals(declaredObjectPropertyIRI));
 
-				//Extract object assertions with the current object property
+				//Extract object assertions of the current object property
 				foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
 				{
 					OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
