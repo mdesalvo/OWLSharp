@@ -36,6 +36,7 @@ namespace OWLSharp
             DisjointObjectPropertiesEntailment = 9,
 			SameIndividualEntailment = 10,
             FunctionalObjectPropertyEntailment = 11,
+			InverseFunctionalObjectPropertyEntailment = 12,
         }
     }
 }
