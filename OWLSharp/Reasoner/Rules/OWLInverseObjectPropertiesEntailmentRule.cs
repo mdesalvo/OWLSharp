@@ -38,10 +38,11 @@ namespace OWLSharp.Reasoner.Rules
 
 				//Extract inverse object properties of the current object property
 				List<OWLObjectPropertyExpression> invsOfDeclaredObjectProperty = invObjProps.Where(ax => ax.LeftObjectPropertyExpression.GetIRI().Equals(declaredObjectPropertyIRI))
-																						    .Select(ax => ax.LeftObjectPropertyExpression)
+																						    .Select(ax => ax.RightObjectPropertyExpression)
 																						    .Union(invObjProps.Where(ax => ax.RightObjectPropertyExpression.GetIRI().Equals(declaredObjectPropertyIRI))
-																						   					  .Select(ax => ax.RightObjectPropertyExpression)).ToList();
-				
+																						   					  .Select(ax => ax.LeftObjectPropertyExpression)).ToList();
+				invsOfDeclaredObjectProperty.RemoveAll(opex => opex.GetIRI().Equals(declaredObjectPropertyIRI));
+
 				//Extract object assertions with the current object property
 				foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
 				{
