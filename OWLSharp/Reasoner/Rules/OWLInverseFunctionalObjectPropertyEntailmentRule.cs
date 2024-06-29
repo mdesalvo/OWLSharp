@@ -46,7 +46,7 @@ namespace OWLSharp.Reasoner.Rules
                         fopAsnTargetIdvExpr = ifopAsn.SourceIndividualExpression;
                     }
 
-					//In case the object assertion works under inverse logic, we must swap source/target of the assertion
+					//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
 					if (ifopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
                     {
 						swapIdvExpr = fopAsnSourceIdvExpr;
