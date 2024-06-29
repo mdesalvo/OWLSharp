@@ -37,12 +37,21 @@ namespace OWLSharp.Reasoner.Rules
                 {
                     OWLIndividualExpression fopAsnSourceIdvExpr = fopAsn.SourceIndividualExpression;
                     OWLIndividualExpression fopAsnTargetIdvExpr = fopAsn.TargetIndividualExpression;
+					OWLIndividualExpression swapIdvExpr;
 
-					//In case the inverse functional object property or the object assertion work under inverse logic, we must swap source/target of the object assertion
-                    if (fop.ObjectPropertyExpression is OWLObjectInverseOf || fopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
+					//In case the functional object property works under inverse logic, we must swap source/target of the object assertion
+                    if (fop.ObjectPropertyExpression is OWLObjectInverseOf)
                     {
                         fopAsnSourceIdvExpr = fopAsn.TargetIndividualExpression;
                         fopAsnTargetIdvExpr = fopAsn.SourceIndividualExpression;
+                    }
+
+					//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
+					if (fopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
+                    {
+						swapIdvExpr = fopAsnSourceIdvExpr;
+                        fopAsnSourceIdvExpr = fopAsnTargetIdvExpr;
+                        fopAsnTargetIdvExpr = swapIdvExpr;
                     }
 
                     string idvx = fopAsnSourceIdvExpr.GetIRI().ToString();
