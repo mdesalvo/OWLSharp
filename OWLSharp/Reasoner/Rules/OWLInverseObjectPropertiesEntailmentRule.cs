@@ -37,11 +37,7 @@ namespace OWLSharp.Reasoner.Rules
 				RDFResource declaredObjectPropertyIRI = declaredObjectProperty.GetIRI();
 
 				//Extract inverse object properties of the current object property
-				List<OWLObjectPropertyExpression> invsOfDeclaredObjectProperty = invObjProps.Where(ax => ax.LeftObjectPropertyExpression.GetIRI().Equals(declaredObjectPropertyIRI))
-																						    .Select(ax => ax.RightObjectPropertyExpression)
-																						    .Union(invObjProps.Where(ax => ax.RightObjectPropertyExpression.GetIRI().Equals(declaredObjectPropertyIRI))
-																						   					  .Select(ax => ax.LeftObjectPropertyExpression)).ToList();
-				invsOfDeclaredObjectProperty.RemoveAll(opex => opex.GetIRI().Equals(declaredObjectPropertyIRI));
+				List<OWLObjectPropertyExpression> invsOfDeclaredObjectProperty = ontology.GetInverseObjectProperties(declaredObjectProperty);
 
 				//Extract object assertions of the current object property
 				foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
