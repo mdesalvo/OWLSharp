@@ -215,6 +215,36 @@ namespace OWLSharp.Ontology.Helpers
             return OWLExpressionHelper.RemoveDuplicates(disjObjPropExprs);
         }
 
+		public static List<OWLObjectPropertyExpression> GetInverseObjectProperties(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, bool directOnly=false)
+        {
+			List<OWLObjectPropertyExpression> invObjPropExprs = new List<OWLObjectPropertyExpression>();
+			if (ontology != null && objPropExpr != null)
+            {
+				RDFResource objPropExprIRI = objPropExpr.GetIRI();
+				List<OWLInverseObjectProperties> invObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>();
+            
+				invObjPropExprs.AddRange(invObjProps.Where(ax => ax.LeftObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
+													.Select(ax => ax.RightObjectPropertyExpression)
+													.Union(invObjProps.Where(ax => ax.RightObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
+																	  .Select(ax => ax.LeftObjectPropertyExpression)));
+				
+				if (!directOnly)
+				{
+					//InverseObjectProperties(OP,IOP) ^ EquivalentObjectProperties(IOP,OP2) -> InverseObjectProperties(OP,OP2)
+					foreach (OWLObjectPropertyExpression iop in invObjPropExprs)
+					{
+						RDFResource iopIRI = iop.GetIRI();
+						List<OWLObjectPropertyExpression> equivsIOP = ontology.GetEquivalentObjectProperties(iop, directOnly);
+						equivsIOP.RemoveAll(opex => opex.GetIRI().Equals(iopIRI));
+
+						foreach (OWLObjectPropertyExpression equivIOP in equivsIOP)
+							invObjPropExprs.Add(equivIOP);						
+					}
+				}
+			}
+            return OWLExpressionHelper.RemoveDuplicates(invObjPropExprs);
+        }
+
         public static bool CheckHasFunctionalObjectProperty(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
             => ontology != null && objPropExpr != null && GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>(ontology).Any(fop => fop.ObjectPropertyExpression.GetIRI().Equals(objPropExpr.GetIRI()));
 
