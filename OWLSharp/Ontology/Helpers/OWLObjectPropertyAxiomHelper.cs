@@ -226,10 +226,12 @@ namespace OWLSharp.Ontology.Helpers
 				RDFResource objPropExprIRI = objPropExpr.GetIRI();
 				List<OWLInverseObjectProperties> invObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>();
             
+				if (objPropExpr is OWLObjectInverseOf objInvOfPropExpr)
+					invObjPropExprs.Add(objInvOfPropExpr.ObjectProperty);
 				invObjPropExprs.AddRange(invObjProps.Where(ax => ax.LeftObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
-													.Select(ax => ax.RightObjectPropertyExpression)
-													.Union(invObjProps.Where(ax => ax.RightObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
-																	  .Select(ax => ax.LeftObjectPropertyExpression)));
+													.Select(ax => ax.RightObjectPropertyExpression));
+				invObjPropExprs.AddRange(invObjProps.Where(ax => ax.RightObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
+												    .Select(ax => ax.LeftObjectPropertyExpression));
 				
 				if (!directOnly)
 				{
