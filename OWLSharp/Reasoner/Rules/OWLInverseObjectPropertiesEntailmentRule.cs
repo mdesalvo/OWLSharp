@@ -54,6 +54,7 @@ namespace OWLSharp.Reasoner.Rules
                     {
                         opAsnSourceIdvExpr = opAsn.TargetIndividualExpression;
                         opAsnTargetIdvExpr = opAsn.SourceIndividualExpression;
+						inferences.Add(new OWLObjectPropertyAssertion(declaredObjectProperty, opAsnSourceIdvExpr, opAsnTargetIdvExpr) { IsInference=true });
                     }
 
 					//Iterate inverse object properties of the current object property in order to materialize the "swapped-assertion" inference
