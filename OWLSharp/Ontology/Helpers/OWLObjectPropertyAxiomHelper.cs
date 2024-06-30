@@ -215,6 +215,9 @@ namespace OWLSharp.Ontology.Helpers
             return OWLExpressionHelper.RemoveDuplicates(disjObjPropExprs);
         }
 
+		public static bool CheckAreInverseObjectProperties(this OWLOntology ontology, OWLObjectPropertyExpression leftObjPropExpr, OWLObjectPropertyExpression rightObjPropExpr, bool directOnly=false)
+            => ontology != null && leftObjPropExpr != null && rightObjPropExpr != null && GetInverseObjectProperties(ontology, leftObjPropExpr, directOnly).Any(oex => oex.GetIRI().Equals(rightObjPropExpr.GetIRI()));
+
 		public static List<OWLObjectPropertyExpression> GetInverseObjectProperties(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr, bool directOnly=false)
         {
 			List<OWLObjectPropertyExpression> invObjPropExprs = new List<OWLObjectPropertyExpression>();
