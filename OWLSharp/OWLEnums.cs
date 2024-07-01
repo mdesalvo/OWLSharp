@@ -38,6 +38,7 @@ namespace OWLSharp
             FunctionalObjectPropertyEntailment = 11,
 			InverseFunctionalObjectPropertyEntailment = 12,
 			InverseObjectPropertiesEntailment = 13,
+            SymmetricObjectPropertyEntailment = 14,
         }
     }
 }
