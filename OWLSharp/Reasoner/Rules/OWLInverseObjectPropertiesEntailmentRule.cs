@@ -73,6 +73,8 @@ namespace OWLSharp.Reasoner.Rules
                 RDFResource objPropExprIRI = objProp.GetIRI();
                 foreach (OWLInverseObjectProperties invObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>())
                 {
+                    //Item1 is a flag to signal the reasoner that the final inference will need to be locally swapped,
+                    //since coming from a ObjectInverseOf(ObjectInverseOf) modeling situation
                     if (invObjProp.LeftObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
                         invObjPropExprs.Add((false, invObjProp.RightObjectPropertyExpression));
                     if (invObjProp.LeftObjectPropertyExpression is OWLObjectInverseOf leftInvOf && leftInvOf.ObjectProperty.GetIRI().Equals(objPropExprIRI))
