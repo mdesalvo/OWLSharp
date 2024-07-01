@@ -272,7 +272,26 @@ namespace OWLSharp.Ontology
 														   .Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual((RDFResource)typeNamedIndividual.Subject)));
             }
-            void LoadOntologyAnnotations(OWLOntology ont)
+            void PrefetchAnnotationAxioms(OWLOntology ont, out RDFGraph annAxiomsGraph)
+            {
+                RDFConstructQuery query = new RDFConstructQuery()
+                    .AddPatternGroup(new RDFPatternGroup()
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFVariable("?ANNOTATED_SOURCE")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_PROPERTY, new RDFVariable("?ANNOTATED_PROPERTY")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFVariable("?ANNOTATED_TARGET")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), new RDFVariable("?ANNPROP"), new RDFVariable("?ANNVAL")))
+                        .AddPattern(new RDFPattern(new RDFVariable("?ANNPROP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY)))
+                    .AddTemplate(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM))
+                    .AddTemplate(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFVariable("?ANNOTATED_SOURCE")))
+                    .AddTemplate(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_PROPERTY, new RDFVariable("?ANNOTATED_PROPERTY")))
+                    .AddTemplate(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFVariable("?ANNOTATED_TARGET")))
+                    .AddTemplate(new RDFPattern(new RDFVariable("?AXIOM"), new RDFVariable("?ANNPROP"), new RDFVariable("?ANNVAL")))
+                    .AddTemplate(new RDFPattern(new RDFVariable("?ANNPROP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
+                RDFConstructQueryResult result = query.ApplyToGraph(graph);
+                annAxiomsGraph = result.ToRDFGraph();
+            }
+            void LoadOntologyAnnotations(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
 				LoadIRIAnnotations(ont,	new List<RDFResource>() {
 						RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
@@ -284,11 +303,11 @@ namespace OWLSharp.Ontology
 						RDFVocabulary.RDFS.LABEL,
 						RDFVocabulary.RDFS.SEE_ALSO,
 						RDFVocabulary.RDFS.IS_DEFINED_BY
-					}, new RDFResource(ont.IRI), out List<OWLAnnotation> ontologyAnnotations);
+					}, new RDFResource(ont.IRI), annAxiomsGraph, out List <OWLAnnotation> ontologyAnnotations);
                 ont.Annotations = ontologyAnnotations;
             }
             //Axioms
-            void LoadFunctionalObjectProperties(OWLOntology ont)
+            void LoadFunctionalObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
                 {
@@ -298,13 +317,13 @@ namespace OWLSharp.Ontology
                         OWLFunctionalObjectProperty functionalObjectProperty = new OWLFunctionalObjectProperty() { 
                             ObjectPropertyExpression = opex };
 
-                        LoadAxiomAnnotations(ont, funcPropTriple, functionalObjectProperty);
+                        LoadAxiomAnnotations(ont, funcPropTriple, functionalObjectProperty, annAxiomsGraph);
 
                     	ont.ObjectPropertyAxioms.Add(functionalObjectProperty);
 					}
                 }
             }
-            void LoadInverseFunctionalObjectProperties(OWLOntology ont)
+            void LoadInverseFunctionalObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple invfuncPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null])
                 {
@@ -314,13 +333,13 @@ namespace OWLSharp.Ontology
                         OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty() {
                             ObjectPropertyExpression = opex };
 
-                        LoadAxiomAnnotations(ont, invfuncPropTriple, inverseFunctionalObjectProperty);
+                        LoadAxiomAnnotations(ont, invfuncPropTriple, inverseFunctionalObjectProperty, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(inverseFunctionalObjectProperty);
                     }
                 }
             }
-			void LoadSymmetricObjectProperties(OWLOntology ont)
+			void LoadSymmetricObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple symPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null])
                 {
@@ -330,13 +349,13 @@ namespace OWLSharp.Ontology
                         OWLSymmetricObjectProperty symmetricObjectProperty = new OWLSymmetricObjectProperty() {
                             ObjectPropertyExpression = opex };
 
-                        LoadAxiomAnnotations(ont, symPropTriple, symmetricObjectProperty);
+                        LoadAxiomAnnotations(ont, symPropTriple, symmetricObjectProperty, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(symmetricObjectProperty);
                     }
                 }
             }
-			void LoadAsymmetricObjectProperties(OWLOntology ont)
+			void LoadAsymmetricObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple asymPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
                 {
@@ -346,13 +365,13 @@ namespace OWLSharp.Ontology
                         OWLAsymmetricObjectProperty asymmetricObjectProperty = new OWLAsymmetricObjectProperty() {
                             ObjectPropertyExpression = opex };
 
-                        LoadAxiomAnnotations(ont, asymPropTriple, asymmetricObjectProperty);
+                        LoadAxiomAnnotations(ont, asymPropTriple, asymmetricObjectProperty, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(asymmetricObjectProperty);
                     }
                 }
             }
-            void LoadReflexiveObjectProperties(OWLOntology ont)
+            void LoadReflexiveObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple refPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.REFLEXIVE_PROPERTY, null])
                 {
@@ -362,13 +381,13 @@ namespace OWLSharp.Ontology
                         OWLReflexiveObjectProperty reflexiveObjectProperty = new OWLReflexiveObjectProperty() {
                             ObjectPropertyExpression = opex };
 
-                        LoadAxiomAnnotations(ont, refPropTriple, reflexiveObjectProperty);
+                        LoadAxiomAnnotations(ont, refPropTriple, reflexiveObjectProperty, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(reflexiveObjectProperty);
                     }
                 }
             }
-            void LoadIrreflexiveObjectProperties(OWLOntology ont)
+            void LoadIrreflexiveObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple irrefPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.IRREFLEXIVE_PROPERTY, null])
                 {
@@ -378,13 +397,13 @@ namespace OWLSharp.Ontology
                         OWLIrreflexiveObjectProperty irreflexiveObjectProperty = new OWLIrreflexiveObjectProperty() {
                             ObjectPropertyExpression = opex };
 
-                        LoadAxiomAnnotations(ont, irrefPropTriple, irreflexiveObjectProperty);
+                        LoadAxiomAnnotations(ont, irrefPropTriple, irreflexiveObjectProperty, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(irreflexiveObjectProperty);
                     }
                 }
             }
-			void LoadTransitiveObjectProperties(OWLOntology ont)
+			void LoadTransitiveObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple transPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null])
                 {
@@ -394,13 +413,13 @@ namespace OWLSharp.Ontology
                         OWLTransitiveObjectProperty transitiveObjectProperty = new OWLTransitiveObjectProperty() {
                             ObjectPropertyExpression = opex };
 
-                        LoadAxiomAnnotations(ont, transPropTriple, transitiveObjectProperty);
+                        LoadAxiomAnnotations(ont, transPropTriple, transitiveObjectProperty, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(transitiveObjectProperty);
                     }
                 }
             }
-            void LoadInverseObjectProperties(OWLOntology ont)
+            void LoadInverseObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
@@ -466,7 +485,7 @@ namespace OWLSharp.Ontology
                             OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
                             inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectProperty(OPL);
                             inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectProperty(OPR);
-                            LoadAxiomAnnotations(ont, new RDFTriple(OPL, RDFVocabulary.OWL.INVERSE_OF, OPR), inverseObjectProperties);
+                            LoadAxiomAnnotations(ont, new RDFTriple(OPL, RDFVocabulary.OWL.INVERSE_OF, OPR), inverseObjectProperties, annAxiomsGraph);
                             break;
                         case "IO":
                             IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
@@ -478,7 +497,7 @@ namespace OWLSharp.Ontology
                             OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
                             inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPL));
                             inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectProperty(OPR);
-                            LoadAxiomAnnotations(ont, new RDFTriple(IOPL, RDFVocabulary.OWL.INVERSE_OF, OPR), inverseObjectProperties);
+                            LoadAxiomAnnotations(ont, new RDFTriple(IOPL, RDFVocabulary.OWL.INVERSE_OF, OPR), inverseObjectProperties, annAxiomsGraph);
                             break;
                         case "OI":
                             OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
@@ -486,7 +505,7 @@ namespace OWLSharp.Ontology
                             OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
                             inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectProperty(OPL);
                             inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPR));
-                            LoadAxiomAnnotations(ont, new RDFTriple(OPL, RDFVocabulary.OWL.INVERSE_OF, IOPR), inverseObjectProperties);
+                            LoadAxiomAnnotations(ont, new RDFTriple(OPL, RDFVocabulary.OWL.INVERSE_OF, IOPR), inverseObjectProperties, annAxiomsGraph);
                             break;
                         case "II":
                             IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
@@ -495,14 +514,14 @@ namespace OWLSharp.Ontology
                             OPR = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPR"].ToString());
                             inverseObjectProperties.LeftObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPL));
                             inverseObjectProperties.RightObjectPropertyExpression = new OWLObjectInverseOf(new OWLObjectProperty(OPR));
-                            LoadAxiomAnnotations(ont, new RDFTriple(IOPL, RDFVocabulary.OWL.INVERSE_OF, IOPR), inverseObjectProperties);
+                            LoadAxiomAnnotations(ont, new RDFTriple(IOPL, RDFVocabulary.OWL.INVERSE_OF, IOPR), inverseObjectProperties, annAxiomsGraph);
                             break;
                     }
 
                     ont.ObjectPropertyAxioms.Add(inverseObjectProperties);
                 }
             }
-			void LoadEquivalentObjectProperties(OWLOntology ont)
+			void LoadEquivalentObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
                 {
@@ -514,13 +533,13 @@ namespace OWLSharp.Ontology
                         OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties() {
                             ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() { leftOPE, rightOPE } };
 
-                        LoadAxiomAnnotations(ont, equivPropTriple, equivalentObjectProperties);
+                        LoadAxiomAnnotations(ont, equivPropTriple, equivalentObjectProperties, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(equivalentObjectProperties);
                     }
                 }
             }
-			void LoadDisjointObjectProperties(OWLOntology ont)
+			void LoadDisjointObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
 			{
 				//Load axioms built with owl:propertyDisjointWith
 				foreach (RDFTriple propDisjointWithTriple in graph[null, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null])
@@ -533,7 +552,7 @@ namespace OWLSharp.Ontology
 						OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties() {
 							ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() { leftOPE, rightOPE } }; 
 
-						LoadAxiomAnnotations(ont, propDisjointWithTriple, disjointObjectProperties);
+						LoadAxiomAnnotations(ont, propDisjointWithTriple, disjointObjectProperties, annAxiomsGraph);
 
                     	ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
 					}
@@ -565,14 +584,14 @@ namespace OWLSharp.Ontology
 								RDFVocabulary.RDFS.LABEL,
 								RDFVocabulary.RDFS.SEE_ALSO,
 								RDFVocabulary.RDFS.IS_DEFINED_BY
-							}, (RDFResource)allDisjointPropertiesTriple.Subject, out List<OWLAnnotation> adjpAnnotations);
+							}, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjpAnnotations);
 							disjointObjectProperties.Annotations = adjpAnnotations;
 
 							ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
 						}
 					}
 			}
-			void LoadSubObjectProperties(OWLOntology ont)
+			void LoadSubObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
 				//Load axioms built with owl:propertyChainAxiom
 				foreach (RDFTriple propertyChainAxiomTriple in graph[null, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, null, null])
@@ -597,7 +616,7 @@ namespace OWLSharp.Ontology
                         OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf() {
                             SubObjectPropertyChain = objectPropertyChain, SuperObjectPropertyExpression = rightOPE };
 
-                        LoadAxiomAnnotations(ont, propertyChainAxiomTriple, subObjectPropertyOf);
+                        LoadAxiomAnnotations(ont, propertyChainAxiomTriple, subObjectPropertyOf, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(subObjectPropertyOf);
                     }
@@ -614,13 +633,13 @@ namespace OWLSharp.Ontology
                         OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf() {
                             SubObjectPropertyExpression = leftOPE, SuperObjectPropertyExpression = rightOPE };
 
-                        LoadAxiomAnnotations(ont, subPropTriple, subObjectPropertyOf);
+                        LoadAxiomAnnotations(ont, subPropTriple, subObjectPropertyOf, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(subObjectPropertyOf);
                     }
                 }
             }
-            void LoadObjectPropertyDomain(OWLOntology ont)
+            void LoadObjectPropertyDomain(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple domainTriple in graph[null, RDFVocabulary.RDFS.DOMAIN, null, null])
                 {
@@ -632,13 +651,13 @@ namespace OWLSharp.Ontology
                         OWLObjectPropertyDomain objectPropertyDomain = new OWLObjectPropertyDomain() {
                              ObjectPropertyExpression = objEXP, ClassExpression = clsEXP };
 
-                        LoadAxiomAnnotations(ont, domainTriple, objectPropertyDomain);
+                        LoadAxiomAnnotations(ont, domainTriple, objectPropertyDomain, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(objectPropertyDomain);
                     }
                 }
             }
-            void LoadObjectPropertyRange(OWLOntology ont)
+            void LoadObjectPropertyRange(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple rangeTriple in graph[null, RDFVocabulary.RDFS.RANGE, null, null])
                 {
@@ -650,13 +669,13 @@ namespace OWLSharp.Ontology
                         OWLObjectPropertyRange objectPropertyRange = new OWLObjectPropertyRange() {
                             ObjectPropertyExpression = objEXP, ClassExpression = clsEXP };
 
-                        LoadAxiomAnnotations(ont, rangeTriple, objectPropertyRange);
+                        LoadAxiomAnnotations(ont, rangeTriple, objectPropertyRange, annAxiomsGraph);
 
                         ont.ObjectPropertyAxioms.Add(objectPropertyRange);
                     }
                 }
             }
-            void LoadFunctionalDataProperties(OWLOntology ont)
+            void LoadFunctionalDataProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
                 {
@@ -665,13 +684,13 @@ namespace OWLSharp.Ontology
                     {
                         OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(dp);
 
-                        LoadAxiomAnnotations(ont, funcPropTriple, functionalDataProperty);
+                        LoadAxiomAnnotations(ont, funcPropTriple, functionalDataProperty, annAxiomsGraph);
 
                         ont.DataPropertyAxioms.Add(functionalDataProperty);
                     }
                 }
             }
-            void LoadEquivalentDataProperties(OWLOntology ont)
+            void LoadEquivalentDataProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple equivPropTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null, null])
                 {
@@ -683,13 +702,13 @@ namespace OWLSharp.Ontology
                         OWLEquivalentDataProperties equivalentDataProperties = new OWLEquivalentDataProperties() {
                             DataProperties = new List<OWLDataProperty>() { leftDP, rightDP } };
 
-                        LoadAxiomAnnotations(ont, equivPropTriple, equivalentDataProperties);
+                        LoadAxiomAnnotations(ont, equivPropTriple, equivalentDataProperties, annAxiomsGraph);
 
                         ont.DataPropertyAxioms.Add(equivalentDataProperties);
                     }
                 }
             }
-            void LoadDisjointDataProperties(OWLOntology ont)
+            void LoadDisjointDataProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 //Load axioms built with owl:propertyDisjointWith
                 foreach (RDFTriple propDisjointWithTriple in graph[null, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, null, null])
@@ -702,7 +721,7 @@ namespace OWLSharp.Ontology
                         OWLDisjointDataProperties disjointDataProperties = new OWLDisjointDataProperties() {
                             DataProperties = new List<OWLDataProperty>() { leftDP, rightDP } };
 
-                        LoadAxiomAnnotations(ont, propDisjointWithTriple, disjointDataProperties);
+                        LoadAxiomAnnotations(ont, propDisjointWithTriple, disjointDataProperties, annAxiomsGraph);
 
                         ont.DataPropertyAxioms.Add(disjointDataProperties);
                     }
@@ -734,14 +753,14 @@ namespace OWLSharp.Ontology
                                 RDFVocabulary.RDFS.LABEL,
                                 RDFVocabulary.RDFS.SEE_ALSO,
                                 RDFVocabulary.RDFS.IS_DEFINED_BY
-                            }, (RDFResource)allDisjointPropertiesTriple.Subject, out List<OWLAnnotation> adjpAnnotations);
+                            }, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjpAnnotations);
                             disjointDataProperties.Annotations = adjpAnnotations;
 
                             ont.DataPropertyAxioms.Add(disjointDataProperties);
                         }
                     }
             }
-            void LoadSubDataProperties(OWLOntology ont)
+            void LoadSubDataProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
                 {
@@ -753,13 +772,13 @@ namespace OWLSharp.Ontology
                         OWLSubDataPropertyOf subDataPropertyOf = new OWLSubDataPropertyOf() {
                             SubDataProperty = leftDP, SuperDataProperty = rightDP };
 
-                        LoadAxiomAnnotations(ont, subPropTriple, subDataPropertyOf);
+                        LoadAxiomAnnotations(ont, subPropTriple, subDataPropertyOf, annAxiomsGraph);
 
                         ont.DataPropertyAxioms.Add(subDataPropertyOf);
                     }
                 }
             }
-            void LoadDataPropertyDomain(OWLOntology ont)
+            void LoadDataPropertyDomain(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple domainTriple in graph[null, RDFVocabulary.RDFS.DOMAIN, null, null])
                 {
@@ -771,13 +790,13 @@ namespace OWLSharp.Ontology
                         OWLDataPropertyDomain dataPropertyDomain = new OWLDataPropertyDomain() {
                              DataProperty = dp, ClassExpression = clsEXP };
 
-                        LoadAxiomAnnotations(ont, domainTriple, dataPropertyDomain);
+                        LoadAxiomAnnotations(ont, domainTriple, dataPropertyDomain, annAxiomsGraph);
 
                         ont.DataPropertyAxioms.Add(dataPropertyDomain);
                     }
                 }
             }
-            void LoadDataPropertyRange(OWLOntology ont)
+            void LoadDataPropertyRange(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple rangeTriple in graph[null, RDFVocabulary.RDFS.RANGE, null, null])
                 {
@@ -789,13 +808,13 @@ namespace OWLSharp.Ontology
                         OWLDataPropertyRange dataPropertyRange = new OWLDataPropertyRange() {
                             DataProperty = dp, DataRangeExpression = drEXP };
 
-                        LoadAxiomAnnotations(ont, rangeTriple, dataPropertyRange);
+                        LoadAxiomAnnotations(ont, rangeTriple, dataPropertyRange, annAxiomsGraph);
 
                         ont.DataPropertyAxioms.Add(dataPropertyRange);
                     }
                 }
             }
-			void LoadSubClassOf(OWLOntology ont)
+			void LoadSubClassOf(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple subClassTriple in graph[null, RDFVocabulary.RDFS.SUB_CLASS_OF, null, null])
                 {
@@ -810,13 +829,13 @@ namespace OWLSharp.Ontology
                             SuperClassExpression = rightCLEX
                         };
 
-                        LoadAxiomAnnotations(ont, subClassTriple, subClassOf);
+                        LoadAxiomAnnotations(ont, subClassTriple, subClassOf, annAxiomsGraph);
 
                         ont.ClassAxioms.Add(subClassOf);
                     }
                 }
             }
-            void LoadEquivalentClasses(OWLOntology ont)
+            void LoadEquivalentClasses(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple equivClassTriple in graph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null])
                 {
@@ -828,13 +847,13 @@ namespace OWLSharp.Ontology
                         OWLEquivalentClasses equivalentClasses = new OWLEquivalentClasses() {
                              ClassExpressions = new List<OWLClassExpression>() { leftCLex, rightCLex } };
 
-                        LoadAxiomAnnotations(ont, equivClassTriple, equivalentClasses);
+                        LoadAxiomAnnotations(ont, equivClassTriple, equivalentClasses, annAxiomsGraph);
 
                         ont.ClassAxioms.Add(equivalentClasses);
                     }
                 }
             }
-            void LoadDisjointClasses(OWLOntology ont)
+            void LoadDisjointClasses(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 //Load axioms built with owl:disjointWith
                 foreach (RDFTriple disjointWithTriple in graph[null, RDFVocabulary.OWL.DISJOINT_WITH, null, null])
@@ -847,7 +866,7 @@ namespace OWLSharp.Ontology
                         OWLDisjointClasses disjointClasses = new OWLDisjointClasses() {
                             ClassExpressions = new List<OWLClassExpression>() { leftCLE, rightCLE } };
 
-                        LoadAxiomAnnotations(ont, disjointWithTriple, disjointClasses);
+                        LoadAxiomAnnotations(ont, disjointWithTriple, disjointClasses, annAxiomsGraph);
 
                         ont.ClassAxioms.Add(disjointClasses);
                     }
@@ -879,14 +898,14 @@ namespace OWLSharp.Ontology
                                 RDFVocabulary.RDFS.LABEL,
                                 RDFVocabulary.RDFS.SEE_ALSO,
                                 RDFVocabulary.RDFS.IS_DEFINED_BY
-                            }, (RDFResource)allDisjointClassesTriple.Subject, out List<OWLAnnotation> adjcAnnotations);
+                            }, (RDFResource)allDisjointClassesTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjcAnnotations);
                             disjointClasses.Annotations = adjcAnnotations;
 
                             ont.ClassAxioms.Add(disjointClasses);
                         }
                     }
             }
-            void LoadDisjointUnion(OWLOntology ont)
+            void LoadDisjointUnion(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple disjointUnionOfTriple in graph[null, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null])
                 {
@@ -908,13 +927,13 @@ namespace OWLSharp.Ontology
                         OWLDisjointUnion disjointUnion = new OWLDisjointUnion() {
                             ClassIRI = classIRI, ClassExpressions = disjointUnionMembers };
 
-                        LoadAxiomAnnotations(ont, disjointUnionOfTriple, disjointUnion);
+                        LoadAxiomAnnotations(ont, disjointUnionOfTriple, disjointUnion, annAxiomsGraph);
 
                         ont.ClassAxioms.Add(disjointUnion);
                     }
                 }
             }
-            void LoadHasKey(OWLOntology ont)
+            void LoadHasKey(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple hasKeyTriple in graph[null, RDFVocabulary.OWL.HAS_KEY, null, null])
                 {
@@ -941,12 +960,12 @@ namespace OWLSharp.Ontology
                     OWLHasKey hasKey = new OWLHasKey() {
                          ClassExpression = clsExp, ObjectPropertyExpressions = haskeyOPMembers, DataProperties = haskeyDPMembers };
 
-                    LoadAxiomAnnotations(ont, hasKeyTriple, hasKey);
+                    LoadAxiomAnnotations(ont, hasKeyTriple, hasKey, annAxiomsGraph);
 
                     ont.KeyAxioms.Add(hasKey);
                 }
             }
-            void LoadDatatypeDefinition(OWLOntology ont)
+            void LoadDatatypeDefinition(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple datatypeTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null]
                                                       .Where(t => !((RDFResource)t.Subject).IsBlank))                
@@ -965,12 +984,12 @@ namespace OWLSharp.Ontology
                         DataRangeExpression = drex
                     };
 
-                    LoadAxiomAnnotations(ont, datatypeTriple, datatypeDefinition);
+                    LoadAxiomAnnotations(ont, datatypeTriple, datatypeDefinition, annAxiomsGraph);
 
                     ont.DatatypeDefinitionAxioms.Add(datatypeDefinition);
                 }
             }
-            void LoadSameIndividual(OWLOntology ont)
+            void LoadSameIndividual(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple sameAsTriple in graph[null, RDFVocabulary.OWL.SAME_AS, null, null])
                 {
@@ -982,13 +1001,13 @@ namespace OWLSharp.Ontology
                         OWLSameIndividual sameIndividual = new OWLSameIndividual() {
                             IndividualExpressions = new List<OWLIndividualExpression>() { leftIE, rightIE } };
 
-                        LoadAxiomAnnotations(ont, sameAsTriple, sameIndividual);
+                        LoadAxiomAnnotations(ont, sameAsTriple, sameIndividual, annAxiomsGraph);
 
                         ont.AssertionAxioms.Add(sameIndividual);
                     }
                 }
             }
-            void LoadDifferentIndividuals(OWLOntology ont)
+            void LoadDifferentIndividuals(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 //Load axioms built with owl:differentFrom
                 foreach (RDFTriple differentFromTriple in graph[null, RDFVocabulary.OWL.DIFFERENT_FROM, null, null])
@@ -1001,7 +1020,7 @@ namespace OWLSharp.Ontology
                         OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals() {
                             IndividualExpressions = new List<OWLIndividualExpression>() { leftIE, rightIE } };
 
-                        LoadAxiomAnnotations(ont, differentFromTriple, differentIndividuals);
+                        LoadAxiomAnnotations(ont, differentFromTriple, differentIndividuals, annAxiomsGraph);
 
                         ont.AssertionAxioms.Add(differentIndividuals);
                     }
@@ -1033,14 +1052,14 @@ namespace OWLSharp.Ontology
                                 RDFVocabulary.RDFS.LABEL,
                                 RDFVocabulary.RDFS.SEE_ALSO,
                                 RDFVocabulary.RDFS.IS_DEFINED_BY
-                            }, (RDFResource)allDifferentTriple.Subject, out List<OWLAnnotation> adjpAnnotations);
+                            }, (RDFResource)allDifferentTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjpAnnotations);
                             differentIndividuals.Annotations = adjpAnnotations;
 
                             ont.AssertionAxioms.Add(differentIndividuals);
                         }
                     }
             }
-			void LoadObjectPropertyAssertions(OWLOntology ont)
+			void LoadObjectPropertyAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple objPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
                 {
@@ -1057,14 +1076,14 @@ namespace OWLSharp.Ontology
 								 SourceIndividualExpression = leftIE,
 								 TargetIndividualExpression = rightIE };
 
-							LoadAxiomAnnotations(ont, objPropAsnTriple, objPropAsn);
+							LoadAxiomAnnotations(ont, objPropAsnTriple, objPropAsn, annAxiomsGraph);
 
 							ont.AssertionAxioms.Add(objPropAsn);
 						}
 					}
                 }
             }
-            void LoadNegativeObjectPropertyAssertions(OWLOntology ont)
+            void LoadNegativeObjectPropertyAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
@@ -1100,14 +1119,14 @@ namespace OWLSharp.Ontology
                                 RDFVocabulary.RDFS.LABEL,
                                 RDFVocabulary.RDFS.SEE_ALSO,
                                 RDFVocabulary.RDFS.IS_DEFINED_BY
-                            }, axiomIRI, out List<OWLAnnotation> nasnAnnotations);
+                            }, axiomIRI, annAxiomsGraph, out List <OWLAnnotation> nasnAnnotations);
                         negObjPropAsn.Annotations = nasnAnnotations;
 
                         ont.AssertionAxioms.Add(negObjPropAsn);
                     }
                 }
             }
-            void LoadDataPropertyAssertions(OWLOntology ont)
+            void LoadDataPropertyAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple dtPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null])
                 {
@@ -1125,14 +1144,14 @@ namespace OWLSharp.Ontology
                                 Literal = new OWLLiteral((RDFLiteral)dtPropAsnTriple.Object)
                             };
 
-                            LoadAxiomAnnotations(ont, dtPropAsnTriple, dtPropAsn);
+                            LoadAxiomAnnotations(ont, dtPropAsnTriple, dtPropAsn, annAxiomsGraph);
 
                             ont.AssertionAxioms.Add(dtPropAsn);
                         }
                     }
                 }
             }
-            void LoadClassAssertions(OWLOntology ont)
+            void LoadClassAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
 			{
 				RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
@@ -1159,13 +1178,13 @@ namespace OWLSharp.Ontology
                         OWLClassAssertion classAssertion = new OWLClassAssertion() {
                             ClassExpression = clsEx, IndividualExpression = idvEx };
 
-                        LoadAxiomAnnotations(ont, new RDFTriple(idvIRI, RDFVocabulary.RDF.TYPE, clsIRI), classAssertion);
+                        LoadAxiomAnnotations(ont, new RDFTriple(idvIRI, RDFVocabulary.RDF.TYPE, clsIRI), classAssertion, annAxiomsGraph);
 
                         ont.AssertionAxioms.Add(classAssertion);
                     }
                 }
 			}
-			void LoadNegativeDataPropertyAssertions(OWLOntology ont)
+			void LoadNegativeDataPropertyAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
@@ -1201,14 +1220,14 @@ namespace OWLSharp.Ontology
                             RDFVocabulary.RDFS.LABEL,
                             RDFVocabulary.RDFS.SEE_ALSO,
                             RDFVocabulary.RDFS.IS_DEFINED_BY
-                        }, axiomIRI, out List<OWLAnnotation> nasnAnnotations);
+                        }, axiomIRI, annAxiomsGraph, out List <OWLAnnotation> nasnAnnotations);
                         negDtPropAsn.Annotations = nasnAnnotations;
 
                         ont.AssertionAxioms.Add(negDtPropAsn);
                     }
                 }
             }
-            void LoadAnnotationAssertions(OWLOntology ont)
+            void LoadAnnotationAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 #region Fetch Declarations
                 List<OWLClass> declaredClasses = ont.DeclarationAxioms.Where(dax => dax.Expression is OWLClass)
@@ -1248,7 +1267,7 @@ namespace OWLSharp.Ontology
                             else
                                 annAsn = new OWLAnnotationAssertion(annProp, clsIRI, new OWLLiteral((RDFLiteral)clsAnnPropTriple.Object));
 
-                            LoadAxiomAnnotations(ont, clsAnnPropTriple, annAsn);
+                            LoadAxiomAnnotations(ont, clsAnnPropTriple, annAsn, annAxiomsGraph);
 
                             ont.AnnotationAxioms.Add(annAsn);
                         }
@@ -1266,7 +1285,7 @@ namespace OWLSharp.Ontology
                             else
                                 annAsn = new OWLAnnotationAssertion(annProp, dtIRI, new OWLLiteral((RDFLiteral)dtAnnPropTriple.Object));
 
-                            LoadAxiomAnnotations(ont, dtAnnPropTriple, annAsn);
+                            LoadAxiomAnnotations(ont, dtAnnPropTriple, annAsn, annAxiomsGraph);
 
                             ont.AnnotationAxioms.Add(annAsn);
                         }
@@ -1284,7 +1303,7 @@ namespace OWLSharp.Ontology
                             else
                                 annAsn = new OWLAnnotationAssertion(annProp, opIRI, new OWLLiteral((RDFLiteral)opAnnPropTriple.Object));
 
-                            LoadAxiomAnnotations(ont, opAnnPropTriple, annAsn);
+                            LoadAxiomAnnotations(ont, opAnnPropTriple, annAsn, annAxiomsGraph);
 
                             ont.AnnotationAxioms.Add(annAsn);
                         }
@@ -1302,7 +1321,7 @@ namespace OWLSharp.Ontology
                             else
                                 annAsn = new OWLAnnotationAssertion(annProp, dpIRI, new OWLLiteral((RDFLiteral)dpAnnPropTriple.Object));
 
-                            LoadAxiomAnnotations(ont, dpAnnPropTriple, annAsn);
+                            LoadAxiomAnnotations(ont, dpAnnPropTriple, annAsn, annAxiomsGraph);
 
                             ont.AnnotationAxioms.Add(annAsn);
                         }
@@ -1320,7 +1339,7 @@ namespace OWLSharp.Ontology
                             else
                                 annAsn = new OWLAnnotationAssertion(annProp, apIRI, new OWLLiteral((RDFLiteral)apAnnPropTriple.Object));
 
-                            LoadAxiomAnnotations(ont, apAnnPropTriple, annAsn);
+                            LoadAxiomAnnotations(ont, apAnnPropTriple, annAsn, annAxiomsGraph);
 
                             ont.AnnotationAxioms.Add(annAsn);
                         }
@@ -1338,14 +1357,14 @@ namespace OWLSharp.Ontology
                             else
                                 annAsn = new OWLAnnotationAssertion(annProp, idvIRI, new OWLLiteral((RDFLiteral)idvAnnPropTriple.Object));
 
-                            LoadAxiomAnnotations(ont, idvAnnPropTriple, annAsn);
+                            LoadAxiomAnnotations(ont, idvAnnPropTriple, annAsn, annAxiomsGraph);
 
                             ont.AnnotationAxioms.Add(annAsn);
                         }
                     });
                 });
             }
-            void LoadSubAnnotationProperties(OWLOntology ont)
+            void LoadSubAnnotationProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple subPropTriple in graph[null, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null, null])
                 {
@@ -1357,13 +1376,13 @@ namespace OWLSharp.Ontology
                         OWLSubAnnotationPropertyOf subAnnotationPropertyOf = new OWLSubAnnotationPropertyOf() {
                             SubAnnotationProperty = leftAP, SuperAnnotationProperty = rightAP };
 
-                        LoadAxiomAnnotations(ont, subPropTriple, subAnnotationPropertyOf);
+                        LoadAxiomAnnotations(ont, subPropTriple, subAnnotationPropertyOf, annAxiomsGraph);
 
                         ont.AnnotationAxioms.Add(subAnnotationPropertyOf);
                     }
                 }
             }
-            void LoadAnnotationPropertyDomain(OWLOntology ont)
+            void LoadAnnotationPropertyDomain(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple domainTriple in graph[null, RDFVocabulary.RDFS.DOMAIN, null, null])
                 {
@@ -1374,13 +1393,13 @@ namespace OWLSharp.Ontology
                         OWLAnnotationPropertyDomain annotationPropertyDomain = new OWLAnnotationPropertyDomain() {
                              AnnotationProperty = annProp, IRI = domainObject.ToString() };
 
-                        LoadAxiomAnnotations(ont, domainTriple, annotationPropertyDomain);
+                        LoadAxiomAnnotations(ont, domainTriple, annotationPropertyDomain, annAxiomsGraph);
 
                         ont.AnnotationAxioms.Add(annotationPropertyDomain);
                     }
                 }
             }
-            void LoadAnnotationPropertyRange(OWLOntology ont)
+            void LoadAnnotationPropertyRange(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
                 foreach (RDFTriple rangeTriple in graph[null, RDFVocabulary.RDFS.RANGE, null, null])
                 {
@@ -1391,15 +1410,20 @@ namespace OWLSharp.Ontology
                         OWLAnnotationPropertyRange annotationPropertyRange = new OWLAnnotationPropertyRange() {
                             AnnotationProperty = annProp, IRI = rangeObject.ToString() };
 
-                        LoadAxiomAnnotations(ont, rangeTriple, annotationPropertyRange);
+                        LoadAxiomAnnotations(ont, rangeTriple, annotationPropertyRange, annAxiomsGraph);
 
                         ont.AnnotationAxioms.Add(annotationPropertyRange);
                     }
                 }
             }
 			//Annotations
-            void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom)
+            void LoadAxiomAnnotations(OWLOntology ont, RDFTriple axiomTriple, OWLAxiom axiom, RDFGraph annAxiomsGraph)
             {
+                #region Guards
+                if (annAxiomsGraph.TriplesCount == 0)
+                    return;
+                #endregion
+
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
                         .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM))
@@ -1408,7 +1432,7 @@ namespace OWLSharp.Ontology
                         .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.OWL.ANNOTATED_TARGET, axiomTriple.Object))
                         .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), new RDFVariable("?ANNPROP"), new RDFVariable("?ANNVAL")))
                         .AddPattern(new RDFPattern(new RDFVariable("?ANNPROP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY)));
-                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                RDFSelectQueryResult result = query.ApplyToGraph(annAxiomsGraph);
                 foreach (DataRow resultRow in result.SelectResults.Rows)
                 {
                     RDFPatternMember axiomIRI = RDFQueryUtilities.ParseRDFPatternMember(resultRow["?AXIOM"].ToString());
@@ -1421,12 +1445,12 @@ namespace OWLSharp.Ontology
                         ? new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), annValRes2)
                         : new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), new OWLLiteral((RDFLiteral)annVal));
 
-                    LoadNestedAnnotation(ont, annotationTriple, annotation);
+                    LoadNestedAnnotation(ont, annotationTriple, annotation, annAxiomsGraph);
 
                     axiom.Annotations.Add(annotation);
                 }
             }
-            void LoadIRIAnnotations(OWLOntology ont, List<RDFResource> annotationProperties, RDFResource iri, out List<OWLAnnotation> annotations)
+            void LoadIRIAnnotations(OWLOntology ont, List<RDFResource> annotationProperties, RDFResource iri, RDFGraph annAxiomsGraph, out List<OWLAnnotation> annotations)
 			{
 				annotations = new List<OWLAnnotation>();
 
@@ -1447,14 +1471,19 @@ namespace OWLSharp.Ontology
                             ? new OWLAnnotation(annotationProperty, (RDFResource)annotationTriple.Object)
                             : new OWLAnnotation(annotationProperty, new OWLLiteral((RDFLiteral)annotationTriple.Object));
 
-                        LoadNestedAnnotation(ont, annotationTriple, annotation);
+                        LoadNestedAnnotation(ont, annotationTriple, annotation, annAxiomsGraph);
 
                         annotations.Add(annotation);
                     }
                 }
 			}
-			void LoadNestedAnnotation(OWLOntology ont, RDFTriple annotationTriple, OWLAnnotation annotation)
+			void LoadNestedAnnotation(OWLOntology ont, RDFTriple annotationTriple, OWLAnnotation annotation, RDFGraph annAxiomsGraph)
             {
+                #region Guards
+                if (annAxiomsGraph.TriplesCount == 0)
+                    return;
+                #endregion
+
                 RDFSelectQuery query = new RDFSelectQuery()
                     .AddPatternGroup(new RDFPatternGroup()
                         .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM))
@@ -1464,7 +1493,7 @@ namespace OWLSharp.Ontology
                         .AddPattern(new RDFPattern(new RDFVariable("?AXIOM"), new RDFVariable("?ANNPROP"), new RDFVariable("?ANNVAL")))
                         .AddPattern(new RDFPattern(new RDFVariable("?ANNPROP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY)))
                     .AddModifier(new RDFLimitModifier(1));
-                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                RDFSelectQueryResult result = query.ApplyToGraph(annAxiomsGraph);
                 if (result.SelectResultsCount > 0)
                 {
                     DataRow resultRow = result.SelectResults.Rows[0];
@@ -1479,7 +1508,7 @@ namespace OWLSharp.Ontology
                         : new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), new OWLLiteral((RDFLiteral)annVal));
                     annotation.Annotation = nestedAnnotation;
 
-                    LoadNestedAnnotation(ont, nestedAnnotationTriple, annotation.Annotation);
+                    LoadNestedAnnotation(ont, nestedAnnotationTriple, annotation.Annotation, annAxiomsGraph);
                 }
             }
             //Expressions
@@ -2261,47 +2290,50 @@ namespace OWLSharp.Ontology
                 throw new OWLException("Cannot read ontology from graph because: no ontology declaration available in RDF data!");
             #endregion
 
+            //Ontology
 			LoadOntology(out OWLOntology ontology);
             LoadImports(ontology);
             LoadPrefixes(ontology);
             LoadDeclarations(ontology);
-            LoadOntologyAnnotations(ontology);			
-			LoadFunctionalObjectProperties(ontology);
-            LoadInverseFunctionalObjectProperties(ontology);
-			LoadSymmetricObjectProperties(ontology);
-            LoadAsymmetricObjectProperties(ontology);
-			LoadReflexiveObjectProperties(ontology);
-            LoadIrreflexiveObjectProperties(ontology);
-			LoadTransitiveObjectProperties(ontology);
-			LoadInverseObjectProperties(ontology);
-			LoadEquivalentObjectProperties(ontology);
-			LoadDisjointObjectProperties(ontology);
-			LoadSubObjectProperties(ontology);
-            LoadObjectPropertyDomain(ontology);
-            LoadObjectPropertyRange(ontology);
-            LoadFunctionalDataProperties(ontology);
-            LoadEquivalentDataProperties(ontology);
-            LoadDisjointDataProperties(ontology);
-            LoadSubDataProperties(ontology);
-            LoadDataPropertyDomain(ontology);
-            LoadDataPropertyRange(ontology);
-            LoadSubClassOf(ontology);
-            LoadEquivalentClasses(ontology);
-            LoadDisjointClasses(ontology);
-            LoadDisjointUnion(ontology);
-            LoadHasKey(ontology);
-            LoadDatatypeDefinition(ontology);
-            LoadSameIndividual(ontology);
-            LoadDifferentIndividuals(ontology);
-			LoadObjectPropertyAssertions(ontology);
-            LoadNegativeObjectPropertyAssertions(ontology);
-            LoadDataPropertyAssertions(ontology);
-            LoadNegativeDataPropertyAssertions(ontology);
-            LoadClassAssertions(ontology);
-            LoadAnnotationAssertions(ontology);
-            LoadSubAnnotationProperties(ontology);
-			LoadAnnotationPropertyDomain(ontology);
-            LoadAnnotationPropertyRange(ontology);
+            PrefetchAnnotationAxioms(ontology, out RDFGraph annotationAxiomsGraph);
+            LoadOntologyAnnotations(ontology, annotationAxiomsGraph);			
+			//Axioms
+            LoadFunctionalObjectProperties(ontology, annotationAxiomsGraph);
+            LoadInverseFunctionalObjectProperties(ontology, annotationAxiomsGraph);
+			LoadSymmetricObjectProperties(ontology, annotationAxiomsGraph);
+            LoadAsymmetricObjectProperties(ontology, annotationAxiomsGraph);
+			LoadReflexiveObjectProperties(ontology, annotationAxiomsGraph);
+            LoadIrreflexiveObjectProperties(ontology, annotationAxiomsGraph);
+			LoadTransitiveObjectProperties(ontology, annotationAxiomsGraph);
+			LoadInverseObjectProperties(ontology, annotationAxiomsGraph);
+			LoadEquivalentObjectProperties(ontology, annotationAxiomsGraph);
+			LoadDisjointObjectProperties(ontology, annotationAxiomsGraph);
+			LoadSubObjectProperties(ontology, annotationAxiomsGraph);
+            LoadObjectPropertyDomain(ontology, annotationAxiomsGraph);
+            LoadObjectPropertyRange(ontology, annotationAxiomsGraph);
+            LoadFunctionalDataProperties(ontology, annotationAxiomsGraph);
+            LoadEquivalentDataProperties(ontology, annotationAxiomsGraph);
+            LoadDisjointDataProperties(ontology, annotationAxiomsGraph);
+            LoadSubDataProperties(ontology, annotationAxiomsGraph);
+            LoadDataPropertyDomain(ontology, annotationAxiomsGraph);
+            LoadDataPropertyRange(ontology, annotationAxiomsGraph);
+            LoadSubClassOf(ontology, annotationAxiomsGraph);
+            LoadEquivalentClasses(ontology, annotationAxiomsGraph);
+            LoadDisjointClasses(ontology, annotationAxiomsGraph);
+            LoadDisjointUnion(ontology, annotationAxiomsGraph);
+            LoadHasKey(ontology, annotationAxiomsGraph);
+            LoadDatatypeDefinition(ontology, annotationAxiomsGraph);
+            LoadSameIndividual(ontology, annotationAxiomsGraph);
+            LoadDifferentIndividuals(ontology, annotationAxiomsGraph);
+			LoadObjectPropertyAssertions(ontology, annotationAxiomsGraph);
+            LoadNegativeObjectPropertyAssertions(ontology, annotationAxiomsGraph);
+            LoadDataPropertyAssertions(ontology, annotationAxiomsGraph);
+            LoadNegativeDataPropertyAssertions(ontology, annotationAxiomsGraph);
+            LoadClassAssertions(ontology, annotationAxiomsGraph);
+            LoadAnnotationAssertions(ontology, annotationAxiomsGraph);
+            LoadSubAnnotationProperties(ontology, annotationAxiomsGraph);
+			LoadAnnotationPropertyDomain(ontology, annotationAxiomsGraph);
+            LoadAnnotationPropertyRange(ontology, annotationAxiomsGraph);
 
             return ontology;
         }
