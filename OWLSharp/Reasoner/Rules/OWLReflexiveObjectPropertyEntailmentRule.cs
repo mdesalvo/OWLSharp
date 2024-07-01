@@ -47,7 +47,7 @@ namespace OWLSharp.Reasoner.Rules
 					if (opAsn.ObjectPropertyExpression is OWLObjectInverseOf)
                         opAsnSourceIdvExpr = opAsnTargetIdvExpr;
                     
-                    //Exploit the reflexive object property to emit the "swapped-assertion" inference
+                    //Exploit the reflexive object property to emit the "selfswapped-assertion" inference
                     if (refObjProp.ObjectPropertyExpression is OWLObjectInverseOf refObjInvOf)
                         inferences.Add(new OWLObjectPropertyAssertion(refObjInvOf.ObjectProperty, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true });
                     else
