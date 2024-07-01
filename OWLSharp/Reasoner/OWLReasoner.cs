@@ -93,6 +93,9 @@ namespace OWLSharp.Reasoner
                             case OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment.ToString()] = OWLSymmetricObjectPropertyEntailmentRule.ExecuteRule(ontology);
                                 break;
+							case OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment.ToString()] = OWLReflexiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': got {inferenceRegistry[standardRule.ToString()].Count} inferences");
