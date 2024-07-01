@@ -28,7 +28,6 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-			List<OWLInverseObjectProperties> invObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>();
 
             //InverseObjectProperties(OP,IOP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(IOP,IDV2,IDV1)
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
@@ -37,7 +36,7 @@ namespace OWLSharp.Reasoner.Rules
 				RDFResource declaredObjectPropertyIRI = declaredObjectProperty.GetIRI();
 
 				//Extract inverse object properties of the current object property
-				List<OWLObjectPropertyExpression> invsOfDeclaredObjectProperty = ontology.GetInverseObjectProperties(declaredObjectProperty);
+				List<(bool,OWLObjectPropertyExpression)> invsOfDeclaredObjectProperty = GetInverseObjectProperties(ontology, declaredObjectProperty);
 
 				//Extract object assertions of the current object property
 				foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
@@ -56,12 +55,35 @@ namespace OWLSharp.Reasoner.Rules
                     }
 
 					//Iterate inverse object properties of the current object property in order to materialize the "swapped-assertion" inference
-					foreach (OWLObjectPropertyExpression invOfDeclaredObjectProperty in invsOfDeclaredObjectProperty)
-						inferences.Add(new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true });
-				}
+					foreach ((bool,OWLObjectPropertyExpression) invOfDeclaredObjectProperty in invsOfDeclaredObjectProperty)
+                        inferences.Add(new OWLObjectPropertyAssertion(invOfDeclaredObjectProperty.Item2,
+                            invOfDeclaredObjectProperty.Item1 ? opAsnSourceIdvExpr : opAsnTargetIdvExpr,
+                            invOfDeclaredObjectProperty.Item1 ? opAsnTargetIdvExpr : opAsnSourceIdvExpr) { IsInference=true });
+                }
 			}
 
             return inferences;
+        }
+
+        internal static List<(bool,OWLObjectPropertyExpression)> GetInverseObjectProperties(this OWLOntology ontology, OWLObjectProperty objProp)
+        {
+            List<(bool,OWLObjectPropertyExpression)> invObjPropExprs = new List<(bool,OWLObjectPropertyExpression)>();
+            if (ontology != null && objProp != null)
+            {
+                RDFResource objPropExprIRI = objProp.GetIRI();
+                foreach (OWLInverseObjectProperties invObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>())
+                {
+                    if (invObjProp.LeftObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
+                        invObjPropExprs.Add((false, invObjProp.RightObjectPropertyExpression));
+                    if (invObjProp.LeftObjectPropertyExpression is OWLObjectInverseOf leftInvOf && leftInvOf.ObjectProperty.GetIRI().Equals(objPropExprIRI))
+                        invObjPropExprs.Add((true, invObjProp.RightObjectPropertyExpression));
+                    if (invObjProp.RightObjectPropertyExpression.GetIRI().Equals(objPropExprIRI))
+                        invObjPropExprs.Add((false, invObjProp.LeftObjectPropertyExpression));
+                    if (invObjProp.RightObjectPropertyExpression is OWLObjectInverseOf rightInvOf && rightInvOf.ObjectProperty.GetIRI().Equals(objPropExprIRI))
+                        invObjPropExprs.Add((true, invObjProp.LeftObjectPropertyExpression));
+                }
+            }
+            return invObjPropExprs;
         }
     }
 }
