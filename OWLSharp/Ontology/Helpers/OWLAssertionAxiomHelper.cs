@@ -566,14 +566,9 @@ namespace OWLSharp.Ontology.Helpers
         #region Utilities
         internal static List<OWLObjectPropertyAssertion> SelectObjectAssertionsByOPEX(List<OWLObjectPropertyAssertion> objPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
         {
-            if (objPropExpr is OWLObjectInverseOf objPropExprInvOf)
-                return objPropAsnAxioms.Where(ax =>
-                        (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(objPropExprInvOf.ObjectProperty.GetIRI()))
-                     || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(objPropExprInvOf.ObjectProperty.GetIRI()))).ToList();
-            else
-                return objPropAsnAxioms.Where(ax =>
-                        (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(objPropExpr.GetIRI()))
-                     || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(objPropExpr.GetIRI()))).ToList();
+			RDFResource opexIRI = objPropExpr is OWLObjectInverseOf objPropExprInvOf ? objPropExprInvOf.ObjectProperty.GetIRI() : objPropExpr.GetIRI();
+            return objPropAsnAxioms.Where(ax => (ax.ObjectPropertyExpression is OWLObjectInverseOf asnObjInvOf && asnObjInvOf.ObjectProperty.GetIRI().Equals(opexIRI))
+												  || (ax.ObjectPropertyExpression is OWLObjectProperty asnObjProp && asnObjProp.GetIRI().Equals(opexIRI))).ToList();
         }
 
         internal static List<OWLDataPropertyAssertion> SelectDataAssertionsByDPEX(List<OWLDataPropertyAssertion> dtPropAsnAxioms, OWLDataProperty dtProp)
