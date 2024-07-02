@@ -29,7 +29,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Ontology")]
-    public class OWLOntology : ICloneable
+    public class OWLOntology
     {
         #region Properties
         [XmlAttribute("ontologyIRI", DataType="anyURI")]
@@ -127,34 +127,39 @@ namespace OWLSharp.Ontology
             AssertionAxioms = new List<OWLAssertionAxiom>();
             AnnotationAxioms = new List<OWLAnnotationAxiom>();
         }
+
         public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI=null) : this()
         {
             IRI = ontologyIRI?.ToString();
             VersionIRI = ontologyVersionIRI?.ToString();
         }
-        #endregion
 
-		#region Interfaces
-		public object Clone()
-			=>  new OWLOntology() 
-				{
-					//Ontology
-					IRI = IRI,
-					VersionIRI = VersionIRI,
-					Prefixes = new List<OWLPrefix>(Prefixes),
-					Imports = new List<OWLImport>(Imports),
-					Annotations = new List<OWLAnnotation>(Annotations),
-					//Axioms
-					DeclarationAxioms = new List<OWLDeclaration>(DeclarationAxioms),
-					ClassAxioms = new List<OWLClassAxiom>(ClassAxioms),
-					ObjectPropertyAxioms = new List<OWLObjectPropertyAxiom>(ObjectPropertyAxioms),
-					DataPropertyAxioms = new List<OWLDataPropertyAxiom>(DataPropertyAxioms),
-					DatatypeDefinitionAxioms = new List<OWLDatatypeDefinition>(DatatypeDefinitionAxioms),
-					KeyAxioms = new List<OWLHasKey>(KeyAxioms),
-					AssertionAxioms = new List<OWLAssertionAxiom>(AssertionAxioms),
-					AnnotationAxioms = new List<OWLAnnotationAxiom>(AnnotationAxioms)
-				};
-		#endregion
+		public OWLOntology(OWLOntology ontology)
+		{
+			IRI = ontology?.IRI;
+			VersionIRI = ontology?.VersionIRI;
+			Prefixes = new List<OWLPrefix>(ontology?.Prefixes ?? 
+						new List<OWLPrefix>()
+						{
+							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
+							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)),
+							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDF.PREFIX)),
+							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
+							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
+						});
+			Imports = new List<OWLImport>(ontology?.Imports ?? Enumerable.Empty<OWLImport>());
+			Annotations = new List<OWLAnnotation>(ontology?.Annotations ?? Enumerable.Empty<OWLAnnotation>());
+			//Axioms
+			DeclarationAxioms = new List<OWLDeclaration>(ontology?.DeclarationAxioms ?? Enumerable.Empty<OWLDeclaration>());
+			ClassAxioms = new List<OWLClassAxiom>(ontology?.ClassAxioms ?? Enumerable.Empty<OWLClassAxiom>());
+			ObjectPropertyAxioms = new List<OWLObjectPropertyAxiom>(ontology?.ObjectPropertyAxioms ?? Enumerable.Empty<OWLObjectPropertyAxiom>());
+			DataPropertyAxioms = new List<OWLDataPropertyAxiom>(ontology?.DataPropertyAxioms ?? Enumerable.Empty<OWLDataPropertyAxiom>());
+			DatatypeDefinitionAxioms = new List<OWLDatatypeDefinition>(ontology?.DatatypeDefinitionAxioms ?? Enumerable.Empty<OWLDatatypeDefinition>());
+			KeyAxioms = new List<OWLHasKey>(ontology?.KeyAxioms ?? Enumerable.Empty<OWLHasKey>());
+			AssertionAxioms = new List<OWLAssertionAxiom>(ontology?.AssertionAxioms ?? Enumerable.Empty<OWLAssertionAxiom>());
+			AnnotationAxioms = new List<OWLAnnotationAxiom>(ontology?.AnnotationAxioms ?? Enumerable.Empty<OWLAnnotationAxiom>());
+		}
+        #endregion
 
         #region Methods
 		public RDFGraph ToRDFGraph()

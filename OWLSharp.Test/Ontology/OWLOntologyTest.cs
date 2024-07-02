@@ -63,6 +63,108 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
+        public void ShouldCreateOntologyFromExisting()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+			ontology.Prefixes.Add(
+				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+			ontology.Imports.Add(
+				new OWLImport(new RDFResource("ex:ont2")));
+			ontology.Annotations.Add(
+				new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+				{ 
+					Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+				});
+			ontology.DeclarationAxioms.AddRange(
+				[ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
+				  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
+				  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+				  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+			ontology.ClassAxioms.Add(
+				new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
+			ontology.ObjectPropertyAxioms.Add(
+				new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+			ontology.DataPropertyAxioms.Add(
+				new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+			ontology.DatatypeDefinitionAxioms.Add(
+				new OWLDatatypeDefinition(
+					new OWLDatatype(new RDFResource("ex:length6to10")),
+					new OWLDatatypeRestriction(
+						new OWLDatatype(RDFVocabulary.XSD.STRING),
+						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+			ontology.KeyAxioms.Add(
+				new OWLHasKey(
+					new OWLClass(RDFVocabulary.FOAF.AGENT),
+					[ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
+					[ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+			ontology.AssertionAxioms.Add(
+				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+			ontology.AnnotationAxioms.Add(
+				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+			
+			//Test cloning an ontology
+			OWLOntology clonedOntology = new OWLOntology(ontology);
+			Assert.IsNotNull(clonedOntology);
+            Assert.IsTrue(string.Equals(clonedOntology.IRI, "ex:ont"));
+			Assert.IsTrue(string.Equals(clonedOntology.VersionIRI, "ex:ont/v1"));
+			Assert.IsNotNull(clonedOntology.Prefixes);
+			Assert.IsTrue(clonedOntology.Prefixes.Count == 6);
+			Assert.IsNotNull(clonedOntology.Imports);
+			Assert.IsTrue(clonedOntology.Imports.Count == 1);
+			Assert.IsNotNull(clonedOntology.Annotations);
+			Assert.IsTrue(clonedOntology.Annotations.Count == 1);
+			Assert.IsNotNull(clonedOntology.DeclarationAxioms);
+			Assert.IsTrue(clonedOntology.DeclarationAxioms.Count == 8);
+			Assert.IsNotNull(clonedOntology.ClassAxioms);
+			Assert.IsTrue(clonedOntology.ClassAxioms.Count == 1);
+			Assert.IsNotNull(clonedOntology.ObjectPropertyAxioms);
+			Assert.IsTrue(clonedOntology.ObjectPropertyAxioms.Count == 1);
+			Assert.IsNotNull(clonedOntology.DataPropertyAxioms);
+			Assert.IsTrue(clonedOntology.DataPropertyAxioms.Count == 1);
+			Assert.IsNotNull(clonedOntology.DatatypeDefinitionAxioms);
+			Assert.IsTrue(clonedOntology.DatatypeDefinitionAxioms.Count == 1);
+			Assert.IsNotNull(clonedOntology.KeyAxioms);
+			Assert.IsTrue(clonedOntology.KeyAxioms.Count == 1);
+			Assert.IsNotNull(clonedOntology.AssertionAxioms);
+			Assert.IsTrue(clonedOntology.AssertionAxioms.Count == 1);
+			Assert.IsNotNull(clonedOntology.AnnotationAxioms);
+			Assert.IsTrue(clonedOntology.AnnotationAxioms.Count == 1);
+
+			//Test cloning a null ontology
+			OWLOntology clonedEmptyOntology = new OWLOntology(null);
+			Assert.IsNotNull(clonedEmptyOntology);
+            Assert.IsNull(clonedEmptyOntology.IRI);
+			Assert.IsNull(clonedEmptyOntology.VersionIRI);
+			Assert.IsNotNull(clonedEmptyOntology.Prefixes);
+			Assert.IsTrue(clonedEmptyOntology.Prefixes.Count == 5);
+			Assert.IsNotNull(clonedEmptyOntology.Imports);
+			Assert.IsTrue(clonedEmptyOntology.Imports.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.Annotations);
+			Assert.IsTrue(clonedEmptyOntology.Annotations.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.DeclarationAxioms);
+			Assert.IsTrue(clonedEmptyOntology.DeclarationAxioms.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.ClassAxioms);
+			Assert.IsTrue(clonedEmptyOntology.ClassAxioms.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.ObjectPropertyAxioms);
+			Assert.IsTrue(clonedEmptyOntology.ObjectPropertyAxioms.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.DataPropertyAxioms);
+			Assert.IsTrue(clonedEmptyOntology.DataPropertyAxioms.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.DatatypeDefinitionAxioms);
+			Assert.IsTrue(clonedEmptyOntology.DatatypeDefinitionAxioms.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.KeyAxioms);
+			Assert.IsTrue(clonedEmptyOntology.KeyAxioms.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.AssertionAxioms);
+			Assert.IsTrue(clonedEmptyOntology.AssertionAxioms.Count == 0);
+			Assert.IsNotNull(clonedEmptyOntology.AnnotationAxioms);
+			Assert.IsTrue(clonedEmptyOntology.AnnotationAxioms.Count == 0);
+        }
+
+		[TestMethod]
 		public void ShouldSerializeOntology()
 		{
 			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
