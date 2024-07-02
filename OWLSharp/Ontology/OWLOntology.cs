@@ -29,7 +29,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Ontology")]
-    public class OWLOntology
+    public class OWLOntology : ICloneable
     {
         #region Properties
         [XmlAttribute("ontologyIRI", DataType="anyURI")]
@@ -133,6 +133,28 @@ namespace OWLSharp.Ontology
             VersionIRI = ontologyVersionIRI?.ToString();
         }
         #endregion
+
+		#region Interfaces
+		public object Clone()
+			=>  new OWLOntology() 
+				{
+					//Ontology
+					IRI = IRI,
+					VersionIRI = VersionIRI,
+					Prefixes = new List<OWLPrefix>(Prefixes),
+					Imports = new List<OWLImport>(Imports),
+					Annotations = new List<OWLAnnotation>(Annotations),
+					//Axioms
+					DeclarationAxioms = new List<OWLDeclaration>(DeclarationAxioms),
+					ClassAxioms = new List<OWLClassAxiom>(ClassAxioms),
+					ObjectPropertyAxioms = new List<OWLObjectPropertyAxiom>(ObjectPropertyAxioms),
+					DataPropertyAxioms = new List<OWLDataPropertyAxiom>(DataPropertyAxioms),
+					DatatypeDefinitionAxioms = new List<OWLDatatypeDefinition>(DatatypeDefinitionAxioms),
+					KeyAxioms = new List<OWLHasKey>(KeyAxioms),
+					AssertionAxioms = new List<OWLAssertionAxiom>(AssertionAxioms),
+					AnnotationAxioms = new List<OWLAnnotationAxiom>(AnnotationAxioms)
+				};
+		#endregion
 
         #region Methods
 		public RDFGraph ToRDFGraph()
@@ -2403,6 +2425,6 @@ namespace OWLSharp.Ontology
                 throw new OWLException($"Cannot import ontology because: {ex.Message}", ex);
             }
         }
-        #endregion
-    }
+		#endregion
+	}
 }
