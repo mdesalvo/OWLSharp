@@ -40,6 +40,7 @@ namespace OWLSharp
 			InverseObjectPropertiesEntailment = 13,
             SymmetricObjectPropertyEntailment = 14,
 			ReflexiveObjectPropertyEntailment = 15,
+            TransitiveObjectPropertyEntailment = 16,
         }
     }
 }
