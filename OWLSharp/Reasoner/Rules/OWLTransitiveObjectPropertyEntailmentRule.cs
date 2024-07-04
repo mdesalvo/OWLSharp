@@ -38,6 +38,7 @@ namespace OWLSharp.Reasoner.Rules
             //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
             foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
 			{
+                #region ObjectPropertyAssertion Calibration
                 //Extract (deduplicated) object assertions of the current transitive property
                 List<OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
@@ -61,7 +62,9 @@ namespace OWLSharp.Reasoner.Rules
                     }
                 }
                 trnObjPropAsns = OWLAxiomHelper.RemoveDuplicates(trnObjPropAsns);
+                #endregion
 
+                #region Transitive Closure Analysis
                 //Iterate object assertions to find inference opportunities (transitive closure)
                 visitContext.Clear();
                 transitiveRelatedIdvExprs.Clear();
@@ -76,9 +79,9 @@ namespace OWLSharp.Reasoner.Rules
                     transitiveRelatedIdvExprs.Clear();
                     visitContext.Clear();
                 }
-
                 //Remove inferences already stated in explicit knowledge
                 inferences.RemoveAll(inf => trnObjPropAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+                #endregion
             }
 
             return inferences;
