@@ -23,11 +23,13 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLTransitiveObjectPropertyEntailmentRule
     {
+        internal static List<OWLIndividualExpression> EmptyIdvExprList = Enumerable.Empty<OWLIndividualExpression>().ToList();
+
         internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-            //Temporary algorythm working variables
+            //Temporary working variables
             OWLIndividualExpression swapIdvExpr;
             HashSet<long> visitContext = new HashSet<long>();
             List<OWLIndividualExpression> transitiveRelatedIdvExprs = new List<OWLIndividualExpression>();
@@ -96,8 +98,7 @@ namespace OWLSharp.Reasoner.Rules
 
             //DIRECT
             transitiveRelatedIdvExprs.AddRange(trnObjPropAsnGroups.SingleOrDefault(grp => grp.Key.GetIRI().Equals(trnObjPropAsnGroupKeyIRI))
-                                                                 ?.Select(asn => asn.TargetIndividualExpression)
-                                                                ?? Enumerable.Empty<OWLIndividualExpression>());
+                                                                 ?.Select(asn => asn.TargetIndividualExpression) ?? EmptyIdvExprList);
 
             //INDIRECT
             foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs.ToList())
