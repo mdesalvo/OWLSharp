@@ -32,7 +32,6 @@ namespace OWLSharp.Reasoner.Rules
             //Temporary working variables
             OWLIndividualExpression swapIdvExpr;
             HashSet<long> visitContext = new HashSet<long>();
-            List<OWLIndividualExpression> transitiveRelatedIdvExprs = new List<OWLIndividualExpression>();
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
             //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
@@ -68,17 +67,11 @@ namespace OWLSharp.Reasoner.Rules
 
                 #region Transitive Closure Analysis
                 //Iterate object assertions to find inference opportunities (transitive closure)
-                visitContext.Clear();
-                transitiveRelatedIdvExprs.Clear();
                 IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression);
                 foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
 				{
-                    RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
-                    transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
-                    foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs)
+                    foreach (OWLIndividualExpression transitiveRelatedIdvExpr in FindTransitiveRelatedIndividuals(trnObjPropAsnGroup.Key.GetIRI(), trnObjPropAsnGroups, visitContext))
                         inferences.Add(new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true });
-
-                    transitiveRelatedIdvExprs.Clear();
                     visitContext.Clear();
                 }
                 //Remove inferences already stated in explicit knowledge
