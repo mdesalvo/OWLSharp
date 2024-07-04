@@ -34,14 +34,25 @@ namespace OWLSharp.Reasoner.Rules
                 //Extract object assertions of the current transitive property
                 List<OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
+                {
+                    //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
                     if (trnObjPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                    {
-                        //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
+                    {   
                         swapIdvExpr = trnObjPropAsns[i].SourceIndividualExpression;
                         trnObjPropAsns[i].SourceIndividualExpression = trnObjPropAsns[i].TargetIndividualExpression;
                         trnObjPropAsns[i].TargetIndividualExpression = swapIdvExpr;
                         trnObjPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
                     }
+
+                    //In case the transitive object property works under inverse logic, we must swap source/target of the object assertion
+                    if (trnObjProp.ObjectPropertyExpression is OWLObjectInverseOf trnObjInvOf)
+                    {
+                        swapIdvExpr = trnObjPropAsns[i].SourceIndividualExpression;
+                        trnObjPropAsns[i].SourceIndividualExpression = trnObjPropAsns[i].TargetIndividualExpression;
+                        trnObjPropAsns[i].TargetIndividualExpression = swapIdvExpr;
+                        trnObjPropAsns[i].ObjectPropertyExpression = trnObjInvOf.ObjectProperty;
+                    }
+                }
 
                 //Iterate object assertions to find inference opportunities (transitive closure)
                 foreach (OWLObjectPropertyAssertion trnObjPropAsn in trnObjPropAsns)
