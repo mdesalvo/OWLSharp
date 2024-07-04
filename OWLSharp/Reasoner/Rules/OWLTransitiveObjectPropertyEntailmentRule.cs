@@ -55,7 +55,7 @@ namespace OWLSharp.Reasoner.Rules
                 }
 
                 //Iterate object assertions to find inference opportunities (transitive closure)
-                foreach (OWLObjectPropertyAssertion trnObjPropAsn in trnObjPropAsns)
+                foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsn in trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression))
 				{
 					//TODO
                 }
