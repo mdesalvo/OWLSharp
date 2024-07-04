@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Reasoner.Rules
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 6); //TODO
+            Assert.IsTrue(inferences.Count == 6);
         }
         #endregion
     }

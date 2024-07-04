@@ -73,11 +73,11 @@ namespace OWLSharp.Reasoner.Rules
                     transitiveRelatedIdvExprs.Clear();
                     visitContext.Clear();
                 }
-			}
 
-            //Remove inferences already stated in explicit knowledge
+                //Remove inferences already stated in explicit knowledge
+                inferences.RemoveAll(inf => trnObjPropAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+            }
 
-            
             return inferences;
         }
 
