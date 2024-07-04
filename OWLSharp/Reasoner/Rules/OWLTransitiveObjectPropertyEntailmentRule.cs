@@ -65,22 +65,19 @@ namespace OWLSharp.Reasoner.Rules
                 IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression);
                 foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
 				{
-                    #region VisitContext
                     RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
-                    if (!visitContext.Contains(trnObjPropAsnGroupKeyIRI.PatternMemberID))
-                        visitContext.Add(trnObjPropAsnGroupKeyIRI.PatternMemberID);
-                    else
-                        continue;
-                    #endregion
-
                     transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
                     foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs)
                         inferences.Add(new OWLObjectPropertyAssertion(trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr));
 
                     transitiveRelatedIdvExprs.Clear();
+                    visitContext.Clear();
                 }
 			}
 
+            //Remove inferences already stated in explicit knowledge
+
+            
             return inferences;
         }
 
@@ -97,8 +94,9 @@ namespace OWLSharp.Reasoner.Rules
             #endregion
 
             //DIRECT
-            transitiveRelatedIdvExprs.AddRange(trnObjPropAsnGroups.Single(grp => grp.Key.GetIRI().Equals(trnObjPropAsnGroupKeyIRI))
-                                                                  .Select(asn => asn.TargetIndividualExpression));
+            transitiveRelatedIdvExprs.AddRange(trnObjPropAsnGroups.SingleOrDefault(grp => grp.Key.GetIRI().Equals(trnObjPropAsnGroupKeyIRI))
+                                                                 ?.Select(asn => asn.TargetIndividualExpression)
+                                                                ?? Enumerable.Empty<OWLIndividualExpression>());
 
             //INDIRECT
             foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs.ToList())
