@@ -17,6 +17,7 @@ using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner.Rules;
 using RDFSharp.Model;
+using System;
 using System.Collections.Generic;
 
 namespace OWLSharp.Test.Reasoner.Rules
@@ -57,22 +58,26 @@ namespace OWLSharp.Test.Reasoner.Rules
 					new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
                 ]
             };
+            bool shouldAddMoreAsns = new Random().NextDouble() > 0.5;
+            if (shouldAddMoreAsns)
+            {
+                ontology.AssertionAxioms.Add(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))));
+                ontology.AssertionAxioms.Add(new OWLObjectPropertyAssertion(
+                   new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                   new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")),
+                   new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))));
+            }
             List<OWLAxiom> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 20);
+            Assert.IsTrue(inferences.Count == (shouldAddMoreAsns ? 20 : 6));
         }
         #endregion
     }
