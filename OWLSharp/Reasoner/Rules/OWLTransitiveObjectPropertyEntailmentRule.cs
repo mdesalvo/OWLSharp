@@ -39,7 +39,7 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
 			{
                 #region ObjectPropertyAssertion Calibration
-                //Extract (deduplicated) object assertions of the current transitive property
+                //Extract (calibrated and deduplicated) object assertions of the current transitive property
                 List<OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
                 {
