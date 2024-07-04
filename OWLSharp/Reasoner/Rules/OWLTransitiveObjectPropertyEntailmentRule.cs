@@ -38,9 +38,11 @@ namespace OWLSharp.Reasoner.Rules
             //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
             foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
 			{
+                bool isTrnObjInvOf = trnObjProp.ObjectPropertyExpression is OWLObjectInverseOf;
+
                 #region ObjectPropertyAssertion Calibration
                 //Extract (calibrated and deduplicated) object assertions of the current transitive property
-                List<OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
+                List <OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
                 {
                     //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
@@ -74,7 +76,7 @@ namespace OWLSharp.Reasoner.Rules
                     RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
                     transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
                     foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs)
-                        inferences.Add(new OWLObjectPropertyAssertion(trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true });
+                        inferences.Add(new OWLObjectPropertyAssertion(isTrnObjInvOf ? ((OWLObjectInverseOf)trnObjProp.ObjectPropertyExpression).ObjectProperty : trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true });
 
                     transitiveRelatedIdvExprs.Clear();
                     visitContext.Clear();
