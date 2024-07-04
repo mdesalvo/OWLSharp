@@ -68,7 +68,7 @@ namespace OWLSharp.Reasoner.Rules
                     RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
                     transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
                     foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs)
-                        inferences.Add(new OWLObjectPropertyAssertion(trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr));
+                        inferences.Add(new OWLObjectPropertyAssertion(trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true });
 
                     transitiveRelatedIdvExprs.Clear();
                     visitContext.Clear();
