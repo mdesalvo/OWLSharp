@@ -38,7 +38,7 @@ namespace OWLSharp.Reasoner.Rules
             //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
             foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
 			{
-                bool isTrnObjInvOf = trnObjProp.ObjectPropertyExpression is OWLObjectInverseOf;
+                OWLObjectProperty trnObjPropInvOfValue = (trnObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
                 #region ObjectPropertyAssertion Calibration
                 //Extract (calibrated and deduplicated) object assertions of the current transitive property
@@ -55,12 +55,12 @@ namespace OWLSharp.Reasoner.Rules
                     }
 
                     //In case the transitive object property works under inverse logic, we must swap source/target of the object assertion
-                    if (trnObjProp.ObjectPropertyExpression is OWLObjectInverseOf trnObjInvOf)
+                    if (trnObjPropInvOfValue != null)
                     {
                         swapIdvExpr = trnObjPropAsns[i].SourceIndividualExpression;
                         trnObjPropAsns[i].SourceIndividualExpression = trnObjPropAsns[i].TargetIndividualExpression;
                         trnObjPropAsns[i].TargetIndividualExpression = swapIdvExpr;
-                        trnObjPropAsns[i].ObjectPropertyExpression = trnObjInvOf.ObjectProperty;
+                        trnObjPropAsns[i].ObjectPropertyExpression = trnObjPropInvOfValue;
                     }
                 }
                 trnObjPropAsns = OWLAxiomHelper.RemoveDuplicates(trnObjPropAsns);
@@ -76,7 +76,7 @@ namespace OWLSharp.Reasoner.Rules
                     RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
                     transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
                     foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs)
-                        inferences.Add(new OWLObjectPropertyAssertion(isTrnObjInvOf ? ((OWLObjectInverseOf)trnObjProp.ObjectPropertyExpression).ObjectProperty : trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true });
+                        inferences.Add(new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true });
 
                     transitiveRelatedIdvExprs.Clear();
                     visitContext.Clear();
@@ -105,7 +105,7 @@ namespace OWLSharp.Reasoner.Rules
             transitiveRelatedIdvExprs.AddRange(trnObjPropAsnGroups.SingleOrDefault(grp => grp.Key.GetIRI().Equals(trnObjPropAsnGroupKeyIRI))
                                                                  ?.Select(asn => asn.TargetIndividualExpression) ?? EmptyIdvExprList);
 
-            //INDIRECT
+            //INDIRECT (TRANSITIVE CLOSURE)
             foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs.ToList())
                 transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(transitiveRelatedIdvExpr.GetIRI(), trnObjPropAsnGroups, visitContext));
 
