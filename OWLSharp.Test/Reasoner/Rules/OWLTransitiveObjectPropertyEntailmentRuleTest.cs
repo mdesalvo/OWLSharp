@@ -57,14 +57,18 @@ namespace OWLSharp.Test.Reasoner.Rules
 					new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
                 ]
             };
             List<OWLAxiom> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 6);
+            Assert.IsTrue(inferences.Count == 20); //without the latest object assertion (needed by testing infinite loops) this would be 6
         }
         #endregion
     }
