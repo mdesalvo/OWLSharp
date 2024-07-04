@@ -26,6 +26,8 @@ namespace OWLSharp.Reasoner.Rules
         internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
+
+            //Temporary algorythm working variables
             OWLIndividualExpression swapIdvExpr;
             HashSet<long> visitContext = new HashSet<long>();
             List<OWLIndividualExpression> transitiveRelatedIdvExprs = new List<OWLIndividualExpression>();
@@ -64,11 +66,12 @@ namespace OWLSharp.Reasoner.Rules
                 IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression);
                 foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
 				{
-                    RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
-
                     #region VisitContext
+                    RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
                     if (!visitContext.Contains(trnObjPropAsnGroupKeyIRI.PatternMemberID))
                         visitContext.Add(trnObjPropAsnGroupKeyIRI.PatternMemberID);
+                    else
+                        continue;
                     #endregion
 
                     transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsns, trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
