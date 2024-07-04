@@ -36,7 +36,7 @@ namespace OWLSharp.Reasoner.Rules
             //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
             foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
 			{
-                //Extract object assertions of the current transitive property
+                //Extract (deduplicated) object assertions of the current transitive property
                 List<OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
                 {
@@ -58,6 +58,7 @@ namespace OWLSharp.Reasoner.Rules
                         trnObjPropAsns[i].ObjectPropertyExpression = trnObjInvOf.ObjectProperty;
                     }
                 }
+                trnObjPropAsns = OWLAxiomHelper.RemoveDuplicates(trnObjPropAsns);
 
                 //Iterate object assertions to find inference opportunities (transitive closure)
                 visitContext.Clear();
