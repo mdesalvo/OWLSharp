@@ -74,7 +74,7 @@ namespace OWLSharp.Reasoner.Rules
                         continue;
                     #endregion
 
-                    transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsns, trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
+                    transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext));
                     foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs)
                         inferences.Add(new OWLObjectPropertyAssertion(trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr));
 
@@ -85,24 +85,25 @@ namespace OWLSharp.Reasoner.Rules
             return inferences;
         }
 
-        internal static List<OWLIndividualExpression> FindTransitiveRelatedIndividuals(List<OWLObjectPropertyAssertion> trnObjPropAsns, RDFResource trnObjPropAsnGroupKeyIRI,
+        internal static List<OWLIndividualExpression> FindTransitiveRelatedIndividuals(RDFResource trnObjPropAsnGroupKeyIRI,
             IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups, HashSet<long> visitContext)
         {
             List<OWLIndividualExpression> transitiveRelatedIdvExprs = new List<OWLIndividualExpression>();
 
             #region VisitContext
-            RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
             if (!visitContext.Contains(trnObjPropAsnGroupKeyIRI.PatternMemberID))
                 visitContext.Add(trnObjPropAsnGroupKeyIRI.PatternMemberID);
+            else
+                return transitiveRelatedIdvExprs;
             #endregion
 
-            //DIRECT
+                //DIRECT
             transitiveRelatedIdvExprs.AddRange(trnObjPropAsnGroups.Single(grp => grp.Key.GetIRI().Equals(trnObjPropAsnGroupKeyIRI))
                                                                   .Select(asn => asn.TargetIndividualExpression));
 
             //INDIRECT
             foreach (OWLIndividualExpression transitiveRelatedIdvExpr in transitiveRelatedIdvExprs.ToList())
-                transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(trnObjPropAsns,  , visitContext));
+                transitiveRelatedIdvExprs.AddRange(FindTransitiveRelatedIndividuals(transitiveRelatedIdvExpr.GetIRI(), trnObjPropAsnGroups, visitContext));
 
             return transitiveRelatedIdvExprs;
         }
