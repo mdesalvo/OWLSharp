@@ -61,7 +61,7 @@ namespace OWLSharp.Reasoner.Rules
 					inferences.Add(new OWLObjectPropertyAssertion(
 						new OWLObjectProperty((RDFResource)materializedChainTriple.Predicate),
 						new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject),
-						new OWLNamedIndividual((RDFResource)materializedChainTriple.Object)));
+						new OWLNamedIndividual((RDFResource)materializedChainTriple.Object)) { IsInference=true });
 			}
 
             return inferences;
