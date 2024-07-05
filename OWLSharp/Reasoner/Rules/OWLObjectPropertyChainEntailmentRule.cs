@@ -57,11 +57,24 @@ namespace OWLSharp.Reasoner.Rules
                         .ApplyToGraph(opAsnsGraph);
 
 				//Populate result with corresponding inference assertions
+				OWLIndividualExpression infSrcIdvExpr = null;
+				OWLIndividualExpression infTgtIdvExpr = null;
                 foreach (RDFTriple materializedChainTriple in materializedChainTriples.ToRDFGraph())
-					inferences.Add(new OWLObjectPropertyAssertion(
-						new OWLObjectProperty((RDFResource)materializedChainTriple.Predicate),
-						new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject),
-						new OWLNamedIndividual((RDFResource)materializedChainTriple.Object)) { IsInference=true });
+				{
+					//Rebuild source individual
+					if (((RDFResource)materializedChainTriple.Subject).IsBlank) 
+						infSrcIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Subject.ToString().Replace("bnode:", string.Empty));
+					else
+						infSrcIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject);
+
+					//Rebuild target individual
+					if (((RDFResource)materializedChainTriple.Object).IsBlank) 
+						infTgtIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Object.ToString().Replace("bnode:", string.Empty));
+					else
+						infTgtIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Object);
+
+					inferences.Add(new OWLObjectPropertyAssertion(new OWLObjectProperty((RDFResource)materializedChainTriple.Predicate), infSrcIdvExpr, infTgtIdvExpr) { IsInference=true });
+				}
 			}
 
             return inferences;

@@ -80,6 +80,58 @@ namespace OWLSharp.Test.Reasoner.Rules
         }
 
 		[TestMethod]
+        public void ShouldEntailSimpleObjectPropertyChainWithAnonymousIndividualsCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jish"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Fritz"))),
+                ],
+                ObjectPropertyAxioms = [ 
+                    new OWLSubObjectPropertyOf(
+						new OWLObjectPropertyChain([
+							new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+							new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")) ]),
+						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+                ],
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLAnonymousIndividual("Aebe"),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jish"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jish")),
+                        new OWLAnonymousIndividual("John")),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jish")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))),
+					new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Fritz"))),
+                ]
+            };
+            List<OWLAxiom> inferences = OWLObjectPropertyChainEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 2);
+            Assert.IsTrue(inferences[0] is OWLObjectPropertyAssertion inf 
+                            && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasUncle")
+							&& string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "bnode:Aebe")
+                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "bnode:John"));
+			Assert.IsTrue(inferences[1] is OWLObjectPropertyAssertion inf1 
+                            && string.Equals(inf1.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasUncle")
+							&& string.Equals(inf1.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jish")
+                            && string.Equals(inf1.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Fritz"));
+        }
+
+		[TestMethod]
         public void ShouldEntailObjectPropertyChainWithInverseStepCase()
         {
             OWLOntology ontology = new OWLOntology()
