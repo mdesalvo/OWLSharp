@@ -47,7 +47,7 @@ namespace OWLSharp.Reasoner.Rules
 				RDFPattern templatePattern = subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfSuperObjPropExpr 
 					? new RDFPattern(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"), objInvOfSuperObjPropExpr.ObjectProperty.GetIRI(), new RDFVariable("?PROPERTY_CHAIN_AXIOM_START")) 
 					: new RDFPattern(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"), subObjectPropertyOf.SuperObjectPropertyExpression.GetIRI(), new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"));
-                RDFConstructQueryResult queryResult =
+                RDFConstructQueryResult materializedChainTriples =
                     new RDFConstructQuery()
                         .AddPatternGroup(new RDFPatternGroup()
                             .AddPropertyPath(propertyPath)
@@ -57,11 +57,11 @@ namespace OWLSharp.Reasoner.Rules
                         .ApplyToGraph(opAsnsGraph);
 
 				//Populate result with corresponding inference assertions
-                foreach (RDFTriple queryResultTriple in queryResult.ToRDFGraph())
+                foreach (RDFTriple materializedChainTriple in materializedChainTriples.ToRDFGraph())
 					inferences.Add(new OWLObjectPropertyAssertion(
-						new OWLObjectProperty((RDFResource)queryResultTriple.Predicate),
-						new OWLNamedIndividual((RDFResource)queryResultTriple.Subject),
-						new OWLNamedIndividual((RDFResource)queryResultTriple.Object)));
+						new OWLObjectProperty((RDFResource)materializedChainTriple.Predicate),
+						new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject),
+						new OWLNamedIndividual((RDFResource)materializedChainTriple.Object)));
 			}
 
             return inferences;
