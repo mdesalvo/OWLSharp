@@ -43,15 +43,14 @@ namespace OWLSharp.Reasoner.Rules
 
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-            //Temporary working variables
+            //Temporary working variables (general)
             List<OWLSameIndividual> sameIdvs = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
             List<OWLObjectPropertyAssertion> opAsns = CalibrateObjectAssertions(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>());            
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-
-            //Iterate declared named individuals (which are focus of the rule)
             foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
 			                                                   .Select(ax => (OWLNamedIndividual)ax.Expression))
 			{
+                //Temporary working variables (declared individual)
                 RDFResource declaredIdvIRI = declaredIdv.GetIRI();
                 List<OWLObjectPropertyAssertion> declaredIdvSrcOpAsns = CalibrateObjectAssertions(opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList());
                 List<OWLObjectPropertyAssertion> declaredIdvTgtOpAsns = CalibrateObjectAssertions(opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList());
@@ -59,6 +58,7 @@ namespace OWLSharp.Reasoner.Rules
 
                 foreach (OWLIndividualExpression sameIdv in ontology.GetSameIndividuals(declaredIdv))
                 {
+                    //Temporary working variables (same individual)
                     RDFResource sameIdvIRI = sameIdv.GetIRI();
                     List<OWLObjectPropertyAssertion> sameIdvSrcOpAsns = opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
                     List<OWLObjectPropertyAssertion> sameIdvTgtOpAsns = opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
