@@ -25,17 +25,37 @@ namespace OWLSharp.Reasoner.Rules
     {
         internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
+            #region Utilities
+            List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(List<OWLObjectPropertyAssertion> objectPropertyAssertions)
+            {
+                OWLIndividualExpression swapIdvExpr;
+                for (int i = 0; i < objectPropertyAssertions.Count; i++)
+                    if (objectPropertyAssertions[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                    {
+                        swapIdvExpr = objectPropertyAssertions[i].SourceIndividualExpression;
+                        objectPropertyAssertions[i].SourceIndividualExpression = objectPropertyAssertions[i].TargetIndividualExpression;
+                        objectPropertyAssertions[i].TargetIndividualExpression = swapIdvExpr;
+                        objectPropertyAssertions[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+                    }
+                return OWLAxiomHelper.RemoveDuplicates(objectPropertyAssertions);
+            }
+            #endregion
+
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
+            //Temporary working variables
+            
             List<OWLSameIndividual> sameIdvs = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
-            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+            List<OWLObjectPropertyAssertion> opAsns = CalibrateObjectAssertions(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>());            
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
+            //Iterate declared named individuals (which are focus of the rule)
             foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
 			                                                   .Select(ax => (OWLNamedIndividual)ax.Expression))
 			{
                 RDFResource declaredIdvIRI = declaredIdv.GetIRI();
-                List<OWLObjectPropertyAssertion> declaredIdvSrcOpAsns = opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
-                List<OWLObjectPropertyAssertion> declaredIdvTgtOpAsns = opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
+                List<OWLObjectPropertyAssertion> declaredIdvSrcOpAsns = CalibrateObjectAssertions(opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList());
+                List<OWLObjectPropertyAssertion> declaredIdvTgtOpAsns = CalibrateObjectAssertions(opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList());
                 List<OWLDataPropertyAssertion> declaredIdvDpAsns = dpAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
 
                 foreach (OWLIndividualExpression sameIdv in ontology.GetSameIndividuals(declaredIdv))

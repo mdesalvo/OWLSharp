@@ -149,10 +149,9 @@ namespace OWLSharp.Test.Reasoner.Rules
             Assert.IsTrue(inferences.Count == 2);
             Assert.IsTrue(inferences.Count(inf => inf is OWLSameIndividual) == 1);
             Assert.IsTrue(inferences.Count(inf => inf is OWLObjectPropertyAssertion opAsn
-                                                    && opAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf 
-                                                        && string.Equals(objInvOf.ObjectProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
-                                                    && string.Equals(opAsn.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
-                                                    && string.Equals(opAsn.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Marco")) == 1);
+                                                    && string.Equals(opAsn.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
+                                                    && string.Equals(opAsn.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Marco")
+                                                    && string.Equals(opAsn.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")) == 1);
         }
 
         [TestMethod]

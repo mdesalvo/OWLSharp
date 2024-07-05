@@ -39,7 +39,7 @@ namespace OWLSharp.Reasoner.Rules
 			{
                 OWLObjectProperty trnObjPropInvOfValue = (trnObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
-                #region ObjectPropertyAssertion Calibration
+                #region Calibration
                 //Extract (calibrated and deduplicated) object assertions of the current transitive property
                 List <OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
@@ -65,7 +65,7 @@ namespace OWLSharp.Reasoner.Rules
                 trnObjPropAsns = OWLAxiomHelper.RemoveDuplicates(trnObjPropAsns);
                 #endregion
 
-                #region Transitive Closure Analysis
+                #region Analysis
                 //Iterate object assertions to find inference opportunities (transitive closure)
                 IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression);
                 foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
