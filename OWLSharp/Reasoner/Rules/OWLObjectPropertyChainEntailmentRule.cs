@@ -61,13 +61,13 @@ namespace OWLSharp.Reasoner.Rules
 				OWLIndividualExpression infTgtIdvExpr = null;
                 foreach (RDFTriple materializedChainTriple in materializedChainTriples.ToRDFGraph())
 				{
-					//Rebuild source individual
+					//Rebuild source individual (preserve support for anonymous individuals)
 					if (((RDFResource)materializedChainTriple.Subject).IsBlank) 
 						infSrcIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Subject.ToString().Replace("bnode:", string.Empty));
 					else
 						infSrcIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject);
 
-					//Rebuild target individual
+					//Rebuild target individual (preserve support for anonymous individuals)
 					if (((RDFResource)materializedChainTriple.Object).IsBlank) 
 						infTgtIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Object.ToString().Replace("bnode:", string.Empty));
 					else
