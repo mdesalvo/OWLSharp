@@ -72,12 +72,15 @@ namespace OWLSharp.Reasoner.Rules
 
                     /* SAMEAS ENTAILMENTS */
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)
+                    //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)
                     declaredIdvSrcOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, sameIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true }));
                     sameIdvSrcOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, declaredIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true }));
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I3,I1) -> ObjectPropertyAssertion(OP,I3,I2)
+                    //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I3,I2) -> ObjectPropertyAssertion(OP,I3,I1)
                     declaredIdvTgtOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, idvOpAsn.SourceIndividualExpression, sameIdv) { IsInference=true }));
                     sameIdvTgtOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, idvOpAsn.SourceIndividualExpression, declaredIdv) { IsInference=true }));
                     //SameIndividual(I1,I2) ^ DataPropertyAssertion(DP,I1,LIT) -> DataPropertyAssertion(DP,I2,LIT)
+                    //SameIndividual(I1,I2) ^ DataPropertyAssertion(DP,I2,LIT) -> DataPropertyAssertion(DP,I1,LIT)
                     if (sameIdv is OWLNamedIndividual sameNamedIndividual)
                         declaredIdvDpAsns.ForEach(idvDpAsn => inferences.Add(new OWLDataPropertyAssertion(idvDpAsn.DataProperty, sameNamedIndividual, idvDpAsn.Literal) { IsInference=true }));
                     else if (sameIdv is OWLAnonymousIndividual sameAnonIndividual)
