@@ -65,12 +65,12 @@ namespace OWLSharp.Reasoner.Rules
                     List<OWLObjectPropertyAssertion> sameIdvTgtOpAsns = opAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
                     List<OWLDataPropertyAssertion> sameIdvDpAsns = dpAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(sameIdvIRI)).ToList();
 
-                    /* TRANSITIVITY */
+                    /* SAMEAS TRANSITIVITY */
                     //SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)
                     inferences.Add(new OWLSameIndividual(new List<OWLIndividualExpression>() { declaredIdv, sameIdv }) { IsInference=true });
                     inferences.Add(new OWLSameIndividual(new List<OWLIndividualExpression>() { sameIdv, declaredIdv }) { IsInference = true });
 
-                    /* ENTAILMENTS */
+                    /* SAMEAS ENTAILMENTS */
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)
                     declaredIdvSrcOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, sameIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true }));
                     sameIdvSrcOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, declaredIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true }));
