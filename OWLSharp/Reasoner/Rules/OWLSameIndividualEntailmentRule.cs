@@ -31,7 +31,7 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
-																	  .Select(ax => (OWLNamedIndividual)ax.Expression))
+			                                                   .Select(ax => (OWLNamedIndividual)ax.Expression))
 			{
                 RDFResource declaredIdvIRI = declaredIdv.GetIRI();
                 List<OWLObjectPropertyAssertion> declaredIdvSrcOpAsns = opAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(declaredIdvIRI)).ToList();
