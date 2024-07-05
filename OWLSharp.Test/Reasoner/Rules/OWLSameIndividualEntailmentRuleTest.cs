@@ -121,6 +121,41 @@ namespace OWLSharp.Test.Reasoner.Rules
         }
 
         [TestMethod]
+        public void ShouldEntailSameIndividualInverseObjectAssertionTargetCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                ],
+                AssertionAxioms = [
+                    new OWLSameIndividual([
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))
+                    ]),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
+                ]
+            };
+            List<OWLAxiom> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 2);
+            Assert.IsTrue(inferences.Count(inf => inf is OWLSameIndividual) == 1);
+            Assert.IsTrue(inferences.Count(inf => inf is OWLObjectPropertyAssertion opAsn
+                                                    && opAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf 
+                                                        && string.Equals(objInvOf.ObjectProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
+                                                    && string.Equals(opAsn.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
+                                                    && string.Equals(opAsn.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Marco")) == 1);
+        }
+
+        [TestMethod]
         public void ShouldEntailSameIndividualDataAssertionCase()
         {
             OWLOntology ontology = new OWLOntology()
