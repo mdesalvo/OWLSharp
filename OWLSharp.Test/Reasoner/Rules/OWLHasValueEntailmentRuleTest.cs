@@ -61,6 +61,42 @@ namespace OWLSharp.Test.Reasoner.Rules
 							&& string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
                             && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny"));
         }
+
+		[TestMethod]
+        public void ShouldEntailDataHasValueCase()
+        {
+
+
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+					new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://frede.gat/stuff#propData"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions"))),
+                ],
+				ClassAxioms = [
+					new OWLSubClassOf(
+						new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+						new OWLDataHasValue(
+							new OWLDataProperty(new RDFResource("http://frede.gat/stuff#propData")),
+							new OWLLiteral(new RDFTypedLiteral("44", RDFModelEnums.RDFDatatypes.XSD_INTEGER))))
+				],
+				AssertionAxioms = [
+					new OWLClassAssertion(
+						new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+						new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+				]
+            };
+            List<OWLAxiom> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0] is OWLDataPropertyAssertion inf 
+                            && string.Equals(inf.DataProperty.GetIRI().ToString(), "http://frede.gat/stuff#propData")
+							&& string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
+                            && string.Equals(inf.Literal.GetLiteral().ToString(), "44^^http://www.w3.org/2001/XMLSchema#integer"));
+        }
         #endregion
     }
 }
