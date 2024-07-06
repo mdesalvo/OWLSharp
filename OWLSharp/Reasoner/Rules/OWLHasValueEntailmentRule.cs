@@ -15,6 +15,7 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,10 +34,20 @@ namespace OWLSharp.Reasoner.Rules
 			foreach (OWLSubClassOf subClassOfObjectHasValue in subClassOfAxioms.Where(ax => ax.SuperClassExpression is OWLObjectHasValue objHasValue))
 			{
 				OWLObjectHasValue objHasValue = (OWLObjectHasValue)subClassOfObjectHasValue.SuperClassExpression;
-				foreach (OWLClassAssertion classAssertion in classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassOfObjectHasValue.SubClassExpression.GetIRI())))
+				RDFResource subClassExpressionIRI = subClassOfObjectHasValue.SubClassExpression.GetIRI();
+				foreach (OWLClassAssertion classAssertion in classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
 					inferences.Add(objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objInvOfHasValue 
-						? new OWLObjectPropertyAssertion(objInvOfHasValue.ObjectProperty, objHasValue.IndividualExpression, classAssertion.IndividualExpression)
-						: new OWLObjectPropertyAssertion(objHasValue.ObjectPropertyExpression, classAssertion.IndividualExpression, objHasValue.IndividualExpression));	
+						? new OWLObjectPropertyAssertion(objInvOfHasValue.ObjectProperty, objHasValue.IndividualExpression, classAssertion.IndividualExpression) { IsInference=true }
+						: new OWLObjectPropertyAssertion(objHasValue.ObjectPropertyExpression, classAssertion.IndividualExpression, objHasValue.IndividualExpression) { IsInference=true });
+			}
+
+			//SubClassOf(C,DataHasValue(DP,LIT)) ^ ClassAssertion(C,I) -> DataPropertyAssertion(DP,I,LIT)
+			foreach (OWLSubClassOf subClassOfDataHasValue in subClassOfAxioms.Where(ax => ax.SuperClassExpression is OWLDataHasValue dtHasValue))
+			{
+				OWLDataHasValue dtHasValue = (OWLDataHasValue)subClassOfDataHasValue.SuperClassExpression;
+				RDFResource subClassExpressionIRI = subClassOfDataHasValue.SubClassExpression.GetIRI();
+				foreach (OWLClassAssertion classAssertion in classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
+					inferences.Add(new OWLDataPropertyAssertion(dtHasValue.DataProperty, dtHasValue.Literal) { IndividualExpression=classAssertion.IndividualExpression, IsInference=true });	
 			}
 
             return inferences;
