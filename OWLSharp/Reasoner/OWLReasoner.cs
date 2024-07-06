@@ -100,8 +100,11 @@ namespace OWLSharp.Reasoner
                             case OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment.ToString()] = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
                                 break;
-							case OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailmentRule:
-                                inferenceRegistry[OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailmentRule.ToString()] = OWLObjectPropertyChainEntailmentRule.ExecuteRule(ontology);
+							case OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment.ToString()] = OWLObjectPropertyChainEntailmentRule.ExecuteRule(ontology);
+                                break;
+							case OWLEnums.OWLReasonerRules.HasValueEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.HasValueEntailment.ToString()] = OWLHasValueEntailmentRule.ExecuteRule(ontology);
                                 break;
                         }
 
