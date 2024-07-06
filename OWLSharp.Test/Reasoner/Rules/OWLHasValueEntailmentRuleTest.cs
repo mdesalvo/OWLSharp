@@ -28,8 +28,6 @@ namespace OWLSharp.Test.Reasoner.Rules
         [TestMethod]
         public void ShouldEntailObjectHasValueCase()
         {
-
-
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 
@@ -65,8 +63,6 @@ namespace OWLSharp.Test.Reasoner.Rules
 		[TestMethod]
         public void ShouldEntailObjectHasValueWithInverseObjectHasValueCase()
         {
-
-
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 
@@ -102,8 +98,6 @@ namespace OWLSharp.Test.Reasoner.Rules
 		[TestMethod]
         public void ShouldEntailDataHasValueCase()
         {
-
-
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 

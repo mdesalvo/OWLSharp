@@ -42,7 +42,8 @@ namespace OWLSharp
 			ReflexiveObjectPropertyEntailment = 15,
             TransitiveObjectPropertyEntailment = 16,
 			ObjectPropertyChainEntailment = 17,
-			HasValueEntailment = 18
+			HasValueEntailment = 18,
+			HasSelfEntailment = 19
         }
     }
 }
