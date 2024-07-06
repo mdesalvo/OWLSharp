@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
@@ -44,7 +45,7 @@ namespace OWLSharp.Reasoner
 				StandardRules.ForEach(standardRule => inferenceRegistry.Add(standardRule.ToString(), null));
 
                 //Execute standard rules
-                Parallel.ForEach(StandardRules, 
+                Parallel.ForEach(StandardRules.Distinct(), 
                     standardRule =>
                     {
                         OWLEvents.RaiseInfo($"Launching standard reasoner rule '{standardRule}'");
