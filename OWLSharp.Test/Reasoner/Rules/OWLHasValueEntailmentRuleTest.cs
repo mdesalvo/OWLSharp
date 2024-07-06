@@ -63,6 +63,43 @@ namespace OWLSharp.Test.Reasoner.Rules
         }
 
 		[TestMethod]
+        public void ShouldEntailObjectHasValueWithInverseObjectHasValueCase()
+        {
+
+
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+					new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions"))),
+                ],
+				ClassAxioms = [
+					new OWLSubClassOf(
+						new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+						new OWLObjectHasValue(
+							new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
+							new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))))
+				],
+				AssertionAxioms = [
+					new OWLClassAssertion(
+						new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+						new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+				]
+            };
+            List<OWLAxiom> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0] is OWLObjectPropertyAssertion inf 
+                            && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propObj")
+							&& string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")
+                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions"));
+        }
+
+		[TestMethod]
         public void ShouldEntailDataHasValueCase()
         {
 
