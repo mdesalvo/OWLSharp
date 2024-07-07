@@ -26,14 +26,22 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-            //SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
-            //SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
+			//Temporary working variables
+			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
 			{
+				//SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
+            	//SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
 				List<OWLDataProperty> superDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
                 foreach (OWLDataProperty superDataProperty in superDataProperties)
                     inferences.Add(new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference=true });
+
+				//SubDataPropertyOf(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
+				foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, declaredDataProperty))
+					foreach (OWLDataProperty superDataProperty in superDataProperties)
+						inferences.Add(new OWLDataPropertyAssertion(superDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression=declaredDataPropertyAsn.IndividualExpression, IsInference=true });
 			}
 
             return inferences;
