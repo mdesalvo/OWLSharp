@@ -33,12 +33,15 @@ namespace OWLSharp.Reasoner.Rules
 			List<OWLClassAssertion> classAssertionAxioms = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 			List<OWLEquivalentClasses> equivalentClassesAxioms = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
 			List<OWLDisjointClasses> disjointClassesAxioms = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
+			List<OWLDisjointUnion> disjointUnionAxioms = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
 
-			//Collect classes: if not declared, we must exploit class axioms for extraction
+			//Collect classes for entailment execution
 			List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(declaredClasses);
 			inScopeClsExprs.AddRange(classAssertionAxioms.Select(ax => ax.ClassExpression));
 			inScopeClsExprs.AddRange(equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
 			inScopeClsExprs.AddRange(disjointClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
+			inScopeClsExprs.AddRange(disjointUnionAxioms.Select(ax => ax.ClassIRI));
+			inScopeClsExprs.AddRange(disjointUnionAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
 			foreach (OWLClassExpression inScopeClsExpr in OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs))
 			{
 				inScopeClsExprs.AddRange(ontology.GetSuperClassesOf(inScopeClsExpr));
