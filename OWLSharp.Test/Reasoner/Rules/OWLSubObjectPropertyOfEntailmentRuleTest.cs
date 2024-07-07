@@ -33,7 +33,9 @@ namespace OWLSharp.Test.Reasoner.Rules
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
 					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFriend"))),
-					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBestFriend")))
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBestFriend"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Olly")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLSubObjectPropertyOf(
@@ -42,16 +44,30 @@ namespace OWLSharp.Test.Reasoner.Rules
 					new OWLSubObjectPropertyOf(
 						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBestFriend")),
 						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFriend")))
+				],
+				AssertionAxioms = [
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBestFriend")),
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")),
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Olly")))
                 ]
             };
             List<OWLAxiom> inferences = OWLSubObjectPropertyOfEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences.Count == 3);
             Assert.IsTrue(inferences[0] is OWLSubObjectPropertyOf inf 
                             && string.Equals(inf.SubObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasBestFriend")
                             && string.Equals(inf.SuperObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows"));
+			Assert.IsTrue(inferences[1] is OWLObjectPropertyAssertion inf1 
+                            && string.Equals(inf1.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasFriend")
+							&& string.Equals(inf1.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                            && string.Equals(inf1.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Olly"));
+			Assert.IsTrue(inferences[2] is OWLObjectPropertyAssertion inf2 
+                            && string.Equals(inf2.ObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
+							&& string.Equals(inf2.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                            && string.Equals(inf2.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Olly"));
         }
         #endregion
     }
