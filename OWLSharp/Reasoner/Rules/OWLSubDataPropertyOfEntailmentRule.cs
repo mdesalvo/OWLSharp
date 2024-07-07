@@ -27,6 +27,7 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
 			//Temporary working variables
+			List<OWLSubDataPropertyOf> subDtPropOfAxs = ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>();
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
@@ -43,6 +44,9 @@ namespace OWLSharp.Reasoner.Rules
 					foreach (OWLDataProperty superDataProperty in superDataProperties)
 						inferences.Add(new OWLDataPropertyAssertion(superDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression=declaredDataPropertyAsn.IndividualExpression, IsInference=true });
 			}
+			//Remove inferences already stated in explicit knowledge
+            inferences.RemoveAll(inf => subDtPropOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+			inferences.RemoveAll(inf => dpAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
         }

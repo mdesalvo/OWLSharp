@@ -26,14 +26,27 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-            //EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)
+			//Temporary working variables
+			List<OWLEquivalentDataProperties> equivDtPropsAxs = ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>();
+			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
 			{
+				//EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)
 				List<OWLDataProperty> equivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
                 foreach (OWLDataProperty equivalentDataProperty in equivalentDataProperties)
                     inferences.Add(new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, equivalentDataProperty }) { IsInference=true });
+
+				//EquivalentDataProperties(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
+				foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, declaredDataProperty))
+					foreach (OWLDataProperty equivalentDataProperty in equivalentDataProperties)
+						inferences.Add(new OWLDataPropertyAssertion(equivalentDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression=declaredDataPropertyAsn.IndividualExpression, IsInference=true });
+
 			}
+			//Remove inferences already stated in explicit knowledge
+            inferences.RemoveAll(inf => equivDtPropsAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+			inferences.RemoveAll(inf => dpAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
         }
