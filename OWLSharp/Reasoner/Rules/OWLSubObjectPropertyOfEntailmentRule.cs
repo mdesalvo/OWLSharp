@@ -28,6 +28,8 @@ namespace OWLSharp.Reasoner.Rules
 			
 			//Temporary working variables
 			OWLIndividualExpression swapIdvExpr;
+			List<OWLSubObjectPropertyOf> subObjPropOfAxs = ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>();
+			List<OWLSubDataPropertyOf> subDtPropOfAxs = ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>();
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
@@ -57,6 +59,10 @@ namespace OWLSharp.Reasoner.Rules
 							? new OWLObjectPropertyAssertion(objInvOf.ObjectProperty, declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression) { IsInference=true }
 							: new OWLObjectPropertyAssertion(superObjectPropertyExpr, declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) { IsInference=true });
 			}
+			//Remove inferences already stated in explicit knowledge
+            inferences.RemoveAll(inf => subObjPropOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+			inferences.RemoveAll(inf => subDtPropOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+			inferences.RemoveAll(inf => opAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
         }
