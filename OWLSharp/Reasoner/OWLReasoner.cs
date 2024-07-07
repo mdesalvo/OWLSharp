@@ -109,6 +109,9 @@ namespace OWLSharp.Reasoner
 							case OWLEnums.OWLReasonerRules.HasSelfEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.HasSelfEntailment.ToString()] = OWLHasSelfEntailmentRule.ExecuteRule(ontology);
                                 break;
+							case OWLEnums.OWLReasonerRules.ClassAssertionEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.ClassAssertionEntailment.ToString()] = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': got {inferenceRegistry[standardRule.ToString()].Count} inferences");

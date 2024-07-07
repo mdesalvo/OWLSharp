@@ -43,7 +43,8 @@ namespace OWLSharp
             TransitiveObjectPropertyEntailment = 16,
 			ObjectPropertyChainEntailment = 17,
 			HasValueEntailment = 18,
-			HasSelfEntailment = 19
+			HasSelfEntailment = 19,
+			ClassAssertionEntailment = 20
         }
     }
 }

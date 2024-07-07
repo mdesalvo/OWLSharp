@@ -130,12 +130,12 @@ namespace OWLSharp.Ontology.Helpers
             
                 if (!directOnly)
                 {
-					//IsA(IDV,C1) ^ SubClassOf(C1,C2) -> IsA(IDV,C2)
+					//ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
 					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr, directOnly))
 						foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
 																				.Select(ax => ax.IndividualExpression));
 
-					//IsA(IDV,C1) ^ EquivalentClasses(C1,C2) -> IsA(IDV,C2)
+					//ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
 					foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr, directOnly))
 					{
 						RDFResource equivClsExprIRI = equivClsExpr.GetIRI();
