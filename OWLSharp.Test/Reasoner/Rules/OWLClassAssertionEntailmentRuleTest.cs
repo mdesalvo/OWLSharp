@@ -18,6 +18,7 @@ using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner.Rules;
 using RDFSharp.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OWLSharp.Test.Reasoner.Rules
 {
@@ -175,6 +176,82 @@ namespace OWLSharp.Test.Reasoner.Rules
 			Assert.IsTrue(inferences[1] is OWLClassAssertion inf1 
                             && string.Equals(inf1.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/DomesticFeline")
                             && string.Equals(inf1.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Felix"));
+        }
+
+		[TestMethod]
+        public void ShouldEntailClassAssertionOnComplexTBOXCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Cat")), 
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Felix"))),
+                    new OWLClassAssertion(
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Parrot")), 
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Paco"))),
+                    new OWLSameIndividual([ 
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Paco")), 
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/PaquitoTheParrot")) ])
+                ],
+                ClassAxioms = [
+                    new OWLSubClassOf(
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Parrot")), 
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
+                    new OWLSubClassOf(
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Cat")), 
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
+                    new OWLSubClassOf(
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal")), 
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/LivingEntity"))),
+                    new OWLEquivalentClasses([ 
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Cat")), 
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/DomesticFeline")) ]),
+                    new OWLEquivalentClasses([ 
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/MyAnimals")), 
+						new OWLObjectOneOf([ 
+							new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Felix")), 
+							new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Paco")) ]) ])
+                ]
+            };
+            List<OWLAxiom> inferences = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
+			
+			Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 14);
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Felix")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/DomesticFeline")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Felix")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Felix")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/MyAnimals")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Felix")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Paco")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Paco")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/MyAnimals")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Paco")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/MyAnimals")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
+			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Parrot")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
         }
         #endregion
     }

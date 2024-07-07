@@ -25,17 +25,35 @@ namespace OWLSharp.Reasoner.Rules
         internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
-			List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+
+			//Temporary working variables
+			List<OWLClass> declaredClasses = ontology.GetDeclarationAxiomsOfType<OWLClass>()
+													 .Select(ax => (OWLClass)ax.Expression)
+													 .ToList();
+			List<OWLClassAssertion> classAssertionAxioms = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+			List<OWLEquivalentClasses> equivalentClassesAxioms = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
+			List<OWLDisjointClasses> disjointClassesAxioms = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
+
+			//Collect classes: if not declared, we must exploit class axioms for extraction
+			List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(declaredClasses);
+			inScopeClsExprs.AddRange(classAssertionAxioms.Select(ax => ax.ClassExpression));
+			inScopeClsExprs.AddRange(equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
+			inScopeClsExprs.AddRange(disjointClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
+			foreach (OWLClassExpression inScopeClsExpr in OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs))
+			{
+				inScopeClsExprs.AddRange(ontology.GetSuperClassesOf(inScopeClsExpr));
+				inScopeClsExprs.AddRange(ontology.GetEquivalentClasses(inScopeClsExpr));
+			}
+			inScopeClsExprs = OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs);
 
 			//ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
 			//ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
-            foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
-			                                           .Select(ax => (OWLClass)ax.Expression))
-			    foreach (OWLIndividualExpression idvExprOfDeclaredClass in ontology.GetIndividualsOf(declaredClass))
-					inferences.Add(new OWLClassAssertion(declaredClass) { IndividualExpression=idvExprOfDeclaredClass, IsInference=true });
+            foreach (OWLClassExpression inScopeClsExpr in inScopeClsExprs)
+			    foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr))
+					inferences.Add(new OWLClassAssertion(inScopeClsExpr) { IndividualExpression=idvExprOfInScopeClsExpr, IsInference=true });
 
 			//Remove inferences already stated in explicit knowledge
-			inferences.RemoveAll(inf => clsAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+			inferences.RemoveAll(inf => classAssertionAxioms.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
 			return OWLAxiomHelper.RemoveDuplicates(inferences);
 		}
