@@ -26,7 +26,10 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-			//EquivalentClasses(C1,C2) ^ EquivalentClasses(C2,C3) -> EquivalentClasses(C1,C3)
+            //Temporary working variables
+            List<OWLEquivalentClasses> equivClasses = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
+
+            //EquivalentClasses(C1,C2) ^ EquivalentClasses(C2,C3) -> EquivalentClasses(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
@@ -34,6 +37,8 @@ namespace OWLSharp.Reasoner.Rules
                 foreach (OWLClassExpression equivalentClass in equivalentClasses)
                     inferences.Add(new OWLEquivalentClasses(new List<OWLClassExpression>() { declaredClass, equivalentClass }) { IsInference=true });
 			}
+            //Remove inferences already stated in explicit knowledge
+            inferences.RemoveAll(inf => equivClasses.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
         }
