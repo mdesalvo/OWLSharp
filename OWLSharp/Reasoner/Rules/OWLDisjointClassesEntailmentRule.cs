@@ -26,8 +26,12 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-			//EquivalentClasses(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
-			//SubClassOf(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
+            //Temporary working variables
+            List<OWLDisjointClasses> dsjClasses = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
+            List<OWLSubClassOf> subClassOfAxs = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
+
+            //EquivalentClasses(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
+            //SubClassOf(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
@@ -35,16 +39,19 @@ namespace OWLSharp.Reasoner.Rules
                 foreach (OWLClassExpression disjointClass in disjointClasses)
 					inferences.Add(new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, disjointClass }) { IsInference=true });
 			}
-
+            
+            //DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)
+            //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)	
 			foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
-			{
-				//DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)
+			{	
 				inferences.Add(new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true });
-
-				//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
 				foreach (OWLClassExpression disjointUnionClassExpression in disjointUnion.ClassExpressions)
 					inferences.Add(new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference=true });
 			}
+
+            //Remove inferences already stated in explicit knowledge
+            inferences.RemoveAll(inf => dsjClasses.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+            inferences.RemoveAll(inf => subClassOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
         }
