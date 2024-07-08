@@ -26,9 +26,12 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-			//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
-			//SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
-			//DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
+            //Temporary working variables
+            List<OWLSubClassOf> subClassOfAxs = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
+
+            //SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+            //SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
+            //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
 													   .Select(ax => (OWLClass)ax.Expression))
 			{
@@ -36,6 +39,8 @@ namespace OWLSharp.Reasoner.Rules
                 foreach (OWLClassExpression superClass in superClasses)
                     inferences.Add(new OWLSubClassOf(declaredClass, superClass) { IsInference=true });
 			}
+            //Remove inferences already stated in explicit knowledge
+            inferences.RemoveAll(inf => subClassOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
         }

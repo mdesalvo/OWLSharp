@@ -16,6 +16,7 @@ using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OWLSharp.Reasoner.Rules
 {
@@ -25,6 +26,7 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
+            //Temporary working variables
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
             
             //SymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV2,IDV1)
@@ -50,6 +52,8 @@ namespace OWLSharp.Reasoner.Rules
                         inferences.Add(new OWLObjectPropertyAssertion(symObjProp.ObjectPropertyExpression, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true });
                 }
 			}
+            //Remove inferences already stated in explicit knowledge
+            inferences.RemoveAll(inf => opAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
         }
