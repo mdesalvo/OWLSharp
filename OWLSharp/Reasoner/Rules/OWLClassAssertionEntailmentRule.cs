@@ -34,8 +34,6 @@ namespace OWLSharp.Reasoner.Rules
 			List<OWLEquivalentClasses> equivalentClassesAxioms = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
 			List<OWLDisjointClasses> disjointClassesAxioms = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
 			List<OWLDisjointUnion> disjointUnionAxioms = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
-
-			//Collect classes for entailment execution
 			List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(declaredClasses);
 			inScopeClsExprs.AddRange(classAssertionAxioms.Select(ax => ax.ClassExpression));
 			inScopeClsExprs.AddRange(equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
