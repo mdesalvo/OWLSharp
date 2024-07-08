@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Reasoner.Rules
     {
         #region Tests
         [TestMethod]
-        public void ShouldEntailSimpleSubObjectPropertyOfCase()
+        public void ShouldEntailSubObjectPropertyOfCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
