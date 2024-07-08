@@ -120,7 +120,9 @@ namespace OWLSharp.Test.Ontology.Helpers
             List<OWLClassExpression> subClassesOfCls4 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
             Assert.IsTrue(subClassesOfCls4.Count == 0);
 
-            Assert.IsTrue(ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls5"))).Count == 0);
+            List<OWLClassExpression> subClassesOfCls5 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls5")));
+            Assert.IsTrue(subClassesOfCls5.Count == 2);
+
             Assert.IsTrue(ontology.GetSubClassesOf(null).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }
@@ -284,7 +286,9 @@ namespace OWLSharp.Test.Ontology.Helpers
             List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")));
             Assert.IsTrue(superClassesOfCls4.Count == 4);
 
-            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5"))).Count == 0);
+            List<OWLClassExpression> superClassesOfCls5 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5")));
+            Assert.IsTrue(superClassesOfCls5.Count == 2);
+
             Assert.IsTrue(ontology.GetSuperClassesOf(null).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }

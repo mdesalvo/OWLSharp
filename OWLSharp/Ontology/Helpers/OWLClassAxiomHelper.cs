@@ -65,10 +65,19 @@ namespace OWLSharp.Ontology.Helpers
             if (ontology != null && classExpr != null)
 			{
 				RDFResource clsExprIRI = classExpr.GetIRI();
-				subClassExprs.AddRange(FindSubClassesOf(clsExprIRI, GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+				HashSet<long> visitContext = new HashSet<long>();
+				List<OWLSubClassOf> subClassOfAxs = GetClassAxiomsOfType<OWLSubClassOf>(ontology);
+				List<OWLClassExpression> equivClassesOfClassExpr = GetEquivalentClasses(ontology, classExpr, directOnly);
+
+				//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+				subClassExprs.AddRange(FindSubClassesOf(clsExprIRI, subClassOfAxs, visitContext));
 
 				if (!directOnly)
 				{
+					//EquivalentClasses(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+					foreach (OWLClassExpression equivClassExpr in equivClassesOfClassExpr)
+						subClassExprs.AddRange(FindSubClassesOf(equivClassExpr.GetIRI(), subClassOfAxs, visitContext));
+
 					//SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
                     foreach (OWLClassExpression subClassExpr in subClassExprs.ToList())
 						subClassExprs.AddRange(GetEquivalentClasses(ontology, subClassExpr, directOnly));
@@ -78,7 +87,7 @@ namespace OWLSharp.Ontology.Helpers
                         subClassExprs.AddRange(disjointUnion.ClassExpressions);
 
 					//EquivalentClasses(C1,ObjectUnionOf(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
-					foreach (OWLObjectUnionOf objectUnionOf in GetEquivalentClasses(ontology, classExpr, directOnly).OfType<OWLObjectUnionOf>())
+					foreach (OWLObjectUnionOf objectUnionOf in equivClassesOfClassExpr.OfType<OWLObjectUnionOf>())
 						subClassExprs.AddRange(objectUnionOf.ClassExpressions);
 				}
 			}
@@ -118,15 +127,23 @@ namespace OWLSharp.Ontology.Helpers
             }
             #endregion
 
-            List<OWLClassExpression> superClassExprs = new List<OWLClassExpression>();
+			List<OWLClassExpression> superClassExprs = new List<OWLClassExpression>();
             if (ontology != null && classExpr != null)
 			{
 				RDFResource clsExprIRI = classExpr.GetIRI();
-				superClassExprs.AddRange(FindSuperClassesOf(clsExprIRI, GetClassAxiomsOfType<OWLSubClassOf>(ontology), new HashSet<long>()));
+				HashSet<long> visitContext = new HashSet<long>();
+				List<OWLSubClassOf> subClassOfAxs = GetClassAxiomsOfType<OWLSubClassOf>(ontology);
+				
+				//SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+				superClassExprs.AddRange(FindSuperClassesOf(clsExprIRI, subClassOfAxs, visitContext));
 
 				if (!directOnly)
 				{
-					//SubClassOf(C1,C2) ^ EquivalentClass(C2,C3) -> SubClassOf(C1,C3)
+					//EquivalentClasses(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+					foreach (OWLClassExpression equivClassExpr in GetEquivalentClasses(ontology, classExpr, directOnly))
+						superClassExprs.AddRange(FindSuperClassesOf(equivClassExpr.GetIRI(), subClassOfAxs, visitContext));
+
+					//SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
                     foreach (OWLClassExpression superClassExpr in superClassExprs.ToList())
 						superClassExprs.AddRange(GetEquivalentClasses(ontology, superClassExpr, directOnly));
 
