@@ -65,10 +65,19 @@ namespace OWLSharp.Ontology.Helpers
             if (ontology != null && dataProperty != null)
 			{
 				RDFResource dtPropIRI = dataProperty.GetIRI();
-				subDataProperties.AddRange(FindSubDataPropertiesOf(dtPropIRI, GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology), new HashSet<long>()));
+				HashSet<long> visitContext = new HashSet<long>();
+				List<OWLSubDataPropertyOf> subDtPropOfAxs = GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology);
+				List<OWLDataProperty> equivDtPropsOfDataProperty = GetEquivalentDataProperties(ontology, dataProperty, directOnly);
+
+				//SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
+				subDataProperties.AddRange(FindSubDataPropertiesOf(dtPropIRI, subDtPropOfAxs, visitContext));
 
 				if (!directOnly)
 				{
+					//EquivalentDataProperties(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
+					foreach (OWLDataProperty equivDtProp in equivDtPropsOfDataProperty)
+						subDataProperties.AddRange(FindSubDataPropertiesOf(equivDtProp.GetIRI(), subDtPropOfAxs, visitContext));
+
 					//SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
                     foreach (OWLDataProperty subDataProperty in subDataProperties.ToList())
 						subDataProperties.AddRange(GetEquivalentDataProperties(ontology, subDataProperty, directOnly));
@@ -114,10 +123,18 @@ namespace OWLSharp.Ontology.Helpers
             if (ontology != null && dataProperty != null)
 			{
 				RDFResource dtPropIRI = dataProperty.GetIRI();
-				superDataProperties.AddRange(FindSuperDataPropertiesOf(dtPropIRI, GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology), new HashSet<long>()));
+				HashSet<long> visitContext = new HashSet<long>();
+				List<OWLSubDataPropertyOf> subDtPropOfAxs = GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>(ontology);
+
+				//SubDataPropertyOf(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
+				superDataProperties.AddRange(FindSuperDataPropertiesOf(dtPropIRI, subDtPropOfAxs, visitContext));
 
 				if (!directOnly)
 				{
+					//EquivalentDataProperties(P1,P2) ^ SubDataPropertyOf(P2,P3) -> SubDataPropertyOf(P1,P3)
+					foreach (OWLDataProperty equivDtProp in GetEquivalentDataProperties(ontology, dataProperty, directOnly))
+						superDataProperties.AddRange(FindSuperDataPropertiesOf(equivDtProp.GetIRI(), subDtPropOfAxs, visitContext));
+
 					//SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
                     foreach (OWLDataProperty superDataProperty in superDataProperties.ToList())
 						superDataProperties.AddRange(GetEquivalentDataProperties(ontology, superDataProperty, directOnly));

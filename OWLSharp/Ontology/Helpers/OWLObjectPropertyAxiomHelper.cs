@@ -66,10 +66,19 @@ namespace OWLSharp.Ontology.Helpers
             if (ontology != null && objPropExpr != null)
 			{
 				RDFResource objPropIRI = objPropExpr.GetIRI();
-				subObjPropExprs.AddRange(FindSubObjectPropertiesOf(objPropIRI, GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology), new HashSet<long>()));
+				HashSet<long> visitContext = new HashSet<long>();
+				List<OWLSubObjectPropertyOf> subObjPropOfAxs = GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology);
+				List<OWLObjectPropertyExpression> equivObjPropsOfObjPropExpr = GetEquivalentObjectProperties(ontology, objPropExpr, directOnly);
+
+				//SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
+				subObjPropExprs.AddRange(FindSubObjectPropertiesOf(objPropIRI, subObjPropOfAxs, visitContext));
 
 				if (!directOnly)
 				{
+					//EquivalentObjectProperties(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
+					foreach (OWLObjectPropertyExpression equivObjPropExpr in equivObjPropsOfObjPropExpr)
+						subObjPropExprs.AddRange(FindSubObjectPropertiesOf(equivObjPropExpr.GetIRI(), subObjPropOfAxs, visitContext));
+
 					//SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
                     foreach (OWLObjectPropertyExpression subObjPropExpr in subObjPropExprs.ToList())
 						subObjPropExprs.AddRange(GetEquivalentObjectProperties(ontology, subObjPropExpr, directOnly));
@@ -115,10 +124,18 @@ namespace OWLSharp.Ontology.Helpers
             if (ontology != null && objPropExpr != null)
 			{
 				RDFResource objPropExprIRI = objPropExpr.GetIRI();
-				superObjPropExprs.AddRange(FindSuperObjectPropertiesOf(objPropExprIRI, GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology), new HashSet<long>()));
+				HashSet<long> visitContext = new HashSet<long>();
+				List<OWLSubObjectPropertyOf> subObjPropOfAxs = GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>(ontology);
+
+				//SubObjectPropertyOf(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
+				superObjPropExprs.AddRange(FindSuperObjectPropertiesOf(objPropExprIRI, subObjPropOfAxs, visitContext));
 
 				if (!directOnly)
 				{
+					//EquivalentObjectProperties(P1,P2) ^ SubObjectPropertyOf(P2,P3) -> SubObjectPropertyOf(P1,P3)
+					foreach (OWLObjectPropertyExpression equivObjPropExpr in GetEquivalentObjectProperties(ontology, objPropExpr, directOnly))
+						superObjPropExprs.AddRange(FindSuperObjectPropertiesOf(equivObjPropExpr.GetIRI(), subObjPropOfAxs, visitContext));
+
 					//SubObjectPropertyOf(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> SubObjectPropertyOf(P1,P3)
                     foreach (OWLObjectPropertyExpression superObjPropExpr in superObjPropExprs.ToList())
 						superObjPropExprs.AddRange(GetEquivalentObjectProperties(ontology, superObjPropExpr, directOnly));

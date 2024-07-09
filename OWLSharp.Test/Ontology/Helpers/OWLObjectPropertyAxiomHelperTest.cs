@@ -156,7 +156,9 @@ namespace OWLSharp.Test.Ontology.Helpers
             List<OWLObjectPropertyExpression> subObjectPropertiesOfObp4 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp4")));
             Assert.IsTrue(subObjectPropertiesOfObp4.Count == 0);
 
-            Assert.IsTrue(ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5"))).Count == 0);
+            List<OWLObjectPropertyExpression> subObjectPropertiesOfObp5 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5")));
+            Assert.IsTrue(subObjectPropertiesOfObp5.Count == 2);
+
             Assert.IsTrue(ontology.GetSubObjectPropertiesOf(null).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count == 0);
         }
@@ -254,7 +256,9 @@ namespace OWLSharp.Test.Ontology.Helpers
             List<OWLObjectPropertyExpression> superObjectPropertiesOfObp4 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp4")));
             Assert.IsTrue(superObjectPropertiesOfObp4.Count == 4);
 
-            Assert.IsTrue(ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5"))).Count == 0);
+            List<OWLObjectPropertyExpression> subObjectPropertiesOfObp5 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5")));
+            Assert.IsTrue(subObjectPropertiesOfObp5.Count == 2);
+
             Assert.IsTrue(ontology.GetSuperObjectPropertiesOf(null).Count == 0);
             Assert.IsTrue((null as OWLOntology).GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count == 0);
         }
