@@ -64,6 +64,43 @@ namespace OWLSharp.Test.Reasoner.Rules
                             && string.Equals(inf2.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
                             && string.Equals(inf2.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mammifero"));	
         }
+
+        [TestMethod]
+        public void ShouldEntailSubClassOfOnDisjointUnionCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/LivingEntity"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Vegetal"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom")))
+                ],
+                ClassAxioms = [
+                    new OWLDisjointUnion(
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/LivingEntity")),
+                        [
+                            new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal")),
+                            new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Vegetal")),
+                            new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom"))
+                        ])
+                ]
+            };
+            List<OWLAxiom> inferences = OWLSubClassOfEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 3);
+            Assert.IsTrue(inferences[0] is OWLSubClassOf inf
+                            && string.Equals(inf.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")
+                            && string.Equals(inf.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity"));
+            Assert.IsTrue(inferences[1] is OWLSubClassOf inf1
+                            && string.Equals(inf1.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Vegetal")
+                            && string.Equals(inf1.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity"));
+            Assert.IsTrue(inferences[2] is OWLSubClassOf inf2
+                            && string.Equals(inf2.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mushroom")
+                            && string.Equals(inf2.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity"));
+        }
         #endregion
     }
 }
