@@ -28,10 +28,10 @@ namespace OWLSharp.Ontology.Helpers
 		public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
             => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
 		
-		public static bool CheckIsSubAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty, bool directOnly=false)
-            => ontology != null && subAnnotationProperty != null && superAnnotationProperty != null && GetSubAnnotationPropertiesOf(ontology, superAnnotationProperty, directOnly).Any(ap => ap.GetIRI().Equals(subAnnotationProperty.GetIRI()));
+		public static bool CheckIsSubAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty)
+            => ontology != null && subAnnotationProperty != null && superAnnotationProperty != null && GetSubAnnotationPropertiesOf(ontology, superAnnotationProperty).Any(ap => ap.GetIRI().Equals(subAnnotationProperty.GetIRI()));
 
-        public static List<OWLAnnotationProperty> GetSubAnnotationPropertiesOf(this OWLOntology ontology, OWLAnnotationProperty annotationProperty, bool directOnly=false)
+        public static List<OWLAnnotationProperty> GetSubAnnotationPropertiesOf(this OWLOntology ontology, OWLAnnotationProperty annotationProperty)
         {
             #region Utilities
             List<OWLAnnotationProperty> FindSubAnnotationPropertiesOf(RDFResource annPropIRI, List<OWLSubAnnotationPropertyOf> axioms, HashSet<long> visitContext)
@@ -49,12 +49,9 @@ namespace OWLSharp.Ontology.Helpers
 				foreach (OWLSubAnnotationPropertyOf axiom in axioms.Where(ax => ax.SuperAnnotationProperty.GetIRI().Equals(annPropIRI)))
                     foundSubAnnotationProperties.Add(axiom.SubAnnotationProperty);
 
-				if (!directOnly)
-                {
-					//SubAnnotationPropertyOf(P1,P2) ^ SubAnnotationPropertyOf(P2,P3) -> SubAnnotationPropertyOf(P1,P3)
-                    foreach (OWLAnnotationProperty subAnnotationProperty in foundSubAnnotationProperties.ToList())
-                        foundSubAnnotationProperties.AddRange(FindSubAnnotationPropertiesOf(subAnnotationProperty.GetIRI(), axioms, visitContext));
-                }
+				//SubAnnotationPropertyOf(P1,P2) ^ SubAnnotationPropertyOf(P2,P3) -> SubAnnotationPropertyOf(P1,P3)
+				foreach (OWLAnnotationProperty subAnnotationProperty in foundSubAnnotationProperties.ToList())
+					foundSubAnnotationProperties.AddRange(FindSubAnnotationPropertiesOf(subAnnotationProperty.GetIRI(), axioms, visitContext));
 				#endregion
 
                 return foundSubAnnotationProperties;
@@ -70,10 +67,10 @@ namespace OWLSharp.Ontology.Helpers
             return OWLExpressionHelper.RemoveDuplicates(subAnnotationProperties);
         }
 
-		public static bool CheckIsSuperAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty superAnnotationProperty, OWLAnnotationProperty subAnnotationProperty, bool directOnly=false)
-            => ontology != null && superAnnotationProperty != null && subAnnotationProperty != null && GetSuperAnnotationPropertiesOf(ontology, subAnnotationProperty, directOnly).Any(ap => ap.GetIRI().Equals(superAnnotationProperty.GetIRI()));
+		public static bool CheckIsSuperAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty superAnnotationProperty, OWLAnnotationProperty subAnnotationProperty)
+            => ontology != null && superAnnotationProperty != null && subAnnotationProperty != null && GetSuperAnnotationPropertiesOf(ontology, subAnnotationProperty).Any(ap => ap.GetIRI().Equals(superAnnotationProperty.GetIRI()));
 
-		public static List<OWLAnnotationProperty> GetSuperAnnotationPropertiesOf(this OWLOntology ontology, OWLAnnotationProperty annotationProperty, bool directOnly=false)
+		public static List<OWLAnnotationProperty> GetSuperAnnotationPropertiesOf(this OWLOntology ontology, OWLAnnotationProperty annotationProperty)
         {
             #region Utilities
             List<OWLAnnotationProperty> FindSuperAnnotationPropertiesOf(RDFResource annPropIRI, List<OWLSubAnnotationPropertyOf> axioms, HashSet<long> visitContext)
@@ -91,12 +88,9 @@ namespace OWLSharp.Ontology.Helpers
 				foreach (OWLSubAnnotationPropertyOf axiom in axioms.Where(ax => ax.SubAnnotationProperty.GetIRI().Equals(annPropIRI)))
                     foundSuperAnnotationProperties.Add(axiom.SuperAnnotationProperty);
 
-				if (!directOnly)
-                {
-					//SubAnnotationPropertyOf(P1,P2) ^ SubAnnotationPropertyOf(P2,P3) -> SubAnnotationPropertyOf(P1,P3)
-                    foreach (OWLAnnotationProperty superAnnotationProperty in foundSuperAnnotationProperties.ToList())
-                        foundSuperAnnotationProperties.AddRange(FindSuperAnnotationPropertiesOf(superAnnotationProperty.GetIRI(), axioms, visitContext));
-                }
+				//SubAnnotationPropertyOf(P1,P2) ^ SubAnnotationPropertyOf(P2,P3) -> SubAnnotationPropertyOf(P1,P3)
+				foreach (OWLAnnotationProperty superAnnotationProperty in foundSuperAnnotationProperties.ToList())
+					foundSuperAnnotationProperties.AddRange(FindSuperAnnotationPropertiesOf(superAnnotationProperty.GetIRI(), axioms, visitContext));
 				#endregion
 
                 return foundSuperAnnotationProperties;

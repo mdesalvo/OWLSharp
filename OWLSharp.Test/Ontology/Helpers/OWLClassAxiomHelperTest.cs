@@ -193,35 +193,6 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue((null as OWLOntology).GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }
 
-        [TestMethod]
-        public void ShouldGetSubClassesOfDirectOnly()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                ClassAxioms = [
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
-                ]
-            };
-
-            List<OWLClassExpression> subClassesOfCls1 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true);
-            Assert.IsTrue(subClassesOfCls1.Count == 1);
-
-            List<OWLClassExpression> subClassesOfCls2 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls2")), true);
-            Assert.IsTrue(subClassesOfCls2.Count == 1);
-
-            List<OWLClassExpression> subClassesOfCls3 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls3")), true);
-            Assert.IsTrue(subClassesOfCls3.Count == 1);
-
-            List<OWLClassExpression> subClassesOfCls4 = ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls4")), true);
-            Assert.IsTrue(subClassesOfCls4.Count == 0);
-
-            Assert.IsTrue(ontology.GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls5")), true).Count == 0);
-            Assert.IsTrue(ontology.GetSubClassesOf(null, true).Count == 0);
-            Assert.IsTrue((null as OWLOntology).GetSubClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true).Count == 0);
-        }
-
 		[TestMethod]
         public void ShouldGetSuperClassesOf()
         {
@@ -327,35 +298,6 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
         }
 
-        [TestMethod]
-        public void ShouldGetSuperClassesOfDirectOnly()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                ClassAxioms = [
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
-                    new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
-                ]
-            };
-
-            List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true);
-            Assert.IsTrue(superClassesOfCls1.Count == 0);
-
-            List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")), true);
-            Assert.IsTrue(superClassesOfCls2.Count == 1);
-
-            List<OWLClassExpression> superClassesOfCls3 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls3")), true);
-            Assert.IsTrue(superClassesOfCls3.Count == 1);
-
-            List<OWLClassExpression> superClassesOfCls4 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls4")), true);
-            Assert.IsTrue(superClassesOfCls4.Count == 1);
-
-            Assert.IsTrue(ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls5")), true).Count == 0);
-            Assert.IsTrue(ontology.GetSuperClassesOf(null, true).Count == 0);
-            Assert.IsTrue((null as OWLOntology).GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")), true).Count == 0);
-        }
-
 		[TestMethod]
         public void ShouldGetEquivalentClasses()
         {
@@ -398,35 +340,6 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsFalse(ontology.CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), null));
             Assert.IsFalse((null as OWLOntology).CheckAreEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2"))));
             Assert.IsTrue((null as OWLOntology).GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1"))).Count == 0);
-        }
-
-		[TestMethod]
-        public void ShouldGetEquivalentClassesDirectOnly()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                ClassAxioms = [
-                    new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls3")) ]),
-					new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls4")) ]),
-					new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls5")) ]),
-                ]
-            };
-
-            List<OWLClassExpression> equivalentClassesOfCls1 = ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), true);
-            Assert.IsTrue(equivalentClassesOfCls1.Count == 3);
-
-            List<OWLClassExpression> equivalentClassesOfCls2 = ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls2")), true);
-            Assert.IsTrue(equivalentClassesOfCls2.Count == 3);
-
-            List<OWLClassExpression> equivalentClassesOfCls3 = ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls3")), true);
-            Assert.IsTrue(equivalentClassesOfCls3.Count == 2);
-
-            List<OWLClassExpression> equivalentClassesOfCls4 = ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls4")), true);
-            Assert.IsTrue(equivalentClassesOfCls4.Count == 1);
-
-            Assert.IsTrue(ontology.GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls6")), true).Count == 0);
-            Assert.IsTrue(ontology.GetEquivalentClasses(null, true).Count == 0);
-            Assert.IsTrue((null as OWLOntology).GetEquivalentClasses(new OWLClass(new RDFResource("ex:Cls1")), true).Count == 0);
         }
 
         [TestMethod]
