@@ -291,56 +291,6 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsFalse((null as OWLOntology).CheckAreDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp1")), new OWLDataProperty(new RDFResource("ex:Dtp2"))));
             Assert.IsTrue((null as OWLOntology).GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp1"))).Count == 0);
         }
-        
-		[TestMethod]
-        public void ShouldGetDisjointDataPropertiesWithEquivalentDataPropertiesDiscovery()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                DataPropertyAxioms = [
-					new OWLEquivalentDataProperties([ new OWLDataProperty(new RDFResource("ex:Dtp1")), new OWLDataProperty(new RDFResource("ex:Dtp2"))]),
-                    new OWLDisjointDataProperties([ new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp3")) ]),
-					new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp4")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
-                ]
-            };
-
-            List<OWLDataProperty> disjointDataPropertiesOfDtp1 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp1")));
-            Assert.IsTrue(disjointDataPropertiesOfDtp1.Count == 1);
-            
-            List<OWLDataProperty> disjointDataPropertiesOfDtp2 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp2")));
-            Assert.IsTrue(disjointDataPropertiesOfDtp2.Count == 1);
-
-            List<OWLDataProperty> disjointDataPropertiesOfDtp3 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp3")));
-            Assert.IsTrue(disjointDataPropertiesOfDtp3.Count == 1);
-
-            List<OWLDataProperty> disjointOfDtp4 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp4")));
-            Assert.IsTrue(disjointOfDtp4.Count == 1);
-        }
-
-		[TestMethod]
-        public void ShouldGetDisjointDataPropertiesWithSubDataPropertyOfDiscovery()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                DataPropertyAxioms = [
-					new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
-					new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp3")), new OWLDataProperty(new RDFResource("ex:Dtp2"))),
-                    new OWLDisjointDataProperties([ new OWLDataProperty(new RDFResource("ex:Dtp1")), new OWLDataProperty(new RDFResource("ex:Dtp4")) ])
-                ]
-            };
-
-            List<OWLDataProperty> disjointDataPropertiesOfDtp1 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp1")));
-            Assert.IsTrue(disjointDataPropertiesOfDtp1.Count == 1);
-            
-            List<OWLDataProperty> disjointDataPropertiesOfDtp2 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp2")));
-            Assert.IsTrue(disjointDataPropertiesOfDtp2.Count == 1);
-
-            List<OWLDataProperty> disjointDataPropertiesOfDtp3 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp3")));
-            Assert.IsTrue(disjointDataPropertiesOfDtp3.Count == 1);
-
-            List<OWLDataProperty> disjointOfDtp4 = ontology.GetDisjointDataProperties(new OWLDataProperty(new RDFResource("ex:Dtp4")));
-            Assert.IsTrue(disjointOfDtp4.Count == 1);
-        }
 
 		[TestMethod]
         public void ShouldCheckHasFunctionalDataProperty()

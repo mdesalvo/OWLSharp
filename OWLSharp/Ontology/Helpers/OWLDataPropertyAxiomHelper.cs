@@ -173,44 +173,20 @@ namespace OWLSharp.Ontology.Helpers
 
         public static List<OWLDataProperty> GetDisjointDataProperties(this OWLOntology ontology, OWLDataProperty dataProperty)
         {
-            #region Utilities
-            List<OWLDataProperty> FindDisjointDataProperties(RDFResource dtPropIRI, List<OWLDisjointDataProperties> axioms, HashSet<long> visitContext)
-            {
-                List<OWLDataProperty> foundDisjointDataProperties = new List<OWLDataProperty>();
-
-                #region VisitContext
-                if (!visitContext.Contains(dtPropIRI.PatternMemberID))
-                    visitContext.Add(dtPropIRI.PatternMemberID);
-                else
-                    return foundDisjointDataProperties;
-                #endregion
-
-                #region Discovery
-                foreach (OWLDisjointDataProperties axiom in axioms.Where(ax => ax.DataProperties.Any(dp => dp.GetIRI().Equals(dtPropIRI))))
-                    foundDisjointDataProperties.AddRange(axiom.DataProperties);
-                #endregion
-
-                foundDisjointDataProperties.RemoveAll(res => res.GetIRI().Equals(dtPropIRI));
-                return OWLExpressionHelper.RemoveDuplicates(foundDisjointDataProperties);
-            }
-            #endregion
-
             List<OWLDataProperty> disjointDataProperties = new List<OWLDataProperty>();
+
             if (ontology != null && dataProperty != null)
 			{
-				HashSet<long> visitContext = new HashSet<long>();
-				List<OWLDisjointDataProperties> disjointDataPropertyAxioms = GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>(ontology);
-				disjointDataProperties.AddRange(FindDisjointDataProperties(dataProperty.GetIRI(), disjointDataPropertyAxioms, visitContext));
+				RDFResource dtPropIRI = dataProperty.GetIRI();
 
-				//EquivalentDataProperties(P1,P2) ^ DisjointDataProperties(P2,P3) -> DisjointDataProperties(P1,P3)
-				foreach (OWLDataProperty equivalentDataProperty in GetEquivalentDataProperties(ontology, dataProperty))
-					disjointDataProperties.AddRange(FindDisjointDataProperties(equivalentDataProperty.GetIRI(), disjointDataPropertyAxioms, visitContext));
+				//There is no reasoning on data property disjointness (apart simmetry), being this totally under OWA domain
+				foreach (OWLDisjointDataProperties axiom in GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>(ontology).Where(ax => ax.DataProperties.Any(dp => dp.GetIRI().Equals(dtPropIRI))))
+                    disjointDataProperties.AddRange(axiom.DataProperties);
 
-				//SubDataPropertyOf(P1,P2) ^ DisjointDataProperties(P2,P3) -> DisjointDataProperties(P1,P3)
-				foreach (OWLDataProperty superDataProperty in GetSuperDataPropertiesOf(ontology, dataProperty))
-					disjointDataProperties.AddRange(FindDisjointDataProperties(superDataProperty.GetIRI(), disjointDataPropertyAxioms, visitContext));
+				disjointDataProperties.RemoveAll(res => res.GetIRI().Equals(dtPropIRI));
 			}
-            return OWLExpressionHelper.RemoveDuplicates(disjointDataProperties);
+
+			return OWLExpressionHelper.RemoveDuplicates(disjointDataProperties);
         }
 		
 		public static bool CheckHasFunctionalDataProperty(this OWLOntology ontology, OWLDataProperty dataProperty)

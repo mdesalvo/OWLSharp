@@ -26,19 +26,14 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-            //Temporary working variables
             List<OWLDisjointDataProperties> dsjDataProps = ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>();
-
-            //EquivalentDataProperties(P1,P2) ^ DisjointDataProperties(P2,P3) -> DisjointDataProperties(P1,P3)
-            //SubDataPropertyOf(P1,P2) ^ DisjointDataProperties(P2,P3) -> DisjointClasses(P1,P3)
-            foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
+			foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
 			{
 				List<OWLDataProperty> disjointDataProperties = ontology.GetDisjointDataProperties(declaredDataProperty);
                 foreach (OWLDataProperty disjointDataProperty in disjointDataProperties)
                     inferences.Add(new OWLDisjointDataProperties(new List<OWLDataProperty>() { declaredDataProperty, disjointDataProperty }) { IsInference=true });
 			}
-            //Remove inferences already stated in explicit knowledge
             inferences.RemoveAll(inf => dsjDataProps.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return inferences;
