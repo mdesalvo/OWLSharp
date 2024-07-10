@@ -40,7 +40,7 @@ namespace OWLSharp.Reasoner.Rules
             //Remove inferences already stated in explicit knowledge
             inferences.RemoveAll(inf => equivClasses.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
     }
 }

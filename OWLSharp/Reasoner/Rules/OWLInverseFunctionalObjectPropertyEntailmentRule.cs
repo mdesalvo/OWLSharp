@@ -64,7 +64,7 @@ namespace OWLSharp.Reasoner.Rules
                     inferences.Add(new OWLSameIndividual(idvxLookupEntry) { IsInference=true });
             }
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
     }
 }

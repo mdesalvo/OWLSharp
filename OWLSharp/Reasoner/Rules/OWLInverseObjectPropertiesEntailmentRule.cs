@@ -63,7 +63,7 @@ namespace OWLSharp.Reasoner.Rules
                 }
 			}
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
 
         internal static List<(bool,OWLObjectPropertyExpression)> GetInverseObjectProperties(this OWLOntology ontology, OWLObjectProperty objProp)

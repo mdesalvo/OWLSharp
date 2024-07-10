@@ -79,7 +79,7 @@ namespace OWLSharp.Reasoner.Rules
                 #endregion
             }
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
 
         internal static List<OWLIndividualExpression> FindTransitiveRelatedIndividuals(RDFResource trnObjPropAsnGroupKeyIRI,

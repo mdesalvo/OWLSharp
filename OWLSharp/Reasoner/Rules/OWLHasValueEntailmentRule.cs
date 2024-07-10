@@ -51,7 +51,7 @@ namespace OWLSharp.Reasoner.Rules
 					inferences.Add(new OWLDataPropertyAssertion(dtHasValue.DataProperty, dtHasValue.Literal) { IndividualExpression=classAssertion.IndividualExpression, IsInference=true });	
 			}
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace OWLSharp.Reasoner.Rules
                 }
 			}
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
     }
 }

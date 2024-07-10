@@ -53,7 +53,7 @@ namespace OWLSharp.Reasoner.Rules
             inferences.RemoveAll(inf => dsjClasses.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
             inferences.RemoveAll(inf => subClassOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
     }
 }
