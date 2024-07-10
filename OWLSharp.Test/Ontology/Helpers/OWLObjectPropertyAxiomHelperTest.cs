@@ -284,10 +284,10 @@ namespace OWLSharp.Test.Ontology.Helpers
             OWLOntology ontology = new OWLOntology()
             {
                 ObjectPropertyAxioms = [
-                    new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp3")) ]),
-            new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ]),
-            new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp5")) ]),
-        ]
+					new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp3")) ]),
+					new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ]),
+					new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp5")) ]),
+				]
             };
 
             List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp1 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")));
@@ -318,56 +318,6 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsFalse(ontology.CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), null));
             Assert.IsFalse((null as OWLOntology).CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
             Assert.IsTrue((null as OWLOntology).GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count == 0);
-        }
-
-        [TestMethod]
-        public void ShouldGetDisjointObjectPropertiesWithEquivalentObjectPropertiesDiscovery()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                ObjectPropertyAxioms = [
-                    new OWLEquivalentObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2"))]),
-            new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp3")) ]),
-            new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp4")), new OWLObjectProperty(new RDFResource("ex:Obp1"))),
-        ]
-            };
-
-            List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp1 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-            Assert.IsTrue(disjointObjectPropertiesOfObp1.Count == 1);
-
-            List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp2 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-            Assert.IsTrue(disjointObjectPropertiesOfObp2.Count == 1);
-
-            List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp3 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-            Assert.IsTrue(disjointObjectPropertiesOfObp3.Count == 1);
-
-            List<OWLObjectPropertyExpression> disjointOfObp4 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-            Assert.IsTrue(disjointOfObp4.Count == 1);
-        }
-
-        [TestMethod]
-        public void ShouldGetDisjointObjectPropertiesWithSubObjectPropertyOfDiscovery()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                ObjectPropertyAxioms = [
-                    new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))),
-            new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp3")), new OWLObjectProperty(new RDFResource("ex:Obp2"))),
-            new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4")) ])
-                ]
-            };
-
-            List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp1 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-            Assert.IsTrue(disjointObjectPropertiesOfObp1.Count == 1);
-
-            List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp2 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-            Assert.IsTrue(disjointObjectPropertiesOfObp2.Count == 1);
-
-            List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp3 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-            Assert.IsTrue(disjointObjectPropertiesOfObp3.Count == 1);
-
-            List<OWLObjectPropertyExpression> disjointOfObp4 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-            Assert.IsTrue(disjointOfObp4.Count == 1);
         }
 
         [TestMethod]

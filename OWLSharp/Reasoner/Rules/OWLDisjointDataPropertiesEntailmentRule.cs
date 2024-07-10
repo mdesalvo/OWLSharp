@@ -36,7 +36,7 @@ namespace OWLSharp.Reasoner.Rules
 			}
             inferences.RemoveAll(inf => dsjDataProps.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
     }
 }

@@ -26,24 +26,25 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
-            //Temporary working variables
             List<OWLDisjointObjectProperties> dsjObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>();
-
-            //EquivalentObjectProperties(P1,P2) ^ DisjointObjectProperties(P2,P3) -> DisjointObjectProperties(P1,P3)
-            //SubObjectPropertyOf(P1,P2) ^ DisjointObjectProperties(P2,P3) -> DisjointObjectProperties(P1,P3)
-            foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
+			foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
             															 .Select(ax => (OWLObjectProperty)ax.Expression))
 			{
 				List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
                 foreach (OWLObjectProperty disjointObjectProperty in disjointObjectPropertyExpressions.OfType<OWLObjectProperty>())
-                    inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectProperty }) { IsInference=true });
+				{
+					inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectProperty }) { IsInference=true });
+					inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { disjointObjectProperty, declaredObjectProperty }) { IsInference=true });
+				}
                 foreach (OWLObjectInverseOf disjointObjectInverseOf in disjointObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-                    inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectInverseOf }) { IsInference=true });
+				{
+					inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectInverseOf }) { IsInference=true });
+					inferences.Add(new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { disjointObjectInverseOf, declaredObjectProperty }) { IsInference=true });
+				}
 			}
-            //Remove inferences already stated in explicit knowledge
             inferences.RemoveAll(inf => dsjObjProps.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return inferences;
+            return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
     }
 }
