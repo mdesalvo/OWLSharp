@@ -33,7 +33,8 @@ namespace OWLSharp.Test.Reasoner.Rules
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasCharacteristic"))),
 					new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))),
-					new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTemporalCharacteristic"))),
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
 					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")))
                 ],
                 DataPropertyAxioms = [ 
@@ -42,8 +43,11 @@ namespace OWLSharp.Test.Reasoner.Rules
 						new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasCharacteristic"))),
 					new OWLSubDataPropertyOf(
 						new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-						new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic")))
-				],
+						new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))),
+                    new OWLEquivalentDataProperties([
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")),
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))])
+                ],
 				AssertionAxioms = [
 					new OWLDataPropertyAssertion(
 						new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
@@ -55,18 +59,28 @@ namespace OWLSharp.Test.Reasoner.Rules
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 3);
-            Assert.IsTrue(inferences[0] is OWLSubDataPropertyOf inf 
-                            && string.Equals(inf.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
+            Assert.IsTrue(inferences.Count == 6);
+            Assert.IsTrue(inferences[0] is OWLSubDataPropertyOf inf
+                            && string.Equals(inf.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")
                             && string.Equals(inf.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic"));
-			Assert.IsTrue(inferences[1] is OWLDataPropertyAssertion inf1 
-                            && string.Equals(inf1.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTimeCharacteristic")
-							&& string.Equals(inf1.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
-                            && string.Equals(inf1.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer"));
-			Assert.IsTrue(inferences[2] is OWLDataPropertyAssertion inf2 
-                            && string.Equals(inf2.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")
-							&& string.Equals(inf2.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
-                            && string.Equals(inf2.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer"));
+            Assert.IsTrue(inferences[1] is OWLSubDataPropertyOf inf1 
+                            && string.Equals(inf1.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
+                            && string.Equals(inf1.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic"));
+            Assert.IsTrue(inferences[2] is OWLSubDataPropertyOf inf2
+                            && string.Equals(inf2.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
+                            && string.Equals(inf2.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic"));
+            Assert.IsTrue(inferences[3] is OWLDataPropertyAssertion inf3 
+                            && string.Equals(inf3.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTimeCharacteristic")
+							&& string.Equals(inf3.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                            && string.Equals(inf3.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer"));
+			Assert.IsTrue(inferences[4] is OWLDataPropertyAssertion inf4 
+                            && string.Equals(inf4.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")
+							&& string.Equals(inf4.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                            && string.Equals(inf4.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer"));
+            Assert.IsTrue(inferences[5] is OWLDataPropertyAssertion inf5
+                            && string.Equals(inf5.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")
+                            && string.Equals(inf5.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                            && string.Equals(inf5.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer"));
         }
         #endregion
     }
