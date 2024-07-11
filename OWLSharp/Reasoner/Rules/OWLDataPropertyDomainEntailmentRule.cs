@@ -32,9 +32,9 @@ namespace OWLSharp.Reasoner.Rules
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
 			//DataPropertyDomain(DP,C) ^ DataPropertyAssertion(DP, I, LIT) -> ClassAssertion(C,I)
-            foreach (OWLDataPropertyDomain dtPropDomainAx in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
-				foreach (OWLDataPropertyAssertion dtPropAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dtPropDomainAx.DataProperty))
-					inferences.Add(new OWLClassAssertion(dtPropDomainAx.ClassExpression) { IndividualExpression=dtPropAsn.IndividualExpression, IsInference=true});
+            foreach (OWLDataPropertyDomain dataPropertyDomain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
+				foreach (OWLDataPropertyAssertion dataPropertyAssertion in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dataPropertyDomain.DataProperty))
+					inferences.Add(new OWLClassAssertion(dataPropertyDomain.ClassExpression) { IndividualExpression=dataPropertyAssertion.IndividualExpression, IsInference=true});
 
 			//Remove inferences already stated in explicit knowledge
             inferences.RemoveAll(inf => clsAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
