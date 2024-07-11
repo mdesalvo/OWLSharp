@@ -112,6 +112,9 @@ namespace OWLSharp.Reasoner
 							case OWLEnums.OWLReasonerRules.ClassAssertionEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.ClassAssertionEntailment.ToString()] = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
                                 break;
+							case OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment.ToString()] = OWLDataPropertyDomainEntailmentRule.ExecuteRule(ontology);
+                                break;
                         }
 
                         OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': got {inferenceRegistry[standardRule.ToString()].Count} inferences");
