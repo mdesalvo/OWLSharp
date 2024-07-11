@@ -28,17 +28,16 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
 			//Temporary working variables
-			List<OWLDataPropertyDomain> dtPropDomainAxs = ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>();
+			List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
 			//DataPropertyDomain(DP,C) ^ DataPropertyAssertion(DP, I, LIT) -> ClassAssertion(C,I)
-            foreach (OWLDataPropertyDomain dtPropDomainAx in dtPropDomainAxs)
+            foreach (OWLDataPropertyDomain dtPropDomainAx in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
 				foreach (OWLDataPropertyAssertion dtPropAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dtPropDomainAx.DataProperty))
 					inferences.Add(new OWLClassAssertion(dtPropDomainAx.ClassExpression) { IndividualExpression=dtPropAsn.IndividualExpression, IsInference=true});
 
 			//Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => dtPropDomainAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-			inferences.RemoveAll(inf => dpAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+            inferences.RemoveAll(inf => clsAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
             return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
