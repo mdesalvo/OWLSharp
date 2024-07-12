@@ -112,6 +112,9 @@ namespace OWLSharp.Reasoner
 							case OWLEnums.OWLReasonerRules.HasSelfEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.HasSelfEntailment.ToString()] = OWLHasSelfEntailmentRule.ExecuteRule(ontology);
                                 break;
+							case OWLEnums.OWLReasonerRules.HasKeyEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.HasKeyEntailment.ToString()] = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
+                                break;
 							case OWLEnums.OWLReasonerRules.ClassAssertionEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.ClassAssertionEntailment.ToString()] = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
                                 break;
