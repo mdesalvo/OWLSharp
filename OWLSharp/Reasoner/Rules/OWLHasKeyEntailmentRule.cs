@@ -32,17 +32,16 @@ namespace OWLSharp.Reasoner.Rules
 			List<OWLSameIndividual> sameIdvs = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-			Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
 			
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
 			{
 				List<OWLIndividualExpression> hasKeyClassIdvs = ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression);
 
 				//HasKey(C, OP) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
-				inferences.AddRange(AnalyzeObjectKeyValues(ontology, hasKeyAxiom, hasKeyClassIdvs, opAsns));
+				inferences.AddRange(AnalyzeObjectKeyValues(hasKeyAxiom, hasKeyClassIdvs, opAsns));
 
 				//HasKey(C, DP) ^ DataPropertyAssertion(DP, I1, LIT) ^ DataPropertyAssertion(DP, I2, LIT) -> SameIndividual(I1,I2)
-				inferences.AddRange(AnalyzeDataKeyValues(ontology, hasKeyAxiom, hasKeyClassIdvs, dpAsns));
+				inferences.AddRange(AnalyzeDataKeyValues(hasKeyAxiom, hasKeyClassIdvs, dpAsns));
 			}
 
 			//Remove inferences already stated in explicit knowledge
@@ -51,7 +50,7 @@ namespace OWLSharp.Reasoner.Rules
             return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
 
-		private static List<OWLAxiom> AnalyzeObjectKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, List<OWLObjectPropertyAssertion> opAsns)
+		private static List<OWLAxiom> AnalyzeObjectKeyValues(OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, List<OWLObjectPropertyAssertion> opAsns)
 		{
 			List<OWLAxiom> inferences = new List<OWLAxiom>();
 
@@ -119,7 +118,7 @@ namespace OWLSharp.Reasoner.Rules
 			return inferences;
 		}
     
-		private static List<OWLAxiom> AnalyzeDataKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, List<OWLDataPropertyAssertion> dpAsns)
+		private static List<OWLAxiom> AnalyzeDataKeyValues(OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, List<OWLDataPropertyAssertion> dpAsns)
 		{
 			List<OWLAxiom> inferences = new List<OWLAxiom>();
 
