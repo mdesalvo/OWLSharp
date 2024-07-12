@@ -71,32 +71,18 @@ namespace OWLSharp.Ontology.Helpers
 
         public static List<OWLIndividualExpression> GetDifferentIndividuals(this OWLOntology ontology, OWLIndividualExpression idvExpr)
         {
-            #region Utilities
-            List<OWLIndividualExpression> FindDifferentIndividuals(RDFResource idvExprIRI, List<OWLDifferentIndividuals> axioms, HashSet<long> visitContext)
-            {
-                List<OWLIndividualExpression> foundDifferentIndividuals = new List<OWLIndividualExpression>();
-
-                #region VisitContext
-                if (!visitContext.Contains(idvExprIRI.PatternMemberID))
-                    visitContext.Add(idvExprIRI.PatternMemberID);
-                else
-                    return foundDifferentIndividuals;
-                #endregion
-
-                #region Discovery
-                foreach (OWLDifferentIndividuals axiom in axioms.Where(ax => ax.IndividualExpressions.Any(iex => iex.GetIRI().Equals(idvExprIRI))))
-                    foundDifferentIndividuals.AddRange(axiom.IndividualExpressions);
-                #endregion
-
-                foundDifferentIndividuals.RemoveAll(res => res.GetIRI().Equals(idvExprIRI));
-                return OWLExpressionHelper.RemoveDuplicates(foundDifferentIndividuals);
-            }
-            #endregion
-
             List<OWLIndividualExpression> differentIndividuals = new List<OWLIndividualExpression>();
+
+			//There is no reasoning on individual difference (apart simmetry), being this totally under OWA domain
             if (ontology != null && idvExpr != null)
-                differentIndividuals.AddRange(FindDifferentIndividuals(idvExpr.GetIRI(), GetAssertionAxiomsOfType<OWLDifferentIndividuals>(ontology), new HashSet<long>()));
-            return differentIndividuals;
+			{
+				RDFResource idvExprIRI = idvExpr.GetIRI();
+				foreach (OWLDifferentIndividuals axiom in GetAssertionAxiomsOfType<OWLDifferentIndividuals>(ontology).Where(ax => ax.IndividualExpressions.Any(iex => iex.GetIRI().Equals(idvExprIRI))))
+                    differentIndividuals.AddRange(axiom.IndividualExpressions);
+				differentIndividuals.RemoveAll(res => res.GetIRI().Equals(idvExprIRI));
+			}
+
+            return OWLExpressionHelper.RemoveDuplicates(differentIndividuals);
         }
 
 		public static bool CheckIsIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr)

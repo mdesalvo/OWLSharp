@@ -82,6 +82,9 @@ namespace OWLSharp.Reasoner
 							case OWLEnums.OWLReasonerRules.SameIndividualEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.SameIndividualEntailment.ToString()] = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
                                 break;
+							case OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment:
+                                inferenceRegistry[OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment.ToString()] = OWLDifferentIndividualsEntailmentRule.ExecuteRule(ontology);
+                                break;
                             case OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment:
                                 inferenceRegistry[OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment.ToString()] = OWLFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
                                 break;
