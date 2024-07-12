@@ -59,7 +59,7 @@ namespace OWLSharp.Test.Reasoner.Rules
                             && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly"));
         }
 
-		 [TestMethod]
+		[TestMethod]
         public void ShouldEntailInverseObjectPropertyDomainCase()
         {
             OWLOntology ontology = new OWLOntology()
@@ -91,6 +91,74 @@ namespace OWLSharp.Test.Reasoner.Rules
             Assert.IsTrue(inferences[0] is OWLClassAssertion inf
                             && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
                             && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Janine"));
+        }
+
+		[TestMethod]
+        public void ShouldEntailInverseObjectPropertyAssertionDomainCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
+                ],
+                ObjectPropertyAxioms = [ 
+                    new OWLObjectPropertyDomain(
+						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                ],
+				AssertionAxioms = [
+					new OWLObjectPropertyAssertion(
+						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
+					)
+				]
+            };
+            List<OWLAxiom> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0] is OWLClassAssertion inf
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Janine"));
+        }
+
+		[TestMethod]
+        public void ShouldEntailInverseObjectPropertyAssertionInverseDomainCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
+                ],
+                ObjectPropertyAxioms = [ 
+                    new OWLObjectPropertyDomain(
+						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                ],
+				AssertionAxioms = [
+					new OWLObjectPropertyAssertion(
+						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
+					)
+				]
+            };
+            List<OWLAxiom> inferences = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0] is OWLClassAssertion inf
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly"));
         }
         #endregion
     }
