@@ -72,7 +72,7 @@ namespace OWLSharp.Test.Reasoner.Rules
 					new OWLObjectPropertyAssertion(
 						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
 						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))
+						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
 					),
 					new OWLObjectPropertyAssertion(
 						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
@@ -82,16 +82,13 @@ namespace OWLSharp.Test.Reasoner.Rules
 				]
             };
             List<OWLAxiom> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
-var a = OWLSerializer.SerializeOntology(ontology);
+
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.IsTrue(inferences.Count == 1);
             Assert.IsTrue(inferences[0] is OWLSameIndividual inf 
-                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
-							&& string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener"));
-			 Assert.IsTrue(inferences[1] is OWLSameIndividual inf1 
-                            && string.Equals(inf1.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")
-							&& string.Equals(inf1.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen"));
+                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")
+							&& string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Henry"));
         }
         #endregion
     }
