@@ -47,6 +47,7 @@ namespace OWLSharp
 			ClassAssertionEntailment = 20,
 			DataPropertyDomainEntailment = 21,
 			ObjectPropertyDomainEntailment = 22,
+			ObjectPropertyRangeEntailment = 23,
         }
     }
 }
