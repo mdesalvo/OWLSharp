@@ -36,11 +36,13 @@ namespace OWLSharp.Reasoner.Rules
 			
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
 			{
+				List<OWLIndividualExpression> hasKeyClassIdvs = ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression);
+
 				//HasKey(C, OP) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
-				inferences.AddRange(AnalyzeObjectKeyValues(ontology, hasKeyAxiom, opAsns));
+				inferences.AddRange(AnalyzeObjectKeyValues(ontology, hasKeyAxiom, hasKeyClassIdvs, opAsns));
 
 				//HasKey(C, DP) ^ DataPropertyAssertion(DP, I1, LIT) ^ DataPropertyAssertion(DP, I2, LIT) -> SameIndividual(I1,I2)
-				inferences.AddRange(AnalyzeDataKeyValues(ontology, hasKeyAxiom, dpAsns));
+				inferences.AddRange(AnalyzeDataKeyValues(ontology, hasKeyAxiom, hasKeyClassIdvs, dpAsns));
 			}
 
 			//Remove inferences already stated in explicit knowledge
@@ -49,7 +51,7 @@ namespace OWLSharp.Reasoner.Rules
             return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
 
-		private static List<OWLAxiom> AnalyzeObjectKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLObjectPropertyAssertion> opAsns)
+		private static List<OWLAxiom> AnalyzeObjectKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, List<OWLObjectPropertyAssertion> opAsns)
 		{
 			List<OWLAxiom> inferences = new List<OWLAxiom>();
 
@@ -59,7 +61,7 @@ namespace OWLSharp.Reasoner.Rules
 
 			#region Compute Keys
 			//Iterate individuals of the HasKey axiom's class in order to calculate their key values
-			foreach (OWLIndividualExpression idvExpr in ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression))
+			foreach (OWLIndividualExpression idvExpr in hasKeyClassIdvs)
 			{
 				//Calculate the key values of the current individual
                 StringBuilder sb = new StringBuilder();
@@ -117,7 +119,7 @@ namespace OWLSharp.Reasoner.Rules
 			return inferences;
 		}
     
-		private static List<OWLAxiom> AnalyzeDataKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLDataPropertyAssertion> dpAsns)
+		private static List<OWLAxiom> AnalyzeDataKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, List<OWLDataPropertyAssertion> dpAsns)
 		{
 			List<OWLAxiom> inferences = new List<OWLAxiom>();
 
@@ -126,7 +128,7 @@ namespace OWLSharp.Reasoner.Rules
 
 			#region Compute Keys
 			//Iterate individuals of the HasKey axiom's class in order to calculate their key values
-			foreach (OWLIndividualExpression idvExpr in ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression))
+			foreach (OWLIndividualExpression idvExpr in hasKeyClassIdvs)
 			{
 				//Calculate the key values of the current individual
                 StringBuilder sb = new StringBuilder();
