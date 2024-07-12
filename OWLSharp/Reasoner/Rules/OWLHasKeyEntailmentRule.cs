@@ -62,6 +62,8 @@ namespace OWLSharp.Reasoner.Rules
 			//Iterate individuals of the HasKey axiom's class in order to calculate their key values
 			foreach (OWLIndividualExpression idvExpr in hasKeyClassIdvs)
 			{
+				RDFResource idvExprIRI = idvExpr.GetIRI();
+
 				//Calculate the key values of the current individual
                 StringBuilder sb = new StringBuilder();
                 foreach (OWLObjectPropertyExpression keyObjectProperty in hasKeyAxiom.ObjectPropertyExpressions)
@@ -94,7 +96,8 @@ namespace OWLSharp.Reasoner.Rules
 					#endregion
 
 					if (keyObjectPropertyAsns.Count > 0)
-                        sb.Append(string.Join("§§", keyObjectPropertyAsns.Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
+                        sb.Append(string.Join("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
+																		 .Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
                 }
 
                 //Collect the key values of the current individual into the register
@@ -129,13 +132,16 @@ namespace OWLSharp.Reasoner.Rules
 			//Iterate individuals of the HasKey axiom's class in order to calculate their key values
 			foreach (OWLIndividualExpression idvExpr in hasKeyClassIdvs)
 			{
+				RDFResource idvExprIRI = idvExpr.GetIRI();
+
 				//Calculate the key values of the current individual
                 StringBuilder sb = new StringBuilder();
                 foreach (OWLDataProperty keyDataProperty in hasKeyAxiom.DataProperties)
                 {
 					List<OWLDataPropertyAssertion> keyDataPropertyAsns = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, keyDataProperty);
 					if (keyDataPropertyAsns.Count > 0)
-                        sb.Append(string.Join("§§", keyDataPropertyAsns.Select(asn => asn.Literal.GetLiteral().ToString())));
+                        sb.Append(string.Join("§§", keyDataPropertyAsns.Where(asn => asn.IndividualExpression.GetIRI().Equals(idvExprIRI))
+																	   .Select(asn => asn.Literal.GetLiteral().ToString())));
                 }
 
                 //Collect the key values of the current individual into the register
