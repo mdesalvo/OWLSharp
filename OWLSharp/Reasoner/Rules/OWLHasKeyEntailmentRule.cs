@@ -18,6 +18,7 @@ using OWLSharp.Ontology.Helpers;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace OWLSharp.Reasoner.Rules
 {
@@ -31,13 +32,15 @@ namespace OWLSharp.Reasoner.Rules
 			List<OWLSameIndividual> sameIdvs = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-
-			//HasKey(C, OP) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
-			//HasKey(C, DP) ^ DataPropertyAssertion(DP, I1, LIT) ^ DataPropertyAssertion(DP, I2, LIT) -> SameIndividual(I1,I2)
+			Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
+			
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
 			{
-				//TODO
-				
+				//HasKey(C, OP) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
+				AnalyzeObjectKeyValues(GetObjectKeyValues(ontology, hasKeyAxiom, opAsns));
+
+
+				//HasKey(C, DP) ^ DataPropertyAssertion(DP, I1, LIT) ^ DataPropertyAssertion(DP, I2, LIT) -> SameIndividual(I1,I2)
 			}
 
 			//Remove inferences already stated in explicit knowledge
@@ -45,5 +48,66 @@ namespace OWLSharp.Reasoner.Rules
 
             return OWLAxiomHelper.RemoveDuplicates(inferences);
         }
+
+		private static Dictionary<string, List<OWLIndividualExpression>> GetObjectKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLObjectPropertyAssertion> opAsns)
+		{
+			Dictionary<string, List<OWLIndividualExpression>> keyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
+			OWLIndividualExpression swapIdvExpr;
+
+			//Iterate individuals of the HasKey axiom's class in order to calculate their key values
+			foreach (OWLIndividualExpression idvExpr in ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression))
+			{
+				//Calculate the key values of the current individual
+                StringBuilder sb = new StringBuilder();
+                foreach (OWLObjectPropertyExpression keyObjectProperty in hasKeyAxiom.ObjectPropertyExpressions)
+                {
+					OWLObjectProperty keyObjectPropertyInvOfValue = (keyObjectProperty as OWLObjectInverseOf)?.ObjectProperty;
+
+					#region Calibration
+					List<OWLObjectPropertyAssertion> keyObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, keyObjectProperty);
+                    for (int i=0; i<keyObjectPropertyAsns.Count; i++)
+					{
+						//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
+						if (keyObjectPropertyAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+						{   
+							swapIdvExpr = keyObjectPropertyAsns[i].SourceIndividualExpression;
+							keyObjectPropertyAsns[i].SourceIndividualExpression = keyObjectPropertyAsns[i].TargetIndividualExpression;
+							keyObjectPropertyAsns[i].TargetIndividualExpression = swapIdvExpr;
+							keyObjectPropertyAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+						}
+
+						//In case the key object property works under inverse logic, we must swap source/target of the object assertion
+						if (keyObjectPropertyInvOfValue != null)
+						{
+							swapIdvExpr = keyObjectPropertyAsns[i].SourceIndividualExpression;
+							keyObjectPropertyAsns[i].SourceIndividualExpression = keyObjectPropertyAsns[i].TargetIndividualExpression;
+							keyObjectPropertyAsns[i].TargetIndividualExpression = swapIdvExpr;
+							keyObjectPropertyAsns[i].ObjectPropertyExpression = keyObjectPropertyInvOfValue;
+						}
+					}
+					keyObjectPropertyAsns = OWLAxiomHelper.RemoveDuplicates(keyObjectPropertyAsns);
+					#endregion
+
+					if (keyObjectPropertyAsns.Count > 0)
+                        sb.Append(string.Join("§§", keyObjectPropertyAsns.Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
+                }
+
+                //Collect the key values of the current individual into the register
+                string sbValue = sb.ToString();
+                if (!string.IsNullOrEmpty(sbValue))
+                {
+                    if (!keyValueRegister.ContainsKey(sbValue))
+                        keyValueRegister.Add(sbValue, new List<OWLIndividualExpression>());
+                    keyValueRegister[sbValue].Add(idvExpr);
+                }
+			}
+
+			return keyValueRegister;
+		}
+
+		private static void AnalyzeObjectKeyValues(Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister)
+		{
+			//TODO
+		}
     }
 }
