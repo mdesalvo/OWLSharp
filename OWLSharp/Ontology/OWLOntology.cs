@@ -1592,7 +1592,7 @@ namespace OWLSharp.Ontology
                 idvex = null;
                 if (idvIRI.IsBlank)
                     idvex = new OWLAnonymousIndividual(idvIRI.ToString().Substring(6));
-                else if (typeGraph[idvIRI, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                else if (typeGraph[idvIRI, null, null, null].TriplesCount > 0)
                     idvex = new OWLNamedIndividual(idvIRI);
             }
             void LoadClassExpression(OWLOntology ont, RDFResource clsIRI, out OWLClassExpression clex)
