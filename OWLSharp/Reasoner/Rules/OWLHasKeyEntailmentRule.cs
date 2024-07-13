@@ -85,15 +85,6 @@ namespace OWLSharp.Reasoner.Rules
 								keyObjectPropertyAsns[i].TargetIndividualExpression = swapIdvExpr;
 								keyObjectPropertyAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
 							}
-
-							//In case the key object property works under inverse logic, we must swap source/target of the object assertion
-							if (keyObjectPropertyInvOfValue != null)
-							{
-								swapIdvExpr = keyObjectPropertyAsns[i].SourceIndividualExpression;
-								keyObjectPropertyAsns[i].SourceIndividualExpression = keyObjectPropertyAsns[i].TargetIndividualExpression;
-								keyObjectPropertyAsns[i].TargetIndividualExpression = swapIdvExpr;
-								keyObjectPropertyAsns[i].ObjectPropertyExpression = keyObjectPropertyInvOfValue;
-							}
 						}
 						keyObjectPropertyAsns = OWLAxiomHelper.RemoveDuplicates(keyObjectPropertyAsns);
 						#endregion
