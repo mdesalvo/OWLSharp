@@ -200,6 +200,38 @@ namespace OWLSharp.Test.Reasoner.Rules
                             && string.Equals(inf2.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                             && string.Equals(inf2.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Stiv"));
         }
-        #endregion
+        
+		[TestMethod]
+        public void ShouldEntailInverseObjectPropertiesViaEquivalentObjectPropertiesCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isKnownBy"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFriendOf")))
+                ],
+                ObjectPropertyAxioms = [ 
+                    new OWLInverseObjectProperties(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+												   new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isKnownBy"))),
+					new OWLEquivalentObjectProperties([
+						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isKnownBy")),
+						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFriendOf"))
+					])
+                ]
+            };
+            List<OWLAxiom> inferences = OWLInverseObjectPropertiesEntailmentRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.Count == 2);
+            Assert.IsTrue(inferences[0] is OWLInverseObjectProperties inf 
+                            && string.Equals(inf.LeftObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")
+							&& string.Equals(inf.RightObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isFriendOf"));
+			Assert.IsTrue(inferences[1] is OWLInverseObjectProperties inf1 
+                            && string.Equals(inf1.LeftObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isFriendOf")
+							&& string.Equals(inf1.RightObjectPropertyExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows"));
+        }
+		#endregion
     }
 }
