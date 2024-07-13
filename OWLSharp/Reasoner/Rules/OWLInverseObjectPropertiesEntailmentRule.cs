@@ -34,8 +34,6 @@ namespace OWLSharp.Reasoner.Rules
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
                                                                      	 .Select(ax => (OWLObjectProperty)ax.Expression))
 			{
-				RDFResource declaredObjectPropertyIRI = declaredObjectProperty.GetIRI();
-
 				//Extract inverse object properties of the current object property
 				List<(bool,OWLObjectPropertyExpression)> invsOfDeclaredObjectProperty = GetInverseObjectProperties(ontology, declaredObjectProperty);
 
