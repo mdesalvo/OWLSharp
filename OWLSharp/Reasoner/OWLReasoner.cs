@@ -23,12 +23,12 @@ namespace OWLSharp.Reasoner
     public class OWLReasoner
     {
         #region Properties
-        public List<OWLEnums.OWLReasonerRules> StandardRules { get; internal set; }
+        public List<OWLEnums.OWLReasonerRules> Rules { get; internal set; }
         #endregion
 
         #region Ctors
         public OWLReasoner()
-			=> StandardRules = new List<OWLEnums.OWLReasonerRules>();
+			=> Rules = new List<OWLEnums.OWLReasonerRules>();
         #endregion
 
         #region Methods
@@ -42,15 +42,15 @@ namespace OWLSharp.Reasoner
 
                 //Initialize inference registry
                 Dictionary<string, List<OWLAxiom>> inferenceRegistry = new Dictionary<string, List<OWLAxiom>>();
-				StandardRules.ForEach(standardRule => inferenceRegistry.Add(standardRule.ToString(), null));
+				Rules.ForEach(rule => inferenceRegistry.Add(rule.ToString(), null));
 
                 //Execute standard rules
-                Parallel.ForEach(StandardRules.Distinct(), 
-                    standardRule =>
+                Parallel.ForEach(Rules.Distinct(), 
+                    rule =>
                     {
-                        OWLEvents.RaiseInfo($"Launching standard reasoner rule '{standardRule}'");
+                        OWLEvents.RaiseInfo($"Launching reasoner rule {rule}...");
 
-                        switch (standardRule)
+                        switch (rule)
                         {
                             case OWLEnums.OWLReasonerRules.SubClassOfEntailment:
 								inferenceRegistry[OWLEnums.OWLReasonerRules.SubClassOfEntailment.ToString()] = OWLSubClassOfEntailmentRule.ExecuteRule(ontology);
@@ -129,14 +129,14 @@ namespace OWLSharp.Reasoner
                                 break;
                         }
 
-                        OWLEvents.RaiseInfo($"Completed standard reasoner rule '{standardRule}': {inferenceRegistry[standardRule.ToString()].Count} inferences");
+                        OWLEvents.RaiseInfo($"Completed reasoner rule {rule} with {inferenceRegistry[rule.ToString()].Count} inferences");
                     });
 
                 //Process inference registry
                 foreach (KeyValuePair<string, List<OWLAxiom>> inferenceRegistryEntries in inferenceRegistry)
                     inferences.AddRange(inferenceRegistryEntries.Value);
 
-                OWLEvents.RaiseInfo($"Reasoner has been applied to ontology '{ontology.IRI}': {inferences.Count} inferences");
+                OWLEvents.RaiseInfo($"Reasoner has been applied to ontology {ontology.IRI} with {inferences.Count} inferences");
             }
 
             return OWLAxiomHelper.RemoveDuplicates(inferences);
