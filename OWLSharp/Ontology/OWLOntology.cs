@@ -104,7 +104,7 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLOntology()
+        public OWLOntology()
         {
             Prefixes = new List<OWLPrefix>()
             {
@@ -244,11 +244,13 @@ namespace OWLSharp.Ontology
 
         public static OWLOntology FromRDFGraph(RDFGraph graph)
         {
+			RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
+
             #region Utilities
             //Ontology
 			void LoadOntology(out OWLOntology ont)
             {
-                string ontIRI = graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null]
+                string ontIRI = typeGraph[null, null, RDFVocabulary.OWL.ONTOLOGY, null]
                                  .First().Subject.ToString();
                 ont = new OWLOntology()
                 {
@@ -271,33 +273,53 @@ namespace OWLSharp.Ontology
             }
             void LoadDeclarations(OWLOntology ont)
             {
-                RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
-
+                //Class
                 foreach (RDFTriple typeClass in typeGraph[null, null, RDFVocabulary.OWL.CLASS, null]
                                                  .UnionWith(typeGraph[null, null, RDFVocabulary.OWL.DEPRECATED_CLASS, null])
                                                  .UnionWith(typeGraph[null, null, RDFVocabulary.RDFS.CLASS, null])
                                                  .Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass((RDFResource)typeClass.Subject)));
 
+				//Datatype
                 foreach (RDFTriple typeDatatype in typeGraph[null, null, RDFVocabulary.RDFS.DATATYPE, null]
 													.Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype((RDFResource)typeDatatype.Subject)));
 
+				//ObjectProperty
                 foreach (RDFTriple typeObjectProperty in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null]
 														  .Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLObjectProperty((RDFResource)typeObjectProperty.Subject)));
 
+				//DataProperty
                 foreach (RDFTriple typeDataProperty in typeGraph[null, null, RDFVocabulary.OWL.DATATYPE_PROPERTY, null]
 														.Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLDataProperty((RDFResource)typeDataProperty.Subject)));
 
+				//AnnotationProperty
                 foreach (RDFTriple typeAnnotationProperty in typeGraph[null, null, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null]
 															  .Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLAnnotationProperty((RDFResource)typeAnnotationProperty.Subject)));
 
-                foreach (RDFTriple typeNamedIndividual in typeGraph[null, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null]
-														   .Where(t => !((RDFResource)t.Subject).IsBlank))
-                    ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual((RDFResource)typeNamedIndividual.Subject)));
+				//NamedIndividual (OWL)
+				List<RDFResource> namedIndividuals = new List<RDFResource>();
+				foreach (RDFTriple typeNamedIndividual in typeGraph[null, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null]
+															  .Where(t => !((RDFResource)t.Subject).IsBlank))
+					namedIndividuals.Add((RDFResource)typeNamedIndividual.Subject);
+				//NamedIndividual (SPARQL)
+                RDFSelectQuery namedIdvQuery = new RDFSelectQuery()
+					.AddPatternGroup(new RDFPatternGroup()
+						.AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS))
+						.AddPattern(new RDFPattern(new RDFVariable("?NIDV"), RDFVocabulary.RDF.TYPE, new RDFVariable("?CLS")))
+						.AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?NIDV"), new RDFVariable("?CLS"))))
+						.AddFilter(new RDFIsUriFilter(new RDFVariable("?NIDV"))))
+					.AddProjectionVariable(new RDFVariable("?NIDV"))
+					.AddModifier(new RDFDistinctModifier());
+				RDFSelectQueryResult namedIdvQueryResult = namedIdvQuery.ApplyToGraph(typeGraph);
+				foreach (DataRow nidvRow in namedIdvQueryResult.SelectResults.Rows)
+					namedIndividuals.Add(new RDFResource(nidvRow["?NIDV"].ToString()));
+				//NamedIndividual (OWL + SPARQL)
+				RDFQueryUtilities.RemoveDuplicates(namedIndividuals)
+								 .ForEach(nidv => ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(nidv))));
             }
             void PrefetchAnnotationAxioms(OWLOntology ont, out RDFGraph annAxiomsGraph)
             {
@@ -336,7 +358,7 @@ namespace OWLSharp.Ontology
             //Axioms
             void LoadFunctionalObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
+                foreach (RDFTriple funcPropTriple in typeGraph[null, null, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
                 {
                     LoadObjectPropertyExpression(ont, (RDFResource)funcPropTriple.Subject, out OWLObjectPropertyExpression opex);
                     if (opex != null)
@@ -352,7 +374,7 @@ namespace OWLSharp.Ontology
             }
             void LoadInverseFunctionalObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple invfuncPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null])
+                foreach (RDFTriple invfuncPropTriple in typeGraph[null, null, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null])
                 {
                     LoadObjectPropertyExpression(ont, (RDFResource)invfuncPropTriple.Subject, out OWLObjectPropertyExpression opex);
                     if (opex != null)
@@ -368,7 +390,7 @@ namespace OWLSharp.Ontology
             }
 			void LoadSymmetricObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple symPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null])
+                foreach (RDFTriple symPropTriple in typeGraph[null, null, RDFVocabulary.OWL.SYMMETRIC_PROPERTY, null])
                 {
                     LoadObjectPropertyExpression(ont, (RDFResource)symPropTriple.Subject, out OWLObjectPropertyExpression opex);
                     if (opex != null)
@@ -384,7 +406,7 @@ namespace OWLSharp.Ontology
             }
 			void LoadAsymmetricObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple asymPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
+                foreach (RDFTriple asymPropTriple in typeGraph[null, null, RDFVocabulary.OWL.ASYMMETRIC_PROPERTY, null])
                 {
                     LoadObjectPropertyExpression(ont, (RDFResource)asymPropTriple.Subject, out OWLObjectPropertyExpression opex);
                     if (opex != null)
@@ -400,7 +422,7 @@ namespace OWLSharp.Ontology
             }
             void LoadReflexiveObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple refPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.REFLEXIVE_PROPERTY, null])
+                foreach (RDFTriple refPropTriple in typeGraph[null, null, RDFVocabulary.OWL.REFLEXIVE_PROPERTY, null])
                 {
                     LoadObjectPropertyExpression(ont, (RDFResource)refPropTriple.Subject, out OWLObjectPropertyExpression opex);
                     if (opex != null)
@@ -416,7 +438,7 @@ namespace OWLSharp.Ontology
             }
             void LoadIrreflexiveObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple irrefPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.IRREFLEXIVE_PROPERTY, null])
+                foreach (RDFTriple irrefPropTriple in typeGraph[null, null, RDFVocabulary.OWL.IRREFLEXIVE_PROPERTY, null])
                 {
                     LoadObjectPropertyExpression(ont, (RDFResource)irrefPropTriple.Subject, out OWLObjectPropertyExpression opex);
                     if (opex != null)
@@ -432,7 +454,7 @@ namespace OWLSharp.Ontology
             }
 			void LoadTransitiveObjectProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple transPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null])
+                foreach (RDFTriple transPropTriple in typeGraph[null, null, RDFVocabulary.OWL.TRANSITIVE_PROPERTY, null])
                 {
                     LoadObjectPropertyExpression(ont, (RDFResource)transPropTriple.Subject, out OWLObjectPropertyExpression opex);
                     if (opex != null)
@@ -586,7 +608,7 @@ namespace OWLSharp.Ontology
                 }
 			
 				//Load axioms built with owl:AllDisjointProperties
-				foreach (RDFTriple allDisjointPropertiesTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
+				foreach (RDFTriple allDisjointPropertiesTriple in typeGraph[null, null, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
 					if (graph[(RDFResource)allDisjointPropertiesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
 						 .FirstOrDefault()?.Object is RDFResource adjpCollectionRepresentative)
 					{
@@ -704,7 +726,7 @@ namespace OWLSharp.Ontology
             }
             void LoadFunctionalDataProperties(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple funcPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
+                foreach (RDFTriple funcPropTriple in typeGraph[null, null, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null])
                 {
                     LoadDataPropertyExpression(ont, (RDFResource)funcPropTriple.Subject, out OWLDataPropertyExpression dpex);
                     if (dpex is OWLDataProperty dp)
@@ -755,7 +777,7 @@ namespace OWLSharp.Ontology
                 }
 
                 //Load axioms built with owl:AllDisjointProperties
-                foreach (RDFTriple allDisjointPropertiesTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
+                foreach (RDFTriple allDisjointPropertiesTriple in typeGraph[null, null, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
                     if (graph[(RDFResource)allDisjointPropertiesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
                          .FirstOrDefault()?.Object is RDFResource adjpCollectionRepresentative)
                     {
@@ -900,7 +922,7 @@ namespace OWLSharp.Ontology
                 }
 
                 //Load axioms built with owl:AllDisjointClasses
-                foreach (RDFTriple allDisjointClassesTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES, null])
+                foreach (RDFTriple allDisjointClassesTriple in typeGraph[null, null, RDFVocabulary.OWL.ALL_DISJOINT_CLASSES, null])
                     if (graph[(RDFResource)allDisjointClassesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
                          .FirstOrDefault()?.Object is RDFResource adjcCollectionRepresentative)
                     {
@@ -994,7 +1016,7 @@ namespace OWLSharp.Ontology
             }
             void LoadDatatypeDefinition(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple datatypeTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null]
+                foreach (RDFTriple datatypeTriple in typeGraph[null, null, RDFVocabulary.RDFS.DATATYPE, null]
                                                       .Where(t => !((RDFResource)t.Subject).IsBlank))                
                 {
                     if (!(graph[(RDFResource)datatypeTriple.Subject, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
@@ -1054,7 +1076,7 @@ namespace OWLSharp.Ontology
                 }
 
                 //Load axioms built with owl:AllDifferent
-                foreach (RDFTriple allDifferentTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DIFFERENT, null])
+                foreach (RDFTriple allDifferentTriple in typeGraph[null, null, RDFVocabulary.OWL.ALL_DIFFERENT, null])
                     if (graph[(RDFResource)allDifferentTriple.Subject, RDFVocabulary.OWL.DISTINCT_MEMBERS, null, null]
                          .FirstOrDefault()?.Object is RDFResource adiffCollectionRepresentative)
                     {
@@ -1088,7 +1110,7 @@ namespace OWLSharp.Ontology
             }
 			void LoadObjectPropertyAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple objPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
+                foreach (RDFTriple objPropTriple in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
                 {
                     OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)objPropTriple.Subject);
                     foreach (RDFTriple objPropAsnTriple in graph[null, (RDFResource)objPropTriple.Subject, null, null])
@@ -1155,7 +1177,7 @@ namespace OWLSharp.Ontology
             }
             void LoadDataPropertyAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
             {
-                foreach (RDFTriple dtPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null])
+                foreach (RDFTriple dtPropTriple in typeGraph[null, null, RDFVocabulary.OWL.DATATYPE_PROPERTY, null])
                 {
                     OWLDataProperty dtProp = new OWLDataProperty((RDFResource)dtPropTriple.Subject);
                     foreach (RDFTriple dtPropAsnTriple in graph[null, (RDFResource)dtPropTriple.Subject, null, null])
@@ -1192,7 +1214,7 @@ namespace OWLSharp.Ontology
                         .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?IDV"), new RDFVariable("?CLS"))))
 						.AddFilter(new RDFBooleanNotFilter(new RDFInFilter(new RDFVariable("?CLS"), new List<RDFPatternMember>() {
 							RDFVocabulary.RDF.LIST, RDFVocabulary.RDFS.CLASS, RDFVocabulary.OWL.CLASS, RDFVocabulary.OWL.DEPRECATED_CLASS, RDFVocabulary.OWL.RESTRICTION }))));
-                RDFSelectQueryResult result = query.ApplyToGraph(graph);
+                RDFSelectQueryResult result = query.ApplyToGraph(typeGraph);
                 foreach (DataRow resultRow in result.SelectResults.Rows)
                 {
 					RDFResource clsIRI = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?CLS"].ToString());
@@ -1481,7 +1503,7 @@ namespace OWLSharp.Ontology
 			{
 				annotations = new List<OWLAnnotation>();
 
-				foreach (RDFTriple annPropTriple in graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null]
+				foreach (RDFTriple annPropTriple in typeGraph[null, null, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null]
                                                      .Where(ap => !ap.Equals(RDFVocabulary.OWL.VERSION_IRI)))
                 {
                     RDFResource annPropIRI = (RDFResource)annPropTriple.Subject;
@@ -1542,7 +1564,7 @@ namespace OWLSharp.Ontology
             void LoadAnnotationPropertyExpression(OWLOntology ont, RDFResource apIRI, out OWLAnnotationPropertyExpression apex)
             {
                 apex = null;
-                if (graph[apIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount > 0)
+                if (typeGraph[apIRI, null, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount > 0)
                     apex = new OWLAnnotationProperty(apIRI);
             }
             void LoadObjectPropertyExpression(OWLOntology ont, RDFResource opIRI, out OWLObjectPropertyExpression opex)
@@ -1550,7 +1572,7 @@ namespace OWLSharp.Ontology
                 opex = null;
                 if (graph[opIRI, RDFVocabulary.OWL.INVERSE_OF, null, null].TriplesCount == 0)
                 {
-                    if (graph[opIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
+                    if (typeGraph[opIRI, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
                         opex = new OWLObjectProperty(opIRI);
                 }
                 else
@@ -1562,7 +1584,7 @@ namespace OWLSharp.Ontology
             void LoadDataPropertyExpression(OWLOntology ont, RDFResource dpIRI, out OWLDataPropertyExpression dpex)
             {
                 dpex = null;
-                if (graph[dpIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
+                if (typeGraph[dpIRI, null, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount > 0)
                     dpex = new OWLDataProperty(dpIRI);
             }
             void LoadIndividualExpression(OWLOntology ont, RDFResource idvIRI, out OWLIndividualExpression idvex)
@@ -1570,7 +1592,7 @@ namespace OWLSharp.Ontology
                 idvex = null;
                 if (idvIRI.IsBlank)
                     idvex = new OWLAnonymousIndividual(idvIRI.ToString().Substring(6));
-                else if (graph[idvIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
+                else if (typeGraph[idvIRI, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount > 0)
                     idvex = new OWLNamedIndividual(idvIRI);
             }
             void LoadClassExpression(OWLOntology ont, RDFResource clsIRI, out OWLClassExpression clex)
