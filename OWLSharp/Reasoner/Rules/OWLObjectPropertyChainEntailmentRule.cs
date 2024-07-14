@@ -30,12 +30,13 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLAxiom> inferences = new List<OWLAxiom>();
 
 			//Prepare subgraph for analysis of property chain
-			Lazy<RDFGraph> opAsnsGraph = new Lazy<RDFGraph>(() => 
+			Lazy<RDFGraph> lazyOPAsnsGraph = new Lazy<RDFGraph>(() => 
 			{
-				RDFGraph opAsnsGraphTemp = new RDFGraph();
+				RDFGraph opAsnsGraph = new RDFGraph();
 				foreach (OWLObjectPropertyAssertion opAsn in ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>())
-					opAsnsGraphTemp = opAsnsGraphTemp.UnionWith(opAsn.ToRDFGraph());
-				return opAsnsGraphTemp;
+					foreach (RDFTriple opAsnTriple in opAsn.ToRDFGraph())
+						opAsnsGraph.AddTriple(opAsnTriple);
+				return opAsnsGraph;
 			});
 
             //SubObjectPropertyOf(PC,OP) ^ ObjectPropertyChain(PC,(OP1..OPN)) -> ObjectPropertyAssertion(OP,OP1,OPN)
@@ -59,7 +60,7 @@ namespace OWLSharp.Reasoner.Rules
 							.AddFilter(new RDFIsUriFilter(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START")))
 							.AddFilter(new RDFIsUriFilter(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"))))
                         .AddTemplate(templatePattern)
-                        .ApplyToGraph(opAsnsGraph.Value);
+                        .ApplyToGraph(lazyOPAsnsGraph.Value);
 
 				//Populate result with corresponding inference assertions
 				OWLIndividualExpression infSrcIdvExpr = null;
