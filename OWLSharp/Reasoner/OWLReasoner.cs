@@ -38,7 +38,7 @@ namespace OWLSharp.Reasoner
 
             if (ontology != null)
             {
-                OWLEvents.RaiseInfo($"Reasoner is going to be applied to ontology '{ontology.IRI}'...");
+                OWLEvents.RaiseInfo($"Launching reasoner on ontology '{ontology.IRI}'...");
 
                 //Initialize inference registry
                 Dictionary<string, List<OWLAxiom>> inferenceRegistry = new Dictionary<string, List<OWLAxiom>>();
@@ -48,7 +48,7 @@ namespace OWLSharp.Reasoner
                 Parallel.ForEach(Rules.Distinct(), 
                     rule =>
                     {
-                        OWLEvents.RaiseInfo($"Launching reasoner rule {rule}...");
+                        OWLEvents.RaiseInfo($"Launching {rule}...");
 
                         switch (rule)
                         {
@@ -129,14 +129,14 @@ namespace OWLSharp.Reasoner
                                 break;
                         }
 
-                        OWLEvents.RaiseInfo($"Completed reasoner rule {rule} with {inferenceRegistry[rule.ToString()].Count} inferences");
+                        OWLEvents.RaiseInfo($"Completed {rule} ({inferenceRegistry[rule.ToString()].Count} inferences)");
                     });
 
                 //Process inference registry
                 foreach (KeyValuePair<string, List<OWLAxiom>> inferenceRegistryEntries in inferenceRegistry)
                     inferences.AddRange(inferenceRegistryEntries.Value);
 
-                OWLEvents.RaiseInfo($"Reasoner has been applied to ontology {ontology.IRI} with {inferences.Count} inferences");
+                OWLEvents.RaiseInfo($"Completed reasoner on ontology {ontology.IRI} ({inferences.Count} inferences)");
             }
 
             return OWLAxiomHelper.RemoveDuplicates(inferences);
