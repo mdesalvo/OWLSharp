@@ -112,9 +112,12 @@ namespace OWLSharp.Ontology.Helpers
 																		.Select(ax => ax.IndividualExpression));
             
                 //ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
-					foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr))
-						foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExpr.GetIRI()))
-																				.Select(ax => ax.IndividualExpression));
+				foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr))
+				{
+					RDFResource subClsExprIRI = subClsExpr.GetIRI();
+					foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExprIRI))
+																			.Select(ax => ax.IndividualExpression));
+				}
 
 				//ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
 				foreach (OWLClassExpression equivClsExpr in ontology.GetEquivalentClasses(visitingClsExpr))
@@ -203,13 +206,13 @@ namespace OWLSharp.Ontology.Helpers
 									if (shouldSwitchObjPropIdvs)
 									{
 										if (inScopeObjPropAsnSourceIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
-												|| sameIndividuals.Any(idv => idv.GetIRI().Equals(inScopeObjPropAsnSourceIdvExpr.GetIRI())))
+											|| sameIndividuals.Any(idv => idv.GetIRI().Equals(inScopeObjPropAsnSourceIdvExpr.GetIRI())))
 												foundVisitingClsExprIndividuals.Add(inScopeObjPropAsnTargetIdvExpr);
 									}
 									else
 									{
 										if (inScopeObjPropAsnTargetIdvExpr.GetIRI().Equals(objHasValueIdvExprIRI)
-												|| sameIndividuals.Any(idv => idv.GetIRI().Equals(inScopeObjPropAsnTargetIdvExpr.GetIRI())))
+											|| sameIndividuals.Any(idv => idv.GetIRI().Equals(inScopeObjPropAsnTargetIdvExpr.GetIRI())))
 												foundVisitingClsExprIndividuals.Add(inScopeObjPropAsnSourceIdvExpr);
 									}
 								}
@@ -255,7 +258,7 @@ namespace OWLSharp.Ontology.Helpers
 								//Compute qualified individuals eventually in scope of OMNC/OSVF restriction
 								bool isQualified = onClassExpr != null;
 								List<OWLIndividualExpression> qualifiedIdvExprs = isQualified ? ontology.GetIndividualsOf(onClassExpr)
-																								: Enumerable.Empty<OWLIndividualExpression>().ToList();
+																							  : Enumerable.Empty<OWLIndividualExpression>().ToList();
 
 								//Compute individuals participating to OMNC/OSVF restriction
 								var occurrenceRegistry = new Dictionary<long, (OWLIndividualExpression, long)>();
