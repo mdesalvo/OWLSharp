@@ -85,10 +85,10 @@ namespace OWLSharp.Ontology.Helpers
             return OWLExpressionHelper.RemoveDuplicates(differentIndividuals);
         }
 
-		public static bool CheckIsIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr)
-			=> ontology != null && clsExpr != null && idvExpr != null && GetIndividualsOf(ontology, clsExpr).Any(iex => iex.GetIRI().Equals(idvExpr.GetIRI()));
+		public static bool CheckIsIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, bool enableSameAsEntailment=true)
+			=> ontology != null && clsExpr != null && idvExpr != null && GetIndividualsOf(ontology, clsExpr, enableSameAsEntailment).Any(iex => iex.GetIRI().Equals(idvExpr.GetIRI()));
 
-        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr)
+        public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, bool enableSameAsEntailment=true)
         {
 			List<OWLClassAssertion> classAssertions = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
 			List<OWLObjectPropertyAssertion> objectPropertyAssertions = GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology);
@@ -390,10 +390,13 @@ namespace OWLSharp.Ontology.Helpers
             if (ontology != null && clsExpr != null)
 			{
 				classIndividuals.AddRange(FindIndividualsOf(clsExpr, new HashSet<long>()));
-
-				//ClassAssertion(C,I1) ^ SameIndividual(I1,I2) -> ClassAssertion(C,I2)
-				foreach (OWLIndividualExpression classIndividual in classIndividuals.ToList())
-					classIndividuals.AddRange(ontology.GetSameIndividuals(classIndividual));
+  
+				if (enableSameAsEntailment)
+				{
+					//ClassAssertion(C,I1) ^ SameIndividual(I1,I2) -> ClassAssertion(C,I2)
+					foreach (OWLIndividualExpression classIndividual in classIndividuals.ToList())
+						classIndividuals.AddRange(ontology.GetSameIndividuals(classIndividual));
+				}
 			}				
             return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
         }

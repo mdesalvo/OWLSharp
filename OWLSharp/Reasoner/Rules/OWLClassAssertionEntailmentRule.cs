@@ -50,7 +50,7 @@ namespace OWLSharp.Reasoner.Rules
 			//ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
 			//ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
             foreach (OWLClassExpression inScopeClsExpr in inScopeClsExprs)
-			    foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr))
+			    foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr, false))
 					inferences.Add(new OWLClassAssertion(inScopeClsExpr) { IndividualExpression=idvExprOfInScopeClsExpr, IsInference=true });
 
 			//Remove inferences already stated in explicit knowledge

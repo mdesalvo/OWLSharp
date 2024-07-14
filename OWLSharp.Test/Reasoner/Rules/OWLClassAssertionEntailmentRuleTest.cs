@@ -218,7 +218,7 @@ namespace OWLSharp.Test.Reasoner.Rules
 			
 			Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 14);
+            Assert.IsTrue(inferences.Count == 9);
 			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
                             && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")
                             && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Felix")));
@@ -240,18 +240,6 @@ namespace OWLSharp.Test.Reasoner.Rules
 			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
                             && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/MyAnimals")
                             && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Paco")));
-			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
-                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")
-                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
-			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
-                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity")
-                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
-			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
-                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/MyAnimals")
-                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
-			Assert.IsTrue(inferences.Any(i => i is OWLClassAssertion inf 
-                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Parrot")
-                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/PaquitoTheParrot")));
         }
         #endregion
     }
