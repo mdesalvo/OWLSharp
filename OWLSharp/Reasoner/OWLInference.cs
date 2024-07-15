@@ -14,10 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
-using OWLSharp.Reasoner.Rules;
 
 namespace OWLSharp.Reasoner
 {
@@ -36,10 +33,18 @@ namespace OWLSharp.Reasoner
             //Initialize XML
             Axiom.GetXML();
         }
+        #endregion
 
         #region Interfaces
         public bool Equals(OWLInference other)
             => string.Equals(Axiom.GetXML(), other?.Axiom.GetXML());
+        #endregion
+
+        #region Method
+        public bool CheckIsAlreadyAsserted(List<OWLAxiom> axioms)
+            => axioms?.AsParallel()
+                      .Select(axiom => axiom.GetXML())
+                      .Any(xml => string.Equals(xml, Axiom.GetXML())) ?? false;
         #endregion
     }
 }
