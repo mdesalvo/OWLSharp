@@ -22,9 +22,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLInverseFunctionalObjectPropertyEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
@@ -61,10 +63,14 @@ namespace OWLSharp.Reasoner.Rules
                     idvxLookup[idvx].Add(fopAsnSourceIdvExpr);
                 }
                 foreach (List<OWLIndividualExpression> idvxLookupEntry in idvxLookup.Values.Where(idvExprs => idvExprs.Count > 1))
-                    inferences.Add(new OWLSameIndividual(idvxLookupEntry) { IsInference=true });
+                {
+                    OWLSameIndividual inference = new OWLSameIndividual(idvxLookupEntry) { IsInference=true };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
+                }   
             }
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

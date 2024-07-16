@@ -22,21 +22,26 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLDifferentIndividualsEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
-        {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment.ToString();
 
-            List<OWLDifferentIndividuals> diffIdvs = ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>();
-			foreach (OWLNamedIndividual declaredNamedIndividual in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        {
+            List<OWLInference> inferences = new List<OWLInference>();
+
+            foreach (OWLNamedIndividual declaredNamedIndividual in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
             															   .Select(ax => (OWLNamedIndividual)ax.Expression))
 				foreach (OWLIndividualExpression differentIdvExpr in ontology.GetDifferentIndividuals(declaredNamedIndividual))
 				{
-					inferences.Add(new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { declaredNamedIndividual, differentIdvExpr }) { IsInference=true });
-					inferences.Add(new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { differentIdvExpr, declaredNamedIndividual }) { IsInference=true });
-				}
-            inferences.RemoveAll(inf => diffIdvs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
+                    OWLDifferentIndividuals inferenceA = new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { declaredNamedIndividual, differentIdvExpr }) { IsInference=true };
+                    inferenceA.GetXML();
+                    inferences.Add(new OWLInference(rulename, inferenceA));
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+                    OWLDifferentIndividuals inferenceB = new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { differentIdvExpr, declaredNamedIndividual }) { IsInference=true };
+                    inferenceB.GetXML();
+					inferences.Add(new OWLInference(rulename, inferenceB));
+				}
+            
+            return inferences;
         }
     }
 }

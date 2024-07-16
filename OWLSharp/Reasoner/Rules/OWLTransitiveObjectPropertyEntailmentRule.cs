@@ -23,11 +23,12 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLTransitiveObjectPropertyEntailmentRule
     {
-        internal static List<OWLIndividualExpression> EmptyIdvExprList = Enumerable.Empty<OWLIndividualExpression>().ToList();
+        private static readonly List<OWLIndividualExpression> EmptyIdvExprList = Enumerable.Empty<OWLIndividualExpression>().ToList();
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment.ToString();
 
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
             OWLIndividualExpression swapIdvExpr;
@@ -70,16 +71,19 @@ namespace OWLSharp.Reasoner.Rules
                 IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression);
                 foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
 				{
-                    foreach (OWLIndividualExpression transitiveRelatedIdvExpr in FindTransitiveRelatedIndividuals(trnObjPropAsnGroup.Key.GetIRI(), trnObjPropAsnGroups, visitContext))
-                        inferences.Add(new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true });
+                    RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
+                    foreach (OWLIndividualExpression transitiveRelatedIdvExpr in FindTransitiveRelatedIndividuals(trnObjPropAsnGroupKeyIRI, trnObjPropAsnGroups, visitContext))
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(trnObjPropInvOfValue ?? trnObjProp.ObjectPropertyExpression, trnObjPropAsnGroup.Key, transitiveRelatedIdvExpr) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
                     visitContext.Clear();
                 }
-                //Remove inferences already stated in explicit knowledge
-                inferences.RemoveAll(inf => trnObjPropAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
                 #endregion
             }
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
 
         internal static List<OWLIndividualExpression> FindTransitiveRelatedIndividuals(RDFResource trnObjPropAsnGroupKeyIRI,

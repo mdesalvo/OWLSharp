@@ -22,12 +22,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSubClassOfEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
-        {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.SubClassOfEntailment.ToString();
 
-            //Temporary working variables
-            List<OWLSubClassOf> subClassOfAxs = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        {
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
             //SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
@@ -38,12 +37,14 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLClassExpression> superClasses = ontology.GetSuperClassesOf(declaredClass);
                 foreach (OWLClassExpression superClass in superClasses)
-                    inferences.Add(new OWLSubClassOf(declaredClass, superClass) { IsInference=true });
+                {
+                    OWLSubClassOf inference = new OWLSubClassOf(declaredClass, superClass) { IsInference=true };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
+                }   
 			}
-            //Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => subClassOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

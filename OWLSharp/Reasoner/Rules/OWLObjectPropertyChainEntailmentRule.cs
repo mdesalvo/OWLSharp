@@ -25,9 +25,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLObjectPropertyChainEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
 			//Prepare subgraph for analysis of property chain
 			Lazy<RDFGraph> lazyOPAsnsGraph = new Lazy<RDFGraph>(() => 
@@ -79,11 +81,13 @@ namespace OWLSharp.Reasoner.Rules
 					else
 						infTgtIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Object);
 
-					inferences.Add(new OWLObjectPropertyAssertion(new OWLObjectProperty((RDFResource)materializedChainTriple.Predicate), infSrcIdvExpr, infTgtIdvExpr) { IsInference=true });
+					OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(new OWLObjectProperty((RDFResource)materializedChainTriple.Predicate), infSrcIdvExpr, infTgtIdvExpr) { IsInference=true };
+					inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
 				}
 			}
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

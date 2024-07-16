@@ -22,12 +22,13 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSubDataPropertyOfEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
 			//Temporary working variables
-			List<OWLSubDataPropertyOf> subDtPropOfAxs = ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>();
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
@@ -37,18 +38,23 @@ namespace OWLSharp.Reasoner.Rules
             	//SubDataPropertyOf(P1,P2) ^ EquivalentDataProperties(P2,P3) -> SubDataPropertyOf(P1,P3)
 				List<OWLDataProperty> superDataProperties = ontology.GetSuperDataPropertiesOf(declaredDataProperty);
                 foreach (OWLDataProperty superDataProperty in superDataProperties)
-                    inferences.Add(new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference=true });
+                {
+                    OWLSubDataPropertyOf inference = new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference=true };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
+                }   
 
 				//SubDataPropertyOf(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
 				foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, declaredDataProperty))
 					foreach (OWLDataProperty superDataProperty in superDataProperties)
-						inferences.Add(new OWLDataPropertyAssertion(superDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression=declaredDataPropertyAsn.IndividualExpression, IsInference=true });
+                    {
+                        OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(superDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression = declaredDataPropertyAsn.IndividualExpression, IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }	
 			}
-			//Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => subDtPropOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-			inferences.RemoveAll(inf => dpAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

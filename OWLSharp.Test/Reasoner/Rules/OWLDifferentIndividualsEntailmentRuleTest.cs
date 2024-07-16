@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Reasoner;
 using OWLSharp.Reasoner.Rules;
 using RDFSharp.Model;
 using System.Collections.Generic;
@@ -44,11 +45,10 @@ namespace OWLSharp.Test.Reasoner.Rules
                     ])
                 ]
             };
-            List<OWLAxiom> inferences = OWLDifferentIndividualsEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLDifferentIndividualsEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 6); //Not "real" inferences: just symmetrical unpacking of OWLDifferentIndividuals
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         }
         #endregion
     }

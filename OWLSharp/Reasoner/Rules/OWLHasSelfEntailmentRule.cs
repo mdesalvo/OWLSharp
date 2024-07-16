@@ -23,9 +23,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLHasSelfEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.HasSelfEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
             List<OWLSubClassOf> subClassOfAxioms = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
@@ -37,12 +39,23 @@ namespace OWLSharp.Reasoner.Rules
 				OWLObjectHasSelf objHasSelf = (OWLObjectHasSelf)subClassOfObjectHasSelf.SuperClassExpression;
 				RDFResource subClassExpressionIRI = subClassOfObjectHasSelf.SubClassExpression.GetIRI();
 				foreach (OWLClassAssertion classAssertion in classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
-					inferences.Add(objHasSelf.ObjectPropertyExpression is OWLObjectInverseOf objInvOfHasSelf 
-						? new OWLObjectPropertyAssertion(objInvOfHasSelf.ObjectProperty, classAssertion.IndividualExpression, classAssertion.IndividualExpression) { IsInference=true }
-						: new OWLObjectPropertyAssertion(objHasSelf.ObjectPropertyExpression, classAssertion.IndividualExpression, classAssertion.IndividualExpression) { IsInference=true });
+				{
+					if (objHasSelf.ObjectPropertyExpression is OWLObjectInverseOf objInvOfHasSelf)
+					{
+						OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objInvOfHasSelf.ObjectProperty, classAssertion.IndividualExpression, classAssertion.IndividualExpression) { IsInference=true };
+						inference.GetXML();
+						inferences.Add(new OWLInference(rulename, inference));
+                    }
+					else
+					{
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objHasSelf.ObjectPropertyExpression, classAssertion.IndividualExpression, classAssertion.IndividualExpression) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
+				}
 			}
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

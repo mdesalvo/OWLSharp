@@ -21,9 +21,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLReflexiveObjectPropertyEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
@@ -50,13 +52,21 @@ namespace OWLSharp.Reasoner.Rules
                     
                     //Exploit the reflexive object property to emit the "selfswapped-assertion" inference
                     if (refObjProp.ObjectPropertyExpression is OWLObjectInverseOf refObjInvOf)
-                        inferences.Add(new OWLObjectPropertyAssertion(refObjInvOf.ObjectProperty, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true });
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjInvOf.ObjectProperty, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }                        
                     else
-                        inferences.Add(new OWLObjectPropertyAssertion(refObjProp.ObjectPropertyExpression, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true });
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjProp.ObjectPropertyExpression, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }   
                 }
 			}
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

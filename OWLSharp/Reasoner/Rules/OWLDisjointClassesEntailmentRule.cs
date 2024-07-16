@@ -22,13 +22,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLDisjointClassesEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
-        {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.DisjointClassesEntailment.ToString();
 
-            //Temporary working variables
-            List<OWLDisjointClasses> dsjClasses = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
-            List<OWLSubClassOf> subClassOfAxs = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        {
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //EquivalentClasses(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
             //SubClassOf(C1,C2) ^ DisjointClasses(C2,C3) -> DisjointClasses(C1,C3)
@@ -37,23 +35,30 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLClassExpression> disjointClasses = ontology.GetDisjointClasses(declaredClass);
                 foreach (OWLClassExpression disjointClass in disjointClasses)
-					inferences.Add(new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, disjointClass }) { IsInference=true });
+                {
+                    OWLDisjointClasses inference = new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, disjointClass }) { IsInference=true };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
+                }	
 			}
             
             //DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)
             //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)	
 			foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
-			{	
-				inferences.Add(new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true });
-				foreach (OWLClassExpression disjointUnionClassExpression in disjointUnion.ClassExpressions)
-					inferences.Add(new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference=true });
+			{
+                OWLDisjointClasses inferenceA = new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true };
+                inferenceA.GetXML();
+                inferences.Add(new OWLInference(rulename, inferenceA));
+
+                foreach (OWLClassExpression disjointUnionClassExpression in disjointUnion.ClassExpressions)
+                {
+                    OWLSubClassOf inferenceB = new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference = true };
+                    inferenceB.GetXML();
+                    inferences.Add(new OWLInference(rulename, inferenceB));
+                }	
 			}
 
-            //Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => dsjClasses.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-            inferences.RemoveAll(inf => subClassOfAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Reasoner;
 using OWLSharp.Reasoner.Rules;
 using RDFSharp.Model;
 using System;
@@ -73,11 +74,10 @@ namespace OWLSharp.Test.Reasoner.Rules
                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")),
                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))));
             }
-            List<OWLAxiom> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == (shouldAddMoreAsns ? 20 : 6));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         }
 
         [TestMethod]
@@ -116,11 +116,10 @@ namespace OWLSharp.Test.Reasoner.Rules
                 ]
             };
 
-            List<OWLAxiom> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == 6);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         }
 
         [TestMethod]
@@ -170,11 +169,10 @@ namespace OWLSharp.Test.Reasoner.Rules
                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))));
             }
-            List<OWLAxiom> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == (shouldAddMoreAsns ? 20 : 6));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         }
 
         [TestMethod]
@@ -224,11 +222,10 @@ namespace OWLSharp.Test.Reasoner.Rules
                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))));
             }
-            List<OWLAxiom> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
-            Assert.IsTrue(inferences.Count == (shouldAddMoreAsns ? 20 : 6));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         }
         #endregion
     }

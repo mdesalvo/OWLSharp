@@ -23,9 +23,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLHasValueEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.HasValueEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
             List<OWLSubClassOf> subClassOfAxioms = ontology.GetClassAxiomsOfType<OWLSubClassOf>();
@@ -37,9 +39,20 @@ namespace OWLSharp.Reasoner.Rules
 				OWLObjectHasValue objHasValue = (OWLObjectHasValue)subClassOfObjectHasValue.SuperClassExpression;
 				RDFResource subClassExpressionIRI = subClassOfObjectHasValue.SubClassExpression.GetIRI();
 				foreach (OWLClassAssertion classAssertion in classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
-					inferences.Add(objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objInvOfHasValue 
-						? new OWLObjectPropertyAssertion(objInvOfHasValue.ObjectProperty, objHasValue.IndividualExpression, classAssertion.IndividualExpression) { IsInference=true }
-						: new OWLObjectPropertyAssertion(objHasValue.ObjectPropertyExpression, classAssertion.IndividualExpression, objHasValue.IndividualExpression) { IsInference=true });
+				{
+					if (objHasValue.ObjectPropertyExpression is OWLObjectInverseOf objInvOfHasValue)
+					{
+						OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objInvOfHasValue.ObjectProperty, objHasValue.IndividualExpression, classAssertion.IndividualExpression) { IsInference=true };
+						inference.GetXML();
+						inferences.Add(new OWLInference(rulename, inference));
+                    }
+					else
+					{
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(objHasValue.ObjectPropertyExpression, classAssertion.IndividualExpression, objHasValue.IndividualExpression) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
+                }
 			}
 
 			//SubClassOf(C,DataHasValue(DP,LIT)) ^ ClassAssertion(C,I) -> DataPropertyAssertion(DP,I,LIT)
@@ -48,10 +61,14 @@ namespace OWLSharp.Reasoner.Rules
 				OWLDataHasValue dtHasValue = (OWLDataHasValue)subClassOfDataHasValue.SuperClassExpression;
 				RDFResource subClassExpressionIRI = subClassOfDataHasValue.SubClassExpression.GetIRI();
 				foreach (OWLClassAssertion classAssertion in classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClassExpressionIRI)))
-					inferences.Add(new OWLDataPropertyAssertion(dtHasValue.DataProperty, dtHasValue.Literal) { IndividualExpression=classAssertion.IndividualExpression, IsInference=true });	
+				{
+					OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(dtHasValue.DataProperty, dtHasValue.Literal) { IndividualExpression = classAssertion.IndividualExpression, IsInference=true };
+					inference.GetXML();
+					inferences.Add(new OWLInference(rulename, inference));
+                }		
 			}
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

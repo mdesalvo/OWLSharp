@@ -16,18 +16,18 @@ using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLObjectPropertyRangeEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
 			//Temporary working variables
-			List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
 			//ObjectPropertyRange(OP,C) ^ ObjectPropertyAssertion(OP, I1, I2) -> ClassAssertion(C,I2)
@@ -45,16 +45,21 @@ namespace OWLSharp.Reasoner.Rules
                     }
 	
 					//In case the object property domain works under inverse logic, we must swap source/target of the object assertion
-					if (objectPropertyRange.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-						inferences.Add(new OWLClassAssertion(objectPropertyRange.ClassExpression) { IndividualExpression=opAsnSourceIdvExpr, IsInference=true});
+					if (objectPropertyRange.ObjectPropertyExpression is OWLObjectInverseOf)
+                    {
+                        OWLClassAssertion inference = new OWLClassAssertion(objectPropertyRange.ClassExpression) { IndividualExpression=opAsnSourceIdvExpr, IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }						
 					else
-						inferences.Add(new OWLClassAssertion(objectPropertyRange.ClassExpression) { IndividualExpression=opAsnTargetIdvExpr, IsInference=true});
-				}
+                    {
+                        OWLClassAssertion inference = new OWLClassAssertion(objectPropertyRange.ClassExpression) { IndividualExpression=opAsnTargetIdvExpr, IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
+                }
 
-			//Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => clsAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

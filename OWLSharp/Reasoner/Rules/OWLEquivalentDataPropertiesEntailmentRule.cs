@@ -22,13 +22,14 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLEquivalentDataPropertiesEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
-        {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment.ToString();
 
-			//Temporary working variables
-			List<OWLEquivalentDataProperties> equivDtPropsAxs = ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>();
-			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        {
+            List<OWLInference> inferences = new List<OWLInference>();
+
+            //Temporary working variables
+            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
@@ -36,19 +37,23 @@ namespace OWLSharp.Reasoner.Rules
 				//EquivalentDataProperties(P1,P2) ^ EquivalentDataProperties(P2,P3) -> EquivalentDataProperties(P1,P3)
 				List<OWLDataProperty> equivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
                 foreach (OWLDataProperty equivalentDataProperty in equivalentDataProperties)
-                    inferences.Add(new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, equivalentDataProperty }) { IsInference=true });
+                {
+                    OWLEquivalentDataProperties inference = new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, equivalentDataProperty }) { IsInference=true };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
+                }   
 
 				//EquivalentDataProperties(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
 				foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, declaredDataProperty))
 					foreach (OWLDataProperty equivalentDataProperty in equivalentDataProperties)
-						inferences.Add(new OWLDataPropertyAssertion(equivalentDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression=declaredDataPropertyAsn.IndividualExpression, IsInference=true });
-
+                    {
+                        OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(equivalentDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression=declaredDataPropertyAsn.IndividualExpression, IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }
 			}
-			//Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => equivDtPropsAxs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-			inferences.RemoveAll(inf => dpAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+			
+            return inferences;
         }
     }
 }

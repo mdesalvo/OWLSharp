@@ -16,15 +16,16 @@ using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSymmetricObjectPropertyEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
@@ -47,15 +48,21 @@ namespace OWLSharp.Reasoner.Rules
 
                     //Exploit the symmetric object property to emit the "swapped-assertion" inference
                     if (symObjProp.ObjectPropertyExpression is OWLObjectInverseOf symObjInvOf)
-                        inferences.Add(new OWLObjectPropertyAssertion(symObjInvOf.ObjectProperty, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true });
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjInvOf.ObjectProperty, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }                        
                     else
-                        inferences.Add(new OWLObjectPropertyAssertion(symObjProp.ObjectPropertyExpression, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true });
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjProp.ObjectPropertyExpression, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    }   
                 }
 			}
-            //Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => opAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

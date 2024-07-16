@@ -30,8 +30,6 @@ namespace OWLSharp.Reasoner
         {
             Rule = rule?.ToUpper().Trim() ?? throw new OWLException("Cannot create inference because given \"rule\" parameter is null");
             Axiom = axiom ?? throw new OWLException("Cannot create inference because given \"axiom\" parameter is null");
-            //Initialize XML
-            Axiom.GetXML();
         }
         #endregion
 

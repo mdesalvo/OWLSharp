@@ -22,12 +22,11 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLEquivalentClassesEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
-        {
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.EquivalentClassesEntailment.ToString();
 
-            //Temporary working variables
-            List<OWLEquivalentClasses> equivClasses = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        {
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //EquivalentClasses(C1,C2) ^ EquivalentClasses(C2,C3) -> EquivalentClasses(C1,C3)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
@@ -35,12 +34,14 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				List<OWLClassExpression> equivalentClasses = ontology.GetEquivalentClasses(declaredClass);
                 foreach (OWLClassExpression equivalentClass in equivalentClasses)
-                    inferences.Add(new OWLEquivalentClasses(new List<OWLClassExpression>() { declaredClass, equivalentClass }) { IsInference=true });
+                {
+                    OWLEquivalentClasses inference = new OWLEquivalentClasses(new List<OWLClassExpression>() { declaredClass, equivalentClass }) { IsInference=true };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
+                }   
 			}
-            //Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => equivClasses.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

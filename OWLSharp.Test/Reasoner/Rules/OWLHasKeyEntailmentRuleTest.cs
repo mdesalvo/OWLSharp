@@ -15,9 +15,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Reasoner;
 using OWLSharp.Reasoner.Rules;
 using RDFSharp.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OWLSharp.Test.Reasoner.Rules
 {
@@ -81,14 +83,14 @@ namespace OWLSharp.Test.Reasoner.Rules
 					)
 				]
             };
-            List<OWLAxiom> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.Count == 1);
-            Assert.IsTrue(inferences[0] is OWLSameIndividual inf 
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")
-							&& string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Henry"));
+							&& string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Henry")));
         }
 
 		[TestMethod]
@@ -140,14 +142,14 @@ namespace OWLSharp.Test.Reasoner.Rules
 					)
 				]
             };
-            List<OWLAxiom> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.Count == 1);
-            Assert.IsTrue(inferences[0] is OWLSameIndividual inf 
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
-							&& string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener"));
+							&& string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")));
         }
         #endregion
     }

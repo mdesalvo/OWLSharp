@@ -23,7 +23,9 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSameIndividualEntailmentRule
     {
-        internal static List<OWLAxiom> ExecuteRule(OWLOntology ontology)
+        private static readonly string rulename = OWLEnums.OWLReasonerRules.SameIndividualEntailment.ToString();
+
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
             #region Utilities
             List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(List<OWLObjectPropertyAssertion> objectPropertyAssertions)
@@ -41,7 +43,7 @@ namespace OWLSharp.Reasoner.Rules
             }
             #endregion
 
-            List<OWLAxiom> inferences = new List<OWLAxiom>();
+            List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables (general)
             List<OWLSameIndividual> sameIdvs = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
@@ -67,33 +69,68 @@ namespace OWLSharp.Reasoner.Rules
 
                     /* SAMEAS TRANSITIVITY */
                     //SameIndividual(I1,I2) ^ SameIndividual(I2,I3) -> SameIndividual(I1,I3)
-                    inferences.Add(new OWLSameIndividual(new List<OWLIndividualExpression>() { declaredIdv, sameIdv }) { IsInference=true });
-                    inferences.Add(new OWLSameIndividual(new List<OWLIndividualExpression>() { sameIdv, declaredIdv }) { IsInference = true });
+                    OWLSameIndividual inferenceA = new OWLSameIndividual(new List<OWLIndividualExpression>() { declaredIdv, sameIdv }) { IsInference=true };
+                    inferenceA.GetXML();
+                    inferences.Add(new OWLInference(rulename, inferenceA));
+                    OWLSameIndividual inferenceB = new OWLSameIndividual(new List<OWLIndividualExpression>() { sameIdv, declaredIdv }) { IsInference=true };
+                    inferenceB.GetXML();
+                    inferences.Add(new OWLInference(rulename, inferenceB));
 
                     /* SAMEAS ENTAILMENTS */
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)
-                    declaredIdvSrcOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, sameIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true }));
-                    sameIdvSrcOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, declaredIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true }));
+                    declaredIdvSrcOpAsns.ForEach(idvOpAsn => 
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, sameIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    });
+                    sameIdvSrcOpAsns.ForEach(idvOpAsn =>
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, declaredIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    });
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I3,I1) -> ObjectPropertyAssertion(OP,I3,I2)
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I3,I2) -> ObjectPropertyAssertion(OP,I3,I1)
-                    declaredIdvTgtOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, idvOpAsn.SourceIndividualExpression, sameIdv) { IsInference=true }));
-                    sameIdvTgtOpAsns.ForEach(idvOpAsn => inferences.Add(new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, idvOpAsn.SourceIndividualExpression, declaredIdv) { IsInference=true }));
+                    declaredIdvTgtOpAsns.ForEach(idvOpAsn =>
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, idvOpAsn.SourceIndividualExpression, sameIdv) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    });
+                    sameIdvTgtOpAsns.ForEach(idvOpAsn =>
+                    {
+                        OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, idvOpAsn.SourceIndividualExpression, declaredIdv) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    });
                     //SameIndividual(I1,I2) ^ DataPropertyAssertion(DP,I1,LIT) -> DataPropertyAssertion(DP,I2,LIT)
                     //SameIndividual(I1,I2) ^ DataPropertyAssertion(DP,I2,LIT) -> DataPropertyAssertion(DP,I1,LIT)
                     if (sameIdv is OWLNamedIndividual sameNamedIndividual)
-                        declaredIdvDpAsns.ForEach(idvDpAsn => inferences.Add(new OWLDataPropertyAssertion(idvDpAsn.DataProperty, sameNamedIndividual, idvDpAsn.Literal) { IsInference=true }));
+                        declaredIdvDpAsns.ForEach(idvDpAsn =>
+                        {
+                            OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(idvDpAsn.DataProperty, sameNamedIndividual, idvDpAsn.Literal) { IsInference=true };
+                            inference.GetXML();
+                            inferences.Add(new OWLInference(rulename, inference));
+                        });
                     else if (sameIdv is OWLAnonymousIndividual sameAnonIndividual)
-                        declaredIdvDpAsns.ForEach(idvDpAsn => inferences.Add(new OWLDataPropertyAssertion(idvDpAsn.DataProperty, sameAnonIndividual, idvDpAsn.Literal) { IsInference=true }));
-                    sameIdvDpAsns.ForEach(idvDpAsn => inferences.Add(new OWLDataPropertyAssertion(idvDpAsn.DataProperty, declaredIdv, idvDpAsn.Literal) { IsInference = true }));
+                        declaredIdvDpAsns.ForEach(idvDpAsn =>
+                        {
+                            OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(idvDpAsn.DataProperty, sameAnonIndividual, idvDpAsn.Literal) { IsInference=true };
+                            inference.GetXML();
+                            inferences.Add(new OWLInference(rulename, inference));
+                        });
+                    sameIdvDpAsns.ForEach(idvDpAsn =>
+                    {
+                        OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(idvDpAsn.DataProperty, declaredIdv, idvDpAsn.Literal) { IsInference=true };
+                        inference.GetXML();
+                        inferences.Add(new OWLInference(rulename, inference));
+                    });
                 }
             }
-            //Remove inferences already stated in explicit knowledge
-            inferences.RemoveAll(inf => sameIdvs.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-            inferences.RemoveAll(inf => opAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
-            inferences.RemoveAll(inf => dpAsns.Any(asn => string.Equals(inf.GetXML(), asn.GetXML())));
 
-            return OWLAxiomHelper.RemoveDuplicates(inferences);
+            return inferences;
         }
     }
 }

@@ -15,9 +15,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Reasoner;
 using OWLSharp.Reasoner.Rules;
 using RDFSharp.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OWLSharp.Test.Reasoner.Rules
 {
@@ -49,15 +51,15 @@ namespace OWLSharp.Test.Reasoner.Rules
 						new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
 				]
             };
-            List<OWLAxiom> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.Count == 1);
-            Assert.IsTrue(inferences[0] is OWLObjectPropertyAssertion inf 
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf 
                             && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propObj")
 							&& string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
-                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny"));
+                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")));
         }
 
 		[TestMethod]
@@ -84,15 +86,15 @@ namespace OWLSharp.Test.Reasoner.Rules
 						new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
 				]
             };
-            List<OWLAxiom> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.Count == 1);
-            Assert.IsTrue(inferences[0] is OWLObjectPropertyAssertion inf 
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf 
                             && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propObj")
 							&& string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")
-                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions"));
+                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")));
         }
 
 		[TestMethod]
@@ -118,15 +120,15 @@ namespace OWLSharp.Test.Reasoner.Rules
 						new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
 				]
             };
-            List<OWLAxiom> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+            List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.Count == 1);
-            Assert.IsTrue(inferences[0] is OWLDataPropertyAssertion inf 
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf 
                             && string.Equals(inf.DataProperty.GetIRI().ToString(), "http://frede.gat/stuff#propData")
 							&& string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
-                            && string.Equals(inf.Literal.GetLiteral().ToString(), "44^^http://www.w3.org/2001/XMLSchema#integer"));
+                            && string.Equals(inf.Literal.GetLiteral().ToString(), "44^^http://www.w3.org/2001/XMLSchema#integer")));
         }
         #endregion
     }
