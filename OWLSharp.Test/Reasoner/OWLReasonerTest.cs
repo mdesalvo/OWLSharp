@@ -234,6 +234,45 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf.ObjectPropertyExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/avoids")
                             && string.Equals(inf.ObjectPropertyExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")));
         }
+
+        [TestMethod]
+        public async Task ShouldEntailEquivalentClassesAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mankind"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Humans"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/EarthMan")))
+                ],
+                ClassAxioms = [
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mankind")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Humans"))]),
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Humans")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/EarthMan"))])
+                ]
+            };
+            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentClassesEntailment] };
+            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+            Assert.IsTrue(inferences.Count == 4);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.Rule, OWLEquivalentClassesEntailmentRule.rulename)));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf
+                            && string.Equals(inf.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mankind")
+                            && string.Equals(inf.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf1
+                            && string.Equals(inf1.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Humans")
+                            && string.Equals(inf1.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mankind")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf2
+                            && string.Equals(inf2.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")
+                            && string.Equals(inf2.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Humans")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf3
+                            && string.Equals(inf3.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")
+                            && string.Equals(inf3.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mankind")));
+        }
         #endregion
     }
 }
