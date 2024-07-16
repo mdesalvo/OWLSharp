@@ -22,7 +22,7 @@ using System.Linq;
 namespace OWLSharp.Test.Reasoner
 {
     [TestClass]
-    public class OWInferenceTest
+    public class OWLInferenceTest
     {
         #region Tests
         [TestMethod]
