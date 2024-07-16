@@ -688,6 +688,41 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf1.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jish")
                             && string.Equals(inf1.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Fritz")));
         }
+
+        [TestMethod]
+        public async Task ShouldEntailObjectPropertyDomainAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
+                ],
+                ObjectPropertyAxioms = [
+                    new OWLObjectPropertyDomain(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                ],
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
+                    )
+                ]
+            };
+            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment] };
+            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.Rule, OWLObjectPropertyDomainEntailmentRule.rulename)));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
+                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
+                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly")));
+        }
         #endregion
     }
 }
