@@ -32,13 +32,9 @@ namespace OWLSharp.Reasoner.Rules
             															   .Select(ax => (OWLNamedIndividual)ax.Expression))
 				foreach (OWLIndividualExpression differentIdvExpr in ontology.GetDifferentIndividuals(declaredNamedIndividual))
 				{
-                    OWLDifferentIndividuals inferenceA = new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { declaredNamedIndividual, differentIdvExpr }) { IsInference=true };
-                    inferenceA.GetXML();
-                    inferences.Add(new OWLInference(rulename, inferenceA));
-
-                    OWLDifferentIndividuals inferenceB = new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { differentIdvExpr, declaredNamedIndividual }) { IsInference=true };
-                    inferenceB.GetXML();
-					inferences.Add(new OWLInference(rulename, inferenceB));
+                    OWLDifferentIndividuals inference = new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { declaredNamedIndividual, differentIdvExpr }) { IsInference=true };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(rulename, inference));
 				}
             
             return inferences;
