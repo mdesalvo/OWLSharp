@@ -30,7 +30,6 @@ namespace OWLSharp.Reasoner.Rules
 
 			//Temporary working variables
 			OWLIndividualExpression swapIdvExpr;
-			List<OWLEquivalentObjectProperties> equivObjPropsAxs = ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>();
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()

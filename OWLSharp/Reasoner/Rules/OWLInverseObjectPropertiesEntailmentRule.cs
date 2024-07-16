@@ -39,7 +39,7 @@ namespace OWLSharp.Reasoner.Rules
                                                                      	 .Select(ax => (OWLObjectProperty)ax.Expression))
 			{
 				//Extract inverse object properties of the current object property
-				List<(bool,OWLObjectPropertyExpression)> invsOfDeclaredObjectProperty = GetInverseObjectProperties(ontology, declaredObjectProperty);
+				List<(bool,OWLObjectPropertyExpression)> invsOfDeclaredObjectProperty = GetInverseObjectProperties(ontology, declaredObjectProperty, invObjProps);
 
 				//Extract object assertions of the current object property
 				foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty))
@@ -94,13 +94,13 @@ namespace OWLSharp.Reasoner.Rules
             return inferences;
         }
 
-        internal static List<(bool,OWLObjectPropertyExpression)> GetInverseObjectProperties(this OWLOntology ontology, OWLObjectProperty objProp)
+        internal static List<(bool,OWLObjectPropertyExpression)> GetInverseObjectProperties(this OWLOntology ontology, OWLObjectProperty objProp, List<OWLInverseObjectProperties> invObjProps)
         {
             List<(bool,OWLObjectPropertyExpression)> invObjPropExprs = new List<(bool,OWLObjectPropertyExpression)>();
             if (ontology != null && objProp != null)
             {
                 RDFResource objPropExprIRI = objProp.GetIRI();
-                foreach (OWLInverseObjectProperties invObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>())
+                foreach (OWLInverseObjectProperties invObjProp in invObjProps)
                 {
                     //Item1 is a flag to signal the reasoner that the final inference will need to be locally swapped,
                     //since coming from a ObjectInverseOf(ObjectInverseOf) modeling situation

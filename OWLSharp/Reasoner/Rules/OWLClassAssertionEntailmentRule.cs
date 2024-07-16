@@ -29,14 +29,12 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLInference> inferences = new List<OWLInference>();
 
 			//Temporary working variables
-			List<OWLClass> declaredClasses = ontology.GetDeclarationAxiomsOfType<OWLClass>()
-													 .Select(ax => (OWLClass)ax.Expression)
-													 .ToList();
 			List<OWLClassAssertion> classAssertionAxioms = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 			List<OWLEquivalentClasses> equivalentClassesAxioms = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
 			List<OWLDisjointClasses> disjointClassesAxioms = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
 			List<OWLDisjointUnion> disjointUnionAxioms = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
-			List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(declaredClasses);
+			List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(ontology.GetDeclarationAxiomsOfType<OWLClass>()
+													 										.Select(ax => (OWLClass)ax.Expression));
 			inScopeClsExprs.AddRange(classAssertionAxioms.Select(ax => ax.ClassExpression));
 			inScopeClsExprs.AddRange(equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
 			inScopeClsExprs.AddRange(disjointClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));

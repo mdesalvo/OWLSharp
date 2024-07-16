@@ -46,7 +46,6 @@ namespace OWLSharp.Reasoner.Rules
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables (general)
-            List<OWLSameIndividual> sameIdvs = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
             List<OWLObjectPropertyAssertion> opAsns = CalibrateObjectAssertions(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>());            
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
