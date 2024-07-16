@@ -67,6 +67,7 @@ namespace OWLSharp.Test.Reasoner
             ];
 
             Assert.IsTrue(inferences.Distinct().Count() == 2);
+            Assert.IsTrue(inferences[0].GetHashCode() == inferences[1].GetHashCode());
         }
         #endregion
     }
