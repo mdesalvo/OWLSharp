@@ -11,14 +11,11 @@
    limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using OWLSharp.Ontology.Axioms;
 
 namespace OWLSharp.Reasoner
 {
-    public class OWLInference : IEquatable<OWLInference>
+    public class OWLInference
     {
         #region Properties
         public string Rule { get; internal set; }
@@ -28,21 +25,9 @@ namespace OWLSharp.Reasoner
         #region Ctors
         public OWLInference(string rule, OWLAxiom axiom)
         {
-            Rule = rule?.ToUpper().Trim() ?? throw new OWLException("Cannot create inference because given \"rule\" parameter is null");
+            Rule = rule?.Trim() ?? throw new OWLException("Cannot create inference because given \"rule\" parameter is null");
             Axiom = axiom ?? throw new OWLException("Cannot create inference because given \"axiom\" parameter is null");
         }
-        #endregion
-
-        #region Interfaces
-        public bool Equals(OWLInference other)
-            => string.Equals(Axiom.GetXML(), other?.Axiom.GetXML());
-        #endregion
-
-        #region Method
-        public bool CheckIsAlreadyAsserted(List<OWLAxiom> axioms)
-            => axioms?.AsParallel()
-                      .Select(axiom => axiom.GetXML())
-                      .Any(xml => string.Equals(xml, Axiom.GetXML())) ?? false;
         #endregion
     }
 }

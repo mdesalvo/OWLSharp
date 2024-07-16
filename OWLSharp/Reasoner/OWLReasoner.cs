@@ -178,6 +178,7 @@ namespace OWLSharp.Reasoner
                         });
                 });
                 await processInferenceRegistryTask;
+                inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value));
 
                 OWLEvents.RaiseInfo($"Completed reasoner on ontology {ontology.IRI} ({inferences.Count} inferences)");
             }
