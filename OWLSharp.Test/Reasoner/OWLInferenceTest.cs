@@ -38,6 +38,14 @@ namespace OWLSharp.Test.Reasoner
         }
 
         [TestMethod]
+        public void ShouldThrowExceptiononCreatingInferenceWithNullRuleName()
+            => Assert.ThrowsException<OWLException>(() => new OWLInference(null, new OWLAxiom()));
+
+        [TestMethod]
+        public void ShouldThrowExceptiononCreatingInferenceWithNullAxiom()
+            => Assert.ThrowsException<OWLException>(() => new OWLInference("testRule", null));
+
+        [TestMethod]
         public void ShouldCompareInferences()
         {
             OWLInference inferenceA = new OWLInference(
