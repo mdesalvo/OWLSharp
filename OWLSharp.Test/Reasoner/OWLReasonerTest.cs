@@ -273,6 +273,60 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf3.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")
                             && string.Equals(inf3.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mankind")));
         }
+
+        [TestMethod]
+        public async Task ShouldEntailEquivalentDataPropertiesAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/isOld"))),
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/wasBornNYearsAgo"))),
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")))
+                ],
+                DataPropertyAxioms = [
+                    new OWLEquivalentDataProperties([
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/wasBornNYearsAgo"))]),
+                    new OWLEquivalentDataProperties([
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/wasBornNYearsAgo")),
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/isOld"))])
+                ],
+                AssertionAxioms = [
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")),
+                        new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+                ]
+            };
+            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment] };
+            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+            Assert.IsTrue(inferences.Count == 6);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.Rule, OWLEquivalentDataPropertiesEntailmentRule.rulename)));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentDataProperties inf
+                            && string.Equals(inf.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isOld")
+                            && string.Equals(inf.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/wasBornNYearsAgo")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentDataProperties inf1
+                            && string.Equals(inf1.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isOld")
+                            && string.Equals(inf1.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentDataProperties inf2
+                            && string.Equals(inf2.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/wasBornNYearsAgo")
+                            && string.Equals(inf2.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentDataProperties inf3
+                            && string.Equals(inf3.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
+                            && string.Equals(inf3.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isOld")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf4
+                            && string.Equals(inf4.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/wasBornNYearsAgo")
+                            && string.Equals(inf4.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                            && string.Equals(inf4.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf5
+                            && string.Equals(inf5.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/isOld")
+                            && string.Equals(inf5.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                            && string.Equals(inf5.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
+        }
         #endregion
     }
 }
