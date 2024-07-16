@@ -834,6 +834,47 @@ namespace OWLSharp.Test.Reasoner
                                                     && string.Equals(opAsn.SourceIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Marco")
                                                     && string.Equals(opAsn.TargetIndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")));
         }
+
+        [TestMethod]
+        public async Task ShouldEntailSubClassOfAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammal"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammifero"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                ],
+                ClassAxioms = [
+                    new OWLSubClassOf(
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammal"))),
+                    new OWLSubClassOf(
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammal")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
+                    new OWLEquivalentClasses([
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammal")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammifero"))
+                    ])
+                ]
+            };
+            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SubClassOfEntailment] };
+            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+            Assert.IsTrue(inferences.Count == 3);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSubClassOfEntailmentRule.rulename)));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf
+                            && string.Equals(inf.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mammifero")
+                            && string.Equals(inf.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf1
+                            && string.Equals(inf1.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
+                            && string.Equals(inf1.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf2
+                            && string.Equals(inf2.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
+                            && string.Equals(inf2.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mammifero")));
+        }
         #endregion
     }
 }
