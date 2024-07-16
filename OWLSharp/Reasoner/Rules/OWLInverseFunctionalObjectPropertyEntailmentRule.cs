@@ -22,7 +22,7 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLInverseFunctionalObjectPropertyEntailmentRule
     {
-        private static readonly string rulename = OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment.ToString();
+        internal static readonly string rulename = OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment.ToString();
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {

@@ -23,7 +23,7 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSameIndividualEntailmentRule
     {
-        private static readonly string rulename = OWLEnums.OWLReasonerRules.SameIndividualEntailment.ToString();
+        internal static readonly string rulename = OWLEnums.OWLReasonerRules.SameIndividualEntailment.ToString();
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {

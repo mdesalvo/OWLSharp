@@ -22,7 +22,7 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLSubDataPropertyOfEntailmentRule
     {
-        private static readonly string rulename = OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment.ToString();
+        internal static readonly string rulename = OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment.ToString();
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {

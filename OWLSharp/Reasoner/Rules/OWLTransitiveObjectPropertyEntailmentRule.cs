@@ -24,7 +24,7 @@ namespace OWLSharp.Reasoner.Rules
     internal static class OWLTransitiveObjectPropertyEntailmentRule
     {
         private static readonly List<OWLIndividualExpression> EmptyIdvExprList = Enumerable.Empty<OWLIndividualExpression>().ToList();
-        private static readonly string rulename = OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment.ToString();
+        internal static readonly string rulename = OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment.ToString();
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {

@@ -22,7 +22,7 @@ namespace OWLSharp.Reasoner.Rules
 {
     internal static class OWLDisjointClassesEntailmentRule
     {
-        private static readonly string rulename = OWLEnums.OWLReasonerRules.DisjointClassesEntailment.ToString();
+        internal static readonly string rulename = OWLEnums.OWLReasonerRules.DisjointClassesEntailment.ToString();
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
