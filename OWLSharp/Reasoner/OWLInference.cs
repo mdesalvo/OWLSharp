@@ -19,14 +19,14 @@ namespace OWLSharp.Reasoner
     public class OWLInference : IEquatable<OWLInference>
     {
         #region Properties
-        public string Rule { get; internal set; }
+        public string RuleName { get; internal set; }
         public OWLAxiom Axiom { get; internal set; }
         #endregion
 
         #region Ctors
-        public OWLInference(string rule, OWLAxiom axiom)
+        public OWLInference(string ruleName, OWLAxiom axiom)
         {
-            Rule = rule?.Trim() ?? throw new OWLException("Cannot create inference because given \"rule\" parameter is null");
+            RuleName = ruleName?.Trim() ?? throw new OWLException("Cannot create inference because given \"ruleName\" parameter is null");
             Axiom = axiom ?? throw new OWLException("Cannot create inference because given \"axiom\" parameter is null");
         }
         #endregion
