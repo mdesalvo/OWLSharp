@@ -160,21 +160,21 @@ namespace OWLSharp.Reasoner
                         inferenceRegistryEntry.Value.RemoveAll(inf =>
                         {
                             string infXML = inf.Axiom.GetXML();
-                            return clsAsnAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || dtPropAsnAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || opPropAsnAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || diffIdvsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || sameIdvsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || dsjClsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || eqvClsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || subClsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || dsjDtPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || eqvDtPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || subDtPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || dsjOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || eqvOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || subOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
-                                    || invOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML);
+                            return clsAsnAxiomsTask.Result.Contains(infXML)
+                                    || dtPropAsnAxiomsTask.Result.Contains(infXML)
+                                    || opPropAsnAxiomsTask.Result.Contains(infXML)
+                                    || diffIdvsAxiomsTask.Result.Contains(infXML)
+                                    || sameIdvsAxiomsTask.Result.Contains(infXML)
+                                    || dsjClsAxiomsTask.Result.Contains(infXML)
+                                    || eqvClsAxiomsTask.Result.Contains(infXML)
+                                    || subClsAxiomsTask.Result.Contains(infXML)
+                                    || dsjDtPropAxiomsTask.Result.Contains(infXML)
+                                    || eqvDtPropAxiomsTask.Result.Contains(infXML)
+                                    || subDtPropAxiomsTask.Result.Contains(infXML)
+                                    || dsjOpPropAxiomsTask.Result.Contains(infXML)
+                                    || eqvOpPropAxiomsTask.Result.Contains(infXML)
+                                    || subOpPropAxiomsTask.Result.Contains(infXML)
+                                    || invOpPropAxiomsTask.Result.Contains(infXML);
                         });
                 });
                 await processInferenceRegistryTask;
