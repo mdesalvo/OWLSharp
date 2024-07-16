@@ -134,7 +134,7 @@ namespace OWLSharp.Reasoner
                     });
 
                 //Process inference registry
-                Task processInferenceRegistryTask = Task.Run(async () =>
+                await Task.Run(async () =>
                 {
                     //Fetch axioms commonly targeted by inferences
                     Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Select(asn => asn.GetXML())));
@@ -177,7 +177,6 @@ namespace OWLSharp.Reasoner
                                    || invOpPropAxiomsTask.Result.Contains(infXML);
                         });
                 });
-                await processInferenceRegistryTask;
                 inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value).Distinct());
 
                 OWLEvents.RaiseInfo($"Completed reasoner on ontology {ontology.IRI} ({inferences.Count} inferences)");
