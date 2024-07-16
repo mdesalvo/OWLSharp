@@ -12,10 +12,11 @@
 */
 
 using OWLSharp.Ontology.Axioms;
+using System;
 
 namespace OWLSharp.Reasoner
 {
-    public class OWLInference
+    public class OWLInference : IEquatable<OWLInference>
     {
         #region Properties
         public string Rule { get; internal set; }
@@ -28,6 +29,17 @@ namespace OWLSharp.Reasoner
             Rule = rule?.Trim() ?? throw new OWLException("Cannot create inference because given \"rule\" parameter is null");
             Axiom = axiom ?? throw new OWLException("Cannot create inference because given \"axiom\" parameter is null");
         }
+        #endregion
+
+        #region Interfaces
+        public bool Equals(OWLInference other)
+            => string.Equals(ToString(), other?.ToString());
+
+        public override string ToString()
+            => Axiom.GetXML();
+
+        public override int GetHashCode()
+            => ToString().GetHashCode();
         #endregion
     }
 }

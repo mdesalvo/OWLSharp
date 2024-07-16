@@ -161,24 +161,24 @@ namespace OWLSharp.Reasoner
                         {
                             string infXML = inf.Axiom.GetXML();
                             return clsAsnAxiomsTask.Result.Contains(infXML)
-                                    || dtPropAsnAxiomsTask.Result.Contains(infXML)
-                                    || opPropAsnAxiomsTask.Result.Contains(infXML)
-                                    || diffIdvsAxiomsTask.Result.Contains(infXML)
-                                    || sameIdvsAxiomsTask.Result.Contains(infXML)
-                                    || dsjClsAxiomsTask.Result.Contains(infXML)
-                                    || eqvClsAxiomsTask.Result.Contains(infXML)
-                                    || subClsAxiomsTask.Result.Contains(infXML)
-                                    || dsjDtPropAxiomsTask.Result.Contains(infXML)
-                                    || eqvDtPropAxiomsTask.Result.Contains(infXML)
-                                    || subDtPropAxiomsTask.Result.Contains(infXML)
-                                    || dsjOpPropAxiomsTask.Result.Contains(infXML)
-                                    || eqvOpPropAxiomsTask.Result.Contains(infXML)
-                                    || subOpPropAxiomsTask.Result.Contains(infXML)
-                                    || invOpPropAxiomsTask.Result.Contains(infXML);
+                                   || dtPropAsnAxiomsTask.Result.Contains(infXML)
+                                   || opPropAsnAxiomsTask.Result.Contains(infXML)
+                                   || diffIdvsAxiomsTask.Result.Contains(infXML)
+                                   || sameIdvsAxiomsTask.Result.Contains(infXML)
+                                   || dsjClsAxiomsTask.Result.Contains(infXML)
+                                   || eqvClsAxiomsTask.Result.Contains(infXML)
+                                   || subClsAxiomsTask.Result.Contains(infXML)
+                                   || dsjDtPropAxiomsTask.Result.Contains(infXML)
+                                   || eqvDtPropAxiomsTask.Result.Contains(infXML)
+                                   || subDtPropAxiomsTask.Result.Contains(infXML)
+                                   || dsjOpPropAxiomsTask.Result.Contains(infXML)
+                                   || eqvOpPropAxiomsTask.Result.Contains(infXML)
+                                   || subOpPropAxiomsTask.Result.Contains(infXML)
+                                   || invOpPropAxiomsTask.Result.Contains(infXML);
                         });
                 });
                 await processInferenceRegistryTask;
-                inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value));
+                inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value).Distinct());
 
                 OWLEvents.RaiseInfo($"Completed reasoner on ontology {ontology.IRI} ({inferences.Count} inferences)");
             }
