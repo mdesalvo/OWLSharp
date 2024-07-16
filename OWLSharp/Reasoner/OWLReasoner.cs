@@ -133,46 +133,51 @@ namespace OWLSharp.Reasoner
                         OWLEvents.RaiseInfo($"Completed rule {rule}");
                     });
 
-                //Fetch inference-targeted ontology axioms
-                Task<List<string>> clsAsnAxiomsTask = Task.Run(() => ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> dtPropAsnAxiomsTask = Task.Run(() => ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> opPropAsnAxiomsTask = Task.Run(() => ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> diffIdvsAxiomsTask = Task.Run(() => ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> sameIdvsAxiomsTask = Task.Run(() => ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> dsjClsAxiomsTask = Task.Run(() => ontology.GetClassAxiomsOfType<OWLDisjointClasses>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> eqvClsAxiomsTask = Task.Run(() => ontology.GetClassAxiomsOfType<OWLEquivalentClasses>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> subClsAxiomsTask = Task.Run(() => ontology.GetClassAxiomsOfType<OWLSubClassOf>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> dsjDtPropAxiomsTask = Task.Run(() => ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> eqvDtPropAxiomsTask = Task.Run(() => ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> subDtPropAxiomsTask = Task.Run(() => ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> dsjOpPropAxiomsTask = Task.Run(() => ontology.GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> eqvOpPropAxiomsTask = Task.Run(() => ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> subOpPropAxiomsTask = Task.Run(() => ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Select(asn => asn.GetXML()).ToList());
-                Task<List<string>> invOpPropAxiomsTask = Task.Run(() => ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>().Select(asn => asn.GetXML()).ToList());
-                await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
-                    dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
-
                 //Process inference registry
-                foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
-                    inferenceRegistryEntry.Value.RemoveAll(inf => 
-                    {
-                        string infXML = inf.Axiom.GetXML();
-                        return clsAsnAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || dtPropAsnAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || opPropAsnAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || diffIdvsAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || sameIdvsAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || dsjClsAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || eqvClsAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || subClsAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || dsjDtPropAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || eqvDtPropAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || subDtPropAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || dsjOpPropAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || eqvOpPropAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || subOpPropAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML))
-                                || invOpPropAxiomsTask.GetAwaiter().GetResult().Any(axiomXML => string.Equals(infXML, axiomXML));
-                    });
+                Task processInferenceRegistryTask = Task.Run(async () =>
+                {
+                    //Fetch axioms commonly targeted by inferences
+                    Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> dtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> opPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> diffIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> sameIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> dsjClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLDisjointClasses>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> eqvClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLEquivalentClasses>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> subClsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetClassAxiomsOfType<OWLSubClassOf>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> dsjDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLDisjointDataProperties>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> eqvDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> subDtPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetDataPropertyAxiomsOfType<OWLSubDataPropertyOf>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> dsjOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> eqvOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> subOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> invOpPropAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>().Select(asn => asn.GetXML())));
+                    await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask, dsjClsAxiomsTask, eqvClsAxiomsTask, subClsAxiomsTask,
+                        dsjDtPropAxiomsTask, eqvDtPropAxiomsTask, subDtPropAxiomsTask, dsjOpPropAxiomsTask, eqvOpPropAxiomsTask, subOpPropAxiomsTask, invOpPropAxiomsTask);
+
+                    //Deduplicate inferences by analyzing fetched axioms
+                    foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
+                        inferenceRegistryEntry.Value.RemoveAll(inf =>
+                        {
+                            string infXML = inf.Axiom.GetXML();
+                            return clsAsnAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || dtPropAsnAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || opPropAsnAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || diffIdvsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || sameIdvsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || dsjClsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || eqvClsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || subClsAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || dsjDtPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || eqvDtPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || subDtPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || dsjOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || eqvOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || subOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML)
+                                    || invOpPropAxiomsTask.GetAwaiter().GetResult().Contains(infXML);
+                        });
+                });
+                await processInferenceRegistryTask;
 
                 OWLEvents.RaiseInfo($"Completed reasoner on ontology {ontology.IRI} ({inferences.Count} inferences)");
             }
