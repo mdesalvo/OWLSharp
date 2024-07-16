@@ -422,6 +422,66 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Stiv")));
         }
+
+        [TestMethod]
+        public async Task ShouldEntailHasKeyAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))),
+                ],
+                KeyAxioms = [
+                    new OWLHasKey(
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                        null,
+                        [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ]
+                    )
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
+                    ),
+                    new OWLClassAssertion(
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
+                    ),
+                    new OWLClassAssertion(
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
+                    ),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                        new OWLLiteral(new RDFPlainLiteral("GLN1"))
+                    ),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
+                        new OWLLiteral(new RDFPlainLiteral("HNR1"))
+                    ),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
+                        new OWLLiteral(new RDFPlainLiteral("GLN1"))
+                    )
+                ]
+            };
+            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasKeyEntailment] };
+            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.Rule, OWLHasKeyEntailmentRule.rulename)));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
+                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
+                            && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")));
+        }
         #endregion
     }
 }
