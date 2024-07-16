@@ -482,6 +482,39 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")));
         }
+
+        [TestMethod]
+        public async Task ShouldEntailHasSelfAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassSelf"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propHas"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
+                ],
+                ClassAxioms = [
+                    new OWLSubClassOf(
+                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassSelf")),
+                        new OWLObjectHasSelf(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propHas"))))
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassSelf")),
+                        new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny")))
+                ]
+            };
+            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasSelfEntailment] };
+            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+            Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.Rule, OWLHasSelfEntailmentRule.rulename)));
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
+                            && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propHas")
+                            && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")
+                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")));
+        }
         #endregion
     }
 }
