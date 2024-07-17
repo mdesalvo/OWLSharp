@@ -37,6 +37,8 @@ namespace OWLSharp.Reasoner.Rules
 			{
 				//EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
 				List<OWLObjectPropertyExpression> equivObjectPropertyExprs = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
+                if (equivObjectPropertyExprs.Count == 0)
+                    continue;
                 foreach (OWLObjectProperty equivalentObjectProperty in equivObjectPropertyExprs.OfType<OWLObjectProperty>())
                 {
                     OWLEquivalentObjectProperties inference = new OWLEquivalentObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, equivalentObjectProperty }) { IsInference=true };

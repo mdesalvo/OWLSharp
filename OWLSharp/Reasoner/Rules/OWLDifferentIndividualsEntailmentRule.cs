@@ -28,14 +28,17 @@ namespace OWLSharp.Reasoner.Rules
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            foreach (OWLNamedIndividual declaredNamedIndividual in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
-            															   .Select(ax => (OWLNamedIndividual)ax.Expression))
-				foreach (OWLIndividualExpression differentIdvExpr in ontology.GetDifferentIndividuals(declaredNamedIndividual))
-				{
-                    OWLDifferentIndividuals inference = new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { declaredNamedIndividual, differentIdvExpr }) { IsInference=true };
-                    inference.GetXML();
-                    inferences.Add(new OWLInference(rulename, inference));
-				}
+            if (ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Count > 0)
+            {
+                foreach (OWLNamedIndividual declaredNamedIndividual in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
+                                                                               .Select(ax => (OWLNamedIndividual)ax.Expression))
+                  foreach (OWLIndividualExpression differentIdvExpr in ontology.GetDifferentIndividuals(declaredNamedIndividual))
+                  {
+                      OWLDifferentIndividuals inference = new OWLDifferentIndividuals(new List<OWLIndividualExpression>() { declaredNamedIndividual, differentIdvExpr }) { IsInference=true };
+                      inference.GetXML();
+                      inferences.Add(new OWLInference(rulename, inference));
+                  }
+            }
             
             return inferences;
         }
