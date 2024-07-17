@@ -391,6 +391,7 @@ namespace OWLSharp.Ontology.Helpers
 			{
 				classIndividuals.AddRange(FindIndividualsOf(clsExpr, new HashSet<long>()));
   
+				//This additional entailment can be quite expensive, so it is on-demand
 				if (enableSameAsEntailment)
 				{
 					//ClassAssertion(C,I1) ^ SameIndividual(I1,I2) -> ClassAssertion(C,I2)
