@@ -54,7 +54,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Felix")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [ OWLEnums.OWLReasonerRules.ClassAssertionEntailment ] };
+            OWLReasoner reasoner = new OWLReasoner() { Rules = [ OWLEnums.OWLReasonerRules.ClassAssertionEntailment, OWLEnums.OWLReasonerRules.ClassAssertionEntailment ] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
