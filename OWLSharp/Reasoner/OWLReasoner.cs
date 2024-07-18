@@ -40,13 +40,14 @@ namespace OWLSharp.Reasoner
             if (ontology != null)
             {
                 OWLEvents.RaiseInfo($"Launching reasoner on ontology '{ontology.IRI}'...");
+				Rules = Rules.Distinct().ToList();
 
-                //Initialize inference registry
+                //Initialize inference registry				
                 Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>();
-				Rules.Distinct().ToList().ForEach(rule => inferenceRegistry.Add(rule.ToString(), null));
+				Rules.ForEach(rule => inferenceRegistry.Add(rule.ToString(), null));
 
                 //Execute reasoner rules
-                Parallel.ForEach(Rules.Distinct(), rule =>
+                Parallel.ForEach(Rules, rule =>
 				{
 					OWLEvents.RaiseInfo($"Launching rule {rule}...");
 
