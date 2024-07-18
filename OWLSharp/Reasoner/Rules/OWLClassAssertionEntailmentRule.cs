@@ -45,11 +45,10 @@ namespace OWLSharp.Reasoner.Rules
 				inScopeClsExprs.AddRange(ontology.GetSuperClassesOf(inScopeClsExpr));
 				inScopeClsExprs.AddRange(ontology.GetEquivalentClasses(inScopeClsExpr));
 			}
-			inScopeClsExprs = OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs);
 
 			//ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
 			//ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
-            foreach (OWLClassExpression inScopeClsExpr in inScopeClsExprs)
+            foreach (OWLClassExpression inScopeClsExpr in OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs))
 			    foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr, false))
 				{
 					OWLClassAssertion inference = new OWLClassAssertion(inScopeClsExpr) { IndividualExpression=idvExprOfInScopeClsExpr, IsInference=true };
