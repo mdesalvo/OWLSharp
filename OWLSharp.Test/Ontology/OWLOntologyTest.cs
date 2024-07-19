@@ -1043,13 +1043,12 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
             Assert.IsNull(ontology.VersionIRI);
-            Assert.IsTrue(ontology.Prefixes.Count == 6);
+            Assert.IsTrue(ontology.Prefixes.Count == 5);
             Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX)) == 1);
             Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX)) == 1);
             Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX)) == 1);
             Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX)) == 1);
             Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX)) == 1);
-            Assert.IsTrue(ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.FOAF.PREFIX)) == 1);
         }
 
         [TestMethod]
@@ -4335,7 +4334,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.DataPropertyAxioms.Count == 0);
             Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
             Assert.IsTrue(ontology.KeyAxioms.Count == 0);
-            Assert.IsTrue(ontology.Prefixes.Count == 7);
+            Assert.IsTrue(ontology.Prefixes.Count == 5);
         }
 
         [TestMethod]

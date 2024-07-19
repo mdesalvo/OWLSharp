@@ -265,12 +265,6 @@ namespace OWLSharp.Ontology
                                                .Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
                     ont.Imports.Add(new OWLImport((RDFResource)imports.Object));
             }
-            void LoadPrefixes(OWLOntology ont)
-            {
-                foreach (RDFNamespace graphPrefix in RDFModelUtilities.GetGraphNamespaces(graph))
-                    if (!ont.Prefixes.Any(pfx => string.Equals(pfx.IRI, graphPrefix.NamespaceUri.ToString())))
-                        ont.Prefixes.Add(new OWLPrefix(graphPrefix));
-            }
             void LoadDeclarations(OWLOntology ont)
             {
                 //Class
@@ -2337,7 +2331,6 @@ namespace OWLSharp.Ontology
             //Ontology
 			LoadOntology(out OWLOntology ontology);
             LoadImports(ontology);
-            LoadPrefixes(ontology);
             LoadDeclarations(ontology);
             PrefetchAnnotationAxioms(ontology, out RDFGraph annotationAxiomsGraph);
             LoadOntologyAnnotations(ontology, annotationAxiomsGraph);			
