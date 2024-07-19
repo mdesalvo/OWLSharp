@@ -176,9 +176,11 @@ namespace OWLSharp.Reasoner
                                    || subOpPropAxiomsTask.Result.Contains(infXML)
                                    || invOpPropAxiomsTask.Result.Contains(infXML);
                         });
-                });
-                inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value).Distinct());
-				inferenceRegistry.Clear();
+
+					//Collect inferences and perform final cleanup
+					inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value).Distinct());
+					inferenceRegistry.Clear();
+                });                
 
                 OWLEvents.RaiseInfo($"Completed reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
             }
