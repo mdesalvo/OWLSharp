@@ -317,8 +317,7 @@ namespace OWLSharp.Ontology
 						.AddPattern(new RDFPattern(new RDFVariable("?NIDV"), RDFVocabulary.RDF.TYPE, new RDFVariable("?CLS")))
 						.AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?NIDV"), new RDFVariable("?CLS"))))
 						.AddFilter(new RDFIsUriFilter(new RDFVariable("?NIDV"))))
-					.AddProjectionVariable(new RDFVariable("?NIDV"))
-					.AddModifier(new RDFDistinctModifier());
+					.AddProjectionVariable(new RDFVariable("?NIDV"));
 				RDFSelectQueryResult namedIdvQueryResult = namedIdvQuery.ApplyToGraph(typeGraph);
 				foreach (DataRow nidvRow in namedIdvQueryResult.SelectResults.Rows)
 					namedIndividuals.Add(nidvRow["?NIDV"].ToString());
