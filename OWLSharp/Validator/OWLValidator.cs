@@ -15,8 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Helpers;
+using OWLSharp.Validator.Rules;
 
 namespace OWLSharp.Validator
 {
@@ -53,7 +52,9 @@ namespace OWLSharp.Validator
 
 						switch (rule)
 						{
-							//TODO
+							case OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis:
+								issueRegistry[OWLAsymmetricObjectPropertyAnalysisRule.rulename] = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
+								break;
 						}
 
 						OWLEvents.RaiseInfo($"Completed rule {rule} => {issueRegistry[rule.ToString()].Count} issues");

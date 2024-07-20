@@ -60,7 +60,7 @@ namespace OWLSharp
 
 		public enum OWLValidatorRules
 		{
-			
+			AsymmetricObjectPropertyAnalysis = 1,
 		}
     }
 }
