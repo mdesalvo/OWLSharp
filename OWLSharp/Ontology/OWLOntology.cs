@@ -245,6 +245,11 @@ namespace OWLSharp.Ontology
 
         public static OWLOntology FromRDFGraph(RDFGraph graph)
         {
+			#region Guards
+            if (graph == null)
+                throw new OWLException("Cannot read ontology from graph because: given \"graph\" parameter is null");
+            #endregion
+
 			RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
 
             #region Utilities
@@ -252,7 +257,7 @@ namespace OWLSharp.Ontology
 			void LoadOntology(out OWLOntology ont)
             {
                 string ontIRI = typeGraph[null, null, RDFVocabulary.OWL.ONTOLOGY, null]
-                                 .FirstOrDefault()?.Subject.ToString() ?? throw new OWLException("Cannot find an ontology definition in the given graph!");
+                                 .FirstOrDefault()?.Subject.ToString() ?? throw new OWLException("Cannot find an owl:Ontology definition in the given graph!");
                 ont = new OWLOntology()
                 {
                     IRI = ontIRI,
@@ -2328,13 +2333,6 @@ namespace OWLSharp.Ontology
 
                  dtRST = new OWLDatatypeRestriction(new OWLDatatype(onDatatype), facetRestrictions);
              }
-            #endregion
-
-            #region Guards
-            if (graph == null)
-                throw new OWLException("Cannot read ontology from graph because: given \"graph\" parameter is null");
-            if (graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 0)
-                throw new OWLException("Cannot read ontology from graph because: no ontology declaration available in RDF data!");
             #endregion
 
             //Ontology
