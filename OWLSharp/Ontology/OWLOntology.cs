@@ -267,38 +267,49 @@ namespace OWLSharp.Ontology
             }
             void LoadDeclarations(OWLOntology ont)
             {
-                //Class
-                foreach (RDFTriple typeClass in typeGraph[null, null, RDFVocabulary.OWL.CLASS, null]
-                                                 .UnionWith(typeGraph[null, null, RDFVocabulary.RDFS.CLASS, null])
-                                                 .Where(t => !((RDFResource)t.Subject).IsBlank))
-                    ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass((RDFResource)typeClass.Subject)));
+                HashSet<string> namedIndividuals = new HashSet<string>();
 
-				//Datatype
-                foreach (RDFTriple typeDatatype in typeGraph[null, null, RDFVocabulary.RDFS.DATATYPE, null]
-													.Where(t => !((RDFResource)t.Subject).IsBlank))
-                    ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype((RDFResource)typeDatatype.Subject)));
+				//Class, Datatype, ObjectProperty, DataProperty, AnnotationProperty, NamedIndividual
+				foreach (RDFTriple typeTriple in typeGraph.Where(t => !((RDFResource)t.Subject).IsBlank))
+				{
+					if (typeTriple.Object.Equals(RDFVocabulary.OWL.CLASS) || typeTriple.Object.Equals(RDFVocabulary.RDFS.CLASS))
+					{
+						ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass((RDFResource)typeTriple.Subject)));
+						continue;
+					}
 
-				//ObjectProperty
-                foreach (RDFTriple typeObjectProperty in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null]
-														  .Where(t => !((RDFResource)t.Subject).IsBlank))
-                    ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLObjectProperty((RDFResource)typeObjectProperty.Subject)));
+					if (typeTriple.Object.Equals(RDFVocabulary.RDFS.DATATYPE))
+					{
+						ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype((RDFResource)typeTriple.Subject)));
+						continue;
+					}
 
-				//DataProperty
-                foreach (RDFTriple typeDataProperty in typeGraph[null, null, RDFVocabulary.OWL.DATATYPE_PROPERTY, null]
-														.Where(t => !((RDFResource)t.Subject).IsBlank))
-                    ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLDataProperty((RDFResource)typeDataProperty.Subject)));
+					if (typeTriple.Object.Equals(RDFVocabulary.OWL.OBJECT_PROPERTY))
+					{
+						ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLObjectProperty((RDFResource)typeTriple.Subject)));
+						continue;
+					}
 
-				//AnnotationProperty
-                foreach (RDFTriple typeAnnotationProperty in typeGraph[null, null, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null]
-															  .Where(t => !((RDFResource)t.Subject).IsBlank))
-                    ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLAnnotationProperty((RDFResource)typeAnnotationProperty.Subject)));
+					if (typeTriple.Object.Equals(RDFVocabulary.OWL.DATATYPE_PROPERTY))
+					{
+						ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLDataProperty((RDFResource)typeTriple.Subject)));
+						continue;
+					}
 
-				//NamedIndividual (OWL)
-				List<RDFResource> namedIndividuals = new List<RDFResource>();
-				foreach (RDFTriple typeNamedIndividual in typeGraph[null, null, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null]
-															  .Where(t => !((RDFResource)t.Subject).IsBlank))
-					namedIndividuals.Add((RDFResource)typeNamedIndividual.Subject);
-				//NamedIndividual (SPARQL)
+					if (typeTriple.Object.Equals(RDFVocabulary.OWL.ANNOTATION_PROPERTY))
+					{
+						ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLAnnotationProperty((RDFResource)typeTriple.Subject)));
+						continue;
+					}
+
+					if (typeTriple.Object.Equals(RDFVocabulary.OWL.NAMED_INDIVIDUAL))
+					{
+						namedIndividuals.Add(typeTriple.Subject.ToString());
+						continue;
+					}
+				}
+
+				//NamedIndividual (undeclared, type-inferred via SPARQL)
                 RDFSelectQuery namedIdvQuery = new RDFSelectQuery()
 					.AddPatternGroup(new RDFPatternGroup()
 						.AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS).UnionWithNext())
@@ -310,10 +321,9 @@ namespace OWLSharp.Ontology
 					.AddModifier(new RDFDistinctModifier());
 				RDFSelectQueryResult namedIdvQueryResult = namedIdvQuery.ApplyToGraph(typeGraph);
 				foreach (DataRow nidvRow in namedIdvQueryResult.SelectResults.Rows)
-					namedIndividuals.Add(new RDFResource(nidvRow["?NIDV"].ToString()));
-				//NamedIndividual (OWL + SPARQL)
-				RDFQueryUtilities.RemoveDuplicates(namedIndividuals)
-								 .ForEach(nidv => ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(nidv))));
+					namedIndividuals.Add(nidvRow["?NIDV"].ToString());
+				foreach (string namedIndividual in namedIndividuals.Distinct())
+					ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(new RDFResource(namedIndividual))));
             }
             void PrefetchAnnotationAxioms(OWLOntology ont, out RDFGraph annAxiomsGraph)
             {
