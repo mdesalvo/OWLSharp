@@ -3,7 +3,7 @@
     <AssemblyTitle>OWLSharp</AssemblyTitle>
     <AssemblyName>OWLSharp</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Version>4.0.0-beta3</Version>
+    <Version>4.0.0-beta4</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
     <Description>Lightweight and friendly .NET library for realizing intelligent Semantic Web applications</Description>
@@ -12,7 +12,7 @@
     <Product>OWLSharp</Product>
     <PackageId>OWLSharp</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
-    <PackageTags>rdfs owl owl2 ontology</PackageTags>
+    <PackageTags>rdfs owl owl2 ontology reasoner</PackageTags>
     <PackageProjectUrl>https://github.com/mdesalvo/OWLSharp</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mdesalvo/OWLSharp.git</RepositoryUrl>
