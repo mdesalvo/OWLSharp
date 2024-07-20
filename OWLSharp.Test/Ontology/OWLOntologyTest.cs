@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -4314,10 +4315,10 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldImportOntology()
+        public async Task ShouldImportOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-            ontology.Import(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI));
+            await ontology.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI));
 
             Assert.IsTrue(ontology.Annotations.Count == 1);
             Assert.IsTrue(ontology.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.IMPORTS)
@@ -4338,10 +4339,10 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnImportingOntology()
+        public async Task ShouldThrowExceptionOnImportingOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-            Assert.ThrowsException<OWLException>(() => ontology.Import(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), 10));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), 10));
         }
         #endregion
 

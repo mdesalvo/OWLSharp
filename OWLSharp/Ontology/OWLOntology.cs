@@ -24,6 +24,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
@@ -2418,7 +2419,7 @@ namespace OWLSharp.Ontology
 			}
         }
 
-        public void Import(Uri importUri, int timeoutMilliseconds=20000)
+        public async Task ImportAsync(Uri importUri, int timeoutMilliseconds=20000)
         {
             #region Guards
             if (importUri == null)
@@ -2427,8 +2428,8 @@ namespace OWLSharp.Ontology
 
             try
             {
-                RDFGraph importedGraph = RDFGraph.FromUri(importUri, timeoutMilliseconds);
-                OWLOntology importedOntology = FromRDFGraph(importedGraph);
+                RDFAsyncGraph importedGraph = await RDFAsyncGraph.FromUriAsync(importUri, timeoutMilliseconds);
+                OWLOntology importedOntology = await Task.Run(() => FromRDFGraph(importedGraph.WrappedGraph));
 
                 Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.OWL.IMPORTS), new RDFResource(importedOntology.IRI)));
                 importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
