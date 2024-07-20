@@ -269,7 +269,6 @@ namespace OWLSharp.Ontology
             {
                 //Class
                 foreach (RDFTriple typeClass in typeGraph[null, null, RDFVocabulary.OWL.CLASS, null]
-                                                 .UnionWith(typeGraph[null, null, RDFVocabulary.OWL.DEPRECATED_CLASS, null])
                                                  .UnionWith(typeGraph[null, null, RDFVocabulary.RDFS.CLASS, null])
                                                  .Where(t => !((RDFResource)t.Subject).IsBlank))
                     ont.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass((RDFResource)typeClass.Subject)));
