@@ -50,6 +50,10 @@ namespace OWLSharp.Test.Validator
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+					new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ]
             };
             OWLValidator validator = new OWLValidator() { Rules = [ OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis, OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis ] };
