@@ -23,6 +23,7 @@ namespace OWLSharp.Validator.Rules
     internal static class OWLAsymmetricObjectPropertyAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis.ToString();
+		internal static readonly string rulesugg = "There should not be object assertions switching source/target individuals under the same asymmetric object property!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -72,7 +73,7 @@ namespace OWLSharp.Validator.Rules
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
 						$"Violated AsymmetricObjectProperty axiom with signature: '{asymObjPropXML}'", 
-						"There should not be object assertions switching source/target individuals under the same asymmetric object property!"));
+						rulesugg));
 				}
 			}
 
