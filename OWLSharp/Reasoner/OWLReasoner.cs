@@ -47,91 +47,92 @@ namespace OWLSharp.Reasoner
 				Rules.ForEach(rule => inferenceRegistry.Add(rule.ToString(), null));
 
                 //Execute reasoner rules
-                Parallel.ForEach(Rules, rule =>
-				{
-					OWLEvents.RaiseInfo($"Launching rule {rule}...");
-
-					switch (rule)
+                await Task.Run(() => 
+					Parallel.ForEach(Rules, rule =>
 					{
-						case OWLEnums.OWLReasonerRules.ClassAssertionEntailment:
-							inferenceRegistry[OWLClassAssertionEntailmentRule.rulename] = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment:
-							inferenceRegistry[OWLDataPropertyDomainEntailmentRule.rulename] = OWLDataPropertyDomainEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment:
-							inferenceRegistry[OWLDifferentIndividualsEntailmentRule.rulename] = OWLDifferentIndividualsEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.DisjointClassesEntailment:
-							inferenceRegistry[OWLDisjointClassesEntailmentRule.rulename] = OWLDisjointClassesEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment:
-							inferenceRegistry[OWLDisjointDataPropertiesEntailmentRule.rulename] = OWLDisjointDataPropertiesEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment:
-							inferenceRegistry[OWLDisjointObjectPropertiesEntailmentRule.rulename] = OWLDisjointObjectPropertiesEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.EquivalentClassesEntailment:
-							inferenceRegistry[OWLEquivalentClassesEntailmentRule.rulename] = OWLEquivalentClassesEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment:
-							inferenceRegistry[OWLEquivalentDataPropertiesEntailmentRule.rulename] = OWLEquivalentDataPropertiesEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment:
-							inferenceRegistry[OWLEquivalentObjectPropertiesEntailmentRule.rulename] = OWLEquivalentObjectPropertiesEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment:
-							inferenceRegistry[OWLFunctionalObjectPropertyEntailmentRule.rulename] = OWLFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.HasKeyEntailment:
-							inferenceRegistry[OWLHasKeyEntailmentRule.rulename] = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.HasSelfEntailment:
-							inferenceRegistry[OWLHasSelfEntailmentRule.rulename] = OWLHasSelfEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.HasValueEntailment:
-							inferenceRegistry[OWLHasValueEntailmentRule.rulename] = OWLHasValueEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment:
-							inferenceRegistry[OWLInverseFunctionalObjectPropertyEntailmentRule.rulename] = OWLInverseFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.InverseObjectPropertiesEntailment:
-							inferenceRegistry[OWLInverseObjectPropertiesEntailmentRule.rulename] = OWLInverseObjectPropertiesEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment:
-							inferenceRegistry[OWLObjectPropertyChainEntailmentRule.rulename] = OWLObjectPropertyChainEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment:
-							inferenceRegistry[OWLObjectPropertyDomainEntailmentRule.rulename] = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment:
-							inferenceRegistry[OWLObjectPropertyRangeEntailmentRule.rulename] = OWLObjectPropertyRangeEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment:
-							inferenceRegistry[OWLReflexiveObjectPropertyEntailmentRule.rulename] = OWLReflexiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.SameIndividualEntailment:
-							inferenceRegistry[OWLSameIndividualEntailmentRule.rulename] = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.SubClassOfEntailment:
-							inferenceRegistry[OWLSubClassOfEntailmentRule.rulename] = OWLSubClassOfEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment:
-							inferenceRegistry[OWLSubDataPropertyOfEntailmentRule.rulename] = OWLSubDataPropertyOfEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.SubObjectPropertyOfEntailment:
-							inferenceRegistry[OWLSubObjectPropertyOfEntailmentRule.rulename] = OWLSubObjectPropertyOfEntailmentRule.ExecuteRule(ontology);
-							break;
-						case OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment:
-							inferenceRegistry[OWLSymmetricObjectPropertyEntailmentRule.rulename] = OWLSymmetricObjectPropertyEntailmentRule.ExecuteRule(ontology);
-							break;							
-						case OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment:
-							inferenceRegistry[OWLTransitiveObjectPropertyEntailmentRule.rulename] = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
-							break;
-					}
+						OWLEvents.RaiseInfo($"Launching rule {rule}...");
 
-					OWLEvents.RaiseInfo($"Completed rule {rule} => {inferenceRegistry[rule.ToString()].Count} candidate inferences");
-				});
+						switch (rule)
+						{
+							case OWLEnums.OWLReasonerRules.ClassAssertionEntailment:
+								inferenceRegistry[OWLClassAssertionEntailmentRule.rulename] = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment:
+								inferenceRegistry[OWLDataPropertyDomainEntailmentRule.rulename] = OWLDataPropertyDomainEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment:
+								inferenceRegistry[OWLDifferentIndividualsEntailmentRule.rulename] = OWLDifferentIndividualsEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.DisjointClassesEntailment:
+								inferenceRegistry[OWLDisjointClassesEntailmentRule.rulename] = OWLDisjointClassesEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment:
+								inferenceRegistry[OWLDisjointDataPropertiesEntailmentRule.rulename] = OWLDisjointDataPropertiesEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment:
+								inferenceRegistry[OWLDisjointObjectPropertiesEntailmentRule.rulename] = OWLDisjointObjectPropertiesEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.EquivalentClassesEntailment:
+								inferenceRegistry[OWLEquivalentClassesEntailmentRule.rulename] = OWLEquivalentClassesEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment:
+								inferenceRegistry[OWLEquivalentDataPropertiesEntailmentRule.rulename] = OWLEquivalentDataPropertiesEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment:
+								inferenceRegistry[OWLEquivalentObjectPropertiesEntailmentRule.rulename] = OWLEquivalentObjectPropertiesEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment:
+								inferenceRegistry[OWLFunctionalObjectPropertyEntailmentRule.rulename] = OWLFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.HasKeyEntailment:
+								inferenceRegistry[OWLHasKeyEntailmentRule.rulename] = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.HasSelfEntailment:
+								inferenceRegistry[OWLHasSelfEntailmentRule.rulename] = OWLHasSelfEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.HasValueEntailment:
+								inferenceRegistry[OWLHasValueEntailmentRule.rulename] = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment:
+								inferenceRegistry[OWLInverseFunctionalObjectPropertyEntailmentRule.rulename] = OWLInverseFunctionalObjectPropertyEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.InverseObjectPropertiesEntailment:
+								inferenceRegistry[OWLInverseObjectPropertiesEntailmentRule.rulename] = OWLInverseObjectPropertiesEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment:
+								inferenceRegistry[OWLObjectPropertyChainEntailmentRule.rulename] = OWLObjectPropertyChainEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment:
+								inferenceRegistry[OWLObjectPropertyDomainEntailmentRule.rulename] = OWLObjectPropertyDomainEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment:
+								inferenceRegistry[OWLObjectPropertyRangeEntailmentRule.rulename] = OWLObjectPropertyRangeEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment:
+								inferenceRegistry[OWLReflexiveObjectPropertyEntailmentRule.rulename] = OWLReflexiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.SameIndividualEntailment:
+								inferenceRegistry[OWLSameIndividualEntailmentRule.rulename] = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.SubClassOfEntailment:
+								inferenceRegistry[OWLSubClassOfEntailmentRule.rulename] = OWLSubClassOfEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment:
+								inferenceRegistry[OWLSubDataPropertyOfEntailmentRule.rulename] = OWLSubDataPropertyOfEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.SubObjectPropertyOfEntailment:
+								inferenceRegistry[OWLSubObjectPropertyOfEntailmentRule.rulename] = OWLSubObjectPropertyOfEntailmentRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment:
+								inferenceRegistry[OWLSymmetricObjectPropertyEntailmentRule.rulename] = OWLSymmetricObjectPropertyEntailmentRule.ExecuteRule(ontology);
+								break;							
+							case OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment:
+								inferenceRegistry[OWLTransitiveObjectPropertyEntailmentRule.rulename] = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
+								break;
+						}
+
+						OWLEvents.RaiseInfo($"Completed rule {rule} => {inferenceRegistry[rule.ToString()].Count} candidate inferences");
+					}));
 
                 //Process inference registry
                 await Task.Run(async () =>

@@ -51,5 +51,16 @@ namespace OWLSharp
             SymmetricObjectPropertyEntailment = 24,
             TransitiveObjectPropertyEntailment = 25
         }
+
+		public enum OWLIssueSeverity
+		{
+			Warning = 1,
+			Error = 2
+		}
+
+		public enum OWLValidatorRules
+		{
+			
+		}
     }
 }
