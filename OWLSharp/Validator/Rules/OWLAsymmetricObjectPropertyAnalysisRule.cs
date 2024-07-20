@@ -71,8 +71,8 @@ namespace OWLSharp.Validator.Rules
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
-						$"Violation of AsymmetricObjectProperty constraint with definition '{asymObjPropXML}'", 
-						"There should not be object assertions switching subject/object under the same asymmetric object property!"));
+						$"Violated AsymmetricObjectProperty axiom '{asymObjPropXML}'", 
+						"There should not be object assertions switching source/target individuals under the same asymmetric object property!"));
 				}
 			}
 
