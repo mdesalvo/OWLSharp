@@ -19,7 +19,6 @@ using OWLSharp.Validator;
 using OWLSharp.Validator.Rules;
 using RDFSharp.Model;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OWLSharp.Test.Validator.Rules
 {
@@ -28,7 +27,7 @@ namespace OWLSharp.Test.Validator.Rules
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeSimpleSymmetricObjectPropertiesCase()
+        public void ShouldAnalyzeSimpleAsymmetricObjectPropertiesCase()
         {
             OWLOntology ontology = new OWLOntology()
             {

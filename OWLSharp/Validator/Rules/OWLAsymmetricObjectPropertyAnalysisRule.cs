@@ -65,13 +65,14 @@ namespace OWLSharp.Validator.Rules
                 #endregion
 
 				if (asymObjPropAsns.Any(outerAsn => 
-						asymObjPropAsns.Any(innerAsn => innerAsn.TargetIndividualExpression.GetIRI().Equals(outerAsn.SourceIndividualExpression.GetIRI()))))
+						asymObjPropAsns.Any(innerAsn => innerAsn.SourceIndividualExpression.GetIRI().Equals(outerAsn.TargetIndividualExpression.GetIRI())
+														 && innerAsn.TargetIndividualExpression.GetIRI().Equals(outerAsn.SourceIndividualExpression.GetIRI()))))
 				{
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
-						$"Violation of AsymmetricObjectProperty constraint: '{asymObjPropXML}'", 
-						"There should not be object assertions switching subject/object during usage of an asymmetric object property"));
+						$"Violation of AsymmetricObjectProperty constraint with definition '{asymObjPropXML}'", 
+						"There should not be object assertions switching subject/object under the same asymmetric object property!"));
 				}
 			}
 
