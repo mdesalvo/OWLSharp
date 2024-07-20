@@ -251,7 +251,7 @@ namespace OWLSharp.Ontology
 			void LoadOntology(out OWLOntology ont)
             {
                 string ontIRI = typeGraph[null, null, RDFVocabulary.OWL.ONTOLOGY, null]
-                                 .First().Subject.ToString(); //We expect to find at least a declaration of type Ontology
+                                 .FirstOrDefault()?.Subject.ToString() ?? throw new OWLException("Cannot find an ontology definition in the given graph!");
                 ont = new OWLOntology()
                 {
                     IRI = ontIRI,
