@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Validator
     {
         #region Tests
         [TestMethod]
-        public async Task ShouldAnalyzeAsymmetricObjectPropertiesAsync()
+        public async Task ShouldAnalyzeAsymmetricObjectPropertyAsync()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -64,7 +64,46 @@ namespace OWLSharp.Test.Validator
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg)));
-        }        
+        }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeIrreflexiveObjectPropertyAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                ],
+                ObjectPropertyAxioms = [ 
+                    new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf")))
+                ],
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+					new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [ OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis ] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysisRule.rulesugg)));
+        }
         #endregion
     }
 }

@@ -55,6 +55,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis:
 								issueRegistry[OWLAsymmetricObjectPropertyAnalysisRule.rulename] = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis:
+								issueRegistry[OWLIrreflexiveObjectPropertyAnalysisRule.rulename] = OWLIrreflexiveObjectPropertyAnalysisRule.ExecuteRule(ontology);
+								break;
 						}
 
 						OWLEvents.RaiseInfo($"Completed rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
