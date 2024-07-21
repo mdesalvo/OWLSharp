@@ -104,6 +104,33 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysisRule.rulesugg)));
         }
-        #endregion
+        
+		[TestMethod]
+        public async Task ShouldAnalyzeDeprecatedTermsAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				AnnotationAxioms = [
+					new OWLAnnotationAssertion(
+						new OWLAnnotationProperty(RDFVocabulary.OWL.DEPRECATED),
+						new RDFResource("http://xmlns.com/foaf/0.1/Person"),
+						new OWLLiteral(RDFTypedLiteral.True))
+				],
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Organization")))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [ OWLEnums.OWLValidatorRules.DeprecatedTermsAnalysis ] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDeprecatedTermsAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated class with IRI: 'http://xmlns.com/foaf/0.1/Person'")));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDeprecatedTermsAnalysisRule.rulesugg)));
+        }
+		#endregion
     }
 }
