@@ -21,9 +21,9 @@ using System.Linq;
 
 namespace OWLSharp.Validator.Rules
 {
-    internal static class OWLDeprecatedTermsAnalysisRule
+    internal static class OWLTermsDeprecationAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.DeprecatedTermsAnalysis.ToString();
+        internal static readonly string rulename = OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis.ToString();
 		internal static readonly string rulesugg = "There should not be presence of deprecated classes, datatypes and properties: it is recommended to migrate ontology to newer term definitions if available";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)

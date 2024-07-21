@@ -23,7 +23,7 @@ using System.Collections.Generic;
 namespace OWLSharp.Test.Validator.Rules
 {
     [TestClass]
-    public class OWLDeprecatedTermsAnalysisRuleTest
+    public class OWLTermsDeprecationAnalysisRuleTest
     {
         #region Tests
         [TestMethod]
@@ -42,14 +42,14 @@ namespace OWLSharp.Test.Validator.Rules
 					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Organization")))
                 ]
             };
-            List<OWLIssue> issues = OWLDeprecatedTermsAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDeprecatedTermsAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDeprecationAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated class with IRI: 'http://xmlns.com/foaf/0.1/Person'")));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDeprecatedTermsAnalysisRule.rulesugg)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysisRule.rulesugg)));
         }
 
 		[TestMethod]
@@ -68,14 +68,14 @@ namespace OWLSharp.Test.Validator.Rules
 					new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.DATETIME))
                 ]
             };
-            List<OWLIssue> issues = OWLDeprecatedTermsAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDeprecatedTermsAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDeprecationAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated datatype with IRI: 'http://www.w3.org/2001/XMLSchema#integer'")));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDeprecatedTermsAnalysisRule.rulesugg)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysisRule.rulesugg)));
         }
 
 		[TestMethod]
@@ -94,14 +94,14 @@ namespace OWLSharp.Test.Validator.Rules
 					new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/name")))
                 ]
             };
-            List<OWLIssue> issues = OWLDeprecatedTermsAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDeprecatedTermsAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDeprecationAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated data property with IRI: 'http://xmlns.com/foaf/0.1/age'")));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDeprecatedTermsAnalysisRule.rulesugg)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysisRule.rulesugg)));
         }
 
 		[TestMethod]
@@ -120,14 +120,14 @@ namespace OWLSharp.Test.Validator.Rules
 					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/depicts")))
                 ]
             };
-            List<OWLIssue> issues = OWLDeprecatedTermsAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDeprecatedTermsAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDeprecationAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated object property with IRI: 'http://xmlns.com/foaf/0.1/knows'")));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDeprecatedTermsAnalysisRule.rulesugg)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysisRule.rulesugg)));
         }
 
 		[TestMethod]
@@ -146,14 +146,14 @@ namespace OWLSharp.Test.Validator.Rules
 					new OWLDeclaration(new OWLAnnotationProperty(new RDFResource("http://xmlns.com/foaf/0.1/lastCommit")))
                 ]
             };
-            List<OWLIssue> issues = OWLDeprecatedTermsAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDeprecatedTermsAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDeprecationAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated annotation property with IRI: 'http://xmlns.com/foaf/0.1/author'")));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDeprecatedTermsAnalysisRule.rulesugg)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysisRule.rulesugg)));
         }
 		#endregion
     }

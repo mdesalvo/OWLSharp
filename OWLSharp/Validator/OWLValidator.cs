@@ -55,11 +55,14 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis:
 								issueRegistry[OWLAsymmetricObjectPropertyAnalysisRule.rulename] = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
 								break;
-							case OWLEnums.OWLValidatorRules.DeprecatedTermsAnalysis:
-								issueRegistry[OWLDeprecatedTermsAnalysisRule.rulename] = OWLDeprecatedTermsAnalysisRule.ExecuteRule(ontology);
-								break;
 							case OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis:
 								issueRegistry[OWLIrreflexiveObjectPropertyAnalysisRule.rulename] = OWLIrreflexiveObjectPropertyAnalysisRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis:
+								issueRegistry[OWLTermsDeprecationAnalysisRule.rulename] = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis:
+								issueRegistry[OWLTermsDisjointnessAnalysisRule.rulename] = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
 								break;
 						}
 
