@@ -67,6 +67,9 @@ namespace OWLSharp.Validator
                             case OWLEnums.OWLValidatorRules.ThingNothingAnalysis:
                                 issueRegistry[OWLThingNothingAnalysisRule.rulename] = OWLThingNothingAnalysisRule.ExecuteRule(ontology);
                                 break;
+							case OWLEnums.OWLValidatorRules.TopBottomAnalysis:
+                                issueRegistry[OWLTopBottomAnalysisRule.rulename] = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
+                                break;
                         }
 
 						OWLEvents.RaiseInfo($"Completed rule {rule} => {issueRegistry[rule.ToString()].Count} issues");

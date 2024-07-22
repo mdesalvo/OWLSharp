@@ -178,6 +178,32 @@ namespace OWLSharp.Test.Validator
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected class axioms causing reserved owl:Thing class to not be the root entity of the ontology")));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLThingNothingAnalysisRule.rulesuggT1)));
         }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeTopBottomAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ObjectPropertyAxioms = [
+                    new OWLSubObjectPropertyOf(
+                        new OWLObjectProperty(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY),
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY)),
+					new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.TopBottomAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected object property axioms causing reserved owl:topObjectProperty property to not be the root object property of the ontology")));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTopBottomAnalysisRule.rulesuggT1)));
+        }
         #endregion
     }
 }

@@ -64,7 +64,8 @@ namespace OWLSharp
 			IrreflexiveObjectPropertyAnalysis = 2,
 			TermsDeprecationAnalysis = 3,
 			TermsDisjointnessAnalysis = 4,
-            ThingNothingAnalysis = 5
+            ThingNothingAnalysis = 5,
+			TopBottomAnalysis = 6
 		}
     }
 }
