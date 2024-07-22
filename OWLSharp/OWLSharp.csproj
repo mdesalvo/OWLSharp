@@ -47,8 +47,4 @@
     </PackageReference>
     <PackageReference Include="RDFSharp" Version="3.12.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validator/" />
-    <Folder Include="Validator/Rules/" />
-  </ItemGroup>
 </Project>

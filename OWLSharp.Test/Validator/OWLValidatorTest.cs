@@ -152,6 +152,32 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected clash on terms disjointness for class with IRI: 'http://xmlns.com/foaf/0.1/Person'")));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDisjointnessAnalysisRule.rulesugg)));
         }
-		#endregion
+
+        [TestMethod]
+        public async Task ShouldAnalyzeThingNothingAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                ClassAxioms = [
+                    new OWLSubClassOf(
+                        new OWLClass(RDFVocabulary.OWL.THING),
+                        new OWLClass(RDFVocabulary.FOAF.PERSON))
+                ],
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.OWL.THING)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.ThingNothingAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+            Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLThingNothingAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected class axioms causing reserved 'owl:Thing' class to not be the root entity")));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLThingNothingAnalysisRule.rulesuggT1)));
+        }
+        #endregion
     }
 }
