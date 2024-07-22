@@ -22,9 +22,9 @@ namespace OWLSharp.Validator.Rules
     internal static class OWLThingNothingAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.ThingNothingAnalysis.ToString();
-		internal static readonly string rulesuggT1 = "There should not be any direct or indirect SubClassOf axioms having reserved 'owl:Thing' class in position of subclass: this class should be the root entity!";
-        internal static readonly string rulesuggN1 = "There should not be any direct or indirect SubClassOf axioms having reserved 'owl:Nothing' class in position of superclass: this class should be the bottom entity!";
-        internal static readonly string rulesuggN2 = "There should not be any direct or indirect ClassAssertion axioms having reserved 'owl:Nothing' class: this class cannot contain individuals by design!";
+		internal static readonly string rulesuggT1 = "There should not be any direct or indirect SubClassOf axioms having reserved owl:Thing class in position of subclass: this class should be the root entity!";
+        internal static readonly string rulesuggN1 = "There should not be any direct or indirect SubClassOf axioms having reserved owl:Nothing class in position of superclass: this class should be the bottom entity!";
+        internal static readonly string rulesuggN2 = "There should not be any direct or indirect ClassAssertion axioms having reserved owl:Nothing class: this class cannot contain individuals by design!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -34,20 +34,20 @@ namespace OWLSharp.Validator.Rules
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected class axioms causing reserved 'owl:Thing' class to not be the root entity",
+                    $"Detected class axioms causing reserved owl:Thing class to not be the root entity of the ontology",
                     rulesuggT1));
 
             if (ontology.GetSubClassesOf(new OWLClass(RDFVocabulary.OWL.NOTHING)).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected class axioms causing reserved 'owl:Nothing' class to not be the bottom entity",
+                    $"Detected class axioms causing reserved owl:Nothing class to not be the bottom entity of the ontology",
                     rulesuggN1));
             if (ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.OWL.NOTHING)).Count > 0)
                 issues.Add(new OWLIssue(
-                    OWLEnums.OWLIssueSeverity.Warning,
+                    OWLEnums.OWLIssueSeverity.Error,
                     rulename,
-                    $"Detected individuals of reserved 'owl:Nothing' class",
+                    $"Violated owl:Nothing class having individuals",
                     rulesuggN2));
 
             return issues;

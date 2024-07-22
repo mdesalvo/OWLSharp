@@ -47,7 +47,7 @@ namespace OWLSharp.Test.Validator.Rules
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLThingNothingAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected class axioms causing reserved 'owl:Thing' class to not be the root entity")));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected class axioms causing reserved owl:Thing class to not be the root entity of the ontology")));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLThingNothingAnalysisRule.rulesuggT1)));
         }
 
@@ -72,7 +72,7 @@ namespace OWLSharp.Test.Validator.Rules
             Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLThingNothingAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected class axioms causing reserved 'owl:Nothing' class to not be the bottom entity")));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected class axioms causing reserved owl:Nothing class to not be the bottom entity of the ontology")));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLThingNothingAnalysisRule.rulesuggN1)));
         }
 
@@ -95,9 +95,9 @@ namespace OWLSharp.Test.Validator.Rules
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLThingNothingAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected individuals of reserved 'owl:Nothing' class")));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Violated owl:Nothing class having individuals")));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLThingNothingAnalysisRule.rulesuggN2)));
         }
         #endregion
