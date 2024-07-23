@@ -35,15 +35,13 @@ namespace OWLSharp.Validator.Rules
             //IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV1) -> ERROR
             foreach (OWLIrreflexiveObjectProperty irrefObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLIrreflexiveObjectProperty>())
 			{
-				string irrefObjPropXML = irrefObjProp.GetXML();
-
 				List <OWLObjectPropertyAssertion> irrefObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, irrefObjProp.ObjectPropertyExpression);
                 if (irrefObjPropAsns.Any(asn => asn.SourceIndividualExpression.GetIRI().Equals(asn.TargetIndividualExpression.GetIRI())))
 				{
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
-						$"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjPropXML}'", 
+						$"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'", 
 						rulesugg));
 				}
 			}

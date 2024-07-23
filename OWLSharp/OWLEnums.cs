@@ -61,11 +61,12 @@ namespace OWLSharp
 		public enum OWLValidatorRules
 		{
 			AsymmetricObjectPropertyAnalysis = 1,
-			IrreflexiveObjectPropertyAnalysis = 2,
-			TermsDeprecationAnalysis = 3,
-			TermsDisjointnessAnalysis = 4,
-            ThingNothingAnalysis = 5,
-			TopBottomAnalysis = 6
+			DifferentIndividualsAnalysis = 2,
+			IrreflexiveObjectPropertyAnalysis = 3,
+			TermsDeprecationAnalysis = 4,
+			TermsDisjointnessAnalysis = 5,
+            ThingNothingAnalysis = 6,
+			TopBottomAnalysis = 7
 		}
     }
 }

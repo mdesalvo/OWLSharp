@@ -37,7 +37,6 @@ namespace OWLSharp.Validator.Rules
             foreach (OWLAsymmetricObjectProperty asymObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>())
 			{
 				OWLObjectProperty asymObjPropInvOfValue = (asymObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
-				string asymObjPropXML = asymObjProp.GetXML();
 
 				#region Calibration
                 //Extract (calibrated and deduplicated) object assertions of the current asymmetric property
@@ -72,7 +71,7 @@ namespace OWLSharp.Validator.Rules
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
-						$"Violated AsymmetricObjectProperty axiom with signature: '{asymObjPropXML}'", 
+						$"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'", 
 						rulesugg));
 				}
 			}
