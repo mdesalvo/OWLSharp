@@ -31,6 +31,9 @@ namespace OWLSharp.Test.Validator.Rules
         {
             OWLOntology ontology = new OWLOntology()
             {
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
+                ],
                 ObjectPropertyAxioms = [ 
                     new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
 					new OWLSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))

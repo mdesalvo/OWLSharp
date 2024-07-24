@@ -15,6 +15,7 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,7 +24,8 @@ namespace OWLSharp.Validator.Rules
     internal static class OWLIrreflexiveObjectPropertyAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis.ToString();
-		internal static readonly string rulesugg = "There should not be object assertions having the same source/target individual under an irreflexive object property!";
+		internal static readonly string rulesugg1 = "There should not be object properties at the same time irreflexive and reflexive!";
+		internal static readonly string rulesugg2 = "There should not be object assertions having the same source/target individual under an irreflexive object property!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -31,9 +33,23 @@ namespace OWLSharp.Validator.Rules
 
             //Temporary working variables
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-            
+            List<OWLIrreflexiveObjectProperty> irrefObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLIrreflexiveObjectProperty>();
+			List<OWLReflexiveObjectProperty> refObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>();
+
+			//IrreflexiveObjectProperty(OP) ^ ReflexiveObjectProperty(OP) -> ERROR
+            foreach (OWLIrreflexiveObjectProperty irrefObjProp in irrefObjProps)
+			{
+				RDFResource irrefObjPropIRI = irrefObjProp.ObjectPropertyExpression.GetIRI();
+				foreach (OWLReflexiveObjectProperty refObjProp in refObjProps.Where(refObjProp => refObjProp.ObjectPropertyExpression.GetIRI().Equals(irrefObjPropIRI)))
+					issues.Add(new OWLIssue(
+						OWLEnums.OWLIssueSeverity.Error, 
+						rulename, 
+						$"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'", 
+						rulesugg1));
+			}
+
             //IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV1) -> ERROR
-            foreach (OWLIrreflexiveObjectProperty irrefObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLIrreflexiveObjectProperty>())
+            foreach (OWLIrreflexiveObjectProperty irrefObjProp in irrefObjProps)
 			{
 				List <OWLObjectPropertyAssertion> irrefObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, irrefObjProp.ObjectPropertyExpression);
                 if (irrefObjPropAsns.Any(asn => asn.SourceIndividualExpression.GetIRI().Equals(asn.TargetIndividualExpression.GetIRI())))
@@ -42,7 +58,7 @@ namespace OWLSharp.Validator.Rules
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
 						$"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'", 
-						rulesugg));
+						rulesugg2));
 				}
 			}
 
