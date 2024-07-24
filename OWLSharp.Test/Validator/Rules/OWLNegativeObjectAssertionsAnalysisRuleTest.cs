@@ -26,7 +26,40 @@ namespace OWLSharp.Test.Validator.Rules
     public class OWLNegativeObjectAssertionsAnalysisRuleTest
     {
         #region Tests
-		
+		[TestMethod]
+        public void ShouldAnalyzeNegativeObjectAssertionsSimpleCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+                ],
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+					new OWLNegativeObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
+                ]
+            };
+            List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLNegativeObjectAssertionsAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLNegativeObjectAssertionsAnalysisRule.rulesugg)));
+        }
 		#endregion
-    }
+    } 
 }
