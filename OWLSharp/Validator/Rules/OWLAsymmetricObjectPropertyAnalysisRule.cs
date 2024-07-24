@@ -15,6 +15,7 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,7 +24,8 @@ namespace OWLSharp.Validator.Rules
     internal static class OWLAsymmetricObjectPropertyAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis.ToString();
-		internal static readonly string rulesugg = "There should not be object assertions switching source/target individuals under the same asymmetric object property!";
+		internal static readonly string rulesugg1 = "There should not be object properties at the same time asymmetric and symmetric!";
+		internal static readonly string rulesugg2 = "There should not be object assertions switching source/target individuals under the same asymmetric object property!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -32,9 +34,23 @@ namespace OWLSharp.Validator.Rules
             //Temporary working variables
 			OWLIndividualExpression swapIdvExpr;
 			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-            
+			List<OWLAsymmetricObjectProperty> asymObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>();
+			List<OWLSymmetricObjectProperty> symObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>();
+
+			//AsymmetricObjectProperty(OP) ^ SymmetricObjectProperty(OP) -> ERROR
+            foreach (OWLAsymmetricObjectProperty asymObjProp in asymObjProps)
+			{
+				RDFResource asymObjPropIRI = asymObjProp.ObjectPropertyExpression.GetIRI();
+				foreach (OWLSymmetricObjectProperty symObjProp in symObjProps.Where(symObjProp => symObjProp.ObjectPropertyExpression.GetIRI().Equals(asymObjPropIRI)))
+					issues.Add(new OWLIssue(
+						OWLEnums.OWLIssueSeverity.Error, 
+						rulename, 
+						$"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'", 
+						rulesugg1));
+			}
+
             //AsymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV1) -> ERROR
-            foreach (OWLAsymmetricObjectProperty asymObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>())
+            foreach (OWLAsymmetricObjectProperty asymObjProp in asymObjProps)
 			{
 				OWLObjectProperty asymObjPropInvOfValue = (asymObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
@@ -72,7 +88,7 @@ namespace OWLSharp.Validator.Rules
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
 						$"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'", 
-						rulesugg));
+						rulesugg2));
 				}
 			}
 
