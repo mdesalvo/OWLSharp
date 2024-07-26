@@ -58,6 +58,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis:
 								issueRegistry[OWLDifferentIndividualsAnalysisRule.rulename] = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.DisjointClassesAnalysis:
+								issueRegistry[OWLDisjointClassesAnalysisRule.rulename] = OWLDisjointClassesAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.DisjointUnionAnalysis:
 								issueRegistry[OWLDisjointUnionAnalysisRule.rulename] = OWLDisjointUnionAnalysisRule.ExecuteRule(ontology);
 								break;

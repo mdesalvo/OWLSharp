@@ -33,7 +33,7 @@ namespace OWLSharp.Validator.Rules
             //Temporary working variables
 			Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
 
-			//DisjointUnion(CLS,(CLS1,CLS2))) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
+			//DisjointUnion(CLS,(CLS1,CLS2)) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
             foreach (OWLDisjointUnion disjUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
 			{
 				//Materialize individuals of each class expression member of the DisjointUnion
