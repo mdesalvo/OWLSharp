@@ -76,7 +76,7 @@ namespace OWLSharp.Validator.Rules
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
-						$"Violated OWLNegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'", 
+						$"Violated NegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'", 
 						rulesugg));
 			}
 

@@ -66,11 +66,12 @@ namespace OWLSharp
 			DisjointUnionAnalysis = 4,
 			IrreflexiveObjectPropertyAnalysis = 5,
 			NegativeDataAssertionsAnalysis = 6,
-			NegativeObjectAssertionsAnalysis = 7,			
-			TermsDeprecationAnalysis = 8,
-			TermsDisjointnessAnalysis = 9,
-            ThingNothingAnalysis = 10,
-			TopBottomAnalysis = 11
+			NegativeObjectAssertionsAnalysis = 7,
+			ObjectPropertyChainAnalysis = 8,			
+			TermsDeprecationAnalysis = 9,
+			TermsDisjointnessAnalysis = 10,
+            ThingNothingAnalysis = 11,
+			TopBottomAnalysis = 12
 		}
     }
 }
