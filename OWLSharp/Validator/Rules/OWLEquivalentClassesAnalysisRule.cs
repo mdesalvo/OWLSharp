@@ -13,34 +13,36 @@
 
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
+using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Validator.Rules
 {
-    internal static class OWLDisjointClassesAnalysisRule
+    internal static class OWLEquivalentClassesAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.DisjointClassesAnalysis.ToString();
-		internal static readonly string rulesugg = "There should not be class expressions belonging at the same time to DisjointClasses and SubClassOf/EquivalentClasses axioms!";
+        internal static readonly string rulename = OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis.ToString();
+		internal static readonly string rulesugg = "There should not be class expressions belonging at the same time to EquivalentClasses and SubClassOf/DisjointClasses axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
-			//DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
-			//DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
-            foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
-				if (disjClasses.ClassExpressions.Any(outerClass => 
-					  disjClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())
+            //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
+			//EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
+			//EquivalentClasses(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> ERROR
+            foreach (OWLEquivalentClasses equivClasses in ontology.GetClassAxiomsOfType<OWLEquivalentClasses>())
+				if (equivClasses.ClassExpressions.Any(outerClass => 
+					  equivClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())
 					  													&& (ontology.CheckIsSubClassOf(outerClass, innerClass)
 																			 || ontology.CheckIsSubClassOf(innerClass, outerClass)
-																			 || ontology.CheckAreEquivalentClasses(outerClass, innerClass)))))
+																			 || ontology.CheckAreDisjointClasses(outerClass, innerClass)))))
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
-						$"Violated DisjointClasses axiom with signature: '{disjClasses.GetXML()}'", 
+						$"Violated EquivalentClasses axiom with signature: '{equivClasses.GetXML()}'", 
 						rulesugg));
 
             return issues;
