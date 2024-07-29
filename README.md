@@ -16,4 +16,4 @@ In addition to the <a href="https://github.com/mdesalvo/OWLSharp/releases/downlo
 </ul>
 <hr/>
 
-Development of <b>OWLSharp v4</b> has started! Track the progress <a href="https://github.com/mdesalvo/OWLSharp/tree/v4">here</a> to stay tuned!
+<b>Development of OWLSharp 4 has started! Track the progress <a href="https://github.com/mdesalvo/OWLSharp/tree/v4">here</a> to stay tuned!</b>
