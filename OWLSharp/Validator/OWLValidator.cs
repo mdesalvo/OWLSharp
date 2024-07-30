@@ -79,6 +79,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis:
 								issueRegistry[OWLObjectPropertyChainAnalysisRule.rulename] = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.SubClassOfAnalysis:
+								issueRegistry[OWLSubClassOfAnalysisRule.rulename] = OWLSubClassOfAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis:
 								issueRegistry[OWLTermsDeprecationAnalysisRule.rulename] = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
 								break;

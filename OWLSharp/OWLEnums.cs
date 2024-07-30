@@ -69,10 +69,11 @@ namespace OWLSharp
 			NegativeDataAssertionsAnalysis = 7,
 			NegativeObjectAssertionsAnalysis = 8,
 			ObjectPropertyChainAnalysis = 9,
-			TermsDeprecationAnalysis = 10,
-			TermsDisjointnessAnalysis = 11,
-            ThingNothingAnalysis = 12,
-			TopBottomAnalysis = 13
+			SubClassOfAnalysis = 10,
+			TermsDeprecationAnalysis = 11,
+			TermsDisjointnessAnalysis = 12,
+            ThingNothingAnalysis = 13,
+			TopBottomAnalysis = 14
 		}
     }
 }

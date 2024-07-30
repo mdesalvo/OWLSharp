@@ -428,6 +428,34 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentClassesAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentClassesAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeSubClassOfSubClassAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ClassAxioms = [
+                    new OWLSubClassOf(
+                        new OWLClass(RDFVocabulary.FOAF.PERSON), 
+						new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+					new OWLSubClassOf(
+						new OWLClass(RDFVocabulary.FOAF.ORGANIZATION), 
+						new OWLClass(RDFVocabulary.FOAF.PERSON))
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+					new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.SubClassOfAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysisRule.rulesugg)));
+        }
         #endregion
     }
 }
