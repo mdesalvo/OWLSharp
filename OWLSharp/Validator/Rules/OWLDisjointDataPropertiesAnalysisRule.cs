@@ -23,7 +23,7 @@ namespace OWLSharp.Validator.Rules
     internal static class OWLDisjointDataPropertiesAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis.ToString();
-		internal static readonly string rulesugg = "There should not be disjoint data properties linking the same individual to the same literal!";
+		internal static readonly string rulesugg = "There should not be disjoint data properties linking the same individual to the same literal within DataPropertyAssertion axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -40,9 +40,9 @@ namespace OWLSharp.Validator.Rules
 				foreach (OWLDataProperty disjDtProp in disjDtProps.DataProperties)
 					disjDtPropAsns.AddRange(OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, disjDtProp));
 
-				if (disjDtPropAsns.GroupBy(dtAsn => new { 
-						Idv = dtAsn.IndividualExpression.GetIRI().ToString(), 
-						Lit = dtAsn.Literal.GetLiteral().ToString() }).Count() > 1)
+				foreach (var conflictingDisjDtPropAsnsGroup in disjDtPropAsns.GroupBy(dtAsn => new { 
+																	Idv = dtAsn.IndividualExpression.GetIRI().ToString(), 
+																	Lit = dtAsn.Literal.GetLiteral().ToString() }).Where(g => g.Count() > 1))
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 

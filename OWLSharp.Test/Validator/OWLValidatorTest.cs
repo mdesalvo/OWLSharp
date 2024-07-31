@@ -482,18 +482,22 @@ namespace OWLSharp.Test.Validator
 					new OWLDataPropertyAssertion(
 						new OWLDataProperty(RDFVocabulary.FOAF.NAME),
 						new OWLNamedIndividual(new RDFResource("ex:John")),
-						new OWLLiteral(new RDFPlainLiteral("John")))
+						new OWLLiteral(new RDFPlainLiteral("John"))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:age")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))) //conflicts with foaf:age
 				],
 				DataPropertyAxioms = [
                     new OWLDisjointDataProperties([
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
 						new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
-						new OWLDataProperty(RDFVocabulary.FOAF.MBOX) ]),
+						new OWLDataProperty(new RDFResource("ex:age")) ]),
                 ],
 				DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
 					new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME)),
-					new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.MBOX)),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age"))),
 					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
 					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
 					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
