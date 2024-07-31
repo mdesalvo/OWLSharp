@@ -61,6 +61,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.DisjointClassesAnalysis:
 								issueRegistry[OWLDisjointClassesAnalysisRule.rulename] = OWLDisjointClassesAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis:
+								issueRegistry[OWLDisjointDataPropertiesAnalysisRule.rulename] = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.DisjointUnionAnalysis:
 								issueRegistry[OWLDisjointUnionAnalysisRule.rulename] = OWLDisjointUnionAnalysisRule.ExecuteRule(ontology);
 								break;

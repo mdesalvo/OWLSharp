@@ -456,6 +456,59 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeDisjointDataPropertiesAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				AssertionAxioms = [
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+						new OWLNamedIndividual(new RDFResource("ex:John")),
+						new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLLiteral(new RDFPlainLiteral("Mark"))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+						new OWLNamedIndividual(new RDFResource("ex:John")),
+						new OWLLiteral(new RDFPlainLiteral("John")))
+				],
+				DataPropertyAxioms = [
+                    new OWLDisjointDataProperties([
+                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+						new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
+						new OWLDataProperty(RDFVocabulary.FOAF.MBOX) ]),
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+					new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME)),
+					new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.MBOX)),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg)));
+        }
         #endregion
     }
 }
