@@ -513,6 +513,57 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeDisjointObjectPropertiesAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				AssertionAxioms = [
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
+						new OWLNamedIndividual(new RDFResource("ex:John")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(RDFVocabulary.FOAF.AGENT),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(RDFVocabulary.FOAF.AGENT),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:Lenny"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(RDFVocabulary.FOAF.AGENT),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))), //conflicts with foaf:knows
+				],
+				ObjectPropertyAxioms = [
+                    new OWLDisjointObjectProperties([
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.AGENT) ]),
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.AGENT)),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Lenny")))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysisRule.rulesugg)));
+        }
         #endregion
     }
 }
