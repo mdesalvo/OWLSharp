@@ -76,6 +76,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis:
 								issueRegistry[OWLEquivalentDataPropertiesAnalysisRule.rulename] = OWLEquivalentDataPropertiesAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis:
+								issueRegistry[OWLEquivalentObjectPropertiesAnalysisRule.rulename] = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis:
 								issueRegistry[OWLIrreflexiveObjectPropertyAnalysisRule.rulename] = OWLIrreflexiveObjectPropertyAnalysisRule.ExecuteRule(ontology);
 								break;

@@ -54,7 +54,7 @@ namespace OWLSharp.Test.Validator.Rules
         }
 
 		[TestMethod]
-        public void ShouldAnalyzeEquivalentDataPropertiesDisjointClassesCase()
+        public void ShouldAnalyzeEquivalentDataPropertiesDisjointDataPropertiesCase()
         {
             OWLOntology ontology = new OWLOntology()
             {

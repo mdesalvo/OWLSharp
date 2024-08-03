@@ -592,6 +592,34 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentDataPropertiesAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentDataPropertiesAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeEquivalentObjectPropertiesAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ObjectPropertyAxioms = [
+                    new OWLEquivalentObjectProperties([
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(new RDFResource("ex:knows")) ]),
+					new OWLSubObjectPropertyOf(
+						new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(new RDFResource("ex:knows")))
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentObjectPropertiesAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentObjectPropertiesAnalysisRule.rulesugg)));
+        }
         #endregion
     }
 }
