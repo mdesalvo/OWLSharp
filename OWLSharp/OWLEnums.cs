@@ -67,15 +67,16 @@ namespace OWLSharp
 			DisjointObjectPropertiesAnalysis = 5,
 			DisjointUnionAnalysis = 6,
 			EquivalentClassesAnalysis = 7,
-			IrreflexiveObjectPropertyAnalysis = 8,
-			NegativeDataAssertionsAnalysis = 9,
-			NegativeObjectAssertionsAnalysis = 10,
-			ObjectPropertyChainAnalysis = 11,
-			SubClassOfAnalysis = 12,
-			TermsDeprecationAnalysis = 13,
-			TermsDisjointnessAnalysis = 14,
-            ThingNothingAnalysis = 15,
-			TopBottomAnalysis = 16
+			EquivalentDataPropertiesAnalysis = 8,
+			IrreflexiveObjectPropertyAnalysis = 9,
+			NegativeDataAssertionsAnalysis = 10,
+			NegativeObjectAssertionsAnalysis = 11,
+			ObjectPropertyChainAnalysis = 12,
+			SubClassOfAnalysis = 13,
+			TermsDeprecationAnalysis = 14,
+			TermsDisjointnessAnalysis = 15,
+            ThingNothingAnalysis = 16,
+			TopBottomAnalysis = 17
 		}
     }
 }
