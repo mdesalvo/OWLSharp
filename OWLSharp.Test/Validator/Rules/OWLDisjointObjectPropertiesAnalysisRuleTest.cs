@@ -125,6 +125,87 @@ namespace OWLSharp.Test.Validator.Rules
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public void ShouldAnalyzeDisjointObjectPropertiesSubObjectPropertyOfCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ObjectPropertyAxioms = [
+                    new OWLDisjointObjectProperties([
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.NAME) ]),
+					new OWLSubObjectPropertyOf(
+						new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.NAME))
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.NAME))
+                ]
+            };
+            List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysisRule.rulesugg2)));
+        }
+
+		[TestMethod]
+        public void ShouldAnalyzeDisjointObjectPropertiesSuperObjectPropertyOfCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ObjectPropertyAxioms = [
+                    new OWLDisjointObjectProperties([
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.NAME) ]),
+					new OWLSubObjectPropertyOf(
+						new OWLObjectProperty(RDFVocabulary.FOAF.NAME), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.NAME))
+                ]
+            };
+            List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysisRule.rulesugg2)));
+        }
+
+		[TestMethod]
+        public void ShouldAnalyzeDisjointObjectPropertiesEquivalentObjectPropertiesCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ObjectPropertyAxioms = [
+                    new OWLDisjointObjectProperties([
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.NAME) ]),
+					new OWLEquivalentObjectProperties([
+						new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.NAME) ])
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.NAME))
+                ]
+            };
+            List<OWLIssue> issues = OWLDisjointObjectPropertiesAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysisRule.rulesugg2)));
+        }
         #endregion
     }
 }
