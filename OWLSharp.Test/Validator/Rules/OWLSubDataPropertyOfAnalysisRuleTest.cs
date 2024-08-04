@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Validator.Rules
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeSubDataPropertiesSubDataPropertyOfCase()
+        public void ShouldAnalyzeSubDataPropertyOfSubDataPropertyOfCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -54,7 +54,7 @@ namespace OWLSharp.Test.Validator.Rules
         }
 
 		[TestMethod]
-        public void ShouldAnalyzeSubDataPropertiesEquivalentDataPropertiesCase()
+        public void ShouldAnalyzeSubDataPropertyOfEquivalentDataPropertiesCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -81,7 +81,7 @@ namespace OWLSharp.Test.Validator.Rules
         }
 
 		[TestMethod]
-        public void ShouldAnalyzeSubDataPropertiesDisjointDataPropertiesCase()
+        public void ShouldAnalyzeSubDataPropertyOfDisjointDataPropertiesCase()
         {
             OWLOntology ontology = new OWLOntology()
             {

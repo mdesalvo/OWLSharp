@@ -622,7 +622,7 @@ namespace OWLSharp.Test.Validator
         }
 
 		[TestMethod]
-        public async Task ShouldAnalyzeSubDataPropertiesAsync()
+        public async Task ShouldAnalyzeSubDataPropertyOfAsync()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -647,6 +647,33 @@ namespace OWLSharp.Test.Validator
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
+        }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeSubObjectPropertyOfAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ObjectPropertyAxioms = [
+                    new OWLSubObjectPropertyOf(
+                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+						new OWLObjectProperty(new RDFResource("ex:knows")) ),
+					new OWLSubObjectPropertyOf(
+						new OWLObjectProperty(new RDFResource("ex:knows")), 
+						new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.SubObjectPropertyOfAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
         }
         #endregion
     }
