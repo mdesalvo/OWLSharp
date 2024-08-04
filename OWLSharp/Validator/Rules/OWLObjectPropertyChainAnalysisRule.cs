@@ -25,6 +25,7 @@ namespace OWLSharp.Validator.Rules
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis.ToString();
 		internal static readonly string rulesugg = "There should not be ObjectPropertyChain definitions related to object property expressions of type: AsymmetricObjectProperty, FunctionalObjectProperty, InverseFunctionalObjectProperty, IrreflexiveObjectProperty!";
+		internal static readonly string rulesugg2 = "There should not be ObjectPropertyChain definitions containing object property expressions defined as their super properties (this is a loop!)";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -36,6 +37,7 @@ namespace OWLSharp.Validator.Rules
 			//SubObjectPropertyOf(OPCHAIN,OP) ^ ObjectPropertyChain(OPCHAIN,(OP1,OP2)) ^ IrreflexiveObjectProperty(OP) -> ERROR
             foreach (OWLSubObjectPropertyOf subObjectPropertyOf in ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>()
 																		   .Where(ax => ax.SubObjectPropertyChain != null))
+			{
 				if (ontology.CheckHasAsymmetricObjectProperty(subObjectPropertyOf.SuperObjectPropertyExpression)
 					 || ontology.CheckHasFunctionalObjectProperty(subObjectPropertyOf.SuperObjectPropertyExpression)
 					 || ontology.CheckHasInverseFunctionalObjectProperty(subObjectPropertyOf.SuperObjectPropertyExpression)
@@ -45,6 +47,15 @@ namespace OWLSharp.Validator.Rules
 						rulename, 
 						$"Violated SubObjectPropertyOf expression with ObjectPropertyChain signature: '{subObjectPropertyOf.GetXML()}'", 
 						rulesugg));
+
+				//SubObjectPropertyOf(OPCHAIN,OP) ^ ObjectPropertyChain(OPCHAIN,(OP,OP1,OP2)) -> ERROR
+				if (subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions.Any(opex => opex.GetIRI().Equals(subObjectPropertyOf.SuperObjectPropertyExpression.GetIRI())))
+					issues.Add(new OWLIssue(
+						OWLEnums.OWLIssueSeverity.Error, 
+						rulename, 
+						$"Violated SubObjectPropertyOf expression with ObjectPropertyChain signature: '{subObjectPropertyOf.GetXML()}'", 
+						rulesugg2));
+			}
 
             return issues;
         }

@@ -74,10 +74,12 @@ namespace OWLSharp
 			NegativeObjectAssertionsAnalysis = 12,
 			ObjectPropertyChainAnalysis = 13,
 			SubClassOfAnalysis = 14,
-			TermsDeprecationAnalysis = 15,
-			TermsDisjointnessAnalysis = 16,
-            ThingNothingAnalysis = 17,
-			TopBottomAnalysis = 18
+			SubDataPropertyOfAnalysis = 15,
+			SubObjectPropertyOfAnalysis = 16,
+			TermsDeprecationAnalysis = 17,
+			TermsDisjointnessAnalysis = 18,
+            ThingNothingAnalysis = 19,
+			TopBottomAnalysis = 20
 		}
     }
 }

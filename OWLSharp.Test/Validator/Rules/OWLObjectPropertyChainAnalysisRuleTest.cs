@@ -137,6 +137,33 @@ namespace OWLSharp.Test.Validator.Rules
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public void ShouldAnalyzeObjectPropertyChainLoopCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
+				],
+                ObjectPropertyAxioms = [ 
+                    new OWLSubObjectPropertyOf(
+						new OWLObjectPropertyChain([
+							new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+							new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))]),
+						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+				]
+            };
+            List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg2)));
+        }
 		#endregion
     }
 }
