@@ -24,6 +24,7 @@ namespace OWLSharp.Validator.Rules
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis.ToString();
 		internal static readonly string rulesugg = "There should not be disjoint data properties linking the same individual to the same literal within DataPropertyAssertion axioms!";
+		internal static readonly string rulesugg2 = "There should not be data properties belonging at the same time to DisjointDataProperties and SubDataPropertyOf/EquivalentDataProperties axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -48,6 +49,20 @@ namespace OWLSharp.Validator.Rules
 						rulename, 
 						$"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'", 
 						rulesugg));
+
+				//DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR
+				//DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
+				//DisjointDataProperties(DP1,DP2) ^ EquivalentDataProperties(DP1,DP2) -> ERROR
+				if (disjDtProps.DataProperties.Any(outerDP => 
+					  disjDtProps.DataProperties.Any(innerDP => !outerDP.GetIRI().Equals(innerDP.GetIRI())
+																  && (ontology.CheckIsSubDataPropertyOf(outerDP, innerDP)
+																	   || ontology.CheckIsSubDataPropertyOf(innerDP, outerDP)
+																	   || ontology.CheckAreEquivalentDataProperties(outerDP, innerDP)))))
+					issues.Add(new OWLIssue(
+						OWLEnums.OWLIssueSeverity.Error, 
+						rulename, 
+						$"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'", 
+						rulesugg2));
 			}				
 
             return issues;
