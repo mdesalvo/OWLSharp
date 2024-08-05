@@ -55,6 +55,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis:
 								issueRegistry[OWLAsymmetricObjectPropertyAnalysisRule.rulename] = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.ClassAssertionAnalysis:
+								issueRegistry[OWLClassAssertionAnalysisRule.rulename] = OWLClassAssertionAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis:
 								issueRegistry[OWLDifferentIndividualsAnalysisRule.rulename] = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
 								break;

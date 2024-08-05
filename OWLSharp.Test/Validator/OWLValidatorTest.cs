@@ -745,6 +745,45 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeClassAssertionsAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(new RDFResource("ex:Cls1")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLClassAssertion(
+                        new OWLClass(new RDFResource("ex:Cls2")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLClassAssertion(
+                        new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls1"))),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))), //clashing with first class assertion
+					new OWLClassAssertion(
+                        new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls1"))),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLClassAssertion(
+                        new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls2"))),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.ClassAssertionAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLClassAssertionAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLClassAssertionAnalysisRule.rulesugg)));
+        }
         #endregion
     }
 }
