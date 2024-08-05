@@ -82,6 +82,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis:
 								issueRegistry[OWLEquivalentObjectPropertiesAnalysisRule.rulename] = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis:
+								issueRegistry[OWLFunctionalDataPropertyAnalysisRule.rulename] = OWLFunctionalDataPropertyAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.HasKeyAnalysis:
 								issueRegistry[OWLHasKeyAnalysisRule.rulename] = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
 								break;
