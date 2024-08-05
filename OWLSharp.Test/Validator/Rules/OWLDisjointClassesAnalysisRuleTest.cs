@@ -77,6 +77,43 @@ namespace OWLSharp.Test.Validator.Rules
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public void ShouldAnalyzeDisjointClassesClassAssertionCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ClassAxioms = [
+                    new OWLDisjointClasses([
+                        new OWLClass(RDFVocabulary.FOAF.PERSON), 
+						new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
+				],
+				AssertionAxioms = [
+					new OWLClassAssertion(
+						new OWLClass(RDFVocabulary.FOAF.PERSON), 
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLClassAssertion(
+						new OWLClass(RDFVocabulary.FOAF.ORGANIZATION), 
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLClassAssertion(
+						new OWLClass(RDFVocabulary.FOAF.PERSON), 
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                ],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+					new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
+                ]
+            };
+            List<OWLIssue> issues = OWLDisjointClassesAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysisRule.rulesugg2)));
+        }
         #endregion
     }
 }
