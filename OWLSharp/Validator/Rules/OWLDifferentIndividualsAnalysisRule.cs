@@ -30,9 +30,9 @@ namespace OWLSharp.Validator.Rules
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //DifferentIndividuals(IDV1,IDV2) ^ SameIndividual(IDV2,IDV1) -> ERROR
             foreach (OWLDifferentIndividuals diffIdvsAxiom in ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>())
 			{
+				//DifferentIndividuals(IDV1,IDV2) ^ SameIndividual(IDV2,IDV1) -> ERROR
 				if (diffIdvsAxiom.IndividualExpressions.Any(outerIdv => 
 						diffIdvsAxiom.IndividualExpressions.Any(innerIdv => !outerIdv.GetIRI().Equals(innerIdv.GetIRI()) 
 																			  && ontology.CheckIsSameIndividual(outerIdv, innerIdv))))
