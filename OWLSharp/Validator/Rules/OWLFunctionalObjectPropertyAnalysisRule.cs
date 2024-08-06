@@ -70,7 +70,7 @@ namespace OWLSharp.Validator.Rules
 				foreach (var fopAsnMap in fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
 												 .Select(grp => new 
 												 { 
-												 	 FopAsnTargets = OWLExpressionHelper.RemoveDuplicates(grp.Select(g => g.TargetIndividualExpression).ToList()),
+												 	 FopAsnTargets = grp.Select(g => g.TargetIndividualExpression),
 												 	 FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
 												 							   .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
 												 													  .Any(innerTgtIdv => !outerTgtIdv.GetIRI().Equals(innerTgtIdv.GetIRI())
