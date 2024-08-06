@@ -78,7 +78,58 @@ namespace OWLSharp.Test.Validator.Rules
         }
 
 		[TestMethod]
-        public void ShouldAnalyzeFunctionalObjectPropertyInverseOfCase()
+        public void ShouldAnalyzeFunctionalObjectPropertyInverseAssertionCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op1")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:op1"))),
+                        new OWLNamedIndividual(new RDFResource("ex:John")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))), //clash with first object assertion (because john and stiv are different idvs)
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op2")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op1")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op2")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLDifferentIndividuals([
+						new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:John")) ])
+                ],
+				ObjectPropertyAxioms = [
+					new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
+					new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
+				],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
+                ]
+            };
+            List<OWLIssue> issues = OWLFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLFunctionalObjectPropertyAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLFunctionalObjectPropertyAnalysisRule.rulesugg)));
+        }
+
+		[TestMethod]
+        public void ShouldAnalyzeFunctionalObjectPropertyInverseFOPCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
