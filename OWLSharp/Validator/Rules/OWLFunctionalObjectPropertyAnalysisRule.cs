@@ -24,7 +24,7 @@ namespace OWLSharp.Validator.Rules
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis.ToString();
 		internal static readonly string rulesugg = "There should not be functional object properties linking the same individual to more than one individual within ObjectPropertyAssertion axioms if these individuals are explicitly different!";
-		internal static readonly string rulesugg2 = "There should not be functional object properties also defined as transitive!";
+		internal static readonly string rulesugg2 = "There should not be functional object properties also defined as transitive, or having super properties defined as transitive!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -85,7 +85,9 @@ namespace OWLSharp.Validator.Rules
 						rulesugg));
 
 				//FunctionalObjectProperty(FOP) ^ TransitiveObjectProperty(FOP) -> ERROR
-				if (ontology.CheckHasTransitiveObjectProperty(fop.ObjectPropertyExpression))
+				//FunctionalObjectProperty(FOP) ^ SubObjectPropertyOf(FOP, SOP) ^ TransitiveObjectProperty(SOP) -> ERROR
+				if (ontology.CheckHasTransitiveObjectProperty(fop.ObjectPropertyExpression)
+					 || ontology.GetSuperObjectPropertiesOf(fop.ObjectPropertyExpression).Any(opex => ontology.CheckHasTransitiveObjectProperty(opex)))
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
