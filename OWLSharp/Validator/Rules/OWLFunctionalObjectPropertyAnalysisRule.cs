@@ -56,7 +56,7 @@ namespace OWLSharp.Validator.Rules
 				{
 					#region Calibration (FunctionalObjectProperty)
 					//In case the functional object property works under inverse logic, we must swap source/target of the object assertion
-					if (fopAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+					if (fop.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
 					{   
 						swapIdvExpr = fopAsn.SourceIndividualExpression;
 						fopAsn.SourceIndividualExpression = fopAsn.TargetIndividualExpression;
@@ -68,15 +68,14 @@ namespace OWLSharp.Validator.Rules
 				fopAsns = OWLAxiomHelper.RemoveDuplicates(fopAsns);
 
 				foreach (var fopAsnMap in fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
-												 .Select(grp => 
-												 	new 
-													{ 
-														FopAsnTargets = OWLExpressionHelper.RemoveDuplicates(grp.Select(g => g.TargetIndividualExpression).ToList()),
-														FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
-																				  .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
-																				  						 .Any(innerTgtIdv => !outerTgtIdv.GetIRI().Equals(innerTgtIdv.GetIRI())
-																										 						&& ontology.CheckAreDifferentIndividuals(outerTgtIdv, innerTgtIdv)))
-													})
+												 .Select(grp => new 
+												 { 
+												 	 FopAsnTargets = OWLExpressionHelper.RemoveDuplicates(grp.Select(g => g.TargetIndividualExpression).ToList()),
+												 	 FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
+												 							   .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
+												 													  .Any(innerTgtIdv => !outerTgtIdv.GetIRI().Equals(innerTgtIdv.GetIRI())
+												 																			&& ontology.CheckAreDifferentIndividuals(outerTgtIdv, innerTgtIdv)))
+												 })
 												 .Where(grp => grp.FoundDiffFromTargets && grp.FopAsnTargets.Count() > 1))
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
