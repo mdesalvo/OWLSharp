@@ -23,7 +23,7 @@ namespace OWLSharp.Validator.Rules
     internal static class OWLFunctionalObjectPropertyAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis.ToString();
-		internal static readonly string rulesugg = "There should not be functional object properties linking the same source individual to more than one target individuals within ObjectPropertyAssertion axioms if these individuals are explicitly different!";
+		internal static readonly string rulesugg = "There should not be functional object properties linking the same source individual to more than one target individuals within ObjectPropertyAssertion axioms if these target individuals are explicitly different!";
 		internal static readonly string rulesugg2 = "There should not be functional object properties also defined as transitive, or having super properties defined as transitive!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
