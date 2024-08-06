@@ -24,6 +24,7 @@ namespace OWLSharp.Validator.Rules
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis.ToString();
 		internal static readonly string rulesugg = "There should not be functional object properties linking the same individual to more than one individual within ObjectPropertyAssertion axioms!";
+		internal static readonly string rulesugg2 = "There should not be functional object properties also defined as transitive!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -48,7 +49,6 @@ namespace OWLSharp.Validator.Rules
 			opAsns = OWLAxiomHelper.RemoveDuplicates(opAsns);
 			#endregion
 
-			//FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
 			foreach (OWLFunctionalObjectProperty fop in ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>())
 			{
 				#region Calibration (FunctionalObjectProperty)
@@ -67,6 +67,7 @@ namespace OWLSharp.Validator.Rules
 				fopAsns = OWLAxiomHelper.RemoveDuplicates(fopAsns);
 				#endregion
 
+				//FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
 				foreach (var fopAsnMap in fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
 												 .Select(grp => new 
 												 { 
@@ -82,6 +83,14 @@ namespace OWLSharp.Validator.Rules
 						rulename, 
 						$"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}", 
 						rulesugg));
+
+				//FunctionalObjectProperty(FOP) ^ TransitiveObjectProperty(FOP) -> ERROR
+				if (ontology.CheckHasTransitiveObjectProperty(fop.ObjectPropertyExpression))
+					issues.Add(new OWLIssue(
+						OWLEnums.OWLIssueSeverity.Error, 
+						rulename, 
+						$"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}", 
+						rulesugg2));
 			}
 
             return issues;

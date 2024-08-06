@@ -180,6 +180,28 @@ namespace OWLSharp.Test.Validator.Rules
         }
 
 		[TestMethod]
+        public void ShouldAnalyzeFunctionalObjectPropertyTransitiveCase()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				ObjectPropertyAxioms = [
+					new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
+					new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1")))
+				],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1")))
+                ]
+            };
+            List<OWLIssue> issues = OWLFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLFunctionalObjectPropertyAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLFunctionalObjectPropertyAnalysisRule.rulesugg2)));
+        }
+
+		[TestMethod]
         public void ShouldAnalyzeFunctionalObjectPropertySimpleCaseAndDontFindIssuesBecauseNoDifferentFrom()
         {
             OWLOntology ontology = new OWLOntology()
