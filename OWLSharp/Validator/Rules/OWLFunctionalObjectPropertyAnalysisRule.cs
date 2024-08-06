@@ -51,10 +51,10 @@ namespace OWLSharp.Validator.Rules
 			//FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
 			foreach (OWLFunctionalObjectProperty fop in ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>())
 			{
+				#region Calibration (FunctionalObjectProperty)
 				List<OWLObjectPropertyAssertion> fopAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, fop.ObjectPropertyExpression);
             	foreach (OWLObjectPropertyAssertion fopAsn in fopAsns)
 				{
-					#region Calibration (FunctionalObjectProperty)
 					//In case the functional object property works under inverse logic, we must swap source/target of the object assertion
 					if (fop.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
 					{   
@@ -63,9 +63,9 @@ namespace OWLSharp.Validator.Rules
 						fopAsn.TargetIndividualExpression = swapIdvExpr;
 						fopAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
 					}
-					#endregion
 				}
 				fopAsns = OWLAxiomHelper.RemoveDuplicates(fopAsns);
+				#endregion
 
 				foreach (var fopAsnMap in fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
 												 .Select(grp => new 
