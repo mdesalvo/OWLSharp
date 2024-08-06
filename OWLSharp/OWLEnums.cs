@@ -73,17 +73,18 @@ namespace OWLSharp
 			FunctionalDataPropertyAnalysis = 11,
 			FunctionalObjectPropertyAnalysis = 12,
 			HasKeyAnalysis = 13,
-			IrreflexiveObjectPropertyAnalysis = 14,
-			NegativeDataAssertionsAnalysis = 15,
-			NegativeObjectAssertionsAnalysis = 16,
-			ObjectPropertyChainAnalysis = 17,
-			SubClassOfAnalysis = 18,
-			SubDataPropertyOfAnalysis = 19,
-			SubObjectPropertyOfAnalysis = 20,
-			TermsDeprecationAnalysis = 21,
-			TermsDisjointnessAnalysis = 22,
-            ThingNothingAnalysis = 23,
-			TopBottomAnalysis = 24
+			InverseFunctionalObjectPropertyAnalysis = 14,
+			IrreflexiveObjectPropertyAnalysis = 15,
+			NegativeDataAssertionsAnalysis = 16,
+			NegativeObjectAssertionsAnalysis = 17,
+			ObjectPropertyChainAnalysis = 18,
+			SubClassOfAnalysis = 19,
+			SubDataPropertyOfAnalysis = 20,
+			SubObjectPropertyOfAnalysis = 21,
+			TermsDeprecationAnalysis = 22,
+			TermsDisjointnessAnalysis = 23,
+            ThingNothingAnalysis = 24,
+			TopBottomAnalysis = 25
 		}
     }
 }

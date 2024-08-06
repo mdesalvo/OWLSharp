@@ -884,6 +884,58 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLFunctionalObjectPropertyAnalysisRule.rulename)));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLFunctionalObjectPropertyAnalysisRule.rulesugg)));
         }
+
+		[TestMethod]
+        public async Task ShouldAnalyzeInverseFunctionalObjectPropertyAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op1")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op1")),
+                        new OWLNamedIndividual(new RDFResource("ex:John")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))), //clash with first object assertion (because john and stiv are different idvs)
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op2")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op1")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:op2")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLDifferentIndividuals([
+						new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:John")) ])
+                ],
+				ObjectPropertyAxioms = [
+					new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
+					new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
+				],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
+                ]
+            };
+            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.InverseFunctionalObjectPropertyAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLInverseFunctionalObjectPropertyAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLInverseFunctionalObjectPropertyAnalysisRule.rulesugg)));
+        }
         #endregion
     }
 }
