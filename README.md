@@ -4,7 +4,8 @@ OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</
 <ul>
   <li>Modeling <b>OWL2 ontologies</b> with curated <a href="https://protege.stanford.edu/">Protégé</a> compatibility</li>
   <li>Exchanging them using standard <b>OWL2 formats</b> (OWL2/XML)</li>
-  <li>Reasoning on them with a wide set of intelligent <b>OWL2 inference rules</b></li>
+  <li><b>Reasoning</b> on them with a set of <b>25</b> intelligent <b>OWL2 inference rules</b></li>
+  <li><b>Validating</b> them with a set of <b>XX</b> intelligent <b>OWL2 analysis rules</b> [WIP]</li> 
 </ul>
 
 
