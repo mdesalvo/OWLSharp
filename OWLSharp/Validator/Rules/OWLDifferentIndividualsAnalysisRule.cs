@@ -36,13 +36,11 @@ namespace OWLSharp.Validator.Rules
 				if (diffIdvsAxiom.IndividualExpressions.Any(outerIdv => 
 						diffIdvsAxiom.IndividualExpressions.Any(innerIdv => !outerIdv.GetIRI().Equals(innerIdv.GetIRI()) 
 																			  && ontology.CheckIsSameIndividual(outerIdv, innerIdv))))
-				{
 					issues.Add(new OWLIssue(
 						OWLEnums.OWLIssueSeverity.Error, 
 						rulename, 
 						$"Violated DifferentIndividuals axiom with signature: '{diffIdvsAxiom.GetXML()}'", 
 						rulesugg));
-				}
 
 				//DifferentIndividuals(IDV1,IDV1) -> ERROR
 				for (int i=0; i<diffIdvsAxiom.IndividualExpressions.Count-1; i++)
@@ -52,13 +50,11 @@ namespace OWLSharp.Validator.Rules
 					{
 						RDFResource innerIdvIRI = diffIdvsAxiom.IndividualExpressions[j].GetIRI();
 						if (outerIdvIRI.Equals(innerIdvIRI))
-						{
 							issues.Add(new OWLIssue(
 								OWLEnums.OWLIssueSeverity.Error, 
 								rulename, 
 								$"Violated DifferentIndividuals axiom with signature: '{diffIdvsAxiom.GetXML()}'", 
 								rulesugg2));
-						}
 					}
 				}
 			}
