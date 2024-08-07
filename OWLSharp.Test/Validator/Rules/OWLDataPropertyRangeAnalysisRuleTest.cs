@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Validator.Rules
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeDataPropertyRange()
+        public void ShouldAnalyzeDataPropertyRangeViolatingDatatype()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -57,6 +57,57 @@ namespace OWLSharp.Test.Validator.Rules
 					new OWLDataPropertyRange(
 						new OWLDataProperty(new RDFResource("ex:dp1")),
 						new OWLDatatype(RDFVocabulary.XSD.INTEGER))
+				],
+				DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
+                ]
+            };
+            List<OWLIssue> issues = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDataPropertyRangeAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDataPropertyRangeAnalysisRule.rulesugg)));
+        }
+
+		[TestMethod]
+        public void ShouldAnalyzeDataPropertyRangeViolatingDataOneOf()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+				AssertionAxioms = [
+                    new OWLDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:dp1")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLLiteral(new RDFPlainLiteral("Z"))), //clashes with range of ex:dp1
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:dp2")),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLLiteral(new RDFPlainLiteral("lit"))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:dp1")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLLiteral(new RDFPlainLiteral("A"))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:dp2")),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLLiteral(new RDFPlainLiteral("lit"))),
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:dp1")),
+                        new OWLNamedIndividual(new RDFResource("ex:Helen")),
+						new OWLLiteral(new RDFPlainLiteral("B")))
+                ],
+				DataPropertyAxioms = [
+					new OWLDataPropertyRange(
+						new OWLDataProperty(new RDFResource("ex:dp1")),
+						new OWLDataOneOf([
+							new OWLLiteral(new RDFPlainLiteral("A")), 
+							new OWLLiteral(new RDFPlainLiteral("B")) ]))
 				],
 				DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
