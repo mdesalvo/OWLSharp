@@ -497,15 +497,15 @@ namespace OWLSharp.Ontology.Helpers
 					{
 						//Numeric
 						if ((string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.LENGTH.ToString())
-							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
-							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
-							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString())
-							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_INCLUSIVE.ToString())
-							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString())
-							   || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString())) 
-							  && dtRestrFacet.Literal.GetLiteral() is RDFTypedLiteral dtRestrFacetTypedLiteralNF
-							  && dtRestrFacetTypedLiteralNF.HasDecimalDatatype()
-							  && uint.TryParse(dtRestrFacetTypedLiteralNF.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dtRestrFacetTypedLiteralValue))
+							 || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
+							 || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
+							 || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString())
+							 || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_INCLUSIVE.ToString())
+							 || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString())
+							 || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString())) 
+							   && dtRestrFacet.Literal.GetLiteral() is RDFTypedLiteral dtRestrFacetTypedLiteralNF
+							   && dtRestrFacetTypedLiteralNF.HasDecimalDatatype()
+							   && uint.TryParse(dtRestrFacetTypedLiteralNF.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dtRestrFacetTypedLiteralValue))
 						{
 							if (string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.LENGTH.ToString()))
 								drExprDatatype.Facets.Add(new RDFLengthFacet(dtRestrFacetTypedLiteralValue));

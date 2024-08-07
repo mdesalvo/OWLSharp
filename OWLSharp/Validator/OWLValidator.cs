@@ -61,6 +61,9 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis:
 								issueRegistry[OWLDataPropertyDomainAnalysisRule.rulename] = OWLDataPropertyDomainAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis:
+								issueRegistry[OWLDataPropertyRangeAnalysisRule.rulename] = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis:
 								issueRegistry[OWLDifferentIndividualsAnalysisRule.rulename] = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
 								break;
