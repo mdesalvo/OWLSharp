@@ -53,7 +53,7 @@ namespace OWLSharp.Validator.Rules
 				bool opRangeUsesObjectInverseOf = opRange.ObjectPropertyExpression is OWLObjectInverseOf;
             	foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opRange.ObjectPropertyExpression))
 				{
-					if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, opRangeUsesObjectInverseOf ? opAsn.TargetIndividualExpression : opAsn.SourceIndividualExpression))
+					if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, opRangeUsesObjectInverseOf ? opAsn.SourceIndividualExpression : opAsn.TargetIndividualExpression))
 						issues.Add(new OWLIssue(
 							OWLEnums.OWLIssueSeverity.Error, 
 							rulename, 
