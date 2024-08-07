@@ -51,9 +51,9 @@ namespace OWLSharp.Validator.Rules
 			List<OWLIssue> issues = new List<OWLIssue>();
 
 			//Temporary working variables
+			OWLIndividualExpression swapIdvExpr;
 			Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
 			Dictionary<string, List<OWLIndividualExpression>> dataKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
-			OWLIndividualExpression swapIdvExpr;
 
 			#region Compute Keys
 			//Iterate individuals of the HasKey axiom's class in order to calculate their key values

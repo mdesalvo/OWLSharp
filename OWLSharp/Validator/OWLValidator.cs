@@ -112,6 +112,12 @@ namespace OWLSharp.Validator
 							case OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis:
 								issueRegistry[OWLObjectPropertyChainAnalysisRule.rulename] = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
 								break;
+							case OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis:
+								issueRegistry[OWLObjectPropertyDomainAnalysisRule.rulename] = OWLObjectPropertyDomainAnalysisRule.ExecuteRule(ontology);
+								break;
+							case OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis:
+								issueRegistry[OWLObjectPropertyRangeAnalysisRule.rulename] = OWLObjectPropertyRangeAnalysisRule.ExecuteRule(ontology);
+								break;
 							case OWLEnums.OWLValidatorRules.SubClassOfAnalysis:
 								issueRegistry[OWLSubClassOfAnalysisRule.rulename] = OWLSubClassOfAnalysisRule.ExecuteRule(ontology);
 								break;
