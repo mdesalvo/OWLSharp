@@ -56,7 +56,11 @@ namespace OWLSharp.Test.Ontology.Views
 					new OWLAnnotationAssertion(
 						new OWLAnnotationProperty(RDFVocabulary.RDFS.SEE_ALSO),
 						new RDFResource("ex:Cat"),
-						new RDFResource("http://wikipedia.org/Cat"))
+						new RDFResource("http://wikipedia.org/Cat")),
+					new OWLAnnotationAssertion(
+						new OWLAnnotationProperty(RDFVocabulary.OWL.DEPRECATED),
+						new RDFResource("ex:Cat"),
+						new OWLLiteral(RDFTypedLiteral.True)),
 				],
 				AssertionAxioms = [
 					new OWLClassAssertion(
@@ -168,7 +172,7 @@ namespace OWLSharp.Test.Ontology.Views
 		{
 			Assert.IsTrue((await LivingEntityView.DataAnnotationsAsync()).Count == 0);
 			Assert.IsTrue((await AnimalView.DataAnnotationsAsync()).Count == 0);
-			Assert.IsTrue((await CatView.DataAnnotationsAsync()).Count == 1);
+			Assert.IsTrue((await CatView.DataAnnotationsAsync()).Count == 2);
 		}
 
 		[TestMethod]
@@ -177,6 +181,14 @@ namespace OWLSharp.Test.Ontology.Views
 			Assert.IsTrue((await LivingEntityView.ObjectAnnotationsAsync()).Count == 0);
 			Assert.IsTrue((await AnimalView.ObjectAnnotationsAsync()).Count == 0);
 			Assert.IsTrue((await CatView.ObjectAnnotationsAsync()).Count == 1);
+		}
+
+		[TestMethod]
+		public async Task ShouldCheckIsDeprecatedAsync()
+		{
+			Assert.IsFalse(await LivingEntityView.IsDeprecatedAsync());
+			Assert.IsFalse(await AnimalView.IsDeprecatedAsync());
+			Assert.IsTrue(await CatView.IsDeprecatedAsync());
 		}
 	}
 }
