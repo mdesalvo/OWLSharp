@@ -71,16 +71,14 @@ namespace OWLSharp.Ontology.Views
 
 		public Task<List<OWLAnnotationAssertion>> ObjectAnnotationsAsync()
 			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Where(ann => ann.ValueLiteral == null 
-									  				 && !string.IsNullOrEmpty(ann.ValueIRI) 
-													 && string.Equals(ann.SubjectIRI, ClassIRI))
+									  .Where(ann => string.Equals(ann.SubjectIRI, ClassIRI)
+									  				 && ann.ValueLiteral == null && !string.IsNullOrEmpty(ann.ValueIRI))
 									  .ToList());
 
 		public Task<List<OWLAnnotationAssertion>> DataAnnotationsAsync()
 			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Where(ann => ann.ValueLiteral != null 
-									  				 && string.IsNullOrEmpty(ann.ValueIRI) 
-													 && string.Equals(ann.SubjectIRI, ClassIRI))
+									  .Where(ann => string.Equals(ann.SubjectIRI, ClassIRI)
+									  				 && ann.ValueLiteral != null && string.IsNullOrEmpty(ann.ValueIRI))
 									  .ToList());
 		#endregion
 	}
