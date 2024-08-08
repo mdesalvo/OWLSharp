@@ -26,10 +26,10 @@ namespace OWLSharp.Ontology.Views
 	public class OWLClassView
 	{
 		#region Properties
-		public OWLClass Class { get; set; }
+		public OWLClass Class { get; internal set; }
 		internal string ClassIRI { get; set; }
 
-		public OWLOntology Ontology { get; set; }
+		public OWLOntology Ontology { get; internal set; }
 		#endregion
 
 		#region Ctors
