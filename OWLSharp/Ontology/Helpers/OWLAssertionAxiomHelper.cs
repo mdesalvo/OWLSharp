@@ -558,6 +558,9 @@ namespace OWLSharp.Ontology.Helpers
 
         internal static List<OWLDataPropertyAssertion> SelectDataAssertionsByDPEX(List<OWLDataPropertyAssertion> dtPropAsnAxioms, OWLDataProperty dtProp)
 			=> dtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
+
+		internal static List<OWLNegativeDataPropertyAssertion> SelectNegativeDataAssertionsByDPEX(List<OWLNegativeDataPropertyAssertion> negDtPropAsnAxioms, OWLDataProperty dtProp)
+			=> negDtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
         #endregion
     }
 }

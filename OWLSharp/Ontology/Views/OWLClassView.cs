@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Views
 {
@@ -80,6 +81,13 @@ namespace OWLSharp.Ontology.Views
 									  .Where(ann => string.Equals(ann.SubjectIRI, ClassIRI)
 									  				 && ann.ValueLiteral != null && string.IsNullOrEmpty(ann.ValueIRI))
 									  .ToList());
+
+		public Task<bool> IsDeprecatedAsync()
+			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
+									  .Any(ann => string.Equals(ann.SubjectIRI, ClassIRI)
+									  				 && ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
+													 && ann.ValueLiteral != null
+													 && ann.ValueLiteral.GetLiteral().Equals(RDFTypedLiteral.True)));
 		#endregion
 	}
 }
