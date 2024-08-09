@@ -85,13 +85,6 @@ namespace OWLSharp.Ontology.Views
 									  .Where(ann => string.Equals(ann.SubjectIRI, NamedIndividualIRI)
 									  				 && ann.ValueLiteral != null && string.IsNullOrEmpty(ann.ValueIRI))
 									  .ToList());
-
-		public Task<bool> IsDeprecatedAsync()
-			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Any(ann => string.Equals(ann.SubjectIRI, NamedIndividualIRI)
-									  				 && ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
-													 && ann.ValueLiteral != null
-													 && ann.ValueLiteral.GetLiteral().Equals(RDFTypedLiteral.True)));
 		#endregion
 	}
 }
