@@ -106,5 +106,75 @@ namespace OWLSharp.Test.Ontology.Views
 			Assert.IsTrue(await ontView.AnnotationPropertyRangeCountAsync() == 1);
 			Assert.IsTrue(await ontView.SubAnnotationPropertyOfCountAsync() == 1);
 		}
+
+		[TestMethod]
+		public async Task ShouldCountClassAssertionAxiomsAsync()
+		{
+			OWLOntology ont = new OWLOntology() 
+			{
+				DeclarationAxioms = [
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Developer"))),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Markus"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
+				],
+				AssertionAxioms = [
+					new OWLDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:age")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLLiteral(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLNegativeDataPropertyAssertion(
+						new OWLDataProperty(new RDFResource("ex:age")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLLiteral(new RDFTypedLiteral("33", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER))),
+					new OWLNegativeObjectPropertyAssertion(
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))),
+					new OWLSameIndividual([
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:Markus"))]),
+					new OWLDifferentIndividuals([
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:John"))]),
+					new OWLDifferentIndividuals([
+						new OWLNamedIndividual(new RDFResource("ex:Mark")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))]),
+					new OWLClassAssertion(
+						new OWLClass(new RDFResource("ex:Developer")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLClassAssertion(
+						new OWLClass(new RDFResource("ex:Human")),
+						new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLClassAssertion(
+						new OWLClass(new RDFResource("ex:Human")),
+						new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLClassAssertion(
+						new OWLClass(new RDFResource("ex:Human")),
+						new OWLNamedIndividual(new RDFResource("ex:John")))
+				]
+			};	
+			OWLOntologyView ontView = new OWLOntologyView(ont);
+
+			Assert.IsTrue(await ontView.ClassAssertionCountAsync() == 4);
+			Assert.IsTrue(await ontView.DataPropertyAssertionCountAsync() == 1);
+			Assert.IsTrue(await ontView.DifferentIndividualsCountAsync() == 2);
+			Assert.IsTrue(await ontView.NegativeDataPropertyAssertionCountAsync() == 1);
+			Assert.IsTrue(await ontView.NegativeObjectPropertyAssertionCountAsync() == 1);
+			Assert.IsTrue(await ontView.ObjectPropertyAssertionCountAsync() == 2);
+			Assert.IsTrue(await ontView.SameIndividualCountAsync() == 1);
+		}
 	}
 }
