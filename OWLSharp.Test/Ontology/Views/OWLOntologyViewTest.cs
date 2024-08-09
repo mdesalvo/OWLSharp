@@ -108,7 +108,7 @@ namespace OWLSharp.Test.Ontology.Views
 		}
 
 		[TestMethod]
-		public async Task ShouldCountClassAssertionAxiomsAsync()
+		public async Task ShouldCountAssertionAxiomsAsync()
 		{
 			OWLOntology ont = new OWLOntology() 
 			{
@@ -175,6 +175,47 @@ namespace OWLSharp.Test.Ontology.Views
 			Assert.IsTrue(await ontView.NegativeObjectPropertyAssertionCountAsync() == 1);
 			Assert.IsTrue(await ontView.ObjectPropertyAssertionCountAsync() == 2);
 			Assert.IsTrue(await ontView.SameIndividualCountAsync() == 1);
+		}
+
+		[TestMethod]
+		public async Task ShouldCountClassAxiomsAsync()
+		{
+			OWLOntology ont = new OWLOntology() 
+			{
+				DeclarationAxioms = [
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:LivingEntity"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Animal"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Cat"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:DomesticFeline"))),
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Dog")))
+				],
+				ClassAxioms = [
+					new OWLSubClassOf(
+						new OWLClass(new RDFResource("ex:Animal")),
+						new OWLClass(new RDFResource("ex:LivingEntity"))),
+					new OWLSubClassOf(
+						new OWLClass(new RDFResource("ex:Cat")),
+						new OWLClass(new RDFResource("ex:Animal"))),
+					new OWLSubClassOf(
+						new OWLClass(new RDFResource("ex:Dog")),
+						new OWLClass(new RDFResource("ex:Animal"))),
+					new OWLDisjointClasses([
+						new OWLClass(new RDFResource("ex:Cat")),
+						new OWLClass(new RDFResource("ex:Dog"))]),
+					new OWLDisjointUnion(
+						new OWLClass(new RDFResource("ex:Animal")),
+						[ new OWLClass(new RDFResource("ex:Cat")), new OWLClass(new RDFResource("ex:Dog")) ]),
+					new OWLEquivalentClasses([
+						new OWLClass(new RDFResource("ex:DomesticFeline")),
+						new OWLClass(new RDFResource("ex:Cat"))]),
+				]
+			};
+			OWLOntologyView ontView = new OWLOntologyView(ont);
+
+			Assert.IsTrue(await ontView.DisjointClassesCountAsync() == 1);
+			Assert.IsTrue(await ontView.DisjointUnionCountAsync() == 1);
+			Assert.IsTrue(await ontView.EquivalentClassesCountAsync() == 1);
+			Assert.IsTrue(await ontView.SubClassOfCountAsync() == 3);
 		}
 	}
 }
