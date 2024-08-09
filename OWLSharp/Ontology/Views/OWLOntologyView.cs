@@ -37,6 +37,16 @@ namespace OWLSharp.Ontology.Views
 
 		#region Methods
 
+		//Ontology
+		public Task<int> AnnotationsCountAsync()
+			=> Task.Run(() => Ontology.Annotations.Count());
+
+		public Task<int> ImportsCountAsync()
+			=> Task.Run(() => Ontology.Imports.Count());
+
+		public Task<int> PrefixesCountAsync()
+			=> Task.Run(() => Ontology.Prefixes.Count());
+
 		//Entities
 		public Task<int> ClassCountAsync()
 			=> Task.Run(() => Ontology.GetDeclarationAxiomsOfType<OWLClass>().Count());
