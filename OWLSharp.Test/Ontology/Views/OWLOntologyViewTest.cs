@@ -217,5 +217,57 @@ namespace OWLSharp.Test.Ontology.Views
 			Assert.IsTrue(await ontView.EquivalentClassesCountAsync() == 1);
 			Assert.IsTrue(await ontView.SubClassOfCountAsync() == 3);
 		}
+	
+		[TestMethod]
+		public async Task ShouldCountDataPropertyAxioms()
+		{
+			OWLOntology ont = new OWLOntology() 
+			{
+				DeclarationAxioms = [
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasData"))),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasPersonalData"))),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasAge"))),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:isNYearsOld"))),
+					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasName"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+				],
+				DataPropertyAxioms = [
+					new OWLSubDataPropertyOf(
+						new OWLDataProperty(new RDFResource("ex:hasAge")),
+						new OWLDataProperty(new RDFResource("ex:hasPersonalData"))),
+					new OWLSubDataPropertyOf(
+						new OWLDataProperty(new RDFResource("ex:hasPersonalData")),
+						new OWLDataProperty(new RDFResource("ex:hasData"))),
+					new OWLSubDataPropertyOf(
+						new OWLDataProperty(new RDFResource("ex:hasName")),
+						new OWLDataProperty(new RDFResource("ex:hasPersonalData"))),
+					new OWLEquivalentDataProperties([
+						new OWLDataProperty(new RDFResource("ex:hasAge")),
+						new OWLDataProperty(new RDFResource("ex:isNYearsOld"))]),
+					new OWLDisjointDataProperties([
+						new OWLDataProperty(new RDFResource("ex:hasAge")),
+						new OWLDataProperty(new RDFResource("ex:hasName"))]),
+					new OWLDataPropertyDomain(
+						new OWLDataProperty(new RDFResource("ex:hasAge")),
+						new OWLClass(new RDFResource("ex:Human"))),
+					new OWLDataPropertyRange(
+						new OWLDataProperty(new RDFResource("ex:hasAge")),
+						new OWLDatatype(RDFVocabulary.XSD.INTEGER)),
+					new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:hasAge")))
+				]
+			};
+
+			OWLOntologyView ontView = new OWLOntologyView(ont);
+
+			Assert.IsTrue(await ontView.DataPropertyDomainCountAsync() == 1);
+			Assert.IsTrue(await ontView.DataPropertyRangeCountAsync() == 1);
+			Assert.IsTrue(await ontView.DisjointDataPropertiesCountAsync() == 1);
+			Assert.IsTrue(await ontView.EquivalentDataPropertiesCountAsync() == 1);
+			Assert.IsTrue(await ontView.FunctionalDataPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.SubDataPropertyOfCountAsync() == 3);
+		}
 	}
 }
