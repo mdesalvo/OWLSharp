@@ -72,5 +72,39 @@ namespace OWLSharp.Test.Ontology.Views
 			Assert.IsTrue(await ontView.NamedIndividualCountAsync() == 1);
 			Assert.IsTrue(await ontView.DeclarationCountAsync() == 6);
 		}
+
+		[TestMethod]
+		public async Task ShouldCountAnnotationAxiomsAsync()
+		{
+			OWLOntology ont = new OWLOntology() 
+			{
+				AnnotationAxioms = [
+					new OWLAnnotationAssertion(
+						new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+						RDFVocabulary.RDFS.COMMENT,
+						new OWLLiteral(new RDFPlainLiteral("comment"))),
+					new OWLAnnotationPropertyDomain(
+						new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+						RDFVocabulary.RDFS.RESOURCE),
+					new OWLAnnotationPropertyRange(
+						new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+						RDFVocabulary.RDFS.RESOURCE),
+					new OWLSubAnnotationPropertyOf(
+						new OWLAnnotationProperty(new RDFResource("ex:comment")),
+						new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT))
+				],
+				DeclarationAxioms = [
+					new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+					new OWLDeclaration(new OWLAnnotationProperty(new RDFResource("ex:comment"))),
+					new OWLDeclaration(new OWLClass(RDFVocabulary.RDFS.RESOURCE))
+				]
+			};
+			OWLOntologyView ontView = new OWLOntologyView(ont);
+
+			Assert.IsTrue(await ontView.AnnotationAssertionCountAsync() == 1);
+			Assert.IsTrue(await ontView.AnnotationPropertyDomainCountAsync() == 1);
+			Assert.IsTrue(await ontView.AnnotationPropertyRangeCountAsync() == 1);
+			Assert.IsTrue(await ontView.SubAnnotationPropertyOfCountAsync() == 1);
+		}
 	}
 }
