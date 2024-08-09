@@ -47,5 +47,30 @@ namespace OWLSharp.Test.Ontology.Views
 			Assert.IsTrue(await ontView.ImportsCountAsync() == 1);
 			Assert.IsTrue(await ontView.PrefixesCountAsync() == 5);
 		}
+
+		[TestMethod]
+		public async Task ShouldCountEntitiesAndDeclarationsAsync()
+		{
+			OWLOntology ont = new OWLOntology() 
+			{
+				DeclarationAxioms = [
+					new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+					new OWLDeclaration(new OWLDataProperty(RDFVocabulary.RDFS.LABEL)),
+					new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.RDFS.DOMAIN)),
+					new OWLDeclaration(new OWLClass(RDFVocabulary.RDFS.RESOURCE)),
+					new OWLDeclaration(new OWLDatatype(RDFVocabulary.RDFS.LITERAL)),
+					new OWLDeclaration(new OWLNamedIndividual(RDFVocabulary.RDF.NIL)),
+				]
+			};
+			OWLOntologyView ontView = new OWLOntologyView(ont);
+
+			Assert.IsTrue(await ontView.AnnotationPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.DataPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.ObjectPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.ClassCountAsync() == 1);
+			Assert.IsTrue(await ontView.DatatypeCountAsync() == 1);
+			Assert.IsTrue(await ontView.NamedIndividualCountAsync() == 1);
+			Assert.IsTrue(await ontView.DeclarationCountAsync() == 6);
+		}
 	}
 }
