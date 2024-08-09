@@ -36,8 +36,8 @@ namespace OWLSharp.Ontology.Views
 		#region Ctors
 		public OWLDataPropertyView(OWLDataProperty dtp, OWLOntology ont)
 		{
-			DataProperty = dtp ?? throw new OWLException("Cannot create class view because given \"dtp\" parameter is null");
-			Ontology = ont ?? throw new OWLException("Cannot create class view because given \"ont\" parameter is null");
+			DataProperty = dtp ?? throw new OWLException("Cannot create data property view because given \"dtp\" parameter is null");
+			Ontology = ont ?? throw new OWLException("Cannot create data property view because given \"ont\" parameter is null");
 			DataPropertyIRI = DataProperty.GetIRI().ToString();
 		}
 		#endregion
