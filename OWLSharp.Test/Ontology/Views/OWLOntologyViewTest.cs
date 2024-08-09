@@ -259,7 +259,6 @@ namespace OWLSharp.Test.Ontology.Views
 					new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:hasAge")))
 				]
 			};
-
 			OWLOntologyView ontView = new OWLOntologyView(ont);
 
 			Assert.IsTrue(await ontView.DataPropertyDomainCountAsync() == 1);
@@ -268,6 +267,69 @@ namespace OWLSharp.Test.Ontology.Views
 			Assert.IsTrue(await ontView.EquivalentDataPropertiesCountAsync() == 1);
 			Assert.IsTrue(await ontView.FunctionalDataPropertyCountAsync() == 1);
 			Assert.IsTrue(await ontView.SubDataPropertyOfCountAsync() == 3);
+		}
+	
+		[TestMethod]
+		public async Task ShouldCountObjectPropertyAxioms()
+		{
+			OWLOntology ont = new OWLOntology() 
+			{
+				DeclarationAxioms = [
+					new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:hasFriend"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:bestFriendOf"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:isFavoriteFriendOf"))),
+					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:loves")))
+				],
+				ObjectPropertyAxioms = [
+					new OWLSubObjectPropertyOf(
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLObjectProperty(new RDFResource("ex:knows"))),
+					new OWLSubObjectPropertyOf(
+						new OWLObjectProperty(new RDFResource("ex:bestFriendOf")),
+						new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLEquivalentObjectProperties([
+						new OWLObjectProperty(new RDFResource("ex:bestFriendOf")),
+						new OWLObjectProperty(new RDFResource("ex:isFavoriteFriendOf"))]),
+					new OWLDisjointObjectProperties([
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLObjectProperty(new RDFResource("ex:loves"))]),
+					new OWLObjectPropertyDomain(
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLClass(new RDFResource("ex:Human"))),
+					new OWLObjectPropertyRange(
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLClass(new RDFResource("ex:Human"))),
+					new OWLInverseObjectProperties(
+						new OWLObjectProperty(new RDFResource("ex:friendOf")),
+						new OWLObjectProperty(new RDFResource("ex:hasFriend"))),
+					//Just for test purposes...
+					new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLReflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+					new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:friendOf")))
+				]
+			};
+			OWLOntologyView ontView = new OWLOntologyView(ont);
+
+			Assert.IsTrue(await ontView.AsymmetricObjectPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.DisjointObjectPropertiesCountAsync() == 1);
+			Assert.IsTrue(await ontView.EquivalentObjectPropertiesCountAsync() == 1);
+			Assert.IsTrue(await ontView.FunctionalObjectPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.InverseFunctionalObjectPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.InverseObjectPropertiesCountAsync() == 1);
+			Assert.IsTrue(await ontView.IrreflexiveObjectPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.ObjectPropertyDomainCountAsync() == 1);
+			Assert.IsTrue(await ontView.ObjectPropertyRangeCountAsync() == 1);
+			Assert.IsTrue(await ontView.ReflexiveObjectPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.SubObjectPropertyOfCountAsync() == 2);
+			Assert.IsTrue(await ontView.SymmetricObjectPropertyCountAsync() == 1);
+			Assert.IsTrue(await ontView.TransitiveObjectPropertyCountAsync() == 1);
 		}
 	}
 }
