@@ -407,7 +407,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraph()
+		public async Task ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -423,7 +423,7 @@ namespace OWLSharp.Test.Ontology
     <Literal>v1.0</Literal>
   </Annotation>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.Context.Equals(new Uri("ex:ont")));
@@ -443,7 +443,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithDeclarationToGraph()
+		public async Task ShouldConvertOntologyWithDeclarationToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -453,7 +453,7 @@ namespace OWLSharp.Test.Ontology
 	<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
   </Declaration>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.TriplesCount == 2);
@@ -462,7 +462,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithClassAxiomToGraph()
+		public async Task ShouldConvertOntologyWithClassAxiomToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -473,7 +473,7 @@ namespace OWLSharp.Test.Ontology
 	<Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
   </SubClassOf>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.TriplesCount == 4);
@@ -484,7 +484,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithObjectPropertyAxiomToGraph()
+		public async Task ShouldConvertOntologyWithObjectPropertyAxiomToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -495,7 +495,7 @@ namespace OWLSharp.Test.Ontology
 	<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" />
   </SubObjectPropertyOf>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.TriplesCount == 4);
@@ -506,7 +506,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithDataPropertyAxiomToGraph()
+		public async Task ShouldConvertOntologyWithDataPropertyAxiomToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -517,7 +517,7 @@ namespace OWLSharp.Test.Ontology
 	<DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
   </SubDataPropertyOf>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.TriplesCount == 4);
@@ -528,7 +528,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithDatatypeDefinitionAxiomToGraph()
+		public async Task ShouldConvertOntologyWithDatatypeDefinitionAxiomToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<Ontology>
@@ -550,7 +550,7 @@ namespace OWLSharp.Test.Ontology
     </DatatypeRestriction>
   </DatatypeDefinition>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.Context.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
@@ -569,7 +569,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithHasKeyAxiomToGraph()
+		public async Task ShouldConvertOntologyWithHasKeyAxiomToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -582,7 +582,7 @@ namespace OWLSharp.Test.Ontology
 	<DataProperty abbreviatedIRI=""foaf:name"" />
   </HasKey>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.TriplesCount == 11);
@@ -598,7 +598,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithAssertionAxiomToGraph()
+		public async Task ShouldConvertOntologyWithAssertionAxiomToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -613,7 +613,7 @@ namespace OWLSharp.Test.Ontology
     <NamedIndividual IRI=""ex:Bob"" />
   </ObjectPropertyAssertion>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.TriplesCount == 4);
@@ -624,7 +624,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldConvertOntologyWithAnnotationAxiomToGraph()
+		public async Task ShouldConvertOntologyWithAnnotationAxiomToGraphAsync()
 		{
 			OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -637,7 +637,7 @@ namespace OWLSharp.Test.Ontology
     <Literal xml:lang=""en-US"">States the age of a person</Literal>    
   </AnnotationAssertion>
 </Ontology>");
-			RDFGraph graph = ontology.ToRDFGraph();
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
 
 			Assert.IsNotNull(graph);
 			Assert.IsTrue(graph.TriplesCount == 3);
@@ -647,7 +647,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldWriteOntologyToFile()
+		public async Task ShouldWriteOntologyToFileAsync()
 		{
 			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
 			ontology.Prefixes.Add(
@@ -692,11 +692,11 @@ namespace OWLSharp.Test.Ontology
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
 			
 			//Write to file
-			ontology.ToFile(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx"));
-			Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx")));
+			await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx"));
+			Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx")));
 
 			//Read from file and deserialize to test content
-			OWLOntology ontology2 = OWLSerializer.DeserializeOntology(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFile.owx")));
+			OWLOntology ontology2 = OWLSerializer.DeserializeOntology(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx")));
 
 			Assert.IsNotNull(ontology2);
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -726,11 +726,11 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldThrowExceptionOnWritingOntologyToFileBecauseNullPath()
-			=> Assert.ThrowsException<OWLException>(() => new OWLOntology().ToFile(OWLEnums.OWLFormats.OWL2XML, null));
+		public async Task ShouldThrowExceptionOnWritingOntologyToFileBecauseNullPathAsync()
+			=> await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
 		[TestMethod]
-		public void ShouldWriteOntologyToStream()
+		public async Task ShouldWriteOntologyToStreamAsync()
 		{
 			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
 			ontology.Prefixes.Add(
@@ -776,7 +776,7 @@ namespace OWLSharp.Test.Ontology
 			
 			//Write to stream
 			MemoryStream stream = new MemoryStream();
-			ontology.ToStream(OWLEnums.OWLFormats.OWL2XML, stream);
+			await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream);
 
 			//Read from stream and deserialize to test content
 			string fileContent;
@@ -812,11 +812,11 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldThrowExceptionOnWritingOntologyToStreamBecauseNullStream()
-			=> Assert.ThrowsException<OWLException>(() => new OWLOntology().ToStream(OWLEnums.OWLFormats.OWL2XML, null));
+		public async Task ShouldThrowExceptionOnWritingOntologyToStreamBecauseNullStreamAsync()
+			=> await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
 		[TestMethod]
-		public void ShouldReadOntologyFromFile()
+		public async Task ShouldReadOntologyFromFileAsync()
 		{
 			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
 			ontology.Prefixes.Add(
@@ -861,10 +861,10 @@ namespace OWLSharp.Test.Ontology
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
 			
 			//Write to file
-			ontology.ToFile(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFile.owx"));
+			await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFileAsync.owx"));
 			
 			//Read from file
-			OWLOntology ontology2 = OWLOntology.FromFile(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFile.owx"));
+			OWLOntology ontology2 = await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFileAsync.owx"));
 
 			Assert.IsNotNull(ontology2);
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -894,15 +894,15 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldThrowExceptionOnReadingOntologyFromFileBecauseNullPath()
-			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromFile(OWLEnums.OWLFormats.OWL2XML, null));
+		public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseNullPathAsync()
+			=> await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
 		[TestMethod]
-		public void ShouldThrowExceptionOnReadingOntologyFromFileBecauseUnexistingPath()
-			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromFile(OWLEnums.OWLFormats.OWL2XML, "test/test"));
+		public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseUnexistingPathAsync()
+			=> await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, "test/test"));
 
 		[TestMethod]
-		public void ShouldReadOntologyFromStream()
+		public async Task ShouldReadOntologyFromStreamAsync()
 		{
 			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
 			ontology.Prefixes.Add(
@@ -948,10 +948,10 @@ namespace OWLSharp.Test.Ontology
 			
 			//Write to stream
 			MemoryStream stream = new MemoryStream();
-			ontology.ToStream(OWLEnums.OWLFormats.OWL2XML, stream);
+			await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream);
 
 			//Read from stream
-			OWLOntology ontology2 = OWLOntology.FromStream(OWLEnums.OWLFormats.OWL2XML, new MemoryStream(stream.ToArray()));
+			OWLOntology ontology2 = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, new MemoryStream(stream.ToArray()));
 
 			Assert.IsNotNull(ontology2);
 			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -981,16 +981,16 @@ namespace OWLSharp.Test.Ontology
 		}
 
 		[TestMethod]
-		public void ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStream()
-			=> Assert.ThrowsException<OWLException>(() => OWLOntology.FromStream(OWLEnums.OWLFormats.OWL2XML, null));
+		public async Task ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStreamAsync()
+			=> await Assert.ThrowsExceptionAsync<OWLException>(async() => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
-        public void ShouldReadOntologyHeaderFromGraph()
+        public async Task ShouldReadOntologyHeaderFromGraphAsync()
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
-            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
@@ -998,12 +998,12 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadOntologyHeaderWithInvalidVersionIRIFromGraph()
+        public async Task ShouldReadOntologyHeaderWithInvalidVersionIRIFromGraphAsync()
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFPlainLiteral("ex:ont/v1")));
-            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
@@ -1011,20 +1011,20 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldCrashOnReadingOntologyHeaderFromGraphBecauseNoOntologyDeclaration()
+        public async Task ShouldCrashOnReadingOntologyHeaderFromGraphBecauseNoOntologyDeclarationAsync()
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
-            Assert.ThrowsException<OWLException>(() => OWLOntology.FromRDFGraph(graph));
+            await Assert.ThrowsExceptionAsync<OWLException>(async() => await OWLOntology.FromRDFGraphAsync(graph));
         }
 
         [TestMethod]
-        public void ShouldReadImportsFromGraph()
+        public async Task ShouldReadImportsFromGraphAsync()
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource("ex:ont2")));
-            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
@@ -1034,12 +1034,12 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadPrefixesFromGraph()
+        public async Task ShouldReadPrefixesFromGraphAsync()
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.FOAF.MAKER, new RDFResource("ex:Mark")));
-            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
@@ -1053,7 +1053,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDeclarationsFromGraph()
+        public async Task ShouldReadDeclarationsFromGraphAsync()
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
@@ -1064,7 +1064,7 @@ namespace OWLSharp.Test.Ontology
             graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY));
             graph.AddTriple(new RDFTriple(RDFVocabulary.FOAF.MAKER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:Alice"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
-            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
@@ -1087,7 +1087,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadOntologyAnnotationsFromGraph()
+        public async Task ShouldReadOntologyAnnotationsFromGraphAsync()
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
@@ -1103,7 +1103,7 @@ namespace OWLSharp.Test.Ontology
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.RDFS.IS_DEFINED_BY, new RDFResource("ex:ont2")));
             graph.AddTriple(new RDFTriple(RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont2"), RDFVocabulary.DC.CREATOR, new RDFResource("ex:Test")));
-            OWLOntology ontology = OWLOntology.FromRDFGraph(graph);
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont2"));
@@ -1122,7 +1122,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadOntologyNestedAnnotationsFromGraph()
+        public async Task ShouldReadOntologyNestedAnnotationsFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.Annotations.Add(
@@ -1133,8 +1133,8 @@ namespace OWLSharp.Test.Ontology
                         Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new RDFResource("ex:ann"))
                     }
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1149,7 +1149,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadAsymmetricObjectPropertyFromGraph()
+        public async Task ShouldReadAsymmetricObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1178,8 +1178,8 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
 					});
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1208,7 +1208,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadSymmetricObjectPropertyFromGraph()
+        public async Task ShouldReadSymmetricObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1237,8 +1237,8 @@ namespace OWLSharp.Test.Ontology
 							}
 						]
 					});
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1267,7 +1267,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadIrreflexiveObjectPropertyFromGraph()
+        public async Task ShouldReadIrreflexiveObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1296,8 +1296,8 @@ namespace OWLSharp.Test.Ontology
 							}
 						]
 					});
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1326,7 +1326,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadReflexiveObjectPropertyFromGraph()
+        public async Task ShouldReadReflexiveObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1355,8 +1355,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1385,7 +1385,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadTransitiveObjectPropertyFromGraph()
+        public async Task ShouldReadTransitiveObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1414,8 +1414,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1444,7 +1444,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadInverseFunctionalObjectPropertyFromGraph()
+        public async Task ShouldReadInverseFunctionalObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1473,8 +1473,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1503,7 +1503,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadFunctionalObjectPropertyFromGraph()
+        public async Task ShouldReadFunctionalObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1532,8 +1532,8 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
                     });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1562,7 +1562,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadInverseObjectPropertyFromGraph()
+        public async Task ShouldReadInverseObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1616,8 +1616,8 @@ namespace OWLSharp.Test.Ontology
                                    }
                         ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1670,7 +1670,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadEquivalentObjectPropertyFromGraph()
+        public async Task ShouldReadEquivalentObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1720,8 +1720,8 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
                     });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1774,7 +1774,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadDisjointObjectPropertyFromGraph()
+        public async Task ShouldReadDisjointObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -1851,8 +1851,8 @@ namespace OWLSharp.Test.Ontology
 						}
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -1927,7 +1927,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadSubObjectPropertyOfFromGraph()
+        public async Task ShouldReadSubObjectPropertyOfFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -2020,8 +2020,8 @@ namespace OWLSharp.Test.Ontology
 						}
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2110,7 +2110,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadObjectPropertyDomainGraph()
+        public async Task ShouldReadObjectPropertyDomainGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -2195,8 +2195,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2294,7 +2294,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadObjectPropertyRangeGraph()
+        public async Task ShouldReadObjectPropertyRangeGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
@@ -2378,8 +2378,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2474,7 +2474,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadFunctionalDataPropertyFromGraph()
+        public async Task ShouldReadFunctionalDataPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2503,8 +2503,8 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2531,7 +2531,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadEquivalentDataPropertyFromGraph()
+        public async Task ShouldReadEquivalentDataPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2560,8 +2560,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2594,7 +2594,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDisjointDataPropertyFromGraph()
+        public async Task ShouldReadDisjointDataPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2626,8 +2626,8 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2657,7 +2657,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadSubDataPropertyOfFromGraph()
+        public async Task ShouldReadSubDataPropertyOfFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -2688,8 +2688,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2718,7 +2718,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadSubClassOfFromGraph()
+        public async Task ShouldReadSubClassOfFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ClassAxioms.Add(
@@ -2733,8 +2733,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2751,7 +2751,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadEquivalentClassesGraph()
+        public async Task ShouldReadEquivalentClassesGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ClassAxioms.Add(
@@ -2766,8 +2766,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2784,7 +2784,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDisjointClassesFromGraph()
+        public async Task ShouldReadDisjointClassesFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ClassAxioms.Add(
@@ -2812,8 +2812,8 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
                     });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2844,7 +2844,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDisjointUnionFromGraph()
+        public async Task ShouldReadDisjointUnionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ClassAxioms.Add(
@@ -2859,8 +2859,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2880,7 +2880,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadHasKeyFromGraph()
+        public async Task ShouldReadHasKeyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.KeyAxioms.Add(
@@ -2896,8 +2896,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2918,7 +2918,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDatatypeDefinitionFromGraph()
+        public async Task ShouldReadDatatypeDefinitionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DatatypeDefinitionAxioms.Add(
@@ -2948,8 +2948,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -2978,7 +2978,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadSameIndividualFromGraph()
+        public async Task ShouldReadSameIndividualFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3041,8 +3041,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3095,7 +3095,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDifferentIndividualsFromGraph()
+        public async Task ShouldReadDifferentIndividualsFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3172,8 +3172,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3248,7 +3248,7 @@ namespace OWLSharp.Test.Ontology
         }
         
 		[TestMethod]
-        public void ShouldReadObjectPropertyAssertionFromGraph()
+        public async Task ShouldReadObjectPropertyAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3315,8 +3315,8 @@ namespace OWLSharp.Test.Ontology
 						}
 					]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3385,7 +3385,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
         [TestMethod]
-        public void ShouldReadNegativeObjectPropertyAssertionFromGraph()
+        public async Task ShouldReadNegativeObjectPropertyAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3452,8 +3452,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3522,7 +3522,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDataPropertyAssertionFromGraph()
+        public async Task ShouldReadDataPropertyAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3555,8 +3555,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3589,7 +3589,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadNegativeDataPropertyAssertionFromGraph()
+        public async Task ShouldReadNegativeDataPropertyAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3622,8 +3622,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3656,7 +3656,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadDataPropertyDomainGraph()
+        public async Task ShouldReadDataPropertyDomainGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -3671,8 +3671,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-			RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3690,7 +3690,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadDataPropertyRangeGraph()
+        public async Task ShouldReadDataPropertyRangeGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DataPropertyAxioms.Add(
@@ -3705,8 +3705,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3724,7 +3724,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadClassAssertionFromGraph()
+        public async Task ShouldReadClassAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AssertionAxioms.Add(
@@ -3770,8 +3770,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3828,7 +3828,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadSubAnnotationPropertyOfFromGraph()
+        public async Task ShouldReadSubAnnotationPropertyOfFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AnnotationAxioms.Add(
@@ -3843,8 +3843,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3861,7 +3861,7 @@ namespace OWLSharp.Test.Ontology
         }
 
 		[TestMethod]
-        public void ShouldReadAnnotationPropertyDomainFromGraph()
+        public async Task ShouldReadAnnotationPropertyDomainFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AnnotationAxioms.Add(
@@ -3888,8 +3888,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3914,7 +3914,7 @@ namespace OWLSharp.Test.Ontology
 		}
         
 		[TestMethod]
-        public void ShouldReadAnnotationPropertyRangeFromGraph()
+        public async Task ShouldReadAnnotationPropertyRangeFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.AnnotationAxioms.Add(
@@ -3941,8 +3941,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -3967,7 +3967,7 @@ namespace OWLSharp.Test.Ontology
 		}
 
         [TestMethod]
-        public void ShouldReadClassAnnotationAssertionFromGraph()
+        public async Task ShouldReadClassAnnotationAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)));
@@ -3997,8 +3997,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -4025,7 +4025,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDatatypeAnnotationAssertionFromGraph()
+        public async Task ShouldReadDatatypeAnnotationAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INTEGER)));
@@ -4055,8 +4055,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -4083,7 +4083,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadObjectPropertyAnnotationAssertionFromGraph()
+        public async Task ShouldReadObjectPropertyAnnotationAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
@@ -4113,8 +4113,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -4141,7 +4141,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadDataPropertyAnnotationAssertionFromGraph()
+        public async Task ShouldReadDataPropertyAnnotationAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)));
@@ -4171,8 +4171,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -4199,7 +4199,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadAnnotationPropertyAnnotationAssertionFromGraph()
+        public async Task ShouldReadAnnotationPropertyAnnotationAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)));
@@ -4229,8 +4229,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -4257,7 +4257,7 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-        public void ShouldReadIndividualAnnotationAssertionFromGraph()
+        public async Task ShouldReadIndividualAnnotationAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.DeclarationAxioms.Add(new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
@@ -4287,8 +4287,8 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-            RDFGraph graph = ontology.ToRDFGraph();
-            OWLOntology ontology2 = OWLOntology.FromRDFGraph(graph);
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
@@ -4322,7 +4322,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsTrue(ontology.Annotations.Count == 1);
             Assert.IsTrue(ontology.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.IMPORTS)
-              && string.Equals(ontology.Annotations.Single().ValueIRI, "http://www.w3.org/2004/02/skos/core"));
+              				&& string.Equals(ontology.Annotations.Single().ValueIRI, "http://www.w3.org/2004/02/skos/core"));
             Assert.IsTrue(ontology.AnnotationAxioms.Count == 51);
             Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
             Assert.IsTrue(ontology.ClassAxioms.Count == 4);
