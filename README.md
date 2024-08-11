@@ -10,3 +10,5 @@ OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</
 
 
 Current release is: <a href="https://github.com/mdesalvo/OWLSharp/releases/tag/v4.0.0"><b>4.0.0</b></a>
+
+Extensions are now available <a href="https://github.com/mdesalvo/OWLSharp.Extensions">here</a>
