@@ -44,7 +44,7 @@ namespace OWLSharp.Extensions.SWRL
             RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
 
             //Calculate individuals of the atom predicate
-            List<OWLIndividualExpression> atomClassIndividuals = ontology.GetIndividualsOf((OWLClass)Predicate, true);
+            List<OWLIndividualExpression> atomClassIndividuals = ontology.GetIndividualsOf((OWLClass)Predicate);
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
