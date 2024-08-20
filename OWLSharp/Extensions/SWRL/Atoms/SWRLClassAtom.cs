@@ -61,9 +61,6 @@ namespace OWLSharp.Extensions.SWRL
             return atomResult;
         }
 
-        /// <summary>
-        /// Evaluates the atom in the context of an consequent
-        /// </summary>
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();
