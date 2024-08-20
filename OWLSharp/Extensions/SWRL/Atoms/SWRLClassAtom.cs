@@ -97,7 +97,12 @@ namespace OWLSharp.Extensions.SWRL
 						clsAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 
 					//Create the inference
-                    OWLClassAssertion inference = new OWLClassAssertion((OWLClass)Predicate) { IndividualExpression=clsAsnIdvExpr, IsInference=true	};
+                    OWLClassAssertion inference = new OWLClassAssertion(
+						(OWLClass)Predicate) 
+						{ 
+							IndividualExpression = clsAsnIdvExpr, 
+							IsInference = true
+						};
 					inference.GetXML();
 					inferences.Add(new OWLInference(classAtomString, inference));
                 }
