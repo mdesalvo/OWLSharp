@@ -20,7 +20,7 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     public class SWRLMultiplyBuiltIn : SWRLMathBuiltIn
     {
         #region Properties
-        internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#multiply");
+        internal static readonly RDFResource BuiltInUri = new RDFResource("swrlb:multiply");
         #endregion
 
         #region Ctors

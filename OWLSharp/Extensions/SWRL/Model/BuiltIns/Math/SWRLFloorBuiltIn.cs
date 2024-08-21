@@ -21,7 +21,7 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     public class SWRLFloorBuiltIn : SWRLMathBuiltIn
     {
         #region Properties
-        internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#floor");
+        internal static readonly RDFResource BuiltInUri = new RDFResource("swrlb:floor");
         #endregion
 
 		#region Interfaces

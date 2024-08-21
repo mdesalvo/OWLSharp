@@ -21,7 +21,7 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     public class SWRLCosBuiltIn : SWRLMathBuiltIn
     {
         #region Properties
-        internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#cos");
+        internal static readonly RDFResource BuiltInUri = new RDFResource("swrlb:cos");
         #endregion
 
 		#region Interfaces

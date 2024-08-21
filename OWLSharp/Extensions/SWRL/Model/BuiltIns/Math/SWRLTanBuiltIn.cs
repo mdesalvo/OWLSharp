@@ -21,7 +21,7 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     public class SWRLTanBuiltIn : SWRLMathBuiltIn
     {
         #region Properties
-        internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#tan");
+        internal static readonly RDFResource BuiltInUri = new RDFResource("swrlb:tan");
         #endregion
 
 		#region Interfaces

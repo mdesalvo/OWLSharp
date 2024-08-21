@@ -21,7 +21,7 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     public class SWRLRoundHalfToEvenBuiltIn : SWRLMathBuiltIn
     {
         #region Properties
-        internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#roundHalfToEven");
+        internal static readonly RDFResource BuiltInUri = new RDFResource("swrlb:roundHalfToEven");
         #endregion
 
 		#region Interfaces

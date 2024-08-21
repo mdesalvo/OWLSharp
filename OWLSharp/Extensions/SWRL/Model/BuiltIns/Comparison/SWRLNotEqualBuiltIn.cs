@@ -20,7 +20,7 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     public class SWRLNotEqualBuiltIn : SWRLFilterBuiltIn
     {
         #region Properties
-        internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#notEqual");
+        internal static readonly RDFResource BuiltInUri = new RDFResource("swrlb:notEqual");
         #endregion
 
         #region Ctors

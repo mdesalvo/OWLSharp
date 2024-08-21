@@ -21,7 +21,7 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     public class SWRLAbsBuiltIn : SWRLMathBuiltIn
     {
         #region Properties
-        internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#abs");
+        internal static readonly RDFResource BuiltInUri = new RDFResource("swrlb:abs");
         #endregion
 
 		#region Interfaces
