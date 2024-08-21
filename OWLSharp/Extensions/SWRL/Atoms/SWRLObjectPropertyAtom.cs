@@ -28,11 +28,11 @@ using System.Linq;
 
 namespace OWLSharp.Extensions.SWRL.Atoms
 {
-    public class SWRLDataPropertyAtom : SWRLAtom
+    public class SWRLObjectPropertyAtom : SWRLAtom
     {
         #region Ctors
-        public SWRLDataPropertyAtom(OWLDataProperty owlDatatypeProperty, RDFVariable leftArgument, RDFVariable rightArgument)
-            : base(owlDatatypeProperty, leftArgument, rightArgument) 
+        public SWRLObjectPropertyAtom(OWLObjectProperty owlObjectProperty, RDFVariable leftArgument, RDFVariable rightArgument)
+            : base(owlObjectProperty, leftArgument, rightArgument) 
         {
             #region Guards
             if (rightArgument == null)
@@ -40,8 +40,8 @@ namespace OWLSharp.Extensions.SWRL.Atoms
             #endregion
         }
 
-        public SWRLDataPropertyAtom(OWLDataProperty owlDatatypeProperty, RDFVariable leftArgument, RDFLiteral rightArgument)
-            : base(owlDatatypeProperty, leftArgument, rightArgument) 
+        public SWRLObjectPropertyAtom(OWLObjectProperty owlObjectProperty, RDFVariable leftArgument, RDFResource rightArgument)
+            : base(owlObjectProperty, leftArgument, rightArgument) 
         {
             #region Guards
             if (rightArgument == null)
@@ -55,6 +55,7 @@ namespace OWLSharp.Extensions.SWRL.Atoms
         {
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
+            OWLIndividualExpression swapIdvExpr;
 
             //Initialize the structure of the atom result
             DataTable atomResult = new DataTable();
@@ -62,20 +63,34 @@ namespace OWLSharp.Extensions.SWRL.Atoms
             if (RightArgument is RDFVariable)
                 RDFQueryEngine.AddColumn(atomResult, rightArgumentString);
 
-            //Extract data property assertions of the atom predicate
-			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-            List<OWLDataPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, (OWLDataProperty)Predicate);
-            if (RightArgument is RDFLiteral rightArgumentLiteral)
-                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.Literal.GetLiteral().Equals(rightArgumentLiteral))
+            //Extract object property assertions of the atom predicate
+			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+            List<OWLObjectPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, (OWLObjectProperty)Predicate);
+            #region Calibration
+            for (int i = 0; i < atomPredicateAssertions.Count; i++)
+            {
+                //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
+                if (atomPredicateAssertions[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                {
+                    swapIdvExpr = atomPredicateAssertions[i].SourceIndividualExpression;
+                    atomPredicateAssertions[i].SourceIndividualExpression = atomPredicateAssertions[i].TargetIndividualExpression;
+                    atomPredicateAssertions[i].TargetIndividualExpression = swapIdvExpr;
+                    atomPredicateAssertions[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+                }
+            }
+            atomPredicateAssertions = OWLAxiomHelper.RemoveDuplicates(atomPredicateAssertions);
+            #endregion
+            if (RightArgument is RDFResource rightArgumentIndividual)
+                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(rightArgumentIndividual))
 																 .ToList();
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
-            foreach (OWLDataPropertyAssertion atomPredicateAssertion in atomPredicateAssertions)
+            foreach (OWLObjectPropertyAssertion atomPredicateAssertion in atomPredicateAssertions)
             {   
-                atomResultBindings.Add(leftArgumentString, atomPredicateAssertion.IndividualExpression.GetIRI().ToString());
+                atomResultBindings.Add(leftArgumentString, atomPredicateAssertion.SourceIndividualExpression.GetIRI().ToString());
                 if (RightArgument is RDFVariable)
-                    atomResultBindings.Add(rightArgumentString, atomPredicateAssertion.Literal.GetLiteral().ToString());
+                    atomResultBindings.Add(rightArgumentString, atomPredicateAssertion.TargetIndividualExpression.GetIRI().ToString());
 
                 RDFQueryEngine.AddRow(atomResult, atomResultBindings);
 
@@ -91,7 +106,7 @@ namespace OWLSharp.Extensions.SWRL.Atoms
             List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
-            string dataPropertyAtomString = this.ToString();
+            string objectPropertyAtomString = this.ToString();
 
             #region Guards
             //The antecedent results table MUST have a column corresponding to the atom's left argument
@@ -124,28 +139,29 @@ namespace OWLSharp.Extensions.SWRL.Atoms
 
                 //Parse the value of the column corresponding to the atom's right argument
                 RDFPatternMember rightArgumentValue = RightArgument is RDFVariable ? RDFQueryUtilities.ParseRDFPatternMember(currentRow[rightArgumentString].ToString())
-                                                                                   : RightArgument; //Literal
+                                                                                   : RightArgument; //Resource
 
                 if (leftArgumentValue is RDFResource leftArgumentValueResource
-                     && rightArgumentValue is RDFLiteral rightArgumentValueLiteral)
+                     && rightArgumentValue is RDFResource rightArgumentValueResource)
                 {
-					//Build the inference individual
-					OWLIndividualExpression dpAsnIdvExpr;
+					//Build the inference individual (source)
+					OWLIndividualExpression opAsnSrcIdvExpr;
 					if (leftArgumentValueResource.IsBlank)
-						dpAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
+						opAsnSrcIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
 					else
-						dpAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
+						opAsnSrcIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 
-					//Create the inference
-                    OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(
-						(OWLDataProperty)Predicate, 
-						new OWLLiteral(rightArgumentValueLiteral)) 
-						{ 
-							IndividualExpression = dpAsnIdvExpr, 
-							IsInference = true 
-						};
+                    //Build the inference individual (target)
+                    OWLIndividualExpression opAsnTgtIdvExpr;
+                    if (rightArgumentValueResource.IsBlank)
+                        opAsnTgtIdvExpr = new OWLAnonymousIndividual(rightArgumentValueResource.ToString().Substring(6));
+                    else
+                        opAsnTgtIdvExpr = new OWLNamedIndividual(rightArgumentValueResource);
+
+                    //Create the inference
+                    OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion((OWLObjectProperty)Predicate, opAsnSrcIdvExpr, opAsnTgtIdvExpr) { IsInference = true };
 					inference.GetXML();
-					inferences.Add(new OWLInference(dataPropertyAtomString, inference));
+					inferences.Add(new OWLInference(objectPropertyAtomString, inference));
                 }
             }
 

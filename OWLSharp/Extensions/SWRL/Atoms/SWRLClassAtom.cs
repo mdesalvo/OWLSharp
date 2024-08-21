@@ -25,7 +25,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 
-namespace OWLSharp.Extensions.SWRL
+namespace OWLSharp.Extensions.SWRL.Atoms
 {
     public class SWRLClassAtom : SWRLAtom
     {

@@ -32,7 +32,9 @@ namespace OWLSharp.Extensions.SWRL
 
         #region Methods
         internal abstract DataTable Evaluate(DataTable antecedentResults, OWLOntology ontology);
+
         internal override DataTable EvaluateOnAntecedent(OWLOntology ontology) => null;
+
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology) => null;
         #endregion
     }
