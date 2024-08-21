@@ -54,7 +54,7 @@ namespace OWLSharp.Extensions.SWRL
             Atoms.Where(atom => atom is SWRLBuiltIn)
                  .OfType<SWRLBuiltIn>()
                  .ToList()
-                 .ForEach(builtin => antecedentResult = builtin.Evaluate(antecedentResult, ontology));
+                 .ForEach(builtin => antecedentResult = builtin.EvaluateOnAntecedent(antecedentResult, ontology));
 
             //Return the antecedent result
             return antecedentResult;
