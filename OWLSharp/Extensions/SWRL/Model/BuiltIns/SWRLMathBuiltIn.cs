@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Globalization;
+using System.Text;
 
 namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
 {
@@ -34,6 +35,22 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
         #region Ctors
         internal SWRLMathBuiltIn(OWLExpression predicate, RDFPatternMember leftArgument, RDFPatternMember rightArgument, double mathValue)
             : base(predicate, leftArgument, rightArgument) => MathValue = mathValue;
+        #endregion
+
+		#region Interfaces
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            //Predicate
+            sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
+
+            //Arguments
+            RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(MathValue.ToString(), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
+            sb.Append($"({LeftArgument},{RightArgument},{RDFQueryPrinter.PrintPatternMember(mathValueTypedLiteral, RDFNamespaceRegister.Instance.Register)})");
+
+            return sb.ToString();
+        }
         #endregion
 
         #region Methods

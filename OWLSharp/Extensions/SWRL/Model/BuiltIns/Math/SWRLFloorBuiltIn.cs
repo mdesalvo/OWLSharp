@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using System.Text;
 using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -21,6 +22,21 @@ namespace OWLSharp.Extensions.SWRL.Model.BuiltIns
     {
         #region Properties
         internal static readonly RDFResource BuiltInUri = new RDFResource("http://www.w3.org/2003/11/swrlb#floor");
+        #endregion
+
+		#region Interfaces
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            //Predicate
+            sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
+
+            //Arguments
+            sb.Append($"({LeftArgument},{RightArgument})");
+
+            return sb.ToString();
+        }
         #endregion
 
         #region Ctors

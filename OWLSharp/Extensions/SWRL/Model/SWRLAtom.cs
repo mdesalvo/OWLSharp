@@ -17,9 +17,11 @@
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
+using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 
 namespace OWLSharp.Extensions.SWRL.Model
 {
@@ -39,6 +41,32 @@ namespace OWLSharp.Extensions.SWRL.Model
             Predicate = predicate ?? throw new OWLException("Cannot create atom because given \"predicate\" parameter is null");
             LeftArgument = leftArgument ?? throw new OWLException("Cannot create atom because given \"leftArgument\" parameter is null");
             RightArgument = rightArgument;
+        }
+        #endregion
+
+		#region Interfaces
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            //Predicate
+            sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
+
+            //Arguments
+            sb.Append($"({LeftArgument}");
+            if (RightArgument != null)
+            {
+                //When the right argument is a resource, it is printed in a SWRL-shortened form
+                if (RightArgument is RDFResource rightArgumentResource)
+                    sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentResource.URI)}");
+
+                //Other cases of right argument (variable, literal) are printed in normal form
+                else
+                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(RightArgument, RDFNamespaceRegister.Instance.Register)}");
+            }
+            sb.Append(")");
+
+            return sb.ToString();
         }
         #endregion
 
