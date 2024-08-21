@@ -45,36 +45,6 @@ namespace OWLSharp.Extensions.SWRL
         }
         #endregion
 
-        #region Interfaces
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder();
-            if (this is SWRLNegativeDataPropertyAtom || this is SWRLNegativeObjectPropertyAtom)
-                sb.Append("!(");
-
-            //Predicate
-            sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
-
-            //Arguments
-            sb.Append($"({LeftArgument}");
-            if (RightArgument != null)
-            {
-                //When the right argument is a resource, it is printed in a SWRL-shortened form
-                if (RightArgument is RDFResource rightArgumentResource)
-                    sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentResource.URI)}");
-
-                //Other cases of right argument (variable, literal) are printed in normal form
-                else
-                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(RightArgument, RDFNamespaceRegister.Instance.Register)}");
-            }
-            sb.Append(")");
-
-            if (this is SWRLNegativeDataPropertyAtom || this is SWRLNegativeObjectPropertyAtom)
-                sb.Append(")");
-            return sb.ToString();
-        }
-        #endregion
-
         #region Methods
         internal abstract DataTable EvaluateOnAntecedent(OWLOntology ontology);
 

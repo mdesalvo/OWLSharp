@@ -32,11 +32,6 @@ namespace OWLSharp.Extensions.SWRL
             => Atoms = new List<SWRLAtom>();
         #endregion
 
-        #region Interfaces
-        public override string ToString()
-            => string.Join(" ^ ", Atoms);
-        #endregion
-
         #region Methods
         internal List<OWLInference> Evaluate(DataTable antecedentResults, OWLOntology ontology)
         {

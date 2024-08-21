@@ -30,8 +30,8 @@ namespace OWLSharp.Extensions.SWRL.Atoms
     public class SWRLClassAtom : SWRLAtom
     {
         #region Ctors
-        public SWRLClassAtom(OWLClass owlClass, RDFVariable leftArgument)
-            : base(owlClass, leftArgument, null) { }
+        public SWRLClassAtom(OWLClassExpression classExpression, RDFVariable leftArgument)
+            : base(classExpression, leftArgument, null) { }
         #endregion
 
         #region Methods
@@ -44,7 +44,7 @@ namespace OWLSharp.Extensions.SWRL.Atoms
             RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
 
             //Calculate individuals of the atom predicate
-            List<OWLIndividualExpression> atomClassIndividuals = ontology.GetIndividualsOf((OWLClass)Predicate);
+            List<OWLIndividualExpression> atomClassIndividuals = ontology.GetIndividualsOf((OWLClassExpression)Predicate);
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
@@ -98,7 +98,7 @@ namespace OWLSharp.Extensions.SWRL.Atoms
 
 					//Create the inference
                     OWLClassAssertion inference = new OWLClassAssertion(
-						(OWLClass)Predicate) 
+						(OWLClassExpression)Predicate) 
 						{ 
 							IndividualExpression = clsAsnIdvExpr, 
 							IsInference = true

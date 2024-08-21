@@ -36,11 +36,6 @@ namespace OWLSharp.Extensions.SWRL
         }
         #endregion
 
-        #region Interfaces
-        public override string ToString()
-            => string.Concat(Antecedent, " -> ", Consequent);
-        #endregion
-
         #region Methods
         public Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
 			=> Task.Run(() => Consequent.Evaluate(

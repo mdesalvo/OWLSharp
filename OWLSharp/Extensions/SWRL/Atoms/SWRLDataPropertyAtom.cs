@@ -31,8 +31,8 @@ namespace OWLSharp.Extensions.SWRL.Atoms
     public class SWRLDataPropertyAtom : SWRLAtom
     {
         #region Ctors
-        public SWRLDataPropertyAtom(OWLDataProperty owlDatatypeProperty, RDFVariable leftArgument, RDFVariable rightArgument)
-            : base(owlDatatypeProperty, leftArgument, rightArgument) 
+        public SWRLDataPropertyAtom(OWLDataProperty dataProperty, RDFVariable leftArgument, RDFVariable rightArgument)
+            : base(dataProperty, leftArgument, rightArgument) 
         {
             #region Guards
             if (rightArgument == null)
@@ -40,8 +40,8 @@ namespace OWLSharp.Extensions.SWRL.Atoms
             #endregion
         }
 
-        public SWRLDataPropertyAtom(OWLDataProperty owlDatatypeProperty, RDFVariable leftArgument, RDFLiteral rightArgument)
-            : base(owlDatatypeProperty, leftArgument, rightArgument) 
+        public SWRLDataPropertyAtom(OWLDataProperty dataProperty, RDFVariable leftArgument, RDFLiteral rightArgument)
+            : base(dataProperty, leftArgument, rightArgument) 
         {
             #region Guards
             if (rightArgument == null)
