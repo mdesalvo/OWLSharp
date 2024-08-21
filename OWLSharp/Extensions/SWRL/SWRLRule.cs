@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OWLSharp.Ontology;
@@ -24,13 +25,17 @@ namespace OWLSharp.Extensions.SWRL
     public class SWRLRule
     {
         #region Properties
+        public Uri IRI { get; internal set; }
+        public string Description { get; internal set; }
         public SWRLAntecedent Antecedent { get; internal set; }
 		public SWRLConsequent Consequent { get; internal set; }
         #endregion
 
         #region Ctors
-        public SWRLRule(SWRLAntecedent antecedent, SWRLConsequent consequent)
+        public SWRLRule(Uri ruleIRI, string ruleDescription, SWRLAntecedent antecedent, SWRLConsequent consequent)
         {
+            IRI = ruleIRI ?? throw new OWLException("Cannot create SWRL rule because given \"ruleIRI\" parameter is null");
+            Description = ruleDescription ?? throw new OWLException("Cannot create SWRL rule because given \"ruleDescription\" parameter is null");
             Antecedent = antecedent ?? throw new OWLException("Cannot create SWRL rule because given \"antecedent\" parameter is null");
             Consequent = consequent ?? throw new OWLException("Cannot create SWRL rule because given \"consequent\" parameter is null");
         }
