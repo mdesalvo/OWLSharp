@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Extensions.SWRL.Atoms;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
@@ -48,6 +49,8 @@ namespace OWLSharp.Extensions.SWRL
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            if (this is SWRLNegativeDataPropertyAtom || this is SWRLNegativeObjectPropertyAtom)
+                sb.Append("!(");
 
             //Predicate
             sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
@@ -66,6 +69,8 @@ namespace OWLSharp.Extensions.SWRL
             }
             sb.Append(")");
 
+            if (this is SWRLNegativeDataPropertyAtom || this is SWRLNegativeObjectPropertyAtom)
+                sb.Append(")");
             return sb.ToString();
         }
         #endregion
