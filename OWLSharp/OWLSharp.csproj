@@ -47,9 +47,4 @@
     </PackageReference>
     <PackageReference Include="RDFSharp" Version="3.12.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\SWRL\BuiltIns\Comparison\" />
-    <Folder Include="Extensions\SWRL\BuiltIns\Math\" />
-    <Folder Include="Extensions\SWRL\BuiltIns\String\" />
-  </ItemGroup>
 </Project>
