@@ -63,9 +63,11 @@ namespace OWLSharp.Extensions.SWRL
                     Task<HashSet<string>> clsAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Select(asn => asn.GetXML())));
                     Task<HashSet<string>> dtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Select(asn => asn.GetXML())));
                     Task<HashSet<string>> opPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> ndtPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>().Select(asn => asn.GetXML())));
+                    Task<HashSet<string>> nopPropAsnAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>().Select(asn => asn.GetXML())));
                     Task<HashSet<string>> diffIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>().Select(asn => asn.GetXML())));
                     Task<HashSet<string>> sameIdvsAxiomsTask = Task.Run(() => new HashSet<string>(ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Select(asn => asn.GetXML())));
-                    await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask);
+                    await Task.WhenAll(clsAsnAxiomsTask, dtPropAsnAxiomsTask, opPropAsnAxiomsTask, ndtPropAsnAxiomsTask, nopPropAsnAxiomsTask, diffIdvsAxiomsTask, sameIdvsAxiomsTask);
 
                     //Deduplicate inferences by analyzing explicit knowledge
                     foreach (KeyValuePair<string, List<OWLInference>> inferenceRegistryEntry in inferenceRegistry.Where(ir => ir.Value?.Count > 0))
@@ -75,6 +77,8 @@ namespace OWLSharp.Extensions.SWRL
                             return clsAsnAxiomsTask.Result.Contains(infXML)
                                    || dtPropAsnAxiomsTask.Result.Contains(infXML)
                                    || opPropAsnAxiomsTask.Result.Contains(infXML)
+                                   || ndtPropAsnAxiomsTask.Result.Contains(infXML)
+                                   || nopPropAsnAxiomsTask.Result.Contains(infXML)
                                    || diffIdvsAxiomsTask.Result.Contains(infXML)
                                    || sameIdvsAxiomsTask.Result.Contains(infXML);
                         });
