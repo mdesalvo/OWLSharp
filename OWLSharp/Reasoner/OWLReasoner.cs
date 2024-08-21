@@ -39,7 +39,7 @@ namespace OWLSharp.Reasoner
 
             if (ontology != null)
             {
-                OWLEvents.RaiseInfo($"Launching reasoner on ontology '{ontology.IRI}'...");
+                OWLEvents.RaiseInfo($"Launching OWL2 reasoner on ontology '{ontology.IRI}'...");
 				Rules = Rules.Distinct().ToList();
 
                 //Initialize inference registry				
@@ -50,7 +50,7 @@ namespace OWLSharp.Reasoner
                 await Task.Run(() => 
 					Parallel.ForEach(Rules, rule =>
 					{
-						OWLEvents.RaiseInfo($"Launching rule {rule}...");
+						OWLEvents.RaiseInfo($"Launching OWL2 rule {rule}...");
 
 						switch (rule)
 						{
@@ -131,7 +131,7 @@ namespace OWLSharp.Reasoner
 								break;
 						}
 
-						OWLEvents.RaiseInfo($"Completed rule {rule} => {inferenceRegistry[rule.ToString()].Count} candidate inferences");
+						OWLEvents.RaiseInfo($"Completed OWL2 rule {rule} => {inferenceRegistry[rule.ToString()].Count} candidate inferences");
 					}));
 
                 //Process inference registry
@@ -183,7 +183,7 @@ namespace OWLSharp.Reasoner
 					inferenceRegistry.Clear();
                 });                
 
-                OWLEvents.RaiseInfo($"Completed reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
+                OWLEvents.RaiseInfo($"Completed OWL2 reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
             }
 
             return inferences;
