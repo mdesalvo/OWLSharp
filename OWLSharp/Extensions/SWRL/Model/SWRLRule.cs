@@ -26,8 +26,11 @@ namespace OWLSharp.Extensions.SWRL.Model
     {
         #region Properties
         public Uri IRI { get; internal set; }
+
         public string Description { get; internal set; }
+
         public SWRLAntecedent Antecedent { get; internal set; }
+
 		public SWRLConsequent Consequent { get; internal set; }
         #endregion
 

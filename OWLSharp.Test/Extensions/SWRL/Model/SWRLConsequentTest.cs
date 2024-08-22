@@ -35,7 +35,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateConsequent()
+        public void ShouldCreateEmptyConsequent()
         {
             SWRLConsequent consequent = new SWRLConsequent();
 
@@ -45,7 +45,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
         }
 
         [TestMethod]
-        public void ShouldAddAtoms()
+        public void ShouldCreateConsequentWithAtoms()
         {
             SWRLConsequent consequent = new SWRLConsequent() {
                 Atoms = [
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
         }
 
         [TestMethod]
-        public void ShouldEvaluate()
+        public void ShouldEvaluateConsequent()
         {
             DataTable antecedentTable = new DataTable();
             antecedentTable.Columns.Add("?C");

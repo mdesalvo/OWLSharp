@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateAntecedent()
+        public void ShouldCreateEmptyAntecedent()
         {
             SWRLAntecedent antecedent = new SWRLAntecedent();
 
@@ -43,7 +43,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
         }
 
         [TestMethod]
-        public void ShouldAddAtom()
+        public void ShouldCreateAntecedentWithAtom()
         {
             SWRLAntecedent antecedent = new SWRLAntecedent() {
                 Atoms = [
@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
         }
 
         [TestMethod]
-        public void ShouldAddBuiltIn()
+        public void ShouldCreateAntecedentWithBuiltIn()
         {
             SWRLAntecedent antecedent = new SWRLAntecedent() {
                 Atoms = [
@@ -71,7 +71,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
         }
 
         [TestMethod]
-        public void ShouldEvaluate()
+        public void ShouldEvaluateAntecedent()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
             {
