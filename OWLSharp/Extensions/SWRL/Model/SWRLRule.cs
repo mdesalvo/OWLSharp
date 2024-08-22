@@ -32,10 +32,10 @@ namespace OWLSharp.Extensions.SWRL.Model
         #endregion
 
         #region Ctors
-        public SWRLRule(Uri ruleIRI, string ruleDescription, SWRLAntecedent antecedent, SWRLConsequent consequent)
+        public SWRLRule(Uri iri, string description, SWRLAntecedent antecedent, SWRLConsequent consequent)
         {
-            IRI = ruleIRI ?? throw new OWLException("Cannot create SWRL rule because given \"ruleIRI\" parameter is null");
-            Description = ruleDescription ?? throw new OWLException("Cannot create SWRL rule because given \"ruleDescription\" parameter is null");
+            IRI = iri ?? throw new OWLException("Cannot create SWRL rule because given \"iri\" parameter is null");
+            Description = description ?? throw new OWLException("Cannot create SWRL rule because given \"description\" parameter is null");
             Antecedent = antecedent ?? throw new OWLException("Cannot create SWRL rule because given \"antecedent\" parameter is null");
             Consequent = consequent ?? throw new OWLException("Cannot create SWRL rule because given \"consequent\" parameter is null");
         }
