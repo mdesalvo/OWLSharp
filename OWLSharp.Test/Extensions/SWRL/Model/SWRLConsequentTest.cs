@@ -22,7 +22,6 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Data;
 using OWLSharp.Ontology.Expressions;
-using OWLSharp.Extensions.SWRL.Model.BuiltIns;
 using OWLSharp.Ontology.Axioms;
 using System;
 using System.Collections.Generic;

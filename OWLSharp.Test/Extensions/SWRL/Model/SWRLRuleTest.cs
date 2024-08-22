@@ -37,10 +37,14 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
         public void ShouldCreateRule()
         {
             SWRLRule rule = new SWRLRule(new Uri("ex:testRule"), "this is test rule",
-                new SWRLAntecedent() { Atoms = [ 
-                    new SWRLClassAtom(new OWLClass(new RDFResource("ex:class")), new RDFVariable("?C")) ]},
-                new SWRLConsequent() { Atoms = [
-                    new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), new RDFVariable("?C"), RDFTypedLiteral.True) ]});
+                new SWRLAntecedent() { 
+                    Atoms = [ 
+                        new SWRLClassAtom(new OWLClass(new RDFResource("ex:class")), new RDFVariable("?C")) 
+                    ]},
+                new SWRLConsequent() { 
+                    Atoms = [
+                        new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), new RDFVariable("?C"), RDFTypedLiteral.True) 
+                    ]});
 
             Assert.IsNotNull(rule);
             Assert.IsTrue(string.Equals("ex:testRule", rule.IRI.ToString()));
@@ -87,8 +91,14 @@ namespace OWLSharp.Test.Extensions.SWRL.Model
             };
 
             SWRLRule rule = new SWRLRule(new Uri("ex:testRule"), "this is test rule",
-                new SWRLAntecedent() { Atoms = [new SWRLClassAtom(new OWLClass(new RDFResource("ex:class")), new RDFVariable("?C"))] },
-                new SWRLConsequent() { Atoms = [new SWRLClassAtom(new OWLClass(RDFVocabulary.OWL.NAMED_INDIVIDUAL), new RDFVariable("?C"))] }); 
+                new SWRLAntecedent() { 
+                    Atoms = [
+                        new SWRLClassAtom(new OWLClass(new RDFResource("ex:class")), new RDFVariable("?C"))
+                    ] },
+                new SWRLConsequent() { 
+                    Atoms = [
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.OWL.NAMED_INDIVIDUAL), new RDFVariable("?C"))
+                    ] }); 
 
             List<OWLInference> inferences = await rule.ApplyToOntologyAsync(ontology);
 
