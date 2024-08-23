@@ -60,7 +60,10 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
         public void ShouldEvaluateNegativeDataRangeAtomOnAntecedent()
         {
             SWRLNegativeDataRangeAtom dataRangeAtom = new SWRLNegativeDataRangeAtom(
-                new OWLDatatype(RDFVocabulary.XSD.STRING), 
+                new OWLDataOneOf([
+                    new OWLLiteral(new RDFPlainLiteral("A")),
+                    new OWLLiteral(new RDFPlainLiteral("B")),
+                    new OWLLiteral(new RDFPlainLiteral("C")) ]), 
                 new RDFVariable("?D"));
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
@@ -77,14 +80,18 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(new RDFResource("ex:dtprop")),
                         new OWLNamedIndividual(new RDFResource("ex:indiv")),
-                        new OWLLiteral(new RDFTypedLiteral("44", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                        new OWLLiteral(new RDFPlainLiteral("Q"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("ex:dtprop")),
+                        new OWLNamedIndividual(new RDFResource("ex:indiv")),
+                        new OWLLiteral(new RDFPlainLiteral("A"))),
                 ]
             };
             
             DataTable antecedentTable = dataRangeAtom.EvaluateOnAntecedent(ontology);
 
             Assert.IsNotNull(antecedentTable);
-            Assert.IsTrue(antecedentTable.Rows.Count == 1);
+            Assert.IsTrue(antecedentTable.Rows.Count == 2);
         }
 
         [TestMethod]
