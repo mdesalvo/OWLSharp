@@ -51,7 +51,10 @@ namespace OWLSharp.Extensions.SWRL.Model
             StringBuilder sb = new StringBuilder();
 
             //Negation (Opening)
-            if (this is SWRLNegativeClassAtom || this is SWRLNegativeDataPropertyAtom || this is SWRLNegativeObjectPropertyAtom)
+            if (this is SWRLNegativeClassAtom
+                 || this is SWRLNegativeDataRangeAtom
+                 || this is SWRLNegativeDataPropertyAtom 
+                 || this is SWRLNegativeObjectPropertyAtom)
                 sb.Append("not(");
 
             //Predicate
@@ -72,7 +75,10 @@ namespace OWLSharp.Extensions.SWRL.Model
             sb.Append(")");
 
             //Negation (Closure)
-            if (this is SWRLNegativeClassAtom || this is SWRLNegativeDataPropertyAtom || this is SWRLNegativeObjectPropertyAtom)
+            if (this is SWRLNegativeClassAtom
+                 || this is SWRLNegativeDataRangeAtom
+                 || this is SWRLNegativeDataPropertyAtom
+                 || this is SWRLNegativeObjectPropertyAtom) 
                 sb.Append(")");
 
             return sb.ToString();
