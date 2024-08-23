@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(new RDFResource("ex:dtprop")),
                         new OWLNamedIndividual(new RDFResource("ex:indiv")),
-                        new OWLLiteral(new RDFTypedLiteral("35", new RDFDatatype(new Uri("ex:int"), RDFModelEnums.RDFDatatypes.XSD_INTEGER, [])))), //not registered, so won't match
+                        new OWLLiteral(new RDFTypedLiteral("35", new RDFDatatype(new Uri("ex:int"), RDFModelEnums.RDFDatatypes.XSD_INTEGER, [])))),
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(new RDFResource("ex:dtprop")),
                         new OWLNamedIndividual(new RDFResource("ex:indiv")),
