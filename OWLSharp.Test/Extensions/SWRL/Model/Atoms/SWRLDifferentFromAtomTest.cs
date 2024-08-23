@@ -35,31 +35,31 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
         [TestMethod]
         public void ShouldCreateDifferentFromAtomWithVariableAsRightArgument()
         {
-            SWRLDifferentFromAtom DifferentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFVariable("?R"));
+            SWRLDifferentFromAtom differentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFVariable("?R"));
 
-            Assert.IsNotNull(DifferentFromAtom);
-            Assert.IsNotNull(DifferentFromAtom.Predicate);
-            Assert.IsTrue(DifferentFromAtom.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM));
-            Assert.IsNotNull(DifferentFromAtom.LeftArgument);
-            Assert.IsTrue(DifferentFromAtom.LeftArgument.Equals(new RDFVariable("?L")));
-            Assert.IsNotNull(DifferentFromAtom.RightArgument);
-            Assert.IsTrue(DifferentFromAtom.RightArgument.Equals(new RDFVariable("?R")));
-            Assert.IsTrue(string.Equals("differentFrom(?L,?R)", DifferentFromAtom.ToString()));
+            Assert.IsNotNull(differentFromAtom);
+            Assert.IsNotNull(differentFromAtom.Predicate);
+            Assert.IsTrue(differentFromAtom.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM));
+            Assert.IsNotNull(differentFromAtom.LeftArgument);
+            Assert.IsTrue(differentFromAtom.LeftArgument.Equals(new RDFVariable("?L")));
+            Assert.IsNotNull(differentFromAtom.RightArgument);
+            Assert.IsTrue(differentFromAtom.RightArgument.Equals(new RDFVariable("?R")));
+            Assert.IsTrue(string.Equals("differentFrom(?L,?R)", differentFromAtom.ToString()));
         }
 
         [TestMethod]
         public void ShouldCreateDifferentFromAtomWithResourceAsRightArgument()
         {
-            SWRLDifferentFromAtom DifferentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFResource("ex:val"));
+            SWRLDifferentFromAtom differentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFResource("ex:val"));
 
-            Assert.IsNotNull(DifferentFromAtom);
-            Assert.IsNotNull(DifferentFromAtom.Predicate);
-            Assert.IsTrue(DifferentFromAtom.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM));
-            Assert.IsNotNull(DifferentFromAtom.LeftArgument);
-            Assert.IsTrue(DifferentFromAtom.LeftArgument.Equals(new RDFVariable("?L")));
-            Assert.IsNotNull(DifferentFromAtom.RightArgument);
-            Assert.IsTrue(DifferentFromAtom.RightArgument.Equals(new RDFResource("ex:val")));
-            Assert.IsTrue(string.Equals("differentFrom(?L,ex:val)", DifferentFromAtom.ToString()));
+            Assert.IsNotNull(differentFromAtom);
+            Assert.IsNotNull(differentFromAtom.Predicate);
+            Assert.IsTrue(differentFromAtom.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM));
+            Assert.IsNotNull(differentFromAtom.LeftArgument);
+            Assert.IsTrue(differentFromAtom.LeftArgument.Equals(new RDFVariable("?L")));
+            Assert.IsNotNull(differentFromAtom.RightArgument);
+            Assert.IsTrue(differentFromAtom.RightArgument.Equals(new RDFResource("ex:val")));
+            Assert.IsTrue(string.Equals("differentFrom(?L,ex:val)", differentFromAtom.ToString()));
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
         [TestMethod]
         public void ShouldEvaluateDifferentFromAtomOnAntecedentWithVariableAsRightArgument()
         {
-            SWRLDifferentFromAtom DifferentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFVariable("?R"));
+            SWRLDifferentFromAtom differentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFVariable("?R"));
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
             {
@@ -92,7 +92,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                  ]
             };
 
-            DataTable antecedentTable = DifferentFromAtom.EvaluateOnAntecedent(ontology);
+            DataTable antecedentTable = differentFromAtom.EvaluateOnAntecedent(ontology);
 
             Assert.IsNotNull(antecedentTable);
             Assert.IsTrue(antecedentTable.Rows.Count == 2);
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
         [TestMethod]
         public void ShouldEvaluateDifferentFromAtomOnAntecedentWithResourceAsRightArgument()
         {
-            SWRLDifferentFromAtom DifferentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFResource("ex:indiv2"));
+            SWRLDifferentFromAtom differentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFResource("ex:indiv2"));
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
             {
@@ -118,7 +118,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                  ]
             };
 
-            DataTable antecedentTable = DifferentFromAtom.EvaluateOnAntecedent(ontology);
+            DataTable antecedentTable = differentFromAtom.EvaluateOnAntecedent(ontology);
 
             Assert.IsNotNull(antecedentTable);
             Assert.IsTrue(antecedentTable.Rows.Count == 2);
@@ -127,7 +127,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
         [TestMethod]
         public void ShouldEvaluateDifferentFromAtomOnConsequentWithVariableAsRightArgument()
         {
-            SWRLDifferentFromAtom DifferentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFVariable("?R"));
+            SWRLDifferentFromAtom differentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFVariable("?R"));
 
             DataTable antecedentTable = new DataTable();
             antecedentTable.Columns.Add("?L");
@@ -136,7 +136,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
 
-            List<OWLInference> inferences = DifferentFromAtom.EvaluateOnConsequent(antecedentTable, ontology);
+            List<OWLInference> inferences = differentFromAtom.EvaluateOnConsequent(antecedentTable, ontology);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.Count == 1);
@@ -145,7 +145,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
         [TestMethod]
         public void ShouldEvaluateDifferentFromAtomOnConsequentWithResourceAsRightArgument()
         {
-            SWRLDifferentFromAtom DifferentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFResource("ex:val1"));
+            SWRLDifferentFromAtom differentFromAtom = new SWRLDifferentFromAtom(new RDFVariable("?L"), new RDFResource("ex:val1"));
 
             DataTable antecedentTable = new DataTable();
             antecedentTable.Columns.Add("?L");
@@ -153,7 +153,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
 
-            List<OWLInference> inferences = DifferentFromAtom.EvaluateOnConsequent(antecedentTable, ontology);
+            List<OWLInference> inferences = differentFromAtom.EvaluateOnConsequent(antecedentTable, ontology);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.Count == 1);
