@@ -47,7 +47,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
             Assert.IsTrue(negativeDataPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
             Assert.IsNotNull(negativeDataPropertyAtom.RightArgument);
             Assert.IsTrue(negativeDataPropertyAtom.RightArgument.Equals(new RDFVariable("?R")));
-            Assert.IsTrue(string.Equals("neg(ex:dtprop(?L,?R))", negativeDataPropertyAtom.ToString()));
+            Assert.IsTrue(string.Equals("not(ex:dtprop(?L,?R))", negativeDataPropertyAtom.ToString()));
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
             Assert.IsTrue(DataPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
             Assert.IsNotNull(DataPropertyAtom.RightArgument);
             Assert.IsTrue(DataPropertyAtom.RightArgument.Equals(new RDFPlainLiteral("hello", "en-US")));
-            Assert.IsTrue(string.Equals("neg(ex:dtprop(?L,\"hello\"@EN-US))", DataPropertyAtom.ToString()));
+            Assert.IsTrue(string.Equals("not(ex:dtprop(?L,\"hello\"@EN-US))", DataPropertyAtom.ToString()));
         }
 
         [TestMethod]

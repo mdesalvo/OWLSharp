@@ -29,37 +29,37 @@ using System.Data;
 namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
 {
     [TestClass]
-    public class SWRLClassAtomTest
+    public class SWRLNegativeClassAtomTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateClassAtom()
+        public void ShouldCreateNegativeClassAtom()
         {
-            SWRLClassAtom classAtom = new SWRLClassAtom(
+            SWRLNegativeClassAtom negativeClassAtom = new SWRLNegativeClassAtom(
                 new OWLClass(new RDFResource("ex:class")), 
                 new RDFVariable("?C"));
 
-            Assert.IsNotNull(classAtom);
-            Assert.IsNotNull(classAtom.Predicate);
-            Assert.IsTrue(classAtom.Predicate.GetIRI().Equals(new RDFResource("ex:class")));
-            Assert.IsNotNull(classAtom.LeftArgument);
-            Assert.IsTrue(classAtom.LeftArgument.Equals(new RDFVariable("?C")));
-            Assert.IsNull(classAtom.RightArgument);
-            Assert.IsTrue(string.Equals("ex:class(?C)", classAtom.ToString()));
+            Assert.IsNotNull(negativeClassAtom);
+            Assert.IsNotNull(negativeClassAtom.Predicate);
+            Assert.IsTrue(negativeClassAtom.Predicate.GetIRI().Equals(new RDFResource("ex:class")));
+            Assert.IsNotNull(negativeClassAtom.LeftArgument);
+            Assert.IsTrue(negativeClassAtom.LeftArgument.Equals(new RDFVariable("?C")));
+            Assert.IsNull(negativeClassAtom.RightArgument);
+            Assert.IsTrue(string.Equals("not(ex:class(?C))", negativeClassAtom.ToString()));
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingClassAtomBecauseNullPredicate()
-            => Assert.ThrowsException<OWLException>(() => new SWRLClassAtom(null, new RDFVariable("?C")));
+        public void ShouldThrowExceptionOnCreatingNegativeClassAtomBecauseNullPredicate()
+            => Assert.ThrowsException<OWLException>(() => new SWRLNegativeClassAtom(null, new RDFVariable("?C")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingClassAtomBecauseNullLeftArgument()
-            => Assert.ThrowsException<OWLException>(() => new SWRLClassAtom(new OWLClass(new RDFResource("ex:class")), null));
+        public void ShouldThrowExceptionOnCreatingNegativeClassAtomBecauseNullLeftArgument()
+            => Assert.ThrowsException<OWLException>(() => new SWRLNegativeClassAtom(new OWLClass(new RDFResource("ex:class")), null));
 
         [TestMethod]
-        public void ShouldEvaluateClassAtomOnAntecedent()
+        public void ShouldEvaluateNegativeClassAtomOnAntecedent()
         {
-            SWRLClassAtom classAtom = new SWRLClassAtom(
+            SWRLNegativeClassAtom negativeClassAtom = new SWRLNegativeClassAtom(
                 new OWLClass(new RDFResource("ex:class")), 
                 new RDFVariable("?C"));
 
@@ -72,7 +72,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:class")),
+                        new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:class"))),
                         new OWLNamedIndividual(new RDFResource("ex:indiv1"))),
                     new OWLClassAssertion(
                         new OWLClass(new RDFResource("ex:class")),
@@ -80,30 +80,29 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                 ]
             };
             
-            DataTable antecedentTable = classAtom.EvaluateOnAntecedent(ontology);
+            DataTable antecedentTable = negativeClassAtom.EvaluateOnAntecedent(ontology);
 
             Assert.IsNotNull(antecedentTable);
-            Assert.IsTrue(antecedentTable.Rows.Count == 2);
+            Assert.IsTrue(antecedentTable.Rows.Count == 1);
         }
 
         [TestMethod]
-        public void ShouldEvaluateClassAtomOnConsequent()
+        public void ShouldEvaluateNegativeClassAtomOnConsequent()
         {
-            SWRLClassAtom classAtom = new SWRLClassAtom(
+            SWRLNegativeClassAtom negativeClassAtom = new SWRLNegativeClassAtom(
                 new OWLClass(new RDFResource("ex:class")), 
                 new RDFVariable("?C"));
 
             DataTable antecedentTable = new DataTable();
             antecedentTable.Columns.Add("?C");
             antecedentTable.Rows.Add("ex:indiv1");
-            antecedentTable.Rows.Add("ex:indiv2");
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
 
-            List<OWLInference> inferences = classAtom.EvaluateOnConsequent(antecedentTable, ontology);
+            List<OWLInference> inferences = negativeClassAtom.EvaluateOnConsequent(antecedentTable, ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.IsTrue(inferences.Count == 1);
         }
         #endregion
     }

@@ -47,7 +47,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
             Assert.IsTrue(negativeObjectPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
             Assert.IsNotNull(negativeObjectPropertyAtom.RightArgument);
             Assert.IsTrue(negativeObjectPropertyAtom.RightArgument.Equals(new RDFVariable("?R")));
-            Assert.IsTrue(string.Equals("neg(ex:objprop(?L,?R))", negativeObjectPropertyAtom.ToString()));
+            Assert.IsTrue(string.Equals("not(ex:objprop(?L,?R))", negativeObjectPropertyAtom.ToString()));
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
             Assert.IsTrue(negativeObjectPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
             Assert.IsNotNull(negativeObjectPropertyAtom.RightArgument);
             Assert.IsTrue(negativeObjectPropertyAtom.RightArgument.Equals(new RDFResource("ex:val")));
-            Assert.IsTrue(string.Equals("neg(ex:objprop(?L,ex:val))", negativeObjectPropertyAtom.ToString()));
+            Assert.IsTrue(string.Equals("not(ex:objprop(?L,ex:val))", negativeObjectPropertyAtom.ToString()));
         }
 
         [TestMethod]
