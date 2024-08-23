@@ -23,7 +23,6 @@
 		<ProjectReference Include="..\OWLSharp\OWLSharp.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Extensions\SWRL\Model\Atoms\" />
 	  <Folder Include="Extensions\SWRL\Model\BuiltIns\" />
 	</ItemGroup>
 </Project>
