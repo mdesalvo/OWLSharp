@@ -29,65 +29,65 @@ using System.Data;
 namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
 {
     [TestClass]
-    public class SWRLDataPropertyAtomTest
+    public class SWRLNegativeDataPropertyAtomTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateDataPropertyAtomWithVariableAsRightArgument()
+        public void ShouldCreateNegativeDataPropertyAtomWithVariableAsRightArgument()
         {
-            SWRLDataPropertyAtom dataPropertyAtom = new SWRLDataPropertyAtom(
+            SWRLNegativeDataPropertyAtom negativeDataPropertyAtom = new SWRLNegativeDataPropertyAtom(
                 new OWLDataProperty(new RDFResource("ex:dtprop")), 
                 new RDFVariable("?L"), 
                 new RDFVariable("?R"));
 
-            Assert.IsNotNull(dataPropertyAtom);
-            Assert.IsNotNull(dataPropertyAtom.Predicate);
-            Assert.IsTrue(dataPropertyAtom.Predicate.GetIRI().Equals(new RDFResource("ex:dtprop")));
-            Assert.IsNotNull(dataPropertyAtom.LeftArgument);
-            Assert.IsTrue(dataPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
-            Assert.IsNotNull(dataPropertyAtom.RightArgument);
-            Assert.IsTrue(dataPropertyAtom.RightArgument.Equals(new RDFVariable("?R")));
-            Assert.IsTrue(string.Equals("ex:dtprop(?L,?R)", dataPropertyAtom.ToString()));
+            Assert.IsNotNull(negativeDataPropertyAtom);
+            Assert.IsNotNull(negativeDataPropertyAtom.Predicate);
+            Assert.IsTrue(negativeDataPropertyAtom.Predicate.GetIRI().Equals(new RDFResource("ex:dtprop")));
+            Assert.IsNotNull(negativeDataPropertyAtom.LeftArgument);
+            Assert.IsTrue(negativeDataPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
+            Assert.IsNotNull(negativeDataPropertyAtom.RightArgument);
+            Assert.IsTrue(negativeDataPropertyAtom.RightArgument.Equals(new RDFVariable("?R")));
+            Assert.IsTrue(string.Equals("neg(ex:dtprop(?L,?R))", negativeDataPropertyAtom.ToString()));
         }
 
         [TestMethod]
-        public void ShouldCreateDataPropertyAtomWithLiteralAsRightArgument()
+        public void ShouldCreateNegativeDataPropertyAtomWithLiteralAsRightArgument()
         {
-            SWRLDataPropertyAtom dataPropertyAtom = new SWRLDataPropertyAtom(
+            SWRLNegativeDataPropertyAtom DataPropertyAtom = new SWRLNegativeDataPropertyAtom(
                 new OWLDataProperty(new RDFResource("ex:dtprop")), 
                 new RDFVariable("?L"), 
                 new RDFPlainLiteral("hello", "en-US"));
 
-            Assert.IsNotNull(dataPropertyAtom);
-            Assert.IsNotNull(dataPropertyAtom.Predicate);
-            Assert.IsTrue(dataPropertyAtom.Predicate.GetIRI().Equals(new RDFResource("ex:dtprop")));
-            Assert.IsNotNull(dataPropertyAtom.LeftArgument);
-            Assert.IsTrue(dataPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
-            Assert.IsNotNull(dataPropertyAtom.RightArgument);
-            Assert.IsTrue(dataPropertyAtom.RightArgument.Equals(new RDFPlainLiteral("hello", "en-US")));
-            Assert.IsTrue(string.Equals("ex:dtprop(?L,\"hello\"@EN-US)", dataPropertyAtom.ToString()));
+            Assert.IsNotNull(DataPropertyAtom);
+            Assert.IsNotNull(DataPropertyAtom.Predicate);
+            Assert.IsTrue(DataPropertyAtom.Predicate.GetIRI().Equals(new RDFResource("ex:dtprop")));
+            Assert.IsNotNull(DataPropertyAtom.LeftArgument);
+            Assert.IsTrue(DataPropertyAtom.LeftArgument.Equals(new RDFVariable("?L")));
+            Assert.IsNotNull(DataPropertyAtom.RightArgument);
+            Assert.IsTrue(DataPropertyAtom.RightArgument.Equals(new RDFPlainLiteral("hello", "en-US")));
+            Assert.IsTrue(string.Equals("neg(ex:dtprop(?L,\"hello\"@EN-US))", DataPropertyAtom.ToString()));
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDataPropertyAtomBecauseNullPredicate()
-            => Assert.ThrowsException<OWLException>(() => new SWRLDataPropertyAtom(null, new RDFVariable("?L"), new RDFVariable("?R")));
+        public void ShouldThrowExceptionOnCreatingNegativeDataPropertyAtomBecauseNullPredicate()
+            => Assert.ThrowsException<OWLException>(() => new SWRLNegativeDataPropertyAtom(null, new RDFVariable("?L"), new RDFVariable("?R")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDataPropertyAtomBecauseNullLeftArgument()
-            => Assert.ThrowsException<OWLException>(() => new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), null, new RDFVariable("?R")));
+        public void ShouldThrowExceptionOnCreatingNegativeDataPropertyAtomBecauseNullLeftArgument()
+            => Assert.ThrowsException<OWLException>(() => new SWRLNegativeDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), null, new RDFVariable("?R")));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDataPropertyAtomBecauseNullRightArgumentVariable()
-            => Assert.ThrowsException<OWLException>(() => new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), new RDFVariable("?L"), null as RDFVariable));
+        public void ShouldThrowExceptionOnCreatingNegativeDataPropertyAtomBecauseNullRightArgumentVariable()
+            => Assert.ThrowsException<OWLException>(() => new SWRLNegativeDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), new RDFVariable("?L"), null as RDFVariable));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDataPropertyAtomBecauseNullRightArgumentLiteral()
-            => Assert.ThrowsException<OWLException>(() => new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), new RDFVariable("?L"), null as RDFLiteral));
+        public void ShouldThrowExceptionOnCreatingNegativeDataPropertyAtomBecauseNullRightArgumentLiteral()
+            => Assert.ThrowsException<OWLException>(() => new SWRLNegativeDataPropertyAtom(new OWLDataProperty(new RDFResource("ex:dtprop")), new RDFVariable("?L"), null as RDFLiteral));
 
         [TestMethod]
-        public void ShouldEvaluateDataPropertyAtomOnAntecedentWithVariableAsRightArgument()
+        public void ShouldEvaluateNegativeDataPropertyAtomOnAntecedentWithVariableAsRightArgument()
         {
-            SWRLDataPropertyAtom dataPropertyAtom = new SWRLDataPropertyAtom(
+            SWRLNegativeDataPropertyAtom negativeDataPropertyAtom = new SWRLNegativeDataPropertyAtom(
                 new OWLDataProperty(new RDFResource("ex:dtprop")), 
                 new RDFVariable("?L"), 
                 new RDFVariable("?R"));
@@ -99,23 +99,23 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:indiv")))
                 ],
                 AssertionAxioms = [
-                    new OWLDataPropertyAssertion(
+                    new OWLNegativeDataPropertyAssertion(
                         new OWLDataProperty(new RDFResource("ex:dtprop")),
                         new OWLNamedIndividual(new RDFResource("ex:indiv")),
                         new OWLLiteral(new RDFPlainLiteral("value")))
                 ]
             };
             
-            DataTable antecedentTable = dataPropertyAtom.EvaluateOnAntecedent(ontology);
+            DataTable antecedentTable = negativeDataPropertyAtom.EvaluateOnAntecedent(ontology);
 
             Assert.IsNotNull(antecedentTable);
             Assert.IsTrue(antecedentTable.Rows.Count == 1);
         }
 
         [TestMethod]
-        public void ShouldEvaluateDataPropertyAtomOnAntecedentWithLiteralAsRightArgument()
+        public void ShouldEvaluateNegativeDataPropertyAtomOnAntecedentWithLiteralAsRightArgument()
         {
-            SWRLDataPropertyAtom dataPropertyAtom = new SWRLDataPropertyAtom(
+            SWRLNegativeDataPropertyAtom negativeDataPropertyAtom = new SWRLNegativeDataPropertyAtom(
                 new OWLDataProperty(new RDFResource("ex:dtprop")),
                 new RDFVariable("?L"),
                 new RDFPlainLiteral("value"));
@@ -127,23 +127,23 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:indiv")))
                 ],
                 AssertionAxioms = [
-                    new OWLDataPropertyAssertion(
+                    new OWLNegativeDataPropertyAssertion(
                         new OWLDataProperty(new RDFResource("ex:dtprop")),
                         new OWLNamedIndividual(new RDFResource("ex:indiv")),
                         new OWLLiteral(new RDFPlainLiteral("value")))
                 ]
             };
 
-            DataTable antecedentTable = dataPropertyAtom.EvaluateOnAntecedent(ontology);
+            DataTable antecedentTable = negativeDataPropertyAtom.EvaluateOnAntecedent(ontology);
 
             Assert.IsNotNull(antecedentTable);
             Assert.IsTrue(antecedentTable.Rows.Count == 1);
         }
 
         [TestMethod]
-        public void ShouldEvaluateDataPropertyAtomOnConsequentWithVariableAsRightArgument()
+        public void ShouldEvaluateNegativeDataPropertyAtomOnConsequentWithVariableAsRightArgument()
         {
-            SWRLDataPropertyAtom dataPropertyAtom = new SWRLDataPropertyAtom(
+            SWRLNegativeDataPropertyAtom negativeDataPropertyAtom = new SWRLNegativeDataPropertyAtom(
                 new OWLDataProperty(new RDFResource("ex:dtprop")), 
                 new RDFVariable("?L"), 
                 new RDFVariable("?R"));
@@ -155,16 +155,16 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
 
-            List<OWLInference> inferences = dataPropertyAtom.EvaluateOnConsequent(antecedentTable, ontology);
+            List<OWLInference> inferences = negativeDataPropertyAtom.EvaluateOnConsequent(antecedentTable, ontology);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.Count == 1);
         }
 
         [TestMethod]
-        public void ShouldEvaluateDataPropertyAtomOnConsequentWithLiteralAsRightArgument()
+        public void ShouldEvaluateNegativeDataPropertyAtomOnConsequentWithLiteralAsRightArgument()
         {
-            SWRLDataPropertyAtom dataPropertyAtom = new SWRLDataPropertyAtom(
+            SWRLNegativeDataPropertyAtom negativeDataPropertyAtom = new SWRLNegativeDataPropertyAtom(
                 new OWLDataProperty(new RDFResource("ex:dtprop")), 
                 new RDFVariable("?L"), 
                 new RDFPlainLiteral("hello", "en-US"));
@@ -175,7 +175,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Model.Atoms
 
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
 
-            List<OWLInference> inferences = dataPropertyAtom.EvaluateOnConsequent(antecedentTable, ontology);
+            List<OWLInference> inferences = negativeDataPropertyAtom.EvaluateOnConsequent(antecedentTable, ontology);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.Count == 1);
