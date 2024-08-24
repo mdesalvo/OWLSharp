@@ -26,6 +26,8 @@ using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Axioms;
 using System.Collections.Generic;
 using OWLSharp.Reasoner;
+using OWLSharp.Extensions.SWRL.Reasoner;
+using OWLSharp.Extensions.SWRL.Model.BuiltIns;
 
 namespace OWLSharp.Test.Extensions.SWRL.Model
 {

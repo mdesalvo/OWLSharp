@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using Dasync.Collections;
 using OWLSharp.Extensions.SWRL.Model;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
@@ -47,15 +48,14 @@ namespace OWLSharp.Extensions.SWRL.Reasoner
                 Rules.ForEach(rule => inferenceRegistry.Add(rule.IRI.ToString(), null));
 
                 //Execute reasoner rules
-                await Task.Run(() =>
-                    Parallel.ForEach(Rules, async (rule) =>
-                    {
-                        OWLEvents.RaiseInfo($"Launching SWRL rule {rule.IRI}...");
+                await Rules.ParallelForEachAsync(async (rule) =>
+				{
+					OWLEvents.RaiseInfo($"Launching SWRL rule {rule.IRI}...");
 
-                        inferenceRegistry[rule.IRI.ToString()] = await rule.ApplyToOntologyAsync(ontology);
+					inferenceRegistry[rule.IRI.ToString()] = await rule.ApplyToOntologyAsync(ontology);
 
-                        OWLEvents.RaiseInfo($"Completed SWRL rule {rule.IRI} => {inferenceRegistry[rule.IRI.ToString()].Count} candidate inferences");
-                    }));
+					OWLEvents.RaiseInfo($"Completed SWRL rule {rule.IRI} => {inferenceRegistry[rule.IRI.ToString()].Count} candidate inferences");
+				});
 
                 //Process inference registry
                 await Task.Run(async () =>
@@ -85,7 +85,7 @@ namespace OWLSharp.Extensions.SWRL.Reasoner
                         });
 
                     //Collect inferences and perform final cleanup
-                    inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value).Distinct());
+                    inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLInference>()).Distinct());
                     inferenceRegistry.Clear();
                 });
 
