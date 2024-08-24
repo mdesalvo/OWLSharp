@@ -37,7 +37,7 @@ namespace OWLSharp.Validator
 
             if (ontology != null)
             {
-                OWLEvents.RaiseInfo($"Launching validator on ontology '{ontology.IRI}'...");
+                OWLEvents.RaiseInfo($"Launching OWL2 validator on ontology '{ontology.IRI}'...");
 				Rules = Rules.Distinct().ToList();
 
                 //Initialize issue registry
@@ -45,113 +45,112 @@ namespace OWLSharp.Validator
 				Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
                 //Execute validator rules
-                await Task.Run(() => 
-					Parallel.ForEach(Rules, rule =>
+                Parallel.ForEach(Rules, rule =>
+				{
+					OWLEvents.RaiseInfo($"Launching OWL2 rule {rule}...");
+
+					switch (rule)
 					{
-						OWLEvents.RaiseInfo($"Launching rule {rule}...");
+						case OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis:
+							issueRegistry[OWLAsymmetricObjectPropertyAnalysisRule.rulename] = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.ClassAssertionAnalysis:
+							issueRegistry[OWLClassAssertionAnalysisRule.rulename] = OWLClassAssertionAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis:
+							issueRegistry[OWLDataPropertyDomainAnalysisRule.rulename] = OWLDataPropertyDomainAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis:
+							issueRegistry[OWLDataPropertyRangeAnalysisRule.rulename] = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis:
+							issueRegistry[OWLDifferentIndividualsAnalysisRule.rulename] = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.DisjointClassesAnalysis:
+							issueRegistry[OWLDisjointClassesAnalysisRule.rulename] = OWLDisjointClassesAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis:
+							issueRegistry[OWLDisjointDataPropertiesAnalysisRule.rulename] = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis:
+							issueRegistry[OWLDisjointObjectPropertiesAnalysisRule.rulename] = OWLDisjointObjectPropertiesAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.DisjointUnionAnalysis:
+							issueRegistry[OWLDisjointUnionAnalysisRule.rulename] = OWLDisjointUnionAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis:
+							issueRegistry[OWLEquivalentClassesAnalysisRule.rulename] = OWLEquivalentClassesAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis:
+							issueRegistry[OWLEquivalentDataPropertiesAnalysisRule.rulename] = OWLEquivalentDataPropertiesAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis:
+							issueRegistry[OWLEquivalentObjectPropertiesAnalysisRule.rulename] = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis:
+							issueRegistry[OWLFunctionalDataPropertyAnalysisRule.rulename] = OWLFunctionalDataPropertyAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis:
+							issueRegistry[OWLFunctionalObjectPropertyAnalysisRule.rulename] = OWLFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.HasKeyAnalysis:
+							issueRegistry[OWLHasKeyAnalysisRule.rulename] = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.InverseFunctionalObjectPropertyAnalysis:
+							issueRegistry[OWLInverseFunctionalObjectPropertyAnalysisRule.rulename] = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis:
+							issueRegistry[OWLIrreflexiveObjectPropertyAnalysisRule.rulename] = OWLIrreflexiveObjectPropertyAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis:
+							issueRegistry[OWLNegativeDataAssertionsAnalysisRule.rulename] = OWLNegativeDataAssertionsAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis:
+							issueRegistry[OWLNegativeObjectAssertionsAnalysisRule.rulename] = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis:
+							issueRegistry[OWLObjectPropertyChainAnalysisRule.rulename] = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis:
+							issueRegistry[OWLObjectPropertyDomainAnalysisRule.rulename] = OWLObjectPropertyDomainAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis:
+							issueRegistry[OWLObjectPropertyRangeAnalysisRule.rulename] = OWLObjectPropertyRangeAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.SubClassOfAnalysis:
+							issueRegistry[OWLSubClassOfAnalysisRule.rulename] = OWLSubClassOfAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis:
+							issueRegistry[OWLSubDataPropertyOfAnalysisRule.rulename] = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.SubObjectPropertyOfAnalysis:
+							issueRegistry[OWLSubObjectPropertyOfAnalysisRule.rulename] = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis:
+							issueRegistry[OWLTermsDeprecationAnalysisRule.rulename] = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis:
+							issueRegistry[OWLTermsDisjointnessAnalysisRule.rulename] = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.ThingNothingAnalysis:
+							issueRegistry[OWLThingNothingAnalysisRule.rulename] = OWLThingNothingAnalysisRule.ExecuteRule(ontology);
+							break;
+						case OWLEnums.OWLValidatorRules.TopBottomAnalysis:
+							issueRegistry[OWLTopBottomAnalysisRule.rulename] = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
+							break;
+					}
 
-						switch (rule)
-						{
-							case OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis:
-								issueRegistry[OWLAsymmetricObjectPropertyAnalysisRule.rulename] = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.ClassAssertionAnalysis:
-								issueRegistry[OWLClassAssertionAnalysisRule.rulename] = OWLClassAssertionAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis:
-								issueRegistry[OWLDataPropertyDomainAnalysisRule.rulename] = OWLDataPropertyDomainAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis:
-								issueRegistry[OWLDataPropertyRangeAnalysisRule.rulename] = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis:
-								issueRegistry[OWLDifferentIndividualsAnalysisRule.rulename] = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.DisjointClassesAnalysis:
-								issueRegistry[OWLDisjointClassesAnalysisRule.rulename] = OWLDisjointClassesAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis:
-								issueRegistry[OWLDisjointDataPropertiesAnalysisRule.rulename] = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis:
-								issueRegistry[OWLDisjointObjectPropertiesAnalysisRule.rulename] = OWLDisjointObjectPropertiesAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.DisjointUnionAnalysis:
-								issueRegistry[OWLDisjointUnionAnalysisRule.rulename] = OWLDisjointUnionAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis:
-								issueRegistry[OWLEquivalentClassesAnalysisRule.rulename] = OWLEquivalentClassesAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis:
-								issueRegistry[OWLEquivalentDataPropertiesAnalysisRule.rulename] = OWLEquivalentDataPropertiesAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis:
-								issueRegistry[OWLEquivalentObjectPropertiesAnalysisRule.rulename] = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis:
-								issueRegistry[OWLFunctionalDataPropertyAnalysisRule.rulename] = OWLFunctionalDataPropertyAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis:
-								issueRegistry[OWLFunctionalObjectPropertyAnalysisRule.rulename] = OWLFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.HasKeyAnalysis:
-								issueRegistry[OWLHasKeyAnalysisRule.rulename] = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.InverseFunctionalObjectPropertyAnalysis:
-								issueRegistry[OWLInverseFunctionalObjectPropertyAnalysisRule.rulename] = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis:
-								issueRegistry[OWLIrreflexiveObjectPropertyAnalysisRule.rulename] = OWLIrreflexiveObjectPropertyAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis:
-								issueRegistry[OWLNegativeDataAssertionsAnalysisRule.rulename] = OWLNegativeDataAssertionsAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis:
-								issueRegistry[OWLNegativeObjectAssertionsAnalysisRule.rulename] = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis:
-								issueRegistry[OWLObjectPropertyChainAnalysisRule.rulename] = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis:
-								issueRegistry[OWLObjectPropertyDomainAnalysisRule.rulename] = OWLObjectPropertyDomainAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis:
-								issueRegistry[OWLObjectPropertyRangeAnalysisRule.rulename] = OWLObjectPropertyRangeAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.SubClassOfAnalysis:
-								issueRegistry[OWLSubClassOfAnalysisRule.rulename] = OWLSubClassOfAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis:
-								issueRegistry[OWLSubDataPropertyOfAnalysisRule.rulename] = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.SubObjectPropertyOfAnalysis:
-								issueRegistry[OWLSubObjectPropertyOfAnalysisRule.rulename] = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis:
-								issueRegistry[OWLTermsDeprecationAnalysisRule.rulename] = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology);
-								break;
-							case OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis:
-								issueRegistry[OWLTermsDisjointnessAnalysisRule.rulename] = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
-								break;
-                            case OWLEnums.OWLValidatorRules.ThingNothingAnalysis:
-                                issueRegistry[OWLThingNothingAnalysisRule.rulename] = OWLThingNothingAnalysisRule.ExecuteRule(ontology);
-                                break;
-							case OWLEnums.OWLValidatorRules.TopBottomAnalysis:
-                                issueRegistry[OWLTopBottomAnalysisRule.rulename] = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
-                                break;
-                        }
-
-						OWLEvents.RaiseInfo($"Completed rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
-					}));
+					OWLEvents.RaiseInfo($"Completed OWL2 rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
+				});
 
                 //Process issues registry
                 await Task.Run(() => 
 				{
-					issues.AddRange(issueRegistry.SelectMany(ir => ir.Value));
+					issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
 					issueRegistry.Clear();
 				});           
 
-                OWLEvents.RaiseInfo($"Completed validator on ontology {ontology.IRI} => {issues.Count} issues");
+                OWLEvents.RaiseInfo($"Completed OWL2 validator on ontology {ontology.IRI} => {issues.Count} issues");
             }
 
             return issues;
