@@ -19,6 +19,7 @@ using OWLSharp.Ontology.Helpers;
 using OWLSharp.Reasoner;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SWRL.Reasoner
@@ -32,6 +33,15 @@ namespace OWLSharp.Extensions.SWRL.Reasoner
         #region Ctors
         public SWRLReasoner()
             => Rules = new List<SWRLRule>();
+        #endregion
+
+        #region Interfaces
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            Rules.ForEach(rule => sb.AppendLine(rule.ToString()));
+            return sb.ToString();
+        }
         #endregion
 
         #region Methods
