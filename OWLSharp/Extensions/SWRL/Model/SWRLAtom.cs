@@ -50,13 +50,6 @@ namespace OWLSharp.Extensions.SWRL.Model
         {
             StringBuilder sb = new StringBuilder();
 
-            //Negation (Opening)
-            if (this is SWRLNegativeClassAtom
-                 || this is SWRLNegativeDataRangeAtom
-                 || this is SWRLNegativeDataPropertyAtom 
-                 || this is SWRLNegativeObjectPropertyAtom)
-                sb.Append("not(");
-
             //Predicate
             sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
 
@@ -73,13 +66,6 @@ namespace OWLSharp.Extensions.SWRL.Model
                     sb.Append($",{RDFQueryPrinter.PrintPatternMember(RightArgument, RDFNamespaceRegister.Instance.Register)}");
             }
             sb.Append(")");
-
-            //Negation (Closure)
-            if (this is SWRLNegativeClassAtom
-                 || this is SWRLNegativeDataRangeAtom
-                 || this is SWRLNegativeDataPropertyAtom
-                 || this is SWRLNegativeObjectPropertyAtom) 
-                sb.Append(")");
 
             return sb.ToString();
         }

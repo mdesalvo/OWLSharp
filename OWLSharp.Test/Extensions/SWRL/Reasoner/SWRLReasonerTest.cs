@@ -98,7 +98,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Reasoner
         }
 
 		[TestMethod]
-        public async Task HarryPotterReasoningExample()
+        public async Task HarryPotterSWRLAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("http://harrypotter.com/ont"))
             {
@@ -107,9 +107,11 @@ namespace OWLSharp.Test.Extensions.SWRL.Reasoner
 					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows"))),
 					new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://harrypotter.com/loves"))),
 					new OWLDeclaration(new OWLDataProperty(new RDFResource("http://harrypotter.com/hasRedHair"))),
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://harrypotter.com/hasName"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HarryPotter"))),
 					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://harrypotter.com/RonWesley"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HermioneGrangers")))
+					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HermioneGrangers"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://harrypotter.com/AlbusSilente")))
                 ],
                 AssertionAxioms = [
 					new OWLClassAssertion(
@@ -121,6 +123,9 @@ namespace OWLSharp.Test.Extensions.SWRL.Reasoner
 					new OWLClassAssertion(
 						new OWLClass(new RDFResource("http://harrypotter.com/Wizard")),
 						new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HermioneGrangers"))),
+                    new OWLClassAssertion(
+                        new OWLClass(new RDFResource("http://harrypotter.com/Wizard")),
+                        new OWLNamedIndividual(new RDFResource("http://harrypotter.com/AlbusSilente"))),
                     new OWLObjectPropertyAssertion(
 						new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HarryPotter")),
@@ -129,7 +134,11 @@ namespace OWLSharp.Test.Extensions.SWRL.Reasoner
 						new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HarryPotter")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HermioneGrangers"))),
-					new OWLObjectPropertyAssertion(
+                        new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")),
+                        new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HarryPotter")),
+                        new OWLNamedIndividual(new RDFResource("http://harrypotter.com/AlbusSilente"))),
+                    new OWLObjectPropertyAssertion(
 						new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/RonWesley")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HarryPotter"))),
@@ -153,14 +162,22 @@ namespace OWLSharp.Test.Extensions.SWRL.Reasoner
 						new OWLDataProperty(new RDFResource("http://harrypotter.com/hasRedHair")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/RonWesley")),
                         new OWLLiteral(RDFTypedLiteral.True)),
-					new OWLNegativeDataPropertyAssertion(
-						new OWLDataProperty(new RDFResource("http://harrypotter.com/hasRedHair")),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://harrypotter.com/hasName")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HarryPotter")),
-                        new OWLLiteral(RDFTypedLiteral.True)),
-					new OWLNegativeDataPropertyAssertion(
-						new OWLDataProperty(new RDFResource("http://harrypotter.com/hasRedHair")),
+                        new OWLLiteral(new RDFPlainLiteral("Harry Potter", "en-US"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://harrypotter.com/hasName")),
+                        new OWLNamedIndividual(new RDFResource("http://harrypotter.com/RonWesley")),
+                        new OWLLiteral(new RDFPlainLiteral("Ron Wesley", "en-US"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://harrypotter.com/hasName")),
                         new OWLNamedIndividual(new RDFResource("http://harrypotter.com/HermioneGrangers")),
-                        new OWLLiteral(RDFTypedLiteral.True)),
+                        new OWLLiteral(new RDFPlainLiteral("Hermione Grangers", "en-US"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://harrypotter.com/hasName")),
+                        new OWLNamedIndividual(new RDFResource("http://harrypotter.com/AlbusSilente")),
+                        new OWLLiteral(new RDFPlainLiteral("Albus Percival Wulfric Brian Silente", "en-US")))
                 ]
             };
             string ontString = OWLSerializer.SerializeOntology(ontology);
@@ -169,7 +186,7 @@ namespace OWLSharp.Test.Extensions.SWRL.Reasoner
 				Rules = [
 					new SWRLRule(
 						new Uri("http://harrypotter.com/HogwardsRule1"), 
-						"Wizards knowing Harry Potter and having red hair are aliases of Ron Wesley",
+						"Wizards knowing Harry Potter and having red hair know AlbusSilente",
 						new SWRLAntecedent() { 
 							Atoms = [
 								new SWRLClassAtom(new OWLClass(new RDFResource("http://harrypotter.com/Wizard")), new RDFVariable("?W")),
@@ -178,24 +195,24 @@ namespace OWLSharp.Test.Extensions.SWRL.Reasoner
 							] },
 						new SWRLConsequent() { 
 							Atoms = [
-								new SWRLSameAsAtom(new RDFVariable("?W"), new RDFResource("http://harrypotter.com/RonWesley"))
+								new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")), new RDFVariable("?W"), new RDFResource("http://harrypotter.com/AlbusSilente"))
 							] }),
 					new SWRLRule(
-						new Uri("ex:HogwardsRule2"), 
-						"Wizards knowing Harry Potter and not having red hair and loving Ron Wesley and having 'Hermione' in their IRIs are aliases of Hermione Grangers",
+						new Uri("ex:HogwardsRule2"),
+                        "Wizards knowing Harry Potter and loving Ron Wesley and having 'hermione' in their name know AlbusSilente",
 						new SWRLAntecedent() { 
 							Atoms = [
-								new SWRLClassAtom(new OWLClass(new RDFResource("http://harrypotter.com/Wizard")), new RDFVariable("?WIZ")),
-								new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")), new RDFVariable("?WIZ"), new RDFResource("http://harrypotter.com/HarryPotter")),
-								new SWRLNegativeDataPropertyAtom(new OWLDataProperty(new RDFResource("http://harrypotter.com/hasRedHair")), new RDFVariable("?WIZ"), RDFTypedLiteral.True),
-								new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("http://harrypotter.com/loves")), new RDFVariable("?WIZ"), new RDFResource("http://harrypotter.com/RonWesley")),
-								new SWRLContainsIgnoreCaseBuiltIn(new RDFVariable("?WIZ"), "hermione")
+								new SWRLClassAtom(new OWLClass(new RDFResource("http://harrypotter.com/Wizard")), new RDFVariable("?W")),
+								new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")), new RDFVariable("?W"), new RDFResource("http://harrypotter.com/HarryPotter")),
+								new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("http://harrypotter.com/loves")), new RDFVariable("?W"), new RDFResource("http://harrypotter.com/RonWesley")),
+								new SWRLDataPropertyAtom(new OWLDataProperty(new RDFResource("http://harrypotter.com/hasName")), new RDFVariable("?W"), new RDFVariable("?N")),
+                                new SWRLContainsIgnoreCaseBuiltIn(new RDFVariable("?N"), "hermione")
 							] },
-						new SWRLConsequent() { 
-							Atoms = [
-								new SWRLSameAsAtom(new RDFVariable("?WIZ"), new RDFResource("http://harrypotter.com/HermioneGrangers"))
-							] })
-				]
+						new SWRLConsequent() {
+                            Atoms = [
+                                new SWRLObjectPropertyAtom(new OWLObjectProperty(new RDFResource("http://harrypotter.com/knows")), new RDFVariable("?W"), new RDFResource("http://harrypotter.com/AlbusSilente"))
+                            ] }),
+                ]
 			};
             string reasonerString = reasoner.ToString();
 
