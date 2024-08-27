@@ -16,7 +16,7 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
-using OWLSharp.Reasoner.Rules;
+using OWLSharp.Reasoner.RuleSet;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;

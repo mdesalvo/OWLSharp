@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Helpers;
-using OWLSharp.Reasoner.Rules;
+using OWLSharp.Reasoner.RuleSet;
 
 namespace OWLSharp.Reasoner
 {
