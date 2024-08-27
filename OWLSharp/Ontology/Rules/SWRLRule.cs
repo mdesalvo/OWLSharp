@@ -85,7 +85,7 @@ namespace OWLSharp.Ontology.Rules
             return RuleXML;
         }
 
-        public Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
+        internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
 			=> Task.Run(() => Consequent.Evaluate(Antecedent.Evaluate(ontology), ontology));
         #endregion
     }

@@ -14,14 +14,18 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
+using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
 using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
+using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
@@ -130,6 +134,52 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsTrue(string.Equals(
 @"<DLSafeRule><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal>SWRL1</Literal></Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>This is a test SWRL rule</Literal></Annotation><Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Body><Head><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Head></DLSafeRule>", rule.GetXML()));
+        }
+
+        [TestMethod]
+        public async Task ShouldApplySWRLRuleToOntologyAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.FOAF.PERSON),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
+                ],
+                Rules = [
+                    new SWRLRule(
+                        new RDFPlainLiteral("SWRL1"),
+                        new RDFPlainLiteral("This is a test SWRL rule"),
+                        new SWRLAntecedent()
+                        {
+                            Atoms = [
+                                new SWRLClassAtom(
+                                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                                    new SWRLVariableArgument(new RDFVariable("?P")))
+                            ]
+                        },
+                        new SWRLConsequent()
+                        {
+                            Atoms = [
+                                new SWRLClassAtom(
+                                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                                    new SWRLVariableArgument(new RDFVariable("?P")))
+                            ]
+                        })
+                ]
+            };
+            List<OWLInference> inferences = await ontology.Rules[0].ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
+                            && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
+                            && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
         }
         #endregion
     }
