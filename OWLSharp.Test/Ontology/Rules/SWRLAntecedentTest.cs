@@ -24,7 +24,7 @@ using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
 using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
-using OWLSharp.Reasoner;
+using OWLSharp.Ontology.Rules.BuiltIns;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
@@ -54,10 +54,13 @@ namespace OWLSharp.Test.Ontology.Rules
                         new SWRLVariableArgument(new RDFVariable("?P"))),
                     new SWRLDataRangeAtom(
                         new OWLDatatype(RDFVocabulary.XSD.INTEGER),
-                        new SWRLVariableArgument(new RDFVariable("?X")))
+                        new SWRLVariableArgument(new RDFVariable("?X"))),
+                    new SWRLEndsWithBuiltIn(
+                        new SWRLVariableArgument(new RDFVariable("?P")),
+                        "Mark")
                 ] };
 
-            Assert.IsTrue(string.Equals("Person(?P) ^ integer(?X)", antecedent.ToString()));
+            Assert.IsTrue(string.Equals("Person(?P) ^ integer(?X) ^ swrlb:endsWith(?P,\"Mark\")", antecedent.ToString()));
         }
 
         [TestMethod]
