@@ -4414,6 +4414,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
             Assert.IsTrue(ontology.KeyAxioms.Count == 0);
             Assert.IsTrue(ontology.Prefixes.Count == 5);
+            Assert.IsTrue(ontology.Rules.Count == 0);
         }
 
         [TestMethod]
