@@ -51,10 +51,16 @@ namespace OWLSharp.Ontology.Rules
     [XmlRoot("BuiltInAtom")]
     public abstract class SWRLBuiltIn : SWRLAtom
     {
+        #region Properties
+        [XmlAttribute("IRI", DataType="anyURI")]
+        public string IRI { get; set; }
+        #endregion
+
         #region Ctors
         internal SWRLBuiltIn() { }
         internal SWRLBuiltIn(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
-            : base(predicate, leftArgument, rightArgument) { }
+            : base(predicate, leftArgument, rightArgument) 
+            => IRI = predicate?.GetIRI().ToString();
         #endregion
 
         #region Methods
