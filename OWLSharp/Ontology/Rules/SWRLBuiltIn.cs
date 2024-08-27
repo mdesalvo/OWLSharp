@@ -60,7 +60,7 @@ namespace OWLSharp.Ontology.Rules
         internal SWRLBuiltIn() { }
         internal SWRLBuiltIn(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
             : base(predicate, leftArgument, rightArgument) 
-            => IRI = predicate?.GetIRI().ToString();
+            => IRI = predicate.GetIRI().ToString();
         #endregion
 
         #region Methods
