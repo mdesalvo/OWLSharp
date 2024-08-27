@@ -22,6 +22,7 @@ using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Rules
@@ -37,6 +38,37 @@ namespace OWLSharp.Ontology.Rules
     public abstract class SWRLAtom
     {
         #region Properties
+        //Register here all derived types of OWLExpression (in scope of SWRL)
+        //ClassExpression
+        [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
+        [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
+        [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=1)]
+        [XmlElement(typeof(OWLObjectComplementOf), ElementName="ObjectComplementOf", Order=1)]
+        [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=1)]
+        [XmlElement(typeof(OWLObjectSomeValuesFrom), ElementName="ObjectSomeValuesFrom", Order=1)]
+        [XmlElement(typeof(OWLObjectAllValuesFrom), ElementName="ObjectAllValuesFrom", Order=1)]
+        [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue", Order=1)]
+        [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf", Order=1)]
+        [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality", Order=1)]
+        [XmlElement(typeof(OWLObjectMaxCardinality), ElementName="ObjectMaxCardinality", Order=1)]
+        [XmlElement(typeof(OWLObjectExactCardinality), ElementName="ObjectExactCardinality", Order=1)]
+        [XmlElement(typeof(OWLDataSomeValuesFrom), ElementName="DataSomeValuesFrom", Order=1)]
+        [XmlElement(typeof(OWLDataAllValuesFrom), ElementName="DataAllValuesFrom", Order=1)]
+        [XmlElement(typeof(OWLDataHasValue), ElementName="DataHasValue", Order=1)]
+        [XmlElement(typeof(OWLDataMinCardinality), ElementName="DataMinCardinality", Order=1)]
+        [XmlElement(typeof(OWLDataMaxCardinality), ElementName="DataMaxCardinality", Order=1)]
+        [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=1)]
+        //DataRangeExpression
+        [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=1)]
+        [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=1)]
+        [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=1)]
+        [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf", Order=1)]
+        [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf", Order=1)]
+        [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=1)]
+        //DataProperty
+        [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
+        //ObjectProperty
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         public OWLExpression Predicate { get; internal set; }
 
         public RDFPatternMember LeftArgument { get; internal set; }

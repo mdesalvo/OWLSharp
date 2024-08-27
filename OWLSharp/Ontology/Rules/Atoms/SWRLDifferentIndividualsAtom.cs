@@ -31,7 +31,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
     [XmlRoot("DifferentIndividualsAtom")]
     public class SWRLDifferentIndividualsAtom : SWRLAtom
     {
-        internal static readonly OWLObjectProperty DifferentFrom = new OWLObjectProperty(RDFVocabulary.OWL.DIFFERENT_FROM);
+        internal static readonly OWLExpression DifferentFrom = new OWLExpression() { ExpressionIRI = RDFVocabulary.OWL.DIFFERENT_FROM };
 
         #region Ctors
         public SWRLDifferentIndividualsAtom(RDFVariable leftArgument, RDFVariable rightArgument)
