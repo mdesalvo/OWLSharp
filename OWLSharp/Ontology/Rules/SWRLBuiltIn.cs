@@ -17,7 +17,6 @@
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules.BuiltIns;
 using OWLSharp.Reasoner;
-using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml.Serialization;
@@ -25,13 +24,35 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology.Rules
 {
     //Register here all derived types of SWRLBuiltIn
-    [XmlInclude(typeof(SWRLFilterBuiltIn))]
-    [XmlInclude(typeof(SWRLMathBuiltIn))]
+    [XmlInclude(typeof(SWRLAbsBuiltIn))]
+    [XmlInclude(typeof(SWRLAddBuiltIn))]
+    [XmlInclude(typeof(SWRLCeilingBuiltIn))]
+    [XmlInclude(typeof(SWRLContainsBuiltIn))]
+    [XmlInclude(typeof(SWRLContainsIgnoreCaseBuiltIn))]
+    [XmlInclude(typeof(SWRLCosBuiltIn))]
+    [XmlInclude(typeof(SWRLDivideBuiltIn))]
+    [XmlInclude(typeof(SWRLEndsWithBuiltIn))]
+    [XmlInclude(typeof(SWRLEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLFloorBuiltIn))]
+    [XmlInclude(typeof(SWRLGreaterThanBuiltIn))]
+    [XmlInclude(typeof(SWRLGreaterThanOrEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLLessThanBuiltIn))]
+    [XmlInclude(typeof(SWRLLessThanOrEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLMatchesBuiltIn))]
+    [XmlInclude(typeof(SWRLMultiplyBuiltIn))]
+    [XmlInclude(typeof(SWRLNotEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLPowBuiltIn))]
+    [XmlInclude(typeof(SWRLRoundBuiltIn))]
+    [XmlInclude(typeof(SWRLRoundHalfToEvenBuiltIn))]
+    [XmlInclude(typeof(SWRLSinBuiltIn))]
+    [XmlInclude(typeof(SWRLStartsWithBuiltIn))]
+    [XmlInclude(typeof(SWRLSubtractBuiltIn))]
+    [XmlInclude(typeof(SWRLTanBuiltIn))]
     [XmlRoot("BuiltInAtom")]
     public abstract class SWRLBuiltIn : SWRLAtom
     {
         #region Ctors
-        internal SWRLBuiltIn(OWLExpression predicate, RDFPatternMember leftArgument, RDFPatternMember rightArgument)
+        internal SWRLBuiltIn(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
             : base(predicate, leftArgument, rightArgument) { }
         #endregion
 

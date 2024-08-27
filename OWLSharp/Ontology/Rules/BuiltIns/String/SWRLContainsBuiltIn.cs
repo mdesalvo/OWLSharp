@@ -12,6 +12,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Text.RegularExpressions;
@@ -25,7 +26,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
-        public SWRLContainsBuiltIn(RDFVariable leftArgument, string containString)
+        public SWRLContainsBuiltIn(SWRLVariableArgument leftArgument, string containString)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, null)
         {
             #region Guards
@@ -33,8 +34,8 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
                 throw new OWLException("Cannot create built-in because given \"containString\" parameter is null");
             #endregion
 
-            RightArgument = new RDFPlainLiteral(containString);
-            BuiltInFilter = new RDFRegexFilter(leftArgument, new Regex($"{containString}"));
+            RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(containString));
+            BuiltInFilter = new RDFRegexFilter(leftArgument.GetVariable(), new Regex($"{containString}"));
         }
         #endregion
     }

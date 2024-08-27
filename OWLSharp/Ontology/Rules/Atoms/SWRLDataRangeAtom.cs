@@ -17,6 +17,7 @@
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Reasoner;
 using RDFSharp.Query;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
     public class SWRLDataRangeAtom : SWRLAtom
     {
         #region Ctors
-        public SWRLDataRangeAtom(OWLDataRangeExpression datarangeExpression, RDFVariable leftArgument)
+        public SWRLDataRangeAtom(OWLDataRangeExpression datarangeExpression, SWRLVariableArgument leftArgument)
             : base(datarangeExpression, leftArgument, null) { }
         #endregion
 

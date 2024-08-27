@@ -13,8 +13,8 @@
 
 using System.Text;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using RDFSharp.Model;
-using RDFSharp.Query;
 
 namespace OWLSharp.Ontology.Rules.BuiltIns
 {
@@ -40,7 +40,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
-        public SWRLCosBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument)
+        public SWRLCosBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, double.NaN)
         {
             #region Guards

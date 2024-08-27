@@ -15,7 +15,9 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
+using OWLSharp.Ontology.Rules.BuiltIns;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -28,18 +30,40 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology.Rules
 {
     //Register here all derived types of SWRLAtom
-    [XmlInclude(typeof(SWRLBuiltIn))]
     [XmlInclude(typeof(SWRLClassAtom))]
     [XmlInclude(typeof(SWRLDataPropertyAtom))]
     [XmlInclude(typeof(SWRLDataRangeAtom))]
     [XmlInclude(typeof(SWRLDifferentIndividualsAtom))]
     [XmlInclude(typeof(SWRLObjectPropertyAtom))]
     [XmlInclude(typeof(SWRLSameIndividualAtom))]
+    //Register here all derived types of SWRLBuiltIn
+    [XmlInclude(typeof(SWRLAbsBuiltIn))]
+    [XmlInclude(typeof(SWRLAddBuiltIn))]
+    [XmlInclude(typeof(SWRLCeilingBuiltIn))]
+    [XmlInclude(typeof(SWRLContainsBuiltIn))]
+    [XmlInclude(typeof(SWRLContainsIgnoreCaseBuiltIn))]
+    [XmlInclude(typeof(SWRLCosBuiltIn))]
+    [XmlInclude(typeof(SWRLDivideBuiltIn))]
+    [XmlInclude(typeof(SWRLEndsWithBuiltIn))]
+    [XmlInclude(typeof(SWRLEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLFloorBuiltIn))]
+    [XmlInclude(typeof(SWRLGreaterThanBuiltIn))]
+    [XmlInclude(typeof(SWRLGreaterThanOrEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLLessThanBuiltIn))]
+    [XmlInclude(typeof(SWRLLessThanOrEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLMatchesBuiltIn))]
+    [XmlInclude(typeof(SWRLMultiplyBuiltIn))]
+    [XmlInclude(typeof(SWRLNotEqualBuiltIn))]
+    [XmlInclude(typeof(SWRLPowBuiltIn))]
+    [XmlInclude(typeof(SWRLRoundBuiltIn))]
+    [XmlInclude(typeof(SWRLRoundHalfToEvenBuiltIn))]
+    [XmlInclude(typeof(SWRLSinBuiltIn))]
+    [XmlInclude(typeof(SWRLStartsWithBuiltIn))]
+    [XmlInclude(typeof(SWRLSubtractBuiltIn))]
+    [XmlInclude(typeof(SWRLTanBuiltIn))]
     public abstract class SWRLAtom
     {
         #region Properties
-        //Register here all derived types of OWLExpression (in scope of SWRL)
-        //ClassExpression
         [XmlElement(typeof(OWLClass), ElementName="Class", Order=1)]
         [XmlElement(typeof(OWLObjectIntersectionOf), ElementName="ObjectIntersectionOf", Order=1)]
         [XmlElement(typeof(OWLObjectUnionOf), ElementName="ObjectUnionOf", Order=1)]
@@ -58,26 +82,29 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(OWLDataMinCardinality), ElementName="DataMinCardinality", Order=1)]
         [XmlElement(typeof(OWLDataMaxCardinality), ElementName="DataMaxCardinality", Order=1)]
         [XmlElement(typeof(OWLDataExactCardinality), ElementName="DataExactCardinality", Order=1)]
-        //DataRangeExpression
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=1)]
         [XmlElement(typeof(OWLDataIntersectionOf), ElementName="DataIntersectionOf", Order=1)]
         [XmlElement(typeof(OWLDataUnionOf), ElementName="DataUnionOf", Order=1)]
         [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf", Order=1)]
         [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf", Order=1)]
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=1)]
-        //DataProperty
         [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
-        //ObjectProperty
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         public OWLExpression Predicate { get; internal set; }
 
-        public RDFPatternMember LeftArgument { get; internal set; }
+        [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
+        [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]
+        [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=2)]
+        public SWRLArgument LeftArgument { get; internal set; }
 
-        public RDFPatternMember RightArgument { get; internal set; }
+        [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=3)]
+        [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=3)]
+        [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=3)]
+        public SWRLArgument RightArgument { get; internal set; }
         #endregion
 
         #region Ctors
-        internal SWRLAtom(OWLExpression predicate, RDFPatternMember leftArgument, RDFPatternMember rightArgument)
+        internal SWRLAtom(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             Predicate = predicate ?? throw new OWLException("Cannot create atom because given \"predicate\" parameter is null");
             LeftArgument = leftArgument ?? throw new OWLException("Cannot create atom because given \"leftArgument\" parameter is null");
@@ -94,16 +121,20 @@ namespace OWLSharp.Ontology.Rules
             sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
 
             //Arguments
-            sb.Append($"({LeftArgument}");
+            if (LeftArgument is SWRLIndividualArgument leftArgumentIndividual)
+                sb.Append($"({RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
+            else if (LeftArgument is SWRLLiteralArgument leftArgumentLiteral)
+                sb.Append($"({RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
+            else if (LeftArgument is SWRLVariableArgument leftArgumentVariable)
+                sb.Append($"({RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
             if (RightArgument != null)
             {
-                //When the right argument is a resource, it is printed in a SWRL-shortened form
-                if (RightArgument is RDFResource rightArgumentResource)
-                    sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentResource.URI)}");
-
-                //Other cases of right argument (variable, literal) are printed in normal form
-                else
-                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(RightArgument, RDFNamespaceRegister.Instance.Register)}");
+                if (RightArgument is SWRLIndividualArgument rightArgumentIndividual)
+                    sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentIndividual.GetResource().URI)}");
+                else if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
+                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
+                else if (RightArgument is SWRLVariableArgument rightArgumentVariable)
+                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
             }
             sb.Append(")");
 

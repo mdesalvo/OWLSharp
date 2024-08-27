@@ -17,6 +17,7 @@
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -34,7 +35,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
         internal static readonly OWLExpression SameAs = new OWLExpression() { ExpressionIRI = RDFVocabulary.OWL.SAME_AS };
 
         #region Ctors
-        public SWRLSameIndividualAtom(RDFVariable leftArgument, RDFVariable rightArgument)
+        public SWRLSameIndividualAtom(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(SameAs, leftArgument, rightArgument)
         {
             #region Guards
@@ -43,7 +44,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
             #endregion
         }
 
-        public SWRLSameIndividualAtom(RDFVariable leftArgument, RDFResource rightArgument)
+        public SWRLSameIndividualAtom(SWRLVariableArgument leftArgument, SWRLIndividualArgument rightArgument)
             : base(SameAs, leftArgument, rightArgument)
         {
             #region Guards
@@ -62,18 +63,18 @@ namespace OWLSharp.Ontology.Rules.Atoms
             //Initialize the structure of the atom result
             DataTable atomResult = new DataTable();
             RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
-            if (RightArgument is RDFVariable)
+            if (RightArgument is SWRLVariableArgument)
                 RDFQueryEngine.AddColumn(atomResult, rightArgumentString);
 
             //In case the atom's right argument is an individual, directly enlist its same individuals
-            if (RightArgument is RDFResource rightArgumentIndividual)
+            if (RightArgument is SWRLIndividualArgument rightArgumentIndividual)
             {
                 //Build the atom's right argument individual
                 OWLIndividualExpression rightArgumentIdvExpr;
-                if (rightArgumentIndividual.IsBlank)
+                if (rightArgumentIndividual.GetResource().IsBlank)
                     rightArgumentIdvExpr = new OWLAnonymousIndividual(rightArgumentIndividual.ToString().Substring(6));
                 else
-                    rightArgumentIdvExpr = new OWLNamedIndividual(rightArgumentIndividual);
+                    rightArgumentIdvExpr = new OWLNamedIndividual(rightArgumentIndividual.GetResource());
 
                 //Calculate same individuals of the atom's right argument
                 List<OWLIndividualExpression> sameIndividuals = ontology.GetSameIndividuals(rightArgumentIdvExpr);
@@ -132,7 +133,8 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 return inferences;
 
             //The antecedent results table MUST have a column corresponding to the atom's right argument (if variable)
-            if (RightArgument is RDFVariable && !antecedentResults.Columns.Contains(rightArgumentString))
+            if (RightArgument is SWRLVariableArgument 
+                    && !antecedentResults.Columns.Contains(rightArgumentString))
                 return inferences;
             #endregion
 
@@ -148,7 +150,8 @@ namespace OWLSharp.Ontology.Rules.Atoms
                     continue;
 
                 //The current row MUST have a BOUND value in the column corresponding to the atom's right argument (if variable)
-                if (this.RightArgument is RDFVariable && currentRow.IsNull(rightArgumentString))
+                if (this.RightArgument is SWRLVariableArgument 
+                        && currentRow.IsNull(rightArgumentString))
                     continue;
                 #endregion
 
@@ -156,8 +159,8 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 RDFPatternMember leftArgumentValue = RDFQueryUtilities.ParseRDFPatternMember(currentRow[leftArgumentString].ToString());
 
                 //Parse the value of the column corresponding to the atom's right argument
-                RDFPatternMember rightArgumentValue = RightArgument is RDFVariable ? RDFQueryUtilities.ParseRDFPatternMember(currentRow[rightArgumentString].ToString())
-                                                                                   : RightArgument; //Resource
+                RDFPatternMember rightArgumentValue = RightArgument is SWRLVariableArgument ? RDFQueryUtilities.ParseRDFPatternMember(currentRow[rightArgumentString].ToString())
+                                                                                            : ((SWRLIndividualArgument)RightArgument).GetResource(); //Resource
 
                 if (leftArgumentValue is RDFResource leftArgumentValueResource
                      && rightArgumentValue is RDFResource rightArgumentValueResource)

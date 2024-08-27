@@ -12,6 +12,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Text;
@@ -26,7 +27,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
-        public SWRLMatchesBuiltIn(RDFVariable leftArgument, Regex matchesRegex)
+        public SWRLMatchesBuiltIn(SWRLVariableArgument leftArgument, Regex matchesRegex)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, null)
         {
             #region Guards
@@ -43,9 +44,9 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
                 regexFlags.Append('m');
             if (matchesRegex.Options.HasFlag(RegexOptions.IgnorePatternWhitespace))
                 regexFlags.Append('x');
-            RightArgument = string.IsNullOrEmpty(regexFlags.ToString()) ? new RDFPlainLiteral($"{matchesRegex}") 
-                                                                        : new RDFPlainLiteral($"{matchesRegex}\",\"{regexFlags}");
-            BuiltInFilter = new RDFRegexFilter(leftArgument, matchesRegex);
+            RightArgument = string.IsNullOrEmpty(regexFlags.ToString()) ? new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}")) 
+                                                                        : new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}\",\"{regexFlags}"));
+            BuiltInFilter = new RDFRegexFilter(leftArgument.GetVariable(), matchesRegex);
         }
         #endregion
     }

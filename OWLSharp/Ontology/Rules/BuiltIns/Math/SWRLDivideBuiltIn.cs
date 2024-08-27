@@ -12,8 +12,8 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using RDFSharp.Model;
-using RDFSharp.Query;
 
 namespace OWLSharp.Ontology.Rules.BuiltIns
 {
@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
-        public SWRLDivideBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument, double divideValue)
+        public SWRLDivideBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double divideValue)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, divideValue)
         {
             #region Guards

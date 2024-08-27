@@ -12,6 +12,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Text.RegularExpressions;
@@ -25,7 +26,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
-        public SWRLEndsWithBuiltIn(RDFVariable leftArgument, string endString)
+        public SWRLEndsWithBuiltIn(SWRLVariableArgument leftArgument, string endString)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, null)
         {
             #region Guards
@@ -33,8 +34,8 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
                 throw new OWLException("Cannot create built-in because given \"endString\" parameter is null");
             #endregion
 
-            RightArgument = new RDFPlainLiteral(endString);
-            BuiltInFilter = new RDFRegexFilter(leftArgument, new Regex($"{endString}$"));
+            RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(endString));
+            BuiltInFilter = new RDFRegexFilter(leftArgument.GetVariable(), new Regex($"{endString}$"));
         }
         #endregion
     }

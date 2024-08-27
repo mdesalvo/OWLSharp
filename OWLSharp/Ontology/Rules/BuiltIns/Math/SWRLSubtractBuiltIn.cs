@@ -12,8 +12,8 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using RDFSharp.Model;
-using RDFSharp.Query;
 
 namespace OWLSharp.Ontology.Rules.BuiltIns
 {
@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
-        public SWRLSubtractBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument, double subtractValue)
+        public SWRLSubtractBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double subtractValue)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, subtractValue)
         {
             #region Guards

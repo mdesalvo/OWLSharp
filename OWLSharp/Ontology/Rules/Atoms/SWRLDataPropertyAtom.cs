@@ -17,6 +17,7 @@
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
+using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -32,7 +33,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
     public class SWRLDataPropertyAtom : SWRLAtom
     {
         #region Ctors
-        public SWRLDataPropertyAtom(OWLDataProperty dataProperty, RDFVariable leftArgument, RDFVariable rightArgument)
+        public SWRLDataPropertyAtom(OWLDataProperty dataProperty, SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(dataProperty, leftArgument, rightArgument) 
         {
             #region Guards
@@ -41,7 +42,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
             #endregion
         }
 
-        public SWRLDataPropertyAtom(OWLDataProperty dataProperty, RDFVariable leftArgument, RDFLiteral rightArgument)
+        public SWRLDataPropertyAtom(OWLDataProperty dataProperty, SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
             : base(dataProperty, leftArgument, rightArgument) 
         {
             #region Guards
@@ -60,14 +61,14 @@ namespace OWLSharp.Ontology.Rules.Atoms
             //Initialize the structure of the atom result
             DataTable atomResult = new DataTable();
             RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
-            if (RightArgument is RDFVariable)
+            if (RightArgument is SWRLVariableArgument)
                 RDFQueryEngine.AddColumn(atomResult, rightArgumentString);
 
             //Extract data property assertions of the atom predicate
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLDataPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, (OWLDataProperty)Predicate);
-            if (RightArgument is RDFLiteral rightArgumentLiteral)
-                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.Literal.GetLiteral().Equals(rightArgumentLiteral))
+            if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
+                atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.Literal.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()))
 																 .ToList();
 
             //Save them into the atom result
@@ -75,7 +76,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
             foreach (OWLDataPropertyAssertion atomPredicateAssertion in atomPredicateAssertions)
             {   
                 atomResultBindings.Add(leftArgumentString, atomPredicateAssertion.IndividualExpression.GetIRI().ToString());
-                if (RightArgument is RDFVariable)
+                if (RightArgument is SWRLVariableArgument)
                     atomResultBindings.Add(rightArgumentString, atomPredicateAssertion.Literal.GetLiteral().ToString());
 
                 RDFQueryEngine.AddRow(atomResult, atomResultBindings);
@@ -100,7 +101,8 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 return inferences;
 
             //The antecedent results table MUST have a column corresponding to the atom's right argument (if variable)
-            if (RightArgument is RDFVariable && !antecedentResults.Columns.Contains(rightArgumentString))
+            if (RightArgument is SWRLVariableArgument 
+                    && !antecedentResults.Columns.Contains(rightArgumentString))
                 return inferences;
             #endregion
 
@@ -116,7 +118,8 @@ namespace OWLSharp.Ontology.Rules.Atoms
                     continue;
 
                 //The current row MUST have a BOUND value in the column corresponding to the atom's right argument (if variable)
-                if (RightArgument is RDFVariable && currentRow.IsNull(rightArgumentString))
+                if (RightArgument is SWRLVariableArgument 
+                        && currentRow.IsNull(rightArgumentString))
                     continue;
                 #endregion
 
@@ -124,8 +127,8 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 RDFPatternMember leftArgumentValue = RDFQueryUtilities.ParseRDFPatternMember(currentRow[leftArgumentString].ToString());
 
                 //Parse the value of the column corresponding to the atom's right argument
-                RDFPatternMember rightArgumentValue = RightArgument is RDFVariable ? RDFQueryUtilities.ParseRDFPatternMember(currentRow[rightArgumentString].ToString())
-                                                                                   : RightArgument; //Literal
+                RDFPatternMember rightArgumentValue = RightArgument is SWRLVariableArgument ? RDFQueryUtilities.ParseRDFPatternMember(currentRow[rightArgumentString].ToString())
+                                                                                            : ((SWRLLiteralArgument)RightArgument).GetLiteral(); //Literal
 
                 if (leftArgumentValue is RDFResource leftArgumentValueResource
                      && rightArgumentValue is RDFLiteral rightArgumentValueLiteral)

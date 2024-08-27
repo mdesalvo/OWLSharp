@@ -12,6 +12,7 @@
 */
 
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
@@ -24,16 +25,16 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
-        public SWRLLessThanBuiltIn(RDFVariable leftArgument, RDFVariable rightArgument)
-            : this(leftArgument, rightArgument as RDFPatternMember) { }
+        public SWRLLessThanBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+            : this(leftArgument, rightArgument as SWRLArgument) { }
 
-        public SWRLLessThanBuiltIn(RDFVariable leftArgument, RDFResource rightArgument)
-            : this(leftArgument, rightArgument as RDFPatternMember) { }
+        public SWRLLessThanBuiltIn(SWRLVariableArgument leftArgument, SWRLIndividualArgument rightArgument)
+            : this(leftArgument, rightArgument as SWRLArgument) { }
 
-        public SWRLLessThanBuiltIn(RDFVariable leftArgument, RDFLiteral rightArgument)
-            : this(leftArgument, rightArgument as RDFPatternMember) { }
+        public SWRLLessThanBuiltIn(SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
+            : this(leftArgument, rightArgument as SWRLArgument) { }
 
-        internal SWRLLessThanBuiltIn(RDFVariable leftArgument, RDFPatternMember rightArgument)
+        internal SWRLLessThanBuiltIn(SWRLArgument leftArgument, SWRLArgument rightArgument)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument)
         {
             #region Guards
@@ -41,7 +42,10 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
 
-            BuiltInFilter = new RDFComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.LessThan, leftArgument, rightArgument);
+            BuiltInFilter = new RDFComparisonFilter(
+                RDFQueryEnums.RDFComparisonFlavors.LessThan, 
+                RDFQueryUtilities.ParseRDFPatternMember(leftArgument.ToString()), 
+                RDFQueryUtilities.ParseRDFPatternMember(rightArgument.ToString()));
         }
         #endregion
     }
