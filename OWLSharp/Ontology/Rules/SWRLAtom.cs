@@ -90,17 +90,17 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=1)]
         [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
-        public OWLExpression Predicate { get; internal set; }
+        public OWLExpression Predicate { get; set; }
 
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]
         [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=2)]
-        public SWRLArgument LeftArgument { get; internal set; }
+        public SWRLArgument LeftArgument { get; set; }
 
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=3)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=3)]
         [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=3)]
-        public SWRLArgument RightArgument { get; internal set; }
+        public SWRLArgument RightArgument { get; set; }
         #endregion
 
         #region Ctors

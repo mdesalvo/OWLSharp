@@ -32,7 +32,7 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(SWRLDifferentIndividualsAtom), ElementName="DifferentIndividualsAtom")]
         [XmlElement(typeof(SWRLObjectPropertyAtom), ElementName="ObjectPropertyAtom")]
         [XmlElement(typeof(SWRLSameIndividualAtom), ElementName="SameIndividualAtom")]
-        public List<SWRLAtom> Atoms { get; internal set; }
+        public List<SWRLAtom> Atoms { get; set; }
         #endregion
 
         #region Ctors

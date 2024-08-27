@@ -28,13 +28,13 @@ namespace OWLSharp.Ontology.Rules
     {
         #region Properties
         [XmlElement("Annotation")]
-        public List<OWLAnnotation> Annotations { get; internal set; }
+        public List<OWLAnnotation> Annotations { get; set; }
 
         [XmlElement("Body")]
-        public SWRLAntecedent Antecedent { get; internal set; }
+        public SWRLAntecedent Antecedent { get; set; }
 
         [XmlElement("Head")]
-        public SWRLConsequent Consequent { get; internal set; }
+        public SWRLConsequent Consequent { get; set; }
 
         [XmlIgnore]
         public bool IsImport { get; set; }
