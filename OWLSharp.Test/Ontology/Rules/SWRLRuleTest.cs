@@ -23,6 +23,7 @@ using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
 using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
+using OWLSharp.Ontology.Rules.BuiltIns;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -142,12 +143,17 @@ namespace OWLSharp.Test.Ontology.Rules
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
                         new OWLClass(RDFVocabulary.FOAF.PERSON),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                        new OWLLiteral(new RDFPlainLiteral("Mark", "en-US")))
                 ],
                 Rules = [
                     new SWRLRule(
@@ -158,7 +164,14 @@ namespace OWLSharp.Test.Ontology.Rules
                             Atoms = [
                                 new SWRLClassAtom(
                                     new OWLClass(RDFVocabulary.FOAF.PERSON),
-                                    new SWRLVariableArgument(new RDFVariable("?P")))
+                                    new SWRLVariableArgument(new RDFVariable("?P"))),
+                                new SWRLDataPropertyAtom(
+                                    new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+                                    new SWRLVariableArgument(new RDFVariable("?P")),
+                                    new SWRLVariableArgument(new RDFVariable("?N"))),
+                                new SWRLContainsIgnoreCaseBuiltIn(
+                                    new SWRLVariableArgument(new RDFVariable("?N")),
+                                    "Mark")
                             ]
                         },
                         new SWRLConsequent()
