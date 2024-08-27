@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 
 namespace OWLSharp.Test.Ontology
@@ -61,6 +62,8 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
 			Assert.IsNotNull(ontology.AnnotationAxioms);
 			Assert.IsTrue(ontology.AnnotationAxioms.Count == 0);
+            Assert.IsNotNull(ontology.Rules);
+            Assert.IsTrue(ontology.Rules.Count == 0);
         }
 
 		[TestMethod]
@@ -107,7 +110,8 @@ namespace OWLSharp.Test.Ontology
 				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
 			ontology.AnnotationAxioms.Add(
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			
+            ontology.Rules.Add(new SWRLRule());
+
 			//Test cloning an ontology
 			OWLOntology clonedOntology = new OWLOntology(ontology);
 			Assert.IsNotNull(clonedOntology);
@@ -135,9 +139,11 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(clonedOntology.AssertionAxioms.Count == 1);
 			Assert.IsNotNull(clonedOntology.AnnotationAxioms);
 			Assert.IsTrue(clonedOntology.AnnotationAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.Rules);
+            Assert.IsTrue(clonedOntology.Rules.Count == 1);
 
-			//Test cloning a null ontology
-			OWLOntology clonedEmptyOntology = new OWLOntology(null);
+            //Test cloning a null ontology
+            OWLOntology clonedEmptyOntology = new OWLOntology(null);
 			Assert.IsNotNull(clonedEmptyOntology);
             Assert.IsNull(clonedEmptyOntology.IRI);
 			Assert.IsNull(clonedEmptyOntology.VersionIRI);
@@ -163,6 +169,8 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(clonedEmptyOntology.AssertionAxioms.Count == 0);
 			Assert.IsNotNull(clonedEmptyOntology.AnnotationAxioms);
 			Assert.IsTrue(clonedEmptyOntology.AnnotationAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.Rules);
+            Assert.IsTrue(clonedEmptyOntology.Rules.Count == 0);
         }
 
 		[TestMethod]
