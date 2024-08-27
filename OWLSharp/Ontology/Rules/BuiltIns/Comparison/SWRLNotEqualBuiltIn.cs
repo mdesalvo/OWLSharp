@@ -34,6 +34,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         public SWRLNotEqualBuiltIn(SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
             : this(leftArgument, rightArgument as SWRLArgument) { }
 
+        internal SWRLNotEqualBuiltIn() { }
         internal SWRLNotEqualBuiltIn(SWRLArgument leftArgument, SWRLArgument rightArgument)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument)
         {

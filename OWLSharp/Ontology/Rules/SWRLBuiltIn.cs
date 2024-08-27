@@ -52,6 +52,7 @@ namespace OWLSharp.Ontology.Rules
     public abstract class SWRLBuiltIn : SWRLAtom
     {
         #region Ctors
+        internal SWRLBuiltIn() { }
         internal SWRLBuiltIn(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
             : base(predicate, leftArgument, rightArgument) { }
         #endregion

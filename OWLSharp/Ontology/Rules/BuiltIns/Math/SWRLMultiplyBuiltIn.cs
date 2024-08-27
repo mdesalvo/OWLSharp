@@ -24,6 +24,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLMultiplyBuiltIn() { }
         public SWRLMultiplyBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double multiplyValue)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, multiplyValue)
         {

@@ -26,6 +26,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLContainsIgnoreCaseBuiltIn() { }
         public SWRLContainsIgnoreCaseBuiltIn(SWRLVariableArgument leftArgument, string containString)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, null)
         {

@@ -24,6 +24,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLDivideBuiltIn() { }
         public SWRLDivideBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double divideValue)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, divideValue)
         {

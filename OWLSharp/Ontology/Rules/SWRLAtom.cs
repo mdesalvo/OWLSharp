@@ -104,6 +104,7 @@ namespace OWLSharp.Ontology.Rules
         #endregion
 
         #region Ctors
+        internal SWRLAtom() { }
         internal SWRLAtom(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             Predicate = predicate ?? throw new OWLException("Cannot create atom because given \"predicate\" parameter is null");

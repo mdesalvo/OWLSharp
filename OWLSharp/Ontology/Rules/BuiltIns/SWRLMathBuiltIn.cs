@@ -48,6 +48,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLMathBuiltIn() { }
         internal SWRLMathBuiltIn(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument, double mathValue)
             : base(predicate, leftArgument, rightArgument) => MathValue = mathValue;
         #endregion

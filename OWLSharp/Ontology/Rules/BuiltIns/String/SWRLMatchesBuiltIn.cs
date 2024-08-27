@@ -27,6 +27,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLMatchesBuiltIn() { }
         public SWRLMatchesBuiltIn(SWRLVariableArgument leftArgument, Regex matchesRegex)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, null)
         {

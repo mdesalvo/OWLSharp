@@ -34,6 +34,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         public SWRLGreaterThanOrEqualBuiltIn(SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
             : this(leftArgument, rightArgument as SWRLArgument) { }
 
+        internal SWRLGreaterThanOrEqualBuiltIn() { }
         internal SWRLGreaterThanOrEqualBuiltIn(SWRLArgument leftArgument, SWRLArgument rightArgument)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument)
         {

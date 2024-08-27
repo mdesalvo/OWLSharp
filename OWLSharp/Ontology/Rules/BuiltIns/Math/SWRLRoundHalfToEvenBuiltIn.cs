@@ -40,6 +40,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLRoundHalfToEvenBuiltIn() { }
         public SWRLRoundHalfToEvenBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, double.NaN)
         {

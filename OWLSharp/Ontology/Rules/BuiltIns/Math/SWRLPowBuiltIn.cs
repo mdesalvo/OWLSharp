@@ -24,6 +24,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLPowBuiltIn() { }
         public SWRLPowBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double expValue)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, expValue)
         {

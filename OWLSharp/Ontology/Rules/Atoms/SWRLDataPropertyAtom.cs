@@ -33,6 +33,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
     public class SWRLDataPropertyAtom : SWRLAtom
     {
         #region Ctors
+        internal SWRLDataPropertyAtom() { }
         public SWRLDataPropertyAtom(OWLDataProperty dataProperty, SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(dataProperty, leftArgument, rightArgument) 
         {

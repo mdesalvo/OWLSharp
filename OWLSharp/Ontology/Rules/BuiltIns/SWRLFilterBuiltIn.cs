@@ -42,6 +42,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLFilterBuiltIn() { }
         internal SWRLFilterBuiltIn(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
             : base(predicate, leftArgument, rightArgument) { }
         #endregion

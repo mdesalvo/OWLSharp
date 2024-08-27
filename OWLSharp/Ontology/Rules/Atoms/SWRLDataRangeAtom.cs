@@ -31,6 +31,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
     public class SWRLDataRangeAtom : SWRLAtom
     {
         #region Ctors
+        internal SWRLDataRangeAtom() { }
         public SWRLDataRangeAtom(OWLDataRangeExpression datarangeExpression, SWRLVariableArgument leftArgument)
             : base(datarangeExpression, leftArgument, null) { }
         #endregion

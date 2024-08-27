@@ -24,6 +24,7 @@ namespace OWLSharp.Ontology.Rules.BuiltIns
         #endregion
 
         #region Ctors
+        internal SWRLSubtractBuiltIn() { }
         public SWRLSubtractBuiltIn(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double subtractValue)
             : base(new OWLExpression() { ExpressionIRI = BuiltInUri }, leftArgument, rightArgument, subtractValue)
         {

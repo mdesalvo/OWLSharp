@@ -35,6 +35,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
         internal static readonly OWLExpression SameAs = new OWLExpression() { ExpressionIRI = RDFVocabulary.OWL.SAME_AS };
 
         #region Ctors
+        internal SWRLSameIndividualAtom() { }
         public SWRLSameIndividualAtom(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             : base(SameAs, leftArgument, rightArgument)
         {

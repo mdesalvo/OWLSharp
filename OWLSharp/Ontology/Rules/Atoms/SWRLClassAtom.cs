@@ -32,6 +32,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
     public class SWRLClassAtom : SWRLAtom
     {
         #region Ctors
+        internal SWRLClassAtom() { }
         public SWRLClassAtom(OWLClassExpression classExpression, SWRLVariableArgument leftArgument)
             : base(classExpression, leftArgument, null) { }
         #endregion
