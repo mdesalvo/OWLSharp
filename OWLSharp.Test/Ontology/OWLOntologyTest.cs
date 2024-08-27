@@ -431,6 +431,28 @@ namespace OWLSharp.Test.Ontology
     <IRI>ex:Mark</IRI>
     <Literal>This is Mark</Literal>
   </AnnotationAssertion>
+  <DLSafeRule>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal>SWRL1</Literal>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+      <Literal>This is a test SWRL rule</Literal>
+    </Annotation>
+    <Body>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Body>
+    <Head>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Head>
+  </DLSafeRule>
 </Ontology>");
 
 			Assert.IsNotNull(ontology);
@@ -458,7 +480,9 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
 			Assert.IsNotNull(ontology.AnnotationAxioms);
 			Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
-		}
+            Assert.IsNotNull(ontology.Rules);
+            Assert.IsTrue(ontology.Rules.Count == 1);
+        }
 
 		[TestMethod]
 		public async Task ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraphAsync()
