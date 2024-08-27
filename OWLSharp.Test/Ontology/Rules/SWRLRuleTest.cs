@@ -20,7 +20,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
+using OWLSharp.Ontology.Rules.Arguments;
+using OWLSharp.Ontology.Rules.Atoms;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Test.Ontology.Rules
 {
@@ -79,6 +82,55 @@ namespace OWLSharp.Test.Ontology.Rules
                    new RDFPlainLiteral("This is a test SWRL rule"),
                    new SWRLAntecedent(),
                    null));
+
+        [TestMethod]
+        public void ShouldGetStringRepresentationOfSWRLRule()
+        {
+            SWRLRule rule = new SWRLRule(
+                new RDFPlainLiteral("SWRL1"),
+                new RDFPlainLiteral("This is a test SWRL rule"),
+                new SWRLAntecedent() { 
+                    Atoms = [ 
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                            new SWRLVariableArgument(new RDFVariable("?P"))) 
+                    ] },
+                new SWRLConsequent() {
+                    Atoms = [
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.FOAF.AGENT),
+                            new SWRLVariableArgument(new RDFVariable("?P")))
+                    ] });
+
+            Assert.IsTrue(string.Equals("Person(?P) -> Agent(?P)", rule.ToString()));
+        }
+
+        [TestMethod]
+        public void ShouldGetXMLRepresentationOfSWRLRule()
+        {
+            SWRLRule rule = new SWRLRule(
+                new RDFPlainLiteral("SWRL1"),
+                new RDFPlainLiteral("This is a test SWRL rule"),
+                new SWRLAntecedent()
+                {
+                    Atoms = [
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.FOAF.PERSON),
+                            new SWRLVariableArgument(new RDFVariable("?P")))
+                    ]
+                },
+                new SWRLConsequent()
+                {
+                    Atoms = [
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.FOAF.AGENT),
+                            new SWRLVariableArgument(new RDFVariable("?P")))
+                    ]
+                });
+
+            Assert.IsTrue(string.Equals(
+@"<DLSafeRule><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal>SWRL1</Literal></Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>This is a test SWRL rule</Literal></Annotation><Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Body><Head><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Head></DLSafeRule>", rule.GetXML()));
+        }
         #endregion
     }
 }
