@@ -51,7 +51,8 @@ namespace OWLSharp.Reasoner
                 //Execute OWL2 reasoner rules
                 Parallel.ForEach(Rules, owl2Rule =>
 				{
-					OWLEvents.RaiseInfo($"Launching OWL2 rule {owl2Rule}...");
+					string owl2RuleString = owl2Rule.ToString();
+					OWLEvents.RaiseInfo($"Launching OWL2 rule {owl2RuleString}...");
 
 					switch (owl2Rule)
 					{
@@ -132,17 +133,18 @@ namespace OWLSharp.Reasoner
 							break;
 					}
 
-					OWLEvents.RaiseInfo($"Completed OWL2 rule {owl2Rule} => {inferenceRegistry[owl2Rule.ToString()].Count} candidate inferences");
+					OWLEvents.RaiseInfo($"Completed OWL2 rule {owl2RuleString} => {inferenceRegistry[owl2RuleString].Count} candidate inferences");
 				});
 
                 //Execute SWRL reasoner rules
                 await ontology.Rules.ParallelForEachAsync(async (swrlRule) =>
                 {
-                    OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRule}...");
+					string swrlRuleString = swrlRule.ToString();
+                    OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");
 
-                    inferenceRegistry[swrlRule.ToString()] = await swrlRule.ApplyToOntologyAsync(ontology);
+                    inferenceRegistry[swrlRuleString] = await swrlRule.ApplyToOntologyAsync(ontology);
 
-                    OWLEvents.RaiseInfo($"Completed SWRL rule {swrlRule} => {inferenceRegistry[swrlRule.ToString()].Count} candidate inferences");
+                    OWLEvents.RaiseInfo($"Completed SWRL rule {swrlRuleString} => {inferenceRegistry[swrlRuleString].Count} candidate inferences");
                 });
 
                 //Process inference registry
