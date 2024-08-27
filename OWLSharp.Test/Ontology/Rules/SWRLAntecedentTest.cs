@@ -73,11 +73,14 @@ namespace OWLSharp.Test.Ontology.Rules
                         new SWRLVariableArgument(new RDFVariable("?P"))),
                     new SWRLDataRangeAtom(
                         new OWLDatatype(RDFVocabulary.XSD.INTEGER),
-                        new SWRLVariableArgument(new RDFVariable("?X")))
+                        new SWRLVariableArgument(new RDFVariable("?X"))),
+                    new SWRLEndsWithBuiltIn(
+                        new SWRLVariableArgument(new RDFVariable("?P")),
+                        "Mark")
                 ] };
 
             Assert.IsTrue(string.Equals(
-@"<Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataRangeAtom><Datatype IRI=""http://www.w3.org/2001/XMLSchema#integer"" /><Variable IRI=""urn:swrl:var#X"" /></DataRangeAtom></Body>", OWLSerializer.SerializeObject(antecedent)));
+@"<Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataRangeAtom><Datatype IRI=""http://www.w3.org/2001/XMLSchema#integer"" /><Variable IRI=""urn:swrl:var#X"" /></DataRangeAtom><BuiltInAtom p2:type=""SWRLEndsWithBuiltIn"" IRI=""swrlb:endsWith"" xmlns:p2=""http://www.w3.org/2001/XMLSchema-instance""><Variable IRI=""urn:swrl:var#P"" /><Literal>Mark</Literal></BuiltInAtom></Body>", OWLSerializer.SerializeObject(antecedent)));
         }
 
         [TestMethod]

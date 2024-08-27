@@ -90,7 +90,9 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=1)]
         [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
+        [XmlElement(typeof(OWLExpression), Order=1)]
         public OWLExpression Predicate { get; set; }
+        public bool ShouldSerializePredicate() => Predicate.GetType() != typeof(OWLExpression);
 
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]
