@@ -22,7 +22,4 @@
 	<ItemGroup>
 		<ProjectReference Include="..\OWLSharp\OWLSharp.csproj" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Ontology\Rules\" />
-	</ItemGroup>
 </Project>
