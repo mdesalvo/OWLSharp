@@ -16,6 +16,7 @@
 
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
@@ -102,6 +103,11 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
         [XmlElement(typeof(OWLAnnotationPropertyRange), ElementName="AnnotationPropertyRange")]
         public List<OWLAnnotationAxiom> AnnotationAxioms { get; internal set; }
+
+        //Rules
+
+        [XmlElement("DLSafeRule")]
+        public List<SWRLRule> Rules { get; internal set; }
         #endregion
 
         #region Ctors
@@ -127,6 +133,8 @@ namespace OWLSharp.Ontology
             KeyAxioms = new List<OWLHasKey>();
             AssertionAxioms = new List<OWLAssertionAxiom>();
             AnnotationAxioms = new List<OWLAnnotationAxiom>();
+			//Rules
+			Rules = new List<SWRLRule>();
         }
 
         public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI=null) : this()
@@ -159,6 +167,8 @@ namespace OWLSharp.Ontology
 			KeyAxioms = new List<OWLHasKey>(ontology?.KeyAxioms ?? Enumerable.Empty<OWLHasKey>());
 			AssertionAxioms = new List<OWLAssertionAxiom>(ontology?.AssertionAxioms ?? Enumerable.Empty<OWLAssertionAxiom>());
 			AnnotationAxioms = new List<OWLAnnotationAxiom>(ontology?.AnnotationAxioms ?? Enumerable.Empty<OWLAnnotationAxiom>());
+			//Rules
+			Rules = new List<SWRLRule>(ontology?.Rules ?? Enumerable.Empty<SWRLRule>());
 		}
         #endregion
 
@@ -2438,6 +2448,7 @@ namespace OWLSharp.Ontology
 							if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
 								Prefixes.Add(pfx); 
 						});
+						importedOntology.Rules.ForEach(r => { r.IsImport = true; Rules.Add(r); });
 					}
 					catch (Exception ex)
 					{
