@@ -15,9 +15,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules.Arguments;
+using OWLSharp.Ontology.Rules.Atoms;
+using OWLSharp.Ontology.Rules;
 using OWLSharp.Reasoner;
 using OWLSharp.Reasoner.RuleSet;
 using RDFSharp.Model;
+using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -1073,6 +1077,52 @@ namespace OWLSharp.Test.Reasoner
             Assert.IsTrue(inferences.Count == 6);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLTransitiveObjectPropertyEntailmentRule.rulename)));
+        }
+
+        [TestMethod]
+        public async Task ShouldEntailOntologyRulesAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.FOAF.PERSON),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
+                ],
+                Rules = [
+                    new SWRLRule(
+                        new RDFPlainLiteral("SWRL1"),
+                        new RDFPlainLiteral("This is a test SWRL rule"),
+                        new SWRLAntecedent()
+                        {
+                            Atoms = [
+                                new SWRLClassAtom(
+                                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                                    new SWRLVariableArgument(new RDFVariable("?P")))
+                            ]
+                        },
+                        new SWRLConsequent()
+                        {
+                            Atoms = [
+                                new SWRLClassAtom(
+                                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                                    new SWRLVariableArgument(new RDFVariable("?P")))
+                            ]
+                        })
+                ]
+            };
+            List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
+                            && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
+                            && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
         }
         #endregion
     }
