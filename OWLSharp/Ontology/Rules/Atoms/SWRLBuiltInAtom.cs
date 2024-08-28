@@ -21,6 +21,7 @@ using RDFSharp.Query;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Xml.Serialization;
@@ -68,7 +69,9 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#startsWith");
 
         [XmlElement("Literal", Order=4)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public OWLLiteral MathLiteral { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public bool ShouldSerializeMathLiteral() => MathLiteral != null;
 
         [XmlIgnore]
