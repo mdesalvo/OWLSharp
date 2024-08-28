@@ -86,28 +86,6 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 return EvaluateFilterBuiltInOnAntecedent(antecedentResults, ontology);
             throw new OWLException($"Cannot evaluate unsupported configuration of SWRL built-in: unknown predicate '{Predicate}'");
         }
-        private DataTable EvaluateFilterBuiltInOnAntecedent(DataTable antecedentResults, OWLOntology ontology)
-        {
-            DataTable filteredTable = antecedentResults.Clone();
-            IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
-
-            //Iterate the rows of the antecedent result table
-            while (rowsEnum.MoveNext())
-            {
-                //Apply the built-in filter on the row
-                bool keepRow = FilterValue.ApplyFilter((DataRow)rowsEnum.Current, false);
-
-                //If the row has passed the filter, keep it in the filtered result table
-                if (keepRow)
-                {
-                    DataRow newRow = filteredTable.NewRow();
-                    newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
-                    filteredTable.Rows.Add(newRow);
-                }
-            }
-
-            return filteredTable;
-        }
         private DataTable EvaluateMathBuiltInOnAntecedent(DataTable antecedentResults, OWLOntology ontology)
         {
             DataTable filteredTable = antecedentResults.Clone();
@@ -202,6 +180,28 @@ namespace OWLSharp.Ontology.Rules.Atoms
                     }
                 }
                 catch { /* Just a no-op, since type errors are normal when trying to face variable's bindings */ }
+            }
+
+            return filteredTable;
+        }
+        private DataTable EvaluateFilterBuiltInOnAntecedent(DataTable antecedentResults, OWLOntology ontology)
+        {
+            DataTable filteredTable = antecedentResults.Clone();
+            IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
+
+            //Iterate the rows of the antecedent result table
+            while (rowsEnum.MoveNext())
+            {
+                //Apply the built-in filter on the row
+                bool keepRow = FilterValue.ApplyFilter((DataRow)rowsEnum.Current, false);
+
+                //If the row has passed the filter, keep it in the filtered result table
+                if (keepRow)
+                {
+                    DataRow newRow = filteredTable.NewRow();
+                    newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
+                    filteredTable.Rows.Add(newRow);
+                }
             }
 
             return filteredTable;
