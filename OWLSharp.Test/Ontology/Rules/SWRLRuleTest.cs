@@ -118,7 +118,13 @@ namespace OWLSharp.Test.Ontology.Rules
                     Atoms = [
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.FOAF.PERSON),
-                            new SWRLVariableArgument(new RDFVariable("?P")))
+                            new SWRLVariableArgument(new RDFVariable("?P"))),
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+                            new SWRLVariableArgument(new RDFVariable("?P")),
+                            new SWRLVariableArgument(new RDFVariable("?N"))),
+                        SWRLBuiltInFactory.ContainsIgnoreCase(
+                            new SWRLVariableArgument(new RDFVariable("?N")), "mark")
                     ]
                 },
                 new SWRLConsequent()
@@ -131,7 +137,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 });
 
             Assert.IsTrue(string.Equals(
-@"<DLSafeRule><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal>SWRL1</Literal></Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>This is a test SWRL rule</Literal></Annotation><Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Body><Head><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Head></DLSafeRule>", rule.GetXML()));
+@"<DLSafeRule><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal>SWRL1</Literal></Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>This is a test SWRL rule</Literal></Annotation><Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataPropertyAtom><DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" /><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#N"" /></DataPropertyAtom><BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#containsIgnoreCase""><Variable IRI=""urn:swrl:var#N"" /><Literal>mark</Literal></BuiltInAtom></Body><Head><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Head></DLSafeRule>", rule.GetXML()));
         }
 
         [TestMethod]
