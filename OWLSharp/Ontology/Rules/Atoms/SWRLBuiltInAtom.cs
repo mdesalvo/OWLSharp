@@ -212,7 +212,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 return filteredTable;
                 #endregion
             }
-            throw new OWLException($"Cannot evaluate unsupported configuration of SWRL built-in: unknown predicate '{Predicate}'");
+            throw new OWLException($"Cannot evaluate unsupported SWRLBuiltInAtom: unknown predicate '{Predicate}'");
         }
 
         //Derived from SRWLAtom
