@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -35,6 +36,9 @@ namespace OWLSharp.Ontology.Rules.Atoms
 
         [XmlIgnore]
         internal double? MathValue { get; set; }
+        [XmlElement("Literal", Order=4)]
+        public OWLLiteral MathLiteral { get; set; }
+        public bool ShouldSerializeMathLiteral() => MathLiteral != null;
 
         [XmlIgnore]
         public bool IsMathBuiltIn
@@ -56,7 +60,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
         internal RDFFilter FilterValue { get; set; }
 
         [XmlIgnore]
-        internal bool IsComparisonFilterBuiltIn
+        public bool IsComparisonFilterBuiltIn
             => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#equal")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#greaterThan")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual")
@@ -65,7 +69,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#notEqual");
 
         [XmlIgnore]
-        internal bool IsStringFilterBuiltIn
+        public bool IsStringFilterBuiltIn
             => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#contains")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#containsIgnoreCase")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#endsWith")

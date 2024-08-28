@@ -19,6 +19,8 @@ using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using System;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -63,7 +65,8 @@ namespace OWLSharp.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#add",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
-                MathValue = addValue
+                MathValue = addValue,
+                MathLiteral = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(addValue, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
             };
         }
 
@@ -120,7 +123,8 @@ namespace OWLSharp.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#divide",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
-                MathValue = divideValue
+                MathValue = divideValue,
+                MathLiteral = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(divideValue, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
             };
         }
 
@@ -157,7 +161,8 @@ namespace OWLSharp.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#multiply",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
-                MathValue = multiplyValue
+                MathValue = multiplyValue,
+                MathLiteral = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(multiplyValue, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
             };
         }
 
@@ -176,7 +181,8 @@ namespace OWLSharp.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#pow",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
-                MathValue = powValue
+                MathValue = powValue,
+                MathLiteral = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(powValue, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
             };
         }
 
@@ -249,7 +255,8 @@ namespace OWLSharp.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#subtract",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
-                MathValue = subtractValue
+                MathValue = subtractValue,
+                MathLiteral = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(subtractValue, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
             };
         }
 
