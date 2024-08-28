@@ -24,6 +24,9 @@ namespace OWLSharp.Ontology.Rules
     public static class SWRLBuiltInFactory
     {
         #region Factory
+
+        //Math
+
         public static SWRLBuiltInAtom Abs(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
@@ -133,6 +136,99 @@ namespace OWLSharp.Ontology.Rules
                 MathValue = multiplyValue
             };
         }
+
+        public static SWRLBuiltInAtom Pow(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double powValue)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#pow") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument,
+                MathValue = powValue
+            };
+        }
+
+        public static SWRLBuiltInAtom Round(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#round") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltInAtom RoundHalfToEven(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#roundHalfToEven") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltInAtom Sin(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#sin") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltInAtom Subtract(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double subtractValue)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#subtract") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument,
+                MathValue = subtractValue
+            };
+        }
+
+        public static SWRLBuiltInAtom Tan(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#tan") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
         #endregion
     }
 }
