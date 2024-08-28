@@ -22,7 +22,6 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
-using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;

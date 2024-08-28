@@ -17,7 +17,6 @@
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
-using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
