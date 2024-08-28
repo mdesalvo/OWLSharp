@@ -26,7 +26,7 @@ namespace OWLSharp.Ontology.Rules
 {
     public static class SWRLBuiltInFactory
     {
-        #region Factory
+        #region Methods
 
         //Math
 
