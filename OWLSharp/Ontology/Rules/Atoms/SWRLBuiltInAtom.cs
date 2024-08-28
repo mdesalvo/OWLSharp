@@ -26,7 +26,7 @@ using System.Data;
 using System.Globalization;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Rules.Atoms
+namespace OWLSharp.Ontology.Rules
 {
     [XmlRoot("BuiltInAtom")]
     public class SWRLBuiltInAtom : SWRLAtom

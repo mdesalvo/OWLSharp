@@ -26,7 +26,7 @@ using System.Data;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Rules.Atoms
+namespace OWLSharp.Ontology.Rules
 {
     [XmlRoot("DifferentIndividualsAtom")]
     public class SWRLDifferentIndividualsAtom : SWRLAtom

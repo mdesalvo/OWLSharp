@@ -15,7 +15,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Rules.Atoms;
 using OWLSharp.Ontology.Rules;
 using OWLSharp.Reasoner;
 using OWLSharp.Reasoner.RuleSet;

@@ -17,7 +17,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Xml.Serialization;
-using OWLSharp.Ontology.Rules.Atoms;
 using OWLSharp.Reasoner;
 
 namespace OWLSharp.Ontology.Rules

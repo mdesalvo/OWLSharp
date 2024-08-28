@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Rules.Atoms;
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
