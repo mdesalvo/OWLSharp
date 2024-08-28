@@ -28,10 +28,5 @@ namespace OWLSharp.Ontology.Rules
         #region Ctors
         internal SWRLArgument() { }
         #endregion
-
-        #region Interfaces
-        public virtual new string ToString() 
-            => null;
-        #endregion
     }
 }
