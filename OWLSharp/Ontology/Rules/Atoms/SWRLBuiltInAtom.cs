@@ -35,12 +35,6 @@ namespace OWLSharp.Ontology.Rules.Atoms
         public string IRI { get; set; }
 
         [XmlIgnore]
-        internal double? MathValue { get; set; }
-        [XmlElement("Literal", Order=4)]
-        public OWLLiteral MathLiteral { get; set; }
-        public bool ShouldSerializeMathLiteral() => MathLiteral != null;
-
-        [XmlIgnore]
         public bool IsMathBuiltIn
             => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#abs")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#add")
@@ -55,9 +49,6 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#sin")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#subtract")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#tan");
-
-        [XmlIgnore]
-        internal RDFFilter FilterValue { get; set; }
 
         [XmlIgnore]
         public bool IsComparisonFilterBuiltIn
@@ -75,6 +66,16 @@ namespace OWLSharp.Ontology.Rules.Atoms
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#endsWith")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#matches")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#startsWith");
+
+        [XmlElement("Literal", Order=4)]
+        public OWLLiteral MathLiteral { get; set; }
+        public bool ShouldSerializeMathLiteral() => MathLiteral != null;
+
+        [XmlIgnore]
+        internal double? MathValue { get; set; }
+
+        [XmlIgnore]
+        internal RDFFilter FilterValue { get; set; }
         #endregion
 
         #region Ctors
