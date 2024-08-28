@@ -23,7 +23,6 @@ using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
 using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
-using OWLSharp.Ontology.Rules.BuiltIns;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -168,10 +167,7 @@ namespace OWLSharp.Test.Ontology.Rules
                                 new SWRLDataPropertyAtom(
                                     new OWLDataProperty(RDFVocabulary.FOAF.NAME),
                                     new SWRLVariableArgument(new RDFVariable("?P")),
-                                    new SWRLVariableArgument(new RDFVariable("?N"))),
-                                new SWRLContainsIgnoreCaseBuiltIn(
-                                    new SWRLVariableArgument(new RDFVariable("?N")),
-                                    "Mark")
+                                    new SWRLVariableArgument(new RDFVariable("?N")))
                             ]
                         },
                         new SWRLConsequent()

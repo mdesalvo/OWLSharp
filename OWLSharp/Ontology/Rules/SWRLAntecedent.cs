@@ -27,7 +27,7 @@ namespace OWLSharp.Ontology.Rules
     public class SWRLAntecedent
     {
         #region Properties
-        [XmlElement(typeof(SWRLBuiltIn), ElementName="BuiltInAtom")]
+        [XmlElement(typeof(SWRLBuiltInAtom), ElementName="BuiltInAtom")]
         [XmlElement(typeof(SWRLClassAtom), ElementName="ClassAtom")]
         [XmlElement(typeof(SWRLDataPropertyAtom), ElementName="DataPropertyAtom")]
         [XmlElement(typeof(SWRLDataRangeAtom), ElementName="DataRangeAtom")]
@@ -52,7 +52,7 @@ namespace OWLSharp.Ontology.Rules
         {
             //Execute the antecedent atoms
             List<DataTable> atomResults = new List<DataTable>();
-            Atoms.Where(atom => !(atom is SWRLBuiltIn))
+            Atoms.Where(atom => !(atom is SWRLBuiltInAtom))
                  .ToList()
                  .ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
 
@@ -60,7 +60,7 @@ namespace OWLSharp.Ontology.Rules
             DataTable antecedentResult = RDFQueryEngine.CombineTables(atomResults, false);
 
             //Execute the antecedent built-ins
-            Atoms.OfType<SWRLBuiltIn>()
+            Atoms.OfType<SWRLBuiltInAtom>()
                  .ToList()
                  .ForEach(builtin => antecedentResult = builtin.EvaluateOnAntecedent(antecedentResult, ontology));
 
