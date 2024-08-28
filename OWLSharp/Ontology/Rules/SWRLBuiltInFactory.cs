@@ -102,6 +102,37 @@ namespace OWLSharp.Ontology.Rules
                 MathValue = divideValue
             };
         }
+
+        public static SWRLBuiltInAtom Floor(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#floor") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltInAtom Multiply(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double multiplyValue)
+        {
+            #region Guards
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#multiply") },
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument,
+                MathValue = multiplyValue
+            };
+        }
         #endregion
     }
 }
