@@ -15,6 +15,7 @@
 */
 
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -99,7 +100,10 @@ namespace OWLSharp.Test.Ontology.Rules
                         SWRLBuiltInFactory.Add(
                             new SWRLVariableArgument(new RDFVariable("?A")),
                             new SWRLVariableArgument(new RDFVariable("?B")),
-                            44.57)
+                            44.57),
+                        SWRLBuiltInFactory.Matches(
+                            new SWRLVariableArgument(new RDFVariable("?P")),
+                            new Regex("Mark", RegexOptions.IgnoreCase))
                     ] },
                 new SWRLConsequent() {
                     Atoms = [
@@ -108,7 +112,7 @@ namespace OWLSharp.Test.Ontology.Rules
                             new SWRLVariableArgument(new RDFVariable("?P")))
                     ] });
 
-            Assert.IsTrue(string.Equals("Person(?P) ^ swrlb:add(?A,?B,\"44.57\"^^xsd:double) -> Agent(?P)", rule.ToString()));
+            Assert.IsTrue(string.Equals("Person(?P) ^ swrlb:add(?A,?B,\"44.57\"^^xsd:double) ^ swrlb:matches(?P,\"Mark\",\"i\") -> Agent(?P)", rule.ToString()));
         }
 
         [TestMethod]
