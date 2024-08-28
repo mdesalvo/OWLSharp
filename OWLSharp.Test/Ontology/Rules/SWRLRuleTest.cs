@@ -95,7 +95,11 @@ namespace OWLSharp.Test.Ontology.Rules
                     Atoms = [ 
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.FOAF.PERSON), 
-                            new SWRLVariableArgument(new RDFVariable("?P"))) 
+                            new SWRLVariableArgument(new RDFVariable("?P"))),
+                        SWRLBuiltInFactory.Add(
+                            new SWRLVariableArgument(new RDFVariable("?A")),
+                            new SWRLVariableArgument(new RDFVariable("?B")),
+                            44.57)
                     ] },
                 new SWRLConsequent() {
                     Atoms = [
@@ -104,7 +108,7 @@ namespace OWLSharp.Test.Ontology.Rules
                             new SWRLVariableArgument(new RDFVariable("?P")))
                     ] });
 
-            Assert.IsTrue(string.Equals("Person(?P) -> Agent(?P)", rule.ToString()));
+            Assert.IsTrue(string.Equals("Person(?P) ^ swrlb:add(?A,?B,\"44.57\"^^xsd:double) -> Agent(?P)", rule.ToString()));
         }
 
         [TestMethod]

@@ -22,6 +22,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -118,6 +119,22 @@ namespace OWLSharp.Ontology.Rules
                     sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
                 else if (RightArgument is SWRLVariableArgument rightArgumentVariable)
                     sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
+            }
+
+            //BuiltIn-specific arguments
+            if (this is SWRLBuiltInAtom builtInAtom)
+            {
+                //MathBuiltIn
+                if (builtInAtom.IsMathBuiltIn)
+                {
+                    RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(builtInAtom.MathValue.ToString(CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
+                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(mathValueTypedLiteral, RDFNamespaceRegister.Instance.Register)}");
+                }
+                //FilterBuiltIn
+                else if (builtInAtom.IsComparisonFilterBuiltIn || builtInAtom.IsStringFilterBuiltIn)
+                {
+                    //TODO
+                }
             }
 
             sb.Append(")");
