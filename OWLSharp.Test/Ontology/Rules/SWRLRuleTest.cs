@@ -167,7 +167,9 @@ namespace OWLSharp.Test.Ontology.Rules
                                 new SWRLDataPropertyAtom(
                                     new OWLDataProperty(RDFVocabulary.FOAF.NAME),
                                     new SWRLVariableArgument(new RDFVariable("?P")),
-                                    new SWRLVariableArgument(new RDFVariable("?N")))
+                                    new SWRLVariableArgument(new RDFVariable("?N"))),
+                                SWRLBuiltInFactory.ContainsIgnoreCase(
+                                    new SWRLVariableArgument(new RDFVariable("?N")), "mark")
                             ]
                         },
                         new SWRLConsequent()

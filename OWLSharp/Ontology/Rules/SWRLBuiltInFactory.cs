@@ -42,6 +42,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom() 
             { 
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#abs") },
+                IRI = "http://www.w3.org/2003/11/swrlb#abs",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -59,6 +60,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#add") },
+                IRI = "http://www.w3.org/2003/11/swrlb#add",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 MathValue = addValue
@@ -77,6 +79,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#ceiling") },
+                IRI = "http://www.w3.org/2003/11/swrlb#ceiling",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -94,6 +97,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#cos") },
+                IRI = "http://www.w3.org/2003/11/swrlb#cos",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -113,6 +117,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#divide") },
+                IRI = "http://www.w3.org/2003/11/swrlb#divide",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 MathValue = divideValue
@@ -131,6 +136,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#floor") },
+                IRI = "http://www.w3.org/2003/11/swrlb#floor",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -148,6 +154,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#multiply") },
+                IRI = "http://www.w3.org/2003/11/swrlb#multiply",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 MathValue = multiplyValue
@@ -166,6 +173,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#pow") },
+                IRI = "http://www.w3.org/2003/11/swrlb#pow",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 MathValue = powValue
@@ -184,6 +192,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#round") },
+                IRI = "http://www.w3.org/2003/11/swrlb#round",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -201,6 +210,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#roundHalfToEven") },
+                IRI = "http://www.w3.org/2003/11/swrlb#roundHalfToEven",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -218,6 +228,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#sin") },
+                IRI = "http://www.w3.org/2003/11/swrlb#sin",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -235,6 +246,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#subtract") },
+                IRI = "http://www.w3.org/2003/11/swrlb#subtract",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 MathValue = subtractValue
@@ -253,6 +265,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#tan") },
+                IRI = "http://www.w3.org/2003/11/swrlb#tan",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -278,6 +291,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#equal") },
+                IRI = "http://www.w3.org/2003/11/swrlb#equal",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 FilterValue = new RDFComparisonFilter(
@@ -305,6 +319,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#greaterThan") },
+                IRI = "http://www.w3.org/2003/11/swrlb#greaterThan",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 FilterValue = new RDFComparisonFilter(
@@ -332,6 +347,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#greaterThanOrEqual") },
+                IRI = "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 FilterValue = new RDFComparisonFilter(
@@ -359,6 +375,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#lessThan") },
+                IRI = "http://www.w3.org/2003/11/swrlb#lessThan",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 FilterValue = new RDFComparisonFilter(
@@ -386,6 +403,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#lessThanOrEqual") },
+                IRI = "http://www.w3.org/2003/11/swrlb#lessThanOrEqual",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 FilterValue = new RDFComparisonFilter(
@@ -413,6 +431,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#notEqual") },
+                IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument,
                 FilterValue = new RDFComparisonFilter(
@@ -436,6 +455,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#contains") },
+                IRI = "http://www.w3.org/2003/11/swrlb#contains",
                 LeftArgument = leftArgument,
                 RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(containString)),
                 FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex(containString))
@@ -454,6 +474,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#containsIgnoreCase") },
+                IRI = "http://www.w3.org/2003/11/swrlb#containsIgnoreCase",
                 LeftArgument = leftArgument,
                 RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(containString)),
                 FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex(containString, RegexOptions.IgnoreCase))
@@ -472,6 +493,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#endsWith") },
+                IRI = "http://www.w3.org/2003/11/swrlb#endsWith",
                 LeftArgument = leftArgument,
                 RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(endString)),
                 FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex($"{endString}$"))
@@ -500,6 +522,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#matches") },
+                IRI = "http://www.w3.org/2003/11/swrlb#matches",
                 LeftArgument = leftArgument,
                 RightArgument = string.IsNullOrEmpty(regexFlags.ToString()) ? new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}"))
                                                                             : new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}\",\"{regexFlags}")),
@@ -519,6 +542,7 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltInAtom()
             {
                 Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#startsWith") },
+                IRI = "http://www.w3.org/2003/11/swrlb#startsWith",
                 LeftArgument = leftArgument,
                 RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(startString)),
                 FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex($"^{startString}"))
