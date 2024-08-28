@@ -81,130 +81,130 @@ namespace OWLSharp.Ontology.Rules.Atoms
         internal DataTable EvaluateOnAntecedent(DataTable antecedentResults, OWLOntology ontology)
         {
             if (IsMathBuiltIn)
-                return EvaluateMathBuiltInOnAntecedent(antecedentResults, ontology);
-            else if (IsComparisonFilterBuiltIn || IsStringFilterBuiltIn)
-                return EvaluateFilterBuiltInOnAntecedent(antecedentResults, ontology);
-            throw new OWLException($"Cannot evaluate unsupported configuration of SWRL built-in: unknown predicate '{Predicate}'");
-        }
-        private DataTable EvaluateMathBuiltInOnAntecedent(DataTable antecedentResults, OWLOntology ontology)
-        {
-            DataTable filteredTable = antecedentResults.Clone();
-
-            #region Guards
-            //Preliminary checks for built-in's applicability (requires arguments to be known variables)
-            string leftArgumentString = LeftArgument.ToString();
-            if (!antecedentResults.Columns.Contains(leftArgumentString))
-                return filteredTable;
-            string rightArgumentString = RightArgument.ToString();
-            if (!antecedentResults.Columns.Contains(rightArgumentString))
-                return filteredTable;
-            #endregion
-
-            //Iterate the rows of the antecedent result table
-            IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
-            while (rowsEnum.MoveNext())
             {
-                try
+                #region MathBuiltIn
+                DataTable filteredTable = antecedentResults.Clone();
+
+                #region Guards
+                //Preliminary checks for built-in's applicability (requires arguments to be known variables)
+                string leftArgumentString = LeftArgument.ToString();
+                if (!antecedentResults.Columns.Contains(leftArgumentString))
+                    return filteredTable;
+                string rightArgumentString = RightArgument.ToString();
+                if (!antecedentResults.Columns.Contains(rightArgumentString))
+                    return filteredTable;
+                #endregion
+
+                //Iterate the rows of the antecedent result table
+                IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
+                while (rowsEnum.MoveNext())
                 {
-                    //Fetch data corresponding to the built-in's arguments
-                    DataRow currentRow = (DataRow)rowsEnum.Current;
-                    string leftArgumentValue = currentRow[leftArgumentString].ToString();
-                    string rightArgumentValue = currentRow[rightArgumentString].ToString();
-
-                    //Transform fetched data to pattern members
-                    RDFPatternMember leftArgumentPMember = RDFQueryUtilities.ParseRDFPatternMember(leftArgumentValue);
-                    RDFPatternMember rightArgumentPMember = RDFQueryUtilities.ParseRDFPatternMember(rightArgumentValue);
-
-                    //Check compatibility of pattern members with the built-in (requires numeric typed literals)
-                    if (leftArgumentPMember is RDFTypedLiteral leftArgumentTypedLiteral
-                         && leftArgumentTypedLiteral.HasDecimalDatatype()
-                         && rightArgumentPMember is RDFTypedLiteral rightArgumentTypedLiteral
-                         && rightArgumentTypedLiteral.HasDecimalDatatype())
+                    try
                     {
-                        if (double.TryParse(leftArgumentTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftArgumentNumericValue)
-                             && double.TryParse(rightArgumentTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightArgumentNumericValue))
-                        {
-                            //Execute the built-in's math logics
-                            bool keepRow = false;
-                            switch (IRI)
-                            {
-                                case "http://www.w3.org/2003/11/swrlb#abs":
-                                    keepRow = (leftArgumentNumericValue == Math.Abs(rightArgumentNumericValue));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#add":
-                                    keepRow = (leftArgumentNumericValue == rightArgumentNumericValue + MathValue);
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#ceiling":
-                                    keepRow = (leftArgumentNumericValue == Math.Ceiling(rightArgumentNumericValue));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#cos":
-                                    keepRow = (leftArgumentNumericValue == Math.Cos(rightArgumentNumericValue));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#divide":
-                                    keepRow = (leftArgumentNumericValue == rightArgumentNumericValue / MathValue);
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#floor":
-                                    keepRow = (leftArgumentNumericValue == Math.Floor(rightArgumentNumericValue));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#multiply":
-                                    keepRow = (leftArgumentNumericValue == rightArgumentNumericValue * MathValue);
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#pow":
-                                    keepRow = (leftArgumentNumericValue == Math.Pow(rightArgumentNumericValue, MathValue));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#round":
-                                    keepRow = (leftArgumentNumericValue == Math.Round(rightArgumentNumericValue));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#roundHalfToEven":
-                                    keepRow = (leftArgumentNumericValue == Math.Round(rightArgumentNumericValue, MidpointRounding.ToEven));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#sin":
-                                    keepRow = (leftArgumentNumericValue == Math.Sin(rightArgumentNumericValue));
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#subtract":
-                                    keepRow = (leftArgumentNumericValue == rightArgumentNumericValue - MathValue);
-                                    break;
-                                case "http://www.w3.org/2003/11/swrlb#tan":
-                                    keepRow = (leftArgumentNumericValue == Math.Tan(rightArgumentNumericValue));
-                                    break;
-                            }
+                        //Fetch data corresponding to the built-in's arguments
+                        DataRow currentRow = (DataRow)rowsEnum.Current;
+                        string leftArgumentValue = currentRow[leftArgumentString].ToString();
+                        string rightArgumentValue = currentRow[rightArgumentString].ToString();
 
-                            //If the row has passed the built-in, keep it in the filtered result table
-                            if (keepRow)
+                        //Transform fetched data to pattern members
+                        RDFPatternMember leftArgumentPMember = RDFQueryUtilities.ParseRDFPatternMember(leftArgumentValue);
+                        RDFPatternMember rightArgumentPMember = RDFQueryUtilities.ParseRDFPatternMember(rightArgumentValue);
+
+                        //Check compatibility of pattern members with the built-in (requires numeric typed literals)
+                        if (leftArgumentPMember is RDFTypedLiteral leftArgumentTypedLiteral
+                             && leftArgumentTypedLiteral.HasDecimalDatatype()
+                             && rightArgumentPMember is RDFTypedLiteral rightArgumentTypedLiteral
+                             && rightArgumentTypedLiteral.HasDecimalDatatype())
+                        {
+                            if (double.TryParse(leftArgumentTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftArgumentNumericValue)
+                                 && double.TryParse(rightArgumentTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightArgumentNumericValue))
                             {
-                                DataRow newRow = filteredTable.NewRow();
-                                newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
-                                filteredTable.Rows.Add(newRow);
+                                //Execute the built-in's math logics
+                                bool keepRow = false;
+                                switch (IRI)
+                                {
+                                    case "http://www.w3.org/2003/11/swrlb#abs":
+                                        keepRow = (leftArgumentNumericValue == Math.Abs(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#add":
+                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue + MathValue);
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#ceiling":
+                                        keepRow = (leftArgumentNumericValue == Math.Ceiling(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#cos":
+                                        keepRow = (leftArgumentNumericValue == Math.Cos(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#divide":
+                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue / MathValue);
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#floor":
+                                        keepRow = (leftArgumentNumericValue == Math.Floor(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#multiply":
+                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue * MathValue);
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#pow":
+                                        keepRow = (leftArgumentNumericValue == Math.Pow(rightArgumentNumericValue, MathValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#round":
+                                        keepRow = (leftArgumentNumericValue == Math.Round(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#roundHalfToEven":
+                                        keepRow = (leftArgumentNumericValue == Math.Round(rightArgumentNumericValue, MidpointRounding.ToEven));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#sin":
+                                        keepRow = (leftArgumentNumericValue == Math.Sin(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#subtract":
+                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue - MathValue);
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#tan":
+                                        keepRow = (leftArgumentNumericValue == Math.Tan(rightArgumentNumericValue));
+                                        break;
+                                }
+
+                                //If the row has passed the built-in, keep it in the filtered result table
+                                if (keepRow)
+                                {
+                                    DataRow newRow = filteredTable.NewRow();
+                                    newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
+                                    filteredTable.Rows.Add(newRow);
+                                }
                             }
                         }
                     }
+                    catch { /* Just a no-op, since type errors are normal when trying to face variable's bindings */ }
                 }
-                catch { /* Just a no-op, since type errors are normal when trying to face variable's bindings */ }
+
+                return filteredTable;
+                #endregion
             }
-
-            return filteredTable;
-        }
-        private DataTable EvaluateFilterBuiltInOnAntecedent(DataTable antecedentResults, OWLOntology ontology)
-        {
-            DataTable filteredTable = antecedentResults.Clone();
-            IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
-
-            //Iterate the rows of the antecedent result table
-            while (rowsEnum.MoveNext())
+            else if (IsComparisonFilterBuiltIn || IsStringFilterBuiltIn)
             {
-                //Apply the built-in filter on the row
-                bool keepRow = FilterValue.ApplyFilter((DataRow)rowsEnum.Current, false);
+                #region FilterBuiltIn
+                DataTable filteredTable = antecedentResults.Clone();
 
-                //If the row has passed the filter, keep it in the filtered result table
-                if (keepRow)
+                //Iterate the rows of the antecedent result table
+                IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
+                while (rowsEnum.MoveNext())
                 {
-                    DataRow newRow = filteredTable.NewRow();
-                    newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
-                    filteredTable.Rows.Add(newRow);
-                }
-            }
+                    //Apply the built-in filter on the row
+                    bool keepRow = FilterValue.ApplyFilter((DataRow)rowsEnum.Current, false);
 
-            return filteredTable;
+                    //If the row has passed the filter, keep it in the filtered result table
+                    if (keepRow)
+                    {
+                        DataRow newRow = filteredTable.NewRow();
+                        newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
+                        filteredTable.Rows.Add(newRow);
+                    }
+                }
+
+                return filteredTable;
+                #endregion
+            }
+            throw new OWLException($"Cannot evaluate unsupported configuration of SWRL built-in: unknown predicate '{Predicate}'");
         }
 
         //Derived from SRWLAtom
