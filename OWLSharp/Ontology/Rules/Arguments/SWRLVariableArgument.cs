@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Xml;

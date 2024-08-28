@@ -19,6 +19,8 @@ using OWLSharp.Ontology.Rules.Arguments;
 using OWLSharp.Ontology.Rules.Atoms;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace OWLSharp.Ontology.Rules
 {
@@ -31,6 +33,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Abs(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -46,6 +50,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Add(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double addValue)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -62,6 +68,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Ceiling(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -77,6 +85,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Cos(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -92,6 +102,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Divide(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double divideValue)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             if (divideValue == 0d)
@@ -110,6 +122,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Floor(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -125,6 +139,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Multiply(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double multiplyValue)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -141,6 +157,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Pow(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double powValue)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -157,6 +175,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Round(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -172,6 +192,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom RoundHalfToEven(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -187,6 +209,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Sin(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -202,6 +226,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Subtract(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double subtractValue)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -218,6 +244,8 @@ namespace OWLSharp.Ontology.Rules
         public static SWRLBuiltInAtom Tan(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -241,6 +269,8 @@ namespace OWLSharp.Ontology.Rules
         internal static SWRLBuiltInAtom EqualInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -266,6 +296,8 @@ namespace OWLSharp.Ontology.Rules
         internal static SWRLBuiltInAtom GreaterThanInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -291,6 +323,8 @@ namespace OWLSharp.Ontology.Rules
         internal static SWRLBuiltInAtom GreaterThanOrEqualInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -316,6 +350,8 @@ namespace OWLSharp.Ontology.Rules
         internal static SWRLBuiltInAtom LessThanInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -341,6 +377,8 @@ namespace OWLSharp.Ontology.Rules
         internal static SWRLBuiltInAtom LessThanOrEqualInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -366,6 +404,8 @@ namespace OWLSharp.Ontology.Rules
         internal static SWRLBuiltInAtom NotEqualInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
             #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
             if (rightArgument == null)
                 throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
             #endregion
@@ -379,6 +419,109 @@ namespace OWLSharp.Ontology.Rules
                     RDFQueryEnums.RDFComparisonFlavors.NotEqualTo,
                     RDFQueryUtilities.ParseRDFPatternMember(leftArgument.ToString()),
                     RDFQueryUtilities.ParseRDFPatternMember(rightArgument.ToString()))
+            };
+        }
+
+        //String
+
+        public static SWRLBuiltInAtom Contains(SWRLVariableArgument leftArgument, string containString)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (containString == null)
+                throw new OWLException("Cannot create built-in because given \"containString\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#contains") },
+                LeftArgument = leftArgument,
+                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(containString)),
+                FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex(containString))
+            };
+        }
+
+        public static SWRLBuiltInAtom ContainsIgnoreCase(SWRLVariableArgument leftArgument, string containString)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (containString == null)
+                throw new OWLException("Cannot create built-in because given \"containString\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#containsIgnoreCase") },
+                LeftArgument = leftArgument,
+                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(containString)),
+                FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex(containString, RegexOptions.IgnoreCase))
+            };
+        }
+
+        public static SWRLBuiltInAtom EndsWith(SWRLVariableArgument leftArgument, string endString)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (endString == null)
+                throw new OWLException("Cannot create built-in because given \"endString\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#endsWith") },
+                LeftArgument = leftArgument,
+                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(endString)),
+                FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex($"{endString}$"))
+            };
+        }
+
+        public static SWRLBuiltInAtom Matches(SWRLVariableArgument leftArgument, Regex matchesRegex)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (matchesRegex == null)
+                throw new OWLException("Cannot create built-in because given \"matchesRegex\" parameter is null");
+            #endregion
+
+            StringBuilder regexFlags = new StringBuilder();
+            if (matchesRegex.Options.HasFlag(RegexOptions.IgnoreCase))
+                regexFlags.Append('i');
+            if (matchesRegex.Options.HasFlag(RegexOptions.Singleline))
+                regexFlags.Append('s');
+            if (matchesRegex.Options.HasFlag(RegexOptions.Multiline))
+                regexFlags.Append('m');
+            if (matchesRegex.Options.HasFlag(RegexOptions.IgnorePatternWhitespace))
+                regexFlags.Append('x');
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#matches") },
+                LeftArgument = leftArgument,
+                RightArgument = string.IsNullOrEmpty(regexFlags.ToString()) ? new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}"))
+                                                                            : new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}\",\"{regexFlags}")),
+                FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), matchesRegex)
+            };
+        }
+
+        public static SWRLBuiltInAtom StartsWith(SWRLVariableArgument leftArgument, string startString)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (startString == null)
+                throw new OWLException("Cannot create built-in because given \"startString\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltInAtom()
+            {
+                Predicate = new OWLExpression() { ExpressionIRI = new RDFResource("http://www.w3.org/2003/11/swrlb#startsWith") },
+                LeftArgument = leftArgument,
+                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(startString)),
+                FilterValue = new RDFRegexFilter(leftArgument.GetVariable(), new Regex($"^{startString}"))
             };
         }
 
