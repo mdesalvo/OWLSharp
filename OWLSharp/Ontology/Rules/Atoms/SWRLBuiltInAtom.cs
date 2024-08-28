@@ -34,7 +34,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
         public string IRI { get; set; }
 
         [XmlIgnore]
-        internal double MathValue { get; set; }
+        internal double? MathValue { get; set; }
 
         [XmlIgnore]
         public bool IsMathBuiltIn
@@ -145,7 +145,7 @@ namespace OWLSharp.Ontology.Rules.Atoms
                                         keepRow = (leftArgumentNumericValue == rightArgumentNumericValue * MathValue);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#pow":
-                                        keepRow = (leftArgumentNumericValue == Math.Pow(rightArgumentNumericValue, MathValue));
+                                        keepRow = (leftArgumentNumericValue == Math.Pow(rightArgumentNumericValue, MathValue.Value));
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#round":
                                         keepRow = (leftArgumentNumericValue == Math.Round(rightArgumentNumericValue));

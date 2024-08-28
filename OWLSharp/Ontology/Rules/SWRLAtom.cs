@@ -20,6 +20,7 @@ using OWLSharp.Ontology.Rules.Atoms;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -123,10 +124,9 @@ namespace OWLSharp.Ontology.Rules
 
             //BuiltIn-specific arguments
             if (this is SWRLBuiltInAtom builtInAtom)
-                //MathBuiltIn
-                if (builtInAtom.IsMathBuiltIn)
+                if (builtInAtom.IsMathBuiltIn && builtInAtom.MathValue.HasValue)
                 {
-                    RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(builtInAtom.MathValue.ToString(CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
+                    RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(Convert.ToString(builtInAtom.MathValue.Value, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
                     sb.Append($",{RDFQueryPrinter.PrintPatternMember(mathValueTypedLiteral, RDFNamespaceRegister.Instance.Register)}");
                 }
 

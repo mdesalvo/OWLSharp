@@ -51,10 +51,13 @@ namespace OWLSharp.Test.Ontology.Rules
                         new SWRLVariableArgument(new RDFVariable("?P"))),
                     new SWRLDataRangeAtom(
                         new OWLDatatype(RDFVocabulary.XSD.INTEGER),
-                        new SWRLVariableArgument(new RDFVariable("?X")))
+                        new SWRLVariableArgument(new RDFVariable("?X"))),
+                    SWRLBuiltInFactory.Tan(
+                        new SWRLVariableArgument(new RDFVariable("?X")),
+                        new SWRLVariableArgument(new RDFVariable("?Y")))
                 ] };
 
-            Assert.IsTrue(string.Equals("Person(?P) ^ integer(?X)", antecedent.ToString()));
+            Assert.IsTrue(string.Equals("Person(?P) ^ integer(?X) ^ swrlb:tan(?X,?Y)", antecedent.ToString()));
         }
 
         [TestMethod]
@@ -67,11 +70,14 @@ namespace OWLSharp.Test.Ontology.Rules
                         new SWRLVariableArgument(new RDFVariable("?P"))),
                     new SWRLDataRangeAtom(
                         new OWLDatatype(RDFVocabulary.XSD.INTEGER),
-                        new SWRLVariableArgument(new RDFVariable("?X")))
+                        new SWRLVariableArgument(new RDFVariable("?X"))),
+                    SWRLBuiltInFactory.Tan(
+                        new SWRLVariableArgument(new RDFVariable("?X")),
+                        new SWRLVariableArgument(new RDFVariable("?Y")))
                 ] };
 
             Assert.IsTrue(string.Equals(
-@"<Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataRangeAtom><Datatype IRI=""http://www.w3.org/2001/XMLSchema#integer"" /><Variable IRI=""urn:swrl:var#X"" /></DataRangeAtom></Body>", OWLSerializer.SerializeObject(antecedent)));
+@"<Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataRangeAtom><Datatype IRI=""http://www.w3.org/2001/XMLSchema#integer"" /><Variable IRI=""urn:swrl:var#X"" /></DataRangeAtom><BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#tan""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom></Body>", OWLSerializer.SerializeObject(antecedent)));
         }
 
         [TestMethod]
