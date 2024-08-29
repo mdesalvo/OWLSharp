@@ -21,6 +21,7 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace OWLSharp.Ontology
 {
@@ -85,7 +86,7 @@ namespace OWLSharp.Ontology
                     List<OWLPrefix> prefixes = new List<OWLPrefix>();
                     owlOntology.Prefixes.ForEach(pfx =>
                     {
-                        if (!prefixes.Any(pfxs => string.Equals(pfxs.Name, pfx.Name, System.StringComparison.OrdinalIgnoreCase)))
+                        if (!prefixes.Any(pfxs => string.Equals(pfxs.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
                             prefixes.Add(pfx);
                     });
                     owlOntology.Prefixes = prefixes;
