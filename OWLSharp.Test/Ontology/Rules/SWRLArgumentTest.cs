@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Test.Ontology.Rules
 {
@@ -73,6 +74,19 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(argPLT.GetLiteral().Equals(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
             Assert.IsTrue(string.Equals("<Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#string\">hello</Literal>", OWLSerializer.SerializeObject(argPLT)));
 
+        }
+
+        [TestMethod]
+        public void ShouldCreateSWRLVariableArgument()
+        {
+            SWRLVariableArgument arg = new SWRLVariableArgument(new RDFVariable("?V"));
+
+            Assert.IsNotNull(arg);
+            Assert.IsTrue(string.Equals("urn:swrl:var#V", arg.IRI));
+            Assert.IsTrue(string.Equals("?V", arg.ToString()));
+            Assert.IsTrue(arg.GetVariable().Equals(new RDFVariable("?V")));
+            Assert.IsTrue(string.Equals("<Variable IRI=\"urn:swrl:var#V\" />", OWLSerializer.SerializeObject(arg)));
+            Assert.ThrowsException<OWLException>(() => new SWRLVariableArgument(null));
         }
         #endregion
     }
