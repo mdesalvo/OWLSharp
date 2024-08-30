@@ -263,7 +263,6 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults.Columns.Count == 2);
             Assert.IsTrue(builtinResults.Rows.Count == 0);
         }
-
         #endregion
     }
 }
