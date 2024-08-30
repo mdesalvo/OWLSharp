@@ -599,7 +599,7 @@ namespace OWLSharp.Ontology.Rules
         #endregion
 
         #region Methods
-        internal DataTable EvaluateOnAntecedent(DataTable antecedentResults, OWLOntology ontology)
+        internal DataTable EvaluateOnAntecedent(DataTable antecedentResults)
         {
             if (IsMathBuiltIn)
             {

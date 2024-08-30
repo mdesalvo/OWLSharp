@@ -17,7 +17,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Rules;
+using RDFSharp.Model;
 using RDFSharp.Query;
+using System;
+using System.Data;
 
 namespace OWLSharp.Test.Ontology.Rules
 {
@@ -26,7 +29,7 @@ namespace OWLSharp.Test.Ontology.Rules
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateAbsBuiltInAtom()
+        public void ShouldCreateAbsBuiltIn()
         {
             SWRLBuiltIn atom = SWRLBuiltIn.Abs(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -52,7 +55,7 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
-        public void ShouldDeserializeAbsBuiltInAtom()
+        public void ShouldDeserializeAbsBuiltIn()
         {
             SWRLBuiltIn atom = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
@@ -72,6 +75,35 @@ namespace OWLSharp.Test.Ontology.Rules
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
             Assert.IsTrue(string.Equals("swrlb:abs(?X,?Y)", atom.ToString()));
             Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(atom)));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateAbsBuiltIn()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add(DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
+            antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
+            antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
+            antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Abs(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "-2^^http://www.w3.org/2001/XMLSchema#int"));
         }
         #endregion
     }
