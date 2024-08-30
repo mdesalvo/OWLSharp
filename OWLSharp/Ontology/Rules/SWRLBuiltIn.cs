@@ -82,7 +82,7 @@ namespace OWLSharp.Ontology.Rules
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#startsWith");
         #endregion
 
-        #region Ctors
+        #region Ctors/Factory
         internal SWRLBuiltIn() { }
 
         //Math
