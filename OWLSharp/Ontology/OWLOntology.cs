@@ -14,12 +14,9 @@
    limitations under the License.
 */
 
-using Dasync.Collections;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 using OWLSharp.Ontology.Rules;
-using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
@@ -2458,19 +2455,6 @@ namespace OWLSharp.Ontology
 						throw new OWLException($"Cannot import ontology from IRI {ontologyIRI} because: {ex.Message}", ex);
 					}
 				});
-
-		public Task AcceptInferencesAsync(List<OWLInference> inferences)
-			=> inferences?.ParallelForEachAsync(
-				async (inference) => await Task.Run(() =>
-				{
-					#region ClassAssertion
-					//In order to accept an inference of type ClassAssertion we must ensure that the
-					//individual is not explicitly classified as a "negative individual" of that class
-					if (inference.Axiom is OWLClassAssertion clsAsn
-						 && !this.CheckIsNegativeIndividualOf(clsAsn.ClassExpression, clsAsn.IndividualExpression))
-						AssertionAxioms.Add(clsAsn);
-					#endregion
-				}));
 		#endregion
 	}
 }
