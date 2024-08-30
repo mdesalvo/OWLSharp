@@ -84,6 +84,7 @@ namespace OWLSharp.Test.Ontology.Rules
             antecedentResults.Columns.Add("?X");
             antecedentResults.Columns.Add("?Y");
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add(DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
             antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
@@ -110,13 +111,19 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin2 = SWRLBuiltIn.Abs(
                 new SWRLVariableArgument(new RDFVariable("?X")),
-                new SWRLVariableArgument(new RDFVariable("?Z")));
-
+                new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
-
             Assert.IsNotNull(builtinResults2);
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
             Assert.IsTrue(builtinResults2.Rows.Count == 0);
+
+            SWRLBuiltIn builtin3 = SWRLBuiltIn.Abs(
+                new SWRLVariableArgument(new RDFVariable("?Z")), //unexisting
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+            DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults3);
+            Assert.IsTrue(builtinResults3.Columns.Count == 2);
+            Assert.IsTrue(builtinResults3.Rows.Count == 0);
         }
         #endregion
     }
