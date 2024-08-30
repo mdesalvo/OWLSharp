@@ -34,7 +34,7 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(SWRLSameIndividualAtom), ElementName="SameIndividualAtom")]
         public List<SWRLAtom> Atoms { get; set; }
 
-        [XmlElement(typeof(SWRLBuiltIn), ElementName="BuiltInAtom")]
+        [XmlElement(ElementName="BuiltInAtom")]
         public List<SWRLBuiltIn> BuiltIns { get; set; }
         #endregion
 
