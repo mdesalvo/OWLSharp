@@ -152,6 +152,23 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
+        public void ShouldGetSWRLRuleFromXMLRepresentation()
+        {
+            SWRLRule rule = OWLSerializer.DeserializeObject<SWRLRule>(
+@"<DLSafeRule><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal>SWRL1</Literal></Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>This is a test SWRL rule</Literal></Annotation><Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataPropertyAtom><DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" /><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#N"" /></DataPropertyAtom><BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#containsIgnoreCase""><Variable IRI=""urn:swrl:var#N"" /><Literal>mark</Literal></BuiltInAtom></Body><Head><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom></Head></DLSafeRule>");
+
+            Assert.IsNotNull(rule);
+            Assert.IsNotNull(rule.Annotations);
+            Assert.IsTrue(rule.Annotations.Count == 2);
+            Assert.IsNotNull(rule.Antecedent);
+            Assert.IsTrue(rule.Antecedent.Atoms.Count == 2);
+            Assert.IsTrue(rule.Antecedent.BuiltIns.Count == 1);
+            Assert.IsNotNull(rule.Consequent);
+            Assert.IsTrue(rule.Consequent.Atoms.Count == 1);
+            Assert.IsTrue(string.Equals("Person(?P) ^ name(?P,?N) ^ swrlb:containsIgnoreCase(?N,\"mark\") -> Agent(?P)", rule.ToString()));
+        }
+
+        [TestMethod]
         public async Task ShouldApplySWRLRuleToOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology()
