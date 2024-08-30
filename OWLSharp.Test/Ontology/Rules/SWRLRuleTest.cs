@@ -94,15 +94,18 @@ namespace OWLSharp.Test.Ontology.Rules
                     Atoms = [ 
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.FOAF.PERSON), 
-                            new SWRLVariableArgument(new RDFVariable("?P"))),
-                        SWRLBuiltInFactory.Add(
+                            new SWRLVariableArgument(new RDFVariable("?P")))
+                    ],
+                    BuiltIns = [
+                        SWRLBuiltIn.Add(
                             new SWRLVariableArgument(new RDFVariable("?A")),
                             new SWRLVariableArgument(new RDFVariable("?B")),
                             44.57),
-                        SWRLBuiltInFactory.Matches(
+                        SWRLBuiltIn.Matches(
                             new SWRLVariableArgument(new RDFVariable("?P")),
                             new Regex("Mark", RegexOptions.IgnoreCase))
-                    ] },
+                    ]
+                },
                 new SWRLConsequent() {
                     Atoms = [
                         new SWRLClassAtom(
@@ -128,8 +131,10 @@ namespace OWLSharp.Test.Ontology.Rules
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(RDFVocabulary.FOAF.NAME),
                             new SWRLVariableArgument(new RDFVariable("?P")),
-                            new SWRLVariableArgument(new RDFVariable("?N"))),
-                        SWRLBuiltInFactory.ContainsIgnoreCase(
+                            new SWRLVariableArgument(new RDFVariable("?N")))
+                    ],
+                    BuiltIns = [
+                        SWRLBuiltIn.ContainsIgnoreCase(
                             new SWRLVariableArgument(new RDFVariable("?N")), "mark")
                     ]
                 },
@@ -179,8 +184,10 @@ namespace OWLSharp.Test.Ontology.Rules
                                 new SWRLDataPropertyAtom(
                                     new OWLDataProperty(RDFVocabulary.FOAF.NAME),
                                     new SWRLVariableArgument(new RDFVariable("?P")),
-                                    new SWRLVariableArgument(new RDFVariable("?N"))),
-                                SWRLBuiltInFactory.ContainsIgnoreCase(
+                                    new SWRLVariableArgument(new RDFVariable("?N")))
+                            ],
+                            BuiltIns = [
+                                SWRLBuiltIn.ContainsIgnoreCase(
                                     new SWRLVariableArgument(new RDFVariable("?N")), "mark")
                             ]
                         },

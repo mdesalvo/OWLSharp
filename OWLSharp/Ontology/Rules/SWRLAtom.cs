@@ -18,11 +18,8 @@ using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Globalization;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -30,7 +27,6 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology.Rules
 {
     //Register here all derived types of SWRLAtom
-    [XmlInclude(typeof(SWRLBuiltInAtom))]
     [XmlInclude(typeof(SWRLClassAtom))]
     [XmlInclude(typeof(SWRLDataPropertyAtom))]
     [XmlInclude(typeof(SWRLDataRangeAtom))]
@@ -68,8 +64,6 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         [XmlElement(typeof(OWLExpression), Order=1)]
         public OWLExpression Predicate { get; set; }
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializePredicate() => !(this is SWRLBuiltInAtom);
 
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]
@@ -98,8 +92,6 @@ namespace OWLSharp.Ontology.Rules
             StringBuilder sb = new StringBuilder();
 
             //Predicate
-            if (this is SWRLBuiltInAtom)
-                sb.Append("swrlb:");
             sb.Append(RDFModelUtilities.GetShortUri(Predicate.GetIRI().URI));
             sb.Append("(");
 
@@ -121,14 +113,6 @@ namespace OWLSharp.Ontology.Rules
                 else if (RightArgument is SWRLVariableArgument rightArgumentVariable)
                     sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
             }
-
-            //BuiltIn-specific arguments
-            if (this is SWRLBuiltInAtom builtInAtom)
-                if (builtInAtom.IsMathBuiltIn && builtInAtom.MathValue.HasValue)
-                {
-                    RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(Convert.ToString(builtInAtom.MathValue.Value, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
-                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(mathValueTypedLiteral, RDFNamespaceRegister.Instance.Register)}");
-                }
 
             sb.Append(")");
             return sb.ToString();

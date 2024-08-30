@@ -17,7 +17,7 @@
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Rules
@@ -26,7 +26,6 @@ namespace OWLSharp.Ontology.Rules
     public class SWRLAntecedent
     {
         #region Properties
-        [XmlElement(typeof(SWRLBuiltInAtom), ElementName="BuiltInAtom")]
         [XmlElement(typeof(SWRLClassAtom), ElementName="ClassAtom")]
         [XmlElement(typeof(SWRLDataPropertyAtom), ElementName="DataPropertyAtom")]
         [XmlElement(typeof(SWRLDataRangeAtom), ElementName="DataRangeAtom")]
@@ -34,16 +33,28 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(SWRLObjectPropertyAtom), ElementName="ObjectPropertyAtom")]
         [XmlElement(typeof(SWRLSameIndividualAtom), ElementName="SameIndividualAtom")]
         public List<SWRLAtom> Atoms { get; set; }
+
+        [XmlElement(typeof(SWRLBuiltIn), ElementName="BuiltInAtom")]
+        public List<SWRLBuiltIn> BuiltIns { get; set; }
         #endregion
 
         #region Ctors
         public SWRLAntecedent()
-            => Atoms = new List<SWRLAtom>();
+        {
+            Atoms = new List<SWRLAtom>();
+            BuiltIns = new List<SWRLBuiltIn>();
+        }
         #endregion
 
-		#region Interfaces
+        #region Interfaces
         public override string ToString()
-            => string.Join(" ^ ", Atoms);
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(string.Join(" ^ ", Atoms));
+            sb.Append(Atoms.Count > 0 && BuiltIns.Count > 0 ? " ^ " : string.Empty);
+            sb.Append(string.Join(" ^ ", BuiltIns));
+            return sb.ToString();
+        }
         #endregion
 
         #region Methods
@@ -51,17 +62,13 @@ namespace OWLSharp.Ontology.Rules
         {
             //Execute the antecedent atoms
             List<DataTable> atomResults = new List<DataTable>();
-            Atoms.Where(atom => !(atom is SWRLBuiltInAtom))
-                 .ToList()
-                 .ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
+            Atoms.ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
 
             //Join results of antecedent atoms
             DataTable antecedentResult = RDFQueryEngine.CombineTables(atomResults, false);
 
             //Execute the antecedent built-ins
-            Atoms.OfType<SWRLBuiltInAtom>()
-                 .ToList()
-                 .ForEach(builtin => antecedentResult = builtin.EvaluateOnAntecedent(antecedentResult, ontology));
+            BuiltIns.ForEach(builtin => antecedentResult = builtin.EvaluateOnAntecedent(antecedentResult, ontology));
 
             //Return the antecedent result
             return antecedentResult;
