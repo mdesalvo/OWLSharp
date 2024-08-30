@@ -48,7 +48,7 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(Order=3)]
         public OWLLiteral Literal { get; set; }
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializeMathLiteral() => Literal != null;
+        public bool ShouldSerializeLiteral() => Literal != null;
 
         [XmlIgnore]
         public bool IsMathBuiltIn
