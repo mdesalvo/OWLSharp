@@ -17,7 +17,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Rules;
-using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
 using System.Data;
