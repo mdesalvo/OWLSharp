@@ -50,6 +50,29 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Abs(null,new SWRLVariableArgument(new RDFVariable("?Y"))));
             Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Abs(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
+
+        [TestMethod]
+        public void ShouldDeserializeAbsBuiltInAtom()
+        {
+            SWRLBuiltIn atom = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+
+            Assert.IsNotNull(atom);
+            Assert.IsTrue(atom.IsMathBuiltIn);
+            Assert.IsFalse(atom.IsComparisonFilterBuiltIn);
+            Assert.IsFalse(atom.IsStringFilterBuiltIn);
+            Assert.IsNotNull(atom.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#abs", atom.IRI));
+            Assert.IsNull(atom.Literal);
+            Assert.IsNotNull(atom.LeftArgument);
+            Assert.IsTrue(atom.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(atom.RightArgument);
+            Assert.IsTrue(atom.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:abs(?X,?Y)", atom.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(atom)));
+        }
         #endregion
     }
 }
