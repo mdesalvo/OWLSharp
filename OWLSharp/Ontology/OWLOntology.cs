@@ -14,9 +14,12 @@
    limitations under the License.
 */
 
+using Dasync.Collections;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Helpers;
 using OWLSharp.Ontology.Rules;
+using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
@@ -30,124 +33,124 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
-    [XmlRoot("Ontology")]
-    public class OWLOntology
-    {
-        #region Properties
-        [XmlAttribute("ontologyIRI", DataType="anyURI")]
-        public string IRI { get; set; }
+	[XmlRoot("Ontology")]
+	public class OWLOntology
+	{
+		#region Properties
+		[XmlAttribute("ontologyIRI", DataType = "anyURI")]
+		public string IRI { get; set; }
 
-        [XmlAttribute("ontologyVersion", DataType="anyURI")]
-        public string VersionIRI { get; set; }
+		[XmlAttribute("ontologyVersion", DataType = "anyURI")]
+		public string VersionIRI { get; set; }
 
-        [XmlElement("Prefix")]
-        public List<OWLPrefix> Prefixes { get; internal set; }
+		[XmlElement("Prefix")]
+		public List<OWLPrefix> Prefixes { get; internal set; }
 
-        [XmlElement("Import")]
-        public List<OWLImport> Imports { get; internal set; }
+		[XmlElement("Import")]
+		public List<OWLImport> Imports { get; internal set; }
 
-        [XmlElement("Annotation")]
-        public List<OWLAnnotation> Annotations { get; internal set; }
+		[XmlElement("Annotation")]
+		public List<OWLAnnotation> Annotations { get; internal set; }
 
-        //Axioms
+		//Axioms
 
-        [XmlElement("Declaration")]
-        public List<OWLDeclaration> DeclarationAxioms { get; internal set; }
+		[XmlElement("Declaration")]
+		public List<OWLDeclaration> DeclarationAxioms { get; internal set; }
 
-        [XmlElement(typeof(OWLSubClassOf), ElementName="SubClassOf")]
-        [XmlElement(typeof(OWLEquivalentClasses), ElementName="EquivalentClasses")]
-        [XmlElement(typeof(OWLDisjointClasses), ElementName="DisjointClasses")]
-        [XmlElement(typeof(OWLDisjointUnion), ElementName="DisjointUnion")]
-        public List<OWLClassAxiom> ClassAxioms { get; internal set; }
+		[XmlElement(typeof(OWLSubClassOf), ElementName = "SubClassOf")]
+		[XmlElement(typeof(OWLEquivalentClasses), ElementName = "EquivalentClasses")]
+		[XmlElement(typeof(OWLDisjointClasses), ElementName = "DisjointClasses")]
+		[XmlElement(typeof(OWLDisjointUnion), ElementName = "DisjointUnion")]
+		public List<OWLClassAxiom> ClassAxioms { get; internal set; }
 
-        [XmlElement(typeof(OWLSubObjectPropertyOf), ElementName="SubObjectPropertyOf")]
-        [XmlElement(typeof(OWLEquivalentObjectProperties), ElementName="EquivalentObjectProperties")]
-        [XmlElement(typeof(OWLDisjointObjectProperties), ElementName="DisjointObjectProperties")]
-        [XmlElement(typeof(OWLInverseObjectProperties), ElementName="InverseObjectProperties")]
-        [XmlElement(typeof(OWLObjectPropertyDomain), ElementName="ObjectPropertyDomain")]
-        [XmlElement(typeof(OWLObjectPropertyRange), ElementName="ObjectPropertyRange")]
-        [XmlElement(typeof(OWLFunctionalObjectProperty), ElementName="FunctionalObjectProperty")]
-        [XmlElement(typeof(OWLInverseFunctionalObjectProperty), ElementName="InverseFunctionalObjectProperty")]
-        [XmlElement(typeof(OWLReflexiveObjectProperty), ElementName="ReflexiveObjectProperty")]
-        [XmlElement(typeof(OWLIrreflexiveObjectProperty), ElementName="IrreflexiveObjectProperty")]
-        [XmlElement(typeof(OWLSymmetricObjectProperty), ElementName="SymmetricObjectProperty")]
-        [XmlElement(typeof(OWLAsymmetricObjectProperty), ElementName="AsymmetricObjectProperty")]
-        [XmlElement(typeof(OWLTransitiveObjectProperty), ElementName="TransitiveObjectProperty")]
-        public List<OWLObjectPropertyAxiom> ObjectPropertyAxioms { get; internal set; }
+		[XmlElement(typeof(OWLSubObjectPropertyOf), ElementName = "SubObjectPropertyOf")]
+		[XmlElement(typeof(OWLEquivalentObjectProperties), ElementName = "EquivalentObjectProperties")]
+		[XmlElement(typeof(OWLDisjointObjectProperties), ElementName = "DisjointObjectProperties")]
+		[XmlElement(typeof(OWLInverseObjectProperties), ElementName = "InverseObjectProperties")]
+		[XmlElement(typeof(OWLObjectPropertyDomain), ElementName = "ObjectPropertyDomain")]
+		[XmlElement(typeof(OWLObjectPropertyRange), ElementName = "ObjectPropertyRange")]
+		[XmlElement(typeof(OWLFunctionalObjectProperty), ElementName = "FunctionalObjectProperty")]
+		[XmlElement(typeof(OWLInverseFunctionalObjectProperty), ElementName = "InverseFunctionalObjectProperty")]
+		[XmlElement(typeof(OWLReflexiveObjectProperty), ElementName = "ReflexiveObjectProperty")]
+		[XmlElement(typeof(OWLIrreflexiveObjectProperty), ElementName = "IrreflexiveObjectProperty")]
+		[XmlElement(typeof(OWLSymmetricObjectProperty), ElementName = "SymmetricObjectProperty")]
+		[XmlElement(typeof(OWLAsymmetricObjectProperty), ElementName = "AsymmetricObjectProperty")]
+		[XmlElement(typeof(OWLTransitiveObjectProperty), ElementName = "TransitiveObjectProperty")]
+		public List<OWLObjectPropertyAxiom> ObjectPropertyAxioms { get; internal set; }
 
-        [XmlElement(typeof(OWLSubDataPropertyOf), ElementName="SubDataPropertyOf")]
-        [XmlElement(typeof(OWLEquivalentDataProperties), ElementName="EquivalentDataProperties")]
-        [XmlElement(typeof(OWLDisjointDataProperties), ElementName="DisjointDataProperties")]
-        [XmlElement(typeof(OWLDataPropertyDomain), ElementName="DataPropertyDomain")]
-        [XmlElement(typeof(OWLDataPropertyRange), ElementName="DataPropertyRange")]
-        [XmlElement(typeof(OWLFunctionalDataProperty), ElementName="FunctionalDataProperty")]
-        public List<OWLDataPropertyAxiom> DataPropertyAxioms { get; internal set; }
+		[XmlElement(typeof(OWLSubDataPropertyOf), ElementName = "SubDataPropertyOf")]
+		[XmlElement(typeof(OWLEquivalentDataProperties), ElementName = "EquivalentDataProperties")]
+		[XmlElement(typeof(OWLDisjointDataProperties), ElementName = "DisjointDataProperties")]
+		[XmlElement(typeof(OWLDataPropertyDomain), ElementName = "DataPropertyDomain")]
+		[XmlElement(typeof(OWLDataPropertyRange), ElementName = "DataPropertyRange")]
+		[XmlElement(typeof(OWLFunctionalDataProperty), ElementName = "FunctionalDataProperty")]
+		public List<OWLDataPropertyAxiom> DataPropertyAxioms { get; internal set; }
 
-        [XmlElement(ElementName="DatatypeDefinition")]
-        public List<OWLDatatypeDefinition> DatatypeDefinitionAxioms { get; internal set; }
+		[XmlElement(ElementName = "DatatypeDefinition")]
+		public List<OWLDatatypeDefinition> DatatypeDefinitionAxioms { get; internal set; }
 
-        [XmlElement(ElementName="HasKey")]
-        public List<OWLHasKey> KeyAxioms { get; internal set; }
+		[XmlElement(ElementName = "HasKey")]
+		public List<OWLHasKey> KeyAxioms { get; internal set; }
 
-        [XmlElement(typeof(OWLSameIndividual), ElementName="SameIndividual")]
-        [XmlElement(typeof(OWLDifferentIndividuals), ElementName="DifferentIndividuals")]
-        [XmlElement(typeof(OWLClassAssertion), ElementName="ClassAssertion")]
-        [XmlElement(typeof(OWLObjectPropertyAssertion), ElementName="ObjectPropertyAssertion")]
-        [XmlElement(typeof(OWLNegativeObjectPropertyAssertion), ElementName="NegativeObjectPropertyAssertion")]
-        [XmlElement(typeof(OWLDataPropertyAssertion), ElementName="DataPropertyAssertion")]
-        [XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName="NegativeDataPropertyAssertion")]
-        public List<OWLAssertionAxiom> AssertionAxioms { get; internal set; }
+		[XmlElement(typeof(OWLSameIndividual), ElementName = "SameIndividual")]
+		[XmlElement(typeof(OWLDifferentIndividuals), ElementName = "DifferentIndividuals")]
+		[XmlElement(typeof(OWLClassAssertion), ElementName = "ClassAssertion")]
+		[XmlElement(typeof(OWLObjectPropertyAssertion), ElementName = "ObjectPropertyAssertion")]
+		[XmlElement(typeof(OWLNegativeObjectPropertyAssertion), ElementName = "NegativeObjectPropertyAssertion")]
+		[XmlElement(typeof(OWLDataPropertyAssertion), ElementName = "DataPropertyAssertion")]
+		[XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName = "NegativeDataPropertyAssertion")]
+		public List<OWLAssertionAxiom> AssertionAxioms { get; internal set; }
 
-        [XmlElement(typeof(OWLAnnotationAssertion), ElementName="AnnotationAssertion")]
-        [XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName="SubAnnotationPropertyOf")]
-        [XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
-        [XmlElement(typeof(OWLAnnotationPropertyRange), ElementName="AnnotationPropertyRange")]
-        public List<OWLAnnotationAxiom> AnnotationAxioms { get; internal set; }
+		[XmlElement(typeof(OWLAnnotationAssertion), ElementName = "AnnotationAssertion")]
+		[XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName = "SubAnnotationPropertyOf")]
+		[XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName = "AnnotationPropertyDomain")]
+		[XmlElement(typeof(OWLAnnotationPropertyRange), ElementName = "AnnotationPropertyRange")]
+		public List<OWLAnnotationAxiom> AnnotationAxioms { get; internal set; }
 
-        //Rules
+		//Rules
 
-        [XmlElement("DLSafeRule")]
-        public List<SWRLRule> Rules { get; internal set; }
-        #endregion
+		[XmlElement("DLSafeRule")]
+		public List<SWRLRule> Rules { get; internal set; }
+		#endregion
 
-        #region Ctors
-        public OWLOntology()
-        {
-            Prefixes = new List<OWLPrefix>()
-            {
-                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
-                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)),
-                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDF.PREFIX)),
-                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
-                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
-            };
-            Imports = new List<OWLImport>();
-            Annotations = new List<OWLAnnotation>();
+		#region Ctors
+		public OWLOntology()
+		{
+			Prefixes = new List<OWLPrefix>()
+			{
+				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
+				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDFS.PREFIX)),
+				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDF.PREFIX)),
+				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
+				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
+			};
+			Imports = new List<OWLImport>();
+			Annotations = new List<OWLAnnotation>();
 
-            //Axioms
-            DeclarationAxioms = new List<OWLDeclaration>();
-            ClassAxioms = new List<OWLClassAxiom>();
-            ObjectPropertyAxioms = new List<OWLObjectPropertyAxiom>();
-            DataPropertyAxioms = new List<OWLDataPropertyAxiom>();
-            DatatypeDefinitionAxioms = new List<OWLDatatypeDefinition>();
-            KeyAxioms = new List<OWLHasKey>();
-            AssertionAxioms = new List<OWLAssertionAxiom>();
-            AnnotationAxioms = new List<OWLAnnotationAxiom>();
+			//Axioms
+			DeclarationAxioms = new List<OWLDeclaration>();
+			ClassAxioms = new List<OWLClassAxiom>();
+			ObjectPropertyAxioms = new List<OWLObjectPropertyAxiom>();
+			DataPropertyAxioms = new List<OWLDataPropertyAxiom>();
+			DatatypeDefinitionAxioms = new List<OWLDatatypeDefinition>();
+			KeyAxioms = new List<OWLHasKey>();
+			AssertionAxioms = new List<OWLAssertionAxiom>();
+			AnnotationAxioms = new List<OWLAnnotationAxiom>();
 			//Rules
 			Rules = new List<SWRLRule>();
-        }
+		}
 
-        public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI=null) : this()
-        {
-            IRI = ontologyIRI?.ToString();
-            VersionIRI = ontologyVersionIRI?.ToString();
-        }
+		public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI = null) : this()
+		{
+			IRI = ontologyIRI?.ToString();
+			VersionIRI = ontologyVersionIRI?.ToString();
+		}
 
 		public OWLOntology(OWLOntology ontology)
 		{
 			IRI = ontology?.IRI;
 			VersionIRI = ontology?.VersionIRI;
-			Prefixes = new List<OWLPrefix>(ontology?.Prefixes ?? 
+			Prefixes = new List<OWLPrefix>(ontology?.Prefixes ??
 						new List<OWLPrefix>()
 						{
 							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
@@ -170,11 +173,11 @@ namespace OWLSharp.Ontology
 			//Rules
 			Rules = new List<SWRLRule>(ontology?.Rules ?? Enumerable.Empty<SWRLRule>());
 		}
-        #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
 		public Task<RDFGraph> ToRDFGraphAsync()
-        	=>  Task.Run(() => 
+			=> Task.Run(() =>
 				{
 					RDFGraph graph = new RDFGraph();
 
@@ -229,8 +232,8 @@ namespace OWLSharp.Ontology
 			return ToStreamAsync(owlFormat, new FileStream(outputFile, FileMode.Create));
 		}
 
-        public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream)
-			=>  Task.Run(() => 
+		public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream)
+			=> Task.Run(() =>
 				{
 					if (outputStream == null)
 						throw new OWLException("Cannot write ontology to stream because given \"outputStream\" parameter is null");
@@ -240,25 +243,25 @@ namespace OWLSharp.Ontology
 						switch (owlFormat)
 						{
 							case OWLEnums.OWLFormats.OWL2XML:
-							default:						
+							default:
 								string ontology = OWLSerializer.SerializeOntology(this);
 								using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
 									streamWriter.Write(ontology);
-							break;
+								break;
 						}
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						throw new OWLException($"Cannot write ontology to stream because: {ex.Message}", ex);
 					}
 				});
 
-        public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph)
-			=>  Task.Run(() => 
+		public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph)
+			=> Task.Run(() =>
 				{
 					if (graph == null)
 						throw new OWLException("Cannot read ontology from graph because: given \"graph\" parameter is null");
-					
+
 					RDFGraph typeGraph = graph[null, RDFVocabulary.RDF.TYPE, null, null];
 
 					#region Utilities
@@ -360,7 +363,7 @@ namespace OWLSharp.Ontology
 					}
 					void LoadOntologyAnnotations(OWLOntology ont, RDFGraph annAxiomsGraph)
 					{
-						LoadIRIAnnotations(ont,	new List<RDFResource>() {
+						LoadIRIAnnotations(ont, new List<RDFResource>() {
 								RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH,
 								RDFVocabulary.OWL.INCOMPATIBLE_WITH,
 								RDFVocabulary.OWL.PRIOR_VERSION,
@@ -370,7 +373,7 @@ namespace OWLSharp.Ontology
 								RDFVocabulary.RDFS.LABEL,
 								RDFVocabulary.RDFS.SEE_ALSO,
 								RDFVocabulary.RDFS.IS_DEFINED_BY
-							}, new RDFResource(ont.IRI), annAxiomsGraph, out List <OWLAnnotation> ontologyAnnotations);
+							}, new RDFResource(ont.IRI), annAxiomsGraph, out List<OWLAnnotation> ontologyAnnotations);
 						ont.Annotations = ontologyAnnotations;
 					}
 					//Axioms
@@ -381,7 +384,7 @@ namespace OWLSharp.Ontology
 							LoadObjectPropertyExpression(ont, (RDFResource)funcPropTriple.Subject, out OWLObjectPropertyExpression opex);
 							if (opex != null)
 							{
-								OWLFunctionalObjectProperty functionalObjectProperty = new OWLFunctionalObjectProperty() { 
+								OWLFunctionalObjectProperty functionalObjectProperty = new OWLFunctionalObjectProperty() {
 									ObjectPropertyExpression = opex };
 
 								LoadAxiomAnnotations(ont, funcPropTriple, functionalObjectProperty, annAxiomsGraph);
@@ -617,14 +620,14 @@ namespace OWLSharp.Ontology
 							if (leftOPE != null && rightOPE != null)
 							{
 								OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties() {
-									ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() { leftOPE, rightOPE } }; 
+									ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() { leftOPE, rightOPE } };
 
 								LoadAxiomAnnotations(ont, propDisjointWithTriple, disjointObjectProperties, annAxiomsGraph);
 
 								ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
 							}
 						}
-					
+
 						//Load axioms built with owl:AllDisjointProperties
 						foreach (RDFTriple allDisjointPropertiesTriple in typeGraph[null, null, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES, null])
 							if (graph[(RDFResource)allDisjointPropertiesTriple.Subject, RDFVocabulary.OWL.MEMBERS, null, null]
@@ -643,15 +646,15 @@ namespace OWLSharp.Ontology
 								if (adjpMembers.Count >= 2)
 								{
 									OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties() {
-										ObjectPropertyExpressions = adjpMembers	};
+										ObjectPropertyExpressions = adjpMembers };
 
-									LoadIRIAnnotations(ont,	new List<RDFResource>() {
+									LoadIRIAnnotations(ont, new List<RDFResource>() {
 										RDFVocabulary.OWL.DEPRECATED,
 										RDFVocabulary.RDFS.COMMENT,
 										RDFVocabulary.RDFS.LABEL,
 										RDFVocabulary.RDFS.SEE_ALSO,
 										RDFVocabulary.RDFS.IS_DEFINED_BY
-									}, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjpAnnotations);
+									}, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
 									disjointObjectProperties.Annotations = adjpAnnotations;
 
 									ont.ObjectPropertyAxioms.Add(disjointObjectProperties);
@@ -665,7 +668,7 @@ namespace OWLSharp.Ontology
 						{
 							OWLObjectPropertyChain objectPropertyChain = new OWLObjectPropertyChain() {
 								ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() };
-							
+
 							//Left                    
 							RDFCollection chainAxiomMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)propertyChainAxiomTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO);
 							foreach (RDFResource chainAxiomMember in chainAxiomMembers.Items.Cast<RDFResource>())
@@ -820,7 +823,7 @@ namespace OWLSharp.Ontology
 										RDFVocabulary.RDFS.LABEL,
 										RDFVocabulary.RDFS.SEE_ALSO,
 										RDFVocabulary.RDFS.IS_DEFINED_BY
-									}, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjpAnnotations);
+									}, (RDFResource)allDisjointPropertiesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
 									disjointDataProperties.Annotations = adjpAnnotations;
 
 									ont.DataPropertyAxioms.Add(disjointDataProperties);
@@ -965,7 +968,7 @@ namespace OWLSharp.Ontology
 										RDFVocabulary.RDFS.LABEL,
 										RDFVocabulary.RDFS.SEE_ALSO,
 										RDFVocabulary.RDFS.IS_DEFINED_BY
-									}, (RDFResource)allDisjointClassesTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjcAnnotations);
+									}, (RDFResource)allDisjointClassesTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjcAnnotations);
 									disjointClasses.Annotations = adjcAnnotations;
 
 									ont.ClassAxioms.Add(disjointClasses);
@@ -1035,7 +1038,7 @@ namespace OWLSharp.Ontology
 					void LoadDatatypeDefinition(OWLOntology ont, RDFGraph annAxiomsGraph)
 					{
 						foreach (RDFTriple datatypeTriple in typeGraph[null, null, RDFVocabulary.RDFS.DATATYPE, null]
-															.Where(t => !((RDFResource)t.Subject).IsBlank))                
+															.Where(t => !((RDFResource)t.Subject).IsBlank))
 						{
 							if (!(graph[(RDFResource)datatypeTriple.Subject, RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null]
 								.FirstOrDefault()?.Object is RDFResource equivalentDatatype))
@@ -1106,7 +1109,7 @@ namespace OWLSharp.Ontology
 									LoadIndividualExpression(ont, adiffMember, out OWLIndividualExpression idvex);
 									if (idvex != null)
 										adiffMembers.Add(idvex);
-								}                            
+								}
 
 								if (adiffMembers.Count >= 2)
 								{
@@ -1119,7 +1122,7 @@ namespace OWLSharp.Ontology
 										RDFVocabulary.RDFS.LABEL,
 										RDFVocabulary.RDFS.SEE_ALSO,
 										RDFVocabulary.RDFS.IS_DEFINED_BY
-									}, (RDFResource)allDifferentTriple.Subject, annAxiomsGraph, out List <OWLAnnotation> adjpAnnotations);
+									}, (RDFResource)allDifferentTriple.Subject, annAxiomsGraph, out List<OWLAnnotation> adjpAnnotations);
 									differentIndividuals.Annotations = adjpAnnotations;
 
 									ont.AssertionAxioms.Add(differentIndividuals);
@@ -1186,7 +1189,7 @@ namespace OWLSharp.Ontology
 										RDFVocabulary.RDFS.LABEL,
 										RDFVocabulary.RDFS.SEE_ALSO,
 										RDFVocabulary.RDFS.IS_DEFINED_BY
-									}, axiomIRI, annAxiomsGraph, out List <OWLAnnotation> nasnAnnotations);
+									}, axiomIRI, annAxiomsGraph, out List<OWLAnnotation> nasnAnnotations);
 								negObjPropAsn.Annotations = nasnAnnotations;
 
 								ont.AssertionAxioms.Add(negObjPropAsn);
@@ -1287,7 +1290,7 @@ namespace OWLSharp.Ontology
 									RDFVocabulary.RDFS.LABEL,
 									RDFVocabulary.RDFS.SEE_ALSO,
 									RDFVocabulary.RDFS.IS_DEFINED_BY
-								}, axiomIRI, annAxiomsGraph, out List <OWLAnnotation> nasnAnnotations);
+								}, axiomIRI, annAxiomsGraph, out List<OWLAnnotation> nasnAnnotations);
 								negDtPropAsn.Annotations = nasnAnnotations;
 
 								ont.AssertionAxioms.Add(negDtPropAsn);
@@ -1527,7 +1530,7 @@ namespace OWLSharp.Ontology
 							RDFResource annPropIRI = (RDFResource)annPropTriple.Subject;
 							if (!annotationProperties.Any(ap => ap.Equals(annPropIRI)))
 								annotationProperties.Add(annPropIRI);
-						}   
+						}
 
 						foreach (RDFResource workingAnnotationProperty in annotationProperties)
 						{
@@ -1798,14 +1801,14 @@ namespace OWLSharp.Ontology
 					void LoadObjectAllValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLObjectAllValuesFrom objAVF)
 					{
 						objAVF = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
 							if (onPropertyOPEX == null)
 								return;
-					
+
 							LoadClassExpression(ont, allValuesFrom, out OWLClassExpression allValuesFromCLEX);
 							if (allValuesFromCLEX != null)
 								objAVF = new OWLObjectAllValuesFrom(onPropertyOPEX, allValuesFromCLEX);
@@ -1814,14 +1817,14 @@ namespace OWLSharp.Ontology
 					void LoadObjectSomeValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLObjectSomeValuesFrom objSVF)
 					{
 						objSVF = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
 							if (onPropertyOPEX == null)
 								return;
-					
+
 							LoadClassExpression(ont, someValuesFrom, out OWLClassExpression someValuesFromCLEX);
 							if (someValuesFromCLEX != null)
 								objSVF = new OWLObjectSomeValuesFrom(onPropertyOPEX, someValuesFromCLEX);
@@ -1830,7 +1833,7 @@ namespace OWLSharp.Ontology
 					void LoadObjectHasSelf(OWLOntology ont, RDFResource clsIRI, out OWLObjectHasSelf objHS)
 					{
 						objHS = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
@@ -1842,14 +1845,14 @@ namespace OWLSharp.Ontology
 					void LoadObjectHasValue(OWLOntology ont, RDFResource clsIRI, out OWLObjectHasValue objHV)
 					{
 						objHV = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
 							if (onPropertyOPEX == null)
 								return;
-					
+
 							if (graph[clsIRI, RDFVocabulary.OWL.HAS_VALUE, null, null].FirstOrDefault()?.Object is RDFResource hasValue)
 							{
 								LoadIndividualExpression(ont, hasValue, out OWLIndividualExpression hasValueIDVEX);
@@ -1861,14 +1864,14 @@ namespace OWLSharp.Ontology
 					void LoadObjectExactCardinality(OWLOntology ont, RDFResource clsIRI, out OWLObjectExactCardinality objEXCR)
 					{
 						objEXCR = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
 							if (onPropertyOPEX == null)
 								return;
-					
+
 							//Cardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactCardLit
 								&& exactCardLit.HasDecimalDatatype()
@@ -1877,7 +1880,7 @@ namespace OWLSharp.Ontology
 								objEXCR = new OWLObjectExactCardinality(onPropertyOPEX, exactCardinality);
 								return;
 							}
-					
+
 							//QualifiedCardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactQCardLit
 									&& exactQCardLit.HasDecimalDatatype()
@@ -1893,14 +1896,14 @@ namespace OWLSharp.Ontology
 					void LoadObjectMinCardinality(OWLOntology ont, RDFResource clsIRI, out OWLObjectMinCardinality objMINCR)
 					{
 						objMINCR = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
 							if (onPropertyOPEX == null)
 								return;
-					
+
 							//Cardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minCardLit
 								&& minCardLit.HasDecimalDatatype()
@@ -1909,7 +1912,7 @@ namespace OWLSharp.Ontology
 								objMINCR = new OWLObjectMinCardinality(onPropertyOPEX, minCardinality);
 								return;
 							}
-					
+
 							//QualifiedCardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minQCardLit
 									&& minQCardLit.HasDecimalDatatype()
@@ -1925,14 +1928,14 @@ namespace OWLSharp.Ontology
 					void LoadObjectMaxCardinality(OWLOntology ont, RDFResource clsIRI, out OWLObjectMaxCardinality objMAXCR)
 					{
 						objMAXCR = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadObjectPropertyExpression(ont, onProperty, out OWLObjectPropertyExpression onPropertyOPEX);
 							if (onPropertyOPEX == null)
 								return;
-					
+
 							//Cardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral maxCardLit
 								&& maxCardLit.HasDecimalDatatype()
@@ -1941,7 +1944,7 @@ namespace OWLSharp.Ontology
 								objMAXCR = new OWLObjectMaxCardinality(onPropertyOPEX, maxCardinality);
 								return;
 							}
-					
+
 							//QualifiedCardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral maxQCardLit
 									&& maxQCardLit.HasDecimalDatatype()
@@ -1957,11 +1960,11 @@ namespace OWLSharp.Ontology
 					void LoadDataAllValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLDataAllValuesFrom dtAVF)
 					{
 						dtAVF = null;
-					
+
 						LoadDataRangeExpression(ont, allValuesFrom, out OWLDataRangeExpression allValuesFromDREX);
 						if (allValuesFromDREX == null)
 							return;
-					
+
 						foreach (RDFResource onProperty in graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null]
 															.Select(t => t.Object)
 															.OfType<RDFResource>())
@@ -1979,11 +1982,11 @@ namespace OWLSharp.Ontology
 					void LoadDataSomeValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource someValuesFrom, out OWLDataSomeValuesFrom dtSVF)
 					{
 						dtSVF = null;
-					
+
 						LoadDataRangeExpression(ont, someValuesFrom, out OWLDataRangeExpression someValuesFromDREX);
 						if (someValuesFromDREX == null)
 							return;
-					
+
 						foreach (RDFResource onProperty in graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null]
 															.Select(t => t.Object)
 															.OfType<RDFResource>())
@@ -2001,14 +2004,14 @@ namespace OWLSharp.Ontology
 					void LoadDataHasValue(OWLOntology ont, RDFResource clsIRI, out OWLDataHasValue dtHV)
 					{
 						dtHV = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
 							if (onPropertyDPEX == null)
 								return;
-					
+
 							if (graph[clsIRI, RDFVocabulary.OWL.HAS_VALUE, null, null].FirstOrDefault()?.Object is RDFLiteral hasValueLIT)
 								dtHV = new OWLDataHasValue((OWLDataProperty)onPropertyDPEX, new OWLLiteral(hasValueLIT));
 						}
@@ -2016,14 +2019,14 @@ namespace OWLSharp.Ontology
 					void LoadDataExactCardinality(OWLOntology ont, RDFResource clsIRI, out OWLDataExactCardinality dtEXCR)
 					{
 						dtEXCR = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
 							if (onPropertyDPEX == null)
 								return;
-					
+
 							//Cardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactCardLit
 								&& exactCardLit.HasDecimalDatatype()
@@ -2032,7 +2035,7 @@ namespace OWLSharp.Ontology
 								dtEXCR = new OWLDataExactCardinality((OWLDataProperty)onPropertyDPEX, exactCardinality);
 								return;
 							}
-					
+
 							//QualifiedCardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral exactQCardLit
 									&& exactQCardLit.HasDecimalDatatype()
@@ -2048,14 +2051,14 @@ namespace OWLSharp.Ontology
 					void LoadDataMinCardinality(OWLOntology ont, RDFResource clsIRI, out OWLDataMinCardinality dtMINCR)
 					{
 						dtMINCR = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
 							if (onPropertyDPEX == null)
 								return;
-					
+
 							//Cardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MIN_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minCardLit
 								&& minCardLit.HasDecimalDatatype()
@@ -2064,7 +2067,7 @@ namespace OWLSharp.Ontology
 								dtMINCR = new OWLDataMinCardinality((OWLDataProperty)onPropertyDPEX, minCardinality);
 								return;
 							}
-					
+
 							//QualifiedCardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MIN_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral minQCardLit
 									&& minQCardLit.HasDecimalDatatype()
@@ -2080,14 +2083,14 @@ namespace OWLSharp.Ontology
 					void LoadDataMaxCardinality(OWLOntology ont, RDFResource clsIRI, out OWLDataMaxCardinality dtMAXCR)
 					{
 						dtMAXCR = null;
-					
+
 						RDFGraph onPropertyGraph = graph[clsIRI, RDFVocabulary.OWL.ON_PROPERTY, null, null];
 						if (onPropertyGraph.TriplesCount == 1 && onPropertyGraph.Single().Object is RDFResource onProperty)
 						{
 							LoadDataPropertyExpression(ont, onProperty, out OWLDataPropertyExpression onPropertyDPEX);
 							if (onPropertyDPEX == null)
 								return;
-					
+
 							//Cardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MAX_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral maxCardLit
 								&& maxCardLit.HasDecimalDatatype()
@@ -2096,7 +2099,7 @@ namespace OWLSharp.Ontology
 								dtMAXCR = new OWLDataMaxCardinality((OWLDataProperty)onPropertyDPEX, maxCardinality);
 								return;
 							}
-					
+
 							//QualifiedCardinality
 							if (graph[clsIRI, RDFVocabulary.OWL.MAX_QUALIFIED_CARDINALITY, null, null].FirstOrDefault()?.Object is RDFTypedLiteral maxQCardLit
 									&& maxQCardLit.HasDecimalDatatype()
@@ -2112,7 +2115,7 @@ namespace OWLSharp.Ontology
 					void LoadObjectUnionOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectUnionOf objUNOF)
 					{
 						objUNOF = null;
-					
+
 						if (graph[clsIRI, RDFVocabulary.OWL.UNION_OF, null, null].FirstOrDefault()?.Object is RDFResource unionOf)
 						{
 							List<OWLClassExpression> objectUnionOfMembers = new List<OWLClassExpression>();
@@ -2129,7 +2132,7 @@ namespace OWLSharp.Ontology
 					void LoadObjectIntersectionOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectIntersectionOf objINTOF)
 					{
 						objINTOF = null;
-					
+
 						if (graph[clsIRI, RDFVocabulary.OWL.INTERSECTION_OF, null, null].FirstOrDefault()?.Object is RDFResource intersectionOf)
 						{
 							List<OWLClassExpression> objectIntersectionOfMembers = new List<OWLClassExpression>();
@@ -2146,7 +2149,7 @@ namespace OWLSharp.Ontology
 					void LoadObjectComplementOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectComplementOf objCMPOF)
 					{
 						objCMPOF = null;
-					
+
 						if (graph[clsIRI, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].FirstOrDefault()?.Object is RDFResource complementOf)
 						{
 							LoadClassExpression(ont, complementOf, out OWLClassExpression clsExp);
@@ -2157,7 +2160,7 @@ namespace OWLSharp.Ontology
 					void LoadObjectOneOf(OWLOntology ont, RDFResource clsIRI, out OWLObjectOneOf objONEOF)
 					{
 						objONEOF = null;
-					
+
 						if (graph[clsIRI, RDFVocabulary.OWL.ONE_OF, null, null].FirstOrDefault()?.Object is RDFResource oneOf)
 						{
 							List<OWLIndividualExpression> objectOneOfMembers = new List<OWLIndividualExpression>();
@@ -2253,13 +2256,13 @@ namespace OWLSharp.Ontology
 							#region Datatype
 							drex = new OWLDatatype(drIRI);
 							#endregion
-						}   
+						}
 						#endregion
 					}
 					void LoadDataUnionOf(OWLOntology ont, RDFResource dtIRI, out OWLDataUnionOf dtUNOF)
 					{
 						dtUNOF = null;
-					
+
 						if (graph[dtIRI, RDFVocabulary.OWL.UNION_OF, null, null].FirstOrDefault()?.Object is RDFResource unionOf)
 						{
 							List<OWLDataRangeExpression> dtUnionOfMembers = new List<OWLDataRangeExpression>();
@@ -2276,7 +2279,7 @@ namespace OWLSharp.Ontology
 					void LoadDataIntersectionOf(OWLOntology ont, RDFResource dtIRI, out OWLDataIntersectionOf dtINTOF)
 					{
 						dtINTOF = null;
-					
+
 						if (graph[dtIRI, RDFVocabulary.OWL.INTERSECTION_OF, null, null].FirstOrDefault()?.Object is RDFResource intersectionOf)
 						{
 							List<OWLDataRangeExpression> dtIntersectionOfMembers = new List<OWLDataRangeExpression>();
@@ -2293,7 +2296,7 @@ namespace OWLSharp.Ontology
 					void LoadDataComplementOf(OWLOntology ont, RDFResource dtIRI, out OWLDataComplementOf dtCMPOF)
 					{
 						dtCMPOF = null;
-					
+
 						if (graph[dtIRI, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].FirstOrDefault()?.Object is RDFResource complementOf)
 						{
 							LoadDataRangeExpression(ont, complementOf, out OWLDataRangeExpression dtExp);
@@ -2304,7 +2307,7 @@ namespace OWLSharp.Ontology
 					void LoadDataOneOf(OWLOntology ont, RDFResource drIRI, out OWLDataOneOf dtONEOF)
 					{
 						dtONEOF = null;
-					
+
 						if (graph[drIRI, RDFVocabulary.OWL.ONE_OF, null, null].FirstOrDefault()?.Object is RDFResource oneOf)
 						{
 							List<OWLLiteral> dataOneOfMembers = new List<OWLLiteral>();
@@ -2317,7 +2320,7 @@ namespace OWLSharp.Ontology
 					void LoadDatatypeRestriction(OWLOntology ont, RDFResource drIRI, RDFResource onDatatype, RDFResource withRestrictions, out OWLDatatypeRestriction dtRST)
 					{
 						dtRST = null;
-					
+
 						List<OWLFacetRestriction> facetRestrictions = new List<OWLFacetRestriction>();
 						RDFCollection facetRestrictionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, withRestrictions, RDFModelEnums.RDFTripleFlavors.SPO);
 						foreach (RDFResource facetRestrictionMember in facetRestrictionMembers.Items.Cast<RDFResource>())
@@ -2349,7 +2352,7 @@ namespace OWLSharp.Ontology
 					LoadImports(ontology);
 					LoadDeclarations(ontology);
 					PrefetchAnnotationAxioms(ontology, out RDFGraph annotationAxiomsGraph);
-					LoadOntologyAnnotations(ontology, annotationAxiomsGraph);			
+					LoadOntologyAnnotations(ontology, annotationAxiomsGraph);
 					//Axioms
 					LoadFunctionalObjectProperties(ontology, annotationAxiomsGraph);
 					LoadInverseFunctionalObjectProperties(ontology, annotationAxiomsGraph);
@@ -2391,7 +2394,7 @@ namespace OWLSharp.Ontology
 					return ontology;
 				});
 
-        public static Task<OWLOntology> FromFileAsync(OWLEnums.OWLFormats owlFormat, string inputFile)
+		public static Task<OWLOntology> FromFileAsync(OWLEnums.OWLFormats owlFormat, string inputFile)
 		{
 			if (string.IsNullOrWhiteSpace(inputFile))
 				throw new OWLException("Cannot read ontology from file because given \"inputFile\" parameter is null or empty");
@@ -2401,8 +2404,8 @@ namespace OWLSharp.Ontology
 			return FromStreamAsync(owlFormat, new FileStream(inputFile, FileMode.Open));
 		}
 
-        public static Task<OWLOntology> FromStreamAsync(OWLEnums.OWLFormats owlFormat, Stream inputStream)
-			=>  Task.Run(() =>
+		public static Task<OWLOntology> FromStreamAsync(OWLEnums.OWLFormats owlFormat, Stream inputStream)
+			=> Task.Run(() =>
 				{
 					if (inputStream == null)
 						throw new OWLException("Cannot read ontology from stream because given \"inputStream\" parameter is null");
@@ -2412,7 +2415,7 @@ namespace OWLSharp.Ontology
 						switch (owlFormat)
 						{
 							case OWLEnums.OWLFormats.OWL2XML:
-							default:						
+							default:
 								using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
 									return OWLSerializer.DeserializeOntology(streamReader.ReadToEnd());
 						}
@@ -2423,12 +2426,12 @@ namespace OWLSharp.Ontology
 					}
 				});
 
-        public Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds=20000)
-			=>  Task.Run(async() =>
+		public Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds = 20000)
+			=> Task.Run(async () =>
 				{
 					if (ontologyIRI == null)
 						throw new OWLException("Cannot import ontology because given \"ontologyIRI\" parameter is null");
-					
+
 					try
 					{
 						RDFAsyncGraph importedGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds);
@@ -2443,10 +2446,10 @@ namespace OWLSharp.Ontology
 						importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
 						importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
 						importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
-						importedOntology.Prefixes.ForEach(pfx => 
+						importedOntology.Prefixes.ForEach(pfx =>
 						{
 							if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
-								Prefixes.Add(pfx); 
+								Prefixes.Add(pfx);
 						});
 						importedOntology.Rules.ForEach(r => { r.IsImport = true; Rules.Add(r); });
 					}
@@ -2455,6 +2458,19 @@ namespace OWLSharp.Ontology
 						throw new OWLException($"Cannot import ontology from IRI {ontologyIRI} because: {ex.Message}", ex);
 					}
 				});
+
+		public Task AcceptInferencesAsync(List<OWLInference> inferences)
+			=> inferences?.ParallelForEachAsync(
+				async (inference) => await Task.Run(() =>
+				{
+					#region ClassAssertion
+					//In order to accept an inference of type ClassAssertion we must ensure that the
+					//individual is not explicitly classified as a "negative individual" of that class
+					if (inference.Axiom is OWLClassAssertion clsAsn
+						 && !this.CheckIsNegativeIndividualOf(clsAsn.ClassExpression, clsAsn.IndividualExpression))
+						AssertionAxioms.Add(clsAsn);
+					#endregion
+				}));
 		#endregion
 	}
 }
