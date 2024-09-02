@@ -65,7 +65,9 @@ namespace OWLSharp.Ontology.Rules
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#roundHalfToEven")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#sin")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#subtract")
-                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#tan");      
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#tan")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#unaryMinus")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#unaryPlus");      
         [XmlIgnore]
         public bool IsComparisonFilterBuiltIn
             => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#equal")
@@ -331,6 +333,40 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#tan",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltIn UnaryMinus(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#unaryMinus",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltIn UnaryPlus(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#unaryPlus",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -719,6 +755,12 @@ namespace OWLSharp.Ontology.Rules
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#tan":
                                         keepRow = (leftArgumentNumericValue == Math.Tan(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#unaryMinus":
+                                        keepRow = (leftArgumentNumericValue == -1 * rightArgumentNumericValue);
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#unaryPlus":
+                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue);
                                         break;
                                 }
 
