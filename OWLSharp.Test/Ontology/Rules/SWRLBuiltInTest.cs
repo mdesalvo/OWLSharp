@@ -844,6 +844,135 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults.Columns.Count == 2);
             Assert.IsTrue(builtinResults.Rows.Count == 0);
         }
+
+        [TestMethod]
+        public void ShouldCreateMultiplyBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.Multiply(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                1.55);
+
+            Assert.IsNotNull(builtin);
+            Assert.IsTrue(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsFalse(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#multiply", builtin.IRI));
+            Assert.IsNotNull(builtin.Literal);
+            Assert.IsTrue(builtin.Literal.GetLiteral().Equals(new RDFTypedLiteral("1.55", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:multiply(?X,?Y,\"1.55\"^^xsd:double)", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Multiply(null, new SWRLVariableArgument(new RDFVariable("?Y")), 1.55));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Multiply(new SWRLVariableArgument(new RDFVariable("?X")), null, 1.55));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeMultiplyBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.Multiply(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                2);
+
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#multiply\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#double\">2</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeMultiplyBuiltIn()
+        {
+            SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#multiply""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">1.55</Literal></BuiltInAtom>");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsTrue(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsFalse(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#multiply", builtin.IRI));
+            Assert.IsNotNull(builtin.Literal);
+            Assert.IsTrue(builtin.Literal.GetLiteral().Equals(new RDFTypedLiteral("1.55", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:multiply(?X,?Y,\"1.55\"^^xsd:double)", builtin.ToString()));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateMultiplyBuiltIn()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "4^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("1^^http://www.w3.org/2001/XMLSchema#int", "1.235^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add(DBNull.Value, "0^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("1^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
+            antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
+            antecedentResults.Rows.Add("1^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
+            antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
+            antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
+            antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Multiply(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                0.5);
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "4^^http://www.w3.org/2001/XMLSchema#int"));
+
+            //Test with unexisting variables
+
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.Multiply(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Z")), 3); //unexisting
+            DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults2);
+            Assert.IsTrue(builtinResults2.Columns.Count == 2);
+            Assert.IsTrue(builtinResults2.Rows.Count == 0);
+
+            SWRLBuiltIn builtin3 = SWRLBuiltIn.Multiply(
+                new SWRLVariableArgument(new RDFVariable("?Z")), //unexisting
+                new SWRLVariableArgument(new RDFVariable("?Y")), 3);
+            DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults3);
+            Assert.IsTrue(builtinResults3.Columns.Count == 2);
+            Assert.IsTrue(builtinResults3.Rows.Count == 0);
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateMultiplyBuiltMissingLiteralValue()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "4^^http://www.w3.org/2001/XMLSchema#int");
+
+            SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#multiply""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 0);
+        }
         #endregion
     }
 }
