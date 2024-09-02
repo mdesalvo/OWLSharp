@@ -28,6 +28,9 @@ namespace OWLSharp.Test.Ontology.Rules
     public class SWRLBuiltInTest
     {
         #region Tests
+
+        //Math
+
         [TestMethod]
         public void ShouldCreateAbsBuiltIn()
         {
@@ -1873,6 +1876,11 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults3.Columns.Count == 2);
             Assert.IsTrue(builtinResults3.Rows.Count == 0);
         }
+        
+        //ComparisonFilter
+
+        //StringFilter
+        
         #endregion
     }
 }
