@@ -58,6 +58,7 @@ namespace OWLSharp.Ontology.Rules
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#cos")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#divide")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#floor")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#mod")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#multiply")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#pow")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#round")
@@ -190,6 +191,26 @@ namespace OWLSharp.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#floor",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltIn Mod(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double literal)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            if (literal == 0d)
+                throw new OWLException("Cannot create built-in because given \"literal\" parameter is 0!");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#mod",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument,
+                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
             };
         }
 
@@ -666,6 +687,11 @@ namespace OWLSharp.Ontology.Rules
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#floor":
                                         keepRow = (leftArgumentNumericValue == Math.Floor(rightArgumentNumericValue));
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#mod":
+                                        if (!literalNumericValue.HasValue)
+                                            throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
+                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue % literalNumericValue.Value);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#multiply":
                                         if (!literalNumericValue.HasValue)
