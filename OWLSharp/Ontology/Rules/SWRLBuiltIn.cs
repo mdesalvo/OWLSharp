@@ -893,12 +893,12 @@ namespace OWLSharp.Ontology.Rules
         
         internal double? GetMathLiteralValue()
         {
-            double? mathLiteralvalue = new Nullable<double>();
+            double? mathLiteralvalue = new double?();
 
             if (Literal != null
                  && Literal.GetLiteral() is RDFTypedLiteral literal
-                  && literal.HasDecimalDatatype()
-                  && double.TryParse(literal.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double litNumVal))
+                 && literal.HasDecimalDatatype()
+                 && double.TryParse(literal.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double litNumVal))
                 mathLiteralvalue = litNumVal;
 
             return mathLiteralvalue;
