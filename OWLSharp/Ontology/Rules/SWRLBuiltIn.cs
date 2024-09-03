@@ -918,7 +918,7 @@ namespace OWLSharp.Ontology.Rules
                 #endregion
             }
 
-            throw new OWLException($"Cannot evaluate SWRLBuiltIn with unsupported predicate '{IRI}'");
+            throw new OWLException($"Cannot evaluate SWRLBuiltIn with unsupported predicate: {IRI}");
         }
         
         internal double? GetMathLiteralValue()

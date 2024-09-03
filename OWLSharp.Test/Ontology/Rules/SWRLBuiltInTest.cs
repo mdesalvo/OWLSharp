@@ -3062,6 +3062,9 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults2.Rows.Count == 5); //SPARQL evaluates true every row if the column is unknown
         }
 
+        [TestMethod]
+        public void ShouldThrowExceptionOnEvaluatingBuiltinWithUnknownPredicate()
+            => Assert.ThrowsException<OWLException>(() => new SWRLBuiltIn() { IRI = "http://example.org" }.EvaluateOnAntecedent(new DataTable()));
         #endregion
     }
 }
