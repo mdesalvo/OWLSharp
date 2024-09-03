@@ -58,6 +58,19 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
+        public void ShouldGetStringRepresentationOfSWRLCompositeClassAtom()
+        {
+             SWRLClassAtom atom = new SWRLClassAtom(
+                new OWLObjectUnionOf([
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    new OWLClass(RDFVocabulary.FOAF.PERSON) ]),
+                new SWRLVariableArgument(new RDFVariable("?P")));
+
+
+            Assert.IsTrue(string.Equals("(Agent or Person)(?P)", atom.ToString()));
+        }
+
+        [TestMethod]
         public void ShouldGetXMLRepresentationOfSWRLClassAtom()
         {
             SWRLClassAtom atom = new SWRLClassAtom(

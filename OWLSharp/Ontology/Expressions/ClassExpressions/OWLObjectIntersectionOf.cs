@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using RDFSharp.Model;
@@ -66,6 +67,15 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
 		#region Methods
+        internal override string GetSWRLPredicate()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("(");
+            sb.Append(string.Join(" and ", ClassExpressions.Select(clsExpr => clsExpr.GetSWRLPredicate())));
+            sb.Append(")");
+            return sb.ToString();
+        }
+
 		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 		{
             RDFGraph graph = new RDFGraph();

@@ -68,6 +68,9 @@ namespace OWLSharp.Ontology.Expressions
         public virtual RDFResource GetIRI()
             => ExpressionIRI;
 
+        internal virtual string GetSWRLPredicate() 
+            => RDFModelUtilities.GetShortUri(GetIRI().URI);
+
         internal virtual RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 			=> new RDFGraph();
         #endregion
