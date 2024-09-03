@@ -2543,8 +2543,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#contains", builtin.IRI));
-            Assert.IsNotNull(builtin.Literal);
-            Assert.IsTrue(string.Equals("hello", builtin.Literal.GetLiteral().ToString()));
+            Assert.IsNull(builtin.Literal);
             Assert.IsNotNull(builtin.LeftArgument);
             Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
