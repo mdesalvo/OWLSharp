@@ -784,6 +784,26 @@ namespace OWLSharp.Ontology.Rules
             if (IsComparisonFilterBuiltIn || IsStringFilterBuiltIn)
             {
                 #region FilterBuiltIn
+                RDFFilter GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors comparisonFlavor)
+                {
+                    if (LeftArgument is SWRLVariableArgument leftArgVarGreaterThan)
+                    {
+                        if (RightArgument is SWRLVariableArgument rightArgVarGreaterThan)
+                            return new RDFComparisonFilter(
+                                comparisonFlavor, leftArgVarGreaterThan.GetVariable(), rightArgVarGreaterThan.GetVariable());
+                        else if (RightArgument is SWRLIndividualArgument rightArgIdvGreaterThan)
+                            return new RDFComparisonFilter(
+                                comparisonFlavor, leftArgVarGreaterThan.GetVariable(), rightArgIdvGreaterThan.GetResource());
+                        else if (RightArgument is SWRLLiteralArgument rightArgLitGreaterThan)
+                            return new RDFComparisonFilter(
+                                comparisonFlavor, leftArgVarGreaterThan.GetVariable(), rightArgLitGreaterThan.GetLiteral());
+                        //Unlikely to happen
+                        throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable, or an individual, or a literal as right argument");
+                    }
+                    //Unlikely to happen
+                    throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable as left argument");
+                }
+
                 DataTable filteredTable = antecedentResults.Clone();
 
                 //Create the most proper type of RDFFilter for builtin evaluation
@@ -792,100 +812,22 @@ namespace OWLSharp.Ontology.Rules
                 {
                     #region ComparisonFilter
                     case "http://www.w3.org/2003/11/swrlb#equal":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarEqual)
-                        {
-                            if (RightArgument is SWRLVariableArgument rightArgVarEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo, leftArgVarEqual.GetVariable(), rightArgVarEqual.GetVariable());
-                            else if (RightArgument is SWRLIndividualArgument rightArgIdvEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo, leftArgVarEqual.GetVariable(), rightArgIdvEqual.GetResource());
-                            else if (RightArgument is SWRLLiteralArgument rightArgLitEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo, leftArgVarEqual.GetVariable(), rightArgLitEqual.GetLiteral());
-                            else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable, or an individual, or a literal as right argument");
-                        }
-                        else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable as left argument");
+                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.EqualTo);
                         break;
                     case "http://www.w3.org/2003/11/swrlb#greaterThan":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarGreaterThan)
-                        {
-                            if (RightArgument is SWRLVariableArgument rightArgVarGreaterThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.GreaterThan, leftArgVarGreaterThan.GetVariable(), rightArgVarGreaterThan.GetVariable());
-                            else if (RightArgument is SWRLIndividualArgument rightArgIdvGreaterThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.GreaterThan, leftArgVarGreaterThan.GetVariable(), rightArgIdvGreaterThan.GetResource());
-                            else if (RightArgument is SWRLLiteralArgument rightArgLitGreaterThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.GreaterThan, leftArgVarGreaterThan.GetVariable(), rightArgLitGreaterThan.GetLiteral());
-                            else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable, or an individual, or a literal as right argument");
-                        }
-                        else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable as left argument");
+                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.GreaterThan);
                         break;
                     case "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarGreaterThanOrEqual)
-                        {
-                            if (RightArgument is SWRLVariableArgument rightArgVarGreaterThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.GreaterOrEqualThan, leftArgVarGreaterThanOrEqual.GetVariable(), rightArgVarGreaterThan.GetVariable());
-                            else if (RightArgument is SWRLIndividualArgument rightArgIdvGreaterThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.GreaterOrEqualThan, leftArgVarGreaterThanOrEqual.GetVariable(), rightArgIdvGreaterThan.GetResource());
-                            else if (RightArgument is SWRLLiteralArgument rightArgLitGreaterThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.GreaterOrEqualThan, leftArgVarGreaterThanOrEqual.GetVariable(), rightArgLitGreaterThan.GetLiteral());
-                            else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable, or an individual, or a literal as right argument");
-                        }
-                        else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable as left argument");
+                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.GreaterOrEqualThan); 
                         break;
                     case "http://www.w3.org/2003/11/swrlb#lessThan":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarLessThan)
-                        {
-                            if (RightArgument is SWRLVariableArgument rightArgVarLessThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.LessThan, leftArgVarLessThan.GetVariable(), rightArgVarLessThan.GetVariable());
-                            else if (RightArgument is SWRLIndividualArgument rightArgIdvLessThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.LessThan, leftArgVarLessThan.GetVariable(), rightArgIdvLessThan.GetResource());
-                            else if (RightArgument is SWRLLiteralArgument rightArgLitLessThan)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.LessThan, leftArgVarLessThan.GetVariable(), rightArgLitLessThan.GetLiteral());
-                            else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable, or an individual, or a literal as right argument");
-                        }
-                        else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable as left argument");
+                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.LessThan); 
                         break;
                     case "http://www.w3.org/2003/11/swrlb#lessThanOrEqual":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarLessThanOrEqual)
-                        {
-                            if (RightArgument is SWRLVariableArgument rightArgVarLessThanOrEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.LessOrEqualThan, leftArgVarLessThanOrEqual.GetVariable(), rightArgVarLessThanOrEqual.GetVariable());
-                            else if (RightArgument is SWRLIndividualArgument rightArgIdvLessThanOrEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.LessOrEqualThan, leftArgVarLessThanOrEqual.GetVariable(), rightArgIdvLessThanOrEqual.GetResource());
-                            else if (RightArgument is SWRLLiteralArgument rightArgLitLessThanOrEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.LessOrEqualThan, leftArgVarLessThanOrEqual.GetVariable(), rightArgLitLessThanOrEqual.GetLiteral());
-                            else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable, or an individual, or a literal as right argument");
-                        }
-                        else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable as left argument");
+                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.LessOrEqualThan); 
                         break;
                     case "http://www.w3.org/2003/11/swrlb#notEqual":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarNotEqual)
-                        {
-                            if (RightArgument is SWRLVariableArgument rightArgVarNotEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.NotEqualTo, leftArgVarNotEqual.GetVariable(), rightArgVarNotEqual.GetVariable());
-                            else if (RightArgument is SWRLIndividualArgument rightArgIdvNotEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.NotEqualTo, leftArgVarNotEqual.GetVariable(), rightArgIdvNotEqual.GetResource());
-                            else if (RightArgument is SWRLLiteralArgument rightArgLitNotEqual)
-                                builtInFilter = new RDFComparisonFilter(
-                                    RDFQueryEnums.RDFComparisonFlavors.NotEqualTo, leftArgVarNotEqual.GetVariable(), rightArgLitNotEqual.GetLiteral());
-                            else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable, or an individual, or a literal as right argument");
-                        }
-                        else throw new OWLException($"Cannot evaluate comparison filter SWRLBuiltIn '{this}': it should have a variable as left argument");
+                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.NotEqualTo); 
                         break;
                     #endregion
 
