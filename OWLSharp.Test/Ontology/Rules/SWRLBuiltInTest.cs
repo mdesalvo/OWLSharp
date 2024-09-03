@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NetTopologySuite.Triangulate.Tri;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
@@ -2528,6 +2529,95 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         //StringFilter
+
+        [TestMethod]
+        public void ShouldCreateContainsBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.Contains(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                "hello");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsTrue(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#contains", builtin.IRI));
+            Assert.IsNotNull(builtin.Literal);
+            Assert.IsTrue(string.Equals("hello", builtin.Literal.GetLiteral().ToString()));
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLLiteralArgument rlarg
+                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello")));
+            Assert.IsTrue(string.Equals("swrlb:contains(?X,\"hello\")", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Contains(null, "hello"));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Contains(new SWRLVariableArgument(new RDFVariable("?X")), null));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeContainsBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.Contains(
+                new SWRLVariableArgument(new RDFVariable("?X")), "hello");
+
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#contains\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeContainsBuiltIn()
+        {
+            SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#contains""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello</Literal></BuiltInAtom>");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsTrue(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#contains", builtin.IRI));
+            Assert.IsNull(builtin.Literal);
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLLiteralArgument rlarg
+                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello")));
+            Assert.IsTrue(string.Equals("swrlb:contains(?X,\"hello\")", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#contains\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateContainsBuiltIn()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Rows.Add("FC Internazionale Milano is the best");
+            antecedentResults.Rows.Add("AC Milan is not the best");
+            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add(DBNull.Value);
+            antecedentResults.Rows.Add("hello@EN");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Contains(
+                new SWRLVariableArgument(new RDFVariable("?X")), "Inter");
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 1);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "FC Internazionale Milano is the best"));
+
+            //Test with unexisting variables
+
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.Contains(
+                new SWRLVariableArgument(new RDFVariable("?Z")), "hello"); //unexisting
+            DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults2);
+            Assert.IsTrue(builtinResults2.Columns.Count == 1);
+            Assert.IsTrue(builtinResults2.Rows.Count == 0);
+        }
 
         #endregion
     }
