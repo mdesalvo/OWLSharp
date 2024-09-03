@@ -73,8 +73,8 @@ namespace OWLSharp.Ontology.Rules
             => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#equal")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#greaterThan")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual")
-                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#lessThan")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#lessThanOrEqual")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#lessThan")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#notEqual");
         [XmlIgnore]
         public bool IsStringFilterBuiltIn
@@ -443,29 +443,6 @@ namespace OWLSharp.Ontology.Rules
             };
         }
 
-        public static SWRLBuiltIn LessThan(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
-            => LessThanInternal(leftArgument, rightArgument);
-        public static SWRLBuiltIn LessThan(SWRLVariableArgument leftArgument, SWRLIndividualArgument rightArgument)
-           => LessThanInternal(leftArgument, rightArgument);
-        public static SWRLBuiltIn LessThan(SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
-           => LessThanInternal(leftArgument, rightArgument);
-        internal static SWRLBuiltIn LessThanInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
-        {
-            #region Guards
-            if (leftArgument == null)
-                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
-            if (rightArgument == null)
-                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
-            #endregion
-
-            return new SWRLBuiltIn()
-            {
-                IRI = "http://www.w3.org/2003/11/swrlb#lessThan",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
-            };
-        }
-
         public static SWRLBuiltIn LessThanOrEqual(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
             => LessThanOrEqualInternal(leftArgument, rightArgument);
         public static SWRLBuiltIn LessThanOrEqual(SWRLVariableArgument leftArgument, SWRLIndividualArgument rightArgument)
@@ -484,6 +461,29 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#lessThanOrEqual",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltIn LessThan(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+            => LessThanInternal(leftArgument, rightArgument);
+        public static SWRLBuiltIn LessThan(SWRLVariableArgument leftArgument, SWRLIndividualArgument rightArgument)
+           => LessThanInternal(leftArgument, rightArgument);
+        public static SWRLBuiltIn LessThan(SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
+           => LessThanInternal(leftArgument, rightArgument);
+        internal static SWRLBuiltIn LessThanInternal(SWRLArgument leftArgument, SWRLArgument rightArgument)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#lessThan",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
             };
@@ -820,11 +820,11 @@ namespace OWLSharp.Ontology.Rules
                     case "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual":
                         builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.GreaterOrEqualThan); 
                         break;
-                    case "http://www.w3.org/2003/11/swrlb#lessThan":
-                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.LessThan); 
-                        break;
                     case "http://www.w3.org/2003/11/swrlb#lessThanOrEqual":
                         builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.LessOrEqualThan); 
+                        break;
+                    case "http://www.w3.org/2003/11/swrlb#lessThan":
+                        builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.LessThan);
                         break;
                     case "http://www.w3.org/2003/11/swrlb#notEqual":
                         builtInFilter = GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.NotEqualTo); 
