@@ -565,31 +565,31 @@ namespace OWLSharp.Ontology.Rules
             };
         }
 
-        public static SWRLBuiltIn Matches(SWRLVariableArgument leftArgument, Regex matchesRegex)
+        public static SWRLBuiltIn Matches(SWRLVariableArgument leftArgument, string matchString, RegexOptions matchOptions=RegexOptions.None)
         {
             #region Guards
             if (leftArgument == null)
                 throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
-            if (matchesRegex == null)
-                throw new OWLException("Cannot create built-in because given \"matchesRegex\" parameter is null");
+            if (matchString == null)
+                throw new OWLException("Cannot create built-in because given \"matchString\" parameter is null");
             #endregion
 
-            StringBuilder regexFlags = new StringBuilder();
-            if (matchesRegex.Options.HasFlag(RegexOptions.IgnoreCase))
-                regexFlags.Append('i');
-            if (matchesRegex.Options.HasFlag(RegexOptions.Singleline))
-                regexFlags.Append('s');
-            if (matchesRegex.Options.HasFlag(RegexOptions.Multiline))
-                regexFlags.Append('m');
-            if (matchesRegex.Options.HasFlag(RegexOptions.IgnorePatternWhitespace))
-                regexFlags.Append('x');
+            StringBuilder sbMatchOptions = new StringBuilder();
+            if (matchOptions.HasFlag(RegexOptions.IgnoreCase))
+                sbMatchOptions.Append('i');
+            if (matchOptions.HasFlag(RegexOptions.Singleline))
+                sbMatchOptions.Append('s');
+            if (matchOptions.HasFlag(RegexOptions.Multiline))
+                sbMatchOptions.Append('m');
+            if (matchOptions.HasFlag(RegexOptions.IgnorePatternWhitespace))
+                sbMatchOptions.Append('x');
 
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#matches",
                 LeftArgument = leftArgument,
-                RightArgument = string.IsNullOrEmpty(regexFlags.ToString()) ? new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}"))
-                                                                            : new SWRLLiteralArgument(new RDFPlainLiteral($"{matchesRegex}\",\"{regexFlags}"))
+                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(matchString)),
+                Literal = !string.IsNullOrEmpty(sbMatchOptions.ToString()) ? new OWLLiteral(new RDFPlainLiteral(sbMatchOptions.ToString())) : null
             };
         }
 
@@ -642,13 +642,15 @@ namespace OWLSharp.Ontology.Rules
 
             //Literal Argument
             if (IsMathBuiltIn
-                 && Literal != null
-                 && Literal.GetLiteral() is RDFTypedLiteral literal
-                 && literal.HasDecimalDatatype())
+                 && Literal?.GetLiteral() is RDFTypedLiteral mathLiteral
+                 && mathLiteral.HasDecimalDatatype())
             {
-                RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(Convert.ToString(literal.Value, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
+                RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(Convert.ToString(mathLiteral.Value, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
                 sb.Append($",{RDFQueryPrinter.PrintPatternMember(mathValueTypedLiteral, RDFNamespaceRegister.Instance.Register)}");
             }
+            if (IsStringFilterBuiltIn
+                 && Literal?.GetLiteral() is RDFPlainLiteral stringLiteral)
+                sb.Append($",{RDFQueryPrinter.PrintPatternMember(stringLiteral, RDFNamespaceRegister.Instance.Register)}");
 
             sb.Append(")");
             return sb.ToString();
@@ -856,7 +858,33 @@ namespace OWLSharp.Ontology.Rules
                     case "http://www.w3.org/2003/11/swrlb#matches":
                         if (LeftArgument is SWRLVariableArgument leftArgVarMatches
                              && RightArgument is SWRLLiteralArgument rightArgLitMatches)
-                            builtInFilter = new RDFRegexFilter(leftArgVarMatches.GetVariable(), new Regex(rightArgLitMatches.GetLiteral().Value));
+                        {
+                            RDFVariable varToSearch = leftArgVarMatches.GetVariable();
+                            string textToSearch = rightArgLitMatches.GetLiteral().Value;
+
+                            //This built-in may convey regex options into the Literal tag
+                            if (Literal?.GetLiteral() is RDFPlainLiteral stringLiteral
+                                 && !string.IsNullOrEmpty(stringLiteral.Value))
+                            {
+                                RegexOptions regexOptions = default;
+                                if (stringLiteral.Value.IndexOf('i') > -1)
+                                    regexOptions |= RegexOptions.IgnoreCase;
+                                if (stringLiteral.Value.IndexOf('s') > -1)
+                                    regexOptions |= RegexOptions.Singleline;
+                                if (stringLiteral.Value.IndexOf('m') > -1)
+                                    regexOptions |= RegexOptions.Multiline;
+                                if (stringLiteral.Value.IndexOf('x') > -1)
+                                    regexOptions |= RegexOptions.IgnorePatternWhitespace;
+
+                                Regex matchesRegex = new Regex(textToSearch, regexOptions);
+                                builtInFilter = new RDFRegexFilter(varToSearch, matchesRegex);
+                            }
+                            else
+                            {
+                                Regex matchesRegex = new Regex(textToSearch);
+                                builtInFilter = new RDFRegexFilter(varToSearch, matchesRegex);
+                            }
+                        }   
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
                         break;
@@ -897,8 +925,7 @@ namespace OWLSharp.Ontology.Rules
         {
             double? mathLiteralvalue = new double?();
 
-            if (Literal != null
-                 && Literal.GetLiteral() is RDFTypedLiteral literal
+            if (Literal?.GetLiteral() is RDFTypedLiteral literal
                  && literal.HasDecimalDatatype()
                  && double.TryParse(literal.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double litNumVal))
                 mathLiteralvalue = litNumVal;

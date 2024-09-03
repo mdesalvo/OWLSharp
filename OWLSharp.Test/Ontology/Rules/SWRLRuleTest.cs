@@ -103,7 +103,8 @@ namespace OWLSharp.Test.Ontology.Rules
                             44.57),
                         SWRLBuiltIn.Matches(
                             new SWRLVariableArgument(new RDFVariable("?P")),
-                            new Regex("Mark", RegexOptions.IgnoreCase))
+                            "Mark", 
+                            RegexOptions.IgnoreCase)
                     ]
                 },
                 new SWRLConsequent() {

@@ -2801,7 +2801,7 @@ namespace OWLSharp.Test.Ontology.Rules
         {
             SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
                 new SWRLVariableArgument(new RDFVariable("?X")),
-                new Regex("hello"));
+                "hello$");
 
             Assert.IsNotNull(builtin);
             Assert.IsFalse(builtin.IsMathBuiltIn);
@@ -2815,9 +2815,9 @@ namespace OWLSharp.Test.Ontology.Rules
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsNotNull(builtin.RightArgument);
             Assert.IsTrue(builtin.RightArgument is SWRLLiteralArgument rlarg
-                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello")));
-            Assert.IsTrue(string.Equals("swrlb:matches(?X,\"hello\")", builtin.ToString()));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Matches(null, new Regex("hello")));
+                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello$")));
+            Assert.IsTrue(string.Equals("swrlb:matches(?X,\"hello$\")", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Matches(null, "hello$"));
             Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Matches(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
 
@@ -2826,7 +2826,8 @@ namespace OWLSharp.Test.Ontology.Rules
         {
             SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
                 new SWRLVariableArgument(new RDFVariable("?X")),
-                new Regex("hello", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace));
+                "hello$", 
+                RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
 
             Assert.IsNotNull(builtin);
             Assert.IsFalse(builtin.IsMathBuiltIn);
@@ -2834,32 +2835,42 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#matches", builtin.IRI));
-            Assert.IsNull(builtin.Literal);
+            Assert.IsNotNull(builtin.Literal);
+            Assert.IsTrue(builtin.Literal.GetLiteral().Equals(new RDFPlainLiteral("ismx")));
             Assert.IsNotNull(builtin.LeftArgument);
             Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsNotNull(builtin.RightArgument);
             Assert.IsTrue(builtin.RightArgument is SWRLLiteralArgument rlarg
-                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello\",\"ismx")));
-            Assert.IsTrue(string.Equals("swrlb:matches(?X,\"hello\",\"ismx\")", builtin.ToString()));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Matches(null, new Regex("hello")));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Matches(new SWRLVariableArgument(new RDFVariable("?X")), null));
+                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello$")));
+            Assert.IsTrue(string.Equals("swrlb:matches(?X,\"hello$\",\"ismx\")", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Matches(null, "hello$", RegexOptions.IgnoreCase));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Matches(new SWRLVariableArgument(new RDFVariable("?X")), null, RegexOptions.IgnoreCase));
         }
 
         [TestMethod]
         public void ShouldSerializeMatchesBuiltIn()
         {
             SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
-                new SWRLVariableArgument(new RDFVariable("?X")), new Regex("hello", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace));
+                new SWRLVariableArgument(new RDFVariable("?X")), "hello$");
 
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello\",\"ismx</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello$</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeMatchesOptionBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
+                new SWRLVariableArgument(new RDFVariable("?X")), "hello$", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
+
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello$</Literal><Literal>ismx</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
         public void ShouldDeserializeMatchesBuiltIn()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#matches""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello</Literal></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#matches""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello$</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
             Assert.IsFalse(builtin.IsMathBuiltIn);
@@ -2873,9 +2884,33 @@ namespace OWLSharp.Test.Ontology.Rules
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsNotNull(builtin.RightArgument);
             Assert.IsTrue(builtin.RightArgument is SWRLLiteralArgument rlarg
-                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello")));
-            Assert.IsTrue(string.Equals("swrlb:matches(?X,\"hello\")", builtin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello$")));
+            Assert.IsTrue(string.Equals("swrlb:matches(?X,\"hello$\")", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello$</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeMatchesOptionBuiltIn()
+        {
+            SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#matches""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello$</Literal><Literal>ismx</Literal></BuiltInAtom>");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsTrue(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#matches", builtin.IRI));
+            Assert.IsNotNull(builtin.Literal);
+            Assert.IsTrue(builtin.Literal.GetLiteral().Equals(new RDFPlainLiteral("ismx")));
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLLiteralArgument rlarg
+                            && rlarg.GetLiteral().Equals(new RDFPlainLiteral("hello$")));
+            Assert.IsTrue(string.Equals("swrlb:matches(?X,\"hello$\",\"ismx\")", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Literal>hello$</Literal><Literal>ismx</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
@@ -2884,26 +2919,57 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable antecedentResults = new DataTable();
             antecedentResults.Columns.Add("?X");
             antecedentResults.Rows.Add("FC Internazionale Milano is the best");
-            antecedentResults.Rows.Add("inter is the best");
+            antecedentResults.Rows.Add("inter is the Best");
             antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add(DBNull.Value);
             antecedentResults.Rows.Add("hello@EN");
 
             SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
-                new SWRLVariableArgument(new RDFVariable("?X")), new Regex("inter", RegexOptions.IgnoreCase));
+                new SWRLVariableArgument(new RDFVariable("?X")), "is the best");
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 1);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "inter is the best"));
+            
+            //Test with unexisting variables
+
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.Matches(
+                new SWRLVariableArgument(new RDFVariable("?Z")), "hello$"); //unexisting
+            DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults2);
+            Assert.IsTrue(builtinResults2.Columns.Count == 1);
+            Assert.IsTrue(builtinResults2.Rows.Count == 5); //SPARQL evaluates true every row if the column is unknown
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateMatchesOptionBuiltIn()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Rows.Add("FC Internazionale Milano is the best");
+            antecedentResults.Rows.Add("inter is the Best");
+            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add(DBNull.Value);
+            antecedentResults.Rows.Add("hello@EN");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
+                new SWRLVariableArgument(new RDFVariable("?X")), "is the best", RegexOptions.IgnoreCase);
 
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 1);
             Assert.IsTrue(builtinResults.Rows.Count == 2);
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "FC Internazionale Milano is the best"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "inter is the best"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "inter is the best"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "FC Internazionale Milano is the best"));
 
             //Test with unexisting variables
 
             SWRLBuiltIn builtin2 = SWRLBuiltIn.Matches(
-                new SWRLVariableArgument(new RDFVariable("?Z")), new Regex("hello")); //unexisting
+                new SWRLVariableArgument(new RDFVariable("?Z")), "hello$"); //unexisting
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults2);
             Assert.IsTrue(builtinResults2.Columns.Count == 1);
