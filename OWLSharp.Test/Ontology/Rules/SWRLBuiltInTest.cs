@@ -2616,7 +2616,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults2);
             Assert.IsTrue(builtinResults2.Columns.Count == 1);
-            Assert.IsTrue(builtinResults2.Rows.Count == 0);
+            Assert.IsTrue(builtinResults2.Rows.Count == 5); //SPARQL evaluates true every row if the column is unknown
         }
 
         #endregion
