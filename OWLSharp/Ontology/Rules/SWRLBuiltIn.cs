@@ -866,7 +866,7 @@ namespace OWLSharp.Ontology.Rules
                             if (Literal?.GetLiteral() is RDFPlainLiteral stringLiteral
                                  && !string.IsNullOrEmpty(stringLiteral.Value))
                             {
-                                RegexOptions? regexOptions = null;
+                                RegexOptions regexOptions = RegexOptions.None;
                                 if (stringLiteral.Value.IndexOf('i') > -1)
                                     regexOptions |= RegexOptions.IgnoreCase;
                                 if (stringLiteral.Value.IndexOf('s') > -1)
@@ -876,7 +876,7 @@ namespace OWLSharp.Ontology.Rules
                                 if (stringLiteral.Value.IndexOf('x') > -1)
                                     regexOptions |= RegexOptions.IgnorePatternWhitespace;
 
-                                Regex matchesRegex = new Regex(textToSearch, regexOptions ?? RegexOptions.None);
+                                Regex matchesRegex = new Regex(textToSearch, regexOptions);
                                 builtInFilter = new RDFRegexFilter(varToSearch, matchesRegex);
                             }
                             else
