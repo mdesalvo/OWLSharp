@@ -52,6 +52,17 @@ namespace OWLSharp.Test.Ontology.Expressions
                 new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())), null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectAllValuesFrom()
+        {
+            OWLObjectAllValuesFrom objectAllValuesFrom = new OWLObjectAllValuesFrom(
+                new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+                new OWLClass(RDFVocabulary.FOAF.PERSON));
+            string swrlString = objectAllValuesFrom.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows all Person)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectAllValuesFrom()
         {
             OWLObjectAllValuesFrom objectAllValuesFrom = new OWLObjectAllValuesFrom(
