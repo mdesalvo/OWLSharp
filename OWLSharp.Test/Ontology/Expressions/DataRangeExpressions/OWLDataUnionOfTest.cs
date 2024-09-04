@@ -54,6 +54,20 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataUnionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING), null ]));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataUnionOf()
+        {
+            OWLDataUnionOf dataUnionOf = new OWLDataUnionOf(
+                 [new OWLDatatype(RDFVocabulary.XSD.STRING), 
+                  new OWLDatatype(RDFVocabulary.XSD.ANY_URI),
+                  new OWLDataOneOf([
+                      new OWLLiteral(new RDFPlainLiteral("A")),
+                      new OWLLiteral(new RDFPlainLiteral("B"))])]);
+            string swrlString = dataUnionOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(string or anyURI or ({\"A\",\"B\"}))"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataUnionOf()
         {
            OWLDataUnionOf dataUnionOf = new OWLDataUnionOf(
