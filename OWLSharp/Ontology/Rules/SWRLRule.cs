@@ -38,9 +38,6 @@ namespace OWLSharp.Ontology.Rules
 
         [XmlIgnore]
         public bool IsImport { get; set; }
-
-        [XmlIgnore]
-        internal string RuleXML { get; set; }
         #endregion
 
         #region Ctors
@@ -79,14 +76,11 @@ namespace OWLSharp.Ontology.Rules
 
         #region Methods
         public virtual string GetXML()
-        {
-            if (RuleXML == null)
-                RuleXML = OWLSerializer.SerializeObject(this);
-            return RuleXML;
-        }
+            => OWLSerializer.SerializeObject(this);
 
         internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
-			=> Task.Run(() => Consequent.Evaluate(Antecedent.Evaluate(ontology), ontology));
+			=> Task.Run(() => Consequent.Evaluate(
+                                Antecedent.Evaluate(ontology), ontology));
         #endregion
     }
 }
