@@ -64,6 +64,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataExactCardinality()
+        {
+            OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+            string swrlString = dataExactCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(description exactly 1)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataExactCardinality()
         {
             OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
@@ -86,6 +95,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(dataExactCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataExactCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataExactCardinality.DataRangeExpression);
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataExactQualifiedCardinality()
+        {
+            OWLDataExactCardinality dataExactCardinality = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+            string swrlString = dataExactCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(description exactly 1 string)"));
         }
 
         [TestMethod]
