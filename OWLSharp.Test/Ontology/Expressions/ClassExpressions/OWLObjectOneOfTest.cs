@@ -54,11 +54,21 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectOneOf([null]));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectOneOf()
+        {
+            OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
+                new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
+            string swrlString = objectOneOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "({ex:Bob,bnode:AnonIdv})"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectOneOf()
         {
-            OWLObjectOneOf ObjectOneOf = new OWLObjectOneOf([
+            OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
                 new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
-            string serializedXML = OWLSerializer.SerializeObject(ObjectOneOf);
+            string serializedXML = OWLSerializer.SerializeObject(objectOneOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<ObjectOneOf><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></ObjectOneOf>"));
@@ -67,18 +77,18 @@ namespace OWLSharp.Test.Ontology.Expressions
         [TestMethod]
         public void ShouldDeserializeObjectOneOf()
         {
-            OWLObjectOneOf ObjectOneOf = OWLSerializer.DeserializeObject<OWLObjectOneOf>(
+            OWLObjectOneOf objectOneOf = OWLSerializer.DeserializeObject<OWLObjectOneOf>(
 @"<ObjectOneOf>
   <NamedIndividual IRI=""ex:Bob"" />
   <AnonymousIndividual nodeID=""AnonIdv"" />
 </ObjectOneOf>");
 
-            Assert.IsNotNull(ObjectOneOf);
-            Assert.IsNotNull(ObjectOneOf.IndividualExpressions);
-            Assert.IsTrue(ObjectOneOf.IndividualExpressions.Count == 2);
-            Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
+            Assert.IsNotNull(objectOneOf);
+            Assert.IsNotNull(objectOneOf.IndividualExpressions);
+            Assert.IsTrue(objectOneOf.IndividualExpressions.Count == 2);
+            Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
                             && string.Equals(namedIdv.IRI, "ex:Bob")));
-            Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv
+            Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv
                             && string.Equals(anonIdv.NodeID, "AnonIdv")));
         }
 
