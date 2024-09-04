@@ -41,6 +41,21 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectComplementOf(null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectComplementOf()
+        {
+            OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(
+                new OWLObjectIntersectionOf([
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    new OWLObjectComplementOf(
+                        new OWLObjectUnionOf([
+                            new OWLClass(RDFVocabulary.FOAF.AGENT),
+                            new OWLClass(RDFVocabulary.FOAF.PERSON)]))]));
+            string swrlString = objectComplementOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(not(Agent and (not(Agent or Person))))"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectComplementOf()
         {
             OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT));

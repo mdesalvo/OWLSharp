@@ -92,7 +92,7 @@ namespace OWLSharp.Ontology.Rules
             StringBuilder sb = new StringBuilder();
 
             //Predicate
-            sb.Append(Predicate.GetSWRLPredicate());
+            sb.Append(Predicate.ToSWRLString());
             sb.Append("(");
 
             //Left Argument

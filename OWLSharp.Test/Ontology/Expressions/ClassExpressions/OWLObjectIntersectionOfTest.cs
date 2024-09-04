@@ -54,6 +54,18 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectIntersectionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON), null ]));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectIntersectionOf()
+        {
+            OWLObjectIntersectionOf objectIntersectionOf = new OWLObjectIntersectionOf([
+                new OWLObjectUnionOf(
+                    [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)]),
+                new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]);
+            string swrlString = objectIntersectionOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "((Person or Agent) and Organization)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectIntersectionOf()
         {
             OWLObjectIntersectionOf objectIntersectionOf = new OWLObjectIntersectionOf(

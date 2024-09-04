@@ -66,13 +66,15 @@ namespace OWLSharp.Ontology.Expressions
         }
         #endregion
 
-		#region Methods
-        internal override string GetSWRLPredicate()
+        #region Methods
+        public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("(");
-            sb.Append(string.Join(" and ", ClassExpressions.Select(clsExpr => clsExpr.GetSWRLPredicate())));
-            sb.Append(")");
+
+            sb.Append('(');
+            sb.Append(string.Join(" and ", ClassExpressions.Select(clsExpr => clsExpr.ToSWRLString())));
+            sb.Append(')');
+
             return sb.ToString();
         }
 
