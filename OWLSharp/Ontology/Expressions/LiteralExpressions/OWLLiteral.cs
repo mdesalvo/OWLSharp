@@ -15,6 +15,8 @@
 */
 
 using RDFSharp.Model;
+using RDFSharp.Query;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology.Expressions
@@ -43,8 +45,17 @@ namespace OWLSharp.Ontology.Expressions
         }
         #endregion
 
-		#region Methods
-		public RDFLiteral GetLiteral()
+        #region Methods
+        public override string ToSWRLString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(RDFQueryPrinter.PrintPatternMember(GetLiteral(), RDFNamespaceRegister.Instance.Register));
+
+            return sb.ToString();
+        }
+
+        public RDFLiteral GetLiteral()
 		{
 			if (DatatypeIRI != null)
 				return new RDFTypedLiteral(Value, RDFDatatypeRegister.GetDatatype(DatatypeIRI));
