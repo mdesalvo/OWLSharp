@@ -65,6 +65,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectMaxCardinality()
+        {
+            OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+            string swrlString = objectMaxCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows max 1)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectMaxCardinality()
         {
             OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
@@ -88,6 +97,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsTrue(objectMaxCardinality.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsNull(objectMaxCardinality.ClassExpression);
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectMaxQualifiedCardinality()
+        {
+            OWLObjectMaxCardinality objectMaxCardinality = new OWLObjectMaxCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+            string swrlString = objectMaxCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows max 1 Person)"));
         }
 
         [TestMethod]

@@ -65,6 +65,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectMinCardinality()
+        {
+            OWLObjectMinCardinality objectMinCardinality = new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+            string swrlString = objectMinCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows min 1)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectMinCardinality()
         {
             OWLObjectMinCardinality objectMinCardinality = new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
@@ -88,6 +97,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsTrue(objectMinCardinality.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsNull(objectMinCardinality.ClassExpression);
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectMinQualifiedCardinality()
+        {
+            OWLObjectMinCardinality objectMinCardinality = new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+            string swrlString = objectMinCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows min 1 Person)"));
         }
 
         [TestMethod]
