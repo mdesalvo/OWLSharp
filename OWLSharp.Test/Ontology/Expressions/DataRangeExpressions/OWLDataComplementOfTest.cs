@@ -41,6 +41,18 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataComplementOf(null));
 
         [TestMethod]
+        public void ShouldGetStringRepresentationOfDataComplementOf()
+        {
+            OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(
+                new OWLDataUnionOf([
+                    new OWLDatatype(RDFVocabulary.XSD.INTEGER),
+                    new OWLDatatype(RDFVocabulary.XSD.DOUBLE)]));
+            string swrlString = dataComplementOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(not(integer or double))"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataComplementOf()
         {
             OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
