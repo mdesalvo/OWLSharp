@@ -80,6 +80,24 @@ namespace OWLSharp.Test.Ontology.Expressions
                  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDatatypeRestriction()
+        {
+            OWLDatatypeRestriction datatypeRestriction = new OWLDatatypeRestriction(
+                new OWLDatatype(RDFVocabulary.XSD.STRING),
+                [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("8", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.LENGTH),
+                 new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                 new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH),
+                 new OWLFacetRestriction(new OWLLiteral(new RDFPlainLiteral("^A")), RDFVocabulary.XSD.PATTERN),
+                 new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("24", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_INCLUSIVE),
+                 new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("24", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_EXCLUSIVE),
+                 new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("24", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_EXCLUSIVE),
+                 new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("24", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_INCLUSIVE)]);
+            string swrlString = datatypeRestriction.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(string[length \"8\"^^xsd:int, minLength \"6\"^^xsd:int, maxLength \"10\"^^xsd:int, pattern \"^A\", <= \"24\"^^xsd:int, < \"24\"^^xsd:int, > \"24\"^^xsd:int, >= \"24\"^^xsd:int])"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDatatypeRestriction()
         {
             OWLDatatypeRestriction length6to10Facet = new OWLDatatypeRestriction(
