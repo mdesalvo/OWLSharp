@@ -14,12 +14,14 @@
    limitations under the License.
 */
 
+using System.Collections.Generic;
 using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
+using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
@@ -118,6 +120,21 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(antecedentResult.Columns.Count == 1);
             Assert.IsTrue(antecedentResult.Rows.Count == 1);
             Assert.IsTrue(string.Equals(antecedentResult.Rows[0]["?P"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateSWRLDataRangeAtomOnConsequent()
+        {
+            SWRLDataRangeAtom atom = new SWRLDataRangeAtom(
+                new OWLDataOneOf([
+                    new OWLLiteral(new RDFPlainLiteral("hello")),
+                    new OWLLiteral(new RDFPlainLiteral("hello", "en-US")),
+                    new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)) ]),
+                new SWRLVariableArgument(new RDFVariable("?P")));
+            List<OWLInference> inferences = atom.EvaluateOnConsequent(null, null); //This kind of atom does not evaluate on consequent
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.Count == 0);
         }
         #endregion
     }
