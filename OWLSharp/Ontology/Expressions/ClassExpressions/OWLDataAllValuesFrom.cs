@@ -15,8 +15,7 @@
 */
 
 using RDFSharp.Model;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -26,8 +25,8 @@ namespace OWLSharp.Ontology.Expressions
     public class OWLDataAllValuesFrom : OWLClassExpression
     {
         #region Properties
-        [XmlElement(ElementName="DataProperty", Order=1)]
-        public List<OWLDataProperty> DataProperties { get; set; }
+        [XmlElement(Order=1)]
+        public OWLDataProperty DataProperty { get; set; }
 
         //Register here all derived types of OWLDataRangeExpression
         [XmlElement(typeof(OWLDatatype), ElementName="Datatype", Order=2)]
@@ -40,23 +39,27 @@ namespace OWLSharp.Ontology.Expressions
 
         #region Ctors
         internal OWLDataAllValuesFrom() { }
-        public OWLDataAllValuesFrom(List<OWLDataProperty> dataProperties, OWLDataRangeExpression datarangeExpression)
+        public OWLDataAllValuesFrom(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression)
         {
-            #region Guards
-            if (dataProperties == null)
-                throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"dataProperties\" parameter is null");
-            if (dataProperties.Count == 0)
-                throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"dataProperties\" parameter must contain at least 1 element");
-            if (dataProperties.Any(dp => dp == null))
-                throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"dataProperties\" parameter contains a null element");
-            #endregion
-
-            DataProperties = dataProperties;
+            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"dataProperty\" parameter is null");
             DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataAllValuesFrom because given \"datarangeExpression\" parameter is null");
         }
         #endregion
 
         #region Methods
+        public override string ToSWRLString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append('(');
+            sb.Append(DataProperty.ToSWRLString());
+            sb.Append(" only ");
+            sb.Append(DataRangeExpression.ToSWRLString());
+            sb.Append(')');
+
+            return sb.ToString();
+        }
+
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();
@@ -66,11 +69,8 @@ namespace OWLSharp.Ontology.Expressions
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ALL_VALUES_FROM, drExpressionIRI));
             graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
-            foreach (OWLDataProperty dataProperty in DataProperties)
-            {
-                graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, dataProperty.GetIRI()));
-                graph = graph.UnionWith(dataProperty.ToRDFGraph());
-            }
+            graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
+            graph = graph.UnionWith(DataProperty.ToRDFGraph());
 
             return graph;
         }

@@ -1970,8 +1970,8 @@ namespace OWLSharp.Ontology
 							if (onPropertyDPEX != null)
 							{
 								if (dtAVF == null)
-									dtAVF = new OWLDataAllValuesFrom() { DataProperties = new List<OWLDataProperty>() };
-								dtAVF.DataProperties.Add((OWLDataProperty)onPropertyDPEX);
+									dtAVF = new OWLDataAllValuesFrom();
+								dtAVF.DataProperty = (OWLDataProperty)onPropertyDPEX;
 								dtAVF.DataRangeExpression = allValuesFromDREX;
 							}
 						}

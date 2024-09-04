@@ -30,13 +30,12 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldCreateDataAllValuesFrom()
         {
             OWLDataAllValuesFrom dataAllValuesFrom = new OWLDataAllValuesFrom(
-                [ new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())) ],
+                new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())),
                 new OWLDatatype(RDFVocabulary.XSD.STRING));
 
             Assert.IsNotNull(dataAllValuesFrom);
-            Assert.IsNotNull(dataAllValuesFrom.DataProperties);
-            Assert.IsTrue(dataAllValuesFrom.DataProperties.Single() is OWLDataProperty dataProperty 
-                            && string.Equals(dataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
+            Assert.IsNotNull(dataAllValuesFrom.DataProperty);
+            Assert.IsTrue(string.Equals(dataAllValuesFrom.DataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
             Assert.IsNotNull(dataAllValuesFrom.DataRangeExpression);
             Assert.IsTrue(dataAllValuesFrom.DataRangeExpression is OWLDatatype datatype 
                             && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
@@ -48,25 +47,26 @@ namespace OWLSharp.Test.Ontology.Expressions
                 null, new OWLDatatype(RDFVocabulary.XSD.STRING)));
 
         [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseZeroDataProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataAllValuesFrom(
-                [], new OWLDatatype(RDFVocabulary.XSD.STRING)));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseNullDataPropertyFound()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataAllValuesFrom(
-                [null], new OWLDatatype(RDFVocabulary.XSD.STRING)));
-
-        [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseNullDataRange()
             => Assert.ThrowsException<OWLException>(() => new OWLDataAllValuesFrom(
-                [ new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())) ], null));
+                new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())), null));
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataAllValuesFrom()
+        {
+            OWLDataAllValuesFrom dataAllValuesFrom = new OWLDataAllValuesFrom(
+                new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())),
+                new OWLDatatype(RDFVocabulary.XSD.STRING));
+            string swrlString = dataAllValuesFrom.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(creator only string)"));
+        }
 
         [TestMethod]
         public void ShouldSerializeDataAllValuesFrom()
         {
             OWLDataAllValuesFrom dataAllValuesFrom = new OWLDataAllValuesFrom(
-                [ new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())) ],
+                new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())),
                 new OWLDatatype(RDFVocabulary.XSD.STRING));
             string serializedXML = OWLSerializer.SerializeObject(dataAllValuesFrom);
 
@@ -84,9 +84,8 @@ namespace OWLSharp.Test.Ontology.Expressions
 </DataAllValuesFrom>");
 
             Assert.IsNotNull(dataAllValuesFrom);
-            Assert.IsNotNull(dataAllValuesFrom.DataProperties);
-            Assert.IsTrue(dataAllValuesFrom.DataProperties.Single() is OWLDataProperty dataProperty 
-                            && string.Equals(dataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
+            Assert.IsNotNull(dataAllValuesFrom.DataProperty);
+            Assert.IsTrue(string.Equals(dataAllValuesFrom.DataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
             Assert.IsNotNull(dataAllValuesFrom.DataRangeExpression);
             Assert.IsTrue(dataAllValuesFrom.DataRangeExpression is OWLDatatype datatype 
                             && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
@@ -96,7 +95,7 @@ namespace OWLSharp.Test.Ontology.Expressions
         public void ShouldConvertDataAllValuesFromToGraph()
         {
             OWLDataAllValuesFrom dataAllValuesFrom = new OWLDataAllValuesFrom(
-                [new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString()))],
+                new OWLDataProperty(new RDFResource(RDFVocabulary.DC.CREATOR.ToString())),
                 new OWLDatatype(RDFVocabulary.XSD.STRING));
             RDFGraph graph = dataAllValuesFrom.ToRDFGraph();
 
