@@ -68,7 +68,7 @@ namespace OWLSharp.Ontology.Expressions
 
             sb.Append('(');
             sb.Append(ObjectPropertyExpression.ToSWRLString());
-            sb.Append(" all ");
+            sb.Append(" only ");
             sb.Append(ClassExpression.ToSWRLString());
             sb.Append(')');
 
