@@ -47,6 +47,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), null));
 
         [TestMethod]
+        public void ShouldgetSWRLRepresentationOfDataHasValue()
+        {
+            OWLDataHasValue dataHasValue = new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello", "en")));
+            string swrlString = dataHasValue.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(description value \"hello\"@EN)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataHasValue()
         {
             OWLDataHasValue dataHasValue = new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("hello","en")));
