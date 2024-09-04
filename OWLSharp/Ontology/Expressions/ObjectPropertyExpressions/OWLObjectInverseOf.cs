@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using RDFSharp.Model;
@@ -34,8 +35,20 @@ namespace OWLSharp.Ontology.Expressions
             => ObjectProperty = objectProperty ?? throw new OWLException("Cannot create OWLObjectInverseOf because given \"objectProperty\" parameter is null");
         #endregion
 
-		#region Methods
-		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
+        #region Methods
+        public override string ToSWRLString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("inverse");
+            sb.Append('(');
+            sb.Append(ObjectProperty.ToSWRLString());
+            sb.Append(')');
+
+            return sb.ToString();
+        }
+
+        internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 		{
 			RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
