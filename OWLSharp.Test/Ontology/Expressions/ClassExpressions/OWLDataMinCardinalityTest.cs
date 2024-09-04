@@ -64,6 +64,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataMinCardinality()
+        {
+            OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+            string swrlString = dataMinCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(description min 1)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataMinCardinality()
         {
             OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
@@ -86,6 +95,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(dataMinCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMinCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataMinCardinality.DataRangeExpression);
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataMinQualifiedCardinality()
+        {
+            OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+            string swrlString = dataMinCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(description min 1 string)"));
         }
 
         [TestMethod]

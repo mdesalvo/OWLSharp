@@ -51,6 +51,17 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataOneOf([null]));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataOneOf()
+        {
+            OWLDataOneOf dataOneOf = new OWLDataOneOf([
+                new OWLLiteral(new RDFPlainLiteral("hello","en")),
+                new OWLLiteral(new RDFTypedLiteral("<ciao />", RDFModelEnums.RDFDatatypes.RDF_XMLLITERAL))]);
+            string swrlString = dataOneOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "({\"hello\"@EN,\"<ciao />\"^^rdf:XMLLiteral})"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataOneOf()
         {
             OWLDataOneOf dataOneOf = new OWLDataOneOf([

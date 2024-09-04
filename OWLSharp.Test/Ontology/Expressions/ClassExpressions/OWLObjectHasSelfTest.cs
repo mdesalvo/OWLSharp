@@ -52,6 +52,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectHasSelf(null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectHasSelf()
+        {
+            OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            string swrlString = objectHasSelf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows Self)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectHasSelf()
         {
             OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
@@ -62,7 +71,16 @@ namespace OWLSharp.Test.Ontology.Expressions
         }
 
         [TestMethod]
-        public void ShouldSerializeObjectHasSelfWithObjectInverseOfOf()
+        public void ShouldGetSWRLRepresentationOfObjectHasSelfWithObjectInverseOf()
+        {
+            OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            string swrlString = objectHasSelf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(inverse(knows) Self)"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeObjectHasSelfWithObjectInverseOf()
         {
             OWLObjectHasSelf objectHasSelf = new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
             string serializedXML = OWLSerializer.SerializeObject(objectHasSelf);

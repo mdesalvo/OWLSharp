@@ -17,6 +17,7 @@
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -47,8 +48,22 @@ namespace OWLSharp.Ontology.Expressions
         }
         #endregion
 
-		#region Methods
-		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
+        #region Methods
+        public override string ToSWRLString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append('(');
+            sb.Append(Datatype.ToSWRLString());
+            sb.Append('[');
+            sb.Append(string.Join(", ", FacetRestrictions.Select(fct => fct.ToSWRLString())));
+            sb.Append(']');
+            sb.Append(')');
+
+            return sb.ToString();
+        }
+
+        internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 		{
 			RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
@@ -100,6 +115,34 @@ namespace OWLSharp.Ontology.Expressions
 
             Literal = literal ?? throw new OWLException("Cannot create OWLFacetRestriction because given \"literal\" parameter is null");
             FacetIRI = facetIRI.ToString();
+        }
+        #endregion
+
+        #region Methods
+        public string ToSWRLString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (string.Equals(FacetIRI, RDFVocabulary.XSD.LENGTH.ToString()))
+                sb.Append($"length {Literal.ToSWRLString()}");
+            else if (string.Equals(FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString()))
+                sb.Append($"minLength {Literal.ToSWRLString()}");
+            else if (string.Equals(FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString()))
+                sb.Append($"maxLength {Literal.ToSWRLString()}");
+            else if (string.Equals(FacetIRI, RDFVocabulary.XSD.PATTERN.ToString()))
+                sb.Append($"pattern {Literal.ToSWRLString()}");
+            else if (string.Equals(FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString()))
+                sb.Append($"<= {Literal.ToSWRLString()}");
+            else if (string.Equals(FacetIRI, RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString()))
+                sb.Append($"< {Literal.ToSWRLString()}");
+            else if (string.Equals(FacetIRI, RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString()))
+                sb.Append($"> {Literal.ToSWRLString()}");
+            else if (string.Equals(FacetIRI, RDFVocabulary.XSD.MIN_INCLUSIVE.ToString()))
+                sb.Append($">= {Literal.ToSWRLString()}");
+            else
+                throw new OWLException($"Cannot get SWRL representation of unsupported facet IRI: {FacetIRI}");
+
+            return sb.ToString();
         }
         #endregion
     }

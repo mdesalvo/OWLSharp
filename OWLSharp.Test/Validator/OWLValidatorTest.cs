@@ -18,7 +18,7 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Validator;
-using OWLSharp.Validator.Rules;
+using OWLSharp.Validator.RuleSet;
 using RDFSharp.Model;
 
 namespace OWLSharp.Test.Validator

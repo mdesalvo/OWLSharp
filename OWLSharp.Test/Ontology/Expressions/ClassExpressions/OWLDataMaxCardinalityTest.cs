@@ -64,6 +64,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, null));
 
         [TestMethod]
+        public void ShouldgetSWRLRepresentationOfDataMaxCardinality()
+        {
+            OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
+            string swrlString = dataMaxCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(description max 1)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataMaxCardinality()
         {
             OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1);
@@ -86,6 +95,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsNotNull(dataMaxCardinality.DataProperty);
             Assert.IsTrue(string.Equals(dataMaxCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
             Assert.IsNull(dataMaxCardinality.DataRangeExpression);
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataMaxQualifiedCardinality()
+        {
+            OWLDataMaxCardinality dataMaxCardinality = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
+            string swrlString = dataMaxCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(description max 1 string)"));
         }
 
         [TestMethod]

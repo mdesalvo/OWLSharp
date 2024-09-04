@@ -75,8 +75,8 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello"));
             string serializedXML = OWLSerializer.SerializeObject(lit);
 
-            Assert.IsTrue(string.Equals(serializedXML,
-@"<Literal>hello</Literal>"));
+            Assert.IsTrue(string.Equals(serializedXML, "<Literal>hello</Literal>"));
+            Assert.IsTrue(string.Equals(lit.ToSWRLString(), "\"hello\""));
         }
 
         [TestMethod]
@@ -85,8 +85,8 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLLiteral lit = new OWLLiteral(null);
             string serializedXML = OWLSerializer.SerializeObject(lit);
 
-            Assert.IsTrue(string.Equals(serializedXML,
-@"<Literal></Literal>"));
+            Assert.IsTrue(string.Equals(serializedXML, "<Literal></Literal>"));
+            Assert.IsTrue(string.Equals(lit.ToSWRLString(), "\"\""));
         }
 
         [TestMethod]
@@ -95,8 +95,8 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello","en-US--RTL"));
             string serializedXML = OWLSerializer.SerializeObject(lit);
 
-            Assert.IsTrue(string.Equals(serializedXML,
-@"<Literal xml:lang=""EN-US--RTL"">hello</Literal>"));
+            Assert.IsTrue(string.Equals(serializedXML, @"<Literal xml:lang=""EN-US--RTL"">hello</Literal>"));
+            Assert.IsTrue(string.Equals(lit.ToSWRLString(), "\"hello\"@EN-US--RTL"));
         }
 
         [TestMethod]
@@ -105,8 +105,8 @@ namespace OWLSharp.Test.Ontology.Expressions
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
             string serializedXML = OWLSerializer.SerializeObject(lit);
 
-            Assert.IsTrue(string.Equals(serializedXML,
-@"<Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal>"));
+            Assert.IsTrue(string.Equals(serializedXML, @"<Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal>"));
+            Assert.IsTrue(string.Equals(lit.ToSWRLString(), "\"hello\"^^xsd:string"));
         }
 
         [TestMethod]

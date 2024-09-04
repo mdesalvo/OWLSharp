@@ -23,7 +23,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Test.Ontology
 {
@@ -61,6 +63,8 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
 			Assert.IsNotNull(ontology.AnnotationAxioms);
 			Assert.IsTrue(ontology.AnnotationAxioms.Count == 0);
+            Assert.IsNotNull(ontology.Rules);
+            Assert.IsTrue(ontology.Rules.Count == 0);
         }
 
 		[TestMethod]
@@ -107,7 +111,8 @@ namespace OWLSharp.Test.Ontology
 				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
 			ontology.AnnotationAxioms.Add(
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			
+            ontology.Rules.Add(new SWRLRule());
+
 			//Test cloning an ontology
 			OWLOntology clonedOntology = new OWLOntology(ontology);
 			Assert.IsNotNull(clonedOntology);
@@ -135,9 +140,11 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(clonedOntology.AssertionAxioms.Count == 1);
 			Assert.IsNotNull(clonedOntology.AnnotationAxioms);
 			Assert.IsTrue(clonedOntology.AnnotationAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.Rules);
+            Assert.IsTrue(clonedOntology.Rules.Count == 1);
 
-			//Test cloning a null ontology
-			OWLOntology clonedEmptyOntology = new OWLOntology(null);
+            //Test cloning a null ontology
+            OWLOntology clonedEmptyOntology = new OWLOntology(null);
 			Assert.IsNotNull(clonedEmptyOntology);
             Assert.IsNull(clonedEmptyOntology.IRI);
 			Assert.IsNull(clonedEmptyOntology.VersionIRI);
@@ -163,6 +170,8 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(clonedEmptyOntology.AssertionAxioms.Count == 0);
 			Assert.IsNotNull(clonedEmptyOntology.AnnotationAxioms);
 			Assert.IsTrue(clonedEmptyOntology.AnnotationAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.Rules);
+            Assert.IsTrue(clonedEmptyOntology.Rules.Count == 0);
         }
 
 		[TestMethod]
@@ -209,7 +218,28 @@ namespace OWLSharp.Test.Ontology
 				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
 			ontology.AnnotationAxioms.Add(
 				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			string serializedXML = OWLSerializer.SerializeOntology(ontology);
+            ontology.Rules.Add(
+                new SWRLRule(
+                    new RDFPlainLiteral("SWRL1"),
+                    new RDFPlainLiteral("This is a test SWRL rule"),
+                    new SWRLAntecedent()
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(
+                                new OWLClass(RDFVocabulary.FOAF.PERSON),
+                                new SWRLVariableArgument(new RDFVariable("?P")))
+                        ]
+                    },
+                    new SWRLConsequent()
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(
+                                new OWLClass(RDFVocabulary.FOAF.AGENT),
+                                new SWRLVariableArgument(new RDFVariable("?P")))
+                        ]
+                    }));
+            
+            string serializedXML = OWLSerializer.SerializeOntology(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -291,6 +321,28 @@ namespace OWLSharp.Test.Ontology
     <IRI>ex:Mark</IRI>
     <Literal>This is Mark</Literal>
   </AnnotationAssertion>
+  <DLSafeRule>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal>SWRL1</Literal>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+      <Literal>This is a test SWRL rule</Literal>
+    </Annotation>
+    <Body>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Body>
+    <Head>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Head>
+  </DLSafeRule>
 </Ontology>")); 
 		}
 
@@ -377,6 +429,28 @@ namespace OWLSharp.Test.Ontology
     <IRI>ex:Mark</IRI>
     <Literal>This is Mark</Literal>
   </AnnotationAssertion>
+  <DLSafeRule>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal>SWRL1</Literal>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+      <Literal>This is a test SWRL rule</Literal>
+    </Annotation>
+    <Body>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Body>
+    <Head>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Head>
+  </DLSafeRule>
 </Ontology>");
 
 			Assert.IsNotNull(ontology);
@@ -404,7 +478,9 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
 			Assert.IsNotNull(ontology.AnnotationAxioms);
 			Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
-		}
+            Assert.IsNotNull(ontology.Rules);
+            Assert.IsTrue(ontology.Rules.Count == 1);
+        }
 
 		[TestMethod]
 		public async Task ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraphAsync()
@@ -4336,6 +4412,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
             Assert.IsTrue(ontology.KeyAxioms.Count == 0);
             Assert.IsTrue(ontology.Prefixes.Count == 5);
+            Assert.IsTrue(ontology.Rules.Count == 0);
         }
 
         [TestMethod]

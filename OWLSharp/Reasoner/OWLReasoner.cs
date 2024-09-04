@@ -14,10 +14,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Helpers;
-using OWLSharp.Reasoner.Rules;
+using OWLSharp.Reasoner.RuleSet;
 
 namespace OWLSharp.Reasoner
 {
@@ -39,19 +40,21 @@ namespace OWLSharp.Reasoner
 
             if (ontology != null)
             {
-                OWLEvents.RaiseInfo($"Launching OWL2 reasoner on ontology '{ontology.IRI}'...");
+                OWLEvents.RaiseInfo($"Launching OWL2/SWRL reasoner on ontology '{ontology.IRI}'...");
 				Rules = Rules.Distinct().ToList();
 
                 //Initialize inference registry				
                 Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>();
-				Rules.ForEach(rule => inferenceRegistry.Add(rule.ToString(), null));
+				Rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
+				ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
 
-                //Execute reasoner rules
-                Parallel.ForEach(Rules, rule =>
+                //Execute OWL2 reasoner rules
+                Parallel.ForEach(Rules, owl2Rule =>
 				{
-					OWLEvents.RaiseInfo($"Launching OWL2 rule {rule}...");
+					string owl2RuleString = owl2Rule.ToString();
+					OWLEvents.RaiseInfo($"Launching OWL2 rule {owl2RuleString}...");
 
-					switch (rule)
+					switch (owl2Rule)
 					{
 						case OWLEnums.OWLReasonerRules.ClassAssertionEntailment:
 							inferenceRegistry[OWLClassAssertionEntailmentRule.rulename] = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
@@ -130,8 +133,19 @@ namespace OWLSharp.Reasoner
 							break;
 					}
 
-					OWLEvents.RaiseInfo($"Completed OWL2 rule {rule} => {inferenceRegistry[rule.ToString()].Count} candidate inferences");
+					OWLEvents.RaiseInfo($"Completed OWL2 rule {owl2RuleString} => {inferenceRegistry[owl2RuleString].Count} candidate inferences");
 				});
+
+                //Execute SWRL reasoner rules
+                await ontology.Rules.ParallelForEachAsync(async (swrlRule) =>
+                {
+					string swrlRuleString = swrlRule.ToString();
+                    OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");
+
+                    inferenceRegistry[swrlRuleString] = await swrlRule.ApplyToOntologyAsync(ontology);
+
+                    OWLEvents.RaiseInfo($"Completed SWRL rule {swrlRuleString} => {inferenceRegistry[swrlRuleString].Count} candidate inferences");
+                });
 
                 //Process inference registry
                 await Task.Run(async () =>
@@ -182,7 +196,7 @@ namespace OWLSharp.Reasoner
 					inferenceRegistry.Clear();
                 });                
 
-                OWLEvents.RaiseInfo($"Completed OWL2 reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
+                OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
             }
 
             return inferences;

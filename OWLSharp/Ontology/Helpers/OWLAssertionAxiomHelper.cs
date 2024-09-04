@@ -337,7 +337,7 @@ namespace OWLSharp.Ontology.Helpers
 								if (equivClsExpr is OWLDataMinCardinality dtMinCard)
 									onProps.Add(dtMinCard.DataProperty);
 								else if (equivClsExpr is OWLDataSomeValuesFrom dtSVF) 
-									onProps.AddRange(dtSVF.DataProperties);
+									onProps.Add(dtSVF.DataProperty);
 								OWLDataRangeExpression onDataRangeExpr = 
 									(equivClsExpr as OWLDataMinCardinality)?.DataRangeExpression ?? 
 									(equivClsExpr as OWLDataSomeValuesFrom)?.DataRangeExpression;

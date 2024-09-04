@@ -54,6 +54,18 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectUnionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON), null ]));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectUnionOf()
+        {
+            OWLObjectUnionOf objectUnionOf = new OWLObjectUnionOf([
+                new OWLObjectUnionOf(
+                    [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)]),
+                new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]);
+            string swrlString = objectUnionOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "((Person or Agent) or Organization)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectUnionOf()
         {
             OWLObjectUnionOf objectUnionOf = new OWLObjectUnionOf(

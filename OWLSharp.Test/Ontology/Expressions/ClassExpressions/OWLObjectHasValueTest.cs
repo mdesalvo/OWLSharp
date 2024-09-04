@@ -62,6 +62,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectHasValue()
+        {
+            OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Bob")));
+            string swrlString = objectHasValue.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows value ex:Bob)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectHasValue()
         {
             OWLObjectHasValue objectHasValue = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Bob")));

@@ -54,6 +54,16 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDataIntersectionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING), null ]));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfDataIntersectionOf()
+        {
+            OWLDataIntersectionOf dataIntersectionOf = new OWLDataIntersectionOf(
+                 [new OWLDatatype(RDFVocabulary.XSD.STRING), new OWLDatatype(RDFVocabulary.XSD.ANY_URI)]);
+            string swrlString = dataIntersectionOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(string and anyURI)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeDataIntersectionOf()
         {
            OWLDataIntersectionOf dataIntersectionOf = new OWLDataIntersectionOf(

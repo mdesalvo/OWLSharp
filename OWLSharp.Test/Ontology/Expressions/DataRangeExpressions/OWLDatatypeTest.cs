@@ -60,6 +60,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLDatatype(null as XmlQualifiedName));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfIRIDatatype()
+        {
+            OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
+            string swrlString = dt.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "string"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeIRIDatatype()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
@@ -83,6 +92,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             dt.GetIRI();
             Assert.IsFalse(dt.ExpressionIRI.ToString().StartsWith("bnode:ex"));
             Assert.IsTrue(dt.ExpressionIRI.ToString().Equals("http://www.w3.org/2001/XMLSchema#string"));
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfQualifiedNameDatatype()
+        {
+            OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
+            string swrlString = dt.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "string"));
         }
 
         [TestMethod]

@@ -40,6 +40,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectInverseOf(null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectInverseOf()
+        {
+            OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            string swrlString = objectInverseOf.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "inverse(knows)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectInverseOf()
         {
             OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));

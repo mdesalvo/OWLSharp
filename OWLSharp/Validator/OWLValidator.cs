@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OWLSharp.Ontology;
-using OWLSharp.Validator.Rules;
+using OWLSharp.Validator.RuleSet;
 
 namespace OWLSharp.Validator
 {

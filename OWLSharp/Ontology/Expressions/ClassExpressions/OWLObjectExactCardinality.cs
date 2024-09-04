@@ -15,6 +15,7 @@
 */
 
 using RDFSharp.Model;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -66,6 +67,24 @@ namespace OWLSharp.Ontology.Expressions
         #endregion
 
         #region Methods
+        public override string ToSWRLString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append('(');
+            sb.Append(ObjectPropertyExpression.ToSWRLString());
+            sb.Append(" exactly ");
+            sb.Append(Cardinality);
+            if (ClassExpression != null)
+            {
+                sb.Append(' ');
+                sb.Append(ClassExpression.ToSWRLString());
+            }   
+            sb.Append(')');
+
+            return sb.ToString();
+        }
+
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
         {
             RDFGraph graph = new RDFGraph();

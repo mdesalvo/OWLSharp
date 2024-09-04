@@ -59,6 +59,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLClass(null as XmlQualifiedName));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfClass()
+        {
+            OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
+            string swrlString = cls.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "Person"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeIRIClass()
         {
             OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
@@ -82,6 +91,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             cls.GetIRI();
             Assert.IsFalse(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
             Assert.IsTrue(cls.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/Person"));
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfQualifiedNameClass()
+        {
+            OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
+            string swrlString = cls.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "Person"));
         }
 
         [TestMethod]
