@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using RDFSharp.Model;
@@ -47,8 +48,21 @@ namespace OWLSharp.Ontology.Expressions
         }
         #endregion
 
-		#region Methods
-		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
+        #region Methods
+        public override string ToSWRLString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append('(');
+            sb.Append('{');
+            sb.Append(string.Join(",", Literals.Select(lit => lit.ToSWRLString())));
+            sb.Append('}');
+            sb.Append(')');
+
+            return sb.ToString();
+        }
+
+        internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
 		{
 			RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
