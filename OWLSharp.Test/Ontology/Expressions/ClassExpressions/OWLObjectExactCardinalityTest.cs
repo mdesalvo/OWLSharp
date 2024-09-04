@@ -65,6 +65,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             => Assert.ThrowsException<OWLException>(() => new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, null));
 
         [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectExactCardinality()
+        {
+            OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
+            string swrlString = objectExactCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows exactly 1)"));
+        }
+
+        [TestMethod]
         public void ShouldSerializeObjectExactCardinality()
         {
             OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1);
@@ -88,6 +97,15 @@ namespace OWLSharp.Test.Ontology.Expressions
             Assert.IsTrue(objectExactCardinality.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsNull(objectExactCardinality.ClassExpression);
+        }
+
+        [TestMethod]
+        public void ShouldGetSWRLRepresentationOfObjectExactQualifiedCardinality()
+        {
+            OWLObjectExactCardinality objectExactCardinality = new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, new OWLClass(RDFVocabulary.FOAF.PERSON));
+            string swrlString = objectExactCardinality.ToSWRLString();
+
+            Assert.IsTrue(string.Equals(swrlString, "(knows exactly 1 Person)"));
         }
 
         [TestMethod]
