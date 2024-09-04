@@ -1992,8 +1992,8 @@ namespace OWLSharp.Ontology
 							if (onPropertyDPEX != null)
 							{
 								if (dtSVF == null)
-									dtSVF = new OWLDataSomeValuesFrom() { DataProperties = new List<OWLDataProperty>() };
-								dtSVF.DataProperties.Add((OWLDataProperty)onPropertyDPEX);
+									dtSVF = new OWLDataSomeValuesFrom();
+								dtSVF.DataProperty = (OWLDataProperty)onPropertyDPEX;
 								dtSVF.DataRangeExpression = someValuesFromDREX;
 							}
 						}
