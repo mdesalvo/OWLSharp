@@ -58,6 +58,7 @@ namespace OWLSharp.Ontology.Rules
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#cos")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#divide")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#floor")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#integerDivide")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#mod")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#multiply")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#pow")
@@ -193,6 +194,26 @@ namespace OWLSharp.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#floor",
                 LeftArgument = leftArgument,
                 RightArgument = rightArgument
+            };
+        }
+
+        public static SWRLBuiltIn IntegerDivide(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, double literal)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            if (literal == 0d)
+                throw new OWLException("Cannot create built-in because given \"literal\" parameter is 0!");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#integerDivide",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument,
+                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
             };
         }
 
@@ -705,64 +726,69 @@ namespace OWLSharp.Ontology.Rules
                                 switch (IRI)
                                 {
                                     case "http://www.w3.org/2003/11/swrlb#abs":
-                                        keepRow = (leftArgumentNumericValue == Math.Abs(rightArgumentNumericValue));
+                                        keepRow = leftArgumentNumericValue == Math.Abs(rightArgumentNumericValue);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#add":
                                         if (!literalNumericValue.HasValue)
                                             throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
-                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue + literalNumericValue.Value);
+                                        keepRow = leftArgumentNumericValue == rightArgumentNumericValue + literalNumericValue.Value;
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#ceiling":
-                                        keepRow = (leftArgumentNumericValue == Math.Ceiling(rightArgumentNumericValue));
+                                        keepRow = leftArgumentNumericValue == Math.Ceiling(rightArgumentNumericValue);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#cos":
-                                        keepRow = (leftArgumentNumericValue == Math.Cos(rightArgumentNumericValue));
+                                        keepRow = leftArgumentNumericValue == Math.Cos(rightArgumentNumericValue);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#divide":
                                         if (!literalNumericValue.HasValue)
                                             throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
-                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue / literalNumericValue.Value);
+                                        keepRow = leftArgumentNumericValue == rightArgumentNumericValue / literalNumericValue.Value;
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#floor":
-                                        keepRow = (leftArgumentNumericValue == Math.Floor(rightArgumentNumericValue));
+                                        keepRow = leftArgumentNumericValue == Math.Floor(rightArgumentNumericValue);
+                                        break;
+                                    case "http://www.w3.org/2003/11/swrlb#integerDivide":
+                                        if (!literalNumericValue.HasValue)
+                                            throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
+                                        keepRow = leftArgumentNumericValue == Convert.ToInt32(rightArgumentNumericValue) / Convert.ToInt32(literalNumericValue.Value);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#mod":
                                         if (!literalNumericValue.HasValue)
                                             throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
-                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue % literalNumericValue.Value);
+                                        keepRow = leftArgumentNumericValue == rightArgumentNumericValue % literalNumericValue.Value;
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#multiply":
                                         if (!literalNumericValue.HasValue)
                                             throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
-                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue * literalNumericValue.Value);
+                                        keepRow = leftArgumentNumericValue == rightArgumentNumericValue * literalNumericValue.Value;
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#pow":
                                         if (!literalNumericValue.HasValue)
                                             throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
-                                        keepRow = (leftArgumentNumericValue == Math.Pow(rightArgumentNumericValue, literalNumericValue.Value));
+                                        keepRow = leftArgumentNumericValue == Math.Pow(rightArgumentNumericValue, literalNumericValue.Value);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#round":
-                                        keepRow = (leftArgumentNumericValue == Math.Round(rightArgumentNumericValue));
+                                        keepRow = leftArgumentNumericValue == Math.Round(rightArgumentNumericValue);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#roundHalfToEven":
-                                        keepRow = (leftArgumentNumericValue == Math.Round(rightArgumentNumericValue, MidpointRounding.ToEven));
+                                        keepRow = leftArgumentNumericValue == Math.Round(rightArgumentNumericValue, MidpointRounding.ToEven);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#sin":
-                                        keepRow = (leftArgumentNumericValue == Math.Sin(rightArgumentNumericValue));
+                                        keepRow = leftArgumentNumericValue == Math.Sin(rightArgumentNumericValue);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#subtract":
                                         if (!literalNumericValue.HasValue)
                                             throw new OWLException($"Cannot evaluate arithmetic SWRLBuiltIn with predicate '{IRI}' because it doesn't have required numeric literal argument");
-                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue - literalNumericValue.Value);
+                                        keepRow = leftArgumentNumericValue == rightArgumentNumericValue - literalNumericValue.Value;
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#tan":
-                                        keepRow = (leftArgumentNumericValue == Math.Tan(rightArgumentNumericValue));
+                                        keepRow = leftArgumentNumericValue == Math.Tan(rightArgumentNumericValue);
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#unaryMinus":
-                                        keepRow = (leftArgumentNumericValue == -1 * rightArgumentNumericValue);
+                                        keepRow = leftArgumentNumericValue == -1 * rightArgumentNumericValue;
                                         break;
                                     case "http://www.w3.org/2003/11/swrlb#unaryPlus":
-                                        keepRow = (leftArgumentNumericValue == rightArgumentNumericValue);
+                                        keepRow = leftArgumentNumericValue == rightArgumentNumericValue;
                                         break;
                                 }
 
