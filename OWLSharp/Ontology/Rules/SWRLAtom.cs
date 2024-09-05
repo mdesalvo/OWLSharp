@@ -19,6 +19,7 @@ using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Text;
 using System.Xml;
@@ -64,6 +65,8 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         [XmlElement(typeof(OWLExpression), Order=1)]
         public OWLExpression Predicate { get; set; }
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public bool ShouldSerializePredicate() => !Predicate.GetType().Equals(typeof(OWLExpression));
 
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]
