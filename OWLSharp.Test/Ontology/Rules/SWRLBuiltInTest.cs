@@ -15,7 +15,6 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NetTopologySuite.Triangulate.Tri;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
@@ -31,6 +30,117 @@ namespace OWLSharp.Test.Ontology.Rules
     {
         #region Tests
 
+        //Boolean
+
+        [TestMethod]
+        public void ShouldCreateBooleanNotBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.BooleanNot(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            Assert.IsNotNull(builtin);
+            Assert.IsTrue(builtin.IsBooleanBuiltIn);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsFalse(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#booleanNot", builtin.IRI));
+            Assert.IsNull(builtin.Literal);
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg 
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg 
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:booleanNot(?X,?Y)", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.BooleanNot(null,new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.BooleanNot(new SWRLVariableArgument(new RDFVariable("?X")), null));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeBooleanNotBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.BooleanNot(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#booleanNot\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeBooleanNotBuiltIn()
+        {
+            SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#booleanNot""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsTrue(builtin.IsBooleanBuiltIn);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsFalse(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#booleanNot", builtin.IRI));
+            Assert.IsNull(builtin.Literal);
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:booleanNot(?X,?Y)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#booleanNot\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateBooleanNotBuiltIn()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("true^^http://www.w3.org/2001/XMLSchema#boolean", "false^^http://www.w3.org/2001/XMLSchema#boolean");
+            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int", "0^^http://www.w3.org/2001/XMLSchema#boolean");
+            antecedentResults.Rows.Add(DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
+            antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
+            antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
+            antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
+            antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.BooleanNot(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "true^^http://www.w3.org/2001/XMLSchema#boolean"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "false^^http://www.w3.org/2001/XMLSchema#boolean"));
+
+            //Test with unexisting variables
+
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.BooleanNot(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
+            DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults2);
+            Assert.IsTrue(builtinResults2.Columns.Count == 2);
+            Assert.IsTrue(builtinResults2.Rows.Count == 0);
+
+            SWRLBuiltIn builtin3 = SWRLBuiltIn.BooleanNot(
+                new SWRLVariableArgument(new RDFVariable("?Z")), //unexisting
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+            DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults3);
+            Assert.IsTrue(builtinResults3.Columns.Count == 2);
+            Assert.IsTrue(builtinResults3.Rows.Count == 0);
+        }
+
         //Math
 
         [TestMethod]
@@ -41,6 +151,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -75,6 +186,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -149,6 +261,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 1.55);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -185,6 +298,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#add""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">1.55</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -277,6 +391,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -311,6 +426,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#ceiling""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -384,6 +500,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -418,6 +535,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#cos""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -492,6 +610,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 1.55);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -529,6 +648,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#divide""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">1.55</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -621,6 +741,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -655,6 +776,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#floor""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -729,6 +851,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 2);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -766,6 +889,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#integerDivide""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">2</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -859,6 +983,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 1);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -896,6 +1021,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#mod""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">1</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -989,6 +1115,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 1.55);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1025,6 +1152,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#multiply""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">1.55</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1118,6 +1246,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 2);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1154,6 +1283,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#pow""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">1.55</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1246,6 +1376,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1280,6 +1411,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#round""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1353,6 +1485,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1387,6 +1520,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#roundHalfToEven""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1460,6 +1594,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1494,6 +1629,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#sin""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1568,6 +1704,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 1.55);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1604,6 +1741,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#subtract""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">1.55</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1696,6 +1834,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1730,6 +1869,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#tan""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1803,6 +1943,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1837,6 +1978,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#unaryMinus""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1910,6 +2052,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -1944,6 +2087,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#unaryPlus""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsTrue(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2019,6 +2163,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2053,6 +2198,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#equal""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2128,6 +2274,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2162,6 +2309,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#greaterThan""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2235,6 +2383,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2269,6 +2418,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#greaterThanOrEqual""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2344,6 +2494,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2378,6 +2529,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#lessThanOrEqual""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2453,6 +2605,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2487,6 +2640,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#lessThan""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2560,6 +2714,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2594,6 +2749,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#notEqual""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsTrue(builtin.IsComparisonFilterBuiltIn);
             Assert.IsFalse(builtin.IsStringFilterBuiltIn);
@@ -2669,6 +2825,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 "hello");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -2702,6 +2859,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#contains""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -2757,6 +2915,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 "hello");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -2790,6 +2949,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#containsIgnoreCase""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -2846,6 +3006,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 "hello");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -2879,6 +3040,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#endsWith""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -2934,6 +3096,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 "hello$");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -2960,6 +3123,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -3003,6 +3167,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#matches""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello$</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -3026,6 +3191,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#matches""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello$</Literal><Literal>ismx</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -3112,6 +3278,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 "hello");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);
@@ -3145,6 +3312,7 @@ namespace OWLSharp.Test.Ontology.Rules
 @"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#startsWith""><Variable IRI=""urn:swrl:var#X"" /><Literal>hello</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
             Assert.IsFalse(builtin.IsMathBuiltIn);
             Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
             Assert.IsTrue(builtin.IsStringFilterBuiltIn);

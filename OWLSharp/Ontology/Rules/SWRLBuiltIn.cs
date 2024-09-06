@@ -51,6 +51,9 @@ namespace OWLSharp.Ontology.Rules
         public bool ShouldSerializeLiteral() => Literal != null;
 
         [XmlIgnore]
+        public bool IsBooleanBuiltIn
+            => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#booleanNot");
+        [XmlIgnore]
         public bool IsMathBuiltIn
             => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#abs")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#add")
@@ -88,6 +91,25 @@ namespace OWLSharp.Ontology.Rules
 
         #region Ctors/Factory
         internal SWRLBuiltIn() { }
+
+        //Boolean
+
+        public static SWRLBuiltIn BooleanNot(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
 
         //Math
 
@@ -661,7 +683,7 @@ namespace OWLSharp.Ontology.Rules
                     sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
             }
 
-            //Literal Argument
+            //Literal Argument (depends on builtin semantics)
             if (IsMathBuiltIn
                  && Literal?.GetLiteral() is RDFTypedLiteral mathLiteral
                  && mathLiteral.HasDecimalDatatype())
@@ -681,9 +703,8 @@ namespace OWLSharp.Ontology.Rules
         #region Methods
         internal DataTable EvaluateOnAntecedent(DataTable antecedentResults)
         {
-            if (IsMathBuiltIn)
+            if (IsBooleanBuiltIn || IsMathBuiltIn)
             {
-                #region MathBuiltIn
                 DataTable filteredTable = antecedentResults.Clone();
 
                 #region Guards
@@ -712,14 +733,43 @@ namespace OWLSharp.Ontology.Rules
                         RDFPatternMember leftArgumentPMember = RDFQueryUtilities.ParseRDFPatternMember(leftArgumentValue);
                         RDFPatternMember rightArgumentPMember = RDFQueryUtilities.ParseRDFPatternMember(rightArgumentValue);
 
-                        //Check compatibility of pattern members with the built-in (requires numeric typed literals)
-                        if (leftArgumentPMember is RDFTypedLiteral leftArgumentTypedLiteral
-                             && leftArgumentTypedLiteral.HasDecimalDatatype()
-                             && rightArgumentPMember is RDFTypedLiteral rightArgumentTypedLiteral
-                             && rightArgumentTypedLiteral.HasDecimalDatatype())
+                        #region BooleanBuiltIn
+                        //Check compatibility of pattern members with the built-in (requires boolean typed literals)
+                        if (leftArgumentPMember is RDFTypedLiteral leftArgumentBoolTypedLiteral
+                             && leftArgumentBoolTypedLiteral.HasBooleanDatatype()
+                             && rightArgumentPMember is RDFTypedLiteral rightArgumentBoolTypedLiteral
+                             && rightArgumentBoolTypedLiteral.HasBooleanDatatype())
                         {
-                            if (double.TryParse(leftArgumentTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftArgumentNumericValue)
-                                 && double.TryParse(rightArgumentTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightArgumentNumericValue))
+                            //Execute the built-in's math logics
+                            bool leftArgumentBoolTypedLiteralValue = bool.Parse(leftArgumentBoolTypedLiteral.Value);
+                            bool rightArgumentBoolTypedLiteralValue = bool.Parse(rightArgumentBoolTypedLiteral.Value);
+                            bool keepRow = false;
+                            switch (IRI)
+                            {
+                                case "http://www.w3.org/2003/11/swrlb#booleanNot":
+                                    keepRow = leftArgumentBoolTypedLiteralValue == !rightArgumentBoolTypedLiteralValue;
+                                    break;
+                            }
+
+                            //If the row has passed the built-in, keep it in the filtered result table
+                            if (keepRow)
+                            {
+                                DataRow newRow = filteredTable.NewRow();
+                                newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
+                                filteredTable.Rows.Add(newRow);
+                            }
+                        }
+                        #endregion
+
+                        #region MathBuiltIn
+                        //Check compatibility of pattern members with the built-in (requires numeric typed literals)
+                        else if (leftArgumentPMember is RDFTypedLiteral leftArgumentNumericTypedLiteral
+                                  && leftArgumentNumericTypedLiteral.HasDecimalDatatype()
+                                  && rightArgumentPMember is RDFTypedLiteral rightArgumentNumericTypedLiteral
+                                  && rightArgumentNumericTypedLiteral.HasDecimalDatatype())
+                        {
+                            if (double.TryParse(leftArgumentNumericTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftArgumentNumericValue)
+                                 && double.TryParse(rightArgumentNumericTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightArgumentNumericValue))
                             {
                                 //Execute the built-in's math logics
                                 bool keepRow = false;
@@ -801,17 +851,16 @@ namespace OWLSharp.Ontology.Rules
                                 }
                             }
                         }
+                        #endregion
                     }
                     catch { /* Just a no-op, since type errors are normal when trying to face variable's bindings */ }
                 }
 
                 return filteredTable;
-                #endregion
             }
 
             if (IsComparisonFilterBuiltIn || IsStringFilterBuiltIn)
             {
-                #region FilterBuiltIn
                 RDFFilter GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors comparisonFlavor)
                 {
                     if (LeftArgument is SWRLVariableArgument leftArgVarGreaterThan)
@@ -921,7 +970,6 @@ namespace OWLSharp.Ontology.Rules
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
                         break;
-                    #endregion
                 }
 
                 //Iterate the rows of the antecedent result table
