@@ -7,6 +7,3 @@ OWLSharp is built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</
   <li><b>Reasoning</b> on them with a set of <b>25</b> intelligent <b>inference rules</b></li>
   <li><b>Validating</b> them with a set of <b>29</b> wide spectrum <b>analysis rules</b></li> 
 </ul>
-
-
-Current release is: <a href="https://github.com/mdesalvo/OWLSharp/releases/tag/v4.0.0"><b>4.0.0</b></a>
