@@ -85,6 +85,7 @@ namespace OWLSharp.Ontology.Rules
             => string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#contains")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#containsIgnoreCase")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#endsWith")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#lowerCase")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#matches")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#startsWith")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#upperCase");
@@ -609,6 +610,23 @@ namespace OWLSharp.Ontology.Rules
             };
         }
 
+        public static SWRLBuiltIn LowerCase(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#lowerCase",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
         public static SWRLBuiltIn Matches(SWRLVariableArgument leftArgument, string matchString, RegexOptions matchOptions=RegexOptions.None)
         {
             #region Guards
@@ -947,6 +965,19 @@ namespace OWLSharp.Ontology.Rules
                             builtInFilter = new RDFRegexFilter(leftArgVarEndsWith.GetVariable(), new Regex($"{rightArgLitEndsWith.GetLiteral().Value}$"));
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
+                        break;
+                    case "http://www.w3.org/2003/11/swrlb#lowerCase":
+                        if (LeftArgument is SWRLVariableArgument leftArgVarLowerCase
+                             && RightArgument is SWRLVariableArgument rightArgVarLowerCase)
+                            builtInFilter = new RDFExpressionFilter(
+                                                new RDFBooleanAndExpression(
+                                                    new RDFConstantExpression(RDFTypedLiteral.True),
+                                                    new RDFComparisonExpression(
+                                                        RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                                        new RDFVariableExpression(leftArgVarLowerCase.GetVariable()),               
+                                                        new RDFLowerCaseExpression(new RDFVariableExpression(rightArgVarLowerCase.GetVariable())))));
+                        else
+                            throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#matches":
                         if (LeftArgument is SWRLVariableArgument leftArgVarMatches
