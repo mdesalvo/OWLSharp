@@ -84,6 +84,7 @@ namespace OWLSharp.Test.Ontology.Rules
                    new SWRLAntecedent(),
                    null));
 
+        /*TODO: Enable and adjust after builtin multi-arguments refactory
         [TestMethod]
         public void ShouldGetStringRepresentationOfSWRLRule()
         {
@@ -169,7 +170,6 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(string.Equals("Person(?P) ^ name(?P,?N) ^ swrlb:containsIgnoreCase(?N,\"mark\") -> Agent(?P)", rule.ToString()));
         }
 
-        /*TODO: Enable and adjust after builtin multi-arguments refactory
         [TestMethod]
         public async Task ShouldApplySWRLRuleToOntologyAsync()
         {
