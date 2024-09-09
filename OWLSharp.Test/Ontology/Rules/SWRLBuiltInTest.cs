@@ -3452,6 +3452,122 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
+        public void ShouldCreateStringConcatBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                "hello");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsTrue(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringConcat", builtin.IRI));
+            Assert.IsNotNull(builtin.Literal);
+            Assert.IsTrue(string.Equals("hello", builtin.Literal.GetLiteral().ToString()));
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringConcat(null, new SWRLVariableArgument(new RDFVariable("?X")), "hello"));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringConcat(new SWRLVariableArgument(new RDFVariable("?X")), null, "hello"));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeStringConcatBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                "hello");
+
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringConcat\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Literal>hello</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeStringConcatBuiltIn()
+        {
+            SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringConcat""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal>hello</Literal></BuiltInAtom>");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsTrue(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringConcat", builtin.IRI));
+            Assert.IsNotNull(builtin.Literal);
+            Assert.IsTrue(string.Equals("hello", builtin.Literal.GetLiteral().ToString()));
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:stringConcat(?X,?Y,\"hello\")", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringConcat\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Literal>hello</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateStringConcatBuiltIn()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("My name is John, hello!", "My name is John, ");
+            antecedentResults.Rows.Add("My name is John, hello!", DBNull.Value);
+            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int", "hello!");
+            antecedentResults.Rows.Add("hello!",DBNull.Value);
+            antecedentResults.Rows.Add("hello!","hello!");
+
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringConcat(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                "hello!");
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "My name is John, hello!"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "My name is John, "));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello!"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), string.Empty));
+
+            //Test without literal
+
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.StringConcat(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                null);
+
+            DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults2);
+            Assert.IsTrue(builtinResults2.Columns.Count == 2);
+            Assert.IsTrue(builtinResults2.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?X"].ToString(), "hello!"));
+            Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?Y"].ToString(), "hello!"));
+
+            //Test with unexisting variables
+
+            SWRLBuiltIn builtin3 = SWRLBuiltIn.StringConcat(
+                new SWRLVariableArgument(new RDFVariable("?Z")), new SWRLVariableArgument(new RDFVariable("?X")), "hello"); //unexisting
+            DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults3);
+            Assert.IsTrue(builtinResults3.Columns.Count == 2);
+            Assert.IsTrue(builtinResults3.Rows.Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldCreateStringEqualIgnoreCaseBuiltIn()
         {
             SWRLBuiltIn builtin = SWRLBuiltIn.StringEqualIgnoreCase(

@@ -88,6 +88,7 @@ namespace OWLSharp.Ontology.Rules
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#lowerCase")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#matches")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#startsWith")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#stringConcat")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#stringLength")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#upperCase");
@@ -691,6 +692,24 @@ namespace OWLSharp.Ontology.Rules
             };
         }
 
+        public static SWRLBuiltIn StringConcat(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument, string concatString)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#stringConcat",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument,
+                Literal = new OWLLiteral(new RDFPlainLiteral(concatString))
+            };
+        }
+
         public static SWRLBuiltIn StringLength(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
@@ -1054,6 +1073,21 @@ namespace OWLSharp.Ontology.Rules
                             builtInFilter = new RDFRegexFilter(leftArgVarStartsWith.GetVariable(), new Regex($"^{rightArgLitStartsWith.GetLiteral().Value}"));
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
+                        break;
+                    case "http://www.w3.org/2003/11/swrlb#stringConcat":
+                        if (LeftArgument is SWRLVariableArgument leftArgVarConcat
+                             && RightArgument is SWRLVariableArgument rightArgVarConcat)
+                            builtInFilter = new RDFExpressionFilter(
+                                                new RDFBooleanAndExpression(
+                                                    new RDFConstantExpression(RDFTypedLiteral.True),
+                                                    new RDFComparisonExpression(
+                                                        RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                                        new RDFVariableExpression(leftArgVarConcat.GetVariable()),               
+                                                        new RDFConcatExpression(
+                                                            new RDFVariableExpression(rightArgVarConcat.GetVariable()),
+                                                            new RDFConstantExpression(Literal?.GetLiteral() ?? new RDFPlainLiteral(null))))));
+                        else
+                            throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase":
                         if (LeftArgument is SWRLVariableArgument leftArgVarStringEqualIgnoreCase
