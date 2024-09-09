@@ -34,10 +34,10 @@ namespace OWLSharp.Ontology
 	public class OWLOntology
 	{
 		#region Properties
-		[XmlAttribute("ontologyIRI", DataType = "anyURI")]
+		[XmlAttribute("ontologyIRI", DataType="anyURI")]
 		public string IRI { get; set; }
 
-		[XmlAttribute("ontologyVersion", DataType = "anyURI")]
+		[XmlAttribute("ontologyVersion", DataType="anyURI")]
 		public string VersionIRI { get; set; }
 
 		[XmlElement("Prefix")]
@@ -54,54 +54,54 @@ namespace OWLSharp.Ontology
 		[XmlElement("Declaration")]
 		public List<OWLDeclaration> DeclarationAxioms { get; internal set; }
 
-		[XmlElement(typeof(OWLSubClassOf), ElementName = "SubClassOf")]
-		[XmlElement(typeof(OWLEquivalentClasses), ElementName = "EquivalentClasses")]
-		[XmlElement(typeof(OWLDisjointClasses), ElementName = "DisjointClasses")]
-		[XmlElement(typeof(OWLDisjointUnion), ElementName = "DisjointUnion")]
+		[XmlElement(typeof(OWLSubClassOf), ElementName="SubClassOf")]
+		[XmlElement(typeof(OWLEquivalentClasses), ElementName="EquivalentClasses")]
+		[XmlElement(typeof(OWLDisjointClasses), ElementName="DisjointClasses")]
+		[XmlElement(typeof(OWLDisjointUnion), ElementName="DisjointUnion")]
 		public List<OWLClassAxiom> ClassAxioms { get; internal set; }
 
-		[XmlElement(typeof(OWLSubObjectPropertyOf), ElementName = "SubObjectPropertyOf")]
-		[XmlElement(typeof(OWLEquivalentObjectProperties), ElementName = "EquivalentObjectProperties")]
-		[XmlElement(typeof(OWLDisjointObjectProperties), ElementName = "DisjointObjectProperties")]
-		[XmlElement(typeof(OWLInverseObjectProperties), ElementName = "InverseObjectProperties")]
-		[XmlElement(typeof(OWLObjectPropertyDomain), ElementName = "ObjectPropertyDomain")]
-		[XmlElement(typeof(OWLObjectPropertyRange), ElementName = "ObjectPropertyRange")]
-		[XmlElement(typeof(OWLFunctionalObjectProperty), ElementName = "FunctionalObjectProperty")]
-		[XmlElement(typeof(OWLInverseFunctionalObjectProperty), ElementName = "InverseFunctionalObjectProperty")]
-		[XmlElement(typeof(OWLReflexiveObjectProperty), ElementName = "ReflexiveObjectProperty")]
-		[XmlElement(typeof(OWLIrreflexiveObjectProperty), ElementName = "IrreflexiveObjectProperty")]
-		[XmlElement(typeof(OWLSymmetricObjectProperty), ElementName = "SymmetricObjectProperty")]
-		[XmlElement(typeof(OWLAsymmetricObjectProperty), ElementName = "AsymmetricObjectProperty")]
-		[XmlElement(typeof(OWLTransitiveObjectProperty), ElementName = "TransitiveObjectProperty")]
+		[XmlElement(typeof(OWLSubObjectPropertyOf), ElementName="SubObjectPropertyOf")]
+		[XmlElement(typeof(OWLEquivalentObjectProperties), ElementName="EquivalentObjectProperties")]
+		[XmlElement(typeof(OWLDisjointObjectProperties), ElementName="DisjointObjectProperties")]
+		[XmlElement(typeof(OWLInverseObjectProperties), ElementName="InverseObjectProperties")]
+		[XmlElement(typeof(OWLObjectPropertyDomain), ElementName="ObjectPropertyDomain")]
+		[XmlElement(typeof(OWLObjectPropertyRange), ElementName="ObjectPropertyRange")]
+		[XmlElement(typeof(OWLFunctionalObjectProperty), ElementName="FunctionalObjectProperty")]
+		[XmlElement(typeof(OWLInverseFunctionalObjectProperty), ElementName="InverseFunctionalObjectProperty")]
+		[XmlElement(typeof(OWLReflexiveObjectProperty), ElementName="ReflexiveObjectProperty")]
+		[XmlElement(typeof(OWLIrreflexiveObjectProperty), ElementName="IrreflexiveObjectProperty")]
+		[XmlElement(typeof(OWLSymmetricObjectProperty), ElementName="SymmetricObjectProperty")]
+		[XmlElement(typeof(OWLAsymmetricObjectProperty), ElementName="AsymmetricObjectProperty")]
+		[XmlElement(typeof(OWLTransitiveObjectProperty), ElementName="TransitiveObjectProperty")]
 		public List<OWLObjectPropertyAxiom> ObjectPropertyAxioms { get; internal set; }
 
-		[XmlElement(typeof(OWLSubDataPropertyOf), ElementName = "SubDataPropertyOf")]
-		[XmlElement(typeof(OWLEquivalentDataProperties), ElementName = "EquivalentDataProperties")]
-		[XmlElement(typeof(OWLDisjointDataProperties), ElementName = "DisjointDataProperties")]
-		[XmlElement(typeof(OWLDataPropertyDomain), ElementName = "DataPropertyDomain")]
-		[XmlElement(typeof(OWLDataPropertyRange), ElementName = "DataPropertyRange")]
-		[XmlElement(typeof(OWLFunctionalDataProperty), ElementName = "FunctionalDataProperty")]
+		[XmlElement(typeof(OWLSubDataPropertyOf), ElementName="SubDataPropertyOf")]
+		[XmlElement(typeof(OWLEquivalentDataProperties), ElementName="EquivalentDataProperties")]
+		[XmlElement(typeof(OWLDisjointDataProperties), ElementName="DisjointDataProperties")]
+		[XmlElement(typeof(OWLDataPropertyDomain), ElementName="DataPropertyDomain")]
+		[XmlElement(typeof(OWLDataPropertyRange), ElementName="DataPropertyRange")]
+		[XmlElement(typeof(OWLFunctionalDataProperty), ElementName="FunctionalDataProperty")]
 		public List<OWLDataPropertyAxiom> DataPropertyAxioms { get; internal set; }
 
-		[XmlElement(ElementName = "DatatypeDefinition")]
+		[XmlElement(ElementName="DatatypeDefinition")]
 		public List<OWLDatatypeDefinition> DatatypeDefinitionAxioms { get; internal set; }
 
-		[XmlElement(ElementName = "HasKey")]
+		[XmlElement(ElementName="HasKey")]
 		public List<OWLHasKey> KeyAxioms { get; internal set; }
 
-		[XmlElement(typeof(OWLSameIndividual), ElementName = "SameIndividual")]
-		[XmlElement(typeof(OWLDifferentIndividuals), ElementName = "DifferentIndividuals")]
-		[XmlElement(typeof(OWLClassAssertion), ElementName = "ClassAssertion")]
-		[XmlElement(typeof(OWLObjectPropertyAssertion), ElementName = "ObjectPropertyAssertion")]
-		[XmlElement(typeof(OWLNegativeObjectPropertyAssertion), ElementName = "NegativeObjectPropertyAssertion")]
-		[XmlElement(typeof(OWLDataPropertyAssertion), ElementName = "DataPropertyAssertion")]
-		[XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName = "NegativeDataPropertyAssertion")]
+		[XmlElement(typeof(OWLSameIndividual), ElementName="SameIndividual")]
+		[XmlElement(typeof(OWLDifferentIndividuals), ElementName="DifferentIndividuals")]
+		[XmlElement(typeof(OWLClassAssertion), ElementName="ClassAssertion")]
+		[XmlElement(typeof(OWLObjectPropertyAssertion), ElementName="ObjectPropertyAssertion")]
+		[XmlElement(typeof(OWLNegativeObjectPropertyAssertion), ElementName="NegativeObjectPropertyAssertion")]
+		[XmlElement(typeof(OWLDataPropertyAssertion), ElementName="DataPropertyAssertion")]
+		[XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName="NegativeDataPropertyAssertion")]
 		public List<OWLAssertionAxiom> AssertionAxioms { get; internal set; }
 
-		[XmlElement(typeof(OWLAnnotationAssertion), ElementName = "AnnotationAssertion")]
-		[XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName = "SubAnnotationPropertyOf")]
-		[XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName = "AnnotationPropertyDomain")]
-		[XmlElement(typeof(OWLAnnotationPropertyRange), ElementName = "AnnotationPropertyRange")]
+		[XmlElement(typeof(OWLAnnotationAssertion), ElementName="AnnotationAssertion")]
+		[XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName="SubAnnotationPropertyOf")]
+		[XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
+		[XmlElement(typeof(OWLAnnotationPropertyRange), ElementName="AnnotationPropertyRange")]
 		public List<OWLAnnotationAxiom> AnnotationAxioms { get; internal set; }
 
 		//Rules

@@ -25,8 +25,8 @@ namespace OWLSharp.Ontology.Axioms
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
-        [XmlElement(typeof(OWLObjectProperty), ElementName = "ObjectProperty", Order=2)]
-        [XmlElement(typeof(OWLObjectInverseOf), ElementName = "ObjectInverseOf", Order=2)]
+        [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=2)]
+        [XmlElement(typeof(OWLObjectInverseOf), ElementName="ObjectInverseOf", Order=2)]
         public OWLObjectPropertyExpression ObjectPropertyExpression { get; set; }
         #endregion
 

@@ -38,7 +38,7 @@ namespace OWLSharp.Ontology.Expressions
         [XmlElement(typeof(OWLObjectOneOf), ElementName="ObjectOneOf", Order=2)]
         [XmlElement(typeof(OWLObjectSomeValuesFrom), ElementName="ObjectSomeValuesFrom", Order=2)]
         [XmlElement(typeof(OWLObjectAllValuesFrom), ElementName="ObjectAllValuesFrom", Order=2)]
-        [XmlElement(typeof(OWLObjectHasValue), ElementName = "ObjectHasValue", Order=2)]
+        [XmlElement(typeof(OWLObjectHasValue), ElementName="ObjectHasValue", Order=2)]
         [XmlElement(typeof(OWLObjectHasSelf), ElementName="ObjectHasSelf", Order=2)]
         [XmlElement(typeof(OWLObjectMinCardinality), ElementName="ObjectMinCardinality", Order=2)]
         [XmlElement(typeof(OWLObjectMaxCardinality), ElementName="ObjectMaxCardinality", Order=2)]
