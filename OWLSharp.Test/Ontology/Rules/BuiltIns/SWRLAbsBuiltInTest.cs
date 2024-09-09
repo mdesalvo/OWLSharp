@@ -209,6 +209,38 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
         }
+
+        [TestMethod]
+        public void ShouldEvaluateAbsBuiltInWithRightNumber()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("2.0^^http://www.w3.org/2001/XMLSchema#float");
+            antecedentResults.Rows.Add(DBNull.Value);
+            antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
+            antecedentResults.Rows.Add("hello");
+            antecedentResults.Rows.Add("hello@EN");
+
+            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#abs",
+                Arguments = [
+                    new SWRLVariableArgument(new RDFVariable("?X")),
+                    new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_INTEGER))
+                ]
+            };
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 1);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
+        }
         #endregion
     }
 }
