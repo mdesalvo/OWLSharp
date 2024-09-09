@@ -3545,6 +3545,97 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
+        public void ShouldCreateStringLengthBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringLength(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsTrue(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringLength", builtin.IRI));
+            Assert.IsNull(builtin.Literal);
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:stringLength(?X,?Y)", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringLength(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringLength(new SWRLVariableArgument(new RDFVariable("?X")), null));
+        }
+
+        [TestMethod]
+        public void ShouldSerializeStringLengthBuiltIn()
+        {
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringLength(
+                new SWRLVariableArgument(new RDFVariable("?X")), new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringLength\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldDeserializeStringLengthBuiltIn()
+        {
+            SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringLength""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+
+            Assert.IsNotNull(builtin);
+            Assert.IsFalse(builtin.IsBooleanBuiltIn);
+            Assert.IsFalse(builtin.IsMathBuiltIn);
+            Assert.IsFalse(builtin.IsComparisonFilterBuiltIn);
+            Assert.IsTrue(builtin.IsStringFilterBuiltIn);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringLength", builtin.IRI));
+            Assert.IsNull(builtin.Literal);
+            Assert.IsNotNull(builtin.LeftArgument);
+            Assert.IsTrue(builtin.LeftArgument is SWRLVariableArgument vlarg
+                            && vlarg.GetVariable().Equals(new RDFVariable("?X")));
+            Assert.IsNotNull(builtin.RightArgument);
+            Assert.IsTrue(builtin.RightArgument is SWRLVariableArgument rlarg
+                            && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
+            Assert.IsTrue(string.Equals("swrlb:stringLength(?X,?Y)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringLength\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateStringLengthBuiltIn()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("5^^http://www.w3.org/2001/XMLSchema#integer", "intEr");
+            antecedentResults.Rows.Add("11^^http://www.w3.org/2001/XMLSchema#integer", "INTER@en-US");
+            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int",DBNull.Value);
+            antecedentResults.Rows.Add("hello@EN", "http://example.org/");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringLength(
+                new SWRLVariableArgument(new RDFVariable("?X")), new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#integer"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "intEr"));
+
+            //Test with unexisting variables
+
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.StringLength(
+                new SWRLVariableArgument(new RDFVariable("?Z")), new SWRLVariableArgument(new RDFVariable("?X"))); //unexisting
+            DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+            Assert.IsNotNull(builtinResults2);
+            Assert.IsTrue(builtinResults2.Columns.Count == 2);
+            Assert.IsTrue(builtinResults2.Rows.Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldCreateUpperCaseBuiltIn()
         {
             SWRLBuiltIn builtin = SWRLBuiltIn.UpperCase(

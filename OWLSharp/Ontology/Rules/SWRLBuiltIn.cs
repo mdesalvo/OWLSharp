@@ -89,6 +89,7 @@ namespace OWLSharp.Ontology.Rules
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#matches")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#startsWith")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase")
+                || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#stringLength")
                 || string.Equals(IRI, "http://www.w3.org/2003/11/swrlb#upperCase");
         #endregion
 
@@ -690,6 +691,23 @@ namespace OWLSharp.Ontology.Rules
             };
         }
 
+        public static SWRLBuiltIn StringLength(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
+        {
+            #region Guards
+            if (leftArgument == null)
+                throw new OWLException("Cannot create built-in because given \"leftArgument\" parameter is null");
+            if (rightArgument == null)
+                throw new OWLException("Cannot create built-in because given \"rightArgument\" parameter is null");
+            #endregion
+
+            return new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#stringLength",
+                LeftArgument = leftArgument,
+                RightArgument = rightArgument
+            };
+        }
+
         public static SWRLBuiltIn UpperCase(SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
         {
             #region Guards
@@ -1047,6 +1065,19 @@ namespace OWLSharp.Ontology.Rules
                                                         RDFQueryEnums.RDFComparisonFlavors.EqualTo,
                                                         new RDFUpperCaseExpression(new RDFVariableExpression(leftArgVarStringEqualIgnoreCase.GetVariable())),               
                                                         new RDFUpperCaseExpression(new RDFVariableExpression(rightArgVarStringEqualIgnoreCase.GetVariable())))));
+                        else
+                            throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
+                        break;
+                    case "http://www.w3.org/2003/11/swrlb#stringLength":
+                        if (LeftArgument is SWRLVariableArgument leftArgVarLength
+                             && RightArgument is SWRLVariableArgument rightArgVarLength)
+                            builtInFilter = new RDFExpressionFilter(
+                                                new RDFBooleanAndExpression(
+                                                    new RDFConstantExpression(RDFTypedLiteral.True),
+                                                    new RDFComparisonExpression(
+                                                        RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                                        new RDFVariableExpression(leftArgVarLength.GetVariable()),               
+                                                        new RDFLengthExpression(new RDFVariableExpression(rightArgVarLength.GetVariable())))));
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
                         break;
