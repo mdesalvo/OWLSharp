@@ -25,6 +25,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace OWLSharp.Ontology.Rules
 {
@@ -35,20 +36,10 @@ namespace OWLSharp.Ontology.Rules
         [XmlAttribute(DataType="anyURI")]
         public string IRI { get; set; }
 
-        [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=1)]
-        [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=1)]
-        [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=1)]
-        public SWRLArgument LeftArgument { get; set; }
-
-        [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
-        [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]
-        [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable", Order=2)]
-        public SWRLArgument RightArgument { get; set; }
-
-        [XmlElement(Order=3)]
-        public OWLLiteral Literal { get; set; }
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializeLiteral() => Literal != null;
+        [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual")]
+        [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal")]
+        [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable")]
+        public List<SWRLArgument> Arguments { get; set; }
 
         [XmlIgnore]
         public bool IsBooleanBuiltIn
@@ -111,8 +102,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument 
+                }
             };
         }
 
@@ -130,8 +123,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#abs",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument 
+                }
             };
         }
 
@@ -147,9 +142,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#add",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument, 
+                    new SWRLLiteralArgument(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                }
             };
         }
 
@@ -165,8 +162,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#ceiling",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument 
+                }
             };
         }
 
@@ -182,8 +181,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#cos",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument 
+                }
             };
         }
 
@@ -201,9 +202,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#divide",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument, 
+                    new SWRLLiteralArgument(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                }
             };
         }
 
@@ -219,8 +222,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#floor",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -238,9 +243,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#integerDivide",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument, 
+                    new SWRLLiteralArgument(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                }
             };
         }
 
@@ -258,9 +265,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#mod",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument, 
+                    new SWRLLiteralArgument(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                }
             };
         }
 
@@ -276,9 +285,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#multiply",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument, 
+                    new SWRLLiteralArgument(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                }
             };
         }
 
@@ -294,9 +305,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#pow",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument, 
+                    new SWRLLiteralArgument(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                }
             };
         }
 
@@ -312,8 +325,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#round",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -329,8 +344,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#roundHalfToEven",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -346,8 +363,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#sin",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -363,9 +382,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#subtract",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument, 
+                    new SWRLLiteralArgument(new RDFTypedLiteral(Convert.ToString(literal, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE))
+                }
             };
         }
 
@@ -381,8 +402,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#tan",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -398,8 +421,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#unaryMinus",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -415,8 +440,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#unaryPlus",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -440,8 +467,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#equal",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -463,8 +492,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#greaterThan",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -486,8 +517,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -509,8 +542,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#lessThanOrEqual",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -532,8 +567,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#lessThan",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -555,8 +592,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -574,8 +613,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#contains",
-                LeftArgument = leftArgument,
-                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(containString))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    new SWRLLiteralArgument(new RDFPlainLiteral(containString))
+                }
             };
         }
 
@@ -591,8 +632,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#containsIgnoreCase",
-                LeftArgument = leftArgument,
-                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(containString))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    new SWRLLiteralArgument(new RDFPlainLiteral(containString))
+                }
             };
         }
 
@@ -608,8 +651,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#endsWith",
-                LeftArgument = leftArgument,
-                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(endString))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    new SWRLLiteralArgument(new RDFPlainLiteral(endString))
+                }
             };
         }
 
@@ -625,8 +670,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#lowerCase",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -652,9 +699,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#matches",
-                LeftArgument = leftArgument,
-                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(matchString)),
-                Literal = !string.IsNullOrEmpty(sbMatchOptions.ToString()) ? new OWLLiteral(new RDFPlainLiteral(sbMatchOptions.ToString())) : null
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    new SWRLLiteralArgument(new RDFPlainLiteral(matchString)),
+                    new SWRLLiteralArgument(new RDFPlainLiteral(sbMatchOptions.ToString()))
+                }
             };
         }
 
@@ -670,8 +719,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#startsWith",
-                LeftArgument = leftArgument,
-                RightArgument = new SWRLLiteralArgument(new RDFPlainLiteral(startString))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    new SWRLLiteralArgument(new RDFPlainLiteral(startString))
+                }
             };
         }
 
@@ -687,8 +738,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -704,9 +757,11 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#stringConcat",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument,
-                Literal = new OWLLiteral(new RDFPlainLiteral(concatString))
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument,
+                    new SWRLLiteralArgument(new RDFPlainLiteral(concatString))
+                }
             };
         }
 
@@ -722,8 +777,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#stringLength",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
 
@@ -739,8 +796,10 @@ namespace OWLSharp.Ontology.Rules
             return new SWRLBuiltIn()
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#upperCase",
-                LeftArgument = leftArgument,
-                RightArgument = rightArgument
+                Arguments = new List<SWRLArgument>() { 
+                    leftArgument, 
+                    rightArgument
+                }
             };
         }
         #endregion
@@ -748,6 +807,11 @@ namespace OWLSharp.Ontology.Rules
         #region Interfaces
         public override string ToString()
         {
+            #region Guards
+            if (Arguments?.Count == 0)
+                return string.Empty;
+            #endregion
+
             StringBuilder sb = new StringBuilder();
 
             //Predicate
@@ -755,36 +819,19 @@ namespace OWLSharp.Ontology.Rules
             sb.Append(RDFModelUtilities.GetShortUri(new Uri(IRI)));
             sb.Append("(");
 
-            //Left Argument
-            if (LeftArgument is SWRLIndividualArgument leftArgumentIndividual)
-                sb.Append($"{RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
-            else if (LeftArgument is SWRLLiteralArgument leftArgumentLiteral)
-                sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
-            else if (LeftArgument is SWRLVariableArgument leftArgumentVariable)
-                sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
-
-            //Right Argument
-            if (RightArgument != null)
+            //Arguments
+            for (int i=0; i<Arguments.Count; i++)
             {
-                if (RightArgument is SWRLIndividualArgument rightArgumentIndividual)
-                    sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentIndividual.GetResource().URI)}");
-                else if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
-                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
-                else if (RightArgument is SWRLVariableArgument rightArgumentVariable)
-                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
-            }
+                if (i>0)
+                    sb.Append(',');
 
-            //Literal Argument (depends on builtin semantics)
-            if (IsMathBuiltIn
-                 && Literal?.GetLiteral() is RDFTypedLiteral mathLiteral
-                 && mathLiteral.HasDecimalDatatype())
-            {
-                RDFTypedLiteral mathValueTypedLiteral = new RDFTypedLiteral(Convert.ToString(mathLiteral.Value, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DOUBLE);
-                sb.Append($",{RDFQueryPrinter.PrintPatternMember(mathValueTypedLiteral, RDFNamespaceRegister.Instance.Register)}");
+                if (Arguments[i] is SWRLIndividualArgument leftArgumentIndividual)
+                    sb.Append($"{RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
+                else if (Arguments[i] is SWRLLiteralArgument leftArgumentLiteral)
+                    sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
+                else if (Arguments[i] is SWRLVariableArgument leftArgumentVariable)
+                    sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
             }
-            if (IsStringFilterBuiltIn
-                 && Literal?.GetLiteral() is RDFPlainLiteral stringLiteral)
-                sb.Append($",{RDFQueryPrinter.PrintPatternMember(stringLiteral, RDFNamespaceRegister.Instance.Register)}");
 
             sb.Append(")");
             return sb.ToString();
@@ -794,13 +841,38 @@ namespace OWLSharp.Ontology.Rules
         #region Methods
         internal DataTable EvaluateOnAntecedent(DataTable antecedentResults)
         {
+            #region Guards
+            if (Arguments?.Count == 0)
+                return new DataTable();
+            #endregion
+
+            DataTable filteredTable = antecedentResults.Clone();
+
+            //TODO
+
+            return filteredTable;
+        }
+        
+        /*
+        internal double? GetMathLiteralValue()
+        {
+            double? mathLiteralvalue = new double?();
+
+            if (Literal?.GetLiteral() is RDFTypedLiteral literal
+                 && literal.HasDecimalDatatype()
+                 && double.TryParse(literal.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double litNumVal))
+                mathLiteralvalue = litNumVal;
+
+            return mathLiteralvalue;
+        }
+
+        internal void OldCode()
+        {
             if (IsBooleanBuiltIn || IsMathBuiltIn)
             {
-                DataTable filteredTable = antecedentResults.Clone();
-
                 #region Guards
                 //Preliminary checks for builtin's applicability (requires arguments to be known variables)
-                string leftArgumentString = LeftArgument.ToString();
+                string leftArgumentString = Arguments.ToString();
                 if (!antecedentResults.Columns.Contains(leftArgumentString))
                     return filteredTable;
                 string rightArgumentString = RightArgument.ToString();
@@ -944,7 +1016,7 @@ namespace OWLSharp.Ontology.Rules
                         }
                         #endregion
                     }
-                    catch { /* Just a no-op, since type errors are normal when trying to face variable's bindings */ }
+                    catch {  }
                 }
 
                 return filteredTable;
@@ -954,7 +1026,7 @@ namespace OWLSharp.Ontology.Rules
             {
                 RDFFilter GetBuiltInComparisonFilter(RDFQueryEnums.RDFComparisonFlavors comparisonFlavor)
                 {
-                    if (LeftArgument is SWRLVariableArgument leftArgVarGreaterThan)
+                    if (Arguments is SWRLVariableArgument leftArgVarGreaterThan)
                     {
                         if (RightArgument is SWRLVariableArgument rightArgVarGreaterThan)
                             return new RDFComparisonFilter(
@@ -1001,28 +1073,28 @@ namespace OWLSharp.Ontology.Rules
 
                     #region StringFilter
                     case "http://www.w3.org/2003/11/swrlb#contains":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarContains 
+                        if (Arguments is SWRLVariableArgument leftArgVarContains 
                              && RightArgument is SWRLLiteralArgument rightArgLitContains)
                             builtInFilter = new RDFRegexFilter(leftArgVarContains.GetVariable(), new Regex(rightArgLitContains.GetLiteral().Value));
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#containsIgnoreCase":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarContainsIgnoreCase 
+                        if (Arguments is SWRLVariableArgument leftArgVarContainsIgnoreCase 
                              && RightArgument is SWRLLiteralArgument rightArgLitContainsIgnoreCase)
                             builtInFilter = new RDFRegexFilter(leftArgVarContainsIgnoreCase.GetVariable(), new Regex(rightArgLitContainsIgnoreCase.GetLiteral().Value, RegexOptions.IgnoreCase));
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#endsWith":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarEndsWith 
+                        if (Arguments is SWRLVariableArgument leftArgVarEndsWith 
                              && RightArgument is SWRLLiteralArgument rightArgLitEndsWith)
                             builtInFilter = new RDFRegexFilter(leftArgVarEndsWith.GetVariable(), new Regex($"{rightArgLitEndsWith.GetLiteral().Value}$"));
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#lowerCase":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarLowerCase
+                        if (Arguments is SWRLVariableArgument leftArgVarLowerCase
                              && RightArgument is SWRLVariableArgument rightArgVarLowerCase)
                             builtInFilter = new RDFExpressionFilter(
                                                 new RDFBooleanAndExpression(
@@ -1035,7 +1107,7 @@ namespace OWLSharp.Ontology.Rules
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#matches":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarMatches
+                        if (Arguments is SWRLVariableArgument leftArgVarMatches
                              && RightArgument is SWRLLiteralArgument rightArgLitMatches)
                         {
                             RDFVariable varToSearch = leftArgVarMatches.GetVariable();
@@ -1068,14 +1140,14 @@ namespace OWLSharp.Ontology.Rules
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#startsWith":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarStartsWith
+                        if (Arguments is SWRLVariableArgument leftArgVarStartsWith
                              && RightArgument is SWRLLiteralArgument rightArgLitStartsWith)
                             builtInFilter = new RDFRegexFilter(leftArgVarStartsWith.GetVariable(), new Regex($"^{rightArgLitStartsWith.GetLiteral().Value}"));
                         else
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a literal as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#stringConcat":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarConcat
+                        if (Arguments is SWRLVariableArgument leftArgVarConcat
                              && RightArgument is SWRLVariableArgument rightArgVarConcat)
                             builtInFilter = new RDFExpressionFilter(
                                                 new RDFBooleanAndExpression(
@@ -1090,7 +1162,7 @@ namespace OWLSharp.Ontology.Rules
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarStringEqualIgnoreCase
+                        if (Arguments is SWRLVariableArgument leftArgVarStringEqualIgnoreCase
                              && RightArgument is SWRLVariableArgument rightArgVarStringEqualIgnoreCase)
                             builtInFilter = new RDFExpressionFilter(
                                                 new RDFBooleanAndExpression(
@@ -1103,7 +1175,7 @@ namespace OWLSharp.Ontology.Rules
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#stringLength":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarLength
+                        if (Arguments is SWRLVariableArgument leftArgVarLength
                              && RightArgument is SWRLVariableArgument rightArgVarLength)
                             builtInFilter = new RDFExpressionFilter(
                                                 new RDFBooleanAndExpression(
@@ -1116,7 +1188,7 @@ namespace OWLSharp.Ontology.Rules
                             throw new OWLException($"Cannot evaluate string filter SWRLBuiltIn '{this}': it should have a variable as left argument and a variable as right argument");
                         break;
                     case "http://www.w3.org/2003/11/swrlb#upperCase":
-                        if (LeftArgument is SWRLVariableArgument leftArgVarUpperCase
+                        if (Arguments is SWRLVariableArgument leftArgVarUpperCase
                              && RightArgument is SWRLVariableArgument rightArgVarUpperCase)
                             builtInFilter = new RDFExpressionFilter(
                                                 new RDFBooleanAndExpression(
@@ -1152,18 +1224,7 @@ namespace OWLSharp.Ontology.Rules
 
             throw new OWLException($"Cannot evaluate SWRLBuiltIn with unsupported predicate: {IRI}");
         }
-        
-        internal double? GetMathLiteralValue()
-        {
-            double? mathLiteralvalue = new double?();
-
-            if (Literal?.GetLiteral() is RDFTypedLiteral literal
-                 && literal.HasDecimalDatatype()
-                 && double.TryParse(literal.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double litNumVal))
-                mathLiteralvalue = litNumVal;
-
-            return mathLiteralvalue;
-        }
+        */
         #endregion
     }
 }

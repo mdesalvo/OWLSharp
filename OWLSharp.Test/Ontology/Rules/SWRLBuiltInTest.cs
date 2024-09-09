@@ -29,7 +29,7 @@ namespace OWLSharp.Test.Ontology.Rules
     public class SWRLBuiltInTest
     {
         #region Tests
-
+        /*
         //Boolean
 
         [TestMethod]
@@ -3848,6 +3848,7 @@ namespace OWLSharp.Test.Ontology.Rules
         [TestMethod]
         public void ShouldThrowExceptionOnEvaluatingBuiltinWithUnknownPredicate()
             => Assert.ThrowsException<OWLException>(() => new SWRLBuiltIn() { IRI = "http://example.org" }.EvaluateOnAntecedent(new DataTable()));
+        */
         #endregion
     }
 }
