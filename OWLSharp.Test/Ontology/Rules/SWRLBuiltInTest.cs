@@ -3524,6 +3524,7 @@ namespace OWLSharp.Test.Ontology.Rules
             antecedentResults.Rows.Add("My name is John, hello!", DBNull.Value);
             antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int", "hello!");
             antecedentResults.Rows.Add("hello!",DBNull.Value);
+            antecedentResults.Rows.Add(DBNull.Value,DBNull.Value);
             antecedentResults.Rows.Add("hello!","hello!");
 
 
@@ -3553,9 +3554,11 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtinResults2);
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
-            Assert.IsTrue(builtinResults2.Rows.Count == 1);
-            Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?X"].ToString(), "hello!"));
-            Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?Y"].ToString(), "hello!"));
+            Assert.IsTrue(builtinResults2.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?X"].ToString(), string.Empty));
+            Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?Y"].ToString(), string.Empty));
+            Assert.IsTrue(string.Equals(builtinResults2.Rows[1]["?X"].ToString(), "hello!"));
+            Assert.IsTrue(string.Equals(builtinResults2.Rows[1]["?Y"].ToString(), "hello!"));
 
             //Test with unexisting variables
 
