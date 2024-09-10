@@ -23,21 +23,8 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology.Rules
 {
-    public static class SWRLAbsBuiltIn
+    internal static class SWRLAbsBuiltIn
     {
-        #region Ctors
-        public static SWRLBuiltIn Create(SWRLVariableArgument leftArg, SWRLVariableArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
-                    IRI = "http://www.w3.org/2003/11/swrlb#abs",
-                    Arguments = new List<SWRLArgument>() 
-                    { 
-                        leftArg ?? throw new OWLException("Cannot create swrlb:abs builtIn because: left argument is null"), 
-                        rightArg ?? throw new OWLException("Cannot create swrlb:abs builtIn because: right argument is null")
-                    }
-                };
-        #endregion
-
         #region Methods
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {

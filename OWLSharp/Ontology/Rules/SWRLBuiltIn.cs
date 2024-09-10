@@ -41,6 +41,17 @@ namespace OWLSharp.Ontology.Rules
         #region Ctors
         internal SWRLBuiltIn()
             => Arguments = new List<SWRLArgument>();
+
+        public static SWRLBuiltIn Abs(SWRLVariableArgument leftArg, SWRLVariableArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#abs",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:abs builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:abs builtIn because: right argument is null")
+                    }
+                };
         #endregion
 
         #region Interfaces

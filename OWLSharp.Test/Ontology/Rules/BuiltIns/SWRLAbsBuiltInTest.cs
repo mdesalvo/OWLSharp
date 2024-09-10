@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Ontology.Rules
         [TestMethod]
         public void ShouldCreateAbsBuiltIn()
         {
-            SWRLBuiltIn builtin = SWRLAbsBuiltIn.Create(
+            SWRLBuiltIn builtin = SWRLBuiltIn.Abs(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -47,14 +47,14 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
             Assert.IsTrue(string.Equals("swrlb:abs(?X,?Y)", builtin.ToString()));
-            Assert.ThrowsException<OWLException>(() => SWRLAbsBuiltIn.Create(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
-            Assert.ThrowsException<OWLException>(() => SWRLAbsBuiltIn.Create(new SWRLVariableArgument(new RDFVariable("?X")), null));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Abs(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Abs(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
 
         [TestMethod]
         public void ShouldSerializeAbsBuiltIn()
         {
-            SWRLBuiltIn builtin = SWRLAbsBuiltIn.Create(
+            SWRLBuiltIn builtin = SWRLBuiltIn.Abs(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -136,7 +136,7 @@ namespace OWLSharp.Test.Ontology.Rules
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
             antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
 
-            SWRLBuiltIn builtin = SWRLAbsBuiltIn.Create(
+            SWRLBuiltIn builtin = SWRLBuiltIn.Abs(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -150,7 +150,7 @@ namespace OWLSharp.Test.Ontology.Rules
 
             //Test with unexisting variables
 
-            SWRLBuiltIn builtin2 = SWRLAbsBuiltIn.Create(
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.Abs(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
@@ -158,7 +158,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
             Assert.IsTrue(builtinResults2.Rows.Count == 11);
 
-            SWRLBuiltIn builtin3 = SWRLAbsBuiltIn.Create(
+            SWRLBuiltIn builtin3 = SWRLBuiltIn.Abs(
                 new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
                 new SWRLVariableArgument(new RDFVariable("?Y")));
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
