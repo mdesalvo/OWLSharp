@@ -123,8 +123,10 @@ namespace OWLSharp.Ontology.Rules
                 }
                 catch (Exception ex) 
                 { 
+                    /* This exception is for unsupported (or not yet implemented) builtIns */
                     if (ex is NotImplementedException nex)
                         throw new OWLException($"Cannot evaluate SWRL builtIn because: {nex.Message}", nex);
+                    /* This exception is for builtIns violating required n-arity of arguments */
                     if (ex is ArgumentException aex)
                         throw new OWLException($"Cannot evaluate SWRL builtIn with IRI {IRI} because: {ex.Message}", aex);
 

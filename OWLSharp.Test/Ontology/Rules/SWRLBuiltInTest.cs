@@ -3735,10 +3735,6 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
             Assert.IsTrue(builtinResults2.Rows.Count == 0);
         }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnEvaluatingBuiltinWithUnknownPredicate()
-            => Assert.ThrowsException<OWLException>(() => new SWRLBuiltIn() { IRI = "http://example.org" }.EvaluateOnAntecedent(new DataTable()));
         */
         #endregion
     }

@@ -166,7 +166,18 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults3.Columns.Count == 2);
             Assert.IsTrue(builtinResults3.Rows.Count == 11);
 
-            //Test exception on bad-formed atom
+            //Test exception on unknown builtIn
+            Assert.ThrowsException<OWLException>(() =>
+                new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#example",
+                    Arguments = [
+                        new SWRLVariableArgument(new RDFVariable("?X")),
+                        new SWRLVariableArgument(new RDFVariable("?Y"))
+                    ]
+                }.EvaluateOnAntecedent(antecedentResults));
+
+            //Test exception on bad-formed builtIn
             Assert.ThrowsException<OWLException>(() => 
                 new SWRLBuiltIn()
                 {
