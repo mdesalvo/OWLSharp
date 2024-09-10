@@ -20,118 +20,120 @@ using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace OWLSharp.Test.Ontology.Rules
 {
     [TestClass]
-    public class SWRLAbsBuiltInTest
+    public class SWRLBooleanNotBuiltInTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateAbsBuiltIn()
+        public void ShouldCreateBooleanNotBuiltIn()
         {
-            SWRLBuiltIn builtin = SWRLBuiltIn.Abs(
+            SWRLBuiltIn builtin = SWRLBuiltIn.BooleanNot(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#abs", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#booleanNot", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-            Assert.IsTrue(string.Equals("swrlb:abs(?X,?Y)", builtin.ToString()));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Abs(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.Abs(new SWRLVariableArgument(new RDFVariable("?X")), null));
+            Assert.IsTrue(string.Equals("swrlb:booleanNot(?X,?Y)", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.BooleanNot(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.BooleanNot(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
 
         [TestMethod]
-        public void ShouldSerializeAbsBuiltIn()
+        public void ShouldSerializeBooleanNotBuiltIn()
         {
-            SWRLBuiltIn builtin = SWRLBuiltIn.Abs(
+            SWRLBuiltIn builtin = SWRLBuiltIn.BooleanNot(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#booleanNot\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
-        public void ShouldDeserializeAbsBuiltIn()
+        public void ShouldDeserializeBooleanNotBuiltIn()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#booleanNot""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#abs", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#booleanNot", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-            Assert.IsTrue(string.Equals("swrlb:abs(?X,?Y)", builtin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("swrlb:booleanNot(?X,?Y)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#booleanNot\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
 
             //Test string handling for empty builtIns
 
             SWRLBuiltIn emptyBuiltin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#booleanNot""></BuiltInAtom>");
 
             Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#booleanNot\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
         }
 
         [TestMethod]
-        public void ShouldDeserializeAbsBuiltInWithLeftNumber()
+        public void ShouldDeserializeBooleanNotBuiltInWithLeftBool()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#booleanNot""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#boolean"">true</Literal><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#abs", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#booleanNot", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLLiteralArgument tlarg 
-                            && tlarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+                            && tlarg.GetLiteral().Equals(RDFTypedLiteral.True));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-            Assert.IsTrue(string.Equals("swrlb:abs(\"5\"^^xsd:integer,?Y)", builtin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\"><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("swrlb:booleanNot(\"true\"^^xsd:boolean,?Y)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#booleanNot\"><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#boolean\">true</Literal><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
-        public void ShouldDeserializeAbsBuiltInWithRightNumber()
+        public void ShouldDeserializeBooleanNotBuiltInWithRightBool()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""><Variable IRI=""urn:swrl:var#X"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#booleanNot""><Variable IRI=""urn:swrl:var#X"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#boolean"">true</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#abs", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#booleanNot", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLLiteralArgument trarg 
-                            && trarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-            Assert.IsTrue(string.Equals("swrlb:abs(?X,\"5\"^^xsd:integer)", builtin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\"><Variable IRI=\"urn:swrl:var#X\" /><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+                            && trarg.GetLiteral().Equals(RDFTypedLiteral.True));
+            Assert.IsTrue(string.Equals("swrlb:booleanNot(?X,\"true\"^^xsd:boolean)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#booleanNot\"><Variable IRI=\"urn:swrl:var#X\" /><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#boolean\">true</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
-        public void ShouldEvaluateAbsBuiltIn()
+        public void ShouldEvaluateBooleanNotBuiltIn()
         {
             DataTable antecedentResults = new DataTable();
             antecedentResults.Columns.Add("?X");
             antecedentResults.Columns.Add("?Y");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "-2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("true^^http://www.w3.org/2001/XMLSchema#boolean", "false^^http://www.w3.org/2001/XMLSchema#boolean");
+            antecedentResults.Rows.Add("false^^http://www.w3.org/2001/XMLSchema#boolean", "true^^http://www.w3.org/2001/XMLSchema#boolean");
             antecedentResults.Rows.Add(DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
             antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
@@ -142,7 +144,7 @@ namespace OWLSharp.Test.Ontology.Rules
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
             antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
 
-            SWRLBuiltIn builtin = SWRLBuiltIn.Abs(
+            SWRLBuiltIn builtin = SWRLBuiltIn.BooleanNot(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -150,13 +152,15 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 2);
-            Assert.IsTrue(builtinResults.Rows.Count == 1);
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "-2^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "true^^http://www.w3.org/2001/XMLSchema#boolean"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "false^^http://www.w3.org/2001/XMLSchema#boolean"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "false^^http://www.w3.org/2001/XMLSchema#boolean"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "true^^http://www.w3.org/2001/XMLSchema#boolean"));
 
             //Test with unexisting variables
 
-            SWRLBuiltIn builtin2 = SWRLBuiltIn.Abs(
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.BooleanNot(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
@@ -164,7 +168,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
             Assert.IsTrue(builtinResults2.Rows.Count == 11);
 
-            SWRLBuiltIn builtin3 = SWRLBuiltIn.Abs(
+            SWRLBuiltIn builtin3 = SWRLBuiltIn.BooleanNot(
                 new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
                 new SWRLVariableArgument(new RDFVariable("?Y")));
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
@@ -187,7 +191,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.ThrowsException<OWLException>(() => 
                 new SWRLBuiltIn()
                 {
-                    IRI = "http://www.w3.org/2003/11/swrlb#abs",
+                    IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
                     Arguments = [
                         new SWRLVariableArgument(new RDFVariable("?V"))
                     ]
@@ -195,12 +199,12 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
-        public void ShouldEvaluateAbsBuiltInWithLeftNumber()
+        public void ShouldEvaluateBooleanNotBuiltInWithLeftBool()
         {
             DataTable antecedentResults = new DataTable();
             antecedentResults.Columns.Add("?Y");
-            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("true^^http://www.w3.org/2001/XMLSchema#boolean");
+            antecedentResults.Rows.Add("false^^http://www.w3.org/2001/XMLSchema#boolean");
             antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add("2.0^^http://www.w3.org/2001/XMLSchema#float");
             antecedentResults.Rows.Add(DBNull.Value);
@@ -210,9 +214,9 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = new SWRLBuiltIn()
             {
-                IRI = "http://www.w3.org/2003/11/swrlb#abs",
+                IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
                 Arguments = [
-                    new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
+                    new SWRLLiteralArgument(RDFTypedLiteral.True),
                     new SWRLVariableArgument(new RDFVariable("?Y"))
                 ]
             };
@@ -221,19 +225,17 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 1);
-            Assert.IsTrue(builtinResults.Rows.Count == 3);
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "-2^^http://www.w3.org/2001/XMLSchema#int"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "false^^http://www.w3.org/2001/XMLSchema#boolean"));
         }
 
         [TestMethod]
-        public void ShouldEvaluateAbsBuiltInWithRightNumber()
+        public void ShouldEvaluateBooleanNotBuiltInWithRightBool()
         {
             DataTable antecedentResults = new DataTable();
             antecedentResults.Columns.Add("?X");
-            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("true^^http://www.w3.org/2001/XMLSchema#boolean");
+            antecedentResults.Rows.Add("false^^http://www.w3.org/2001/XMLSchema#boolean");
             antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add("2.0^^http://www.w3.org/2001/XMLSchema#float");
             antecedentResults.Rows.Add(DBNull.Value);
@@ -243,10 +245,10 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = new SWRLBuiltIn()
             {
-                IRI = "http://www.w3.org/2003/11/swrlb#abs",
+                IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
                 Arguments = [
                     new SWRLVariableArgument(new RDFVariable("?X")),
-                    new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_INTEGER))
+                    new SWRLLiteralArgument(RDFTypedLiteral.False)
                 ]
             };
 
@@ -254,9 +256,8 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 1);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "true^^http://www.w3.org/2001/XMLSchema#boolean"));
         }
         #endregion
     }

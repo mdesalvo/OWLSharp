@@ -52,6 +52,17 @@ namespace OWLSharp.Ontology.Rules
                         rightArg ?? throw new OWLException("Cannot create swrlb:abs builtIn because: right argument is null")
                     }
                 };
+
+        public static SWRLBuiltIn BooleanNot(SWRLVariableArgument leftArg, SWRLVariableArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:booleanNot builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:booleanNot builtIn because: right argument is null")
+                    }
+                };
         #endregion
 
         #region Interfaces
@@ -106,6 +117,9 @@ namespace OWLSharp.Ontology.Rules
                     {
                         case "http://www.w3.org/2003/11/swrlb#abs":
                             keepRow = SWRLAbsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#booleanNot":
+                            keepRow = SWRLBooleanNotBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
                         //Unsupported builtIns must generate an explicit exception
