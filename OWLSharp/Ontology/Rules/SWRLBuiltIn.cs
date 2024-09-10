@@ -22,6 +22,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 namespace OWLSharp.Ontology.Rules
 {
@@ -51,6 +52,15 @@ namespace OWLSharp.Ontology.Rules
                         leftArg ?? throw new OWLException("Cannot create swrlb:abs builtIn because: left argument is null"),
                         rightArg ?? throw new OWLException("Cannot create swrlb:abs builtIn because: right argument is null")
                     }
+                };
+
+        public static SWRLBuiltIn Add(SWRLVariableArgument leftArg, params SWRLVariableArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#add",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:add builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:add builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn BooleanNot(SWRLVariableArgument leftArg, SWRLVariableArgument rightArg)
@@ -117,6 +127,9 @@ namespace OWLSharp.Ontology.Rules
                     {
                         case "http://www.w3.org/2003/11/swrlb#abs":
                             keepRow = SWRLAbsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#add":
+                            keepRow = SWRLAddBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#booleanNot":
                             keepRow = SWRLBooleanNotBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
