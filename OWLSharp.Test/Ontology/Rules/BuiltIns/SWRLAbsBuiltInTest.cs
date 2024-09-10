@@ -78,6 +78,14 @@ namespace OWLSharp.Test.Ontology.Rules
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
             Assert.IsTrue(string.Equals("swrlb:abs(?X,?Y)", builtin.ToString()));
             Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+
+            //Test string handling for empty builtIns (for every kind of builtIn this single test is enough)
+
+            SWRLBuiltIn emptyBuiltin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#abs""></BuiltInAtom>");
+
+            Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#abs\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
         }
 
         [TestMethod]
