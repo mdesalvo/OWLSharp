@@ -43,7 +43,7 @@ namespace OWLSharp.Ontology.Rules
         internal SWRLBuiltIn()
             => Arguments = new List<SWRLArgument>();
 
-        public static SWRLBuiltIn Abs(SWRLVariableArgument leftArg, SWRLVariableArgument rightArg)
+        public static SWRLBuiltIn Abs(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#abs",
@@ -54,7 +54,7 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
-        public static SWRLBuiltIn Add(SWRLVariableArgument leftArg, params SWRLArgument[] rightArgs)
+        public static SWRLBuiltIn Add(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#add",
@@ -63,7 +63,7 @@ namespace OWLSharp.Ontology.Rules
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:add builtIn because: right arguments are null")).ToList()
                 };
 
-        public static SWRLBuiltIn BooleanNot(SWRLVariableArgument leftArg, SWRLVariableArgument rightArg)
+        public static SWRLBuiltIn BooleanNot(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
