@@ -54,7 +54,7 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
-        public static SWRLBuiltIn Add(SWRLVariableArgument leftArg, params SWRLVariableArgument[] rightArgs)
+        public static SWRLBuiltIn Add(SWRLVariableArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#add",
