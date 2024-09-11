@@ -104,6 +104,15 @@ namespace OWLSharp.Ontology.Rules
                         new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:multiply builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:multiply builtIn because: right arguments are null")).ToList()
                 };
+
+        public static SWRLBuiltIn Subtract(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#subtract",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:subtract builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:subtract builtIn because: right arguments are null")).ToList()
+                };
         #endregion
 
         #region Interfaces
@@ -173,6 +182,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#multiply":
                             keepRow = SWRLMultiplyBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#subtract":
+                            keepRow = SWRLSubtractBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
                         //Unsupported builtIns must generate an explicit exception
