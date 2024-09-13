@@ -85,6 +85,17 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
+        public static SWRLBuiltIn Cos(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#cos",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:cos builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:cos builtIn because: right argument is null")
+                    }
+                };
+
         public static SWRLBuiltIn Floor(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
                 {
@@ -176,6 +187,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#ceiling":
                             keepRow = SWRLCeilingBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#cos":
+                            keepRow = SWRLCosBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#floor":
                             keepRow = SWRLFloorBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
