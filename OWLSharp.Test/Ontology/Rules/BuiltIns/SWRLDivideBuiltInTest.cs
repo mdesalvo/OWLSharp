@@ -196,37 +196,6 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
-        public void ShouldEvaluateDivideBuiltInWithOnly2Arguments()
-        {
-            DataTable antecedentResults = new DataTable();
-            antecedentResults.Columns.Add("?X");
-            antecedentResults.Columns.Add("?Y");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2.0^^http://www.w3.org/2001/XMLSchema#float");
-            antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add(DBNull.Value, "2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
-            antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
-            antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "hello^^http://www.w3.org/2001/XMLSchema#string");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello");
-            antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
-            antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
-
-            SWRLBuiltIn builtin = SWRLBuiltIn.Divide(
-                new SWRLVariableArgument(new RDFVariable("?X")),
-                new SWRLVariableArgument(new RDFVariable("?Y")));
-
-            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
-
-            Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 2);
-            Assert.IsTrue(builtinResults.Rows.Count == 1);
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2.0^^http://www.w3.org/2001/XMLSchema#float"));
-        }
-
-        [TestMethod]
         public void ShouldEvaluateDivideBuiltInWithNumbers()
         {
             DataTable antecedentResults = new DataTable();

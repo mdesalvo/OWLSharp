@@ -29,8 +29,8 @@ namespace OWLSharp.Ontology.Rules
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
-            if (builtInArguments?.Count < 2)
-                throw new ArgumentException("it requires at least 2 arguments");
+            if (builtInArguments?.Count != 3)
+                throw new ArgumentException("it requires exactly 3 arguments");
             #endregion
 
             #region Arguments
