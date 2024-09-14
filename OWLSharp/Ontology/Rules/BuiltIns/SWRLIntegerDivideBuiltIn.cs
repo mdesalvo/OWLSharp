@@ -23,7 +23,7 @@ using System.Globalization;
 
 namespace OWLSharp.Ontology.Rules
 {
-    internal static class SWRLDivideBuiltIn
+    internal static class SWRLIntegerDivideBuiltIn
     {
         #region Methods
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
@@ -34,7 +34,7 @@ namespace OWLSharp.Ontology.Rules
             #endregion
 
             #region Arguments
-            double? leftValue = null, rightValue = null;
+            int? leftValue = null, rightValue = null;
             RDFPatternMember patternMember;
             for (int i=0; i<builtInArguments.Count; i++)
             {
@@ -52,12 +52,12 @@ namespace OWLSharp.Ontology.Rules
                 {
                     //First argument concurs to the left value
                     if (i==0)
-                        leftValue = argValue;
+                        leftValue = Convert.ToInt32(argValue);
                     //Other arguments concur to the right value
                     else if (rightValue == null)
-                        rightValue = argValue;
+                        rightValue = Convert.ToInt32(argValue);
                     else
-                        rightValue /= argValue == 0d ? throw new ArgumentException("cannot divide by zero!") : argValue;
+                        rightValue /= argValue == 0d ? throw new ArgumentException("cannot divide by zero!") : Convert.ToInt32(argValue);
                 }
                 //In case of type error just discard the current row
                 else
