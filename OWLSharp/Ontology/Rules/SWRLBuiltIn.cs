@@ -164,6 +164,28 @@ namespace OWLSharp.Ontology.Rules
                         rightArg ?? throw new OWLException("Cannot create swrlb:tan builtIn because: right argument is null")
                     }
                 };
+
+        public static SWRLBuiltIn UnaryMinus(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#unaryMinus",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:unaryMinus builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:unaryMinus builtIn because: right argument is null")
+                    }
+                };
+
+        public static SWRLBuiltIn UnaryPlus(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#unaryPlus",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:unaryPlus builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:unaryPlus builtIn because: right argument is null")
+                    }
+                };
         #endregion
 
         #region Interfaces
@@ -251,6 +273,12 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#tan":
                             keepRow = SWRLTanBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#unaryMinus":
+                            keepRow = SWRLUnaryMinusBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#unaryPlus":
+                            keepRow = SWRLUnaryPlusBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
                         //Unsupported builtIns must generate an explicit exception
