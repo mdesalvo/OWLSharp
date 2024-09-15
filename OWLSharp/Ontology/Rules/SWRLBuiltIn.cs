@@ -105,6 +105,17 @@ namespace OWLSharp.Ontology.Rules
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:divide builtIn because: right arguments are null")).ToList()
                 };
 
+        public static SWRLBuiltIn Equal(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#equal",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:equal builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:equal builtIn because: right argument is null")
+                    }
+                };
+
         public static SWRLBuiltIn Floor(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
                 {
@@ -295,6 +306,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#divide":
                             keepRow = SWRLDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#equal":
+                            keepRow = SWRLEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#floor":
                             keepRow = SWRLFloorBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
