@@ -125,13 +125,13 @@ namespace OWLSharp.Ontology.Rules
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:integerDivide builtIn because: right arguments are null")).ToList()
                 };
 
-        public static SWRLBuiltIn Pow(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+        public static SWRLBuiltIn Mod(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
-                    IRI = "http://www.w3.org/2003/11/swrlb#pow",
+                    IRI = "http://www.w3.org/2003/11/swrlb#mod",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:pow builtIn because: left argument is null") },
-                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:pow builtIn because: right arguments are null")).ToList()
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:mod builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:mod builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Multiply(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
@@ -141,6 +141,15 @@ namespace OWLSharp.Ontology.Rules
                     Arguments = Enumerable.Concat(
                         new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:multiply builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:multiply builtIn because: right arguments are null")).ToList()
+                };
+
+        public static SWRLBuiltIn Pow(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#pow",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:pow builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:pow builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Sin(SWRLArgument leftArg, SWRLArgument rightArg)
@@ -270,6 +279,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#integerDivide":
                             keepRow = SWRLIntegerDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#mod":
+                            keepRow = SWRLModBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#multiply":
                             keepRow = SWRLMultiplyBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
