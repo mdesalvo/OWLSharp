@@ -152,6 +152,28 @@ namespace OWLSharp.Ontology.Rules
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:pow builtIn because: right arguments are null")).ToList()
                 };
 
+        public static SWRLBuiltIn Round(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#round",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:round builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:round builtIn because: right argument is null")
+                    }
+                };
+
+        public static SWRLBuiltIn RoundHalfToEven(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#roundHalfToEven",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:roundHalfToEven builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:roundHalfToEven builtIn because: right argument is null")
+                    }
+                };
+
         public static SWRLBuiltIn Sin(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
                 {
@@ -288,6 +310,12 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#pow":
                             keepRow = SWRLPowBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#round":
+                            keepRow = SWRLRoundBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#roundHalfToEven":
+                            keepRow = SWRLRoundHalfToEvenBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#sin":
                             keepRow = SWRLSinBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
