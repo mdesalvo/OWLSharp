@@ -127,6 +127,17 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
+        public static SWRLBuiltIn GreaterThan(SWRLArgument leftArg, SWRLArgument rightArg)
+            => new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrlb#greaterThan",
+                Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:greaterThan builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:greaterThan builtIn because: right argument is null")
+                    }
+            };
+
         public static SWRLBuiltIn IntegerDivide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
@@ -345,6 +356,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#floor":
                             keepRow = SWRLFloorBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#greaterThan":
+                            keepRow = SWRLGreaterThanBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#integerDivide":
                             keepRow = SWRLIntegerDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
