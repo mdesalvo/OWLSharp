@@ -85,6 +85,28 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
+        public static SWRLBuiltIn Contains(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#contains",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:contains builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:contains builtIn because: right argument is null")
+                    }
+                };
+
+        public static SWRLBuiltIn ContainsIgnoreCase(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#containsIgnoreCase",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:containsIgnoreCase builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:containsIgnoreCase builtIn because: right argument is null")
+                    }
+                };
+
         public static SWRLBuiltIn Cos(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
                 {
@@ -355,6 +377,12 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#ceiling":
                             keepRow = SWRLCeilingBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#contains":
+                            keepRow = SWRLContainsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#containsIgnoreCase":
+                            keepRow = SWRLContainsIgnoreCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#cos":
                             keepRow = SWRLCosBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
