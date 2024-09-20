@@ -127,6 +127,17 @@ namespace OWLSharp.Ontology.Rules
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:divide builtIn because: right arguments are null")).ToList()
                 };
 
+        public static SWRLBuiltIn EndsWith(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#endsWith",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:endsWith builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:endsWith builtIn because: right argument is null")
+                    }
+                };
+
         public static SWRLBuiltIn Equal(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
                 {
@@ -273,6 +284,17 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
+        public static SWRLBuiltIn StartsWith(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#startsWith",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:startsWith builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:startsWith builtIn because: right argument is null")
+                    }
+                };
+
         public static SWRLBuiltIn Subtract(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
@@ -390,6 +412,9 @@ namespace OWLSharp.Ontology.Rules
                         case "http://www.w3.org/2003/11/swrlb#divide":
                             keepRow = SWRLDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
+                        case "http://www.w3.org/2003/11/swrlb#endsWith":
+                            keepRow = SWRLEndsWithBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
                         case "http://www.w3.org/2003/11/swrlb#equal":
                             keepRow = SWRLEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
@@ -431,6 +456,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#sin":
                             keepRow = SWRLSinBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#startsWith":
+                            keepRow = SWRLStartsWithBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#subtract":
                             keepRow = SWRLSubtractBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
