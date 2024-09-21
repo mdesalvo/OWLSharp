@@ -300,7 +300,7 @@ namespace OWLSharp.Test.Ontology.Rules
             SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")),
-                new SWRLLiteralArgument(new RDFPlainLiteral("i")));
+                new SWRLLiteralArgument(new RDFPlainLiteral("ismx")));
 
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
