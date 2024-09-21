@@ -161,26 +161,26 @@ namespace OWLSharp.Ontology.Rules
                 };
 
         public static SWRLBuiltIn GreaterThan(SWRLArgument leftArg, SWRLArgument rightArg)
-            => new SWRLBuiltIn()
-            {
-                IRI = "http://www.w3.org/2003/11/swrlb#greaterThan",
-                Arguments = new List<SWRLArgument>()
-                    {
-                        leftArg ?? throw new OWLException("Cannot create swrlb:greaterThan builtIn because: left argument is null"),
-                        rightArg ?? throw new OWLException("Cannot create swrlb:greaterThan builtIn because: right argument is null")
-                    }
-            };
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#greaterThan",
+                    Arguments = new List<SWRLArgument>()
+                        {
+                            leftArg ?? throw new OWLException("Cannot create swrlb:greaterThan builtIn because: left argument is null"),
+                            rightArg ?? throw new OWLException("Cannot create swrlb:greaterThan builtIn because: right argument is null")
+                        }
+                };
 
         public static SWRLBuiltIn GreaterThanOrEqual(SWRLArgument leftArg, SWRLArgument rightArg)
-            => new SWRLBuiltIn()
-            {
-                IRI = "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual",
-                Arguments = new List<SWRLArgument>()
-                    {
-                        leftArg ?? throw new OWLException("Cannot create swrlb:greaterThanOrEqual builtIn because: left argument is null"),
-                        rightArg ?? throw new OWLException("Cannot create swrlb:greaterThanOrEqual builtIn because: right argument is null")
-                    }
-            };
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual",
+                    Arguments = new List<SWRLArgument>()
+                        {
+                            leftArg ?? throw new OWLException("Cannot create swrlb:greaterThanOrEqual builtIn because: left argument is null"),
+                            rightArg ?? throw new OWLException("Cannot create swrlb:greaterThanOrEqual builtIn because: right argument is null")
+                        }
+                };
 
         public static SWRLBuiltIn IntegerDivide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
@@ -192,26 +192,37 @@ namespace OWLSharp.Ontology.Rules
                 };
 
         public static SWRLBuiltIn LessThan(SWRLArgument leftArg, SWRLArgument rightArg)
-            => new SWRLBuiltIn()
-            {
-                IRI = "http://www.w3.org/2003/11/swrlb#lessThan",
-                Arguments = new List<SWRLArgument>()
-                    {
-                        leftArg ?? throw new OWLException("Cannot create swrlb:lessThan builtIn because: left argument is null"),
-                        rightArg ?? throw new OWLException("Cannot create swrlb:lessThan builtIn because: right argument is null")
-                    }
-            };
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#lessThan",
+                    Arguments = new List<SWRLArgument>()
+                        {
+                            leftArg ?? throw new OWLException("Cannot create swrlb:lessThan builtIn because: left argument is null"),
+                            rightArg ?? throw new OWLException("Cannot create swrlb:lessThan builtIn because: right argument is null")
+                        }
+                };
 
         public static SWRLBuiltIn LessThanOrEqual(SWRLArgument leftArg, SWRLArgument rightArg)
-            => new SWRLBuiltIn()
-            {
-                IRI = "http://www.w3.org/2003/11/swrlb#lessThanOrEqual",
-                Arguments = new List<SWRLArgument>()
-                    {
-                        leftArg ?? throw new OWLException("Cannot create swrlb:lessThanOrEqual builtIn because: left argument is null"),
-                        rightArg ?? throw new OWLException("Cannot create swrlb:lessThanOrEqual builtIn because: right argument is null")
-                    }
-            };
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#lessThanOrEqual",
+                    Arguments = new List<SWRLArgument>()
+                        {
+                            leftArg ?? throw new OWLException("Cannot create swrlb:lessThanOrEqual builtIn because: left argument is null"),
+                            rightArg ?? throw new OWLException("Cannot create swrlb:lessThanOrEqual builtIn because: right argument is null")
+                        }
+                };
+
+        public static SWRLBuiltIn LowerCase(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#lowerCase",
+                    Arguments = new List<SWRLArgument>()
+                        {
+                            leftArg ?? throw new OWLException("Cannot create swrlb:lowerCase builtIn because: left argument is null"),
+                            rightArg ?? throw new OWLException("Cannot create swrlb:lowerCase builtIn because: right argument is null")
+                        }
+                };
 
         public static SWRLBuiltIn Matches(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
@@ -241,15 +252,15 @@ namespace OWLSharp.Ontology.Rules
                 };
 
         public static SWRLBuiltIn NotEqual(SWRLArgument leftArg, SWRLArgument rightArg)
-            => new SWRLBuiltIn()
-            {
-                IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
-                Arguments = new List<SWRLArgument>()
-                    {
-                        leftArg ?? throw new OWLException("Cannot create swrlb:notEqual builtIn because: left argument is null"),
-                        rightArg ?? throw new OWLException("Cannot create swrlb:notEqual builtIn because: right argument is null")
-                    }
-            };
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
+                    Arguments = new List<SWRLArgument>()
+                        {
+                            leftArg ?? throw new OWLException("Cannot create swrlb:notEqual builtIn because: left argument is null"),
+                            rightArg ?? throw new OWLException("Cannot create swrlb:notEqual builtIn because: right argument is null")
+                        }
+                };
 
         public static SWRLBuiltIn Pow(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
@@ -343,6 +354,17 @@ namespace OWLSharp.Ontology.Rules
                     {
                         leftArg ?? throw new OWLException("Cannot create swrlb:unaryPlus builtIn because: left argument is null"),
                         rightArg ?? throw new OWLException("Cannot create swrlb:unaryPlus builtIn because: right argument is null")
+                    }
+                };
+
+        public static SWRLBuiltIn UpperCase(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#upperCase",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:upperCase builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:upperCase builtIn because: right argument is null")
                     }
                 };
         #endregion
@@ -445,6 +467,9 @@ namespace OWLSharp.Ontology.Rules
                         case "http://www.w3.org/2003/11/swrlb#lessThanOrEqual":
                             keepRow = SWRLLessThanOrEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
+                        case "http://www.w3.org/2003/11/swrlb#lowerCase":
+                            keepRow = SWRLLowerCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
                         case "http://www.w3.org/2003/11/swrlb#matches":
                             keepRow = SWRLMatchesBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
@@ -483,6 +508,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#unaryPlus":
                             keepRow = SWRLUnaryPlusBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                         case "http://www.w3.org/2003/11/swrlb#upperCase":
+                            keepRow = SWRLUpperCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
                         //Unsupported builtIns must generate an explicit exception
