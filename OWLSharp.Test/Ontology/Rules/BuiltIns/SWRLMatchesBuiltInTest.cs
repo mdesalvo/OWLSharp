@@ -148,6 +148,7 @@ namespace OWLSharp.Test.Ontology.Rules
             antecedentResults.Columns.Add("?X");
             antecedentResults.Columns.Add("?Y");
             antecedentResults.Rows.Add("hello", "ello$");
+            antecedentResults.Rows.Add("hello", "eLLo$");
             antecedentResults.Rows.Add("hello@EN-US", "EN-US$");
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2");
             antecedentResults.Rows.Add(DBNull.Value, "^hello");
@@ -187,7 +188,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults2);
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
-            Assert.IsTrue(builtinResults2.Rows.Count == 13);
+            Assert.IsTrue(builtinResults2.Rows.Count == 14);
 
             SWRLBuiltIn builtin3 = SWRLBuiltIn.Matches(
                 new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
@@ -195,7 +196,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults3);
             Assert.IsTrue(builtinResults3.Columns.Count == 2);
-            Assert.IsTrue(builtinResults3.Rows.Count == 13);
+            Assert.IsTrue(builtinResults3.Rows.Count == 14);
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<OWLException>(() =>
@@ -217,6 +218,63 @@ namespace OWLSharp.Test.Ontology.Rules
                         new SWRLVariableArgument(new RDFVariable("?V"))
                     ]
                 }.EvaluateOnAntecedent(antecedentResults));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateMatchesBuiltInWithLiteralLeftArgument()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("ello$");
+            antecedentResults.Rows.Add("eLLo$");
+            antecedentResults.Rows.Add("EN-US$");
+            antecedentResults.Rows.Add("2");
+            antecedentResults.Rows.Add("^hello");
+            antecedentResults.Rows.Add(DBNull.Value);
+            antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("^hello$");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
+                new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
+                new SWRLVariableArgument(new RDFVariable("?Y")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 1);
+            Assert.IsTrue(builtinResults.Rows.Count == 5);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "ello$"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "^hello"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), ""));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Y"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[4]["?Y"].ToString(), "^hello$"));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateMatchesBuiltInWithLiteralRightArgument()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Rows.Add("hello");
+            antecedentResults.Rows.Add("eLLo$");
+            antecedentResults.Rows.Add("2");
+            antecedentResults.Rows.Add("lo");
+            antecedentResults.Rows.Add(DBNull.Value);
+            antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Matches(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("ello$")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 1);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
         }
 
         [TestMethod]
