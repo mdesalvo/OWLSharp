@@ -213,6 +213,15 @@ namespace OWLSharp.Ontology.Rules
                     }
             };
 
+        public static SWRLBuiltIn Matches(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#matches",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:matches builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:matches builtIn because: right arguments are null")).ToList()
+                };
+
         public static SWRLBuiltIn Mod(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
@@ -435,6 +444,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#lessThanOrEqual":
                             keepRow = SWRLLessThanOrEqualBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#matches":
+                            keepRow = SWRLMatchesBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#mod":
                             keepRow = SWRLModBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
