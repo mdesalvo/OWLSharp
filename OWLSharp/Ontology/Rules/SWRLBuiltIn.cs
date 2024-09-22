@@ -324,6 +324,17 @@ namespace OWLSharp.Ontology.Rules
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:stringConcat builtIn because: right arguments are null")).ToList()
                 };
 
+        public static SWRLBuiltIn StringEqualIgnoreCase(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new OWLException("Cannot create swrlb:stringEqualIgnoreCase builtIn because: left argument is null"),
+                        rightArg ?? throw new OWLException("Cannot create swrlb:stringEqualIgnoreCase builtIn because: right argument is null")
+                    }
+                };
+
         public static SWRLBuiltIn Subtract(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
@@ -508,6 +519,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#stringConcat":
                             keepRow = SWRLStringConcatBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase":
+                            keepRow = SWRLStringEqualIgnoreCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#subtract":
                             keepRow = SWRLSubtractBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
