@@ -273,6 +273,30 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults.Rows.Count == 1);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "http://example.org/test"));
         }
+
+        [TestMethod]
+        public void ShouldEvaluateStringConcatBuiltInWithMultipleArguments()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Rows.Add("The white fox jumps");
+            antecedentResults.Rows.Add("The white fox jumpsover the lazy...");
+            antecedentResults.Rows.Add("The white fox jumps over the lazy...");
+
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.StringConcat(
+                    new SWRLVariableArgument(new RDFVariable("?X")),
+                    new SWRLLiteralArgument(new RDFPlainLiteral("The white fox jumps")),
+                    new SWRLLiteralArgument(new RDFPlainLiteral(" over","en")),
+                    new SWRLLiteralArgument(new RDFTypedLiteral(" the lazy...", RDFModelEnums.RDFDatatypes.XSD_STRING))
+            );
+
+            DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults2);
+            Assert.IsTrue(builtinResults2.Columns.Count == 1);
+            Assert.IsTrue(builtinResults2.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults2.Rows[0]["?X"].ToString(), "The white fox jumps over the lazy..."));
+        }
         #endregion
     }
 }
