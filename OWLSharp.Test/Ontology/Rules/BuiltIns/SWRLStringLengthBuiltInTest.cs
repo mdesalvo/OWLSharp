@@ -25,116 +25,116 @@ using System.Data;
 namespace OWLSharp.Test.Ontology.Rules
 {
     [TestClass]
-    public class SWRLEqualIgnoreCaseBuiltInTest
+    public class SWRLStringLengthBuiltInTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldCreateEqualIgnoreCaseBuiltIn()
+        public void ShouldCreateStringLengthBuiltIn()
         {
-            SWRLBuiltIn builtin = SWRLBuiltIn.StringEqualIgnoreCase(
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringLength(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringLength", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-            Assert.IsTrue(string.Equals("swrlb:stringEqualIgnoreCase(?X,?Y)", builtin.ToString()));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringEqualIgnoreCase(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringEqualIgnoreCase(new SWRLVariableArgument(new RDFVariable("?X")), null));
+            Assert.IsTrue(string.Equals("swrlb:stringLength(?X,?Y)", builtin.ToString()));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringLength(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.StringLength(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
 
         [TestMethod]
-        public void ShouldSerializeEqualIgnoreCaseBuiltIn()
+        public void ShouldSerializeStringLengthBuiltIn()
         {
-            SWRLBuiltIn builtin = SWRLBuiltIn.StringEqualIgnoreCase(
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringLength(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringLength\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
-        public void ShouldDeserializeEqualIgnoreCaseBuiltIn()
+        public void ShouldDeserializeStringLengthBuiltIn()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringLength""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringLength", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-            Assert.IsTrue(string.Equals("swrlb:stringEqualIgnoreCase(?X,?Y)", builtin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("swrlb:stringLength(?X,?Y)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringLength\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
 
             //Test string handling for empty builtIns
 
             SWRLBuiltIn emptyBuiltin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringLength""></BuiltInAtom>");
 
             Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringLength\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
         }
 
         [TestMethod]
-        public void ShouldDeserializeEqualIgnoreCaseBuiltInWithLeftNumber()
+        public void ShouldDeserializeStringLengthBuiltInWithLeftNumber()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringLength""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringLength", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLLiteralArgument tlarg 
                             && tlarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-            Assert.IsTrue(string.Equals("swrlb:stringEqualIgnoreCase(\"5\"^^xsd:integer,?Y)", builtin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase\"><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("swrlb:stringLength(\"5\"^^xsd:integer,?Y)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringLength\"><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
-        public void ShouldDeserializeEqualIgnoreCaseBuiltInWithRightNumber()
+        public void ShouldDeserializeStringLengthBuiltInWithRightNumber()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""><Variable IRI=""urn:swrl:var#X"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal></BuiltInAtom>");
+@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringLength""><Variable IRI=""urn:swrl:var#X"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal></BuiltInAtom>");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase", builtin.IRI));
+            Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#stringLength", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 2);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLLiteralArgument trarg 
                             && trarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-            Assert.IsTrue(string.Equals("swrlb:stringEqualIgnoreCase(?X,\"5\"^^xsd:integer)", builtin.ToString()));
-            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase\"><Variable IRI=\"urn:swrl:var#X\" /><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
+            Assert.IsTrue(string.Equals("swrlb:stringLength(?X,\"5\"^^xsd:integer)", builtin.ToString()));
+            Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringLength\"><Variable IRI=\"urn:swrl:var#X\" /><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
         }
 
         [TestMethod]
-        public void ShouldEvaluateEqualIgnoreCaseBuiltIn()
+        public void ShouldEvaluateStringLengthBuiltIn()
         {
             DataTable antecedentResults = new DataTable();
             antecedentResults.Columns.Add("?X");
             antecedentResults.Columns.Add("?Y");
-            antecedentResults.Rows.Add("hello", "HeLlo");
+            antecedentResults.Rows.Add("5^^http://www.w3.org/2001/XMLSchema#int", "hello");
             antecedentResults.Rows.Add("hello@EN-US", "EN-US");
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add(DBNull.Value, "-2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
+            antecedentResults.Rows.Add("0^^http://www.w3.org/2001/XMLSchema#int", DBNull.Value);
             antecedentResults.Rows.Add(DBNull.Value, DBNull.Value);
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello^^http://www.w3.org/2001/XMLSchema#string");
             antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string", "2^^http://www.w3.org/2001/XMLSchema#int");
@@ -142,9 +142,9 @@ namespace OWLSharp.Test.Ontology.Rules
             antecedentResults.Rows.Add("hello", "-2^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "hello@EN");
             antecedentResults.Rows.Add("hello@EN", "-2^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("http://example.org/test/", "http://exAmple.org/Test/");
+            antecedentResults.Rows.Add("24^^http://www.w3.org/2001/XMLSchema#integer", "http://example.org/test/");
 
-            SWRLBuiltIn builtin = SWRLBuiltIn.StringEqualIgnoreCase(
+            SWRLBuiltIn builtin = SWRLBuiltIn.StringLength(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
@@ -153,16 +153,16 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 2);
             Assert.IsTrue(builtinResults.Rows.Count == 3);
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "HeLlo"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), ""));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "0^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), ""));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "http://example.org/test/"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "http://exAmple.org/Test/"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "24^^http://www.w3.org/2001/XMLSchema#integer"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "http://example.org/test/"));
 
             //Test with unexisting variables
 
-            SWRLBuiltIn builtin2 = SWRLBuiltIn.StringEqualIgnoreCase(
+            SWRLBuiltIn builtin2 = SWRLBuiltIn.StringLength(
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
@@ -170,7 +170,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
             Assert.IsTrue(builtinResults2.Rows.Count == 13);
 
-            SWRLBuiltIn builtin3 = SWRLBuiltIn.StringEqualIgnoreCase(
+            SWRLBuiltIn builtin3 = SWRLBuiltIn.StringLength(
                 new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
                 new SWRLVariableArgument(new RDFVariable("?Y")));
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
@@ -193,7 +193,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.ThrowsException<OWLException>(() => 
                 new SWRLBuiltIn()
                 {
-                    IRI = "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase",
+                    IRI = "http://www.w3.org/2003/11/swrlb#stringLength",
                     Arguments = [
                         new SWRLVariableArgument(new RDFVariable("?V"))
                     ]
@@ -201,7 +201,7 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
-        public void ShouldEvaluateEqualIgnoreCaseBuiltInWithLeftString()
+        public void ShouldEvaluateStringLengthBuiltInWithLeftNumber()
         {
             DataTable antecedentResults = new DataTable();
             antecedentResults.Columns.Add("?Y");
@@ -217,9 +217,9 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = new SWRLBuiltIn()
             {
-                IRI = "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase",
+                IRI = "http://www.w3.org/2003/11/swrlb#stringLength",
                 Arguments = [
-                    new SWRLLiteralArgument(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)),
+                    new SWRLLiteralArgument(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
                     new SWRLVariableArgument(new RDFVariable("?Y"))
                 ]
             };
@@ -237,13 +237,13 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
-        public void ShouldEvaluateEqualIgnoreCaseBuiltInWithRightString()
+        public void ShouldEvaluateStringLengthBuiltInWithRightString()
         {
             DataTable antecedentResults = new DataTable();
             antecedentResults.Columns.Add("?X");
-            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("5^^http://www.w3.org/2001/XMLSchema#int");
             antecedentResults.Rows.Add("7^^http://www.w3.org/2001/XMLSchema#int");
-            antecedentResults.Rows.Add("2.0^^http://www.w3.org/2001/XMLSchema#float");
+            antecedentResults.Rows.Add("5.0^^http://www.w3.org/2001/XMLSchema#float");
             antecedentResults.Rows.Add(DBNull.Value);
             antecedentResults.Rows.Add("hello^^http://www.w3.org/2001/XMLSchema#string");
             antecedentResults.Rows.Add("hello");
@@ -253,7 +253,7 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = new SWRLBuiltIn()
             {
-                IRI = "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase",
+                IRI = "http://www.w3.org/2003/11/swrlb#stringLength",
                 Arguments = [
                     new SWRLVariableArgument(new RDFVariable("?X")),
                     new SWRLLiteralArgument(new RDFPlainLiteral("hello"))
@@ -264,11 +264,9 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 1);
-            Assert.IsTrue(builtinResults.Rows.Count == 4);
-            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "heLlo"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?X"].ToString(), "hello@EN"));
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "5.0^^http://www.w3.org/2001/XMLSchema#float"));
         }
         #endregion
     }
