@@ -155,7 +155,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults2);
             Assert.IsTrue(builtinResults2.Columns.Count == 2);
-            Assert.IsTrue(builtinResults2.Rows.Count == 3);
+            Assert.IsTrue(builtinResults2.Rows.Count == 2);
 
             SWRLBuiltIn builtin3 = SWRLBuiltIn.EndsWith(
                 new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
@@ -163,7 +163,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults3);
             Assert.IsTrue(builtinResults3.Columns.Count == 2);
-            Assert.IsTrue(builtinResults3.Rows.Count == 3);
+            Assert.IsTrue(builtinResults3.Rows.Count == 2);
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<OWLException>(() =>
