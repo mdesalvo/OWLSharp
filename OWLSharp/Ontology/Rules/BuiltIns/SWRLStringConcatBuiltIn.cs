@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System;
 using RDFSharp.Query;
 using RDFSharp.Model;
-using System.Globalization;
 
 namespace OWLSharp.Ontology.Rules
 {

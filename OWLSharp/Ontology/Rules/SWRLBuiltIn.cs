@@ -357,6 +357,15 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
+        public static SWRLBuiltIn Substring(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#substring",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:substring builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:substring builtIn because: right arguments are null")).ToList()
+                };
+
         public static SWRLBuiltIn Subtract(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
@@ -550,6 +559,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#stringLength":
                             keepRow = SWRLStringLengthBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#substring":
+                            keepRow = SWRLSubstringBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#subtract":
                             keepRow = SWRLSubtractBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
