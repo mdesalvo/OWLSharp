@@ -118,17 +118,17 @@ namespace OWLSharp.Ontology.Rules
                 //This builtIn also requires numeric literals in 3rd (and optional 4th) arguments to execute a substring operation on the 2nd
                 if (rightPatternMemberIDX is RDFTypedLiteral leftTypedLiteralIDX
                      && leftTypedLiteralIDX.HasDecimalDatatype()
-                     && double.TryParse(leftTypedLiteralIDX.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftNumberIDX))
+                     && int.TryParse(leftTypedLiteralIDX.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberIDX))
                 {
                     //startIndex
                     if (builtInArguments.Count == 3)
-                        return string.Equals(leftPMValue, rightPMValue.Substring(Convert.ToInt32(leftNumberIDX)));
+                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX));
 
                     //startIndex+length
                     else if (rightPatternMemberLEN is RDFTypedLiteral leftTypedLiteralLEN
                               && leftTypedLiteralLEN.HasDecimalDatatype()
-                              && double.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double leftNumberLEN))
-                        return string.Equals(leftPMValue, rightPMValue.Substring(Convert.ToInt32(leftNumberIDX), Convert.ToInt32(leftNumberLEN)));
+                              && int.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberLEN))
+                        return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX, leftNumberLEN));
                 }                    
             }
             return false;

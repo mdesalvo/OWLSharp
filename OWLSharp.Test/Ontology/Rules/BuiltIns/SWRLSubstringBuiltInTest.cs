@@ -169,6 +169,81 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
+        public void ShouldEvaluateSubstringBuiltInWithStringRightArgumentSRC()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Z");
+            antecedentResults.Rows.Add("llo", "2^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("@EN-US", "4^^http://www.w3.org/2001/XMLSchema#int");
+            antecedentResults.Rows.Add("org/test", "2^^http://www.w3.org/2001/XMLSchema#int");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("hello")),
+                new SWRLVariableArgument(new RDFVariable("?Z")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "2^^http://www.w3.org/2001/XMLSchema#int"));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDX()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("llo", "hello");
+            antecedentResults.Rows.Add("@EN-US", "hello@EN-US");
+            antecedentResults.Rows.Add("org/test", "http://example.org/test");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "llo"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateSubstringBuiltInWithNumericRightArgumentIDXLEN()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Rows.Add("ll", "hello");
+            antecedentResults.Rows.Add("@EN-US", "hello@EN-US");
+            antecedentResults.Rows.Add("tp", "http://example.org/test");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Substring(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)),
+                new SWRLLiteralArgument(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 2);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "ll"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "tp"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "http://example.org/test"));
+        }
+
+        [TestMethod]
         public void ShouldEvaluateSubstringBuiltInWithLength()
         {
             DataTable antecedentResults = new DataTable();
