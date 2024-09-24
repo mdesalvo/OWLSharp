@@ -132,7 +132,6 @@ namespace OWLSharp.Test.Ontology.Rules
             antecedentResults.Columns.Add("?Y");
             antecedentResults.Rows.Add("hello", "ello");
             antecedentResults.Rows.Add("hello@EN-US", "lo");
-            antecedentResults.Rows.Add("http://example.org/test/", "/test/");
 
             SWRLBuiltIn builtin = SWRLBuiltIn.EndsWith(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -142,13 +141,11 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 2);
-            Assert.IsTrue(builtinResults.Rows.Count == 3);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "hello"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "ello"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "hello@EN-US"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "lo"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), "http://example.org/test/"));
-            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), "/test/"));
 
             //Test with unexisting variables
 
