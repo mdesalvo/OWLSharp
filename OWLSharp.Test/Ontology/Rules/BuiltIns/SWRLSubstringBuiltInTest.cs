@@ -19,7 +19,6 @@ using OWLSharp.Ontology;
 using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
-using System;
 using System.Data;
 
 namespace OWLSharp.Test.Ontology.Rules
