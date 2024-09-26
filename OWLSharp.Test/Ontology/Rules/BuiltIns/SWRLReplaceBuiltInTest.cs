@@ -234,6 +234,44 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
+        public void ShouldEvaluateReplaceBuiltInWithRGXLiteral()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Columns.Add("?Q");
+            antecedentResults.Rows.Add("heMMo", "hello", "MM");
+            antecedentResults.Rows.Add("hemMo", "hello", "MM");
+            antecedentResults.Rows.Add("heMMo@EN", "hello@EN", "MM@EN");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2", "2");
+            antecedentResults.Rows.Add(DBNull.Value, DBNull.Value, DBNull.Value);
+            antecedentResults.Rows.Add(DBNull.Value, "hello", "");
+            antecedentResults.Rows.Add("hello", DBNull.Value, "hello");
+            antecedentResults.Rows.Add("http://example.org/test/", "ftp://example.org/test/", "http");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("ll")),
+                new SWRLVariableArgument(new RDFVariable("?Q")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 3);
+            Assert.IsTrue(builtinResults.Rows.Count == 3);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "heMMo"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "MM"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "heMMo@EN"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "hello@EN"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Q"].ToString(), "MM@EN"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?X"].ToString(), ""));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Y"].ToString(), ""));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[2]["?Q"].ToString(), ""));
+        }
+
+        [TestMethod]
         public void ShouldEvaluateReplaceBuiltInWithRPLLiteral()
         {
             DataTable antecedentResults = new DataTable();
