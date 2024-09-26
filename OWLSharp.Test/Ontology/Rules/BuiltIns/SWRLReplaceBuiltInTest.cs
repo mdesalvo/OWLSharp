@@ -232,6 +232,41 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Z"].ToString(), "hello"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[3]["?Q"].ToString(), "hello"));
         }
+
+        [TestMethod]
+        public void ShouldEvaluateReplaceBuiltInWithRPLLiteral()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Columns.Add("?Z");
+            antecedentResults.Rows.Add("heMMo", "hello", "ll");
+            antecedentResults.Rows.Add("hemMo", "hello", "ll");
+            antecedentResults.Rows.Add("heMMo@EN", "hello@EN", "ll@EN");
+            antecedentResults.Rows.Add("2^^http://www.w3.org/2001/XMLSchema#int", "2", "2");
+            antecedentResults.Rows.Add(DBNull.Value, DBNull.Value, DBNull.Value);
+            antecedentResults.Rows.Add(DBNull.Value, "hello", "[a-z]+");
+            antecedentResults.Rows.Add("hello", DBNull.Value, "hello");
+            antecedentResults.Rows.Add("http://example.org/test/", "ftp://example.org/test/", "ftp");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Replace(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                new SWRLVariableArgument(new RDFVariable("?Z")),
+                new SWRLLiteralArgument(new RDFTypedLiteral("MM", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 3);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "heMMo"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "hello"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "ll"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "heMMo@EN"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "hello@EN"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "ll@EN"));
+        }
         #endregion
     }
 }
