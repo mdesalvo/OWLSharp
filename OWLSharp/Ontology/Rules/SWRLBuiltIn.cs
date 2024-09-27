@@ -136,6 +136,15 @@ namespace OWLSharp.Ontology.Rules
                         rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:dateTime builtIn because: right arguments are null")).ToList()
                 };
 
+        public static SWRLBuiltIn DayTimeDuration(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#dayTimeDuration",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:dayTimeDuration builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:dayTimeDuration builtIn because: right arguments are null")).ToList()
+                };
+
         public static SWRLBuiltIn Divide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
@@ -472,6 +481,15 @@ namespace OWLSharp.Ontology.Rules
                         rightArg ?? throw new OWLException("Cannot create swrlb:upperCase builtIn because: right argument is null")
                     }
                 };
+
+        public static SWRLBuiltIn YearMonthDuration(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#yearMonthDuration",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:yearMonthDuration builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:yearMonthDuration builtIn because: right arguments are null")).ToList()
+                };
         #endregion
 
         #region Interfaces
@@ -550,6 +568,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#dateTime":
                             keepRow = SWRLDateTimeBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#dayTimeDuration":
+                            keepRow = SWRLDayTimeDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#divide":
                             keepRow = SWRLDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
@@ -647,8 +668,11 @@ namespace OWLSharp.Ontology.Rules
                         case "http://www.w3.org/2003/11/swrlb#unaryPlus":
                             keepRow = SWRLUnaryPlusBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
-                         case "http://www.w3.org/2003/11/swrlb#upperCase":
+                        case "http://www.w3.org/2003/11/swrlb#upperCase":
                             keepRow = SWRLUpperCaseBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#yearMonthDuration":
+                            keepRow = SWRLYearMonthDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
                         //Unsupported builtIns must generate an explicit exception
