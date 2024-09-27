@@ -118,6 +118,15 @@ namespace OWLSharp.Ontology.Rules
                     }
                 };
 
+        public static SWRLBuiltIn Date(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "http://www.w3.org/2003/11/swrlb#date",
+                    Arguments = Enumerable.Concat(
+                        new List<SWRLArgument>() { leftArg ?? throw new OWLException("Cannot create swrlb:date builtIn because: left argument is null") },
+                        rightArgs?.ToList() ?? throw new OWLException("Cannot create swrlb:date builtIn because: right arguments are null")).ToList()
+                };
+
         public static SWRLBuiltIn Divide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
             =>  new SWRLBuiltIn()
                 {
@@ -517,6 +526,9 @@ namespace OWLSharp.Ontology.Rules
                             break;
                         case "http://www.w3.org/2003/11/swrlb#cos":
                             keepRow = SWRLCosBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+                        case "http://www.w3.org/2003/11/swrlb#date":
+                            keepRow = SWRLDateBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
                         case "http://www.w3.org/2003/11/swrlb#divide":
                             keepRow = SWRLDivideBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
