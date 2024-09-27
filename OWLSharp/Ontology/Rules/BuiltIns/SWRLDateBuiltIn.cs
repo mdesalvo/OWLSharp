@@ -24,6 +24,8 @@ namespace OWLSharp.Ontology.Rules
 {
     internal static class SWRLDateBuiltIn
     {
+        internal static RDFDatatype XSD_DATE = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DATE);
+
         #region Methods
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
@@ -124,19 +126,17 @@ namespace OWLSharp.Ontology.Rules
             bool isStringRightPMTZ = rightPatternMemberTZ is RDFPlainLiteral
                                       || (rightPatternMemberTZ is RDFTypedLiteral rightPMTLitTZ && rightPMTLitTZ.HasStringDatatype());
             if (isDateTimeLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH && isNumericRightPMDAY && isStringRightPMTZ) 
-            {
-                RDFDatatype xsdDate = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DATE);
-                if (xsdDate.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
+                if (XSD_DATE.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
                 {
                     string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;
                     TimeZoneInfo rightDateTZ = TimeZoneInfo.FindSystemTimeZoneById(
                                                     string.IsNullOrWhiteSpace(targetTZ) ? "UTC" : targetTZ); //Fallback to "UTC" in absence of input
 
-                    //Get left date and convert to destination TZ
+                    //Get left date and convert to destination timezone
                     DateTime leftDate = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
                     DateTime convertedLeftDate = TimeZoneInfo.ConvertTime(leftDate, rightDateTZ);
 
-                    //Get right date and convert to destination TZ
+                    //Get right date and convert to destination timezone
                     DateTime rightDate = new DateTime(
                         Convert.ToInt32(((RDFLiteral)rightPatternMemberYEAR).Value),
                         Convert.ToInt32(((RDFLiteral)rightPatternMemberMONTH).Value),
@@ -147,7 +147,6 @@ namespace OWLSharp.Ontology.Rules
                     //Compare dates
                     return convertedLeftDate.Equals(convertedRightDate);
                 }
-            }
             return false;
         }
         #endregion
