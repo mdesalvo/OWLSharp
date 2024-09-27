@@ -383,6 +383,11 @@ namespace OWLSharp.Test.Ontology.Rules
                 "2010^^http://www.w3.org/2001/XMLSchema#int",
                 "5^^http://www.w3.org/2001/XMLSchema#int",
                 "UTC");
+            antecedentResults.Rows.Add(
+                "2010-16-22Z^^http://www.w3.org/2001/XMLSchema#date", //not valid
+                "2010^^http://www.w3.org/2001/XMLSchema#int",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "UTC");
 
             SWRLBuiltIn builtin = SWRLBuiltIn.Date(
                 new SWRLVariableArgument(new RDFVariable("?X")),

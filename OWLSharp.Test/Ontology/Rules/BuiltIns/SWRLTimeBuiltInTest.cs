@@ -383,6 +383,11 @@ namespace OWLSharp.Test.Ontology.Rules
                 "10^^http://www.w3.org/2001/XMLSchema#int",
                 "34^^http://www.w3.org/2001/XMLSchema#int",
                 "UTC");
+            antecedentResults.Rows.Add(
+                "10:65:30Z^^http://www.w3.org/2001/XMLSchema#time", //not valid
+                "10^^http://www.w3.org/2001/XMLSchema#int",
+                "34^^http://www.w3.org/2001/XMLSchema#int",
+                "UTC");
 
             SWRLBuiltIn builtin = SWRLBuiltIn.Time(
                 new SWRLVariableArgument(new RDFVariable("?X")),
