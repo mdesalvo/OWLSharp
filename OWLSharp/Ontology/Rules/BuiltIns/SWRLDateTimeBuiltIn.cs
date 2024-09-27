@@ -22,16 +22,16 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Rules
 {
-    internal static class SWRLTimeBuiltIn
+    internal static class SWRLDateTimeBuiltIn
     {
-        internal static RDFDatatype XSD_TIME = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_TIME);
+        internal static RDFDatatype XSD_DATETIME = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DATETIME);
 
         #region Methods
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)
         {
             #region Guards
-            if (builtInArguments?.Count != 5)
-                throw new ArgumentException("it requires exactly 5 arguments");
+            if (builtInArguments?.Count != 8)
+                throw new ArgumentException("it requires exactly 8 arguments");
             #endregion
 
             #region LeftArgument
@@ -50,9 +50,57 @@ namespace OWLSharp.Ontology.Rules
                 leftPatternMember = leftArgLit.GetLiteral();
             #endregion
 
+            #region RightArgument (YEAR)
+            RDFPatternMember rightPatternMemberYEAR = null;
+            if (builtInArguments[1] is SWRLVariableArgument rightArgVarYEAR)
+            {
+                #region Guards
+                string rightArgVarName = rightArgVarYEAR.GetVariable().ToString();
+                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                    return true;
+                #endregion
+
+                rightPatternMemberYEAR = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+            }
+            else if (builtInArguments[1] is SWRLLiteralArgument rightArgLitYEAR)
+                rightPatternMemberYEAR = rightArgLitYEAR.GetLiteral();
+            #endregion
+
+            #region RightArgument (MONTH)
+            RDFPatternMember rightPatternMemberMONTH = null;
+            if (builtInArguments[2] is SWRLVariableArgument rightArgVarMONTH)
+            {
+                #region Guards
+                string rightArgVarName = rightArgVarMONTH.GetVariable().ToString();
+                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                    return true;
+                #endregion
+
+                rightPatternMemberMONTH = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+            }
+            else if (builtInArguments[2] is SWRLLiteralArgument rightArgLitMONTH)
+                rightPatternMemberMONTH = rightArgLitMONTH.GetLiteral();
+            #endregion
+
+            #region RightArgument (DAY)
+            RDFPatternMember rightPatternMemberDAY = null;
+            if (builtInArguments[3] is SWRLVariableArgument rightArgVarDAY)
+            {
+                #region Guards
+                string rightArgVarName = rightArgVarDAY.GetVariable().ToString();
+                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                    return true;
+                #endregion
+
+                rightPatternMemberDAY = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+            }
+            else if (builtInArguments[3] is SWRLLiteralArgument rightArgLitDAY)
+                rightPatternMemberDAY = rightArgLitDAY.GetLiteral();
+            #endregion
+
             #region RightArgument (HOUR)
             RDFPatternMember rightPatternMemberHOUR = null;
-            if (builtInArguments[1] is SWRLVariableArgument rightArgVarHOUR)
+            if (builtInArguments[4] is SWRLVariableArgument rightArgVarHOUR)
             {
                 #region Guards
                 string rightArgVarName = rightArgVarHOUR.GetVariable().ToString();
@@ -62,13 +110,13 @@ namespace OWLSharp.Ontology.Rules
 
                 rightPatternMemberHOUR = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
             }
-            else if (builtInArguments[1] is SWRLLiteralArgument rightArgLitHOUR)
+            else if (builtInArguments[4] is SWRLLiteralArgument rightArgLitHOUR)
                 rightPatternMemberHOUR = rightArgLitHOUR.GetLiteral();
             #endregion
 
             #region RightArgument (MINUTE)
             RDFPatternMember rightPatternMemberMINUTE = null;
-            if (builtInArguments[2] is SWRLVariableArgument rightArgVarMINUTE)
+            if (builtInArguments[5] is SWRLVariableArgument rightArgVarMINUTE)
             {
                 #region Guards
                 string rightArgVarName = rightArgVarMINUTE.GetVariable().ToString();
@@ -78,13 +126,13 @@ namespace OWLSharp.Ontology.Rules
 
                 rightPatternMemberMINUTE = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
             }
-            else if (builtInArguments[2] is SWRLLiteralArgument rightArgLitMINUTE)
+            else if (builtInArguments[5] is SWRLLiteralArgument rightArgLitMINUTE)
                 rightPatternMemberMINUTE = rightArgLitMINUTE.GetLiteral();
             #endregion
 
             #region RightArgument (SECOND)
             RDFPatternMember rightPatternMemberSECOND = null;
-            if (builtInArguments[3] is SWRLVariableArgument rightArgVarSECOND)
+            if (builtInArguments[6] is SWRLVariableArgument rightArgVarSECOND)
             {
                 #region Guards
                 string rightArgVarName = rightArgVarSECOND.GetVariable().ToString();
@@ -94,13 +142,13 @@ namespace OWLSharp.Ontology.Rules
 
                 rightPatternMemberSECOND = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
             }
-            else if (builtInArguments[3] is SWRLLiteralArgument rightArgLitSECOND)
+            else if (builtInArguments[6] is SWRLLiteralArgument rightArgLitSECOND)
                 rightPatternMemberSECOND = rightArgLitSECOND.GetLiteral();
             #endregion
 
             #region RightArgument (TZ)
             RDFPatternMember rightPatternMemberTZ = null;
-            if (builtInArguments[4] is SWRLVariableArgument rightArgVarTZ)
+            if (builtInArguments[7] is SWRLVariableArgument rightArgVarTZ)
             {
                 #region Guards
                 string rightArgVarName = rightArgVarTZ.GetVariable().ToString();
@@ -110,45 +158,51 @@ namespace OWLSharp.Ontology.Rules
 
                 rightPatternMemberTZ = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
             }
-            else if (builtInArguments[4] is SWRLLiteralArgument rightArgLitTZ)
+            else if (builtInArguments[7] is SWRLLiteralArgument rightArgLitTZ)
                 rightPatternMemberTZ = rightArgLitTZ.GetLiteral();
             #endregion
 
             //This is a datetime builtIn, so ensure to have information compatible with "date/datetime" semantic
             bool isDateTimeLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit 
                                      && leftPMTLit.HasDatetimeDatatype();
-            bool isNumericRightPMHOUR = rightPatternMemberHOUR is RDFTypedLiteral rightPMTLitHOUR 
+            bool isNumericRightPMYEAR = rightPatternMemberYEAR is RDFTypedLiteral rightPMTLitYEAR 
+                                         && rightPMTLitYEAR.HasDecimalDatatype();
+            bool isNumericRightPMMONTH = rightPatternMemberMONTH is RDFTypedLiteral rightPMTLitMONTH 
+                                          && rightPMTLitMONTH.HasDecimalDatatype();
+            bool isNumericRightPMDAY = rightPatternMemberDAY is RDFTypedLiteral rightPMTLitDAY 
+                                        && rightPMTLitDAY.HasDecimalDatatype();
+            bool isNumericRightPMHOUR = rightPatternMemberHOUR is RDFTypedLiteral rightPMTLitHOUR
                                          && rightPMTLitHOUR.HasDecimalDatatype();
-            bool isNumericRightPMMINUTE = rightPatternMemberMINUTE is RDFTypedLiteral rightPMTLitMINUTE 
+            bool isNumericRightPMMINUTE = rightPatternMemberMINUTE is RDFTypedLiteral rightPMTLitMINUTE
                                           && rightPMTLitMINUTE.HasDecimalDatatype();
-            bool isNumericRightPMSECOND = rightPatternMemberSECOND is RDFTypedLiteral rightPMTLitSECOND 
+            bool isNumericRightPMSECOND = rightPatternMemberSECOND is RDFTypedLiteral rightPMTLitSECOND
                                         && rightPMTLitSECOND.HasDecimalDatatype();
             bool isStringRightPMTZ = rightPatternMemberTZ is RDFPlainLiteral
                                       || (rightPatternMemberTZ is RDFTypedLiteral rightPMTLitTZ && rightPMTLitTZ.HasStringDatatype());
-            if (isDateTimeLeftPM && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND && isStringRightPMTZ) 
-                if (XSD_TIME.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
+            if (isDateTimeLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH && isNumericRightPMDAY && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND && isStringRightPMTZ) 
+                if (XSD_DATETIME.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
                 {
                     string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;
-                    TimeZoneInfo rightTimeTZ = TimeZoneInfo.FindSystemTimeZoneById(
+                    TimeZoneInfo rightDateTimeTZ = TimeZoneInfo.FindSystemTimeZoneById(
                                                     string.IsNullOrWhiteSpace(targetTZ) ? "UTC" : targetTZ); //Fallback to "UTC" in absence of input
 
-                    //Get left time and convert to destination timezone
-                    DateTime leftTime = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
-                    DateTime convertedLeftTime = TimeZoneInfo.ConvertTime(leftTime, rightTimeTZ);
+                    //Get left datetime and convert to destination timezone
+                    DateTime leftDateTime = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
+                    DateTime convertedLeftDateTime = TimeZoneInfo.ConvertTime(leftDateTime, rightDateTimeTZ);
 
-                    //Get right time and convert to destination timezone
-                    DateTime rightTime = new DateTime(
-                        leftTime.Year,
-                        leftTime.Month,
-                        leftTime.Day,
+                    //Get right datetime and convert to destination timezone
+                    DateTime rightDateTime = new DateTime(
+                        Convert.ToInt32(((RDFLiteral)rightPatternMemberYEAR).Value),
+                        Convert.ToInt32(((RDFLiteral)rightPatternMemberMONTH).Value),
+                        Convert.ToInt32(((RDFLiteral)rightPatternMemberDAY).Value),
                         Convert.ToInt32(((RDFLiteral)rightPatternMemberHOUR).Value),
                         Convert.ToInt32(((RDFLiteral)rightPatternMemberMINUTE).Value),
                         Convert.ToInt32(((RDFLiteral)rightPatternMemberSECOND).Value),
                         DateTimeKind.Utc);
-                    DateTime convertedRightTime = TimeZoneInfo.ConvertTime(rightTime, rightTimeTZ);
+                    DateTime convertedRightDateTime = TimeZoneInfo.ConvertTime(rightDateTime, rightDateTimeTZ);
 
-                    //Compare times
-                    return convertedLeftTime.Equals(convertedRightTime);
+                    //Compare datetimes
+                    return convertedLeftDateTime.Equals(convertedRightDateTime);
                 }
             return false;
         }
