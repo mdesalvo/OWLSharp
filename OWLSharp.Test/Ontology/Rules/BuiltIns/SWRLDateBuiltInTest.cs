@@ -118,6 +118,18 @@ namespace OWLSharp.Test.Ontology.Rules
                 "5^^http://www.w3.org/2001/XMLSchema#int", 
                 "22^^http://www.w3.org/2001/XMLSchema#int", 
                 "UTC");
+            antecedentResults.Rows.Add(
+                "2010-05-22^^http://www.w3.org/2001/XMLSchema#date",
+                "2010^^http://www.w3.org/2001/XMLSchema#int",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                ""); //Will fallback to "UTC"
+            antecedentResults.Rows.Add(
+                "2010-08-22Z^^http://www.w3.org/2001/XMLSchema#date",
+                "2010^^http://www.w3.org/2001/XMLSchema#int",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                "UTC");
 
             SWRLBuiltIn builtin = SWRLBuiltIn.Date(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -130,12 +142,17 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtinResults);
             Assert.IsTrue(builtinResults.Columns.Count == 5);
-            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22Z^^http://www.w3.org/2001/XMLSchema#date"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?T"].ToString(), "UTC"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "2010-05-22^^http://www.w3.org/2001/XMLSchema#date"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?T"].ToString(), ""));
 
             //Test with unexisting variables
 
@@ -148,7 +165,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults2);
             Assert.IsTrue(builtinResults2.Columns.Count == 5);
-            Assert.IsTrue(builtinResults2.Rows.Count == 1);
+            Assert.IsTrue(builtinResults2.Rows.Count == 3);
 
             SWRLBuiltIn builtin3 = SWRLBuiltIn.Date(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -159,7 +176,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults3);
             Assert.IsTrue(builtinResults3.Columns.Count == 5);
-            Assert.IsTrue(builtinResults3.Rows.Count == 1);
+            Assert.IsTrue(builtinResults3.Rows.Count == 3);
 
             SWRLBuiltIn builtin4 = SWRLBuiltIn.Date(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -170,7 +187,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults4);
             Assert.IsTrue(builtinResults4.Columns.Count == 5);
-            Assert.IsTrue(builtinResults4.Rows.Count == 1);
+            Assert.IsTrue(builtinResults4.Rows.Count == 3);
 
             SWRLBuiltIn builtin5 = SWRLBuiltIn.Date(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -181,7 +198,7 @@ namespace OWLSharp.Test.Ontology.Rules
             DataTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults5);
             Assert.IsTrue(builtinResults5.Columns.Count == 5);
-            Assert.IsTrue(builtinResults5.Rows.Count == 1);
+            Assert.IsTrue(builtinResults5.Rows.Count == 3);
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<OWLException>(() =>
@@ -203,6 +220,98 @@ namespace OWLSharp.Test.Ontology.Rules
                         new SWRLVariableArgument(new RDFVariable("?V"))
                     ]
                 }.EvaluateOnAntecedent(antecedentResults));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateDateBuiltInWithLeftLiteral()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?Y");
+            antecedentResults.Columns.Add("?Z");
+            antecedentResults.Columns.Add("?Q");
+            antecedentResults.Columns.Add("?T");
+            antecedentResults.Rows.Add(
+                "2010^^http://www.w3.org/2001/XMLSchema#int",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                "UTC");
+            antecedentResults.Rows.Add(
+                "2010^^http://www.w3.org/2001/XMLSchema#int",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                ""); //Will fallback to "UTC"
+            antecedentResults.Rows.Add(
+                "2012^^http://www.w3.org/2001/XMLSchema#int",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                "UTC");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Date(
+                new SWRLLiteralArgument(new RDFTypedLiteral("2010-05-22Z", RDFModelEnums.RDFDatatypes.XSD_DATE)),
+                new SWRLVariableArgument(new RDFVariable("?Y")),
+                new SWRLVariableArgument(new RDFVariable("?Z")),
+                new SWRLVariableArgument(new RDFVariable("?Q")),
+                new SWRLVariableArgument(new RDFVariable("?T")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 4);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?T"].ToString(), "UTC"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?T"].ToString(), ""));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateDateBuiltInWithRightYearLiteral()
+        {
+            DataTable antecedentResults = new DataTable();
+            antecedentResults.Columns.Add("?X");
+            antecedentResults.Columns.Add("?Z");
+            antecedentResults.Columns.Add("?Q");
+            antecedentResults.Columns.Add("?T");
+            antecedentResults.Rows.Add(
+                "2010-05-22Z^^http://www.w3.org/2001/XMLSchema#date",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                "UTC");
+            antecedentResults.Rows.Add(
+                "2010-05-22^^http://www.w3.org/2001/XMLSchema#date",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                ""); //Will fallback to "UTC"
+            antecedentResults.Rows.Add(
+                "2010-08-22Z^^http://www.w3.org/2001/XMLSchema#date",
+                "5^^http://www.w3.org/2001/XMLSchema#int",
+                "22^^http://www.w3.org/2001/XMLSchema#int",
+                "UTC");
+
+            SWRLBuiltIn builtin = SWRLBuiltIn.Date(
+                new SWRLVariableArgument(new RDFVariable("?X")),
+                new SWRLLiteralArgument(new RDFTypedLiteral("2010", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
+                new SWRLVariableArgument(new RDFVariable("?Z")),
+                new SWRLVariableArgument(new RDFVariable("?Q")),
+                new SWRLVariableArgument(new RDFVariable("?T")));
+
+            DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
+
+            Assert.IsNotNull(builtinResults);
+            Assert.IsTrue(builtinResults.Columns.Count == 4);
+            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22Z^^http://www.w3.org/2001/XMLSchema#date"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?T"].ToString(), "UTC"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?X"].ToString(), "2010-05-22^^http://www.w3.org/2001/XMLSchema#date"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
+            Assert.IsTrue(string.Equals(builtinResults.Rows[1]["?T"].ToString(), ""));
         }
         #endregion
     }

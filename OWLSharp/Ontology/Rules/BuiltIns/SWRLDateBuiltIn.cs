@@ -128,13 +128,15 @@ namespace OWLSharp.Ontology.Rules
                 RDFDatatype xsdDate = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DATE);
                 if (xsdDate.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
                 {
-                    TimeZoneInfo rightDateTZ = TimeZoneInfo.FindSystemTimeZoneById(((RDFLiteral)rightPatternMemberTZ).Value);
+                    string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;
+                    TimeZoneInfo rightDateTZ = TimeZoneInfo.FindSystemTimeZoneById(
+                                                    string.IsNullOrWhiteSpace(targetTZ) ? "UTC" : targetTZ); //Fallback to "UTC" in absence of input
 
-                    //Get left date
+                    //Get left date and convert to destination TZ
                     DateTime leftDate = DateTime.Parse(((RDFLiteral)leftPatternMember).Value);
                     DateTime convertedLeftDate = TimeZoneInfo.ConvertTime(leftDate, rightDateTZ);
 
-                    //Get right date
+                    //Get right date and convert to destination TZ
                     DateTime rightDate = new DateTime(
                         Convert.ToInt32(((RDFLiteral)rightPatternMemberYEAR).Value),
                         Convert.ToInt32(((RDFLiteral)rightPatternMemberMONTH).Value),
@@ -142,7 +144,7 @@ namespace OWLSharp.Ontology.Rules
                         0,0,0,DateTimeKind.Utc);
                     DateTime convertedRightDate = TimeZoneInfo.ConvertTime(rightDate, rightDateTZ);
 
-                    //Compare in UTC
+                    //Compare dates
                     return convertedLeftDate.Equals(convertedRightDate);
                 }
             }
