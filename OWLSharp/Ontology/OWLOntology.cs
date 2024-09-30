@@ -214,6 +214,10 @@ namespace OWLSharp.Ontology
 					foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms)
 						graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
+					//Rules
+					foreach (SWRLRule rule in Rules)
+						graph = graph.UnionWith(rule.ToRDFGraph());
+
 					//IRI => Context
 					if (!ontologyIRI.IsBlank)
 						graph.SetContext(ontologyIRI.URI);
