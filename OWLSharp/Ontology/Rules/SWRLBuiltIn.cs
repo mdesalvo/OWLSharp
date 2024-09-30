@@ -703,7 +703,7 @@ namespace OWLSharp.Ontology.Rules
             return filteredTable;
         }
 
-        internal RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN)
+        internal RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN, RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
 

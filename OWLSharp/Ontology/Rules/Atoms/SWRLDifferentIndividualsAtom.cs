@@ -189,7 +189,7 @@ namespace OWLSharp.Ontology.Rules
             return inferences;
         }
 
-        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN)
+        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN, RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
 

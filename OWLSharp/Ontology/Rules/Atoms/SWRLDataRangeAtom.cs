@@ -70,7 +70,7 @@ namespace OWLSharp.Ontology.Rules
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology) 
             => new List<OWLInference>();
 
-        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN)
+        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN, RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
 

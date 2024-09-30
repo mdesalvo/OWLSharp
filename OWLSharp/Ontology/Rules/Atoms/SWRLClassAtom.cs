@@ -113,11 +113,20 @@ namespace OWLSharp.Ontology.Rules
             return inferences;
         }
 
-        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN)
+        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN, RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
-
-            //TODO
+            
+            RDFResource atomBN = new RDFResource(); 
+            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#ClassAtom")));
+            graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#classPredicate"), Predicate.GetIRI()));
+            if (LeftArgument is SWRLVariableArgument leftArgVar)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), new RDFResource(leftArgVar.IRI)));
+            else if (LeftArgument is SWRLIndividualArgument leftArgIdv)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgIdv.GetResource()));
+            else if (LeftArgument is SWRLLiteralArgument leftArgLit)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgLit.GetLiteral()));
+            atomsList.AddItem(atomBN);
 
             return graph;
         }
