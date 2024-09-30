@@ -63,8 +63,7 @@ namespace OWLSharp.Ontology.Rules
 
             RDFResource consequentBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, new RDFResource("http://www.w3.org/2003/11/swrl#head"), consequentBN));
-
-            //TODO
+            Atoms.ForEach(atom => graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, consequentBN))); 
 
             return graph;
         }

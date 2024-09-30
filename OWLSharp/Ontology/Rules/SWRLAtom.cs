@@ -126,6 +126,7 @@ namespace OWLSharp.Ontology.Rules
         internal abstract DataTable EvaluateOnAntecedent(OWLOntology ontology);
 
         internal abstract List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology);
+        internal abstract RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN);
         #endregion
     }
 }

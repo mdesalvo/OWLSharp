@@ -18,6 +18,7 @@ using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Helpers;
 using OWLSharp.Reasoner;
+using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
@@ -68,6 +69,15 @@ namespace OWLSharp.Ontology.Rules
         //This kind of atom does not emit inferences
         internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology) 
             => new List<OWLInference>();
+
+        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN)
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
         #endregion
     }
 }

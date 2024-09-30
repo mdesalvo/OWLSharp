@@ -112,6 +112,15 @@ namespace OWLSharp.Ontology.Rules
 
             return inferences;
         }
+
+        internal override RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN)
+        {
+            RDFGraph graph = new RDFGraph();
+
+            //TODO
+
+            return graph;
+        }
         #endregion
     }
 }
