@@ -78,6 +78,18 @@ namespace OWLSharp.Ontology.Rules
         public virtual string GetXML()
             => OWLSerializer.SerializeObject(this);
 
+        public RDFGraph ToRDFGraph()
+        {
+            RDFGraph graph = new RDFGraph();
+
+            RDFResource ruleBN = new RDFResource();
+            graph.AddTriple(new RDFTriple(ruleBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Imp")));
+            graph = graph.UnionWith(Antecedent.ToRDFGraph(ruleBN))
+                         .UnionWith(Consequent.ToRDFGraph(ruleBN));
+
+            return graph;
+        }
+
         internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
 			=> Task.Run(() => Consequent.Evaluate(
                                 Antecedent.Evaluate(ontology), ontology));

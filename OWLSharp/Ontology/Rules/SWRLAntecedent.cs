@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
@@ -72,6 +73,18 @@ namespace OWLSharp.Ontology.Rules
 
             //Return the antecedent result
             return antecedentResult;
+        }
+
+        internal RDFGraph ToRDFGraph(RDFResource ruleBN)
+        {
+            RDFGraph graph = new RDFGraph();
+
+            RDFResource antecedentBN = new RDFResource();
+            graph.AddTriple(new RDFTriple(ruleBN, new RDFResource("http://www.w3.org/2003/11/swrl#body"), antecedentBN));
+            
+            //TODO
+
+            return graph;
         }
         #endregion
     }

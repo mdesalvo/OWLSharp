@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml.Serialization;
 using OWLSharp.Reasoner;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Rules
 {
@@ -54,6 +55,18 @@ namespace OWLSharp.Ontology.Rules
 
             //Return the consequent result
             return inferences;
+        }
+
+        internal RDFGraph ToRDFGraph(RDFResource ruleBN)
+        {
+            RDFGraph graph = new RDFGraph();
+
+            RDFResource consequentBN = new RDFResource();
+            graph.AddTriple(new RDFTriple(ruleBN, new RDFResource("http://www.w3.org/2003/11/swrl#head"), consequentBN));
+
+            //TODO
+
+            return graph;
         }
         #endregion
     }
