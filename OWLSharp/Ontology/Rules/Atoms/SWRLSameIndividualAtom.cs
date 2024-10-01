@@ -193,7 +193,25 @@ namespace OWLSharp.Ontology.Rules
         {
             RDFGraph graph = new RDFGraph();
 
-            //TODO
+            RDFResource atomBN = new RDFResource();
+            atomsList.AddItem(atomBN);
+
+            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#SameIndividualAtom")));
+            graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#propertyPredicate"), Predicate.GetIRI()));
+
+            if (LeftArgument is SWRLVariableArgument leftArgVar)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), new RDFResource(leftArgVar.IRI)));
+            else if (LeftArgument is SWRLIndividualArgument leftArgIdv)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgIdv.GetResource()));
+            else if (LeftArgument is SWRLLiteralArgument leftArgLit)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgLit.GetLiteral()));
+
+            if (RightArgument is SWRLVariableArgument rightArgVar)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), new RDFResource(rightArgVar.IRI)));
+            else if (RightArgument is SWRLIndividualArgument rightArgIdv)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), rightArgIdv.GetResource()));
+            else if (RightArgument is SWRLLiteralArgument rightArgLit)
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), rightArgLit.GetLiteral()));
 
             return graph;
         }
