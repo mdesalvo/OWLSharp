@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Xml.Serialization;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
@@ -63,11 +64,15 @@ namespace OWLSharp.Ontology.Rules
 
             RDFResource consequentBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, new RDFResource("http://www.w3.org/2003/11/swrl#head"), consequentBN));
-            graph.AddTriple(new RDFTriple(consequentBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));
-            RDFCollection atomsList = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = consequentBN };
+            
+            RDFCollection consequentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = consequentBN };
             foreach (SWRLAtom atom in Atoms)
-                graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, consequentBN, atomsList));
-            graph.AddCollection(atomsList);
+                graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, consequentBN, consequentElements));
+            graph.AddCollection(consequentElements);
+
+            graph.AddTriple(new RDFTriple(consequentBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));
+            foreach (RDFResource consequentElement in consequentElements.Cast<RDFResource>().Skip(1))
+                graph.AddTriple(new RDFTriple(consequentElement, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));    
 
             return graph;
         }

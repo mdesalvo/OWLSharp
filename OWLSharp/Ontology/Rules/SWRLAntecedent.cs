@@ -18,6 +18,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -81,13 +82,17 @@ namespace OWLSharp.Ontology.Rules
 
             RDFResource antecedentBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, new RDFResource("http://www.w3.org/2003/11/swrl#body"), antecedentBN));
-            graph.AddTriple(new RDFTriple(antecedentBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));
-            RDFCollection atomsList = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = antecedentBN };
+            
+            RDFCollection antecedentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = antecedentBN };
             foreach (SWRLAtom atom in Atoms)
-                graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, antecedentBN, atomsList));
+                graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, antecedentBN, antecedentElements));
             foreach (SWRLBuiltIn builtIn in BuiltIns)
-                graph = graph.UnionWith(builtIn.ToRDFGraph(ruleBN, antecedentBN, atomsList));
-            graph.AddCollection(atomsList);
+                graph = graph.UnionWith(builtIn.ToRDFGraph(ruleBN, antecedentBN, antecedentElements));
+            graph.AddCollection(antecedentElements);
+
+            graph.AddTriple(new RDFTriple(antecedentBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));
+            foreach (RDFResource antecedentElement in antecedentElements.Cast<RDFResource>().Skip(1))
+                graph.AddTriple(new RDFTriple(antecedentElement, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));    
 
             return graph;
         }
