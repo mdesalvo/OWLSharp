@@ -79,6 +79,7 @@ namespace OWLSharp.Ontology.Rules
 
             graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#DataRangeAtom")));
             graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#dataRange"), Predicate.GetIRI()));
+            graph = graph.UnionWith(((OWLDataRangeExpression)Predicate).ToRDFGraph());
 
             if (LeftArgument is SWRLVariableArgument leftArgVar)
                 graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), new RDFResource(leftArgVar.IRI)));

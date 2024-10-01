@@ -122,6 +122,7 @@ namespace OWLSharp.Ontology.Rules
 
             graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#ClassAtom")));
             graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#classPredicate"), Predicate.GetIRI()));
+            graph = graph.UnionWith(((OWLClassExpression)Predicate).ToRDFGraph());
 
             if (LeftArgument is SWRLVariableArgument leftArgVar)
                 graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), new RDFResource(leftArgVar.IRI)));
