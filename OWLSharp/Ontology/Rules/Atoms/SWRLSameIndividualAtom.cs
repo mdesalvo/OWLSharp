@@ -197,7 +197,6 @@ namespace OWLSharp.Ontology.Rules
             atomsList.AddItem(atomBN);
 
             graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#SameIndividualAtom")));
-            graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#propertyPredicate"), Predicate.GetIRI()));
 
             if (LeftArgument is SWRLVariableArgument leftArgVar)
                 graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), new RDFResource(leftArgVar.IRI)));
