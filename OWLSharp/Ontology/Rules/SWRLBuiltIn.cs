@@ -751,7 +751,11 @@ namespace OWLSharp.Ontology.Rules
             RDFCollection builtinElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = builtinBN };
             foreach (SWRLArgument argument in Arguments)
                 if (argument is SWRLVariableArgument argVar)
-                    builtinElements.AddItemInternal(new RDFResource(argVar.IRI));
+                {
+                    RDFResource argVarIRI = new RDFResource(argVar.IRI);
+                    builtinElements.AddItemInternal(argVarIRI);
+                    graph.AddTriple(new RDFTriple(argVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
+                }   
                 else if (argument is SWRLIndividualArgument argIdv)
                     builtinElements.AddItemInternal(argIdv.GetResource());
                 else if (argument is SWRLLiteralArgument argLit)

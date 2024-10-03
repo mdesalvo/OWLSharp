@@ -199,14 +199,22 @@ namespace OWLSharp.Ontology.Rules
             graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#SameIndividualAtom")));
 
             if (LeftArgument is SWRLVariableArgument leftArgVar)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), new RDFResource(leftArgVar.IRI)));
+            {
+                RDFResource leftArgVarIRI = new RDFResource(leftArgVar.IRI);
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgVarIRI));
+                graph.AddTriple(new RDFTriple(leftArgVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
+            }
             else if (LeftArgument is SWRLIndividualArgument leftArgIdv)
                 graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgIdv.GetResource()));
             else if (LeftArgument is SWRLLiteralArgument leftArgLit)
                 graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgLit.GetLiteral()));
 
             if (RightArgument is SWRLVariableArgument rightArgVar)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), new RDFResource(rightArgVar.IRI)));
+            {
+                RDFResource rightArgVarIRI = new RDFResource(rightArgVar.IRI);
+                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), rightArgVarIRI));
+                graph.AddTriple(new RDFTriple(rightArgVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
+            }
             else if (RightArgument is SWRLIndividualArgument rightArgIdv)
                 graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), rightArgIdv.GetResource()));
             else if (RightArgument is SWRLLiteralArgument rightArgLit)
