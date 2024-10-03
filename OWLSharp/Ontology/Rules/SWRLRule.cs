@@ -81,7 +81,6 @@ namespace OWLSharp.Ontology.Rules
         public RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
-            RDFNamespaceRegister.AddNamespace(new RDFNamespace("swrl", "http://www.w3.org/2003/11/swrl#"));
 
             RDFResource ruleBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Imp")));
