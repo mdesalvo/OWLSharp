@@ -84,7 +84,6 @@ namespace OWLSharp.Test.Ontology.Rules
                    new SWRLAntecedent(),
                    null));
 
-        /*TODO: Enable and adjust after builtin multi-arguments refactory
         [TestMethod]
         public void ShouldGetStringRepresentationOfSWRLRule()
         {
@@ -101,11 +100,11 @@ namespace OWLSharp.Test.Ontology.Rules
                         SWRLBuiltIn.Add(
                             new SWRLVariableArgument(new RDFVariable("?A")),
                             new SWRLVariableArgument(new RDFVariable("?B")),
-                            44.57),
+                            new SWRLLiteralArgument(new RDFTypedLiteral("44.57", RDFModelEnums.RDFDatatypes.XSD_FLOAT))),
                         SWRLBuiltIn.Matches(
                             new SWRLVariableArgument(new RDFVariable("?P")),
-                            "Mark", 
-                            RegexOptions.IgnoreCase)
+                            new SWRLLiteralArgument(new RDFPlainLiteral("Mark")), 
+                            new SWRLLiteralArgument(new RDFPlainLiteral("i")))
                     ]
                 },
                 new SWRLConsequent() {
@@ -115,7 +114,7 @@ namespace OWLSharp.Test.Ontology.Rules
                             new SWRLVariableArgument(new RDFVariable("?P")))
                     ] });
 
-            Assert.IsTrue(string.Equals("Person(?P) ^ swrlb:add(?A,?B,\"44.57\"^^xsd:double) ^ swrlb:matches(?P,\"Mark\",\"i\") -> Agent(?P)", rule.ToString()));
+            Assert.IsTrue(string.Equals("Person(?P) ^ swrlb:add(?A,?B,\"44.57\"^^xsd:float) ^ swrlb:matches(?P,\"Mark\",\"i\") -> Agent(?P)", rule.ToString()));
         }
 
         [TestMethod]
@@ -137,7 +136,8 @@ namespace OWLSharp.Test.Ontology.Rules
                     ],
                     BuiltIns = [
                         SWRLBuiltIn.ContainsIgnoreCase(
-                            new SWRLVariableArgument(new RDFVariable("?N")), "mark")
+                            new SWRLVariableArgument(new RDFVariable("?N")), 
+                            new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
                     ]
                 },
                 new SWRLConsequent()
@@ -207,7 +207,8 @@ namespace OWLSharp.Test.Ontology.Rules
                             ],
                             BuiltIns = [
                                 SWRLBuiltIn.ContainsIgnoreCase(
-                                    new SWRLVariableArgument(new RDFVariable("?N")), "mark")
+                                    new SWRLVariableArgument(new RDFVariable("?N")), 
+                                    new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
                             ]
                         },
                         new SWRLConsequent()
@@ -227,7 +228,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
                             && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                             && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
-        }*/
+        }
         #endregion
     }
 }

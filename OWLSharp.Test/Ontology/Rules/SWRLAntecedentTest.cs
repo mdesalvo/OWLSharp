@@ -39,7 +39,6 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(antecedent.Atoms.Count == 0);
         }
 
-        /*TODO: Enable and adjust after builtin multi-arguments refactory
         [TestMethod]
         public void ShouldGetStringRepresentationOfSWRLAntecedent()
         {
@@ -78,7 +77,7 @@ namespace OWLSharp.Test.Ontology.Rules
                     SWRLBuiltIn.Divide(
                         new SWRLVariableArgument(new RDFVariable("?X")),
                         new SWRLVariableArgument(new RDFVariable("?Y")),
-                        3.141592),
+                        new SWRLLiteralArgument(new RDFTypedLiteral("3.141592", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))),
                     SWRLBuiltIn.Tan(
                         new SWRLVariableArgument(new RDFVariable("?X")),
                         new SWRLVariableArgument(new RDFVariable("?Y")))
@@ -100,7 +99,6 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(antecedent.BuiltIns.Count == 2);
             Assert.IsTrue(string.Equals("Person(?P) ^ integer(?X) ^ swrlb:divide(?X,?Y,\"3.141592\"^^xsd:double) ^ swrlb:tan(?X,?Y)", antecedent.ToString()));
         }
-        */
 
         [TestMethod]
         public void ShouldEvaluateSWRLAntecedent()
