@@ -705,9 +705,60 @@ namespace OWLSharp.Ontology.Rules
 
         internal RDFGraph ToRDFGraph(RDFResource ruleBN, RDFResource antecedentOrConsequentBN, RDFCollection atomsList)
         {
-            RDFGraph graph = new RDFGraph();
+            #region Facilities
+            //Replicates the algorythm of RDFCollection, but relaxes constraint on ItemType
+            //since a SWRL builtin can mix resources and literals as arguments
+            RDFGraph ReifyCollection(RDFCollection collection)
+            {
+                RDFGraph reifColl = new RDFGraph();
+                RDFResource reifSubj = collection.ReificationSubject;
+                int itemCount = 0;
 
-            //TODO
+                //Collection can be reified only if it has at least one item
+                foreach (RDFPatternMember listEnum in collection)
+                {
+                    itemCount++;
+
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+
+                    if (listEnum is RDFResource resListEnum)
+                        reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.FIRST, resListEnum));
+                    else
+                        reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.FIRST, (RDFLiteral)listEnum));
+
+                    if (itemCount < collection.ItemsCount)
+                    {
+                        RDFResource newSub = new RDFResource();
+                        reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.REST, newSub));
+                        reifSubj = newSub;
+                    }
+                    else
+                        reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
+                }
+
+                return reifColl;
+            }
+            #endregion
+
+            RDFGraph graph = new RDFGraph();
+            
+            RDFResource builtinBN = new RDFResource();
+            atomsList.AddItem(builtinBN);
+
+            graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#BuiltinAtom")));
+            graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#builtin"), new RDFResource(IRI)));
+
+            RDFCollection builtinElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = builtinBN };
+            foreach (SWRLArgument argument in Arguments)
+                if (argument is SWRLVariableArgument argVar)
+                    builtinElements.AddItemInternal(new RDFResource(argVar.IRI));
+                else if (argument is SWRLIndividualArgument argIdv)
+                    builtinElements.AddItemInternal(argIdv.GetResource());
+                else if (argument is SWRLLiteralArgument argLit)
+                    builtinElements.AddItemInternal(argLit.GetLiteral());
+            graph = graph.UnionWith(ReifyCollection(builtinElements));
+
+            graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#arguments"), builtinElements.ReificationSubject));
 
             return graph;
         }
