@@ -83,7 +83,7 @@ namespace OWLSharp.Ontology.Rules
             RDFResource antecedentBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, new RDFResource("http://www.w3.org/2003/11/swrl#body"), antecedentBN));
             
-            RDFCollection antecedentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = antecedentBN };
+            RDFCollection antecedentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { InternalReificationSubject = antecedentBN };
             foreach (SWRLAtom atom in Atoms)
                 graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, antecedentBN, antecedentElements));
             foreach (SWRLBuiltIn builtIn in BuiltIns)

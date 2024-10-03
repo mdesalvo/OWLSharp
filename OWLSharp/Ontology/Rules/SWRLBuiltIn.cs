@@ -748,7 +748,7 @@ namespace OWLSharp.Ontology.Rules
             graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#BuiltinAtom")));
             graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#builtin"), new RDFResource(IRI)));
 
-            RDFCollection builtinElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { ReificationSubject = builtinBN };
+            RDFCollection builtinElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { InternalReificationSubject = builtinBN };
             foreach (SWRLArgument argument in Arguments)
                 if (argument is SWRLVariableArgument argVar)
                 {
