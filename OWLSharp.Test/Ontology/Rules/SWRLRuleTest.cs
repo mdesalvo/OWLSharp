@@ -229,6 +229,43 @@ namespace OWLSharp.Test.Ontology.Rules
                             && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                             && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
         }
+
+        [TestMethod]
+        public void ShouldExportSWRLRuleToRDFGraph()
+        {
+            SWRLRule rule = new SWRLRule(
+                new RDFPlainLiteral("SWRL1"),
+                new RDFPlainLiteral("This is a test SWRL rule"),
+                new SWRLAntecedent()
+                {
+                    Atoms = [
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.FOAF.PERSON),
+                            new SWRLVariableArgument(new RDFVariable("?P"))),
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+                            new SWRLVariableArgument(new RDFVariable("?P")),
+                            new SWRLVariableArgument(new RDFVariable("?N")))
+                    ],
+                    BuiltIns = [
+                        SWRLBuiltIn.ContainsIgnoreCase(
+                            new SWRLVariableArgument(new RDFVariable("?N")), 
+                            new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
+                    ]
+                },
+                new SWRLConsequent()
+                {
+                    Atoms = [
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.FOAF.AGENT),
+                            new SWRLVariableArgument(new RDFVariable("?P")))
+                    ]
+                });
+            RDFGraph graph = rule.ToRDFGraph();
+
+            Assert.IsNotNull(graph);
+            //TODO: complete test...
+        }
         #endregion
     }
 }
