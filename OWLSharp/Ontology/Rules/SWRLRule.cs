@@ -20,6 +20,7 @@ using System.Xml.Serialization;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology.Rules
 {
@@ -101,6 +102,41 @@ namespace OWLSharp.Ontology.Rules
         internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
 			=> Task.Run(() => Consequent.Evaluate(
                                 Antecedent.Evaluate(ontology), ontology));
+        #endregion
+
+        #region Utilities
+        internal static RDFGraph ReifySWRLCollection(RDFCollection collection, bool isAtomList)
+        {
+            RDFGraph reifColl = new RDFGraph();
+            RDFResource reifSubj = collection.ReificationSubject;
+            int itemCount = 0;
+
+            //Collection can be reified only if it has at least one item
+            foreach (RDFPatternMember listEnum in collection)
+            {
+                itemCount++;
+
+                reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+                if (isAtomList)
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));
+
+                if (listEnum is RDFResource resListEnum)
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.FIRST, resListEnum));
+                else
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.FIRST, (RDFLiteral)listEnum));
+
+                if (itemCount < collection.ItemsCount)
+                {
+                    RDFResource newSub = new RDFResource();
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.REST, newSub));
+                    reifSubj = newSub;
+                }
+                else
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
+            }
+
+            return reifColl;
+        }
         #endregion
     }
 }
