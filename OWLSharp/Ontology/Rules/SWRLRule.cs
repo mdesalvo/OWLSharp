@@ -84,8 +84,16 @@ namespace OWLSharp.Ontology.Rules
 
             RDFResource ruleBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Imp")));
-            graph = graph.UnionWith(Antecedent.ToRDFGraph(ruleBN))
-                         .UnionWith(Consequent.ToRDFGraph(ruleBN));
+
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraphInternal(ruleBN));
+
+            //Antecedent
+            graph = graph.UnionWith(Antecedent.ToRDFGraph(ruleBN));
+
+            //Consequent
+            graph = graph.UnionWith(Consequent.ToRDFGraph(ruleBN));
 
             return graph;
         }
