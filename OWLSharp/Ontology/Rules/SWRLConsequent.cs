@@ -67,7 +67,7 @@ namespace OWLSharp.Ontology.Rules
             
             RDFCollection consequentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { InternalReificationSubject = consequentBN };
             foreach (SWRLAtom atom in Atoms)
-                graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, consequentBN, consequentElements));
+                graph = graph.UnionWith(atom.ToRDFGraph(consequentElements));
             graph = graph.UnionWith(SWRLRule.ReifySWRLCollection(consequentElements, true));
 
             return graph;

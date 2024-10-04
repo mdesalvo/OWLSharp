@@ -85,9 +85,9 @@ namespace OWLSharp.Ontology.Rules
             
             RDFCollection antecedentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { InternalReificationSubject = antecedentBN };
             foreach (SWRLAtom atom in Atoms)
-                graph = graph.UnionWith(atom.ToRDFGraph(ruleBN, antecedentBN, antecedentElements));
+                graph = graph.UnionWith(atom.ToRDFGraph(antecedentElements));
             foreach (SWRLBuiltIn builtIn in BuiltIns)
-                graph = graph.UnionWith(builtIn.ToRDFGraph(ruleBN, antecedentBN, antecedentElements));
+                graph = graph.UnionWith(builtIn.ToRDFGraph(antecedentElements));
             graph = graph.UnionWith(SWRLRule.ReifySWRLCollection(antecedentElements, true));
 
             return graph;
