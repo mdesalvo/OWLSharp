@@ -250,7 +250,11 @@ namespace OWLSharp.Test.Ontology.Rules
                     BuiltIns = [
                         SWRLBuiltIn.ContainsIgnoreCase(
                             new SWRLVariableArgument(new RDFVariable("?N")), 
-                            new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
+                            new SWRLLiteralArgument(new RDFPlainLiteral("mark"))),
+                        SWRLBuiltIn.Matches(
+                            new SWRLVariableArgument(new RDFVariable("?N")),
+                            new SWRLLiteralArgument(new RDFPlainLiteral("mark")),
+                            new SWRLLiteralArgument(new RDFPlainLiteral("i")))
                     ]
                 },
                 new SWRLConsequent()
@@ -264,7 +268,19 @@ namespace OWLSharp.Test.Ontology.Rules
             RDFGraph graph = rule.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            //TODO: complete test...
+            Assert.IsTrue(graph.TriplesCount == 62);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Imp"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#body"), null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#head"), null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#ClassAtom"), null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), null, null].TriplesCount == 3);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#BuiltinAtom"), null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#arguments"), null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#builtin"), null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable"), null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList"), null].TriplesCount == 5);
         }
         #endregion
     }
