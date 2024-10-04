@@ -713,21 +713,20 @@ namespace OWLSharp.Ontology.Rules
             graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#BuiltinAtom")));
             graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#builtin"), new RDFResource(IRI)));
 
-            RDFCollection builtinElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { InternalReificationSubject = builtinBN };
+            RDFCollection builtinArguments = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
             foreach (SWRLArgument argument in Arguments)
                 if (argument is SWRLVariableArgument argVar)
                 {
                     RDFResource argVarIRI = new RDFResource(argVar.IRI);
-                    builtinElements.AddItemInternal(argVarIRI);
+                    builtinArguments.AddItemInternal(argVarIRI);
                     graph.AddTriple(new RDFTriple(argVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
                 }   
                 else if (argument is SWRLIndividualArgument argIdv)
-                    builtinElements.AddItemInternal(argIdv.GetResource());
+                    builtinArguments.AddItemInternal(argIdv.GetResource());
                 else if (argument is SWRLLiteralArgument argLit)
-                    builtinElements.AddItemInternal(argLit.GetLiteral());
-            graph = graph.UnionWith(SWRLRule.ReifySWRLCollection(builtinElements, false));
-
-            graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#arguments"), builtinElements.ReificationSubject));
+                    builtinArguments.AddItemInternal(argLit.GetLiteral());
+            graph = graph.UnionWith(SWRLRule.ReifySWRLCollection(builtinArguments, false));
+            graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#arguments"), builtinArguments.ReificationSubject));
 
             return graph;
         }
