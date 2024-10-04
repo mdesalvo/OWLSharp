@@ -722,7 +722,69 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("States the age of a person", "en-US")].TriplesCount == 1);
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithRuleToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Declaration>
+    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+  </Declaration>
+  <Declaration>
+    <DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
+  </Declaration>
+  <DLSafeRule>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal>SWRL1</Literal>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+      <Literal>This is a test SWRL rule</Literal>
+    </Annotation>
+    <Body>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+      <DataPropertyAtom>
+        <DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+        <Variable IRI=""urn:swrl:var#N"" />
+      </DataPropertyAtom>
+      <BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#containsIgnoreCase"">
+        <Variable IRI=""urn:swrl:var#N"" />
+        <Literal>mark</Literal>
+      </BuiltInAtom>
+    </Body>
+    <Head>
+      <ClassAtom>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Head>
+  </DLSafeRule>
+</Ontology>");
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 48);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Imp"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#body"), null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#head"), null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#ClassAtom"), null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#BuiltinAtom"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable"), null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList"), null].TriplesCount == 4);
+        }
+
+        [TestMethod]
 		public async Task ShouldWriteOntologyToFileAsync()
 		{
 			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
