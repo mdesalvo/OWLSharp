@@ -722,7 +722,6 @@ namespace OWLSharp.Test.Ontology
 			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("States the age of a person", "en-US")].TriplesCount == 1);
 		}
 
-        /*TODO: This test breaks on mixed collection reification (arguments of a builtin)
         [TestMethod]
         public async Task ShouldConvertOntologyWithRuleToGraphAsync()
         {
@@ -783,7 +782,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#BuiltinAtom"), null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList"), null].TriplesCount == 4);
-        }*/
+        }
 
         [TestMethod]
 		public async Task ShouldWriteOntologyToFileAsync()

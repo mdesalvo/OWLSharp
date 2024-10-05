@@ -230,7 +230,6 @@ namespace OWLSharp.Test.Ontology.Rules
                             && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
         }
 
-        /*TODO: This test breaks on mixed collection reification (arguments of a builtin)
         [TestMethod]
         public void ShouldExportSWRLRuleToRDFGraph()
         {
@@ -282,7 +281,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(graph[null, new RDFResource("http://www.w3.org/2003/11/swrl#builtin"), null, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList"), null].TriplesCount == 5);
-        }*/
+        }
         #endregion
     }
 }

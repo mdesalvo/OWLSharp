@@ -21,6 +21,7 @@ using System.Xml.Serialization;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Ontology.Rules
 {
@@ -107,14 +108,32 @@ namespace OWLSharp.Ontology.Rules
         #region Utilities
         internal static RDFGraph ReifySWRLCollection(RDFCollection collection, bool isAtomList)
         {
-            RDFGraph reifColl = collection.ReifyCollection();
+            RDFGraph reifColl = new RDFGraph();
+            RDFResource reifSubj = collection.ReificationSubject;
+            int itemCount = 0;
 
-            if (isAtomList)
+            foreach (RDFPatternMember collectionItem in collection)
             {
-                RDFGraph reifCollItems = reifColl[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null];
-                foreach (RDFResource reifCollItem in reifCollItems.Select(t => (RDFResource)t.Subject))
-                    reifColl.AddTriple(new RDFTriple(reifCollItem, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));
-            }   
+                itemCount++;
+
+                reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST));
+                if (isAtomList)
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#AtomList")));
+
+                if (collectionItem is RDFResource collectionItemResource)
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.FIRST, collectionItemResource));
+                else
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.FIRST, (RDFLiteral)collectionItem));
+
+                if (itemCount < collection.ItemsCount)
+                {
+                    RDFResource newSub = new RDFResource();
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.REST, newSub));
+                    reifSubj = newSub;
+                }
+                else
+                    reifColl.AddTriple(new RDFTriple(reifSubj, RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL));
+            }
 
             return reifColl;
         }
