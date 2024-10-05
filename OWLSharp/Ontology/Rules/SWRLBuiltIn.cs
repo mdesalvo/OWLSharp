@@ -710,23 +710,23 @@ namespace OWLSharp.Ontology.Rules
             RDFResource builtinBN = new RDFResource();
             atomsList.AddItem(builtinBN);
 
-            graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#BuiltinAtom")));
-            graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#builtin"), new RDFResource(IRI)));
+            graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.BUILTIN_ATOM));
+            graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.SWRL.BUILTIN_PROP, new RDFResource(IRI)));
 
-            RDFCollection builtinArguments = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+            RDFCollection builtinArguments = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource, true);
             foreach (SWRLArgument argument in Arguments)
                 if (argument is SWRLVariableArgument argVar)
                 {
                     RDFResource argVarIRI = new RDFResource(argVar.IRI);
                     builtinArguments.AddItemInternal(argVarIRI);
-                    graph.AddTriple(new RDFTriple(argVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
+                    graph.AddTriple(new RDFTriple(argVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
                 }   
                 else if (argument is SWRLIndividualArgument argIdv)
                     builtinArguments.AddItemInternal(argIdv.GetResource());
                 else if (argument is SWRLLiteralArgument argLit)
                     builtinArguments.AddItemInternal(argLit.GetLiteral());
             graph = graph.UnionWith(SWRLRule.ReifySWRLCollection(builtinArguments, false));
-            graph.AddTriple(new RDFTriple(builtinBN, new RDFResource("http://www.w3.org/2003/11/swrl#arguments"), builtinArguments.ReificationSubject));
+            graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.SWRL.ARGUMENTS, builtinArguments.ReificationSubject));
 
             return graph;
         }

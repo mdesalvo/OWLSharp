@@ -671,7 +671,7 @@ namespace OWLSharp.Ontology
 								ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() };
 
 							//Left                    
-							RDFCollection chainAxiomMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)propertyChainAxiomTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO);
+							RDFCollection chainAxiomMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)propertyChainAxiomTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO, true);
 							foreach (RDFResource chainAxiomMember in chainAxiomMembers.Items.Cast<RDFResource>())
 							{
 								LoadObjectPropertyExpression(ont, chainAxiomMember, out OWLObjectPropertyExpression opex);

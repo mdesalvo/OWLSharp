@@ -84,7 +84,7 @@ namespace OWLSharp.Ontology.Rules
             RDFGraph graph = new RDFGraph();
 
             RDFResource ruleBN = new RDFResource();
-            graph.AddTriple(new RDFTriple(ruleBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Imp")));
+            graph.AddTriple(new RDFTriple(ruleBN, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.IMP));
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)

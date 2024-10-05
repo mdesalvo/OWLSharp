@@ -77,20 +77,20 @@ namespace OWLSharp.Ontology.Rules
             RDFResource atomBN = new RDFResource();
             atomsList.AddItem(atomBN);
 
-            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#DataRangeAtom")));
-            graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#dataRange"), Predicate.GetIRI()));
+            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DATARANGE_ATOM));
+            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.DATARANGE, Predicate.GetIRI()));
             graph = graph.UnionWith(Predicate.ToRDFGraph());
 
             if (LeftArgument is SWRLVariableArgument leftArgVar)
             {
                 RDFResource leftArgVarIRI = new RDFResource(leftArgVar.IRI);
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgVarIRI));
-                graph.AddTriple(new RDFTriple(leftArgVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgVarIRI));
+                graph.AddTriple(new RDFTriple(leftArgVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
             }
             else if (LeftArgument is SWRLIndividualArgument leftArgIdv)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgIdv.GetResource()));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgIdv.GetResource()));
             else if (LeftArgument is SWRLLiteralArgument leftArgLit)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgLit.GetLiteral()));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgLit.GetLiteral()));
 
             return graph;
         }

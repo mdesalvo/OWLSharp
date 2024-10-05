@@ -179,30 +179,30 @@ namespace OWLSharp.Ontology.Rules
             RDFResource atomBN = new RDFResource();
             atomsList.AddItem(atomBN);
 
-            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#IndividualPropertyAtom")));
-            graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#propertyPredicate"), Predicate.GetIRI()));
+            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.INDIVIDUAL_PROPERTY_ATOM));
+            graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.PROPERTY_PREDICATE, Predicate.GetIRI()));
 
             if (LeftArgument is SWRLVariableArgument leftArgVar)
             {
                 RDFResource leftArgVarIRI = new RDFResource(leftArgVar.IRI);
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgVarIRI));
-                graph.AddTriple(new RDFTriple(leftArgVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgVarIRI));
+                graph.AddTriple(new RDFTriple(leftArgVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
             }
             else if (LeftArgument is SWRLIndividualArgument leftArgIdv)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgIdv.GetResource()));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgIdv.GetResource()));
             else if (LeftArgument is SWRLLiteralArgument leftArgLit)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument1"), leftArgLit.GetLiteral()));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgLit.GetLiteral()));
 
             if (RightArgument is SWRLVariableArgument rightArgVar)
             {
                 RDFResource rightArgVarIRI = new RDFResource(rightArgVar.IRI);
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), rightArgVarIRI));
-                graph.AddTriple(new RDFTriple(rightArgVarIRI, RDFVocabulary.RDF.TYPE, new RDFResource("http://www.w3.org/2003/11/swrl#Variable")));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT2, rightArgVarIRI));
+                graph.AddTriple(new RDFTriple(rightArgVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
             }
             else if (RightArgument is SWRLIndividualArgument rightArgIdv)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), rightArgIdv.GetResource()));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT2, rightArgIdv.GetResource()));
             else if (RightArgument is SWRLLiteralArgument rightArgLit)
-                graph.AddTriple(new RDFTriple(atomBN, new RDFResource("http://www.w3.org/2003/11/swrl#argument2"), rightArgLit.GetLiteral()));
+                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT2, rightArgLit.GetLiteral()));
 
             return graph;
         }
