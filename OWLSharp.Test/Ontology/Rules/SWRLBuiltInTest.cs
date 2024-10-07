@@ -15,6 +15,9 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology.Rules;
+using RDFSharp.Model;
+using RDFSharp.Query;
 
 namespace OWLSharp.Test.Ontology.Rules
 {
@@ -22,7 +25,34 @@ namespace OWLSharp.Test.Ontology.Rules
     public class SWRLBuiltInTest
     {
         #region Tests
-        
+        [TestMethod]
+        public void ShouldCreateBuiltIn()
+        {
+            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrl#example",
+                Arguments = [
+                    new SWRLVariableArgument(new RDFVariable("?VAR")),
+                    new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                    new SWRLLiteralArgument(new RDFPlainLiteral("lit"))
+                ]
+            };
+
+            Assert.IsNotNull(builtin);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals(builtin.IRI, "http://www.w3.org/2003/11/swrl#example"));
+            Assert.IsNotNull(builtin.Arguments);
+            Assert.IsTrue(builtin.Arguments.Count == 3);
+            Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument varArg 
+                                                    && string.Equals(varArg.IRI,"urn:swrl:var#VAR")
+                                                    && varArg.GetVariable().Equals(new RDFVariable("?VAR")));
+            Assert.IsTrue(builtin.Arguments[1] is SWRLIndividualArgument idvArg
+                                                    && string.Equals(idvArg.IRI, "http://test.org/")
+                                                    && idvArg.GetResource().Equals(new RDFResource("http://test.org/")));
+            Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument litArg
+                                                    && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
+            Assert.IsTrue(string.Equals(builtin.ToString(), "swrlb:example(?VAR,http://test.org/,\"lit\")"));
+        }
         #endregion
     }
 }
