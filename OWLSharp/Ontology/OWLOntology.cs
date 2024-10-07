@@ -1587,9 +1587,16 @@ namespace OWLSharp.Ontology
 					{
                         foreach (RDFTriple ruleTriple in typeGraph[null, null, RDFVocabulary.SWRL.IMP, null])
 						{
-							SWRLRule rule = new SWRLRule();
-                            //TODO
+							RDFResource antecedent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.BODY, null, null]
+														.FirstOrDefault()?.Object as RDFResource;
+                            RDFResource consequent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.HEAD, null, null]
+                                                        .FirstOrDefault()?.Object as RDFResource;
+							if (antecedent != null && consequent != null)
+							{
+                                SWRLRule rule = new SWRLRule();
+								//TODO
 
+                            }
                         }
                     }
 					//Expressions
