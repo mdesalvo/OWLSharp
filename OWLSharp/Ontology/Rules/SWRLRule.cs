@@ -92,17 +92,17 @@ namespace OWLSharp.Ontology.Rules
                 graph = graph.UnionWith(annotation.ToRDFGraphInternal(ruleBN));
 
             //Antecedent
-            graph = graph.UnionWith(Antecedent.ToRDFGraph(ruleBN));
+            graph = graph.UnionWith(Antecedent?.ToRDFGraph(ruleBN));
 
             //Consequent
-            graph = graph.UnionWith(Consequent.ToRDFGraph(ruleBN));
+            graph = graph.UnionWith(Consequent?.ToRDFGraph(ruleBN));
 
             return graph;
         }
 
         internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
-			=> Task.Run(() => Consequent.Evaluate(
-                                Antecedent.Evaluate(ontology), ontology));
+			=> Task.Run(() => Consequent?.Evaluate(
+                                Antecedent?.Evaluate(ontology), ontology));
         #endregion
 
         #region Utilities

@@ -4453,6 +4453,68 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
+        public async Task ShouldReadRuleWithAnnotationsFromGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Declaration>
+    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/depicts"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.org/Idv"" />
+  </Declaration>
+  <DLSafeRule>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <Literal xml:lang=""EN-US"">SWRL1</Literal>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
+      <IRI>http://example.org/Idv</IRI>
+    </Annotation>
+     <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+      <Literal datatypeIRI=""http://www.w3.org/2000/01/rdf-schema#Literal"">This is a test SWRL rule</Literal>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
+      <IRI>http://example.org/Idv</IRI>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/depicts"" />
+      <Literal>Depicts a SWRL rule</Literal>
+    </Annotation>
+    <Annotation>
+      <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/depicts"" />
+      <IRI>http://example.org/Idv</IRI>
+    </Annotation>
+  </DLSafeRule>
+</Ontology>");
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(ontology2.Rules.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Annotations.Count == 6);
+            Assert.IsTrue(ontology2.Rules[0].Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
+                            && string.Equals(ontology2.Rules[0].Annotations[0].ValueLiteral.Value, "SWRL1")
+                            && string.Equals(ontology2.Rules[0].Annotations[0].ValueLiteral.Language, "EN-US"));
+            Assert.IsTrue(ontology2.Rules[0].Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
+                            && string.Equals(ontology2.Rules[0].Annotations[1].ValueIRI, "http://example.org/Idv"));
+            Assert.IsTrue(ontology2.Rules[0].Annotations[2].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(ontology2.Rules[0].Annotations[2].ValueLiteral.Value, "This is a test SWRL rule")
+                            && string.Equals(ontology2.Rules[0].Annotations[2].ValueLiteral.DatatypeIRI, "http://www.w3.org/2000/01/rdf-schema#Literal"));
+            Assert.IsTrue(ontology2.Rules[0].Annotations[3].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && string.Equals(ontology2.Rules[0].Annotations[3].ValueIRI, "http://example.org/Idv"));
+            Assert.IsTrue(ontology2.Rules[0].Annotations[4].AnnotationProperty.GetIRI().Equals(new RDFResource("http://xmlns.com/foaf/0.1/depicts"))
+                            && string.Equals(ontology2.Rules[0].Annotations[4].ValueLiteral.Value, "Depicts a SWRL rule"));
+            Assert.IsTrue(ontology2.Rules[0].Annotations[5].AnnotationProperty.GetIRI().Equals(new RDFResource("http://xmlns.com/foaf/0.1/depicts"))
+                            && string.Equals(ontology2.Rules[0].Annotations[5].ValueIRI, "http://example.org/Idv"));
+        }
+
+        [TestMethod]
         public async Task ShouldImportOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));

@@ -1592,15 +1592,19 @@ namespace OWLSharp.Ontology
 
 							//Load annotations
 							foreach (RDFTriple ruleLabel in graph[ruleSubject, RDFVocabulary.RDFS.LABEL, null, null])
+							{
 								if (ruleLabel.Object is RDFLiteral ruleLabelLit)
 									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), new OWLLiteral(ruleLabelLit)));
 								else if (ruleLabel.Object is RDFResource ruleLabelRes)
 									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), ruleLabelRes));
+							}								
 							foreach (RDFTriple ruleComment in graph[ruleSubject, RDFVocabulary.RDFS.COMMENT, null, null])
+							{
 								if (ruleComment.Object is RDFLiteral ruleCommentLit)
 									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(ruleCommentLit)));
 								else if (ruleComment.Object is RDFResource ruleCommentRes)
 									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), ruleCommentRes));
+							}
 							foreach (OWLAnnotationProperty annProp in ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty)
 																						   .Select(dax => (OWLAnnotationProperty)dax.Expression))
 							{
@@ -1608,10 +1612,10 @@ namespace OWLSharp.Ontology
 								if (!annPropIRI.Equals(RDFVocabulary.RDFS.COMMENT) && !annPropIRI.Equals(RDFVocabulary.RDFS.LABEL))
 								{
 									foreach (RDFTriple ruleCustomAnnotation in graph[ruleSubject, annPropIRI, null, null])
-										if (ruleCustomAnnotation.Object is RDFLiteral ruleAnnLit)
-											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), new OWLLiteral(ruleAnnLit)));
-										else if (ruleCustomAnnotation.Object is RDFResource ruleAnnRes)
-											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), ruleAnnRes));
+										if (ruleCustomAnnotation.Object is RDFLiteral ruleCustomAnnotationLit)
+											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), new OWLLiteral(ruleCustomAnnotationLit)));
+										else if (ruleCustomAnnotation.Object is RDFResource ruleCustomAnnotationRes)
+											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), ruleCustomAnnotationRes));
 								} 
 							}
 
@@ -1632,6 +1636,8 @@ namespace OWLSharp.Ontology
 								//TODO
 								
 							}
+
+							ont.Rules.Add(rule);
                         }
                     }
 					//Expressions

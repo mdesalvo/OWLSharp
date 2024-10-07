@@ -52,7 +52,8 @@ namespace OWLSharp.Ontology.Rules
             List<OWLInference>  inferences = new List<OWLInference> ();
 
             //Execute the consequent atoms
-            Atoms.ForEach(atom => inferences.AddRange(atom.EvaluateOnConsequent(antecedentResults, ontology)));
+            if (antecedentResults != null)
+                Atoms.ForEach(atom => inferences.AddRange(atom.EvaluateOnConsequent(antecedentResults, ontology)));
 
             //Return the consequent result
             return inferences;
