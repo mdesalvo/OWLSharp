@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using System.Data;
 
 namespace OWLSharp.Test.Ontology.Rules
 {
@@ -52,6 +53,24 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument litArg
                                                     && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
             Assert.IsTrue(string.Equals(builtin.ToString(), "swrlb:example(?VAR,http://test.org/,\"lit\")"));
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnEvaluatingBuiltInOnAntecedentBecauseUnknownIRI()
+        {
+            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrl#example",
+                Arguments = [
+                    new SWRLVariableArgument(new RDFVariable("?VAR")),
+                    new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                    new SWRLLiteralArgument(new RDFPlainLiteral("lit"))
+                ]
+            };
+            DataTable table = new DataTable();
+            table.Columns.Add("?VAR");
+            table.Rows.Add("value");
+            Assert.ThrowsException<OWLException>(() => builtin.EvaluateOnAntecedent(table));
         }
         #endregion
     }
