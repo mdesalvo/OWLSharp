@@ -1605,13 +1605,12 @@ namespace OWLSharp.Ontology
 																						   .Select(dax => (OWLAnnotationProperty)dax.Expression))
 							{
 								RDFResource annPropIRI = annProp.GetIRI();
-								if (!annPropIRI.Equals(RDFVocabulary.RDFS.COMMENT) 
-									  && !annPropIRI.Equals(RDFVocabulary.RDFS.LABEL))
+								if (!annPropIRI.Equals(RDFVocabulary.RDFS.COMMENT) && !annPropIRI.Equals(RDFVocabulary.RDFS.LABEL))
 								{
-									foreach (RDFTriple ruleAnn in graph[ruleSubject, annPropIRI, null, null])
-										if (ruleAnn.Object is RDFLiteral ruleAnnLit)
+									foreach (RDFTriple ruleCustomAnnotation in graph[ruleSubject, annPropIRI, null, null])
+										if (ruleCustomAnnotation.Object is RDFLiteral ruleAnnLit)
 											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), new OWLLiteral(ruleAnnLit)));
-										else if (ruleAnn.Object is RDFResource ruleAnnRes)
+										else if (ruleCustomAnnotation.Object is RDFResource ruleAnnRes)
 											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), ruleAnnRes));
 								} 
 							}
