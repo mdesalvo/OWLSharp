@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -71,6 +72,40 @@ namespace OWLSharp.Test.Ontology.Rules
             table.Columns.Add("?VAR");
             table.Rows.Add("value");
             Assert.ThrowsException<OWLException>(() => builtin.EvaluateOnAntecedent(table));
+        }
+
+        [TestMethod]
+        public void ShouldExportBuiltinToRDFGraph()
+        {
+            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            {
+                IRI = "http://www.w3.org/2003/11/swrl#example",
+                Arguments = [
+                    new SWRLVariableArgument(new RDFVariable("?VAR")),
+                    new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                    new SWRLLiteralArgument(new RDFPlainLiteral("lit"))
+                ]
+            };
+            RDFGraph graph = builtin.ToRDFGraph(new RDFCollection(RDFModelEnums.RDFItemTypes.Resource));
+
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 13);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.IMP, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.BODY, null, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.HEAD, null, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.CLASS_ATOM, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DATARANGE_ATOM, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DATAVALUED_PROPERTY_ATOM, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DIFFERENT_INDIVIDUALS_ATOM, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.INDIVIDUAL_PROPERTY_ATOM, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.SAME_INDIVIDUAL_ATOM, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENT1, null, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENT2, null, null].TriplesCount == 0);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.BUILTIN_ATOM, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENTS, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.BUILTIN_PROP, new RDFResource("http://www.w3.org/2003/11/swrl#example"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("urn:swrl:var#VAR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 0);
         }
         #endregion
     }
