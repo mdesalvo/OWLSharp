@@ -1582,6 +1582,16 @@ namespace OWLSharp.Ontology
 							LoadNestedAnnotation(ont, nestedAnnotationTriple, annotation.Annotation, annAxiomsGraph);
 						}
 					}
+					//Rules
+					void LoadRules(OWLOntology ont, RDFGraph annAxiomsGraph)
+					{
+                        foreach (RDFTriple ruleTriple in typeGraph[null, null, RDFVocabulary.SWRL.IMP, null])
+						{
+							SWRLRule rule = new SWRLRule();
+                            //TODO
+
+                        }
+                    }
 					//Expressions
 					void LoadAnnotationPropertyExpression(OWLOntology ont, RDFResource apIRI, out OWLAnnotationPropertyExpression apex)
 					{
@@ -2391,6 +2401,8 @@ namespace OWLSharp.Ontology
 					LoadSubAnnotationProperties(ontology, annotationAxiomsGraph);
 					LoadAnnotationPropertyDomain(ontology, annotationAxiomsGraph);
 					LoadAnnotationPropertyRange(ontology, annotationAxiomsGraph);
+					//Rules
+					LoadRules(ontology, annotationAxiomsGraph);
 
 					return ontology;
 				});
@@ -2439,7 +2451,13 @@ namespace OWLSharp.Ontology
 						OWLOntology importedOntology = await FromRDFGraphAsync(importedGraph.WrappedGraph);
 
 						Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.OWL.IMPORTS), new RDFResource(importedOntology.IRI)));
-						importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
+                        //Prefixes
+						importedOntology.Prefixes.ForEach(pfx => {
+                            if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
+                                Prefixes.Add(pfx);
+                        });
+						//Axioms
+                        importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
 						importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
 						importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ClassAxioms.Add(ax); });
 						importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; DataPropertyAxioms.Add(ax); });
@@ -2447,11 +2465,7 @@ namespace OWLSharp.Ontology
 						importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
 						importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
 						importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
-						importedOntology.Prefixes.ForEach(pfx =>
-						{
-							if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
-								Prefixes.Add(pfx);
-						});
+						//Rules
 						importedOntology.Rules.ForEach(r => { r.IsImport = true; Rules.Add(r); });
 					}
 					catch (Exception ex)
