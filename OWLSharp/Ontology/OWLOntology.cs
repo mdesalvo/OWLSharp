@@ -1588,14 +1588,15 @@ namespace OWLSharp.Ontology
                         foreach (RDFTriple ruleTriple in typeGraph[null, null, RDFVocabulary.SWRL.IMP, null])
 						{
 							SWRLRule rule = new SWRLRule();
+							RDFResource ruleSubject = (RDFResource)ruleTriple.Subject;
 
 							//Load annotations
-							foreach (RDFTriple ruleLabel in graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.RDFS.LABEL, null, null])
+							foreach (RDFTriple ruleLabel in graph[ruleSubject, RDFVocabulary.RDFS.LABEL, null, null])
 								if (ruleLabel.Object is RDFLiteral ruleLabelLit)
 									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), new OWLLiteral(ruleLabelLit)));
 								else if (ruleLabel.Object is RDFResource ruleLabelRes)
 									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), ruleLabelRes));
-							foreach (RDFTriple ruleComment in graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.RDFS.COMMENT, null, null])
+							foreach (RDFTriple ruleComment in graph[ruleSubject, RDFVocabulary.RDFS.COMMENT, null, null])
 								if (ruleComment.Object is RDFLiteral ruleCommentLit)
 									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(ruleCommentLit)));
 								else if (ruleComment.Object is RDFResource ruleCommentRes)
@@ -1607,7 +1608,7 @@ namespace OWLSharp.Ontology
 								if (!annPropIRI.Equals(RDFVocabulary.RDFS.COMMENT) 
 									  && !annPropIRI.Equals(RDFVocabulary.RDFS.LABEL))
 								{
-									foreach (RDFTriple ruleAnn in graph[(RDFResource)ruleTriple.Subject, annPropIRI, null, null])
+									foreach (RDFTriple ruleAnn in graph[ruleSubject, annPropIRI, null, null])
 										if (ruleAnn.Object is RDFLiteral ruleAnnLit)
 											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), new OWLLiteral(ruleAnnLit)));
 										else if (ruleAnn.Object is RDFResource ruleAnnRes)
@@ -1616,7 +1617,7 @@ namespace OWLSharp.Ontology
 							}
 
 							//Load antecedent
-							RDFResource antecedent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.BODY, null, null]
+							RDFResource antecedent = graph[ruleSubject, RDFVocabulary.SWRL.BODY, null, null]
 													   .FirstOrDefault()?.Object as RDFResource;
                             if (antecedent != null)
 							{
@@ -1625,7 +1626,7 @@ namespace OWLSharp.Ontology
 							}
 
 							//Load consequent
-							RDFResource consequent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.HEAD, null, null]
+							RDFResource consequent = graph[ruleSubject, RDFVocabulary.SWRL.HEAD, null, null]
                                                        .FirstOrDefault()?.Object as RDFResource;
 							if (consequent != null)
 							{
