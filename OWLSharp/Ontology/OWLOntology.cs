@@ -1587,16 +1587,51 @@ namespace OWLSharp.Ontology
 					{
                         foreach (RDFTriple ruleTriple in typeGraph[null, null, RDFVocabulary.SWRL.IMP, null])
 						{
-							RDFResource antecedent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.BODY, null, null]
-														.FirstOrDefault()?.Object as RDFResource;
-                            RDFResource consequent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.HEAD, null, null]
-                                                        .FirstOrDefault()?.Object as RDFResource;
-							if (antecedent != null && consequent != null)
+							SWRLRule rule = new SWRLRule();
+
+							//Load annotations
+							foreach (RDFTriple ruleLabel in graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.RDFS.LABEL, null, null])
+								if (ruleLabel.Object is RDFLiteral ruleLabelLit)
+									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), new OWLLiteral(ruleLabelLit)));
+								else if (ruleLabel.Object is RDFResource ruleLabelRes)
+									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), ruleLabelRes));
+							foreach (RDFTriple ruleComment in graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.RDFS.COMMENT, null, null])
+								if (ruleComment.Object is RDFLiteral ruleCommentLit)
+									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(ruleCommentLit)));
+								else if (ruleComment.Object is RDFResource ruleCommentRes)
+									rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), ruleCommentRes));
+							foreach (OWLAnnotationProperty annProp in ont.DeclarationAxioms.Where(dax => dax.Expression is OWLAnnotationProperty)
+																						   .Select(dax => (OWLAnnotationProperty)dax.Expression))
 							{
-                                SWRLRule rule = new SWRLRule();
+								RDFResource annPropIRI = annProp.GetIRI();
+								if (!annPropIRI.Equals(RDFVocabulary.RDFS.COMMENT) 
+									  && !annPropIRI.Equals(RDFVocabulary.RDFS.LABEL))
+								{
+									foreach (RDFTriple ruleAnn in graph[(RDFResource)ruleTriple.Subject, annPropIRI, null, null])
+										if (ruleAnn.Object is RDFLiteral ruleAnnLit)
+											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), new OWLLiteral(ruleAnnLit)));
+										else if (ruleAnn.Object is RDFResource ruleAnnRes)
+											rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), ruleAnnRes));
+								} 
+							}
+
+							//Load antecedent
+							RDFResource antecedent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.BODY, null, null]
+													   .FirstOrDefault()?.Object as RDFResource;
+                            if (antecedent != null)
+							{
 								//TODO
 
-                            }
+							}
+
+							//Load consequent
+							RDFResource consequent = graph[(RDFResource)ruleTriple.Subject, RDFVocabulary.SWRL.HEAD, null, null]
+                                                       .FirstOrDefault()?.Object as RDFResource;
+							if (consequent != null)
+							{
+								//TODO
+								
+							}
                         }
                     }
 					//Expressions
