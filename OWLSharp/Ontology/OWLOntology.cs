@@ -1583,7 +1583,7 @@ namespace OWLSharp.Ontology
 						}
 					}
 					//Rules
-					void LoadRules(OWLOntology ont, RDFGraph annAxiomsGraph)
+					void LoadRules(OWLOntology ont)
 					{
                         foreach (RDFTriple ruleTriple in typeGraph[null, null, RDFVocabulary.SWRL.IMP, null])
 						{
@@ -2444,7 +2444,7 @@ namespace OWLSharp.Ontology
 					LoadAnnotationPropertyDomain(ontology, annotationAxiomsGraph);
 					LoadAnnotationPropertyRange(ontology, annotationAxiomsGraph);
 					//Rules
-					LoadRules(ontology, annotationAxiomsGraph);
+					LoadRules(ontology);
 
 					return ontology;
 				});
