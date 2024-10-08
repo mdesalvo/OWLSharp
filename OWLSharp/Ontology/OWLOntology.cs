@@ -1620,21 +1620,37 @@ namespace OWLSharp.Ontology
 							}
 
 							//Load antecedent
-							RDFResource antecedent = graph[ruleSubject, RDFVocabulary.SWRL.BODY, null, null]
-													   .FirstOrDefault()?.Object as RDFResource;
-                            if (antecedent != null)
+							RDFResource ruleAntecedent = graph[ruleSubject, RDFVocabulary.SWRL.BODY, null, null]
+														   .FirstOrDefault()?.Object as RDFResource;
+                            if (ruleAntecedent != null 
+								  && graph[ruleAntecedent, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 1)
 							{
-								//TODO
+								RDFCollection antecedentItems = RDFModelUtilities.DeserializeCollectionFromGraph(graph, ruleAntecedent, RDFModelEnums.RDFTripleFlavors.SPO, true);
+								if (antecedentItems.ItemsCount > 0)
+								{
+									SWRLAntecedent antecedent = new SWRLAntecedent();
 
+									//TODO
+
+									rule.Antecedent = antecedent;
+								}
 							}
 
 							//Load consequent
-							RDFResource consequent = graph[ruleSubject, RDFVocabulary.SWRL.HEAD, null, null]
+							RDFResource ruleConsequent = graph[ruleSubject, RDFVocabulary.SWRL.HEAD, null, null]
                                                        .FirstOrDefault()?.Object as RDFResource;
-							if (consequent != null)
+							if (ruleConsequent != null
+								  && graph[ruleConsequent, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 1)
 							{
-								//TODO
-								
+								RDFCollection consequentItems = RDFModelUtilities.DeserializeCollectionFromGraph(graph, ruleConsequent, RDFModelEnums.RDFTripleFlavors.SPO, true);
+								if (consequentItems.ItemsCount > 0)
+								{
+									SWRLConsequent consequent = new SWRLConsequent();
+
+									//TODO
+
+									rule.Consequent = consequent;
+								}
 							}
 
 							ont.Rules.Add(rule);
