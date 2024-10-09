@@ -4515,6 +4515,56 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
+        public async Task ShouldReadRuleWithClassAtomFromGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Declaration>
+    <Class IRI=""http://example.org/CLS1"" />
+  </Declaration>
+  <Declaration>
+    <Class IRI=""http://example.org/CLS2"" />
+  </Declaration>
+  <DLSafeRule>
+    <Body>
+      <ClassAtom>
+        <Class IRI=""http://example.org/CLS1"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Body>
+    <Head>
+      <ClassAtom>
+        <Class IRI=""http://example.org/CLS2"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </ClassAtom>
+    </Head>
+  </DLSafeRule>
+</Ontology>");
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(ontology2.Rules.Count == 1);
+            Assert.IsNotNull(ontology2.Rules[0].Antecedent);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLClassAtom classAtomAnt
+                            && classAtomAnt.Predicate.GetIRI().Equals(new RDFResource("http://example.org/CLS1"))
+                            && classAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
+                                && leftArgVarAnt.GetVariable().Equals(new RDFVariable("?P"))
+                            && classAtomAnt.RightArgument == null);
+            Assert.IsNotNull(ontology2.Rules[0].Consequent);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLClassAtom classAtomCons
+                            && classAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://example.org/CLS2"))
+                            && classAtomCons.LeftArgument is SWRLVariableArgument leftArgVarCons
+                                && leftArgVarCons.GetVariable().Equals(new RDFVariable("?P"))
+                            && classAtomCons.RightArgument == null);
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "CLS1(?P) -> CLS2(?P)"));
+        }
+
+        [TestMethod]
         public async Task ShouldImportOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
