@@ -4847,6 +4847,9 @@ namespace OWLSharp.Test.Ontology
         <Variable IRI=""urn:swrl:var#P"" />
         <NamedIndividual IRI=""http://example.org/IDV"" />
       </BuiltInAtom>
+      <BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#custombuiltin"">
+        <Variable IRI=""urn:swrl:var#P"" />
+      </BuiltInAtom>
     </Body>
   </DLSafeRule>
 </Ontology>");
@@ -4857,7 +4860,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology2.Rules.Count == 1);
             Assert.IsNotNull(ontology2.Rules[0].Antecedent);
             Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms.Count == 0);
-            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns.Count == 2);
             Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[0] is SWRLBuiltIn builtinAtom
                             && string.Equals(builtinAtom.IRI, "http://www.w3.org/2003/11/swrlb#stringConcat")
                             && builtinAtom.Arguments.Count == 3
@@ -4867,8 +4870,13 @@ namespace OWLSharp.Test.Ontology
                                     && arg1.GetVariable().Equals(new RDFVariable("?P"))
                                 && builtinAtom.Arguments[2] is SWRLIndividualArgument arg2
                                     && arg2.GetResource().Equals(new RDFResource("http://example.org/IDV")));
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[1] is SWRLBuiltIn builtinAtom2
+                            && string.Equals(builtinAtom2.IRI, "http://www.w3.org/2003/11/swrlb#custombuiltin")
+                            && builtinAtom2.Arguments.Count == 1
+                                && builtinAtom2.Arguments[0] is SWRLVariableArgument arg3
+                                    && arg3.GetVariable().Equals(new RDFVariable("?P")));
             Assert.IsNull(ontology2.Rules[0].Consequent);
-            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "swrlb:stringConcat(\"hello\"@EN-US,?P,IDV) -> "));
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "swrlb:stringConcat(\"hello\"@EN-US,?P,IDV) ^ swrlb:custombuiltin(?P) -> "));
         }
 
         [TestMethod]
