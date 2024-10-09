@@ -4730,6 +4730,110 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
+        public async Task ShouldReadRuleWithSameIndividualAtomFromGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Declaration>
+    <NamedIndividual IRI=""http://example.org/IDV1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.org/IDV2"" />
+  </Declaration>
+  <DLSafeRule>
+    <Body>
+      <SameIndividualAtom>
+        <Variable IRI=""urn:swrl:var#P"" />
+        <Variable IRI=""urn:swrl:var#Q"" />
+      </SameIndividualAtom>
+    </Body>
+    <Head>
+      <SameIndividualAtom>
+        <NamedIndividual IRI=""http://example.org/IDV2"" />
+        <NamedIndividual IRI=""http://example.org/IDV1"" />
+      </SameIndividualAtom>
+    </Head>
+  </DLSafeRule>
+</Ontology>");
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(ontology2.Rules.Count == 1);
+            Assert.IsNotNull(ontology2.Rules[0].Antecedent);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLSameIndividualAtom sameindividualAtomAnt
+                            && sameindividualAtomAnt.Predicate.GetIRI().Equals(RDFVocabulary.OWL.SAME_AS)
+                            && sameindividualAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
+                                && leftArgVarAnt.GetVariable().Equals(new RDFVariable("?P"))
+                            && sameindividualAtomAnt.RightArgument is SWRLVariableArgument rightArgVarAnt
+                                && rightArgVarAnt.GetVariable().Equals(new RDFVariable("?Q")));
+            Assert.IsNotNull(ontology2.Rules[0].Consequent);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLSameIndividualAtom sameindividualAtomCons
+                            && sameindividualAtomCons.Predicate.GetIRI().Equals(RDFVocabulary.OWL.SAME_AS)
+                            && sameindividualAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
+                                && leftArgIdvCons.GetResource().Equals(new RDFResource("http://example.org/IDV2"))
+                            && sameindividualAtomCons.RightArgument is SWRLIndividualArgument rightArgIdvCons
+                                && rightArgIdvCons.GetResource().Equals(new RDFResource("http://example.org/IDV1")));
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "sameAs(?P,?Q) -> sameAs(IDV2,IDV1)"));
+        }
+
+        [TestMethod]
+        public async Task ShouldReadRuleWithDifferentIndividualsAtomFromGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Declaration>
+    <NamedIndividual IRI=""http://example.org/IDV1"" />
+  </Declaration>
+  <Declaration>
+    <NamedIndividual IRI=""http://example.org/IDV2"" />
+  </Declaration>
+  <DLSafeRule>
+    <Body>
+      <DifferentIndividualsAtom>
+        <Variable IRI=""urn:swrl:var#P"" />
+        <Variable IRI=""urn:swrl:var#Q"" />
+      </DifferentIndividualsAtom>
+    </Body>
+    <Head>
+      <DifferentIndividualsAtom>
+        <NamedIndividual IRI=""http://example.org/IDV2"" />
+        <NamedIndividual IRI=""http://example.org/IDV1"" />
+      </DifferentIndividualsAtom>
+    </Head>
+  </DLSafeRule>
+</Ontology>");
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(ontology2.Rules.Count == 1);
+            Assert.IsNotNull(ontology2.Rules[0].Antecedent);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLDifferentIndividualsAtom differentindividualsAtomAnt
+                            && differentindividualsAtomAnt.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM)
+                            && differentindividualsAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
+                                && leftArgVarAnt.GetVariable().Equals(new RDFVariable("?P"))
+                            && differentindividualsAtomAnt.RightArgument is SWRLVariableArgument rightArgVarAnt
+                                && rightArgVarAnt.GetVariable().Equals(new RDFVariable("?Q")));
+            Assert.IsNotNull(ontology2.Rules[0].Consequent);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLDifferentIndividualsAtom differentindividualsAtomCons
+                            && differentindividualsAtomCons.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM)
+                            && differentindividualsAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
+                                && leftArgIdvCons.GetResource().Equals(new RDFResource("http://example.org/IDV2"))
+                            && differentindividualsAtomCons.RightArgument is SWRLIndividualArgument rightArgIdvCons
+                                && rightArgIdvCons.GetResource().Equals(new RDFResource("http://example.org/IDV1")));
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "differentFrom(?P,?Q) -> differentFrom(IDV2,IDV1)"));
+        }
+
+        [TestMethod]
         public async Task ShouldImportOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
