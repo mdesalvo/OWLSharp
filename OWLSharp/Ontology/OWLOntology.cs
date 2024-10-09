@@ -1647,7 +1647,9 @@ namespace OWLSharp.Ontology
                                         //DifferentIndividualsAtom
                                         else if (TryLoadDifferentIndividualsAtom(ont, antecedentItem, out SWRLDifferentIndividualsAtom differentindividualAtom))
                                             antecedent.Atoms.Add(differentindividualAtom);
-                                        //...
+                                        //BuiltinAtom
+                                        else if (TryLoadBuiltinAtom(ont, antecedentItem, out SWRLBuiltIn builtin))
+                                            antecedent.BuiltIns.Add(builtin);
                                     });
                                     rule.Antecedent = antecedent;
                                 }
@@ -1681,7 +1683,6 @@ namespace OWLSharp.Ontology
                                         //DifferentIndividualsAtom
                                         else if (TryLoadDifferentIndividualsAtom(ont, consequentItem, out SWRLDifferentIndividualsAtom differentindividualAtom))
                                             consequent.Atoms.Add(differentindividualAtom);
-                                        //...
                                     });
                                     rule.Consequent = consequent;
                                 }
@@ -1874,6 +1875,36 @@ namespace OWLSharp.Ontology
                         differentindividualsAtom = null;
                         return false;
                     }
+                    bool TryLoadBuiltinAtom(OWLOntology ont, RDFPatternMember antecedentItem, out SWRLBuiltIn builtin)
+                    {
+                        if (antecedentItem is RDFResource antecedentItemResource
+                             && graph[antecedentItemResource, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.BUILTIN_ATOM, null].TriplesCount == 1
+                             && graph[antecedentItemResource, RDFVocabulary.SWRL.BUILTIN_PROP, null, null].FirstOrDefault()?.Object is RDFResource builtinProperty
+                             && graph[antecedentItemResource, RDFVocabulary.SWRL.ARGUMENTS, null, null].FirstOrDefault()?.Object is RDFResource arguments)
+                        {
+                            //Predicate
+                            builtin = new SWRLBuiltIn() { IRI = builtinProperty.ToString() };
+
+                            //Arguments
+                            RDFCollection argumentsColl = RDFModelUtilities.DeserializeCollectionFromGraph(graph, arguments, RDFModelEnums.RDFTripleFlavors.SPO, true);
+                            foreach (RDFPatternMember argument in argumentsColl.Items)
+                                if (argument is RDFLiteral arg2Lit)
+                                    builtin.Arguments.Add(new SWRLLiteralArgument(arg2Lit));
+                                else if (argument is RDFResource arg2Res)
+                                {
+                                    string arg2Str = arg2Res.ToString();
+                                    if (arg2Str.StartsWith("urn:swrl:var#", StringComparison.OrdinalIgnoreCase))
+                                        builtin.Arguments.Add(new SWRLVariableArgument(new RDFVariable($"?{arg2Str.Replace("urn:swrl:var#", string.Empty)}")));
+                                    else
+                                        builtin.Arguments.Add(new SWRLIndividualArgument(arg2Res));
+                                }
+
+                            return true;
+                        }
+                        builtin = null;
+                        return false;
+                    }
+
                     //Expressions
                     void LoadAnnotationPropertyExpression(OWLOntology ont, RDFResource apIRI, out OWLAnnotationPropertyExpression apex)
 					{
