@@ -4834,6 +4834,44 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
+        public async Task ShouldReadRuleWithBuiltinAtomFromGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <DLSafeRule>
+    <Body>
+      <BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringConcat"">
+        <Literal xml:lang=""en-US"">hello</Literal>
+        <Variable IRI=""urn:swrl:var#P"" />
+        <NamedIndividual IRI=""http://example.org/IDV"" />
+      </BuiltInAtom>
+    </Body>
+  </DLSafeRule>
+</Ontology>");
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(ontology2.Rules.Count == 1);
+            Assert.IsNotNull(ontology2.Rules[0].Antecedent);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms.Count == 0);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[0] is SWRLBuiltIn builtinAtom
+                            && string.Equals(builtinAtom.IRI, "http://www.w3.org/2003/11/swrlb#stringConcat")
+                            && builtinAtom.Arguments.Count == 3
+                                && builtinAtom.Arguments[0] is SWRLLiteralArgument arg0
+                                    && arg0.GetLiteral().Equals(new RDFPlainLiteral("hello", "en-US"))
+                                && builtinAtom.Arguments[1] is SWRLVariableArgument arg1
+                                    && arg1.GetVariable().Equals(new RDFVariable("?P"))
+                                && builtinAtom.Arguments[2] is SWRLIndividualArgument arg2
+                                    && arg2.GetResource().Equals(new RDFResource("http://example.org/IDV")));
+            Assert.IsNull(ontology2.Rules[0].Consequent);
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "swrlb:stringConcat(\"hello\"@EN-US,?P,IDV) -> "));
+        }
+
+        [TestMethod]
         public async Task ShouldImportOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
