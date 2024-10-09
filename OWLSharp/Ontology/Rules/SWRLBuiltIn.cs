@@ -37,11 +37,26 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal")]
         [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable")]
         public List<SWRLArgument> Arguments { get; set; }
+
+        //Custom builtIns have their proprietary logics for filtering antecedent rows,
+        //so we prepare a delegate for them to be automatically invoked when needed
+
+        internal delegate bool BuiltinEvaluator(DataRow antecedentResultsRow);
+        [XmlIgnore]
+        internal BuiltinEvaluator EvaluatorFunction { get; set;}
         #endregion
 
         #region Ctors
         internal SWRLBuiltIn()
             => Arguments = new List<SWRLArgument>();
+
+        public SWRLBuiltIn(Func<DataRow,bool> evaluator, RDFResource iri, params SWRLArgument[] arguments)
+        {
+            EvaluatorFunction = evaluator != null ? new BuiltinEvaluator(evaluator) 
+                                                  : throw new OWLException("Cannot create custom SWRL builtIn because: evaluator is null");
+            IRI = iri?.ToString() ?? throw new OWLException("Cannot create custom SWRL builtIn because: iri is null");
+            Arguments = arguments?.ToList() ?? Enumerable.Empty<SWRLArgument>().ToList();
+        }
 
         public static SWRLBuiltIn Abs(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
@@ -539,9 +554,9 @@ namespace OWLSharp.Ontology.Rules
                 {
                     DataRow currentRow = (DataRow)rowsEnum.Current;
                     
-                    //Determine the builtIn to be engaged for current row's evaluation
                     switch (IRI)
                     {
+                        //Supported builtIns => handle them directly
                         case "http://www.w3.org/2003/11/swrlb#abs":
                             keepRow = SWRLAbsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
@@ -675,9 +690,11 @@ namespace OWLSharp.Ontology.Rules
                             keepRow = SWRLYearMonthDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
-                        //Unsupported builtIns must generate an explicit exception
+                        //Unsupported builtIns => lookup into the register to delegate their execution
                         default:
-                            throw new NotImplementedException($"unsupported IRI {IRI}");
+                            SWRLBuiltIn customBuiltIn = SWRLBuiltInRegister.GetBuiltIn(IRI);
+                            keepRow = customBuiltIn?.EvaluatorFunction(currentRow) ?? throw new NotImplementedException($"unsupported IRI {IRI}");
+                            break;
                     }
 
                     //If current row has satisfied the builtIn, keep it in the filtered result table
@@ -703,7 +720,7 @@ namespace OWLSharp.Ontology.Rules
             return filteredTable;
         }
 
-        internal RDFGraph ToRDFGraph(RDFCollection atomsList)
+        public RDFGraph ToRDFGraph(RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
             

@@ -15,7 +15,6 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -54,6 +53,58 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument litArg
                                                     && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
             Assert.IsTrue(string.Equals(builtin.ToString(), "swrlb:example(?VAR,http://test.org/,\"lit\")"));
+            Assert.IsNull(builtin.EvaluatorFunction);
+        }
+
+        [TestMethod]
+        public void ShouldCreateBuiltInWithEvaluator()
+        {
+            bool Evaluator(DataRow datarow) => true;
+
+            SWRLBuiltIn builtin = new SWRLBuiltIn(
+                Evaluator,
+                new RDFResource("http://www.w3.org/2003/11/swrl#example"),
+                new SWRLVariableArgument(new RDFVariable("?VAR")),
+                new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
+
+            Assert.IsNotNull(builtin);
+            Assert.IsNotNull(builtin.IRI);
+            Assert.IsTrue(string.Equals(builtin.IRI, "http://www.w3.org/2003/11/swrl#example"));
+            Assert.IsNotNull(builtin.Arguments);
+            Assert.IsTrue(builtin.Arguments.Count == 3);
+            Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument varArg 
+                                                    && string.Equals(varArg.IRI,"urn:swrl:var#VAR")
+                                                    && varArg.GetVariable().Equals(new RDFVariable("?VAR")));
+            Assert.IsTrue(builtin.Arguments[1] is SWRLIndividualArgument idvArg
+                                                    && string.Equals(idvArg.IRI, "http://test.org/")
+                                                    && idvArg.GetResource().Equals(new RDFResource("http://test.org/")));
+            Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument litArg
+                                                    && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
+            Assert.IsTrue(string.Equals(builtin.ToString(), "swrlb:example(?VAR,http://test.org/,\"lit\")"));
+            Assert.IsNotNull(builtin.EvaluatorFunction);
+        }
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingBuiltInWithEvaluatorBecauseNullEvaluator()
+            => Assert.ThrowsException<OWLException>(() => new SWRLBuiltIn(
+                null,
+                new RDFResource("http://www.w3.org/2003/11/swrl#example"),
+                new SWRLVariableArgument(new RDFVariable("?VAR")),
+                new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("lit"))));
+
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingBuiltInWithEvaluatorBecauseNullIRI()
+        {
+            bool Evaluator(DataRow datarow) => true;
+
+            Assert.ThrowsException<OWLException>(() => new SWRLBuiltIn(
+                Evaluator,
+                null,
+                new SWRLVariableArgument(new RDFVariable("?VAR")),
+                new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("lit"))));
         }
 
         [TestMethod]
@@ -72,6 +123,27 @@ namespace OWLSharp.Test.Ontology.Rules
             table.Columns.Add("?VAR");
             table.Rows.Add("value");
             Assert.ThrowsException<OWLException>(() => builtin.EvaluateOnAntecedent(table));
+        }
+
+        [TestMethod]
+        public void ShouldEvaluateBuiltInWithEvaluatorOnAntecedent()
+        {
+            bool Evaluator(DataRow datarow) => string.Equals(datarow["?VAR"].ToString(), "value");
+
+            SWRLBuiltIn builtin = new SWRLBuiltIn(
+                Evaluator,
+                new RDFResource("http://www.w3.org/2003/11/swrl#exampleRegistered"),
+                new SWRLVariableArgument(new RDFVariable("?VAR")),
+                new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
+            DataTable table = new DataTable();
+            table.Columns.Add("?VAR");
+            table.Rows.Add("value");
+            table.Rows.Add("value2");
+            table.Rows.Add("value3");
+            SWRLBuiltInRegister.AddBuiltIn(builtin);
+
+            Assert.IsTrue(builtin.EvaluateOnAntecedent(table).Rows.Count == 1);
         }
 
         [TestMethod]
