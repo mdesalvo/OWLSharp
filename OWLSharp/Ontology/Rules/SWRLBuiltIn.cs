@@ -38,9 +38,6 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(SWRLVariableArgument), ElementName="Variable")]
         public List<SWRLArgument> Arguments { get; set; }
 
-        //Custom builtIns have their proprietary logics for filtering antecedent rows,
-        //so we prepare a delegate for them to be automatically invoked when needed
-
         internal delegate bool BuiltinEvaluator(DataRow antecedentResultsRow);
         [XmlIgnore]
         internal BuiltinEvaluator EvaluatorFunction { get; set;}
@@ -57,6 +54,8 @@ namespace OWLSharp.Ontology.Rules
             IRI = iri?.ToString() ?? throw new OWLException("Cannot create custom SWRL builtIn because: iri is null");
             Arguments = arguments?.ToList() ?? Enumerable.Empty<SWRLArgument>().ToList();
         }
+
+        //Official BuiltIns
 
         public static SWRLBuiltIn Abs(SWRLArgument leftArg, SWRLArgument rightArg)
             =>  new SWRLBuiltIn()
@@ -556,7 +555,7 @@ namespace OWLSharp.Ontology.Rules
                     
                     switch (IRI)
                     {
-                        //Supported builtIns => handle them directly
+                        //Official builtIns => handle them directly
                         case "http://www.w3.org/2003/11/swrlb#abs":
                             keepRow = SWRLAbsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
@@ -690,10 +689,10 @@ namespace OWLSharp.Ontology.Rules
                             keepRow = SWRLYearMonthDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
-                        //Unsupported builtIns => lookup into the register to delegate their execution
+                        //Custom builtIns => lookup the register to delegate their execution (raise exception if unknown)
                         default:
-                            SWRLBuiltIn customBuiltIn = SWRLBuiltInRegister.GetBuiltIn(IRI);
-                            keepRow = customBuiltIn?.EvaluatorFunction(currentRow) ?? throw new NotImplementedException($"unsupported IRI {IRI}");
+                            keepRow = SWRLBuiltInRegister.GetBuiltIn(IRI)?.EvaluatorFunction(currentRow) 
+                                        ?? throw new NotImplementedException($"unsupported IRI {IRI}");
                             break;
                     }
 
