@@ -1123,6 +1123,10 @@ namespace OWLSharp.Test.Ontology
 			=> await Assert.ThrowsExceptionAsync<OWLException>(async() => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
+        public async Task ShouldThrowExceptionOnReadingOntologyFromGraphBecauseNullGraphAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromRDFGraphAsync(null));
+
+        [TestMethod]
         public async Task ShouldReadOntologyHeaderFromGraphAsync()
         {
             RDFGraph graph = new RDFGraph();
@@ -4537,7 +4541,7 @@ namespace OWLSharp.Test.Ontology
     <Head>
       <ClassAtom>
         <Class IRI=""http://example.org/CLS2"" />
-        <Variable IRI=""urn:swrl:var#P"" />
+        <NamedIndividual IRI=""http://example.org/IDV"" />
       </ClassAtom>
     </Head>
   </DLSafeRule>
@@ -4558,10 +4562,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms.Count == 1);
             Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLClassAtom classAtomCons
                             && classAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://example.org/CLS2"))
-                            && classAtomCons.LeftArgument is SWRLVariableArgument leftArgVarCons
-                                && leftArgVarCons.GetVariable().Equals(new RDFVariable("?P"))
+                            && classAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
+                                && leftArgIdvCons.GetResource().Equals(new RDFResource("http://example.org/IDV"))
                             && classAtomCons.RightArgument == null);
-            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "CLS1(?P) -> CLS2(?P)"));
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "CLS1(?P) -> CLS2(IDV)"));
         }
 
         [TestMethod]
