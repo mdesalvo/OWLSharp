@@ -4591,7 +4591,7 @@ namespace OWLSharp.Test.Ontology
     <Head>
       <DataRangeAtom>
         <Datatype IRI=""http://www.w3.org/2000/01/rdf-schema#Literal"" />
-        <Variable IRI=""urn:swrl:var#P"" />
+        <Literal xml:lang=""en"">hello</Literal>
       </DataRangeAtom>
     </Head>
   </DLSafeRule>
@@ -4612,10 +4612,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms.Count == 1);
             Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLDataRangeAtom datarangeAtomCons
                             && datarangeAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://www.w3.org/2000/01/rdf-schema#Literal"))
-                            && datarangeAtomCons.LeftArgument is SWRLVariableArgument leftArgVarCons
-                                && leftArgVarCons.GetVariable().Equals(new RDFVariable("?P"))
+                            && datarangeAtomCons.LeftArgument is SWRLLiteralArgument leftArgLitCons
+                                && leftArgLitCons.GetLiteral().Equals(new RDFPlainLiteral("hello","en"))
                             && datarangeAtomCons.RightArgument == null);
-            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "string(?P) -> Literal(?P)"));
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "string(?P) -> Literal(\"hello\"@EN)"));
         }
 
         [TestMethod]
