@@ -4565,6 +4565,56 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
+        public async Task ShouldReadRuleWithDataRangeAtomFromGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
+  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
+  <Declaration>
+    <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
+  </Declaration>
+  <Declaration>
+    <Datatype IRI=""http://www.w3.org/2000/01/rdf-schema#Literal"" />
+  </Declaration>
+  <DLSafeRule>
+    <Body>
+      <DataRangeAtom>
+        <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </DataRangeAtom>
+    </Body>
+    <Head>
+      <DataRangeAtom>
+        <Datatype IRI=""http://www.w3.org/2000/01/rdf-schema#Literal"" />
+        <Variable IRI=""urn:swrl:var#P"" />
+      </DataRangeAtom>
+    </Head>
+  </DLSafeRule>
+</Ontology>");
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
+
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(ontology2.Rules.Count == 1);
+            Assert.IsNotNull(ontology2.Rules[0].Antecedent);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLDataRangeAtom datarangeAtomAnt
+                            && datarangeAtomAnt.Predicate.GetIRI().Equals(new RDFResource("http://www.w3.org/2001/XMLSchema#string"))
+                            && datarangeAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
+                                && leftArgVarAnt.GetVariable().Equals(new RDFVariable("?P"))
+                            && datarangeAtomAnt.RightArgument == null);
+            Assert.IsNotNull(ontology2.Rules[0].Consequent);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms.Count == 1);
+            Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLDataRangeAtom datarangeAtomCons
+                            && datarangeAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://www.w3.org/2000/01/rdf-schema#Literal"))
+                            && datarangeAtomCons.LeftArgument is SWRLVariableArgument leftArgVarCons
+                                && leftArgVarCons.GetVariable().Equals(new RDFVariable("?P"))
+                            && datarangeAtomCons.RightArgument == null);
+            Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "string(?P) -> Literal(?P)"));
+        }
+
+        [TestMethod]
         public async Task ShouldImportOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));

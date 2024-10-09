@@ -1619,59 +1619,59 @@ namespace OWLSharp.Ontology
 								} 
 							}
 
-							//Load antecedent
-							RDFResource ruleAntecedent = graph[ruleSubject, RDFVocabulary.SWRL.BODY, null, null]
-														   .FirstOrDefault()?.Object as RDFResource;
-                            if (ruleAntecedent != null 
-								  && graph[ruleAntecedent, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 1)
-							{
-								RDFCollection antecedentItems = RDFModelUtilities.DeserializeCollectionFromGraph(graph, ruleAntecedent, RDFModelEnums.RDFTripleFlavors.SPO, true);
-								if (antecedentItems.ItemsCount > 0)
-								{
-									SWRLAntecedent antecedent = new SWRLAntecedent();
-									antecedentItems.Items.ForEach(antecedentItem => 
-									{
-										//ClassAtom
-										if (TryLoadClassAtom(ont, antecedentItem, out SWRLClassAtom classAtom))
-											antecedent.Atoms.Add(classAtom);
-										//...
-									});
-									rule.Antecedent = antecedent;
-								}
-							}
+                            //Load antecedent
+                            if (graph[ruleSubject, RDFVocabulary.SWRL.BODY, null, null].FirstOrDefault()?.Object is RDFResource ruleAntecedent
+                                 && graph[ruleAntecedent, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 1)
+                            {
+                                RDFCollection antecedentItems = RDFModelUtilities.DeserializeCollectionFromGraph(graph, ruleAntecedent, RDFModelEnums.RDFTripleFlavors.SPO, true);
+                                if (antecedentItems.ItemsCount > 0)
+                                {
+                                    SWRLAntecedent antecedent = new SWRLAntecedent();
+                                    antecedentItems.Items.ForEach(antecedentItem =>
+                                    {
+                                        //ClassAtom
+                                        if (TryLoadClassAtom(ont, antecedentItem, out SWRLClassAtom classAtom))
+                                            antecedent.Atoms.Add(classAtom);
+                                        //DataRangeAtom
+                                        else if (TryLoadDataRangeAtom(ont, antecedentItem, out SWRLDataRangeAtom datarangeAtom))
+                                            antecedent.Atoms.Add(datarangeAtom);
+                                        //...
+                                    });
+                                    rule.Antecedent = antecedent;
+                                }
+                            }
 
-							//Load consequent
-							RDFResource ruleConsequent = graph[ruleSubject, RDFVocabulary.SWRL.HEAD, null, null]
-                                                       .FirstOrDefault()?.Object as RDFResource;
-							if (ruleConsequent != null
-								  && graph[ruleConsequent, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 1)
-							{
-								RDFCollection consequentItems = RDFModelUtilities.DeserializeCollectionFromGraph(graph, ruleConsequent, RDFModelEnums.RDFTripleFlavors.SPO, true);
-								if (consequentItems.ItemsCount > 0)
-								{
-									SWRLConsequent consequent = new SWRLConsequent();
-									consequentItems.Items.ForEach(consequentItem => 
-									{
-										//ClassAtom
-										if (TryLoadClassAtom(ont, consequentItem, out SWRLClassAtom classAtom))
-											consequent.Atoms.Add(classAtom);
-										//...
-									});
-									rule.Consequent = consequent;
-								}
-							}
+                            //Load consequent
+                            if (graph[ruleSubject, RDFVocabulary.SWRL.HEAD, null, null].FirstOrDefault()?.Object is RDFResource ruleConsequent
+                                 && graph[ruleConsequent, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 1)
+                            {
+                                RDFCollection consequentItems = RDFModelUtilities.DeserializeCollectionFromGraph(graph, ruleConsequent, RDFModelEnums.RDFTripleFlavors.SPO, true);
+                                if (consequentItems.ItemsCount > 0)
+                                {
+                                    SWRLConsequent consequent = new SWRLConsequent();
+                                    consequentItems.Items.ForEach(consequentItem =>
+                                    {
+                                        //ClassAtom
+                                        if (TryLoadClassAtom(ont, consequentItem, out SWRLClassAtom classAtom))
+                                            consequent.Atoms.Add(classAtom);
+                                        //DataRangeAtom
+                                        else if (TryLoadDataRangeAtom(ont, consequentItem, out SWRLDataRangeAtom datarangeAtom))
+                                            consequent.Atoms.Add(datarangeAtom);
+                                        //...
+                                    });
+                                    rule.Consequent = consequent;
+                                }
+                            }
 
-							ont.Rules.Add(rule);
+                            ont.Rules.Add(rule);
                         }
                     }
 					bool TryLoadClassAtom(OWLOntology ont, RDFPatternMember antecedentItem, out SWRLClassAtom classAtom)
 					{
 						if (antecedentItem is RDFResource antecedentItemResource 
 							 && graph[antecedentItemResource, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.CLASS_ATOM, null].TriplesCount == 1
-							 && graph[antecedentItemResource, RDFVocabulary.SWRL.CLASS_PREDICATE, null, null]
-							     .FirstOrDefault()?.Object is RDFResource classPredicate
-							 && graph[antecedentItemResource, RDFVocabulary.SWRL.ARGUMENT1, null, null]
-							     .FirstOrDefault()?.Object is RDFPatternMember arg1)
+							 && graph[antecedentItemResource, RDFVocabulary.SWRL.CLASS_PREDICATE, null, null].FirstOrDefault()?.Object is RDFResource classPredicate
+							 && graph[antecedentItemResource, RDFVocabulary.SWRL.ARGUMENT1, null, null].FirstOrDefault()?.Object is RDFPatternMember arg1)
 						{
 							LoadClassExpression(ont, classPredicate, out OWLClassExpression classExp);
 							if (classExp != null)
@@ -1696,8 +1696,38 @@ namespace OWLSharp.Ontology
 						classAtom = null;
 						return false;
 					}
-					//Expressions
-					void LoadAnnotationPropertyExpression(OWLOntology ont, RDFResource apIRI, out OWLAnnotationPropertyExpression apex)
+                    bool TryLoadDataRangeAtom(OWLOntology ont, RDFPatternMember antecedentItem, out SWRLDataRangeAtom datarangeAtom)
+                    {
+                        if (antecedentItem is RDFResource antecedentItemResource
+                             && graph[antecedentItemResource, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DATARANGE_ATOM, null].TriplesCount == 1
+                             && graph[antecedentItemResource, RDFVocabulary.SWRL.DATARANGE, null, null].FirstOrDefault()?.Object is RDFResource datarange
+                             && graph[antecedentItemResource, RDFVocabulary.SWRL.ARGUMENT1, null, null].FirstOrDefault()?.Object is RDFPatternMember arg1)
+                        {
+                            LoadDataRangeExpression(ont, datarange, out OWLDataRangeExpression drangeExp);
+                            if (drangeExp != null)
+                            {
+                                datarangeAtom = new SWRLDataRangeAtom() { Predicate = drangeExp };
+                                if (arg1 is RDFLiteral arg1Lit)
+                                {
+                                    datarangeAtom.LeftArgument = new SWRLLiteralArgument(arg1Lit);
+                                    return true;
+                                }
+                                else if (arg1 is RDFResource arg1Res)
+                                {
+                                    string arg1Str = arg1Res.ToString();
+                                    if (arg1Str.StartsWith("urn:swrl:var#", StringComparison.OrdinalIgnoreCase))
+                                        datarangeAtom.LeftArgument = new SWRLVariableArgument(new RDFVariable($"?{arg1Str.Replace("urn:swrl:var#", string.Empty)}"));
+                                    else
+                                        datarangeAtom.LeftArgument = new SWRLIndividualArgument(arg1Res);
+                                    return true;
+                                }
+                            }
+                        }
+                        datarangeAtom = null;
+                        return false;
+                    }
+                    //Expressions
+                    void LoadAnnotationPropertyExpression(OWLOntology ont, RDFResource apIRI, out OWLAnnotationPropertyExpression apex)
 					{
 						apex = null;
 						if (typeGraph[apIRI, null, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount > 0)
