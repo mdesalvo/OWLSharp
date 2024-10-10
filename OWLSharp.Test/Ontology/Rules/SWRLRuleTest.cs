@@ -230,6 +230,24 @@ namespace OWLSharp.Test.Ontology.Rules
         }
 
         [TestMethod]
+        public async Task ShouldNotApplySWRLRuleToOntologyBecauseNullAntecedentAsync()
+        {
+            List<OWLInference> inferences = await new SWRLRule() { Consequent = new SWRLConsequent() }.ApplyToOntologyAsync(new OWLOntology());
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.Count == 0);
+        }
+
+        [TestMethod]
+        public async Task ShouldNotApplySWRLRuleToOntologyBecauseNullConsequentAsync()
+        {
+            List<OWLInference> inferences = await new SWRLRule() { Antecedent = new SWRLAntecedent() }.ApplyToOntologyAsync(new OWLOntology());
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.Count == 0);
+        }
+
+        [TestMethod]
         public void ShouldExportSWRLRuleToRDFGraph()
         {
             SWRLRule rule = new SWRLRule(

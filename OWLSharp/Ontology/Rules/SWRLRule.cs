@@ -101,8 +101,8 @@ namespace OWLSharp.Ontology.Rules
         }
 
         internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
-			=> Task.Run(() => Consequent?.Evaluate(
-                                Antecedent?.Evaluate(ontology), ontology));
+			=> Task.Run(() => Consequent?.Evaluate(Antecedent?.Evaluate(ontology), ontology) 
+                                       ?? Enumerable.Empty<OWLInference>().ToList());
         #endregion
 
         #region Utilities
