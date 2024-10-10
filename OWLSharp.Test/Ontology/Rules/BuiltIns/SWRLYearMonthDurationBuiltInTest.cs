@@ -47,8 +47,8 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2 
                             && rlarg2.GetVariable().Equals(new RDFVariable("?Z")));
             Assert.IsTrue(string.Equals("swrlb:yearMonthDuration(?X,?Y,?Z)", builtin.ToString()));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.YearMonthDuration(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.YearMonthDuration(new SWRLVariableArgument(new RDFVariable("?X")), null));
+            Assert.ThrowsException<SWRLException>(() => SWRLBuiltIn.YearMonthDuration(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsException<SWRLException>(() => SWRLBuiltIn.YearMonthDuration(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
 
         [TestMethod]
@@ -149,7 +149,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults3.Rows.Count == 3);
 
             //Test exception on unknown builtIn
-            Assert.ThrowsException<OWLException>(() =>
+            Assert.ThrowsException<SWRLException>(() =>
                 new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#example",
@@ -160,7 +160,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 }.EvaluateOnAntecedent(antecedentResults));
 
             //Test exception on bad-formed builtIn
-            Assert.ThrowsException<OWLException>(() => 
+            Assert.ThrowsException<SWRLException>(() => 
                 new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#yearMonthDuration",

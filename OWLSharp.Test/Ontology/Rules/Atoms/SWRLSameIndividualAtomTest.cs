@@ -65,13 +65,13 @@ namespace OWLSharp.Test.Ontology.Rules
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLSameIndividualAtomBecauseNullRightArgument()
-            => Assert.ThrowsException<OWLException>(() => new SWRLSameIndividualAtom(
+            => Assert.ThrowsException<SWRLException>(() => new SWRLSameIndividualAtom(
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 null as SWRLVariableArgument));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLSameIndividualAtomWithIndividualRightArgumentBecauseNullRightArgument()
-            => Assert.ThrowsException<OWLException>(() => new SWRLSameIndividualAtom(
+            => Assert.ThrowsException<SWRLException>(() => new SWRLSameIndividualAtom(
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 null as SWRLIndividualArgument));
 

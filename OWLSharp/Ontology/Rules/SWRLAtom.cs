@@ -83,8 +83,8 @@ namespace OWLSharp.Ontology.Rules
         internal SWRLAtom() { }
         internal SWRLAtom(OWLExpression predicate, SWRLArgument leftArgument, SWRLArgument rightArgument)
         {
-            Predicate = predicate ?? throw new OWLException("Cannot create atom because given \"predicate\" parameter is null");
-            LeftArgument = leftArgument ?? throw new OWLException("Cannot create atom because given \"leftArgument\" parameter is null");
+            Predicate = predicate ?? throw new SWRLException("Cannot create atom because given \"predicate\" parameter is null");
+            LeftArgument = leftArgument ?? throw new SWRLException("Cannot create atom because given \"leftArgument\" parameter is null");
             RightArgument = rightArgument;
         }
         #endregion

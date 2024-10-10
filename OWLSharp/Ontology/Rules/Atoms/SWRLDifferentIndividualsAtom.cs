@@ -40,7 +40,7 @@ namespace OWLSharp.Ontology.Rules
         {
             #region Guards
             if (rightArgument == null)
-                throw new OWLException("Cannot create atom because given \"rightArgument\" parameter is null");
+                throw new SWRLException("Cannot create atom because given \"rightArgument\" parameter is null");
             #endregion
         }
 
@@ -49,7 +49,7 @@ namespace OWLSharp.Ontology.Rules
         {
             #region Guards
             if (rightArgument == null)
-                throw new OWLException("Cannot create atom because given \"rightArgument\" parameter is null");
+                throw new SWRLException("Cannot create atom because given \"rightArgument\" parameter is null");
             #endregion
         }
         #endregion

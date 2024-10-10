@@ -45,8 +45,8 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
                             && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
             Assert.IsTrue(string.Equals("swrlb:endsWith(?X,?Y)", builtin.ToString()));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.EndsWith(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
-            Assert.ThrowsException<OWLException>(() => SWRLBuiltIn.EndsWith(new SWRLVariableArgument(new RDFVariable("?X")), null));
+            Assert.ThrowsException<SWRLException>(() => SWRLBuiltIn.EndsWith(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsException<SWRLException>(() => SWRLBuiltIn.EndsWith(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
 
         [TestMethod]
@@ -166,7 +166,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(builtinResults3.Rows.Count == 2);
 
             //Test exception on unknown builtIn
-            Assert.ThrowsException<OWLException>(() =>
+            Assert.ThrowsException<SWRLException>(() =>
                 new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#example",
@@ -177,7 +177,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 }.EvaluateOnAntecedent(antecedentResults));
 
             //Test exception on bad-formed builtIn
-            Assert.ThrowsException<OWLException>(() => 
+            Assert.ThrowsException<SWRLException>(() => 
                 new SWRLBuiltIn()
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#endsWith",

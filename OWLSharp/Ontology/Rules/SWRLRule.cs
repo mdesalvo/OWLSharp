@@ -49,13 +49,13 @@ namespace OWLSharp.Ontology.Rules
         {
             #region Guards
             if (ruleName == null)
-                throw new OWLException("Cannot create SWRL rule because given \"ruleName\" parameter is null");
+                throw new SWRLException("Cannot create SWRL rule because given \"ruleName\" parameter is null");
             if (ruleDescription == null)
-                throw new OWLException("Cannot create SWRL rule because given \"ruleDescription\" parameter is null");
+                throw new SWRLException("Cannot create SWRL rule because given \"ruleDescription\" parameter is null");
             if (antecedent == null)
-                throw new OWLException("Cannot create SWRL rule because given \"antecedent\" parameter is null");
+                throw new SWRLException("Cannot create SWRL rule because given \"antecedent\" parameter is null");
             if (consequent == null)
-                throw new OWLException("Cannot create SWRL rule because given \"consequent\" parameter is null");
+                throw new SWRLException("Cannot create SWRL rule because given \"consequent\" parameter is null");
             #endregion
 
             Annotations.Add(

@@ -47,9 +47,9 @@ namespace OWLSharp.Ontology.Rules
         {
             #region Guards
             if (iri == null)
-                throw new OWLException("Cannot create SWRLIndividualArgument because given \"iri\" parameter is null");
+                throw new SWRLException("Cannot create SWRLIndividualArgument because given \"iri\" parameter is null");
             if (iri.IsBlank)
-                throw new OWLException("Cannot create SWRLIndividualArgument because given \"iri\" parameter is a blank resource");
+                throw new SWRLException("Cannot create SWRLIndividualArgument because given \"iri\" parameter is a blank resource");
             #endregion
 
             IRI = iri.ToString();
@@ -121,7 +121,7 @@ namespace OWLSharp.Ontology.Rules
         {
             #region Guards
             if (variable == null)
-                throw new OWLException("Cannot create SWRLVariableArgument because given \"variable\" parameter is null");
+                throw new SWRLException("Cannot create SWRLVariableArgument because given \"variable\" parameter is null");
             #endregion
 
             IRI = new RDFResource($"urn:swrl:var#{variable.VariableName.Substring(1)}").ToString();

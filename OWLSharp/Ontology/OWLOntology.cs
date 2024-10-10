@@ -1904,7 +1904,6 @@ namespace OWLSharp.Ontology
                         builtin = null;
                         return false;
                     }
-
                     //Expressions
                     void LoadAnnotationPropertyExpression(OWLOntology ont, RDFResource apIRI, out OWLAnnotationPropertyExpression apex)
 					{
