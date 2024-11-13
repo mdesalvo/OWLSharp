@@ -212,7 +212,7 @@ namespace OWLSharp.Test.Ontology.Rules
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#cos",
                 Arguments = [
-                    new SWRLLiteralArgument(new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
+                    new SWRLLiteralArgument(RDFTypedLiteral.One),
                     new SWRLVariableArgument(new RDFVariable("?Y"))
                 ]
             };
@@ -244,7 +244,7 @@ namespace OWLSharp.Test.Ontology.Rules
                 IRI = "http://www.w3.org/2003/11/swrlb#cos",
                 Arguments = [
                     new SWRLVariableArgument(new RDFVariable("?X")),
-                    new SWRLLiteralArgument(new RDFTypedLiteral("0", RDFModelEnums.RDFDatatypes.XSD_INTEGER))
+                    new SWRLLiteralArgument(RDFTypedLiteral.Zero)
                 ]
             };
 

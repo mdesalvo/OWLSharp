@@ -269,7 +269,7 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
                 new SWRLVariableArgument(new RDFVariable("?X")),
-                new SWRLLiteralArgument(new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
+                new SWRLLiteralArgument(RDFTypedLiteral.One),
                 new SWRLVariableArgument(new RDFVariable("?Z")),
                 new SWRLVariableArgument(new RDFVariable("?Q")),
                 new SWRLVariableArgument(new RDFVariable("?U")));

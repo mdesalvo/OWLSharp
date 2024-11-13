@@ -196,7 +196,7 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = SWRLBuiltIn.SubstringAfter(
                 new SWRLVariableArgument(new RDFVariable("?X")),
-                new SWRLLiteralArgument(new RDFPlainLiteral("")),
+                new SWRLLiteralArgument(RDFPlainLiteral.Empty),
                 new SWRLVariableArgument(new RDFVariable("?Z")));
 
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);

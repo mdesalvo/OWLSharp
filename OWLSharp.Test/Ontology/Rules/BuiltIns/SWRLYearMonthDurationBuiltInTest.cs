@@ -220,7 +220,7 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = SWRLBuiltIn.YearMonthDuration(
                 new SWRLVariableArgument(new RDFVariable("?X")),
-                new SWRLLiteralArgument(new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_INTEGER)),
+                new SWRLLiteralArgument(RDFTypedLiteral.One),
                 new SWRLVariableArgument(new RDFVariable("?Z")));
 
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
