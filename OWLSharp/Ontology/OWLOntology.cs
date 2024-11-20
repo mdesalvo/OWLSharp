@@ -2775,51 +2775,51 @@ namespace OWLSharp.Ontology
 			=> ImportAsync(ontologyIRI, timeoutMilliseconds, true);
         internal Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds, bool shouldCollectImport)
             => Task.Run(async () =>
-            {
-                if (ontologyIRI == null)
-                    throw new OWLException("Cannot import ontology because given \"ontologyIRI\" parameter is null");
+				{
+					if (ontologyIRI == null)
+						throw new OWLException("Cannot import ontology because given \"ontologyIRI\" parameter is null");
 
-                try
-                {
-                    RDFAsyncGraph importedGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds);
-                    OWLOntology importedOntology = await FromRDFGraphAsync(importedGraph.WrappedGraph);
+					try
+					{
+						RDFAsyncGraph importedGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds);
+						OWLOntology importedOntology = await FromRDFGraphAsync(importedGraph.WrappedGraph);
 
-                    //Imports
-					if (shouldCollectImport)
-						Imports.Add(new OWLImport(new RDFResource(importedOntology.IRI)));
+						//Imports
+						if (shouldCollectImport)
+							Imports.Add(new OWLImport(new RDFResource(importedOntology.IRI)));
 
-                    //Prefixes
-                    importedOntology.Prefixes.ForEach(pfx =>
-                    {
-                        if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
-                            Prefixes.Add(pfx);
-                    });
+						//Prefixes
+						importedOntology.Prefixes.ForEach(pfx =>
+						{
+							if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
+								Prefixes.Add(pfx);
+						});
 
-                    //Axioms
-                    importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
-                    importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ClassAxioms.Add(ax); });
-                    importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
-                    importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; DataPropertyAxioms.Add(ax); });
-                    importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport = true; DatatypeDefinitionAxioms.Add(ax); });
-                    importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
-                    importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
-                    importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
+						//Axioms
+						importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
+						importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ClassAxioms.Add(ax); });
+						importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
+						importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; DataPropertyAxioms.Add(ax); });
+						importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport = true; DatatypeDefinitionAxioms.Add(ax); });
+						importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
+						importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
+						importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
 
-                    //Rules
-                    importedOntology.Rules.ForEach(rl => { rl.IsImport = true; Rules.Add(rl); });
-                }
-                catch (Exception ex)
-                {
-                    throw new OWLException($"Cannot import ontology from IRI {ontologyIRI} because: {ex.Message}", ex);
-                }
-            });
+						//Rules
+						importedOntology.Rules.ForEach(rl => { rl.IsImport = true; Rules.Add(rl); });
+					}
+					catch (Exception ex)
+					{
+						throw new OWLException($"Cannot import ontology from IRI {ontologyIRI} because: {ex.Message}", ex);
+					}
+				});
 
         public Task ResolveImportsAsync(int timeoutMilliseconds = 20000)
             => Task.Run(async () =>
-            {
-                foreach (OWLImport import in Imports.ToList())
-                    await ImportAsync(new Uri(import.IRI), timeoutMilliseconds, false);
-            });
+				{
+					foreach (OWLImport import in Imports.ToList())
+						await ImportAsync(new Uri(import.IRI), timeoutMilliseconds, false);
+				});
         #endregion
     }
 }
