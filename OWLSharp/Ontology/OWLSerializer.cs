@@ -42,12 +42,29 @@ namespace OWLSharp.Ontology
             ontology.Prefixes.ForEach(pfx => 
             {
                 if (!string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX, StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX, StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX, StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX, StringComparison.OrdinalIgnoreCase))
+                     && !string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, StringComparison.OrdinalIgnoreCase)
+                     && !string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX, StringComparison.OrdinalIgnoreCase)
+                     && !string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX, StringComparison.OrdinalIgnoreCase)
+                     && !string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX, StringComparison.OrdinalIgnoreCase))
                     xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI);
             });
+
+            #region Exclude Imports
+            OWLOntology exportOntology = new OWLOntology(ontology);
+
+            //Axioms
+            exportOntology.DeclarationAxioms.RemoveAll(ax => ax.IsImport);
+            exportOntology.ClassAxioms.RemoveAll(ax => ax.IsImport);
+            exportOntology.ObjectPropertyAxioms.RemoveAll(ax => ax.IsImport);
+            exportOntology.DataPropertyAxioms.RemoveAll(ax => ax.IsImport);
+            exportOntology.DatatypeDefinitionAxioms.RemoveAll(ax => ax.IsImport);
+            exportOntology.KeyAxioms.RemoveAll(ax => ax.IsImport);
+            exportOntology.AssertionAxioms.RemoveAll(ax => ax.IsImport);
+            exportOntology.AnnotationAxioms.RemoveAll(ax => ax.IsImport);
+
+            //Rules
+            exportOntology.Rules.RemoveAll(rl => rl.IsImport);
+            #endregion
 
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
@@ -60,7 +77,7 @@ namespace OWLSharp.Ontology
                         NewLineHandling = NewLineHandling.None
                     }))
                 {
-                    xmlSerializer.Serialize(writer, ontology, xmlSerializerNamespaces);
+                    xmlSerializer.Serialize(writer, exportOntology, xmlSerializerNamespaces);
                     return stringWriter.ToString();
                 }
             }
