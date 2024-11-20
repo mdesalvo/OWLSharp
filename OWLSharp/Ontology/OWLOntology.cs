@@ -197,26 +197,26 @@ namespace OWLSharp.Ontology
 						graph = graph.UnionWith(annotation.ToRDFGraphInternal(ontologyIRI));
 
 					//Axioms
-					foreach (OWLDeclaration declarationAxiom in DeclarationAxioms)
+					foreach (OWLDeclaration declarationAxiom in DeclarationAxioms.Where(ax => !ax.IsImport))
 						graph = graph.UnionWith(declarationAxiom.ToRDFGraph());
-					foreach (OWLClassAxiom classAxiom in ClassAxioms)
-						graph = graph.UnionWith(classAxiom.ToRDFGraph());
-					foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms)
-						graph = graph.UnionWith(objectPropertyAxiom.ToRDFGraph());
-					foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms)
-						graph = graph.UnionWith(dataPropertyAxiom.ToRDFGraph());
-					foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms)
-						graph = graph.UnionWith(datatypeDefinitionAxiom.ToRDFGraph());
-					foreach (OWLHasKey keyAxiom in KeyAxioms)
-						graph = graph.UnionWith(keyAxiom.ToRDFGraph());
-					foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms)
-						graph = graph.UnionWith(assertionAxiom.ToRDFGraph());
-					foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms)
-						graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
+					foreach (OWLClassAxiom classAxiom in ClassAxioms.Where(ax => !ax.IsImport))
+                        graph = graph.UnionWith(classAxiom.ToRDFGraph());
+					foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms.Where(ax => !ax.IsImport))
+                        graph = graph.UnionWith(objectPropertyAxiom.ToRDFGraph());
+					foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms.Where(ax => !ax.IsImport))
+                        graph = graph.UnionWith(dataPropertyAxiom.ToRDFGraph());
+					foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms.Where(ax => !ax.IsImport))
+                        graph = graph.UnionWith(datatypeDefinitionAxiom.ToRDFGraph());
+					foreach (OWLHasKey keyAxiom in KeyAxioms.Where(ax => !ax.IsImport))
+                        graph = graph.UnionWith(keyAxiom.ToRDFGraph());
+					foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms.Where(ax => !ax.IsImport))
+                        graph = graph.UnionWith(assertionAxiom.ToRDFGraph());
+					foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms.Where(ax => !ax.IsImport))
+                        graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
 					//Rules
-					foreach (SWRLRule rule in Rules)
-						graph = graph.UnionWith(rule.ToRDFGraph());
+					foreach (SWRLRule rule in Rules.Where(rl => !rl.IsImport))
+                        graph = graph.UnionWith(rule.ToRDFGraph());
 
 					//IRI => Context
 					if (!ontologyIRI.IsBlank)
