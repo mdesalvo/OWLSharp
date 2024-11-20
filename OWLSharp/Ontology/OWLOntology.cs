@@ -2751,7 +2751,7 @@ namespace OWLSharp.Ontology
 					}
 				});
 
-		public Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds = 20000)
+		public Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds=20000)
 			=> Task.Run(async () =>
 				{
 					if (ontologyIRI == null)
@@ -2762,12 +2762,16 @@ namespace OWLSharp.Ontology
 						RDFAsyncGraph importedGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds);
 						OWLOntology importedOntology = await FromRDFGraphAsync(importedGraph.WrappedGraph);
 
-						Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.OWL.IMPORTS), new RDFResource(importedOntology.IRI)));
-                        //Prefixes
-						importedOntology.Prefixes.ForEach(pfx => {
+						//Imports
+						Imports.Add(new OWLImport(new RDFResource(importedOntology.IRI)));
+
+						//Prefixes
+						importedOntology.Prefixes.ForEach(pfx => 
+						{
                             if (!Prefixes.Any(PFX => string.Equals(PFX.Name, pfx.Name, StringComparison.OrdinalIgnoreCase)))
                                 Prefixes.Add(pfx);
                         });
+
 						//Axioms
                         importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
 						importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
@@ -2777,6 +2781,7 @@ namespace OWLSharp.Ontology
 						importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
 						importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
 						importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
+
 						//Rules
 						importedOntology.Rules.ForEach(r => { r.IsImport = true; Rules.Add(r); });
 					}

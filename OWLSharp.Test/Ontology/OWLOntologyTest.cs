@@ -4885,9 +4885,8 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
             await ontology.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI));
 
-            Assert.IsTrue(ontology.Annotations.Count == 1);
-            Assert.IsTrue(ontology.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.IMPORTS)
-              				&& string.Equals(ontology.Annotations.Single().ValueIRI, "http://www.w3.org/2004/02/skos/core"));
+            Assert.IsTrue(ontology.Imports.Count == 1);
+            Assert.IsTrue(string.Equals(ontology.Imports.Single().IRI, "http://www.w3.org/2004/02/skos/core"));
             Assert.IsTrue(ontology.AnnotationAxioms.Count == 51);
             Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
             Assert.IsTrue(ontology.ClassAxioms.Count == 4);
