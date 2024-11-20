@@ -2814,7 +2814,7 @@ namespace OWLSharp.Ontology
 					}
 				});
 
-        public Task ResolveImportsAsync(int timeoutMilliseconds = 20000)
+        public Task ResolveImportsAsync(int timeoutMilliseconds=20000)
             => Task.Run(async () =>
 				{
 					foreach (OWLImport import in Imports.ToList())
