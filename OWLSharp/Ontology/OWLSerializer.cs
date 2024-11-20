@@ -41,11 +41,11 @@ namespace OWLSharp.Ontology
             //Initialize user-declared prefixes
             ontology.Prefixes.ForEach(pfx => 
             {
-                if (!string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX, System.StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, System.StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX, System.StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX, System.StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX, System.StringComparison.OrdinalIgnoreCase))
+                if (!string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX, StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX, StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX, StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX, StringComparison.OrdinalIgnoreCase))
                     xmlSerializerNamespaces.Add(pfx.Name, pfx.IRI);
             });
 
