@@ -5076,6 +5076,31 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
+        public async Task ShouldResolveImportsAsync()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
+            ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.SKOS.DEREFERENCE_URI)));
+            ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.FOAF.DEREFERENCE_URI)));
+            await ontology.ResolveImportsAsync();
+
+            Assert.IsTrue(ontology.Imports.Count == 2);
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 151);
+            Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
+            Assert.IsTrue(ontology.ClassAxioms.Count == 21);
+            Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 140);
+            Assert.IsTrue(ontology.DeclarationAxioms.TrueForAll(ax => ax.IsImport));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 106);
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.TrueForAll(ax => ax.IsImport));
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
+            Assert.IsTrue(ontology.DataPropertyAxioms.Count == 29);
+            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
+            Assert.IsTrue(ontology.KeyAxioms.Count == 0);
+            Assert.IsTrue(ontology.Prefixes.Count == 5);
+            Assert.IsTrue(ontology.Rules.Count == 0);
+        }
+
+        [TestMethod]
         public async Task ShouldThrowExceptionOnImportingOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
