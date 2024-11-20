@@ -133,6 +133,7 @@ namespace OWLSharp.Ontology
 			KeyAxioms = new List<OWLHasKey>();
 			AssertionAxioms = new List<OWLAssertionAxiom>();
 			AnnotationAxioms = new List<OWLAnnotationAxiom>();
+
 			//Rules
 			Rules = new List<SWRLRule>();
 		}
@@ -147,7 +148,7 @@ namespace OWLSharp.Ontology
 		{
 			IRI = ontology?.IRI;
 			VersionIRI = ontology?.VersionIRI;
-			Prefixes = new List<OWLPrefix>(ontology?.Prefixes ??
+			Prefixes = ontology?.Prefixes.ToList() ??
 						new List<OWLPrefix>()
 						{
 							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.OWL.PREFIX)),
@@ -155,9 +156,10 @@ namespace OWLSharp.Ontology
 							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.RDF.PREFIX)),
 							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XSD.PREFIX)),
 							new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.XML.PREFIX))
-						});
+						};
 			Imports = new List<OWLImport>(ontology?.Imports ?? Enumerable.Empty<OWLImport>());
 			Annotations = new List<OWLAnnotation>(ontology?.Annotations ?? Enumerable.Empty<OWLAnnotation>());
+
 			//Axioms
 			DeclarationAxioms = new List<OWLDeclaration>(ontology?.DeclarationAxioms ?? Enumerable.Empty<OWLDeclaration>());
 			ClassAxioms = new List<OWLClassAxiom>(ontology?.ClassAxioms ?? Enumerable.Empty<OWLClassAxiom>());
@@ -167,6 +169,7 @@ namespace OWLSharp.Ontology
 			KeyAxioms = new List<OWLHasKey>(ontology?.KeyAxioms ?? Enumerable.Empty<OWLHasKey>());
 			AssertionAxioms = new List<OWLAssertionAxiom>(ontology?.AssertionAxioms ?? Enumerable.Empty<OWLAssertionAxiom>());
 			AnnotationAxioms = new List<OWLAnnotationAxiom>(ontology?.AnnotationAxioms ?? Enumerable.Empty<OWLAnnotationAxiom>());
+
 			//Rules
 			Rules = new List<SWRLRule>(ontology?.Rules ?? Enumerable.Empty<SWRLRule>());
 		}
@@ -239,8 +242,25 @@ namespace OWLSharp.Ontology
 					if (outputStream == null)
 						throw new OWLException("Cannot write ontology to stream because given \"outputStream\" parameter is null");
 
-					try
-					{
+                    #region Exclude Imports
+                    OWLOntology exportOntology = new OWLOntology(this);
+
+                    //Axioms
+                    exportOntology.DeclarationAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.ClassAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.ObjectPropertyAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.DataPropertyAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.DatatypeDefinitionAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.KeyAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.AssertionAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.AnnotationAxioms.RemoveAll(ax => ax.IsImport);
+
+                    //Rules
+                    exportOntology.Rules.RemoveAll(rl => rl.IsImport);
+                    #endregion
+
+                    try
+                    {
 						switch (owlFormat)
 						{
 							case OWLEnums.OWLFormats.OWL2XML:
@@ -2772,18 +2792,18 @@ namespace OWLSharp.Ontology
                                 Prefixes.Add(pfx);
                         });
 
-						//Axioms
+                        //Axioms
+                        importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
+                        importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ClassAxioms.Add(ax); });
+                        importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
+                        importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; DataPropertyAxioms.Add(ax); });
+                        importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport = true; DatatypeDefinitionAxioms.Add(ax); });
+                        importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
+                        importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
                         importedOntology.AnnotationAxioms.ForEach(ax => { ax.IsImport = true; AnnotationAxioms.Add(ax); });
-						importedOntology.AssertionAxioms.ForEach(ax => { ax.IsImport = true; AssertionAxioms.Add(ax); });
-						importedOntology.ClassAxioms.ForEach(ax => { ax.IsImport = true; ClassAxioms.Add(ax); });
-						importedOntology.DataPropertyAxioms.ForEach(ax => { ax.IsImport = true; DataPropertyAxioms.Add(ax); });
-						importedOntology.DatatypeDefinitionAxioms.ForEach(ax => { ax.IsImport = true; DatatypeDefinitionAxioms.Add(ax); });
-						importedOntology.DeclarationAxioms.ForEach(ax => { ax.IsImport = true; DeclarationAxioms.Add(ax); });
-						importedOntology.KeyAxioms.ForEach(ax => { ax.IsImport = true; KeyAxioms.Add(ax); });
-						importedOntology.ObjectPropertyAxioms.ForEach(ax => { ax.IsImport = true; ObjectPropertyAxioms.Add(ax); });
-
+						
 						//Rules
-						importedOntology.Rules.ForEach(r => { r.IsImport = true; Rules.Add(r); });
+						importedOntology.Rules.ForEach(rl => { rl.IsImport = true; Rules.Add(rl); });
 					}
 					catch (Exception ex)
 					{
