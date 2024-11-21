@@ -28,6 +28,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology.Rules
 {
     //Register here all derived types of SWRLAtom
+    [XmlInclude(typeof(SWRLAnnotationPropertyAtom))]
     [XmlInclude(typeof(SWRLClassAtom))]
     [XmlInclude(typeof(SWRLDataPropertyAtom))]
     [XmlInclude(typeof(SWRLDataRangeAtom))]
@@ -61,6 +62,7 @@ namespace OWLSharp.Ontology.Rules
         [XmlElement(typeof(OWLDataComplementOf), ElementName="DataComplementOf", Order=1)]
         [XmlElement(typeof(OWLDataOneOf), ElementName="DataOneOf", Order=1)]
         [XmlElement(typeof(OWLDatatypeRestriction), ElementName="DatatypeRestriction", Order=1)]
+        [XmlElement(typeof(OWLAnnotationProperty), ElementName="AnnotationProperty", Order=1)]
         [XmlElement(typeof(OWLDataProperty), ElementName="DataProperty", Order=1)]
         [XmlElement(typeof(OWLObjectProperty), ElementName="ObjectProperty", Order=1)]
         [XmlElement(typeof(OWLExpression), Order=1)]

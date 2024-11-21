@@ -17,12 +17,15 @@ using System.Threading.Tasks;
 using OWLSharp.Extensions.SKOS.Validator.RuleSet;
 using OWLSharp.Ontology;
 using OWLSharp.Validator;
+using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.SKOS.Validator
 {
     public class SKOSValidator
     {
         #region Properties
+        internal static RDFResource ViolationIRI = new RDFResource("urn:owlsharp:swrl:hasViolations");
+
         public List<SKOSEnums.SKOSValidatorRules> Rules { get; internal set; }
         #endregion
 

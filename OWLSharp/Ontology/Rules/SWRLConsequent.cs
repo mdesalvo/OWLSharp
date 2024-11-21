@@ -27,6 +27,7 @@ namespace OWLSharp.Ontology.Rules
     public class SWRLConsequent
     {
         #region Properties
+        [XmlElement(typeof(SWRLAnnotationPropertyAtom), ElementName="AnnotationPropertyAtom")]
         [XmlElement(typeof(SWRLClassAtom), ElementName="ClassAtom")]
         [XmlElement(typeof(SWRLDataPropertyAtom), ElementName="DataPropertyAtom")]
         [XmlElement(typeof(SWRLDataRangeAtom), ElementName="DataRangeAtom")]

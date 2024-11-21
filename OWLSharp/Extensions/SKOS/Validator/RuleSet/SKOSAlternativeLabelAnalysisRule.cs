@@ -14,111 +14,235 @@
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
+using OWLSharp.Ontology.Rules;
+using OWLSharp.Reasoner;
 using OWLSharp.Validator;
 using RDFSharp.Model;
+using RDFSharp.Query;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 
 namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 {
     internal class SKOSAlternativeLabelAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis.ToString();
-		internal static readonly string rulesugg1 = "There should not be SKOS concepts having the same annotation value for altLabel, prefLabel, hiddenLabel properties.";
-		internal static readonly string rulesugg2 = "There should not be SKOS-XL concepts having the same annotation value for altLabel, prefLabel, hiddenLabel properties";
+		internal static readonly string rulesugg1 = "There should not be SKOS concepts having the same value for skos:altLabel and skos:prefLabel data annotations.";
+        internal static readonly string rulesugg2 = "There should not be SKOS concepts having the same value for skos:altLabel and skos:hiddenLabel data annotations.";
+        internal static readonly string rulesugg3 = "There should not be SKOS-XL concepts having the same value for skosxl:altLabel and skosxl:prefLabel data relations.";
+        internal static readonly string rulesugg4 = "There should not be SKOS-XL concepts having the same value for skosxl:altLabel and skosxl:hiddenLabel data relations.";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
+            List<OWLInference> violations = new List<OWLInference>();
 
-            //Temporary working variables (SKOS)
-            List<OWLAnnotationAssertion> annAsns = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
-            List<OWLAnnotationAssertion> altLabels = annAsns.Where(annAsn => annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.SKOS.ALT_LABEL)).ToList();
-            List<OWLAnnotationAssertion> prefLabels = annAsns.Where(annAsn => annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.SKOS.PREF_LABEL)).ToList();
-            List<OWLAnnotationAssertion> hiddenLabels = annAsns.Where(annAsn => annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.SKOS.HIDDEN_LABEL)).ToList();
+            //SKOS
 
-            //Temporary working variables (SKOS-XL)
-            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-            #region Calibration
-            OWLIndividualExpression swapIdvExpr;
-            for (int i = 0; i < opAsns.Count; i++)
-            {
-                //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                if (opAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+            //skos:altLabel VS skos:prefLabel
+            SWRLRule altprefRule = new SWRLRule(
+                new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
+                new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skos:altLabel and skos:prefLabel data annotations"),
+                new SWRLAntecedent()
                 {
-                    swapIdvExpr = opAsns[i].SourceIndividualExpression;
-                    opAsns[i].SourceIndividualExpression = opAsns[i].TargetIndividualExpression;
-                    opAsns[i].TargetIndividualExpression = swapIdvExpr;
-                    opAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-                }
-            }
-            opAsns = OWLAxiomHelper.RemoveDuplicates(opAsns);
-            #endregion
-            List<OWLObjectPropertyAssertion> altXLabels = opAsns.Where(opAsn => opAsn.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL)).ToList();
-            List<OWLObjectPropertyAssertion> prefXLabels = opAsns.Where(opAsn => opAsn.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.SKOS.SKOSXL.PREF_LABEL)).ToList();
-            List<OWLObjectPropertyAssertion> hiddenXLabels = opAsns.Where(opAsn => opAsn.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL)).ToList();
-            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-            List<OWLDataPropertyAssertion> litFormLabels = dpAsns.Where(dpAsn => dpAsn.DataProperty.GetIRI().Equals(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM)).ToList();
-            
-            foreach (OWLIndividualExpression concept in ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT), false))
-            {
-                string conceptIRI = concept.GetIRI().ToString();
-
-                //skos:altLabel
-                foreach (OWLAnnotationAssertion altLabel in altLabels.Where(al => string.Equals(al.SubjectIRI, conceptIRI)
-                                                                                   && al.ValueIRI == null 
-                                                                                   && al.ValueLiteral?.GetLiteral() is RDFPlainLiteral))
-                {
-                    //Clash with skos:prefLabel
-                    if (prefLabels.Any(pl => string.Equals(pl.SubjectIRI, conceptIRI)
-                                              && pl.ValueIRI == null 
-                                              && pl.ValueLiteral?.GetLiteral() is RDFPlainLiteral prefLabelValue
-                                              && prefLabelValue.Equals(altLabel.ValueLiteral.GetLiteral())))
-                        issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error, 
-                            rulename, 
-                            $"Violated skos:altLabel with signature: '{altLabel.GetXML()}'", 
-                            rulesugg1));
-
-                    //Clash with skos:hiddenLabel
-                    if (hiddenLabels.Any(hl => string.Equals(hl.SubjectIRI, conceptIRI)
-                                                && hl.ValueIRI == null 
-                                                && hl.ValueLiteral?.GetLiteral() is RDFPlainLiteral hiddenLabelValue
-                                                && hiddenLabelValue.Equals(altLabel.ValueLiteral.GetLiteral())))
-                        issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error, 
-                            rulename, 
-                            $"Violated skos:altLabel with signature: '{altLabel.GetXML()}'", 
-                            rulesugg1));
-                }                    
-
-                //skosxl:altLabel
-                foreach (OWLObjectPropertyAssertion altXLabel in altXLabels.Where(al => string.Equals(al.SourceIndividualExpression.GetIRI().ToString(), conceptIRI)))
-                    foreach (OWLDataPropertyAssertion altXLabelLitForm in litFormLabels.Where(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(altXLabel.TargetIndividualExpression.GetIRI())))
+                    Atoms = new List<SWRLAtom>() 
                     {
-                        //Clash with skosxl:prefLabel
-                        if (prefXLabels.Any(pl => string.Equals(pl.SourceIndividualExpression.GetIRI().ToString(), conceptIRI)
-                                                   && litFormLabels.Any(litFormLabel => litFormLabel.IndividualExpression.GetIRI().Equals(pl.TargetIndividualExpression.GetIRI())
-                                                                                         && litFormLabel.Literal.GetLiteral().Equals(altXLabelLitForm.Literal.GetLiteral()))))
-                            issues.Add(new OWLIssue(
-                                OWLEnums.OWLIssueSeverity.Error, 
-                                rulename, 
-                                $"Violated skosxl:altLabel with signature: '{altXLabel.GetXML()}'", 
-                                rulesugg2));
-
-                        //Clash with skosxl:hiddenLabel
-                        if (hiddenXLabels.Any(hl => string.Equals(hl.SourceIndividualExpression.GetIRI().ToString(), conceptIRI)
-                                                     && litFormLabels.Any(litFormLabel => litFormLabel.IndividualExpression.GetIRI().Equals(hl.TargetIndividualExpression.GetIRI())
-                                                                                           && litFormLabel.Literal.GetLiteral().Equals(altXLabelLitForm.Literal.GetLiteral()))))
-                            issues.Add(new OWLIssue(
-                                OWLEnums.OWLIssueSeverity.Error, 
-                                rulename, 
-                                $"Violated skosxl:altLabel with signature: '{altXLabel.GetXML()}'", 
-                                rulesugg2));
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                        new SWRLAnnotationPropertyAtom(
+                            new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL"))),
+                        new SWRLAnnotationPropertyAtom(
+                            new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
+                    },
+                    BuiltIns = new List<SWRLBuiltIn>()
+                    {
+                        SWRLBuiltIn.Equal(
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
+                            new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
                     }
-            }
+                },
+                new SWRLConsequent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(SKOSValidator.ViolationIRI),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLLiteralArgument(RDFTypedLiteral.True))
+                    }
+                });
+            violations.AddRange(altprefRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.ForEach(violation => issues.Add(
+                new OWLIssue(
+                    OWLEnums.OWLIssueSeverity.Error,
+                    rulename,
+                    rulesugg1,
+                    $"SKOS concept '{((OWLDataPropertyAssertion)violation.Axiom).IndividualExpression.GetIRI()}' should be adjusted to not clash on skos:altlabel and skos:prefLabel values"
+                )));
+            violations.Clear();
+
+            //skos:altLabel VS skos:hiddenLabel
+            SWRLRule althiddenRule = new SWRLRule(
+                new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
+                new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skos:altLabel and skos:hiddenLabel data annotations"),
+                new SWRLAntecedent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                        new SWRLAnnotationPropertyAtom(
+                            new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL"))),
+                        new SWRLAnnotationPropertyAtom(
+                            new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
+                    },
+                    BuiltIns = new List<SWRLBuiltIn>()
+                    {
+                        SWRLBuiltIn.Equal(
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
+                            new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
+                    }
+                },
+                new SWRLConsequent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(SKOSValidator.ViolationIRI),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLLiteralArgument(RDFTypedLiteral.True))
+                    }
+                });
+            violations.AddRange(althiddenRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.ForEach(violation => issues.Add(
+                new OWLIssue(
+                    OWLEnums.OWLIssueSeverity.Error,
+                    rulename,
+                    rulesugg2,
+                    $"SKOS concept '{((OWLDataPropertyAssertion)violation.Axiom).IndividualExpression.GetIRI()}' should be adjusted to not clash on skos:altlabel and skos:hiddenLabel values"
+                )));
+            violations.Clear();
+
+            //SKOS-XL
+
+            //skosxl:altLabel VS skosxl:prefLabel
+            SWRLRule altprefXLRule = new SWRLRule(
+                new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
+                new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skosxl:altLabel and skosxl:prefLabel data relations"),
+                new SWRLAntecedent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                        new SWRLObjectPropertyAtom(
+                            new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?AL"))),
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                            new SWRLVariableArgument(new RDFVariable("?AL")),
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL"))),
+                        new SWRLObjectPropertyAtom(
+                            new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.PREF_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?PL"))),
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                            new SWRLVariableArgument(new RDFVariable("?PL")),
+                            new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
+                    },
+                    BuiltIns = new List<SWRLBuiltIn>()
+                    {
+                        SWRLBuiltIn.Equal(
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
+                            new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
+                    }
+                },
+                new SWRLConsequent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(SKOSValidator.ViolationIRI),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLLiteralArgument(RDFTypedLiteral.True))
+                    }
+                });
+            violations.AddRange(altprefXLRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.ForEach(violation => issues.Add(
+                new OWLIssue(
+                    OWLEnums.OWLIssueSeverity.Error,
+                    rulename,
+                    rulesugg3,
+                    $"SKOS concept '{((OWLDataPropertyAssertion)violation.Axiom).IndividualExpression.GetIRI()}' should be adjusted to not clash on skosxl:altlabel and skosxl:prefLabel values"
+                )));
+            violations.Clear();
+
+            //skosxl:altLabel VS skosxl:hiddenLabel
+            SWRLRule althiddenXLRule = new SWRLRule(
+                new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
+                new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skosxl:altLabel and skosxl:hiddenLabel data relations"),
+                new SWRLAntecedent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLClassAtom(
+                            new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                        new SWRLObjectPropertyAtom(
+                            new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?AL"))),
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                            new SWRLVariableArgument(new RDFVariable("?AL")),
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL"))),
+                        new SWRLObjectPropertyAtom(
+                            new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLVariableArgument(new RDFVariable("?HL"))),
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                            new SWRLVariableArgument(new RDFVariable("?HL")),
+                            new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
+                    },
+                    BuiltIns = new List<SWRLBuiltIn>()
+                    {
+                        SWRLBuiltIn.Equal(
+                            new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
+                            new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
+                    }
+                },
+                new SWRLConsequent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLDataPropertyAtom(
+                            new OWLDataProperty(SKOSValidator.ViolationIRI),
+                            new SWRLVariableArgument(new RDFVariable("?C")),
+                            new SWRLLiteralArgument(RDFTypedLiteral.True))
+                    }
+                });
+            violations.AddRange(althiddenXLRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.ForEach(violation => issues.Add(
+                new OWLIssue(
+                    OWLEnums.OWLIssueSeverity.Error,
+                    rulename,
+                    rulesugg4,
+                    $"SKOS concept '{((OWLDataPropertyAssertion)violation.Axiom).IndividualExpression.GetIRI()}' should be adjusted to not clash on skosxl:altlabel and skosxl:hiddenLabel values"
+                )));
+            violations.Clear();
 
             return issues;
         }

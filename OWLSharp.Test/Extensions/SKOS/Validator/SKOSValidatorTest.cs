@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator
                         new OWLLiteral(new RDFPlainLiteral("This is concept B"))),
                     new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
-                        new RDFResource("ex:ConceptA"),
+                        new RDFResource("ex:ConceptB"),
                         new OWLLiteral(new RDFPlainLiteral("This is concept B (but this is preferred)"))),
                     new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
@@ -84,7 +84,8 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSAlternativeLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, SKOSAlternativeLabelAnalysisRule.rulesugg1)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSAlternativeLabelAnalysisRule.rulesugg1)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skos:altlabel and skos:prefLabel values")));
         }
         #endregion
     }
