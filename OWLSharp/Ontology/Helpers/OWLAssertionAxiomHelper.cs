@@ -559,9 +559,6 @@ namespace OWLSharp.Ontology.Helpers
         internal static List<OWLDataPropertyAssertion> SelectDataAssertionsByDPEX(List<OWLDataPropertyAssertion> dtPropAsnAxioms, OWLDataProperty dtProp)
 			=> dtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
 
-        internal static List<OWLAnnotationAssertion> SelectAnnotationAssertionsByAPEX(List<OWLAnnotationAssertion> annAsnAxioms, OWLAnnotationProperty annProp)
-            => annAsnAxioms.Where(ax => ax.AnnotationProperty.GetIRI().Equals(annProp.GetIRI())).ToList();
-
         internal static List<OWLNegativeObjectPropertyAssertion> SelectNegativeObjectAssertionsByOPEX(List<OWLNegativeObjectPropertyAssertion> negObjPropAsnAxioms, OWLObjectPropertyExpression objPropExpr)
         {
 			RDFResource opexIRI = objPropExpr is OWLObjectInverseOf objPropExprInvOf ? objPropExprInvOf.ObjectProperty.GetIRI() : objPropExpr.GetIRI();

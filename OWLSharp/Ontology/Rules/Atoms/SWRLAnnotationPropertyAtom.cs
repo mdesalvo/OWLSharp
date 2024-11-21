@@ -70,7 +70,7 @@ namespace OWLSharp.Ontology.Rules
 
             //Extract annotation property assertions of the atom predicate
 			List<OWLAnnotationAssertion> annAsns = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
-            List<OWLAnnotationAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectAnnotationAssertionsByAPEX(annAsns, (OWLAnnotationProperty)Predicate);
+            List<OWLAnnotationAssertion> atomPredicateAssertions = OWLAnnotationAxiomHelper.SelectAnnotationAssertionsByAPEX(annAsns, (OWLAnnotationProperty)Predicate);
             if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
                 atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.ValueLiteral?.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()) ?? false)
 																 .ToList();
@@ -97,7 +97,7 @@ namespace OWLSharp.Ontology.Rules
             List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
-            string AnnotationPropertyAtomString = this.ToString();
+            string annotationPropertyAtomString = this.ToString();
 
             #region Guards
             //The antecedent results table MUST have a column corresponding to the atom's left argument
@@ -137,13 +137,6 @@ namespace OWLSharp.Ontology.Rules
                 if (leftArgumentValue is RDFResource leftArgumentValueResource
                      && rightArgumentValue is RDFLiteral rightArgumentValueLiteral)
                 {
-					//Build the inference individual
-					OWLIndividualExpression dpAsnIdvExpr;
-					if (leftArgumentValueResource.IsBlank)
-						dpAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
-					else
-						dpAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
-
 					//Create the inference
                     OWLAnnotationAssertion inference = new OWLAnnotationAssertion(
 						(OWLAnnotationProperty)Predicate,
@@ -153,7 +146,7 @@ namespace OWLSharp.Ontology.Rules
 							IsInference=true 
 						};
 					inference.GetXML();
-					inferences.Add(new OWLInference(AnnotationPropertyAtomString, inference));
+					inferences.Add(new OWLInference(annotationPropertyAtomString, inference));
                 }
             }
 
