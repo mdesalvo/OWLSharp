@@ -21,7 +21,8 @@ namespace OWLSharp.Extensions.SKOS
       public enum SKOSValidatorRules
       {
         AlternativeLabelAnalysis = 1,
-        PreferredLabelAnalysis = 2
+        HiddenLabelAnalysis = 2,
+        PreferredLabelAnalysis = 3
       }
     }
 }

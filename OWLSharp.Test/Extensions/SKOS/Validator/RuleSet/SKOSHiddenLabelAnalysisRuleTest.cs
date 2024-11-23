@@ -23,11 +23,11 @@ using RDFSharp.Model;
 namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
 {
     [TestClass]
-    public class SKOSAlternativeLabelAnalysisRuleTest
+    public class SKOSHiddenLabelAnalysisRuleTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeAlternativeLabelConflictingWithPrefLabel()
+        public void ShouldAnalyzeHiddenLabelConflictingWithAltLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -42,7 +42,65 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
+                        new RDFResource("ex:ConceptA"),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
+                    new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
+                        new RDFResource("ex:ConceptA"),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
+                    new OWLAnnotationAssertion(
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
+                        new RDFResource("ex:ConceptB"),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept B"))),
+                    new OWLAnnotationAssertion(
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
+                        new RDFResource("ex:ConceptB"),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept B (but this is hidden)"))),
+                    new OWLAnnotationAssertion(
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
+                        new RDFResource("ex:ConceptC"),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept C")))
+                ],
+                AssertionAxioms = [
+                     new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
+                ]
+            };
+            List<OWLIssue> issues = SKOSHiddenLabelAnalysisRule.ExecuteRule(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSHiddenLabelAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSHiddenLabelAnalysisRule.rulesugg1)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skos:hiddenLabel and skos:altLabel values")));
+        }
+        
+        [TestMethod]
+        public void ShouldAnalyzeHiddenLabelConflictingWithPrefLabel()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
+                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL)),
+                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL)),
+                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                ],
+                AnnotationAxioms = [
+                    new OWLAnnotationAssertion(
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
                         new RDFResource("ex:ConceptA"),
                         new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
                     new OWLAnnotationAssertion(
@@ -50,7 +108,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new RDFResource("ex:ConceptA"),
                         new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
                     new OWLAnnotationAssertion(
-                        new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
                         new RDFResource("ex:ConceptB"),
                         new OWLLiteral(new RDFPlainLiteral("This is concept B"))),
                     new OWLAnnotationAssertion(
@@ -58,7 +116,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new RDFResource("ex:ConceptB"),
                         new OWLLiteral(new RDFPlainLiteral("This is concept B (but this is preferred)"))),
                     new OWLAnnotationAssertion(
-                        new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
                         new RDFResource("ex:ConceptC"),
                         new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ],
@@ -74,72 +132,112 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSHiddenLabelAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSAlternativeLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSAlternativeLabelAnalysisRule.rulesugg1)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skos:altLabel and skos:prefLabel values")));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSHiddenLabelAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSHiddenLabelAnalysisRule.rulesugg2)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skos:hiddenLabel and skos:prefLabel values")));
         }
 
         [TestMethod]
-        public void ShouldAnalyzeAlternativeLabelConflictingWithHiddenLabel()
+        public void ShouldAnalyzeAlternativeXLabelConflictingWithAltXLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
-                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL)),
-                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL)),
-                    new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.PREF_LABEL)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
-                ],
-                AnnotationAxioms = [
-                    new OWLAnnotationAssertion(
-                        new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
-                        new RDFResource("ex:ConceptA"),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
-                    new OWLAnnotationAssertion(
-                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
-                        new RDFResource("ex:ConceptA"),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
-                    new OWLAnnotationAssertion(
-                        new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
-                        new RDFResource("ex:ConceptB"),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept B"))),
-                    new OWLAnnotationAssertion(
-                        new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
-                        new RDFResource("ex:ConceptB"),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept B (but this is hidden)"))),
-                    new OWLAnnotationAssertion(
-                        new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL),
-                        new RDFResource("ex:ConceptC"),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept C")))
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelA2"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelB2"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelC")))
                 ],
                 AssertionAxioms = [
-                     new OWLClassAssertion(
+                    new OWLClassAssertion(
                         new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA2"))),
                     new OWLClassAssertion(
                         new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB2"))),
+                    new OWLClassAssertion(
                         new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelC"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA")),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA2"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA2")),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB")),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept B"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB2"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB2")),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept B (but this is hidden)"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelC"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelC")),
+                        new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ]
             };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSHiddenLabelAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSAlternativeLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSAlternativeLabelAnalysisRule.rulesugg2)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skos:altLabel and skos:hiddenLabel values")));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSHiddenLabelAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSHiddenLabelAnalysisRule.rulesugg3)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skosxl:hiddenLabel and skosxl:altLabel values")));
         }
 
         [TestMethod]
@@ -189,7 +287,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
                         new OWLNamedIndividual(new RDFResource("ex:LabelC"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
                     new OWLDataPropertyAssertion(
@@ -205,7 +303,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:LabelA2")),
                         new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
                         new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
                     new OWLDataPropertyAssertion(
@@ -221,7 +319,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:LabelB2")),
                         new OWLLiteral(new RDFPlainLiteral("This is concept B (but this is preferred)"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:LabelC"))),
                     new OWLDataPropertyAssertion(
@@ -230,112 +328,14 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ]
             };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSHiddenLabelAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSAlternativeLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSAlternativeLabelAnalysisRule.rulesugg3)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skosxl:altLabel and skosxl:prefLabel values")));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeAlternativeXLabelConflictingWithHiddenXLabel()
-        {
-            OWLOntology ontology = new OWLOntology()
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
-                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL)),
-                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL)),
-                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.PREF_LABEL)),
-                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL)),
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelA2"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelB2"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelC")))
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelA2"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelB2"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelC"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelA")),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelA2"))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelA2")),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept A"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelB")),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept B"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelB2"))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelB2")),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept B (but this is hidden)"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelC"))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
-                        new OWLNamedIndividual(new RDFResource("ex:LabelC")),
-                        new OWLLiteral(new RDFPlainLiteral("This is concept C")))
-                ]
-            };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSAlternativeLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSAlternativeLabelAnalysisRule.rulesugg4)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skosxl:altLabel and skosxl:hiddenLabel values")));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSHiddenLabelAnalysisRule.rulename)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSHiddenLabelAnalysisRule.rulesugg4)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skosxl:hiddenLabel and skosxl:prefLabel values")));
         }
         #endregion
     }
