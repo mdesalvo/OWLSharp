@@ -21,6 +21,7 @@ using OWLSharp.Reasoner.RuleSet;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -1103,6 +1104,66 @@ namespace OWLSharp.Test.Reasoner
                                     new OWLClass(RDFVocabulary.FOAF.PERSON),
                                     new SWRLVariableArgument(new RDFVariable("?P")))
                             ]
+                        },
+                        new SWRLConsequent()
+                        {
+                            Atoms = [
+                                new SWRLClassAtom(
+                                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                                    new SWRLVariableArgument(new RDFVariable("?P")))
+                            ]
+                        })
+                ]
+            };
+            List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.Count == 1);
+            Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
+                            && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
+                            && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
+        }
+
+        [TestMethod]
+        public async Task ShouldEntailOntologyRulesHavingCustomRegisteredBuiltInsAsync()
+        {
+            bool Evaluator(DataRow datarow) => string.Equals(datarow["?P"].ToString(), "ex:Mark");
+            SWRLBuiltIn builtIn = new SWRLBuiltIn(
+                Evaluator,
+                new RDFResource("http://www.w3.org/2003/11/swrl#exampleRegistered"),
+                new SWRLVariableArgument(new RDFVariable("?VAR")),
+                new SWRLIndividualArgument(new RDFResource("http://test.org/")),
+                new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
+            SWRLBuiltIn builtInExec = new SWRLBuiltIn(
+                Evaluator,
+                new RDFResource("http://www.w3.org/2003/11/swrl#exampleRegistered"),
+                new SWRLVariableArgument(new RDFVariable("?P")));
+			SWRLBuiltInRegister.AddBuiltIn(builtIn);
+
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.FOAF.PERSON),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
+                ],
+                Rules = [
+                    new SWRLRule(
+                        new RDFPlainLiteral("SWRL1"),
+                        new RDFPlainLiteral("This is a test SWRL rule"),
+                        new SWRLAntecedent()
+                        {
+                            Atoms = [
+                                new SWRLClassAtom(
+                                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                                    new SWRLVariableArgument(new RDFVariable("?P")))
+                            ],
+                            BuiltIns = [ builtInExec ]
                         },
                         new SWRLConsequent()
                         {
