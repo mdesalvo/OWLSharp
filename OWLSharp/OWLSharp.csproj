@@ -12,7 +12,7 @@
     <Product>OWLSharp</Product>
     <PackageId>OWLSharp</PackageId>
     <PackageVersion>$(Version)</PackageVersion>
-    <PackageTags>rdfs owl owl2 swrl ontology reasoner validator</PackageTags>
+    <PackageTags>rdfs owl owl2 swrl skos skos-xl ontology reasoner validator</PackageTags>
     <PackageProjectUrl>https://github.com/mdesalvo/OWLSharp</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/mdesalvo/OWLSharp.git</RepositoryUrl>
@@ -21,7 +21,6 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -48,11 +47,5 @@
     </PackageReference>
     <PackageReference Include="RDFSharp" Version="3.13.0" />
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
   </ItemGroup>
 </Project>
