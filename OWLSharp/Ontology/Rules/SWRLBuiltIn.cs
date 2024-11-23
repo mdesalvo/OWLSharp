@@ -43,9 +43,12 @@ namespace OWLSharp.Ontology.Rules
         internal BuiltinEvaluator EvaluatorFunction { get; set;}
 
         [XmlIgnore]
-        internal bool IsCustom { get; set;}
+        internal bool IsCustom => !string.IsNullOrEmpty(IRI) 
+                                    && !IRI.StartsWith(RDFVocabulary.SWRL.SWRLB.BASE_URI, StringComparison.Ordinal)
+                                    && !IRI.StartsWith("https://github.com/mdesalvo/OWLSharp#", StringComparison.Ordinal);
         [XmlIgnore]
-        internal bool IsExtension { get; set;}
+        internal bool IsExtension => !string.IsNullOrEmpty(IRI)
+                                       && IRI.StartsWith("https://github.com/mdesalvo/OWLSharp#", StringComparison.Ordinal);
         #endregion
 
         #region Ctors
@@ -60,7 +63,6 @@ namespace OWLSharp.Ontology.Rules
                                                   : throw new SWRLException("Cannot create custom SWRL builtIn because: evaluator is null");
             IRI = iri?.ToString() ?? throw new SWRLException("Cannot create custom SWRL builtIn because: iri is null");
             Arguments = arguments?.ToList() ?? Enumerable.Empty<SWRLArgument>().ToList();
-            IsCustom = true;
         }
 
         //Official BuiltIns
@@ -523,8 +525,7 @@ namespace OWLSharp.Ontology.Rules
                     {
                         leftArg ?? throw new SWRLException("Cannot create owlsharp:langMatches builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create owlsharp:langMatches builtIn because: right argument is null")
-                    },
-                    IsExtension = true
+                    }
                 };
         #endregion
 

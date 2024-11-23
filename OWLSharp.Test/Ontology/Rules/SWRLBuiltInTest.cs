@@ -31,7 +31,7 @@ namespace OWLSharp.Test.Ontology.Rules
         {
             SWRLBuiltIn builtin = new SWRLBuiltIn()
             {
-                IRI = "http://www.w3.org/2003/11/swrl#example",
+                IRI = "http://example.org/testBuiltIn",
                 Arguments = [
                     new SWRLVariableArgument(new RDFVariable("?VAR")),
                     new SWRLIndividualArgument(new RDFResource("http://test.org/")),
@@ -41,7 +41,7 @@ namespace OWLSharp.Test.Ontology.Rules
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals(builtin.IRI, "http://www.w3.org/2003/11/swrl#example"));
+            Assert.IsTrue(string.Equals(builtin.IRI, "http://example.org/testBuiltIn"));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 3);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument varArg 
@@ -52,7 +52,7 @@ namespace OWLSharp.Test.Ontology.Rules
                                                     && idvArg.GetResource().Equals(new RDFResource("http://test.org/")));
             Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument litArg
                                                     && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
-            Assert.IsTrue(string.Equals(builtin.ToString(), "swrlb:example(?VAR,http://test.org/,\"lit\")"));
+            Assert.IsTrue(string.Equals(builtin.ToString(), "http://example.org/testBuiltIn(?VAR,http://test.org/,\"lit\")"));
             Assert.IsNull(builtin.EvaluatorFunction);
         }
 
@@ -63,14 +63,14 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = new SWRLBuiltIn(
                 Evaluator,
-                new RDFResource("http://www.w3.org/2003/11/swrl#example"),
+                new RDFResource("http://example.org/testBuiltIn"),
                 new SWRLVariableArgument(new RDFVariable("?VAR")),
                 new SWRLIndividualArgument(new RDFResource("http://test.org/")),
                 new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
-            Assert.IsTrue(string.Equals(builtin.IRI, "http://www.w3.org/2003/11/swrl#example"));
+            Assert.IsTrue(string.Equals(builtin.IRI, "http://example.org/testBuiltIn"));
             Assert.IsNotNull(builtin.Arguments);
             Assert.IsTrue(builtin.Arguments.Count == 3);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument varArg 
@@ -81,7 +81,7 @@ namespace OWLSharp.Test.Ontology.Rules
                                                     && idvArg.GetResource().Equals(new RDFResource("http://test.org/")));
             Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument litArg
                                                     && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
-            Assert.IsTrue(string.Equals(builtin.ToString(), "http://www.w3.org/2003/11/swrl#example(?VAR,http://test.org/,\"lit\")"));
+            Assert.IsTrue(string.Equals(builtin.ToString(), "http://example.org/testBuiltIn(?VAR,http://test.org/,\"lit\")"));
             Assert.IsNotNull(builtin.EvaluatorFunction);
         }
 
@@ -89,7 +89,7 @@ namespace OWLSharp.Test.Ontology.Rules
         public void ShouldThrowExceptionOnCreatingBuiltInWithEvaluatorBecauseNullEvaluator()
             => Assert.ThrowsException<SWRLException>(() => new SWRLBuiltIn(
                 null,
-                new RDFResource("http://www.w3.org/2003/11/swrl#example"),
+                new RDFResource("http://example.org/testBuiltIn"),
                 new SWRLVariableArgument(new RDFVariable("?VAR")),
                 new SWRLIndividualArgument(new RDFResource("http://test.org/")),
                 new SWRLLiteralArgument(new RDFPlainLiteral("lit"))));
@@ -112,7 +112,7 @@ namespace OWLSharp.Test.Ontology.Rules
         {
             SWRLBuiltIn builtin = new SWRLBuiltIn()
             {
-                IRI = "http://www.w3.org/2003/11/swrl#example",
+                IRI = "http://example.org/testBuiltIn",
                 Arguments = [
                     new SWRLVariableArgument(new RDFVariable("?VAR")),
                     new SWRLIndividualArgument(new RDFResource("http://test.org/")),
@@ -132,7 +132,7 @@ namespace OWLSharp.Test.Ontology.Rules
 
             SWRLBuiltIn builtin = new SWRLBuiltIn(
                 Evaluator,
-                new RDFResource("http://www.w3.org/2003/11/swrl#exampleRegistered"),
+                new RDFResource("http://example.org/testBuiltInRegistered"),
                 new SWRLVariableArgument(new RDFVariable("?VAR")),
                 new SWRLIndividualArgument(new RDFResource("http://test.org/")),
                 new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
@@ -151,7 +151,7 @@ namespace OWLSharp.Test.Ontology.Rules
         {
             SWRLBuiltIn builtin = new SWRLBuiltIn()
             {
-                IRI = "http://www.w3.org/2003/11/swrl#example",
+                IRI = "http://example.org/testBuiltIn",
                 Arguments = [
                     new SWRLVariableArgument(new RDFVariable("?VAR")),
                     new SWRLIndividualArgument(new RDFResource("http://test.org/")),
@@ -175,7 +175,7 @@ namespace OWLSharp.Test.Ontology.Rules
             Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENT2, null, null].TriplesCount == 0);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.BUILTIN_ATOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENTS, null, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.BUILTIN_PROP, new RDFResource("http://www.w3.org/2003/11/swrl#example"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.BUILTIN_PROP, new RDFResource("http://example.org/testBuiltIn"), null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("urn:swrl:var#VAR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 0);
         }
