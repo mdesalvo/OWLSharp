@@ -1146,11 +1146,15 @@ namespace OWLSharp.Test.Reasoner
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
                         new OWLClass(RDFVocabulary.FOAF.PERSON),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
+                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.FOAF.PERSON),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")))
                 ],
                 Rules = [
                     new SWRLRule(
