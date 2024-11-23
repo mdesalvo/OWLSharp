@@ -58,6 +58,9 @@ namespace OWLSharp.Extensions.SKOS.Validator
 						case SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis:
 							issueRegistry[SKOSAlternativeLabelAnalysisRule.rulename] = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
 							break;
+                        case SKOSEnums.SKOSValidatorRules.PreferredLabelAnalysis:
+							issueRegistry[SKOSPreferredLabelAnalysisRule.rulename] = SKOSPreferredLabelAnalysisRule.ExecuteRule(ontology);
+							break;
 					}
 
 					OWLEvents.RaiseInfo($"Completed SKOS rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
