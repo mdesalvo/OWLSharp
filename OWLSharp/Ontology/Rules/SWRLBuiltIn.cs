@@ -41,11 +41,18 @@ namespace OWLSharp.Ontology.Rules
         internal delegate bool BuiltinEvaluator(DataRow antecedentResultsRow);
         [XmlIgnore]
         internal BuiltinEvaluator EvaluatorFunction { get; set;}
+
+        [XmlIgnore]
+        internal bool IsCustom { get; set;}
+        [XmlIgnore]
+        internal bool IsExtension { get; set;}
         #endregion
 
         #region Ctors
         internal SWRLBuiltIn()
             => Arguments = new List<SWRLArgument>();
+
+        //Custom BuiltIns
 
         public SWRLBuiltIn(Func<DataRow,bool> evaluator, RDFResource iri, params SWRLArgument[] arguments)
         {
@@ -53,6 +60,7 @@ namespace OWLSharp.Ontology.Rules
                                                   : throw new SWRLException("Cannot create custom SWRL builtIn because: evaluator is null");
             IRI = iri?.ToString() ?? throw new SWRLException("Cannot create custom SWRL builtIn because: iri is null");
             Arguments = arguments?.ToList() ?? Enumerable.Empty<SWRLArgument>().ToList();
+            IsCustom = true;
         }
 
         //Official BuiltIns
@@ -504,6 +512,20 @@ namespace OWLSharp.Ontology.Rules
                         new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:yearMonthDuration builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:yearMonthDuration builtIn because: right arguments are null")).ToList()
                 };
+        
+        //Extension BuiltIns
+
+        public static SWRLBuiltIn EXTLangMatches(SWRLArgument leftArg, SWRLArgument rightArg)
+            =>  new SWRLBuiltIn()
+                {
+                    IRI = "https://github.com/mdesalvo/OWLSharp#langMatches",
+                    Arguments = new List<SWRLArgument>()
+                    {
+                        leftArg ?? throw new SWRLException("Cannot create owlsharp:langMatches builtIn because: left argument is null"),
+                        rightArg ?? throw new SWRLException("Cannot create owlsharp:langMatches builtIn because: right argument is null")
+                    },
+                    IsExtension = true
+                };
         #endregion
 
         #region Interfaces
@@ -517,8 +539,13 @@ namespace OWLSharp.Ontology.Rules
             StringBuilder sb = new StringBuilder();
 
             //Predicate
-            sb.Append("swrlb:");
-            sb.Append(RDFModelUtilities.GetShortUri(new Uri(IRI)));
+            if (IsCustom)
+                sb.Append(IRI);
+            else
+            {
+                sb.Append(IsExtension ? "owlsharp:" : "swrlb:");
+                sb.Append(RDFModelUtilities.GetShortUri(new Uri(IRI)));
+            }
             sb.Append("(");
 
             //Arguments
@@ -555,7 +582,7 @@ namespace OWLSharp.Ontology.Rules
                     
                     switch (IRI)
                     {
-                        //Official builtIns => handle them directly
+                        //Official BuiltIns => handle them directly
                         case "http://www.w3.org/2003/11/swrlb#abs":
                             keepRow = SWRLAbsBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
@@ -689,10 +716,21 @@ namespace OWLSharp.Ontology.Rules
                             keepRow = SWRLYearMonthDurationBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
                             break;
 
-                        //Custom builtIns => lookup the register to delegate their execution (raise exception if unknown)
+                        //Extension BuiltIns => handle them directly
+                        case "https://github.com/mdesalvo/OWLSharp#langMatches":
+                            keepRow = SWRLEXTLangMatchesBuiltIn.EvaluateOnAntecedent(currentRow, Arguments);
+                            break;
+
+                        //Custom BuiltIns => handle them via register
                         default:
-                            keepRow = SWRLBuiltInRegister.GetBuiltIn(IRI)?.EvaluatorFunction(currentRow) 
-                                        ?? throw new NotImplementedException($"unsupported IRI {IRI}");
+                            SWRLBuiltIn customBuiltIn = SWRLBuiltInRegister.GetBuiltIn(IRI)
+                                                          ?? throw new NotImplementedException($"unsupported IRI {IRI}");
+                            //Since the custom builtIn may have been registered with different arguments,
+                            //we must temporary replace its arguments with ones from the executing rule
+                            List<SWRLArgument> registeredArguments = customBuiltIn.Arguments;
+                            customBuiltIn.Arguments = Arguments;
+                            keepRow = customBuiltIn.EvaluatorFunction(currentRow);
+                            customBuiltIn.Arguments = registeredArguments;
                             break;
                     }
 

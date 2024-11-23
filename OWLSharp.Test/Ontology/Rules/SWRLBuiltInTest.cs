@@ -81,7 +81,7 @@ namespace OWLSharp.Test.Ontology.Rules
                                                     && idvArg.GetResource().Equals(new RDFResource("http://test.org/")));
             Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument litArg
                                                     && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
-            Assert.IsTrue(string.Equals(builtin.ToString(), "swrlb:example(?VAR,http://test.org/,\"lit\")"));
+            Assert.IsTrue(string.Equals(builtin.ToString(), "http://www.w3.org/2003/11/swrl#example(?VAR,http://test.org/,\"lit\")"));
             Assert.IsNotNull(builtin.EvaluatorFunction);
         }
 
