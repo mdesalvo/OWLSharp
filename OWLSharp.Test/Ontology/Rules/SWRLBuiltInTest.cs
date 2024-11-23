@@ -54,6 +54,7 @@ namespace OWLSharp.Test.Ontology.Rules
                                                     && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
             Assert.IsTrue(string.Equals(builtin.ToString(), "http://example.org/testBuiltIn(?VAR,http://test.org/,\"lit\")"));
             Assert.IsNull(builtin.EvaluatorFunction);
+            Assert.IsTrue(builtin.IsCustom);
         }
 
         [TestMethod]
@@ -83,6 +84,7 @@ namespace OWLSharp.Test.Ontology.Rules
                                                     && litArg.GetLiteral().Equals(new RDFPlainLiteral("lit")));
             Assert.IsTrue(string.Equals(builtin.ToString(), "http://example.org/testBuiltIn(?VAR,http://test.org/,\"lit\")"));
             Assert.IsNotNull(builtin.EvaluatorFunction);
+            Assert.IsTrue(builtin.IsCustom);
         }
 
         [TestMethod]

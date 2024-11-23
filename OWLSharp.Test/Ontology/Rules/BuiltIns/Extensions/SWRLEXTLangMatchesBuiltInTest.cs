@@ -139,6 +139,8 @@ namespace OWLSharp.Test.Ontology.Rules
                 new SWRLVariableArgument(new RDFVariable("?X")),
                 new SWRLVariableArgument(new RDFVariable("?Y")));
 
+            Assert.IsTrue(builtin.IsExtension);
+
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
