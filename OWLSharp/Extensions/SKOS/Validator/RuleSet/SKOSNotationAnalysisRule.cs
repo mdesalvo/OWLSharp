@@ -42,10 +42,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S1"))),
-                        new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S2"))),
+                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
@@ -55,11 +52,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S1"))),
+                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                             new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S2"))),
+                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(RDFVocabulary.SKOS.NOTATION),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -74,9 +71,6 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        SWRLBuiltIn.Equal(
-                            new SWRLVariableArgument(new RDFVariable("?S1")),
-                            new SWRLVariableArgument(new RDFVariable("?S2"))),
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?N1")),
                             new SWRLVariableArgument(new RDFVariable("?N2")))
