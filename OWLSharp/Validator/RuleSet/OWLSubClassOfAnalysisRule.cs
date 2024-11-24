@@ -18,29 +18,29 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Validator.RuleSet
 {
-    internal static class OWLSubClassOfAnalysisRule
+		internal static class OWLSubClassOfAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.SubClassOfAnalysis.ToString();
-		internal static readonly string rulesugg = "There should not be class expressions belonging at the same time to SubClassOf and EquivalentClasses/DisjointClasses axioms!";
+			internal static readonly string rulename = OWLEnums.OWLValidatorRules.SubClassOfAnalysis.ToString();
+			internal static readonly string rulesugg = "There should not be class expressions belonging at the same time to SubClassOf and EquivalentClasses/DisjointClasses axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
-        {
-            List<OWLIssue> issues = new List<OWLIssue>();
+			internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+			{
+				List<OWLIssue> issues = new List<OWLIssue>();
+				
+        //SubClassOf(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
+				//SubClassOf(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
+				//SubClassOf(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> ERROR
+				foreach (OWLSubClassOf subClassOf in ontology.GetClassAxiomsOfType<OWLSubClassOf>())
+					if (ontology.CheckIsSubClassOf(subClassOf.SuperClassExpression, subClassOf.SubClassExpression)
+							|| ontology.CheckAreEquivalentClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression)
+							|| ontology.CheckAreDisjointClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression))
+						issues.Add(new OWLIssue(
+							OWLEnums.OWLIssueSeverity.Error, 
+							rulename, 
+							$"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+							rulesugg));
 
-            //SubClassOf(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
-			//SubClassOf(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
-			//SubClassOf(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> ERROR
-            foreach (OWLSubClassOf subClassOf in ontology.GetClassAxiomsOfType<OWLSubClassOf>())
-				if (ontology.CheckIsSubClassOf(subClassOf.SuperClassExpression, subClassOf.SubClassExpression)
-					 || ontology.CheckAreEquivalentClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression)
-					 || ontology.CheckAreDisjointClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression))
-					issues.Add(new OWLIssue(
-						OWLEnums.OWLIssueSeverity.Error, 
-						rulename, 
-						$"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
-						rulesugg));
-
-            return issues;
-        }
-    }
+				return issues;
+			}
+		}
 }
