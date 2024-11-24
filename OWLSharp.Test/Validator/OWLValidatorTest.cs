@@ -454,7 +454,7 @@ namespace OWLSharp.Test.Validator
 			Assert.IsTrue(issues.Count == 2);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
 			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysisRule.rulesugg)));
+			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysisRule.rulesugg1)));
         }
 
 		[TestMethod]
