@@ -22,7 +22,8 @@ namespace OWLSharp.Extensions.SKOS
       {
         AlternativeLabelAnalysis = 1,
         HiddenLabelAnalysis = 2,
-        PreferredLabelAnalysis = 3
+        PreferredLabelAnalysis = 3,
+        NotationAnalysis = 4
       }
     }
 }
