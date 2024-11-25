@@ -176,7 +176,7 @@ namespace OWLSharp.Ontology
 		#endregion
 
 		#region Methods
-		public Task<RDFGraph> ToRDFGraphAsync()
+		public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
 			=> Task.Run(() =>
 				{
 					RDFGraph graph = new RDFGraph();
@@ -200,21 +200,21 @@ namespace OWLSharp.Ontology
 						graph = graph.UnionWith(annotation.ToRDFGraphInternal(ontologyIRI));
 
 					//Axioms
-					foreach (OWLDeclaration declarationAxiom in DeclarationAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLDeclaration declarationAxiom in DeclarationAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
 						graph = graph.UnionWith(declarationAxiom.ToRDFGraph());
-					foreach (OWLClassAxiom classAxiom in ClassAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLClassAxiom classAxiom in ClassAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(classAxiom.ToRDFGraph());
-					foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(objectPropertyAxiom.ToRDFGraph());
-					foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(dataPropertyAxiom.ToRDFGraph());
-					foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(datatypeDefinitionAxiom.ToRDFGraph());
-					foreach (OWLHasKey keyAxiom in KeyAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLHasKey keyAxiom in KeyAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(keyAxiom.ToRDFGraph());
-					foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(assertionAxiom.ToRDFGraph());
-					foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms.Where(ax => !ax.IsImport))
+					foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
 					//Rules
@@ -228,32 +228,32 @@ namespace OWLSharp.Ontology
 					return graph;
 				});
 
-		public Task ToFileAsync(OWLEnums.OWLFormats owlFormat, string outputFile)
+		public Task ToFileAsync(OWLEnums.OWLFormats owlFormat, string outputFile, bool includeInferences=true)
 		{
 			if (string.IsNullOrWhiteSpace(outputFile))
 				throw new OWLException("Cannot write ontology to file because given \"outputFile\" parameter is null or empty");
 
-			return ToStreamAsync(owlFormat, new FileStream(outputFile, FileMode.Create));
+			return ToStreamAsync(owlFormat, new FileStream(outputFile, FileMode.Create), includeInferences);
 		}
 
-		public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream)
+		public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream, bool includeInferences=true)
 			=> Task.Run(() =>
 				{
 					if (outputStream == null)
 						throw new OWLException("Cannot write ontology to stream because given \"outputStream\" parameter is null");
 
-                    #region Exclude Imports
+                    #region Exclude Imports/Inferences
                     OWLOntology exportOntology = new OWLOntology(this);
 
                     //Axioms
-                    exportOntology.DeclarationAxioms.RemoveAll(ax => ax.IsImport);
-                    exportOntology.ClassAxioms.RemoveAll(ax => ax.IsImport);
-                    exportOntology.ObjectPropertyAxioms.RemoveAll(ax => ax.IsImport);
-                    exportOntology.DataPropertyAxioms.RemoveAll(ax => ax.IsImport);
-                    exportOntology.DatatypeDefinitionAxioms.RemoveAll(ax => ax.IsImport);
-                    exportOntology.KeyAxioms.RemoveAll(ax => ax.IsImport);
-                    exportOntology.AssertionAxioms.RemoveAll(ax => ax.IsImport);
-                    exportOntology.AnnotationAxioms.RemoveAll(ax => ax.IsImport);
+                    exportOntology.DeclarationAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
+                    exportOntology.ClassAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
+                    exportOntology.ObjectPropertyAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
+                    exportOntology.DataPropertyAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
+                    exportOntology.DatatypeDefinitionAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
+                    exportOntology.KeyAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
+                    exportOntology.AssertionAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
+                    exportOntology.AnnotationAxioms.RemoveAll(ax => ax.IsImport || (!includeInferences && ax.IsInference));
 
                     //Rules
                     exportOntology.Rules.RemoveAll(rl => rl.IsImport);
@@ -265,9 +265,8 @@ namespace OWLSharp.Ontology
 						{
 							case OWLEnums.OWLFormats.OWL2XML:
 							default:
-								string ontology = OWLSerializer.SerializeOntology(this);
 								using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
-									streamWriter.Write(ontology);
+									streamWriter.Write(OWLSerializer.SerializeOntology(exportOntology));
 								break;
 						}
 					}
