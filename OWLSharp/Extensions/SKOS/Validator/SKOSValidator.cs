@@ -70,6 +70,9 @@ namespace OWLSharp.Extensions.SKOS.Validator
                         case SKOSEnums.SKOSValidatorRules.BroaderConceptAnalysis:
 							issueRegistry[SKOSBroaderConceptAnalysisRule.rulename] = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
 							break;
+                        case SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis:
+							issueRegistry[SKOSNarrowerConceptAnalysisRule.rulename] = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
+							break;
 					}
 
 					OWLEvents.RaiseInfo($"Completed SKOS rule {rule} => {issueRegistry[rule.ToString()].Count} issues");

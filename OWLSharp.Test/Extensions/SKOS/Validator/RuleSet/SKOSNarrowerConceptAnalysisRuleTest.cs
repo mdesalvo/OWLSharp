@@ -23,11 +23,11 @@ using RDFSharp.Model;
 namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
 {
     [TestClass]
-    public class SKOSBroaderConceptAnalysisRuleTest
+    public class SKOSNarrowerConceptAnalysisRuleTest
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule1A()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule1A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -68,11 +68,11 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
@@ -81,18 +81,18 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg1A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical relations (skos:broader VS skos:narrower)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg1A));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical relations (skos:narrower VS skos:broader)"));
         }
 
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule1B()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule1B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -133,31 +133,31 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg1B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical relations (skos:broaderTransitive VS skos:narrowerTransitive)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg1B));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule2A()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule2A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -198,7 +198,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -206,23 +206,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg2A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/associative relations (skos:broader VS skos:related)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg2A));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/associative relations (skos:narrower VS skos:related)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule2B()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule2B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -263,7 +263,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -271,23 +271,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg2B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/associative relations (skos:broaderTransitive VS skos:related)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg2B));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/associative relations (skos:narrowerTransitive VS skos:related)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule3A()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule3A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -328,7 +328,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -336,23 +336,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg3A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broader VS skos:narrowMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg3A));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:narrowMatch)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule3B()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule3B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -393,7 +393,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -401,23 +401,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg3B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broaderTransitive VS skos:narrowMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg3B));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:narrowMatch)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule4A()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule4A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -458,7 +458,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -466,23 +466,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg4A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broader VS skos:closeMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg4A));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:closeMatch)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule4B()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule4B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -523,7 +523,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -531,23 +531,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg4B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broaderTransitive VS skos:closeMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg4B));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:closeMatch)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule5A()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule5A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -588,7 +588,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -596,23 +596,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg5A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broader VS skos:exactMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg5A));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:exactMatch)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule5B()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule5B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -653,7 +653,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -661,23 +661,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg5B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broaderTransitive VS skos:exactMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg5B));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:exactMatch)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule6A()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule6A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -718,7 +718,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -726,23 +726,23 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg6A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broader VS skos:relatedMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg6A));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:relatedMatch)"));
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule6B()
+        public void ShouldAnalyzeNarrowerConceptAndViolateRule6B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -783,7 +783,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLObjectPropertyAssertion(
@@ -791,19 +791,19 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
+                        new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
 			Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg6B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:broaderTransitive VS skos:relatedMatch)"));
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg6B));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:relatedMatch)"));
         }
         #endregion
     }
