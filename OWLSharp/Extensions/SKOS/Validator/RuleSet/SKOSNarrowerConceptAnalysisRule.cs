@@ -46,7 +46,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrower VS skos:broader
             SWRLRule clash1ARule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical relations (skos:narrower VS skos:broader)"),
                 new SWRLAntecedent()
                 {
@@ -107,7 +107,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrowerTransitive VS skos:broaderTransitive
             SWRLRule clash1BRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)"),
                 new SWRLAntecedent()
                 {
@@ -168,7 +168,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrower VS skos:related
             SWRLRule clash2ARule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/associative relations (skos:narrower VS skos:related)"),
                 new SWRLAntecedent()
                 {
@@ -229,7 +229,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrowerTransitive VS skos:related
             SWRLRule clash2BRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/associative relations (skos:narrowerTransitive VS skos:related)"),
                 new SWRLAntecedent()
                 {
@@ -290,7 +290,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrower VS skos:narrowMatch
             SWRLRule clash3ARule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrower VS skos:narrowMatch)"),
                 new SWRLAntecedent()
                 {
@@ -351,7 +351,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrowerTransitive VS skos:narrowMatch
             SWRLRule clash3BRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrowerTransitive VS skos:narrowMatch)"),
                 new SWRLAntecedent()
                 {
@@ -412,7 +412,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrower VS skos:closeMatch
             SWRLRule clash4ARule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrower VS skos:closeMatch)"),
                 new SWRLAntecedent()
                 {
@@ -473,7 +473,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrowerTransitive VS skos:closeMatch
             SWRLRule clash4BRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrowerTransitive VS skos:closeMatch)"),
                 new SWRLAntecedent()
                 {
@@ -534,7 +534,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrower VS skos:exactMatch
             SWRLRule clash5ARule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrower VS skos:exactMatch)"),
                 new SWRLAntecedent()
                 {
@@ -595,7 +595,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrowerTransitive VS skos:exactMatch
             SWRLRule clash5BRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrowerTransitive VS skos:exactMatch)"),
                 new SWRLAntecedent()
                 {
@@ -656,7 +656,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrower VS skos:relatedMatch
             SWRLRule clash6ARule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrower VS skos:relatedMatch)"),
                 new SWRLAntecedent()
                 {
@@ -717,7 +717,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
 
             //skos:narrowerTransitive VS skos:relatedMatch
             SWRLRule clash6BRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(SKOSBroaderConceptAnalysisRule)),
+                new RDFPlainLiteral(nameof(SKOSNarrowerConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:narrowerTransitive VS skos:relatedMatch)"),
                 new SWRLAntecedent()
                 {
