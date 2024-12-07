@@ -67,7 +67,7 @@ namespace OWLSharp.Ontology.Rules
             Atoms.ForEach(atom => atomResults.Add(atom.EvaluateOnAntecedent(ontology)));
 
             //Join results of antecedent atoms
-            DataTable antecedentResult = RDFQueryEngine.CombineTables(atomResults, false);
+            DataTable antecedentResult = RDFQueryEngine.CombineTables(atomResults);
 
             //Execute the antecedent built-ins
             BuiltIns.ForEach(builtin => antecedentResult = builtin.EvaluateOnAntecedent(antecedentResult));
