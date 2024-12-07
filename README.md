@@ -5,6 +5,6 @@ OWLSharp is an API built atop <a href="https://github.com/mdesalvo/RDFSharp">RDF
   <li>Modeling <b><a href="https://www.w3.org/TR/owl2-overview/">OWL2</a> ontologies</b> (with tested <a href="https://protege.stanford.edu/">Protégé</a> compatibility)</li>
   <li>Exchanging them using standard <b>OWL2 formats</b> (OWL2/XML) and also <b>RDF formats</b> (via RDFSharp)
   <li><b>Reasoning</b> on them with a set of <b>25 OWL2 inference rules</b></li>
-  <li><b>Validating</b> them with a set of <b>29 OWL2 + 4 SKOS analysis rules</b></li> 
+  <li><b>Validating</b> them with a set of <b>29 OWL2 + 5 SKOS analysis rules</b></li>
 </ul>
 It also integrates a powerful <b><a href="https://www.w3.org/submissions/SWRL/">SWRL</a> engine</b> for modeling, exchange and execution of custom inference rules
