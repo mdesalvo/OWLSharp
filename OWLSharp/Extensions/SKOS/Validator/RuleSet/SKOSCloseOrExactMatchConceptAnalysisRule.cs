@@ -26,10 +26,10 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
     internal class SKOSCloseOrExactMatchConceptAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis.ToString();
-		internal static readonly string rulesugg1A = "There should not be SKOS concepts having a clash in associative VS mapping relations (skos:closeMatch VS skos:related)";
-        internal static readonly string rulesugg1B = "There should not be SKOS concepts having a clash in associative VS mapping relations (skos:closeMatch VS skos:relatedMatch)";
-        internal static readonly string rulesugg2A = "There should not be SKOS concepts having a clash in associative VS mapping relations (skos:exactMatch VS skos:related)";
-        internal static readonly string rulesugg2B = "There should not be SKOS concepts having a clash in associative VS mapping relations (skos:exactMatch VS skos:relatedMatch)";
+		internal static readonly string rulesugg1A = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:closeMatch VS skos:related)";
+        internal static readonly string rulesugg1B = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:closeMatch VS skos:relatedMatch)";
+        internal static readonly string rulesugg2A = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:related)";
+        internal static readonly string rulesugg2B = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:relatedMatch)";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
@@ -39,7 +39,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
             //skos:closeMatch VS skos:related
             SWRLRule clash1ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSCloseOrExactMatchConceptAnalysisRule)),
-                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:closeMatch VS skos:related)"),
+                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their mapping VS associative relations (skos:closeMatch VS skos:related)"),
                 new SWRLAntecedent()
                 {
                     Atoms = new List<SWRLAtom>() 
@@ -93,14 +93,14 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg1A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on associative/mapping relations (skos:closeMatch VS skos:related)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:related)"
                 )));
             violations.Clear();
 
             //skos:closeMatch VS skos:relatedMatch
             SWRLRule clash1BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSCloseOrExactMatchConceptAnalysisRule)),
-                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:closeMatch VS skos:relatedMatch)"),
+                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their mapping VS associative relations (skos:closeMatch VS skos:relatedMatch)"),
                 new SWRLAntecedent()
                 {
                     Atoms = new List<SWRLAtom>() 
@@ -154,14 +154,14 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg1B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on associative/mapping relations (skos:closeMatch VS skos:relatedMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:relatedMatch)"
                 )));
             violations.Clear();
 
             //skos:exactMatch VS skos:related
             SWRLRule clash2ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSCloseOrExactMatchConceptAnalysisRule)),
-                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:exactMatch VS skos:related)"),
+                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their mapping VS associative relations (skos:exactMatch VS skos:related)"),
                 new SWRLAntecedent()
                 {
                     Atoms = new List<SWRLAtom>() 
@@ -215,14 +215,14 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg2A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on associative/mapping relations (skos:exactMatch VS skos:related)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on mapping/associative relations (skos:exactMatch VS skos:related)"
                 )));
             violations.Clear();
 
             //skos:exactMatch VS skos:relatedMatch
             SWRLRule clash2BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSCloseOrExactMatchConceptAnalysisRule)),
-                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:exactMatch VS skos:relatedMatch)"),
+                new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their mapping VS associative relations (skos:exactMatch VS skos:relatedMatch)"),
                 new SWRLAntecedent()
                 {
                     Atoms = new List<SWRLAtom>() 
@@ -276,7 +276,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg2B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on associative/mapping relations (skos:exactMatch VS skos:relatedMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on mapping/associative relations (skos:exactMatch VS skos:relatedMatch)"
                 )));
             violations.Clear();
 

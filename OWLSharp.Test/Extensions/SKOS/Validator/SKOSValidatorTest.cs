@@ -468,7 +468,73 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative/mapping relations (skos:closeMatch VS skos:related)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:related)"));
+        }
+        
+        [TestMethod]
+        public async Task ShouldAnalyzeRelatedConceptAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [ 
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.RELATED)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.BROADER)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))), //clash
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                ]
+            };
+            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis ] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
+			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg1A));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS hierarchical relations (skos:related VS skos:broader)"));
         }
         #endregion
     }

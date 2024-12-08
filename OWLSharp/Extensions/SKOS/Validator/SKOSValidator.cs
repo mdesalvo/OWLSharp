@@ -76,6 +76,9 @@ namespace OWLSharp.Extensions.SKOS.Validator
                         case SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis:
 							issueRegistry[SKOSCloseOrExactMatchConceptAnalysisRule.rulename] = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
 							break;
+                        case SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis:
+							issueRegistry[SKOSRelatedConceptAnalysisRule.rulename] = SKOSRelatedConceptAnalysisRule.ExecuteRule(ontology);
+							break;
 					}
 
 					OWLEvents.RaiseInfo($"Completed SKOS rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
