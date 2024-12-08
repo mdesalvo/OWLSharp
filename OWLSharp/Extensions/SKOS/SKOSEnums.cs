@@ -25,7 +25,8 @@ namespace OWLSharp.Extensions.SKOS
         PreferredLabelAnalysis = 3,
         NotationAnalysis = 4,
         BroaderConceptAnalysis = 5,
-        NarrowerConceptAnalysis = 6
+        NarrowerConceptAnalysis = 6,
+        CloseOrExactMatchConceptAnalysis = 7
       }
     }
 }
