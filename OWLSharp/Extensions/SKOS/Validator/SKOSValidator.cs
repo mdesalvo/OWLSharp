@@ -79,7 +79,10 @@ namespace OWLSharp.Extensions.SKOS.Validator
                         case SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis:
 							issueRegistry[SKOSRelatedConceptAnalysisRule.rulename] = SKOSRelatedConceptAnalysisRule.ExecuteRule(ontology);
 							break;
-					}
+                        case SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis:
+                            issueRegistry[SKOSXLLiteralFormAnalysisRule.rulename] = SKOSXLLiteralFormAnalysisRule.ExecuteRule(ontology);
+                            break;
+                    }
 
 					OWLEvents.RaiseInfo($"Completed SKOS rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
 				});

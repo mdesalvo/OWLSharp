@@ -536,6 +536,85 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg1A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS hierarchical relations (skos:related VS skos:broader)"));
         }
+
+        [TestMethod]
+        public async Task ShouldAnalyzeLiteralFormAsync()
+        {
+            OWLOntology ontology = new OWLOntology()
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
+                     new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA")),
+                        new OWLLiteral(new RDFPlainLiteral("labelA1"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelA")),
+                        new OWLLiteral(new RDFPlainLiteral("labelA2"))), //clash
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.PREF_LABEL),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptB")),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
+                        new OWLNamedIndividual(new RDFResource("ex:LabelB")),
+                        new OWLLiteral(new RDFPlainLiteral("labelB", "en"))),
+                ]
+            };
+            SKOSValidator validator = new SKOSValidator() { Rules = [SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis] };
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+
+            Assert.IsNotNull(issues);
+            Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSXLLiteralFormAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSXLLiteralFormAnalysisRule.rulesugg));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS-XL label 'ex:LabelA' should be adjusted to not have more than one occurrence of skosxl:literalForm values"));
+            Assert.IsTrue(issues[1].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.IsTrue(string.Equals(issues[1].RuleName, SKOSXLLiteralFormAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[1].Description, SKOSXLLiteralFormAnalysisRule.rulesugg));
+            Assert.IsTrue(string.Equals(issues[1].Suggestion, "SKOS-XL label 'ex:LabelA' should be adjusted to not have more than one occurrence of skosxl:literalForm values"));
+        }
         #endregion
     }
 }

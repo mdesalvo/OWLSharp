@@ -18,16 +18,17 @@ namespace OWLSharp.Extensions.SKOS
 {
     public static class SKOSEnums
     {
-      public enum SKOSValidatorRules
-      {
-        AlternativeLabelAnalysis = 1,
-        HiddenLabelAnalysis = 2,
-        PreferredLabelAnalysis = 3,
-        NotationAnalysis = 4,
-        BroaderConceptAnalysis = 5,
-        NarrowerConceptAnalysis = 6,
-        CloseOrExactMatchConceptAnalysis = 7,
-        RelatedConceptAnalysis = 8
-      }
+        public enum SKOSValidatorRules
+        {
+            AlternativeLabelAnalysis = 1,
+            HiddenLabelAnalysis = 2,
+            PreferredLabelAnalysis = 3,
+            NotationAnalysis = 4,
+            BroaderConceptAnalysis = 5,
+            NarrowerConceptAnalysis = 6,
+            CloseOrExactMatchConceptAnalysis = 7,
+            RelatedConceptAnalysis = 8,
+            LiteralFormAnalysis = 9
+        }
     }
 }
