@@ -53,22 +53,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -101,7 +90,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg1A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical relations (skos:narrower VS skos:broader)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical relations (skos:narrower VS skos:broader)"
                 )));
             violations.Clear();
 
@@ -114,22 +103,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -162,7 +140,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg1B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)"
                 )));
             violations.Clear();
 
@@ -175,22 +153,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -223,7 +190,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg2A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/associative relations (skos:narrower VS skos:related)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/associative relations (skos:narrower VS skos:related)"
                 )));
             violations.Clear();
 
@@ -236,22 +203,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -284,7 +240,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg2B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/associative relations (skos:narrowerTransitive VS skos:related)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/associative relations (skos:narrowerTransitive VS skos:related)"
                 )));
             violations.Clear();
 
@@ -297,22 +253,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -345,7 +290,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg3A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:narrowMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:narrowMatch)"
                 )));
             violations.Clear();
 
@@ -358,22 +303,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -406,7 +340,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg3B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:narrowMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:narrowMatch)"
                 )));
             violations.Clear();
 
@@ -419,22 +353,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -467,7 +390,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg4A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:closeMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:closeMatch)"
                 )));
             violations.Clear();
 
@@ -480,22 +403,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -528,7 +440,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg4B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:closeMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:closeMatch)"
                 )));
             violations.Clear();
 
@@ -541,22 +453,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -589,7 +490,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg5A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:exactMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:exactMatch)"
                 )));
             violations.Clear();
 
@@ -602,22 +503,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -650,7 +540,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg5B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:exactMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:exactMatch)"
                 )));
             violations.Clear();
 
@@ -663,22 +553,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -711,7 +590,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg6A,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:relatedMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:relatedMatch)"
                 )));
             violations.Clear();
 
@@ -724,22 +603,11 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     Atoms = new List<SWRLAtom>() 
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C1"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
-                        new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
-                            new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -772,7 +640,7 @@ namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
                     rulesugg6B,
-                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' belonging to the same schema should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:relatedMatch)"
+                    $"SKOS concepts '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:relatedMatch)"
                 )));
             violations.Clear();
 

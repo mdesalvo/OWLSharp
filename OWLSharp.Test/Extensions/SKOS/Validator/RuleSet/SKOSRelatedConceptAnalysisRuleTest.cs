@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg1A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS hierarchical relations (skos:related VS skos:broader)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS hierarchical relations (skos:related VS skos:broader)"));
         }
 
         [TestMethod]
@@ -153,7 +153,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg1B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS hierarchical relations (skos:relatedMatch VS skos:broader)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS hierarchical relations (skos:relatedMatch VS skos:broader)"));
         }
         
         [TestMethod]
@@ -218,7 +218,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg2A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS hierarchical relations (skos:related VS skos:narrower)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS hierarchical relations (skos:related VS skos:narrower)"));
         }
         
         [TestMethod]
@@ -283,7 +283,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg2B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:narrower)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:narrower)"));
         }
         
         [TestMethod]
@@ -348,7 +348,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg3A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:broadMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:broadMatch)"));
         }
         
         [TestMethod]
@@ -413,7 +413,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg3B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:broadMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:broadMatch)"));
         }
         
         [TestMethod]
@@ -478,7 +478,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg4A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:narrowMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:narrowMatch)"));
         }
         
         [TestMethod]
@@ -543,7 +543,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg4B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:narrowMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:narrowMatch)"));
         }
         
         [TestMethod]
@@ -608,7 +608,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg5A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:closeMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:closeMatch)"));
         }
         
         [TestMethod]
@@ -673,7 +673,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg5B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:closeMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:closeMatch)"));
         }
         
         [TestMethod]
@@ -738,7 +738,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg6A));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:exactMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:related VS skos:exactMatch)"));
         }
         
         [TestMethod]
@@ -803,7 +803,7 @@ namespace OWLSharp.Test.Extensions.SKOS.Validator.RuleSet
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
 			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
 			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg6B));
-            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' belonging to the same schema should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:exactMatch)"));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS mapping relations (skos:relatedMatch VS skos:exactMatch)"));
         }
         #endregion
     }
