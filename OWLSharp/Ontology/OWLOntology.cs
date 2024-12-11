@@ -1153,8 +1153,10 @@ namespace OWLSharp.Ontology
 					{
 						foreach (RDFTriple objPropTriple in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
 						{
-							#region SKOS:MEMBERLIST
-							if (objPropTriple.Subject.Equals(RDFVocabulary.SKOS.MEMBER_LIST))
+                            #region SKOS
+                            //S36: For any resource, every item in the list given as the value of the skos:memberList property
+							//     is also a value of the skos:member property.
+                            if (objPropTriple.Subject.Equals(RDFVocabulary.SKOS.MEMBER_LIST))
 							{
                                 OWLObjectProperty skosMemberOP = new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER);
                                 foreach (RDFTriple skosMemberListTriple in graph[null, RDFVocabulary.SKOS.MEMBER_LIST, null, null])
