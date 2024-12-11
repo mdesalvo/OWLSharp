@@ -4057,7 +4057,7 @@ namespace OWLSharp.Test.Ontology
             ]);
             OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
-            Assert.IsTrue(ontology.AssertionAxioms.Count == 8);
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 10);
             Assert.IsTrue(ontology.AssertionAxioms.Any(asn => asn is OWLObjectPropertyAssertion objPropAsn
                             && objPropAsn.ObjectPropertyExpression is OWLObjectProperty skosMember
                             && skosMember.GetIRI().Equals(RDFVocabulary.SKOS.MEMBER)
@@ -4079,6 +4079,16 @@ namespace OWLSharp.Test.Ontology
                             && ocbIdv.GetIRI().Equals(new RDFResource("ex:OCB"))
                             && objPropAsn.TargetIndividualExpression is OWLNamedIndividual c3Idv
                             && c3Idv.GetIRI().Equals(new RDFResource("ex:C3"))));
+            Assert.IsTrue(ontology.AssertionAxioms.Any(asn => asn is OWLClassAssertion clsAsn
+                            && clsAsn.ClassExpression is OWLClass skosCollection
+                            && skosCollection.GetIRI().Equals(RDFVocabulary.SKOS.COLLECTION)
+                            && clsAsn.IndividualExpression is OWLNamedIndividual ocaIdv
+                            && ocaIdv.GetIRI().Equals(new RDFResource("ex:OCA"))));
+            Assert.IsTrue(ontology.AssertionAxioms.Any(asn => asn is OWLClassAssertion clsAsn
+                            && clsAsn.ClassExpression is OWLClass skosCollection
+                            && skosCollection.GetIRI().Equals(RDFVocabulary.SKOS.COLLECTION)
+                            && clsAsn.IndividualExpression is OWLNamedIndividual ocbIdv
+                            && ocbIdv.GetIRI().Equals(new RDFResource("ex:OCB"))));
         }
 
         [TestMethod]

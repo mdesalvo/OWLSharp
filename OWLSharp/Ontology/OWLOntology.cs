@@ -1154,11 +1154,12 @@ namespace OWLSharp.Ontology
 						foreach (RDFTriple objPropTriple in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
 						{
                             #region SKOS
-                            //S36: For any resource, every item in the list given as the value of the skos:memberList property
-							//     is also a value of the skos:member property.
+                            //S36:For any resource, every item in the list given as the value of the skos:memberList property is also a value of the skos:member property.
                             if (objPropTriple.Subject.Equals(RDFVocabulary.SKOS.MEMBER_LIST))
 							{
-                                OWLObjectProperty skosMemberOP = new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER);
+								OWLClass skosCollection = new OWLClass(RDFVocabulary.SKOS.COLLECTION);
+                                OWLObjectProperty skosMember = new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER);
+
                                 foreach (RDFTriple skosMemberListTriple in graph[null, RDFVocabulary.SKOS.MEMBER_LIST, null, null])
 								{
                                     LoadIndividualExpression(ont, (RDFResource)skosMemberListTriple.Subject, out OWLIndividualExpression skosOrderedCollectionIE);
@@ -1172,7 +1173,7 @@ namespace OWLSharp.Ontology
 
                                             OWLObjectPropertyAssertion objPropAsn = new OWLObjectPropertyAssertion()
                                             {
-                                                ObjectPropertyExpression = skosMemberOP,
+                                                ObjectPropertyExpression = skosMember,
                                                 SourceIndividualExpression = skosOrderedCollectionIE,
                                                 TargetIndividualExpression = skosOrderedCollectionMemberIE
                                             };
@@ -1181,6 +1182,8 @@ namespace OWLSharp.Ontology
 
                                             ont.AssertionAxioms.Add(objPropAsn);
                                         }
+										//Complete transformation of skos:OrderedCollection into skos:Collection
+										ont.AssertionAxioms.Add(new OWLClassAssertion(skosCollection) { IndividualExpression = skosOrderedCollectionIE });
 									}
                                 }
 								continue;
