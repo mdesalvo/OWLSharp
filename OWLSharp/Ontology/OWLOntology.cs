@@ -1153,7 +1153,39 @@ namespace OWLSharp.Ontology
 					{
 						foreach (RDFTriple objPropTriple in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
 						{
-							OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)objPropTriple.Subject);
+							#region SKOS:MEMBERLIST
+							if (objPropTriple.Subject.Equals(RDFVocabulary.SKOS.MEMBER_LIST))
+							{
+                                OWLObjectProperty skosMemberOP = new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER);
+                                foreach (RDFTriple skosMemberListTriple in graph[null, RDFVocabulary.SKOS.MEMBER_LIST, null, null])
+								{
+                                    LoadIndividualExpression(ont, (RDFResource)skosMemberListTriple.Subject, out OWLIndividualExpression skosOrderedCollectionIE);
+
+									if (skosOrderedCollectionIE != null)
+									{
+										RDFCollection skosOrderedCollectionMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)skosMemberListTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO);
+										foreach (RDFResource skosOrderedCollectionMember in skosOrderedCollectionMembers.Items.Cast<RDFResource>())
+										{
+                                            LoadIndividualExpression(ont, skosOrderedCollectionMember, out OWLIndividualExpression skosOrderedCollectionMemberIE);
+
+                                            OWLObjectPropertyAssertion objPropAsn = new OWLObjectPropertyAssertion()
+                                            {
+                                                ObjectPropertyExpression = skosMemberOP,
+                                                SourceIndividualExpression = skosOrderedCollectionIE,
+                                                TargetIndividualExpression = skosOrderedCollectionMemberIE
+                                            };
+
+                                            LoadAxiomAnnotations(ont, skosMemberListTriple, objPropAsn, annAxiomsGraph);
+
+                                            ont.AssertionAxioms.Add(objPropAsn);
+                                        }
+									}
+                                }
+								continue;
+							}
+                            #endregion
+
+                            OWLObjectProperty objProp = new OWLObjectProperty((RDFResource)objPropTriple.Subject);
 							foreach (RDFTriple objPropAsnTriple in graph[null, (RDFResource)objPropTriple.Subject, null, null])
 							{
 								LoadIndividualExpression(ont, (RDFResource)objPropAsnTriple.Subject, out OWLIndividualExpression leftIE);

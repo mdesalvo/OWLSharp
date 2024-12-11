@@ -4030,6 +4030,58 @@ namespace OWLSharp.Test.Ontology
 		}
 
         [TestMethod]
+        public async Task ShouldReadObjectPropertyAssertionUsingSKOSMemberListFromGraphAsync()
+        {
+            RDFGraph graph = new RDFGraph([
+                new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY),
+                new RDFTriple(RDFVocabulary.SKOS.CONCEPT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS),
+                new RDFTriple(RDFVocabulary.SKOS.ORDERED_COLLECTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS),
+                new RDFTriple(RDFVocabulary.SKOS.MEMBER_LIST, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY),
+                new RDFTriple(RDFVocabulary.SKOS.MEMBER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY),
+                new RDFTriple(new RDFResource("ex:OCA"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.ORDERED_COLLECTION),
+                new RDFTriple(new RDFResource("ex:OCB"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.ORDERED_COLLECTION),
+                new RDFTriple(new RDFResource("ex:C1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT),
+                new RDFTriple(new RDFResource("ex:C2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT),
+                new RDFTriple(new RDFResource("ex:C3"), RDFVocabulary.RDF.TYPE, RDFVocabulary.SKOS.CONCEPT),
+                new RDFTriple(new RDFResource("ex:OCA"), RDFVocabulary.SKOS.MEMBER_LIST, new RDFResource("bnode:OCA1")),
+                new RDFTriple(new RDFResource("bnode:OCA1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST),
+                new RDFTriple(new RDFResource("bnode:OCA1"), RDFVocabulary.RDF.FIRST, new RDFResource("ex:C1")),
+                new RDFTriple(new RDFResource("bnode:OCA1"), RDFVocabulary.RDF.REST, new RDFResource("bnode:OCA2")),
+                new RDFTriple(new RDFResource("bnode:OCA2"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST),
+                new RDFTriple(new RDFResource("bnode:OCA2"), RDFVocabulary.RDF.FIRST, new RDFResource("ex:C2")),
+                new RDFTriple(new RDFResource("bnode:OCA2"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL),
+                new RDFTriple(new RDFResource("ex:OCB"), RDFVocabulary.SKOS.MEMBER_LIST, new RDFResource("bnode:OCB1")),
+                new RDFTriple(new RDFResource("bnode:OCB1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST),
+                new RDFTriple(new RDFResource("bnode:OCB1"), RDFVocabulary.RDF.FIRST, new RDFResource("ex:C3")),
+                new RDFTriple(new RDFResource("bnode:OCB1"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL),
+            ]);
+            OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
+
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 8);
+            Assert.IsTrue(ontology.AssertionAxioms.Any(asn => asn is OWLObjectPropertyAssertion objPropAsn
+                            && objPropAsn.ObjectPropertyExpression is OWLObjectProperty skosMember
+                            && skosMember.GetIRI().Equals(RDFVocabulary.SKOS.MEMBER)
+                            && objPropAsn.SourceIndividualExpression is OWLNamedIndividual ocaIdv
+                            && ocaIdv.GetIRI().Equals(new RDFResource("ex:OCA"))
+                            && objPropAsn.TargetIndividualExpression is OWLNamedIndividual c1Idv
+                            && c1Idv.GetIRI().Equals(new RDFResource("ex:C1"))));
+            Assert.IsTrue(ontology.AssertionAxioms.Any(asn => asn is OWLObjectPropertyAssertion objPropAsn
+                            && objPropAsn.ObjectPropertyExpression is OWLObjectProperty skosMember
+                            && skosMember.GetIRI().Equals(RDFVocabulary.SKOS.MEMBER)
+                            && objPropAsn.SourceIndividualExpression is OWLNamedIndividual ocaIdv
+                            && ocaIdv.GetIRI().Equals(new RDFResource("ex:OCA"))
+                            && objPropAsn.TargetIndividualExpression is OWLNamedIndividual c2Idv
+                            && c2Idv.GetIRI().Equals(new RDFResource("ex:C2"))));
+            Assert.IsTrue(ontology.AssertionAxioms.Any(asn => asn is OWLObjectPropertyAssertion objPropAsn
+                            && objPropAsn.ObjectPropertyExpression is OWLObjectProperty skosMember
+                            && skosMember.GetIRI().Equals(RDFVocabulary.SKOS.MEMBER)
+                            && objPropAsn.SourceIndividualExpression is OWLNamedIndividual ocbIdv
+                            && ocbIdv.GetIRI().Equals(new RDFResource("ex:OCB"))
+                            && objPropAsn.TargetIndividualExpression is OWLNamedIndividual c3Idv
+                            && c3Idv.GetIRI().Equals(new RDFResource("ex:C3"))));
+        }
+
+        [TestMethod]
         public async Task ShouldReadNegativeObjectPropertyAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
