@@ -10,7 +10,7 @@ OWLSharp is an API built atop <a href="https://github.com/mdesalvo/RDFSharp">RDF
 It also integrates a powerful <b><a href="https://www.w3.org/submissions/SWRL/">SWRL</a> engine</b> for modeling, exchange and execution of custom inference rules
 <hr style="height:0.05em" />
 
-Along with core ontology features, it also integrates a set of extensions providing additional opportunities:
+Along with core ontology features, it also integrates a set of extensions providing additional opportunities (WIP v4.3):
 <ul>
   <li>Create and validate schemes describing, documenting and organizing vocabularies of concepts (<b><a href="https://www.w3.org/TR/skos-reference">SKOS</a></b>)</li>
   <li>Model and correlate features having a spatio-temporal representation (<b><a href="https://docs.ogc.org/is/22-047r1/22-047r1.html">GeoSPARQL</a></b>, <b><a href="https://www.w3.org/TR/owl-time/">OWL-TIME</a></b>)</li>
