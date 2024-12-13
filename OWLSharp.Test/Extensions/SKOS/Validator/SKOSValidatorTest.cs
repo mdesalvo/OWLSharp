@@ -15,15 +15,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SKOS;
-using OWLSharp.Extensions.SKOS.Validator;
-using OWLSharp.Extensions.SKOS.Validator.RuleSet;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Validator;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Extensions.SKOS.Validator
+namespace OWLSharp.Test.Extensions.SKOS
 {
     [TestClass]
     public class SKOSValidatorTest

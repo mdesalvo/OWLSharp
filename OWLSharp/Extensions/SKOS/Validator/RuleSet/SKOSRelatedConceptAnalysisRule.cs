@@ -21,7 +21,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
 
-namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
+namespace OWLSharp.Extensions.SKOS
 {
     internal class SKOSRelatedConceptAnalysisRule
     {

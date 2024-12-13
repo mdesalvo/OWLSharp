@@ -22,7 +22,7 @@ using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Extensions.SKOS.Validator.RuleSet
+namespace OWLSharp.Extensions.SKOS
 {
     internal class SKOSPreferredLabelAnalysisRule
     {

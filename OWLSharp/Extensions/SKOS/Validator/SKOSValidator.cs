@@ -14,12 +14,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OWLSharp.Extensions.SKOS.Validator.RuleSet;
 using OWLSharp.Ontology;
 using OWLSharp.Validator;
 using RDFSharp.Model;
 
-namespace OWLSharp.Extensions.SKOS.Validator
+namespace OWLSharp.Extensions.SKOS
 {
     public class SKOSValidator
     {
