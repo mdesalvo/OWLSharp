@@ -15,7 +15,6 @@
 */
 
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using NetTopologySuite.Geometries;
@@ -37,7 +36,119 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
         // LON => X (West/East, -180 ->180)
         // LAT => Y (North/South, -90->90)
 
-        #region Methods
+        #region Properties
+        internal static WKTReader WKTReader = new WKTReader();
+        internal static WKTWriter WKTWriter = new WKTWriter();
+        internal static GMLReader GMLReader = new GMLReader();
+        internal static GMLWriter GMLWriter = new GMLWriter();
+        #endregion
+
+        #region Methods (Distance)
+        public static async Task<double?> GetDistanceBetweenFeaturesAsync(OWLOntology ontology, RDFResource fromFeatureUri, RDFResource toFeatureUri)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get distance between features because given \"ontology\" parameter is null");
+            if (fromFeatureUri == null)
+                throw new OWLException("Cannot get distance between features because given \"fromFeatureUri\" parameter is null");
+            if (toFeatureUri == null)
+                throw new OWLException("Cannot get distance between features because given \"toFeatureUri\" parameter is null");
+            #endregion
+
+            //Collect geometries of "From" feature
+            (Geometry, Geometry) defaultGeometryFrom = await ontology.GetDefaultGeometryOfFeatureAsync(fromFeatureUri);
+            List<(Geometry, Geometry)> geometriesFrom = await ontology.GetSecondaryGeometriesOfFeatureAsync(fromFeatureUri);
+            if (defaultGeometryFrom.Item1 != null && defaultGeometryFrom.Item2 != null)
+                geometriesFrom.Insert(0, defaultGeometryFrom);
+
+            //Collect geometries of "To" feature
+            (Geometry, Geometry) defaultGeometryTo = await ontology.GetDefaultGeometryOfFeatureAsync(toFeatureUri);
+            List<(Geometry, Geometry)> geometriesTo = await ontology.GetSecondaryGeometriesOfFeatureAsync(toFeatureUri);
+            if (defaultGeometryTo.Item1 != null && defaultGeometryTo.Item2 != null)
+                geometriesTo.Insert(0, defaultGeometryTo);
+
+            //Perform spatial analysis between collected geometries (calibrate minimum distance)
+            double? featuresDistance = double.MaxValue;
+            geometriesFrom.ForEach(fromGeom => {
+                geometriesTo.ForEach(toGeom => {
+                    double tempDistance = fromGeom.Item2.Distance(toGeom.Item2);
+                    if (tempDistance < featuresDistance)
+                        featuresDistance = tempDistance;
+                });
+            });
+
+            //Give null in case distance could not be calculated (no available geometries from any sides)
+            return featuresDistance == double.MaxValue ? null : featuresDistance;
+        }
+
+        public static async Task<double?> GetDistanceBetweenFeaturesAsync(OWLOntology ontology, RDFResource fromFeatureUri, RDFTypedLiteral toFeatureLiteral)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get distance between features because given \"ontology\" parameter is null");
+            if (fromFeatureUri == null)
+                throw new OWLException("Cannot get distance between features because given \"fromFeatureUri\" parameter is null");
+            if (toFeatureLiteral == null)
+                throw new OWLException("Cannot get distance between features because given \"toFeatureLiteral\" parameter is null");
+            if (!toFeatureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get distance between features because given \"toFeatureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Collect geometries of "From" feature
+            (Geometry, Geometry) defaultGeometryFrom = await ontology.GetDefaultGeometryOfFeatureAsync(fromFeatureUri);
+            List<(Geometry, Geometry)> geometriesFrom = await ontology.GetSecondaryGeometriesOfFeatureAsync(fromFeatureUri);
+            if (defaultGeometryFrom.Item1 != null && defaultGeometryFrom.Item2 != null)
+                geometriesFrom.Insert(0, defaultGeometryFrom);
+
+            //Transform "To" feature into geometry
+            bool isWKT = toFeatureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84GeometryTo = isWKT ? WKTReader.Read(toFeatureLiteral.Value) : GMLReader.Read(toFeatureLiteral.Value);
+            wgs84GeometryTo.SRID = 4326;
+            Geometry lazGeometryTo = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryTo);
+
+            //Perform spatial analysis between collected geometries (calibrate minimum distance)
+            double? featuresDistance = double.MaxValue;
+            geometriesFrom.ForEach(fromGeom => {
+                double tempDistance = fromGeom.Item2.Distance(lazGeometryTo);
+                if (tempDistance < featuresDistance)
+                    featuresDistance = tempDistance;
+            });
+
+            //Give null in case distance could not be calculated (no available geometries)
+            return featuresDistance == double.MaxValue ? null : featuresDistance;
+        }
+
+        public static async Task<double?> GetDistanceBetweenFeaturesAsync(RDFTypedLiteral fromFeatureLiteral, RDFTypedLiteral toFeatureLiteral)
+        {
+            #region Guards
+            if (fromFeatureLiteral == null)
+                throw new OWLException("Cannot get distance between features because given \"fromFeatureLiteral\" parameter is null");
+            if (!fromFeatureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get distance between features because given \"fromFeatureLiteral\" parameter is not a geographic typed literal");
+            if (toFeatureLiteral == null)
+                throw new OWLException("Cannot get distance between features because given \"toFeatureLiteral\" parameter is null");
+            if (!toFeatureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get distance between features because given \"toFeatureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform "From" feature into geometry
+            bool fromIsWKT = fromFeatureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84GeometryFrom = fromIsWKT ? WKTReader.Read(fromFeatureLiteral.Value) : GMLReader.Read(fromFeatureLiteral.Value);
+            wgs84GeometryFrom.SRID = 4326;
+            Geometry lazGeometryFrom = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryFrom);
+
+            //Transform "To" feature into geometry
+            bool toIsWKT = toFeatureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84GeometryTo = toIsWKT ? WKTReader.Read(toFeatureLiteral.Value) : GMLReader.Read(toFeatureLiteral.Value);
+            wgs84GeometryTo.SRID = 4326;
+            Geometry lazGeometryTo = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84GeometryTo);
+
+            //Perform spatial analysis between geometries
+            return await Task.FromResult(lazGeometryFrom.Distance(lazGeometryTo));
+        }
+        #endregion
+
+        #region Utilities
         internal static async Task<(Geometry,Geometry)> GetDefaultGeometryOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
         {
             //Execute SWRL rule to retrieve WKT serialization of the given feature's default geometry
@@ -64,10 +175,7 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
-                            new SWRLIndividualArgument(featureUri)),
-                        SWRLBuiltIn.EndsWith(
-                            new SWRLVariableArgument(new RDFVariable("?WKT")),
-                            new SWRLLiteralArgument(new RDFPlainLiteral($"^^{RDFVocabulary.GEOSPARQL.WKT_LITERAL}")))
+                            new SWRLIndividualArgument(featureUri))
                     }
                 },
                 Consequent = new SWRLConsequent()
@@ -108,10 +216,7 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
                         {
                             SWRLBuiltIn.Equal(
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
-                                new SWRLIndividualArgument(featureUri)),
-                            SWRLBuiltIn.EndsWith(
-                                new SWRLVariableArgument(new RDFVariable("?GML")),
-                                new SWRLLiteralArgument(new RDFPlainLiteral($"^^{RDFVocabulary.GEOSPARQL.GML_LITERAL}")))
+                                new SWRLIndividualArgument(featureUri))
                         }
                     },
                     Consequent = new SWRLConsequent()
@@ -130,13 +235,13 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
 
             //Parse retrieved WKT/GML serialization into (WGS84,UTM) result geometry
             OWLDataPropertyAssertion inferenceAxiom = (OWLDataPropertyAssertion)inferences.FirstOrDefault()?.Axiom;
-            if (string.Equals(inferenceAxiom?.DataProperty.GetIRI(), "urn:swrl:geosparql:asWKT"))
+            if (string.Equals(inferenceAxiom?.DataProperty.GetIRI().ToString(), "urn:swrl:geosparql:asWKT"))
             {
                 try
                 {
                     //Parse default geometry from WKT
                     RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
-                    Geometry wgs84Geometry = new WKTReader().Read(inferenceLiteral.Value);
+                    Geometry wgs84Geometry = WKTReader.Read(inferenceLiteral.Value);
                     wgs84Geometry.SRID = 4326;
 
                     //Project default geometry from WGS84 to Lambert Azimuthal
@@ -146,13 +251,13 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
                 }
                 catch { /* Just a no-op, since type errors are normal when trying to face variable's bindings */ }
             }
-            if (string.Equals(inferenceAxiom?.DataProperty.GetIRI(), "urn:swrl:geosparql:asGML"))
+            if (string.Equals(inferenceAxiom?.DataProperty.GetIRI().ToString(), "urn:swrl:geosparql:asGML"))
             {
                 try
                 {
                     //Parse default geometry from GML
                     RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
-                    Geometry wgs84Geometry = new GMLReader().Read(inferenceLiteral.Value);
+                    Geometry wgs84Geometry = GMLReader.Read(inferenceLiteral.Value);
                     wgs84Geometry.SRID = 4326;
 
                     //Project default geometry from WGS84 to Lambert Azimuthal
@@ -166,9 +271,6 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
             return (null,null);
         }
 
-        /// <summary>
-        /// Gets the list of secondary geometries (WGS84,UTM) assigned to the feature
-        /// </summary>
         internal static async Task<List<(Geometry,Geometry)>> GetSecondaryGeometriesOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
         {
             List<(Geometry,Geometry)> secondaryGeometries = new List<(Geometry,Geometry)>();
@@ -197,10 +299,7 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
-                            new SWRLIndividualArgument(featureUri)),
-                        SWRLBuiltIn.EndsWith(
-                            new SWRLVariableArgument(new RDFVariable("?WKT")),
-                            new SWRLLiteralArgument(new RDFPlainLiteral($"^^{RDFVocabulary.GEOSPARQL.WKT_LITERAL}")))
+                            new SWRLIndividualArgument(featureUri))
                     }
                 },
                 Consequent = new SWRLConsequent()
@@ -241,10 +340,7 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
                         {
                             SWRLBuiltIn.Equal(
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
-                                new SWRLIndividualArgument(featureUri)),
-                            SWRLBuiltIn.EndsWith(
-                                new SWRLVariableArgument(new RDFVariable("?GML")),
-                                new SWRLLiteralArgument(new RDFPlainLiteral($"^^{RDFVocabulary.GEOSPARQL.GML_LITERAL}")))
+                                new SWRLIndividualArgument(featureUri))
                         }
                     },
                     Consequent = new SWRLConsequent()
@@ -261,17 +357,17 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
                 inferences.AddRange(await defaultGeomAsGML.ApplyToOntologyAsync(ontology));
             }
             
-            //Parse retrieved WKT/GML serialization into (WGS84,UTM) result geometry
+            //Parse retrieved WKT/GML serializations into (WGS84,UTM) result geometries
             foreach (OWLInference inference in inferences)
             {
                 OWLDataPropertyAssertion inferenceAxiom = (OWLDataPropertyAssertion)inference.Axiom;
-                if (string.Equals(inferenceAxiom?.DataProperty.GetIRI(), "urn:swrl:geosparql:asWKT"))
+                if (string.Equals(inferenceAxiom?.DataProperty.GetIRI().ToString(), "urn:swrl:geosparql:asWKT"))
                 {
                     try
                     {
                         //Parse default geometry from WKT
                         RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
-                        Geometry wgs84Geometry = new WKTReader().Read(inferenceLiteral.Value);
+                        Geometry wgs84Geometry = WKTReader.Read(inferenceLiteral.Value);
                         wgs84Geometry.SRID = 4326;
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
@@ -281,13 +377,13 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
                     }
                     catch { /* Just a no-op, since type errors are normal when trying to face variable's bindings */ }
                 }
-                if (string.Equals(inferenceAxiom?.DataProperty.GetIRI(), "urn:swrl:geosparql:asGML"))
+                if (string.Equals(inferenceAxiom?.DataProperty.GetIRI().ToString(), "urn:swrl:geosparql:asGML"))
                 {
                     try
                     {
                         //Parse default geometry from GML
                         RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
-                        Geometry wgs84Geometry = new GMLReader().Read(inferenceLiteral.Value);
+                        Geometry wgs84Geometry = GMLReader.Read(inferenceLiteral.Value);
                         wgs84Geometry.SRID = 4326;
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
