@@ -28,7 +28,7 @@ using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
-namespace OWLSharp.Extensions.GEO.Ontology.Helpers
+namespace OWLSharp.Extensions.GEO
 {
     public static class GEOHelper
     {
@@ -69,8 +69,10 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate minimum distance)
             double? featuresDistance = double.MaxValue;
-            geometriesFrom.ForEach(fromGeom => {
-                geometriesTo.ForEach(toGeom => {
+            geometriesFrom.ForEach(fromGeom => 
+            {
+                geometriesTo.ForEach(toGeom => 
+                {
                     double tempDistance = fromGeom.Item2.Distance(toGeom.Item2);
                     if (tempDistance < featuresDistance)
                         featuresDistance = tempDistance;
@@ -108,7 +110,8 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate minimum distance)
             double? featuresDistance = double.MaxValue;
-            geometriesFrom.ForEach(fromGeom => {
+            geometriesFrom.ForEach(fromGeom => 
+            {
                 double tempDistance = fromGeom.Item2.Distance(lazGeometryTo);
                 if (tempDistance < featuresDistance)
                     featuresDistance = tempDistance;
@@ -166,7 +169,8 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate maximum length)
             double? featureLength = double.MinValue;
-            geometries.ForEach(geom => {
+            geometries.ForEach(geom => 
+            {
                 double tempLength = geom.Item2.Length;
                 if (tempLength > featureLength)
                     featureLength = tempLength;
@@ -211,7 +215,8 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate maximum area)
             double? featureArea = double.MinValue;
-            geometries.ForEach(geom => {
+            geometries.ForEach(geom => 
+            {
                 double tempArea = geom.Item2.Area;
                 if (tempArea > featureArea)
                     featureArea = tempArea;
@@ -290,6 +295,59 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
             Geometry centroidGeometryAZ = lazGeometry.Centroid;
             Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
             return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+        }
+        #endregion
+
+        #region Methods (Boundary)
+        public static async Task<RDFTypedLiteral> GetBoundaryOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get boundary of feature because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get boundary of feature because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Analyze default geometry of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+            {
+                Geometry centroidGeometryAZ = defaultGeometry.Item2.Boundary;
+                Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            }
+
+            //Analyze secondary geometries of feature
+            List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (secondaryGeometries.Count > 0)
+            {
+                Geometry centroidGeometryAZ = secondaryGeometries.First().Item2.Boundary;
+                Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            }
+
+            return null;
+        }
+
+        public static async Task<RDFTypedLiteral> GetBoundaryOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        {
+            #region Guards
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get boundary of feature because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get boundary of feature because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            //Analyze geometry
+            Geometry centroidGeometryAZ = lazGeometry.Boundary;
+            Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
+            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
         }
         #endregion
 
