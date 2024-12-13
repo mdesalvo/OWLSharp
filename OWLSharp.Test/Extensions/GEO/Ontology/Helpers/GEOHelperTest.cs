@@ -247,6 +247,8 @@ namespace OWLSharp.Test.Extensions.GEO.Ontology.Helpers
             //Input guards
             await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetLengthOfFeatureAsync(
                 null as RDFTypedLiteral));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetLengthOfFeatureAsync(
+               new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
 
         [TestMethod]
@@ -326,6 +328,8 @@ namespace OWLSharp.Test.Extensions.GEO.Ontology.Helpers
             //Input guards
             await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetAreaOfFeatureAsync(
                 null as RDFTypedLiteral));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetAreaOfFeatureAsync(
+               new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
         #endregion
     }
