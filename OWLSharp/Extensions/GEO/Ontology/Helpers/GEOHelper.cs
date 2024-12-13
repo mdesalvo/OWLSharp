@@ -148,6 +148,98 @@ namespace OWLSharp.Extensions.GEO.Ontology.Helpers
         }
         #endregion
 
+        #region Methods (Length/Area)
+        public static async Task<double?> GetLengthOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get length of feature because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get length of feature because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Collect geometries of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            List<(Geometry, Geometry)> geometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+                geometries.Insert(0, defaultGeometry);
+
+            //Perform spatial analysis between collected geometries (calibrate maximum length)
+            double? featureLength = double.MinValue;
+            geometries.ForEach(geom => {
+                double tempLength = geom.Item2.Length;
+                if (tempLength > featureLength)
+                    featureLength = tempLength;
+            });
+
+            //Give null in case length could not be calculated (no available geometries)
+            return featureLength == double.MinValue ? null : featureLength;
+        }
+
+        public static async Task<double?> GetLengthOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        {
+            #region Guards
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get length of feature because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get length of feature because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            return await Task.FromResult(lazGeometry.Length);
+        }
+
+        public static async Task<double?> GetAreaOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get area of feature because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get area of feature because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Collect geometries of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            List<(Geometry, Geometry)> geometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+                geometries.Insert(0, defaultGeometry);
+
+            //Perform spatial analysis between collected geometries (calibrate maximum area)
+            double? featureArea = double.MinValue;
+            geometries.ForEach(geom => {
+                double tempArea = geom.Item2.Area;
+                if (tempArea > featureArea)
+                    featureArea = tempArea;
+            });
+
+            //Give null in case area could not be calculated (no available geometries)
+            return featureArea == double.MinValue ? null : featureArea;
+        }
+
+        public static async Task<double?> GetAreaOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        {
+            #region Guards
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get area of feature because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get area of feature because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            return await Task.FromResult(lazGeometry.Area);
+        }
+        #endregion
+
         #region Utilities
         internal static async Task<(Geometry,Geometry)> GetDefaultGeometryOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
         {
