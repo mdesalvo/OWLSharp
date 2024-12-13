@@ -312,18 +312,18 @@ namespace OWLSharp.Extensions.GEO
             (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
             if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
             {
-                Geometry centroidGeometryAZ = defaultGeometry.Item2.Boundary;
-                Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
-                return new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+                Geometry boundaryGeometryAZ = defaultGeometry.Item2.Boundary;
+                Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(boundaryGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
 
             //Analyze secondary geometries of feature
             List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
             if (secondaryGeometries.Count > 0)
             {
-                Geometry centroidGeometryAZ = secondaryGeometries.First().Item2.Boundary;
-                Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
-                return new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+                Geometry boundaryGeometryAZ = secondaryGeometries.First().Item2.Boundary;
+                Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(boundaryGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
 
             return null;
@@ -345,9 +345,62 @@ namespace OWLSharp.Extensions.GEO
             Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
 
             //Analyze geometry
-            Geometry centroidGeometryAZ = lazGeometry.Boundary;
-            Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
-            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            Geometry boundaryGeometryAZ = lazGeometry.Boundary;
+            Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
+            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(boundaryGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+        }
+        #endregion
+
+        #region Methods (Buffer)
+        public static async Task<RDFTypedLiteral> GetBufferAroundFeatureAsync(OWLOntology ontology, RDFResource featureUri, double bufferMeters)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get buffer around feature because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get buffer around feature because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Analyze default geometry of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+            {
+                Geometry bufferGeometryAZ = defaultGeometry.Item2.Buffer(bufferMeters);
+                Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            }
+
+            //Analyze secondary geometries of feature
+            List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (secondaryGeometries.Count > 0)
+            {
+                Geometry bufferGeometryAZ = secondaryGeometries.First().Item2.Buffer(bufferMeters);
+                Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            }
+
+            return null;
+        }
+
+        public static async Task<RDFTypedLiteral> GetBufferAroundFeatureAsync(RDFTypedLiteral featureLiteral, double bufferMeters)
+        {
+            #region Guards
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get buffer around feature because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get buffer around feature because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            //Analyze geometry
+            Geometry bufferGeometryAZ = lazGeometry.Buffer(bufferMeters);
+            Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
         }
         #endregion
 
