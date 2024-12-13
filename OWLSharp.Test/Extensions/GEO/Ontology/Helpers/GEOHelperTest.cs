@@ -48,7 +48,7 @@ namespace OWLSharp.Test.Extensions.GEO.Ontology.Helpers
                         new OWLNamedIndividual(new RDFResource("ex:milanFT")),
                         new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
                         new OWLNamedIndividual(new RDFResource("ex:romeFT")),
                         new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDataPropertyAssertion(
