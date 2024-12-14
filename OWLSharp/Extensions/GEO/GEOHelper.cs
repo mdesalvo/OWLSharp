@@ -404,6 +404,59 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
+        #region Methods (ConvexHull)
+        public static async Task<RDFTypedLiteral> GetConvexHullOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get convex hull of feature because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get convex hull of feature because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Analyze default geometry of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+            {
+                Geometry bufferGeometryAZ = defaultGeometry.Item2.ConvexHull();
+                Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            }
+
+            //Analyze secondary geometries of feature
+            List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (secondaryGeometries.Count > 0)
+            {
+                Geometry bufferGeometryAZ = secondaryGeometries.First().Item2.ConvexHull();
+                Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+                return new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            }
+
+            return null;
+        }
+
+        public static async Task<RDFTypedLiteral> GetConvexHullOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        {
+            #region Guards
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get convex hull of feature because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get convex hull of feature because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            //Analyze geometry
+            Geometry bufferGeometryAZ = lazGeometry.ConvexHull();
+            Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
+            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+        }
+        #endregion
+
         #region Utilities
         internal static async Task<(Geometry,Geometry)> GetDefaultGeometryOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
         {
