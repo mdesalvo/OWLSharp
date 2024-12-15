@@ -8,7 +8,7 @@ OWLSharp is a framework built atop <a href="https://github.com/mdesalvo/RDFSharp
   <li><b>Validating</b> them with a set of <b>29 OWL2 analysis rules</b></li>
 </ul>
 It also integrates a powerful <b><a href="https://www.w3.org/submissions/SWRL/">SWRL</a> engine</b> for modeling, exchange and execution of custom inference rules
-<hr style="height:0.05em" />
+<hr style="height:0.10em !important" />
 
 Along with core ontology features, it also includes a set of extensions providing additional capabilities:
 <ul>
