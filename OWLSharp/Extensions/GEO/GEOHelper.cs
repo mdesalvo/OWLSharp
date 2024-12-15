@@ -23,6 +23,7 @@ using NetTopologySuite.IO.GML2;
 using OWLSharp.Ontology;
 using OWLSharp.Ontology.Axioms;
 using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology.Helpers;
 using OWLSharp.Ontology.Rules;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
@@ -151,7 +152,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Length/Area)
+        #region Methods (Measure)
         public static async Task<double?> GetLengthOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -510,7 +511,118 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
+        #region Methods (Proximity)
+        public static async Task<List<RDFResource>> GetProximityFeatures(OWLOntology ontology, RDFResource featureUri, double distanceMeters)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features within distance because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get features within distance because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Get centroid of feature
+            RDFTypedLiteral centroidOfFeature = await GetCentroidOfFeatureAsync(ontology, featureUri);
+            if (centroidOfFeature == null)
+                return null;
+
+            //Create WGS84 geometry from centroid of feature
+            bool isWKT = centroidOfFeature.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84CentroidOfFeature = isWKT ? WKTReader.Read(centroidOfFeature.Value) : GMLReader.Read(centroidOfFeature.Value);
+            wgs84CentroidOfFeature.SRID = 4326;
+
+            //Create Lambert Azimuthal geometry from centroid of feature
+            Geometry lazCentroidOfFeature = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84CentroidOfFeature);
+
+            //Retrieve WKT/GML serialization of features
+            Dictionary<string,List<(Geometry,Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+            //Perform spatial analysis between collected geometries:
+            //iterate geometries and collect those within given radius
+            List<RDFResource> featuresWithinDistance = new List<RDFResource>();
+            foreach (KeyValuePair<string,List<(Geometry,Geometry)>> featureWithGeometry in featuresWithGeometry)
+            {
+                //Obviously exclude the given feature itself
+                if (string.Equals(featureWithGeometry.Key, featureUri.ToString()))
+                    continue;
+
+                foreach ((Geometry,Geometry) geometryOfFeature in featureWithGeometry.Value)
+                    if (geometryOfFeature.Item2.IsWithinDistance(lazCentroidOfFeature, distanceMeters))
+                    {
+                        featuresWithinDistance.Add(new RDFResource(featureWithGeometry.Key));
+                        continue;
+                    }
+            };
+
+            return RDFQueryUtilities.RemoveDuplicates(featuresWithinDistance);
+        }
+
+        public static async Task<List<RDFResource>> GetProximityFeatures(OWLOntology ontology, RDFTypedLiteral featureLiteral, double distanceMeters)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features within distance because given \"ontology\" parameter is null");
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get features within distance because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get features within distance because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            //Create Lambert Azimuthal geometry from centroid of feature
+            Geometry lazCentroidOfFeature = lazGeometry.Centroid;
+
+            //Retrieve WKT/GML serialization of features
+            Dictionary<string,List<(Geometry,Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+            //Perform spatial analysis between collected geometries:
+            //iterate geometries and collect those within given radius
+            List<RDFResource> featuresWithinDistance = new List<RDFResource>();
+            foreach (KeyValuePair<string,List<(Geometry,Geometry)>> featureWithGeometry in featuresWithGeometry)
+            {
+                foreach ((Geometry,Geometry) geometryOfFeature in featureWithGeometry.Value)
+                    if (geometryOfFeature.Item2.IsWithinDistance(lazCentroidOfFeature, distanceMeters))
+                    {
+                        featuresWithinDistance.Add(new RDFResource(featureWithGeometry.Key));
+                        continue;
+                    }
+            };
+
+            return RDFQueryUtilities.RemoveDuplicates(featuresWithinDistance);
+        }
+        #endregion
+
         #region Utilities
+        internal static async Task<Dictionary<string,List<(Geometry,Geometry)>>> GetFeaturesWithGeometriesAsync(this OWLOntology ontology)
+        {
+            Dictionary<string,List<(Geometry,Geometry)>> featuresWithGeometry = new Dictionary<string,List<(Geometry,Geometry)>>();
+
+            foreach(OWLIndividualExpression featureIdv in OWLAssertionAxiomHelper.GetIndividualsOf(ontology, new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)))
+            {
+                RDFResource featureIRI = featureIdv.GetIRI();
+                string featureIRIString = featureIRI.ToString();
+                if (!featuresWithGeometry.ContainsKey(featureIRIString))
+                    featuresWithGeometry.Add(featureIRIString, new List<(Geometry, Geometry)>());
+
+                //Analyze default geometry of feature
+                (Geometry,Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureIRI);
+                if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+                    featuresWithGeometry[featureIRIString].Add(defaultGeometry);
+
+                //Analyze secondary geometries of feature
+                List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureIRI);
+                if (secondaryGeometries.Count > 0)
+                    featuresWithGeometry[featureIRIString].AddRange(secondaryGeometries);
+            }
+
+            return featuresWithGeometry;
+        }
+
         internal static async Task<(Geometry,Geometry)> GetDefaultGeometryOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
         {
             //Execute SWRL rule to retrieve WKT serialization of the given feature's default geometry
