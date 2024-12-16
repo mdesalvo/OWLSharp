@@ -1597,6 +1597,686 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
                 null as RDFResource, GEOEnums.GeoDirections.South));
         }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesNorthDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                 AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionNorthFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.North);
+            List<RDFResource> romeDirectionNorthFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.North);
+            List<RDFResource> tivoliDirectionNorthFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.North);
+
+            Assert.IsNotNull(milanDirectionNorthFeatures);
+            Assert.IsTrue(milanDirectionNorthFeatures.Count == 0);
+            Assert.IsNotNull(romeDirectionNorthFeatures);
+            Assert.IsTrue(romeDirectionNorthFeatures.Count == 2);
+            Assert.IsNotNull(tivoliDirectionNorthFeatures);
+            Assert.IsTrue(tivoliDirectionNorthFeatures.Count == 1);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.North));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.North));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesNorthEastDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionNorthEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.NorthEast);
+            List<RDFResource> romeDirectionNorthEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.NorthEast);
+            List<RDFResource> tivoliDirectionNorthEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.NorthEast);
+
+            Assert.IsNotNull(milanDirectionNorthEastFeatures);
+            Assert.IsTrue(milanDirectionNorthEastFeatures.Count == 0);
+            Assert.IsNotNull(romeDirectionNorthEastFeatures);
+            Assert.IsTrue(romeDirectionNorthEastFeatures.Count == 1);
+            Assert.IsNotNull(tivoliDirectionNorthEastFeatures);
+            Assert.IsTrue(tivoliDirectionNorthEastFeatures.Count == 0);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.NorthEast));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.NorthEast));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesNorthWestDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionNorthWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.NorthWest);
+            List<RDFResource> romeDirectionNorthWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.NorthWest);
+            List<RDFResource> tivoliDirectionNorthWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.NorthWest);
+
+            Assert.IsNotNull(milanDirectionNorthWestFeatures);
+            Assert.IsTrue(milanDirectionNorthWestFeatures.Count == 0);
+            Assert.IsNotNull(romeDirectionNorthWestFeatures);
+            Assert.IsTrue(romeDirectionNorthWestFeatures.Count == 1);
+            Assert.IsNotNull(tivoliDirectionNorthWestFeatures);
+            Assert.IsTrue(tivoliDirectionNorthWestFeatures.Count == 1);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.NorthWest));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.NorthWest));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesEastDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.East);
+            List<RDFResource> romeDirectionEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.East);
+            List<RDFResource> tivoliDirectionEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.East);
+
+            Assert.IsNotNull(milanDirectionEastFeatures);
+            Assert.IsTrue(milanDirectionEastFeatures.Count == 2);
+            Assert.IsNotNull(romeDirectionEastFeatures);
+            Assert.IsTrue(romeDirectionEastFeatures.Count == 1);
+            Assert.IsNotNull(tivoliDirectionEastFeatures);
+            Assert.IsTrue(tivoliDirectionEastFeatures.Count == 0);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.East));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.East));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesSouthEastDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionSouthEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.SouthEast);
+            List<RDFResource> romeDirectionSouthEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.SouthEast);
+            List<RDFResource> tivoliDirectionSouthEastFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.SouthEast);
+
+            Assert.IsNotNull(milanDirectionSouthEastFeatures);
+            Assert.IsTrue(milanDirectionSouthEastFeatures.Count == 2);
+            Assert.IsNotNull(romeDirectionSouthEastFeatures);
+            Assert.IsTrue(romeDirectionSouthEastFeatures.Count == 0);
+            Assert.IsNotNull(tivoliDirectionSouthEastFeatures);
+            Assert.IsTrue(tivoliDirectionSouthEastFeatures.Count == 0);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.SouthEast));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.SouthEast));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesWestDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.West);
+            List<RDFResource> romeDirectionWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.West);
+            List<RDFResource> tivoliDirectionWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.West);
+
+            Assert.IsNotNull(milanDirectionWestFeatures);
+            Assert.IsTrue(milanDirectionWestFeatures.Count == 0);
+            Assert.IsNotNull(romeDirectionWestFeatures);
+            Assert.IsTrue(romeDirectionWestFeatures.Count == 1);
+            Assert.IsNotNull(tivoliDirectionWestFeatures);
+            Assert.IsTrue(tivoliDirectionWestFeatures.Count == 2);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.West));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.West));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesSouthWestDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionSouthWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.SouthWest);
+            List<RDFResource> romeDirectionSouthWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.SouthWest);
+            List<RDFResource> tivoliDirectionSouthWestFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.SouthWest);
+
+            Assert.IsNotNull(milanDirectionSouthWestFeatures);
+            Assert.IsTrue(milanDirectionSouthWestFeatures.Count == 0);
+            Assert.IsNotNull(romeDirectionSouthWestFeatures);
+            Assert.IsTrue(romeDirectionSouthWestFeatures.Count == 0);
+            Assert.IsNotNull(tivoliDirectionSouthWestFeatures);
+            Assert.IsTrue(tivoliDirectionSouthWestFeatures.Count == 1);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.SouthWest));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.SouthWest));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesSouthDirectionOfLiteralAsync()
+        {
+            RDFTypedLiteral milanTL = new RDFTypedLiteral("POINT(9.188540 45.464664)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral romeTL = new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            RDFTypedLiteral tivoliTL = new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:milanFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:romeFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:milanGM")),
+                        new OWLLiteral(milanTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:romeGM")),
+                        new OWLLiteral(romeTL)),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
+                        new OWLLiteral(tivoliTL)),
+                ]
+            };
+            List<RDFResource> milanDirectionSouthFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, milanTL, GEOEnums.GeoDirections.South);
+            List<RDFResource> romeDirectionSouthFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, romeTL, GEOEnums.GeoDirections.South);
+            List<RDFResource> tivoliDirectionSouthFeatures = await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology, tivoliTL, GEOEnums.GeoDirections.South);
+
+            Assert.IsNotNull(milanDirectionSouthFeatures);
+            Assert.IsTrue(milanDirectionSouthFeatures.Count == 2);
+            Assert.IsNotNull(romeDirectionSouthFeatures);
+            Assert.IsTrue(romeDirectionSouthFeatures.Count == 0);
+            Assert.IsNotNull(tivoliDirectionSouthFeatures);
+            Assert.IsTrue(tivoliDirectionSouthFeatures.Count == 1);
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(null,
+                milanTL, GEOEnums.GeoDirections.South));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesDirectionOfAsync(geoOntology,
+                null as RDFTypedLiteral, GEOEnums.GeoDirections.South));
+        }
         #endregion
     }
 }

@@ -28,6 +28,7 @@ using OWLSharp.Ontology.Rules;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using static OWLSharp.Extensions.GEO.GEOEnums;
 
 namespace OWLSharp.Extensions.GEO
 {
@@ -600,46 +601,11 @@ namespace OWLSharp.Extensions.GEO
         #region Methods (Direction)
         public static async Task<List<RDFResource>> GetFeaturesDirectionOfAsync(OWLOntology ontology, RDFResource featureUri, GEOEnums.GeoDirections geoDirection)
         {
-            #region Utilities
-            bool MatchCoordinates(Coordinate c1, Coordinate c2)
-            {
-                bool answer = false;
-                switch (geoDirection)
-                {
-                    case GEOEnums.GeoDirections.North:
-                        answer = c1.Y > c2.Y;
-                        break;
-                    case GEOEnums.GeoDirections.East:
-                        answer = c1.X > c2.X;
-                        break;
-                    case GEOEnums.GeoDirections.South:
-                        answer = c1.Y < c2.Y;
-                        break;
-                    case GEOEnums.GeoDirections.West:
-                        answer = c1.X < c2.X;
-                        break;
-                    case GEOEnums.GeoDirections.NorthEast:
-                        answer = c1.Y > c2.Y && c1.X > c2.X;
-                        break;
-                    case GEOEnums.GeoDirections.NorthWest:
-                        answer = c1.Y > c2.Y && c1.X < c2.X;
-                        break;
-                    case GEOEnums.GeoDirections.SouthEast:
-                        answer = c1.Y < c2.Y && c1.X > c2.X;
-                        break;
-                    case GEOEnums.GeoDirections.SouthWest:
-                        answer = c1.Y < c2.Y && c1.X < c2.X;
-                        break;
-                }
-                return answer;
-            }
-            #endregion
-
             #region Guards
             if (ontology == null)
-                throw new OWLException("Cannot get features north because given \"ontology\" parameter is null");
+                throw new OWLException("Cannot get features direction because given \"ontology\" parameter is null");
             if (featureUri == null)
-                throw new OWLException("Cannot get features north because given \"featureUri\" parameter is null");
+                throw new OWLException("Cannot get features direction because given \"featureUri\" parameter is null");
             #endregion
 
             //Analyze default geometry of feature
@@ -658,7 +624,7 @@ namespace OWLSharp.Extensions.GEO
                         continue;
 
                     foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
-                        if (geometryOfFeature.Item2.Coordinates.Any(c => MatchCoordinates(c, defaultGeometry.Item2.Coordinate)))
+                        if (geometryOfFeature.Item2.Coordinates.Any(c1 => defaultGeometry.Item2.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection))))
                         {
                             featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
                             continue;
@@ -684,7 +650,7 @@ namespace OWLSharp.Extensions.GEO
                         continue;
 
                     foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
-                        if (geometryOfFeature.Item2.Coordinates.Any(c => secondaryGeometries.Any(sg => MatchCoordinates(c, sg.Item2.Coordinate))))
+                        if (geometryOfFeature.Item2.Coordinates.Any(c1 => secondaryGeometries.Any(sg => sg.Item2.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection)))))
                         {
                             featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
                             continue;
@@ -695,6 +661,41 @@ namespace OWLSharp.Extensions.GEO
             }
 
             return null;
+        }
+
+        public static async Task<List<RDFResource>> GetFeaturesDirectionOfAsync(OWLOntology ontology, RDFTypedLiteral featureLiteral, GEOEnums.GeoDirections geoDirection)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features direction because given \"ontology\" parameter is null");
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get features direction because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get features direction because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            //Retrieve WKT/GML serialization of features
+            Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+            //Perform spatial analysis between collected geometries
+            List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+            foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+            {
+                foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                    if (geometryOfFeature.Item2.Coordinates.Any(c1 => lazGeometry.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection))))
+                    {
+                        featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
+                        continue;
+                    }
+            };
+
+            return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
         }
         #endregion
 
@@ -971,6 +972,39 @@ namespace OWLSharp.Extensions.GEO
             }
 
             return secondaryGeometries;
+        }
+
+        internal static bool MatchCoordinates(Coordinate c1, Coordinate c2, GEOEnums.GeoDirections geoDirection)
+        {
+            bool answer = false;
+            switch (geoDirection)
+            {
+                case GEOEnums.GeoDirections.North:
+                    answer = c1.Y > c2.Y;
+                    break;
+                case GEOEnums.GeoDirections.East:
+                    answer = c1.X > c2.X;
+                    break;
+                case GEOEnums.GeoDirections.South:
+                    answer = c1.Y < c2.Y;
+                    break;
+                case GEOEnums.GeoDirections.West:
+                    answer = c1.X < c2.X;
+                    break;
+                case GEOEnums.GeoDirections.NorthEast:
+                    answer = c1.Y > c2.Y && c1.X > c2.X;
+                    break;
+                case GEOEnums.GeoDirections.NorthWest:
+                    answer = c1.Y > c2.Y && c1.X < c2.X;
+                    break;
+                case GEOEnums.GeoDirections.SouthEast:
+                    answer = c1.Y < c2.Y && c1.X > c2.X;
+                    break;
+                case GEOEnums.GeoDirections.SouthWest:
+                    answer = c1.Y < c2.Y && c1.X < c2.X;
+                    break;
+            }
+            return answer;
         }
         #endregion
     }
