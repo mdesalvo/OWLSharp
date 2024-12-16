@@ -511,8 +511,8 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Proximity)
-        public static async Task<List<RDFResource>> GetProximityFeatures(OWLOntology ontology, RDFResource featureUri, double distanceMeters)
+        #region Methods (NearBy)
+        public static async Task<List<RDFResource>> GetFeaturesNearBy(OWLOntology ontology, RDFResource featureUri, double distanceMeters)
         {
             #region Guards
             if (ontology == null)
@@ -557,7 +557,7 @@ namespace OWLSharp.Extensions.GEO
             return RDFQueryUtilities.RemoveDuplicates(featuresWithinDistance);
         }
 
-        public static async Task<List<RDFResource>> GetProximityFeatures(OWLOntology ontology, RDFTypedLiteral featureLiteral, double distanceMeters)
+        public static async Task<List<RDFResource>> GetFeaturesNearBy(OWLOntology ontology, RDFTypedLiteral featureLiteral, double distanceMeters)
         {
             #region Guards
             if (ontology == null)
@@ -594,6 +594,107 @@ namespace OWLSharp.Extensions.GEO
             };
 
             return RDFQueryUtilities.RemoveDuplicates(featuresWithinDistance);
+        }
+        #endregion
+
+        #region Methods (Direction)
+        public static async Task<List<RDFResource>> GetFeaturesDirectionOfAsync(OWLOntology ontology, RDFResource featureUri, GEOEnums.GeoDirections geoDirection)
+        {
+            #region Utilities
+            bool MatchCoordinates(Coordinate c1, Coordinate c2)
+            {
+                bool answer = false;
+                switch (geoDirection)
+                {
+                    case GEOEnums.GeoDirections.North:
+                        answer = c1.Y > c2.Y;
+                        break;
+                    case GEOEnums.GeoDirections.East:
+                        answer = c1.X > c2.X;
+                        break;
+                    case GEOEnums.GeoDirections.South:
+                        answer = c1.Y < c2.Y;
+                        break;
+                    case GEOEnums.GeoDirections.West:
+                        answer = c1.X < c2.X;
+                        break;
+                    case GEOEnums.GeoDirections.NorthEast:
+                        answer = c1.Y > c2.Y && c1.X > c2.X;
+                        break;
+                    case GEOEnums.GeoDirections.NorthWest:
+                        answer = c1.Y > c2.Y && c1.X < c2.X;
+                        break;
+                    case GEOEnums.GeoDirections.SouthEast:
+                        answer = c1.Y < c2.Y && c1.X > c2.X;
+                        break;
+                    case GEOEnums.GeoDirections.SouthWest:
+                        answer = c1.Y < c2.Y && c1.X < c2.X;
+                        break;
+                }
+                return answer;
+            }
+            #endregion
+
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features north because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get features north because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Analyze default geometry of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+            {
+                //Retrieve WKT/GML serialization of features
+                Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+                //Perform spatial analysis between collected geometries
+                List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+                foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+                {
+                    //Obviously exclude the given feature itself
+                    if (string.Equals(featureWithGeometry.Key, featureUri.ToString()))
+                        continue;
+
+                    foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                        if (geometryOfFeature.Item2.Coordinates.Any(c => MatchCoordinates(c, defaultGeometry.Item2.Coordinate)))
+                        {
+                            featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
+                            continue;
+                        }   
+                };
+
+                return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
+            }
+
+            //Analyze secondary geometries of feature
+            List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (secondaryGeometries.Count > 0)
+            {
+                //Retrieve WKT/GML serialization of features
+                Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+                //Perform spatial analysis between collected geometries
+                List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+                foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+                {
+                    //Obviously exclude the given feature itself
+                    if (string.Equals(featureWithGeometry.Key, featureUri.ToString()))
+                        continue;
+
+                    foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                        if (geometryOfFeature.Item2.Coordinates.Any(c => secondaryGeometries.Any(sg => MatchCoordinates(c, sg.Item2.Coordinate))))
+                        {
+                            featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
+                            continue;
+                        }
+                };
+
+                return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
+            }
+
+            return null;
         }
         #endregion
 
