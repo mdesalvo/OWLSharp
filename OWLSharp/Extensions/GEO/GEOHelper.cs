@@ -599,7 +599,7 @@ namespace OWLSharp.Extensions.GEO
         #endregion
 
         #region Methods (Direction)
-        public static async Task<List<RDFResource>> GetFeaturesDirectionOfAsync(OWLOntology ontology, RDFResource featureUri, GEOEnums.GeoDirections geoDirection)
+        public static async Task<List<RDFResource>> GetFeaturesDirectionAsync(OWLOntology ontology, RDFResource featureUri, GEOEnums.GeoDirections geoDirection)
         {
             #region Guards
             if (ontology == null)
@@ -616,7 +616,7 @@ namespace OWLSharp.Extensions.GEO
                 Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
 
                 //Perform spatial analysis between collected geometries
-                List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+                List<RDFResource> featuresDirection = new List<RDFResource>();
                 foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
                 {
                     //Obviously exclude the given feature itself
@@ -626,12 +626,12 @@ namespace OWLSharp.Extensions.GEO
                     foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
                         if (geometryOfFeature.Item2.Coordinates.Any(c1 => defaultGeometry.Item2.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection))))
                         {
-                            featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
+                            featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
                             continue;
                         }   
                 };
 
-                return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
+                return RDFQueryUtilities.RemoveDuplicates(featuresDirection);
             }
 
             //Analyze secondary geometries of feature
@@ -642,7 +642,7 @@ namespace OWLSharp.Extensions.GEO
                 Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
 
                 //Perform spatial analysis between collected geometries
-                List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+                List<RDFResource> featuresDirection = new List<RDFResource>();
                 foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
                 {
                     //Obviously exclude the given feature itself
@@ -652,18 +652,18 @@ namespace OWLSharp.Extensions.GEO
                     foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
                         if (geometryOfFeature.Item2.Coordinates.Any(c1 => secondaryGeometries.Any(sg => sg.Item2.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection)))))
                         {
-                            featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
+                            featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
                             continue;
                         }
                 };
 
-                return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
+                return RDFQueryUtilities.RemoveDuplicates(featuresDirection);
             }
 
             return null;
         }
 
-        public static async Task<List<RDFResource>> GetFeaturesDirectionOfAsync(OWLOntology ontology, RDFTypedLiteral featureLiteral, GEOEnums.GeoDirections geoDirection)
+        public static async Task<List<RDFResource>> GetFeaturesDirectionAsync(OWLOntology ontology, RDFTypedLiteral featureLiteral, GEOEnums.GeoDirections geoDirection)
         {
             #region Guards
             if (ontology == null)
@@ -684,11 +684,112 @@ namespace OWLSharp.Extensions.GEO
             Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
 
             //Perform spatial analysis between collected geometries
-            List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+            List<RDFResource> featuresDirection = new List<RDFResource>();
             foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
             {
                 foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
                     if (geometryOfFeature.Item2.Coordinates.Any(c1 => lazGeometry.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection))))
+                    {
+                        featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
+                        continue;
+                    }
+            };
+
+            return RDFQueryUtilities.RemoveDuplicates(featuresDirection);
+        }
+        #endregion
+
+        #region Methods (Interaction)
+        public static async Task<List<RDFResource>> GetFeaturesCrossedByAsync(OWLOntology ontology, RDFResource featureUri)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features interaction because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get features interaction because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Analyze default geometry of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+            {
+                //Retrieve WKT/GML serialization of features
+                Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+                //Perform spatial analysis between collected geometries
+                List<RDFResource> featuresInteraction = new List<RDFResource>();
+                foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+                {
+                    //Obviously exclude the given feature itself
+                    if (string.Equals(featureWithGeometry.Key, featureUri.ToString()))
+                        continue;
+
+                    foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                        if (defaultGeometry.Item2.Crosses(geometryOfFeature.Item2))
+                        {
+                            featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
+                            continue;
+                        }
+                };
+
+                return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
+            }
+
+            //Analyze secondary geometries of feature
+            List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (secondaryGeometries.Count > 0)
+            {
+                //Retrieve WKT/GML serialization of features
+                Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+                //Perform spatial analysis between collected geometries
+                List<RDFResource> featuresInteraction = new List<RDFResource>();
+                foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+                {
+                    //Obviously exclude the given feature itself
+                    if (string.Equals(featureWithGeometry.Key, featureUri.ToString()))
+                        continue;
+
+                    foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                        if (secondaryGeometries.Any(sg => sg.Item2.Crosses(geometryOfFeature.Item2)))
+                        {
+                            featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
+                            continue;
+                        }
+                };
+
+                return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
+            }
+
+            return null;
+        }
+
+        public static async Task<List<RDFResource>> GetFeaturesCrossedByAsync(OWLOntology ontology, RDFTypedLiteral featureLiteral)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features interaction because given \"ontology\" parameter is null");
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get features interaction because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get features interaction because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            //Retrieve WKT/GML serialization of features
+            Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+            //Perform spatial analysis between collected geometries
+            List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+            foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+            {
+                foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                    if (lazGeometry.Crosses(geometryOfFeature.Item2))
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
                         continue;
