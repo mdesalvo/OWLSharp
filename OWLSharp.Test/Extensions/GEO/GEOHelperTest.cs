@@ -2808,6 +2808,183 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesOverlappedByAsync(geoOntology,
                 new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesWithinAsync()
+        {
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BallabioCivateFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BallabioCivateGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BallabioPescateFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioCivateFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioCivateGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioCivateFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioCivateGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioCivateGM")),
+                        new OWLLiteral(new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.346078615493791 45.828624093492635, 9.455255251235979 45.77932096932273, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM")),
+                        new OWLLiteral(new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.392083864517229 45.85254191756793, 9.346078615493791 45.828624093492635, 9.393457155532854 45.82814563213719, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM")),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.370156172304162 45.83948216157425, 9.390755537538537 45.837807855535225)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoGM")),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                ]
+            };
+            List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesWithinAsync(geoOntology, new RDFResource("ex:BallabioCivateFT"));
+            
+            Assert.IsNotNull(overlappedByBallabioCivateFT);
+            Assert.IsTrue(overlappedByBallabioCivateFT.Count == 2);
+            Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:BallabioPescateFT"))));
+            Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:FornaciVillaFT"))));
+
+            //Unexisting features
+            Assert.IsNull(await GEOHelper.GetFeaturesWithinAsync(geoOntology,
+                new RDFResource("ex:BallabioCivateFT2")));
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesWithinAsync(null,
+                new RDFResource("ex:BallabioCivateFT2")));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesWithinAsync(geoOntology,
+                null as RDFResource));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetFeaturesWithinLiteralAsync()
+        {
+            OWLOntology geoOntology = new OWLOntology(new Uri("ex:geoOnt"))
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)),
+                    new OWLDeclaration(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)),
+                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
+                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BallabioPescateFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                ],
+                AssertionAxioms = [
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
+                    new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoFT")),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:BallabioPescateGM")),
+                        new OWLLiteral(new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.392083864517229 45.85254191756793, 9.346078615493791 45.828624093492635, 9.393457155532854 45.82814563213719, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM")),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.370156172304162 45.83948216157425, 9.390755537538537 45.837807855535225)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                        new OWLNamedIndividual(new RDFResource("ex:IseoGM")),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                ]
+            };
+            List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesWithinAsync(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.346078615493791 45.828624093492635, 9.455255251235979 45.77932096932273, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            
+            Assert.IsNotNull(overlappedByBallabioCivateFT);
+            Assert.IsTrue(overlappedByBallabioCivateFT.Count == 2);
+            Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:BallabioPescateFT"))));
+            Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:FornaciVillaFT"))));
+
+            //Input guards
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesWithinAsync(null,
+                new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.346078615493791 45.828624093492635, 9.455255251235979 45.77932096932273, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesWithinAsync(geoOntology,
+                null as RDFTypedLiteral));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await GEOHelper.GetFeaturesWithinAsync(geoOntology,
+                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
+        }
         #endregion
     }
 }
