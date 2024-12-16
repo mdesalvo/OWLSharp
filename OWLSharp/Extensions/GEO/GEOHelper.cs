@@ -28,7 +28,6 @@ using OWLSharp.Ontology.Rules;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
-using static OWLSharp.Extensions.GEO.GEOEnums;
 
 namespace OWLSharp.Extensions.GEO
 {
@@ -798,6 +797,105 @@ namespace OWLSharp.Extensions.GEO
 
             return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
         }
+
+        public static async Task<List<RDFResource>> GetFeaturesTouchedByAsync(OWLOntology ontology, RDFResource featureUri)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features interaction because given \"ontology\" parameter is null");
+            if (featureUri == null)
+                throw new OWLException("Cannot get features interaction because given \"featureUri\" parameter is null");
+            #endregion
+
+            //Analyze default geometry of feature
+            (Geometry, Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureUri);
+            if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+            {
+                //Retrieve WKT/GML serialization of features
+                Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+                //Perform spatial analysis between collected geometries
+                List<RDFResource> featuresInteraction = new List<RDFResource>();
+                foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+                {
+                    //Obviously exclude the given feature itself
+                    if (string.Equals(featureWithGeometry.Key, featureUri.ToString()))
+                        continue;
+
+                    foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                        if (defaultGeometry.Item2.Touches(geometryOfFeature.Item2))
+                        {
+                            featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
+                            continue;
+                        }
+                };
+
+                return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
+            }
+
+            //Analyze secondary geometries of feature
+            List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
+            if (secondaryGeometries.Count > 0)
+            {
+                //Retrieve WKT/GML serialization of features
+                Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+                //Perform spatial analysis between collected geometries
+                List<RDFResource> featuresInteraction = new List<RDFResource>();
+                foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+                {
+                    //Obviously exclude the given feature itself
+                    if (string.Equals(featureWithGeometry.Key, featureUri.ToString()))
+                        continue;
+
+                    foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                        if (secondaryGeometries.Any(sg => sg.Item2.Touches(geometryOfFeature.Item2)))
+                        {
+                            featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
+                            continue;
+                        }
+                };
+
+                return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
+            }
+
+            return null;
+        }
+
+        public static async Task<List<RDFResource>> GetFeaturesTouchedByAsync(OWLOntology ontology, RDFTypedLiteral featureLiteral)
+        {
+            #region Guards
+            if (ontology == null)
+                throw new OWLException("Cannot get features interaction because given \"ontology\" parameter is null");
+            if (featureLiteral == null)
+                throw new OWLException("Cannot get features interaction because given \"featureLiteral\" parameter is null");
+            if (!featureLiteral.HasGeographicDatatype())
+                throw new OWLException("Cannot get features interaction because given \"featureLiteral\" parameter is not a geographic typed literal");
+            #endregion
+
+            //Transform feature into geometry
+            bool isWKT = featureLiteral.Datatype.TargetDatatype == RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT;
+            Geometry wgs84Geometry = isWKT ? WKTReader.Read(featureLiteral.Value) : GMLReader.Read(featureLiteral.Value);
+            wgs84Geometry.SRID = 4326;
+            Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+
+            //Retrieve WKT/GML serialization of features
+            Dictionary<string, List<(Geometry, Geometry)>> featuresWithGeometry = await ontology.GetFeaturesWithGeometriesAsync();
+
+            //Perform spatial analysis between collected geometries
+            List<RDFResource> featuresDirectionOf = new List<RDFResource>();
+            foreach (KeyValuePair<string, List<(Geometry, Geometry)>> featureWithGeometry in featuresWithGeometry)
+            {
+                foreach ((Geometry, Geometry) geometryOfFeature in featureWithGeometry.Value)
+                    if (lazGeometry.Touches(geometryOfFeature.Item2))
+                    {
+                        featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
+                        continue;
+                    }
+            };
+
+            return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
+        }
         #endregion
 
         #region Utilities
@@ -839,6 +937,9 @@ namespace OWLSharp.Extensions.GEO
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
+                        new SWRLClassAtom(
+                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")),
@@ -880,6 +981,9 @@ namespace OWLSharp.Extensions.GEO
                             new SWRLClassAtom(
                                 new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
+                            new SWRLClassAtom(
+                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                             new SWRLObjectPropertyAtom(
                                 new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY), 
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")),
@@ -963,6 +1067,9 @@ namespace OWLSharp.Extensions.GEO
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
+                        new SWRLClassAtom(
+                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")),
@@ -1004,6 +1111,9 @@ namespace OWLSharp.Extensions.GEO
                             new SWRLClassAtom(
                                 new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
+                            new SWRLClassAtom(
+                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                             new SWRLObjectPropertyAtom(
                                 new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY), 
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")),
