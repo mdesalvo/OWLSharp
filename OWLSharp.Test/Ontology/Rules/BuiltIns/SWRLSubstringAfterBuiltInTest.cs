@@ -16,12 +16,11 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Data;
 
-namespace OWLSharp.Test.Ontology.Rules
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class SWRLSubstringAfterBuiltInTest

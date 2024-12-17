@@ -18,7 +18,7 @@ using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     //Register here all derived types of SWRLArgument
     [XmlInclude(typeof(SWRLIndividualArgument))]

@@ -21,7 +21,7 @@ using RDFSharp.Query;
 using RDFSharp.Model;
 using System.Globalization;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     internal static class SWRLMultiplyBuiltIn
     {

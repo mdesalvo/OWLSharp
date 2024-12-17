@@ -17,11 +17,9 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology.Axioms
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class OWLIrreflexiveObjectPropertyTest

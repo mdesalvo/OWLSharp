@@ -14,10 +14,9 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Axioms;
 using System.Linq;
 
-namespace OWLSharp.Ontology.Helpers
+namespace OWLSharp.Ontology
 {
     public static class OWLDatatypeDefinitionHelper
     {

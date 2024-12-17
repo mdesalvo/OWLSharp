@@ -20,7 +20,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectProperty")]
     public class OWLObjectProperty : OWLObjectPropertyExpression, IOWLEntity

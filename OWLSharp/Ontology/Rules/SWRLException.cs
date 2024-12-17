@@ -16,7 +16,7 @@
 
 using System;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     public class SWRLException : Exception
     {

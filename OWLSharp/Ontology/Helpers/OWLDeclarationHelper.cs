@@ -16,12 +16,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Axioms;
 
-namespace OWLSharp.Ontology.Helpers
+namespace OWLSharp.Ontology
 {
-	public static class OWLDeclarationHelper
+    public static class OWLDeclarationHelper
 	{
 		#region Methods
 		public static List<OWLDeclaration> GetDeclarationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLExpression, IOWLEntity

@@ -15,13 +15,13 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Ontology.Rules;
+using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Data;
 
-namespace OWLSharp.Test.Ontology.Rules
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class SWRLBuiltInRegisterTest

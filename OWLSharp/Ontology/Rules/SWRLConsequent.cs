@@ -16,12 +16,11 @@
 
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Xml.Serialization;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     [XmlRoot("Head")]
     public class SWRLConsequent

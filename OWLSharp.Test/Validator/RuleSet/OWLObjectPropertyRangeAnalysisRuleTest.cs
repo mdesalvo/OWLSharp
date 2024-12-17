@@ -13,14 +13,11 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
 using OWLSharp.Validator;
-using OWLSharp.Validator.RuleSet;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator.RuleSet
+namespace OWLSharp.Test.Validator
 {
     [TestClass]
     public class OWLObjectPropertyRangeAnalysisRuleTest

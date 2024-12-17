@@ -19,7 +19,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectComplementOf")]
     public class OWLObjectComplementOf : OWLClassExpression

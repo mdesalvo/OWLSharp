@@ -12,8 +12,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using System.Collections.Generic;

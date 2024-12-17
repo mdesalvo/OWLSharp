@@ -18,7 +18,7 @@ using RDFSharp.Model;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
     [XmlRoot("NamedIndividual")]
     public class OWLNamedIndividual : OWLIndividualExpression, IOWLEntity

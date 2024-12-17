@@ -17,14 +17,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Reflection.PortableExecutable;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
 

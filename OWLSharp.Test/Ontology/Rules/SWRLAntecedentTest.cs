@@ -17,13 +17,10 @@
 using System.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
-namespace OWLSharp.Test.Ontology.Rules
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class SWRLAntecedentTest

@@ -14,13 +14,11 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
-using OWLSharp.Ontology.Axioms;
 
-namespace OWLSharp.Ontology.Helpers
+namespace OWLSharp.Ontology
 {
     public static class OWLClassAxiomHelper 
     {

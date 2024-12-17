@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace OWLSharp.Ontology.Axioms
+namespace OWLSharp.Ontology
 {
 	public static class OWLAxiomHelper
 	{

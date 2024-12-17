@@ -11,7 +11,7 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Axioms;
+using OWLSharp.Ontology;
 using System;
 
 namespace OWLSharp.Reasoner

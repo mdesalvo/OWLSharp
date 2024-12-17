@@ -13,14 +13,11 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
-using OWLSharp.Reasoner.RuleSet;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Reasoner.RuleSet
+namespace OWLSharp.Test.Reasoner
 {
     [TestClass]
     public class OWLDifferentIndividualEntailmentRuleTest

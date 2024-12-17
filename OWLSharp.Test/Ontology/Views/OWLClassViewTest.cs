@@ -17,14 +17,11 @@
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Views;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology.Views
+namespace OWLSharp.Test.Ontology
 {
-	[TestClass]
+    [TestClass]
 	public class OWLClassViewTest
 	{
 		private OWLOntology Ontology { get; set; }

@@ -18,13 +18,10 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 using RDFSharp.Model;
 
 
-namespace OWLSharp.Test.Ontology.Helpers
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class OWLDeclarationHelperTest

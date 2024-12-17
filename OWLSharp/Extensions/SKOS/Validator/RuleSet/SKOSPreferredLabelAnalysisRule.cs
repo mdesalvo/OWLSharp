@@ -12,15 +12,11 @@
 */
 
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Rules;
 using OWLSharp.Reasoner;
 using OWLSharp.Validator;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OWLSharp.Extensions.SKOS
 {

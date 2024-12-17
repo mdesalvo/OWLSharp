@@ -17,14 +17,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Views
+namespace OWLSharp.Ontology
 {
-	public class OWLObjectPropertyView
+    public class OWLObjectPropertyView
 	{
 		#region Properties
 		public OWLObjectProperty ObjectProperty { get; internal set; }

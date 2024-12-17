@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System;
 using RDFSharp.Query;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     internal static class SWRLLessThanBuiltIn
     {

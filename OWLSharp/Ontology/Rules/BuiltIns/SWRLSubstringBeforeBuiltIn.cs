@@ -20,7 +20,7 @@ using System;
 using RDFSharp.Query;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     internal static class SWRLSubstringBeforeBuiltIn
     {

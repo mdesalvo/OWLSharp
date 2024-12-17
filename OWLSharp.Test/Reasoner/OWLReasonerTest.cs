@@ -13,11 +13,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Rules;
 using OWLSharp.Reasoner;
-using OWLSharp.Reasoner.RuleSet;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;

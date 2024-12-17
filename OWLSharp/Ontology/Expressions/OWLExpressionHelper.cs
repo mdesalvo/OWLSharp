@@ -16,7 +16,7 @@
 
 using System.Collections.Generic;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
 	public static class OWLExpressionHelper
 	{

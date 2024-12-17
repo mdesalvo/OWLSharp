@@ -16,11 +16,10 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System;
 
-namespace OWLSharp.Test.Ontology.Expressions
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class OWLAnonymousIndividualTest

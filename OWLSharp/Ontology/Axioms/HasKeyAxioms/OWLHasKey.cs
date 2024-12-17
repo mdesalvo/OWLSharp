@@ -14,13 +14,12 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Axioms
+namespace OWLSharp.Ontology
 {
     [XmlRoot("HasKey")]
     public class OWLHasKey : OWLAxiom

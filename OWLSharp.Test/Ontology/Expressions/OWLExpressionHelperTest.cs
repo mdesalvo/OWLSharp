@@ -16,10 +16,10 @@
 
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Ontology.Expressions;
+using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology.Expressions
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class OWLExpressionHelperTest

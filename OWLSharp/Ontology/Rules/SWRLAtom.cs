@@ -14,7 +14,6 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -25,7 +24,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     //Register here all derived types of SWRLAtom
     [XmlInclude(typeof(SWRLAnnotationPropertyAtom))]

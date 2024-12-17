@@ -19,7 +19,7 @@ using RDFSharp.Query;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
     [XmlRoot("Literal")]
     public class OWLLiteral : OWLLiteralExpression

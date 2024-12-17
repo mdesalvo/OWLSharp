@@ -12,11 +12,9 @@
 */
 
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Helpers;
 using System.Collections.Generic;
 
-namespace OWLSharp.Reasoner.RuleSet
+namespace OWLSharp.Reasoner
 {
     internal static class OWLDataPropertyDomainEntailmentRule
     {

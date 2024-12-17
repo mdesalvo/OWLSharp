@@ -14,9 +14,6 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
@@ -25,7 +22,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     [XmlRoot("ClassAtom")]
     public class SWRLClassAtom : SWRLAtom

@@ -14,12 +14,11 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Axioms
+namespace OWLSharp.Ontology
 {
     [XmlRoot("AnnotationAssertion")]
     public class OWLAnnotationAssertion : OWLAnnotationAxiom

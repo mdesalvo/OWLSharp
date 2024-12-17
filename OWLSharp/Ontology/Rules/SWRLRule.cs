@@ -18,12 +18,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using OWLSharp.Ontology.Expressions;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     [XmlRoot("DLSafeRule")]
     public class SWRLRule

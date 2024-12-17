@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     [XmlRoot("BuiltInAtom")]
     public class SWRLBuiltIn

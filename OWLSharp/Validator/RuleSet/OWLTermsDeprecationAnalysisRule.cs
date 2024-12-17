@@ -12,14 +12,11 @@
 */
 
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Validator.RuleSet
+namespace OWLSharp.Validator
 {
     internal static class OWLTermsDeprecationAnalysisRule
     {

@@ -16,13 +16,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Helpers
+namespace OWLSharp.Ontology
 {
-	public static class OWLObjectPropertyAxiomHelper
+    public static class OWLObjectPropertyAxiomHelper
 	{
 		#region Methods
 		public static List<T> GetObjectPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLObjectPropertyAxiom

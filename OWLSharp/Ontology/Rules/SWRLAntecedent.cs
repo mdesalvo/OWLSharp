@@ -21,7 +21,7 @@ using System.Data;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     [XmlRoot("Body")]
     public class SWRLAntecedent

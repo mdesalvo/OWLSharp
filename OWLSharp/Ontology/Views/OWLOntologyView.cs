@@ -16,13 +16,10 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 
-namespace OWLSharp.Ontology.Views
+namespace OWLSharp.Ontology
 {
-	public class OWLOntologyView
+    public class OWLOntologyView
 	{
 		#region Properties
 		public OWLOntology Ontology { get; internal set; }

@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using System.Collections;
 
-namespace OWLSharp.Ontology.Rules
+namespace OWLSharp.Ontology
 {
     public sealed class SWRLBuiltInRegister : IEnumerable<SWRLBuiltIn>
     {

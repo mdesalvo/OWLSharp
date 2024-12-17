@@ -19,7 +19,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
     [XmlRoot("DataExactCardinality")]
     public class OWLDataExactCardinality : OWLClassExpression

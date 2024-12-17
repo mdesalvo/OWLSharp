@@ -15,10 +15,10 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OWLSharp.Ontology.Rules;
+using OWLSharp.Ontology;
 using System;
 
-namespace OWLSharp.Test.Ontology.Rules
+namespace OWLSharp.Test.Ontology
 {
     [TestClass]
     public class SWRLExceptionTest
@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Ontology.Rules
             }
             catch (SWRLException mex)
             {
-                Assert.IsTrue(mex.Message.Contains("OWLSharp.Ontology.Rules.SWRLException", StringComparison.OrdinalIgnoreCase));
+                Assert.IsTrue(mex.Message.Contains("OWLSharp.Ontology.SWRLException", StringComparison.OrdinalIgnoreCase));
             }
         }
 

@@ -21,7 +21,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectUnionOf")]
     public class OWLObjectUnionOf : OWLClassExpression

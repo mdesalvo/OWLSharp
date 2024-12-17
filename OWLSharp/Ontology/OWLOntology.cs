@@ -14,9 +14,6 @@
    limitations under the License.
 */
 
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Rules;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System;
@@ -30,7 +27,7 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
-	[XmlRoot("Ontology")]
+    [XmlRoot("Ontology")]
 	public class OWLOntology
 	{
 		#region Properties

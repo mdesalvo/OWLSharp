@@ -12,12 +12,10 @@
 */
 
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Validator.RuleSet
+namespace OWLSharp.Validator
 {
     internal static class OWLTopBottomAnalysisRule
     {

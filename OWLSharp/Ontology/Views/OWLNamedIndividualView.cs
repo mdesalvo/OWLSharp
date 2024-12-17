@@ -17,14 +17,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
-using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Views
+namespace OWLSharp.Ontology
 {
-	public class OWLNamedIndividualView
+    public class OWLNamedIndividualView
 	{
 		#region Properties
 		public OWLNamedIndividual NamedIndividual { get; internal set; }

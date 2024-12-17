@@ -12,16 +12,13 @@ limitations under the License.
 */
 
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
-using OWLSharp.Ontology.Helpers;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Validator.RuleSet
+namespace OWLSharp.Validator
 {
-	internal static class OWLSubClassOfAnalysisRule
+    internal static class OWLSubClassOfAnalysisRule
 	{
 		internal static readonly string rulename = OWLEnums.OWLValidatorRules.SubClassOfAnalysis.ToString();
 		internal static readonly string rulesugg1 = "There should not be class expressions belonging at the same time to SubClassOf and EquivalentClasses/DisjointClasses axioms!";

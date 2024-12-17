@@ -18,7 +18,7 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Axioms
+namespace OWLSharp.Ontology
 {
     //Register here all derived types of OWLAxiom
     [XmlInclude(typeof(OWLAnnotationAssertion))]

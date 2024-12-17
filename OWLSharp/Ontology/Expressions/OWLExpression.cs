@@ -18,7 +18,7 @@ using RDFSharp.Model;
 using System;
 using System.Xml.Serialization;
 
-namespace OWLSharp.Ontology.Expressions
+namespace OWLSharp.Ontology
 {
     //Register here all derived types of OWLExpression
     [XmlInclude(typeof(OWLAnnotationProperty))]

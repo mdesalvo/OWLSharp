@@ -15,10 +15,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
 using OWLSharp.Validator;
-using OWLSharp.Validator.RuleSet;
 using RDFSharp.Model;
 
 namespace OWLSharp.Test.Validator

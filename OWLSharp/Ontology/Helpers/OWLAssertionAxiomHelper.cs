@@ -17,13 +17,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using OWLSharp.Ontology.Axioms;
-using OWLSharp.Ontology.Expressions;
 using RDFSharp.Model;
 
-namespace OWLSharp.Ontology.Helpers
+namespace OWLSharp.Ontology
 {
-	public static class OWLAssertionAxiomHelper
+    public static class OWLAssertionAxiomHelper
 	{
 		#region Methods
 		public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
