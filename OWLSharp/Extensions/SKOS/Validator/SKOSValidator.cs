@@ -34,6 +34,12 @@ namespace OWLSharp.Extensions.SKOS
         #endregion
 
         #region Methods
+        public SKOSValidator AddRule(SKOSEnums.SKOSValidatorRules rule)
+        {
+            Rules.Add(rule);
+            return this;
+        }
+
         public async Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();

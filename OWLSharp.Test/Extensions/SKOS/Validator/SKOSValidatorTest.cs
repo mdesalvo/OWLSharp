@@ -26,6 +26,18 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
+        public void ShouldCreateValidator()
+        {
+            SKOSValidator validator = new SKOSValidator();
+
+            Assert.IsNotNull(validator);
+            Assert.IsTrue(validator.Rules.Count == 0);
+
+            validator.AddRule(SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis);
+            Assert.IsTrue(validator.Rules.Count == 1);
+        }
+
+        [TestMethod]
         public async Task ShouldAnalyzeAlternativeLabelAsync()
         {
             OWLOntology ontology = new OWLOntology()
