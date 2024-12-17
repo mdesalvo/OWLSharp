@@ -27,8 +27,22 @@ namespace OWLSharp.Ontology.Helpers
 		#region Methods
 		public static List<T> GetDataPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLDataPropertyAxiom
             => ontology?.DataPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
-		
-		public static bool CheckIsSubDataPropertyOf(this OWLOntology ontology, OWLDataProperty subDataProperty, OWLDataProperty superDataProperty)
+
+        public static bool CheckHasDataPropertyAxiom<T>(this OWLOntology ontology, T dataPropertyAxiom) where T : OWLDataPropertyAxiom
+            => GetDataPropertyAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), dataPropertyAxiom?.GetXML()));
+
+        public static void DeclareDataPropertyAxiom<T>(this OWLOntology ontology, T dataPropertyAxiom) where T : OWLDataPropertyAxiom
+        {
+            #region Guards
+            if (dataPropertyAxiom == null)
+                throw new OWLException("Cannot declare property axiom because given \"dataPropertyAxiom\" parameter is null");
+            #endregion
+
+            if (!CheckHasDataPropertyAxiom(ontology, dataPropertyAxiom))
+                ontology?.DataPropertyAxioms.Add(dataPropertyAxiom);
+        }
+
+        public static bool CheckIsSubDataPropertyOf(this OWLOntology ontology, OWLDataProperty subDataProperty, OWLDataProperty superDataProperty)
             => ontology != null && subDataProperty != null && superDataProperty != null && GetSubDataPropertiesOf(ontology, superDataProperty).Any(dp => dp.GetIRI().Equals(subDataProperty.GetIRI()));
 
         public static List<OWLDataProperty> GetSubDataPropertiesOf(this OWLOntology ontology, OWLDataProperty dataProperty)
