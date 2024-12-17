@@ -21,7 +21,10 @@ namespace OWLSharp.Ontology.Axioms
 	public static class OWLAxiomHelper
 	{
 		#region Methods
-		public static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
+        public static void Annotate(this OWLAxiom axiom, OWLAnnotation annotation)
+            => axiom?.Annotations.Add(annotation ?? throw new OWLException("Cannot annotate axiom because given \"annotation\" parameter is null"));
+
+        public static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
         {
             List<T> deduplicatedAxioms = new List<T>();
             if (axioms?.Count > 0)

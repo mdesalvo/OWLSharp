@@ -28,6 +28,23 @@ namespace OWLSharp.Test.Ontology.Axioms
     {
         #region Tests
         [TestMethod]
+        public void ShouldAnnotate()
+        {
+            OWLSubClassOf axiom = new OWLSubClassOf(
+                new OWLClass(RDFVocabulary.FOAF.PERSON),
+                new OWLClass(RDFVocabulary.FOAF.AGENT));
+            axiom.Annotate(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("foaf:Person isA foaf:Agent"))));
+            (null as OWLAxiom).Annotate(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("Since the axiom is null, this annotation will be discarded"))));
+
+            Assert.IsTrue(axiom.Annotations .Count == 1);
+            Assert.ThrowsException<OWLException>(() => axiom.Annotate(null));
+        }
+
+        [TestMethod]
         public void ShouldRemoveDuplicates()
         {
             List<OWLAxiom> axioms = [
