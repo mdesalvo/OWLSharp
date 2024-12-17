@@ -147,6 +147,7 @@ namespace OWLSharp.Test.Ontology.Helpers
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
                 RDFVocabulary.FOAF.PERSON,
                 new OWLLiteral(new RDFPlainLiteral("Person", "en-US")))));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareAnnotationAxiom(null as OWLAnnotationAxiom));
 
             ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
