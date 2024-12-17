@@ -29,7 +29,21 @@ namespace OWLSharp.Ontology.Helpers
 		public static List<T> GetAssertionAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAssertionAxiom
             => ontology?.AssertionAxioms.OfType<T>().ToList() ?? new List<T>();
 
-		public static bool CheckIsSameIndividual(this OWLOntology ontology, OWLIndividualExpression leftIdvExpr, OWLIndividualExpression rightIdvExpr)
+        public static bool CheckHasAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
+            => GetAssertionAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), assertionAxiom?.GetXML()));
+
+        public static void DeclareAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
+        {
+            #region Guards
+            if (assertionAxiom == null)
+                throw new OWLException("Cannot declare assertion axiom because given \"assertionAxiom\" parameter is null");
+            #endregion
+
+            if (!CheckHasAssertionAxiom(ontology, assertionAxiom))
+                ontology?.AssertionAxioms.Add(assertionAxiom);
+        }
+
+        public static bool CheckIsSameIndividual(this OWLOntology ontology, OWLIndividualExpression leftIdvExpr, OWLIndividualExpression rightIdvExpr)
             => ontology != null && leftIdvExpr != null && rightIdvExpr != null && GetSameIndividuals(ontology, leftIdvExpr).Any(iex => iex.GetIRI().Equals(rightIdvExpr.GetIRI()));
 
         public static List<OWLIndividualExpression> GetSameIndividuals(this OWLOntology ontology, OWLIndividualExpression idvExpr)

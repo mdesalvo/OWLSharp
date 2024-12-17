@@ -68,8 +68,28 @@ namespace OWLSharp.Test.Ontology.Helpers
 
             Assert.IsTrue((null as OWLOntology).GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 0);
         }
-		
-		[TestMethod]
+
+        [TestMethod]
+        public void ShouldDeclareAssertionAxiom()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.FOAF.PERSON),
+                new OWLNamedIndividual(new RDFResource("ex:Mark"))));
+
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
+            Assert.IsTrue(ontology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.FOAF.PERSON),
+                new OWLNamedIndividual(new RDFResource("ex:Mark")))));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareAssertionAxiom(null as OWLAssertionAxiom));
+
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.FOAF.PERSON),
+                new OWLNamedIndividual(new RDFResource("ex:Mark")))); //will be discarded, since duplicates are not allowed
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
+        }
+
+        [TestMethod]
         public void ShouldGetSameIndividuals()
         {
             OWLOntology ontology = new OWLOntology()
