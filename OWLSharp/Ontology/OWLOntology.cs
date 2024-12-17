@@ -179,7 +179,10 @@ namespace OWLSharp.Ontology
 		public void Annotate(OWLAnnotation annotation)
 			=> Annotations.Add(annotation ?? throw new OWLException("Cannot annotate ontology because given \"annotation\" parameter is null"));
 
-		public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
+        public void Prefix(OWLPrefix prefix)
+            => Prefixes.Add(prefix ?? throw new OWLException("Cannot prefix ontology because given \"prefix\" parameter is null"));
+
+        public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
 			=> Task.Run(() =>
 				{
 					RDFGraph graph = new RDFGraph();

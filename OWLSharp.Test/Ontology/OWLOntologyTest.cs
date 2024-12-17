@@ -187,7 +187,17 @@ namespace OWLSharp.Test.Ontology
             Assert.ThrowsException<OWLException>(() => ontology.Annotate(null));
         }
 
-		[TestMethod]
+        [TestMethod]
+        public void ShouldPrefixOntology()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Prefix(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+
+            Assert.IsTrue(ontology.Prefixes.Count == 6);
+            Assert.ThrowsException<OWLException>(() => ontology.Prefix(null));
+        }
+
+        [TestMethod]
 		public void ShouldSerializeOntology()
 		{
 			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
