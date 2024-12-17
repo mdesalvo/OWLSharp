@@ -176,6 +176,9 @@ namespace OWLSharp.Ontology
 		#endregion
 
 		#region Methods
+		public void Annotate(OWLAnnotation annotation)
+			=> Annotations.Add(annotation ?? throw new OWLException("Cannot annotate ontology because given \"annotation\" parameter is null"));
+
 		public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
 			=> Task.Run(() =>
 				{

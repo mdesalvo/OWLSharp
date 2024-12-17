@@ -175,6 +175,18 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(clonedEmptyOntology.Rules.Count == 0);
         }
 
+        [TestMethod]
+        public void ShouldAnnotateOntology()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Annotate(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("This is a test ontology"))));
+
+            Assert.IsTrue(ontology.Annotations.Count == 1);
+            Assert.ThrowsException<OWLException>(() => ontology.Annotate(null));
+        }
+
 		[TestMethod]
 		public void ShouldSerializeOntology()
 		{
