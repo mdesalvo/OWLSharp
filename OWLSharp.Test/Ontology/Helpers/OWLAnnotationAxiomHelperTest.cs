@@ -132,6 +132,28 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsFalse((null as OWLOntology).CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
             Assert.IsTrue((null as OWLOntology).GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1"))).Count == 0);
         }
-		#endregion
+
+        [TestMethod]
+        public void ShouldDeclareAnnotationAxiom()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
+                RDFVocabulary.FOAF.PERSON,
+                new OWLLiteral(new RDFPlainLiteral("Person", "en-US"))));
+
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(ontology.CheckHasAnnotationAxiom(new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
+                RDFVocabulary.FOAF.PERSON,
+                new OWLLiteral(new RDFPlainLiteral("Person", "en-US")))));
+
+            ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
+                RDFVocabulary.FOAF.PERSON,
+                new OWLLiteral(new RDFPlainLiteral("Person", "en-US")))); //will be discarded, since duplicates are not allowed
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+        }
+        #endregion
 	}
 }

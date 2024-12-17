@@ -105,7 +105,21 @@ namespace OWLSharp.Ontology.Helpers
 			}
             return OWLExpressionHelper.RemoveDuplicates(superAnnotationProperties);
         }
-		#endregion
+
+        public static bool CheckHasAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
+            => GetAnnotationAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), annotationAxiom?.GetXML()));
+
+        public static void DeclareAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
+        {
+            #region Guards
+            if (annotationAxiom == null)
+                throw new OWLException("Cannot declare annotation axiom because given \"annotationAxiom\" parameter is null");
+            #endregion
+
+            if (!CheckHasAnnotationAxiom(ontology, annotationAxiom))
+                ontology?.AnnotationAxioms.Add(annotationAxiom);
+        }
+        #endregion
 
 		#region Utilities
 		internal static List<OWLAnnotationAssertion> SelectAnnotationAssertionsByAPEX(List<OWLAnnotationAssertion> annAsnAxioms, OWLAnnotationProperty annProp)
