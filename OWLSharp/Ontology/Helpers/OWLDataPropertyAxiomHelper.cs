@@ -35,7 +35,7 @@ namespace OWLSharp.Ontology.Helpers
         {
             #region Guards
             if (dataPropertyAxiom == null)
-                throw new OWLException("Cannot declare property axiom because given \"dataPropertyAxiom\" parameter is null");
+                throw new OWLException("Cannot declare data property axiom because given \"dataPropertyAxiom\" parameter is null");
             #endregion
 
             if (!CheckHasDataPropertyAxiom(ontology, dataPropertyAxiom))

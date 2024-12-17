@@ -27,8 +27,22 @@ namespace OWLSharp.Ontology.Helpers
 		#region Methods
 		public static List<T> GetObjectPropertyAxiomsOfType<T>(this OWLOntology ontology) where T : OWLObjectPropertyAxiom
             => ontology?.ObjectPropertyAxioms.OfType<T>().ToList() ?? new List<T>();
-		
-		public static bool CheckIsSubObjectPropertyOf(this OWLOntology ontology, OWLObjectPropertyExpression subObjPropExpr, OWLObjectPropertyExpression superObjPropExpr)
+
+        public static bool CheckHasObjectPropertyAxiom<T>(this OWLOntology ontology, T objectPropertyAxiom) where T : OWLObjectPropertyAxiom
+            => GetObjectPropertyAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), objectPropertyAxiom?.GetXML()));
+
+        public static void DeclareObjectPropertyAxiom<T>(this OWLOntology ontology, T objectPropertyAxiom) where T : OWLObjectPropertyAxiom
+        {
+            #region Guards
+            if (objectPropertyAxiom == null)
+                throw new OWLException("Cannot declare object property axiom because given \"objectPropertyAxiom\" parameter is null");
+            #endregion
+
+            if (!CheckHasObjectPropertyAxiom(ontology, objectPropertyAxiom))
+                ontology?.ObjectPropertyAxioms.Add(objectPropertyAxiom);
+        }
+
+        public static bool CheckIsSubObjectPropertyOf(this OWLOntology ontology, OWLObjectPropertyExpression subObjPropExpr, OWLObjectPropertyExpression superObjPropExpr)
             => ontology != null && subObjPropExpr != null && superObjPropExpr != null && GetSubObjectPropertiesOf(ontology, superObjPropExpr).Any(opex => opex.GetIRI().Equals(subObjPropExpr.GetIRI()));
 
         public static List<OWLObjectPropertyExpression> GetSubObjectPropertiesOf(this OWLOntology ontology, OWLObjectPropertyExpression objPropExpr)
