@@ -27,6 +27,29 @@ namespace OWLSharp.Test.Ontology
     public class OWLAnnotationTest
     {
         #region Tests
+        [TestMethod]
+        public void ShouldAnnotate()
+        {
+            OWLAnnotation annotation = new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new RDFResource("http://example.org/seeThis"));
+            
+            Assert.IsNotNull(annotation);
+            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp
+                            && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
+                            && annProp.AbbreviatedIRI is null);
+            Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
+
+            Assert.IsNull(annotation.Annotation);
+
+            annotation.Annotate(new OWLAnnotation(
+                new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLLiteral(new RDFPlainLiteral("This is a nested annotation"))));
+
+            Assert.IsNotNull(annotation.Annotation);
+            Assert.ThrowsException<OWLException>(() => annotation.Annotate(null));
+        }
+
         //IRI
         [TestMethod]
         public void ShouldCreateIRIAnnotation()

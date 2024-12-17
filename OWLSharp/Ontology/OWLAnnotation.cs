@@ -58,6 +58,9 @@ namespace OWLSharp.Ontology
         #endregion
 
 		#region Methods
+		public void Annotate(OWLAnnotation annotation)
+			=> Annotation = annotation ?? throw new OWLException("Cannot annotate annotation because given \"annotation\" parameter is null");
+
 		internal RDFGraph ToRDFGraph(RDFTriple axiomTriple)
 		{
 			RDFGraph graph = new RDFGraph();
@@ -77,7 +80,6 @@ namespace OWLSharp.Ontology
 
 			return graph;
 		}
-
 		internal RDFGraph ToRDFGraphInternal(RDFResource axiomIRI)
 		{
 			RDFGraph graph = new RDFGraph();
