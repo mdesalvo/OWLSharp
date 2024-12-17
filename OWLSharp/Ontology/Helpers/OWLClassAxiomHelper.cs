@@ -28,6 +28,20 @@ namespace OWLSharp.Ontology.Helpers
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
             => ontology?.ClassAxioms.OfType<T>().ToList() ?? new List<T>();
 
+        public static bool CheckHasClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
+            => GetClassAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), classAxiom?.GetXML()));
+
+        public static void DeclareClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
+        {
+            #region Guards
+            if (classAxiom == null)
+                throw new OWLException("Cannot declare class axiom because given \"classAxiom\" parameter is null");
+            #endregion
+
+            if (!CheckHasClassAxiom(ontology, classAxiom))
+                ontology?.ClassAxioms.Add(classAxiom);
+        }
+
         public static bool CheckIsSubClassOf(this OWLOntology ontology, OWLClassExpression subClassExpr, OWLClassExpression superClassExpr)
             => ontology != null && subClassExpr != null && superClassExpr != null && GetSubClassesOf(ontology, superClassExpr).Any(cex => cex.GetIRI().Equals(subClassExpr.GetIRI()));
 
