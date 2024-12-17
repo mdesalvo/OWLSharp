@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OWLSharp.Ontology.Expressions;
 using OWLSharp.Ontology.Axioms;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology.Helpers
 {
@@ -32,6 +33,17 @@ namespace OWLSharp.Ontology.Helpers
 
 		public static bool CheckHasEntity<T>(this OWLOntology ontology, T entity) where T : OWLExpression, IOWLEntity
             => GetDeclarationAxiomsOfType<T>(ontology).Any(ax => ax.Expression.GetIRI().Equals(entity?.GetIRI()));
-		#endregion
-	}
+
+		public static void DeclareEntity<T>(this OWLOntology ontology, T entityIRI) where T : OWLExpression, IOWLEntity
+        {
+            #region Guards
+            if (entityIRI == null)
+                throw new OWLException("Cannot declare entity because given \"entityIRI\" parameter is null");
+            #endregion
+
+            if (!CheckHasEntity(ontology, entityIRI))
+                ontology?.DeclarationAxioms.Add(new OWLDeclaration() { Expression = entityIRI });
+        }
+        #endregion
+    }
 }

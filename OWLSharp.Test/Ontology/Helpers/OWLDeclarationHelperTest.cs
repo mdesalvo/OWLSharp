@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -84,6 +85,28 @@ namespace OWLSharp.Test.Ontology.Helpers
             Assert.IsTrue((null as OWLOntology).GetDeclarationAxiomsOfType<OWLClass>().Count == 0);
 			Assert.IsTrue((null as OWLOntology).GetDeclaredEntitiesOfType<OWLClass>().Count == 0);
         }
-		#endregion
-	}
+
+        [TestMethod]
+        public void ShouldDeclareEntities()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.FOAF.PERSON));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.FOAF.PERSON)); //will be discarded, since duplicates are not allowed
+            ontology.DeclareEntity(new OWLDatatype(RDFVocabulary.FOAF.IMG));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.FOAF.AGE));
+            ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.FOAF.MAKER));
+            ontology.DeclareEntity(new OWLNamedIndividual(RDFVocabulary.FOAF.SHA1));
+            (null as OWLOntology).DeclareEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)); //will be discarded, since null ontology
+
+            Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLClass>().Count == 1);
+            Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLDatatype>().Count == 1);
+            Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>().Count == 1);
+            Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLDataProperty>().Count == 1);
+            Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>().Count == 1);
+            Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>().Count == 1);
+            Assert.ThrowsException<OWLException>(() => new OWLOntology().DeclareEntity(null as OWLClass));
+        }
+        #endregion
+    }
 }
