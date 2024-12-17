@@ -20,7 +20,7 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.GEO
 {
-    public static class GEOZHelper
+    public static class GEOHelper
     {
         #region Methods
         public static OWLOntology DeclarePointFeature(this OWLOntology ontology, RDFResource featureUri, 
