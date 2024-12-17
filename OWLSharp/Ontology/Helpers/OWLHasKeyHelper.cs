@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology
         public static bool CheckHasKey(this OWLOntology ontology, OWLHasKey hasKey)
             => ontology?.KeyAxioms.Any(ax => string.Equals(ax.GetXML(), hasKey?.GetXML())) ?? false;
 
-        public static void DeclareHasKey(this OWLOntology ontology, OWLHasKey hasKey)
+        public static void AddHasKey(this OWLOntology ontology, OWLHasKey hasKey)
         {
             #region Guards
             if (hasKey == null)

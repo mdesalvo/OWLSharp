@@ -30,6 +30,12 @@ namespace OWLSharp.Validator
         #endregion
 
         #region Methods
+        public OWLValidator AddRule(OWLEnums.OWLValidatorRules rule)
+        {
+            Rules.Add(rule);
+            return this;
+        }
+
         public async Task<List<OWLIssue>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();

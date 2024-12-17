@@ -28,9 +28,15 @@ namespace OWLSharp.Reasoner
         #region Ctors
         public OWLReasoner()
 			=> Rules = new List<OWLEnums.OWLReasonerRules>();
-        #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
+		public OWLReasoner AddRule(OWLEnums.OWLReasonerRules rule)
+		{
+			Rules.Add(rule);
+			return this;
+		}
+
         public async Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
         {
             List<OWLInference> inferences = new List<OWLInference>();

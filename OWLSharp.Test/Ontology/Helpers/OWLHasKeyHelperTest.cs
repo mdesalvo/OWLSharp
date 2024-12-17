@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareHasKey()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareHasKey(new OWLHasKey(
+            ontology.AddHasKey(new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
@@ -38,9 +38,9 @@ namespace OWLSharp.Test.Ontology
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareHasKey(null));
+            Assert.ThrowsException<OWLException>(() => ontology.AddHasKey(null));
 
-            ontology.DeclareHasKey(new OWLHasKey(
+            ontology.AddHasKey(new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])); //will be discarded, since duplicates are not allowed

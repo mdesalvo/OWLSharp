@@ -28,6 +28,18 @@ namespace OWLSharp.Test.Reasoner
     {
         #region Tests
         [TestMethod]
+        public void ShouldCreateReasoner()
+        {
+            OWLReasoner reasoner = new OWLReasoner();
+
+            Assert.IsNotNull(reasoner);
+            Assert.IsTrue(reasoner.Rules.Count == 0);
+
+            reasoner.AddRule(OWLEnums.OWLReasonerRules.ClassAssertionEntailment);
+            Assert.IsTrue(reasoner.Rules.Count == 1);
+        }
+
+        [TestMethod]
         public async Task ShouldEntailClassAssertionAsync()
         {
             OWLOntology ontology = new OWLOntology()

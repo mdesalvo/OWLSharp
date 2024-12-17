@@ -25,6 +25,18 @@ namespace OWLSharp.Test.Validator
     {
         #region Tests
         [TestMethod]
+        public void ShouldCreateValidator()
+        {
+            OWLValidator validator = new OWLValidator();
+
+            Assert.IsNotNull(validator);
+            Assert.IsTrue(validator.Rules.Count == 0);
+
+            validator.AddRule(OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis);
+            Assert.IsTrue(validator.Rules.Count == 1);
+        }
+
+        [TestMethod]
         public async Task ShouldAnalyzeAsymmetricObjectPropertyAsync()
         {
             OWLOntology ontology = new OWLOntology()

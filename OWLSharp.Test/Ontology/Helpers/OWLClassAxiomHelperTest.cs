@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareClassAxiom()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareClassAxiom(new OWLSubClassOf(
+            ontology.AddClassAxiom(new OWLSubClassOf(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLClass(RDFVocabulary.FOAF.AGENT)));
 
@@ -65,9 +65,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasClassAxiom(new OWLSubClassOf(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLClass(RDFVocabulary.FOAF.AGENT))));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareClassAxiom(null as OWLClassAxiom));
+            Assert.ThrowsException<OWLException>(() => ontology.AddClassAxiom(null as OWLClassAxiom));
 
-            ontology.DeclareClassAxiom(new OWLSubClassOf(
+            ontology.AddClassAxiom(new OWLSubClassOf(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLClass(RDFVocabulary.FOAF.AGENT))); //will be discarded, since duplicates are not allowed
             Assert.IsTrue(ontology.ClassAxioms.Count == 1);

@@ -134,7 +134,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareAnnotationAxiom()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
+            ontology.AddAnnotationAxiom(new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
                 RDFVocabulary.FOAF.PERSON,
                 new OWLLiteral(new RDFPlainLiteral("Person", "en-US"))));
@@ -144,9 +144,9 @@ namespace OWLSharp.Test.Ontology
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
                 RDFVocabulary.FOAF.PERSON,
                 new OWLLiteral(new RDFPlainLiteral("Person", "en-US")))));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAnnotationAxiom(null as OWLAnnotationAxiom));
+            Assert.ThrowsException<OWLException>(() => ontology.AddAnnotationAxiom(null as OWLAnnotationAxiom));
 
-            ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
+            ontology.AddAnnotationAxiom(new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
                 RDFVocabulary.FOAF.PERSON,
                 new OWLLiteral(new RDFPlainLiteral("Person", "en-US")))); //will be discarded, since duplicates are not allowed

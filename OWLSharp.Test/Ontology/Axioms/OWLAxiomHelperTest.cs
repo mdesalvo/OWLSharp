@@ -31,15 +31,15 @@ namespace OWLSharp.Test.Ontology
             OWLSubClassOf axiom = new OWLSubClassOf(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLClass(RDFVocabulary.FOAF.AGENT));
-            axiom.Annotate(new OWLAnnotation(
+            axiom.AddAnnotation(new OWLAnnotation(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLLiteral(new RDFPlainLiteral("foaf:Person isA foaf:Agent"))));
-            (null as OWLAxiom).Annotate(new OWLAnnotation(
+            (null as OWLAxiom).AddAnnotation(new OWLAnnotation(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new OWLLiteral(new RDFPlainLiteral("Since the axiom is null, this annotation will be discarded"))));
 
             Assert.IsTrue(axiom.Annotations .Count == 1);
-            Assert.ThrowsException<OWLException>(() => axiom.Annotate(null));
+            Assert.ThrowsException<OWLException>(() => axiom.AddAnnotation(null));
         }
 
         [TestMethod]

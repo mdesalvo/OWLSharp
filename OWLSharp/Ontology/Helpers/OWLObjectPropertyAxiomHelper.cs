@@ -29,7 +29,7 @@ namespace OWLSharp.Ontology
         public static bool CheckHasObjectPropertyAxiom<T>(this OWLOntology ontology, T objectPropertyAxiom) where T : OWLObjectPropertyAxiom
             => GetObjectPropertyAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), objectPropertyAxiom?.GetXML()));
 
-        public static void DeclareObjectPropertyAxiom<T>(this OWLOntology ontology, T objectPropertyAxiom) where T : OWLObjectPropertyAxiom
+        public static void AddObjectPropertyAxiom<T>(this OWLOntology ontology, T objectPropertyAxiom) where T : OWLObjectPropertyAxiom
         {
             #region Guards
             if (objectPropertyAxiom == null)

@@ -25,8 +25,22 @@ namespace OWLSharp.Ontology
 		#region Methods
 		public static List<T> GetAnnotationAxiomsOfType<T>(this OWLOntology ontology) where T : OWLAnnotationAxiom
             => ontology?.AnnotationAxioms.OfType<T>().ToList() ?? new List<T>();
-		
-		public static bool CheckIsSubAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty)
+
+        public static bool CheckHasAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
+            => GetAnnotationAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), annotationAxiom?.GetXML()));
+
+        public static void AddAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
+        {
+            #region Guards
+            if (annotationAxiom == null)
+                throw new OWLException("Cannot declare annotation axiom because given \"annotationAxiom\" parameter is null");
+            #endregion
+
+            if (!CheckHasAnnotationAxiom(ontology, annotationAxiom))
+                ontology?.AnnotationAxioms.Add(annotationAxiom);
+        }
+
+        public static bool CheckIsSubAnnotationPropertyOf(this OWLOntology ontology, OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty)
             => ontology != null && subAnnotationProperty != null && superAnnotationProperty != null && GetSubAnnotationPropertiesOf(ontology, superAnnotationProperty).Any(ap => ap.GetIRI().Equals(subAnnotationProperty.GetIRI()));
 
         public static List<OWLAnnotationProperty> GetSubAnnotationPropertiesOf(this OWLOntology ontology, OWLAnnotationProperty annotationProperty)
@@ -102,20 +116,6 @@ namespace OWLSharp.Ontology
 				superAnnotationProperties.AddRange(FindSuperAnnotationPropertiesOf(dtPropIRI, GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>(ontology), new HashSet<long>()));
 			}
             return OWLExpressionHelper.RemoveDuplicates(superAnnotationProperties);
-        }
-
-        public static bool CheckHasAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
-            => GetAnnotationAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), annotationAxiom?.GetXML()));
-
-        public static void DeclareAnnotationAxiom<T>(this OWLOntology ontology, T annotationAxiom) where T : OWLAnnotationAxiom
-        {
-            #region Guards
-            if (annotationAxiom == null)
-                throw new OWLException("Cannot declare annotation axiom because given \"annotationAxiom\" parameter is null");
-            #endregion
-
-            if (!CheckHasAnnotationAxiom(ontology, annotationAxiom))
-                ontology?.AnnotationAxioms.Add(annotationAxiom);
         }
         #endregion
 

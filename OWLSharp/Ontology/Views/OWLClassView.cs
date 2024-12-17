@@ -82,9 +82,9 @@ namespace OWLSharp.Ontology
 		public Task<bool> IsDeprecatedAsync()
 			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
 									  .Any(ann => string.Equals(ann.SubjectIRI, ClassIRI)
-									  				 && ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
-													 && ann.ValueLiteral != null
-													 && ann.ValueLiteral.GetLiteral().Equals(RDFTypedLiteral.True)));
+									  				&& ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
+													&& ann.ValueLiteral != null
+													&& ann.ValueLiteral.GetLiteral().Equals(RDFTypedLiteral.True)));
 		#endregion
 	}
 }

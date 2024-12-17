@@ -70,7 +70,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareAssertionAxiom()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLNamedIndividual(new RDFResource("ex:Mark"))));
 
@@ -78,9 +78,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLNamedIndividual(new RDFResource("ex:Mark")))));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAssertionAxiom(null as OWLAssertionAxiom));
+            Assert.ThrowsException<OWLException>(() => ontology.AddAssertionAxiom(null as OWLAssertionAxiom));
 
-            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLNamedIndividual(new RDFResource("ex:Mark")))); //will be discarded, since duplicates are not allowed
             Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
