@@ -60,7 +60,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static OWLOntology DeclareSKOSConcept(this OWLOntology ontology, RDFResource conceptUri,
-            RDFPlainLiteral[] preferredLabels=null)
+            RDFPlainLiteral[] labels=null)
         {
             #region Guards
             if (conceptUri == null)
@@ -73,17 +73,16 @@ namespace OWLSharp.Extensions.SKOS
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                 new OWLNamedIndividual(conceptUri)));
 
-            //skos:prefLabel
-            if (preferredLabels?.Count() > 0)
+            if (labels?.Count() > 0)
             {
                 ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
 
                 HashSet<string> langtagLookup = new HashSet<string>();
-                foreach (RDFPlainLiteral preferredLabel in preferredLabels)
+                foreach (RDFPlainLiteral preferredLabel in labels)
                 {
-                    //(S14) skos:prefLabel annotation requires uniqueness of language tags within each rdfs:Resource
+                    //(S14) skos:prefLabel annotation requires uniqueness of language tags foreach rdfs:Resource
                     if (langtagLookup.Contains(preferredLabel.Language))
-                        throw new OWLException($"Cannot setup preferred label of concept {conceptUri} because more than one occurrence of the same language tag is not allowed!");
+                        throw new OWLException($"Cannot setup preferred label of concept {conceptUri} because having more than one occurrence of the same language tag is not allowed!");
 
                     langtagLookup.Add(preferredLabel.Language);
                     ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
@@ -97,7 +96,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static OWLOntology DeclareSKOSCollection(this OWLOntology ontology, RDFResource collectionUri,
-            RDFResource[] concepts, RDFPlainLiteral[] preferredLabels=null)
+            RDFResource[] concepts, RDFPlainLiteral[] labels=null)
         {
             #region Guards
             if (collectionUri == null)
@@ -105,7 +104,7 @@ namespace OWLSharp.Extensions.SKOS
             if (concepts == null)
                 throw new OWLException("Cannot declare collection because given \"concepts\" parameter is null");
             if (concepts.Length == 0)
-                throw new OWLException("Cannot declare collection because given \"concepts\" parameter must contain at least 1 concept");
+                throw new OWLException("Cannot declare collection because given \"concepts\" parameter must contain at least 1 element");
             #endregion
 
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.COLLECTION));
@@ -115,7 +114,6 @@ namespace OWLSharp.Extensions.SKOS
                 new OWLClass(RDFVocabulary.SKOS.COLLECTION),
                 new OWLNamedIndividual(collectionUri)));
 
-            //skos:member
             foreach (RDFResource concept in concepts)
             {
                 ontology.DeclareSKOSConcept(concept);
@@ -125,17 +123,16 @@ namespace OWLSharp.Extensions.SKOS
                     new OWLNamedIndividual(concept)));
             }
 
-            //skos:prefLabel
-            if (preferredLabels?.Count() > 0)
+            if (labels?.Count() > 0)
             {
                 ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
 
                 HashSet<string> langtagLookup = new HashSet<string>();
-                foreach (RDFPlainLiteral preferredLabel in preferredLabels)
+                foreach (RDFPlainLiteral preferredLabel in labels)
                 {
-                    //(S14) skos:prefLabel annotation requires uniqueness of language tags within each rdfs:Resource
+                    //(S14) skos:prefLabel annotation requires uniqueness of language tags foreach rdfs:Resource
                     if (langtagLookup.Contains(preferredLabel.Language))
-                        throw new OWLException($"Cannot setup preferred label of collection {collectionUri} because more than one occurrence of the same language tag is not allowed!");
+                        throw new OWLException($"Cannot setup preferred label of collection {collectionUri} because having more than one occurrence of the same language tag is not allowed!");
 
                     langtagLookup.Add(preferredLabel.Language);
                     ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
