@@ -580,6 +580,38 @@ namespace OWLSharp.Ontology
 
 		internal static List<OWLNegativeDataPropertyAssertion> SelectNegativeDataAssertionsByDPEX(List<OWLNegativeDataPropertyAssertion> negDtPropAsnAxioms, OWLDataProperty dtProp)
 			=> negDtPropAsnAxioms.Where(ax => ax.DataProperty.GetIRI().Equals(dtProp.GetIRI())).ToList();
+
+        internal static List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(OWLOntology ontology)
+        {
+            List<OWLObjectPropertyAssertion> objPropAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+
+            OWLIndividualExpression swapIdvExpr;
+            for (int i = 0; i < objPropAsns.Count; i++)
+                if (objPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                {
+                    swapIdvExpr = objPropAsns[i].SourceIndividualExpression;
+                    objPropAsns[i].SourceIndividualExpression = objPropAsns[i].TargetIndividualExpression;
+                    objPropAsns[i].TargetIndividualExpression = swapIdvExpr;
+                    objPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+                }
+            return OWLAxiomHelper.RemoveDuplicates(objPropAsns);
+        }
+
+        internal static List<OWLNegativeObjectPropertyAssertion> CalibrateNegativeObjectAssertions(OWLOntology ontology)
+        {
+            List<OWLNegativeObjectPropertyAssertion> negObjPropAsns = ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>();
+
+            OWLIndividualExpression swapIdvExpr;
+            for (int i = 0; i < negObjPropAsns.Count; i++)
+                if (negObjPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                {
+                    swapIdvExpr = negObjPropAsns[i].SourceIndividualExpression;
+                    negObjPropAsns[i].SourceIndividualExpression = negObjPropAsns[i].TargetIndividualExpression;
+                    negObjPropAsns[i].TargetIndividualExpression = swapIdvExpr;
+                    negObjPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+                }
+            return OWLAxiomHelper.RemoveDuplicates(negObjPropAsns);
+        }
         #endregion
     }
 }

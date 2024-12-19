@@ -33,7 +33,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConceptScheme != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosInSchemeAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
                 List<OWLObjectPropertyAssertion> skosHasTopConceptAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.HAS_TOP_CONCEPT));
                 List<OWLObjectPropertyAssertion> skosTopConceptOfAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.TOP_CONCEPT_OF));
@@ -60,7 +60,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosBroaderAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.BROADER));
                 List<OWLObjectPropertyAssertion> skosBroaderTransitiveAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE));
 
@@ -104,7 +104,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosNarrowerAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER));
                 List<OWLObjectPropertyAssertion> skosNarrowerTransitiveAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE));
 
@@ -148,7 +148,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosRelatedAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.RELATED));
 
                 //skos:related
@@ -170,7 +170,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosBroadMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.BROAD_MATCH));
                 List<OWLObjectPropertyAssertion> skosNarrowMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.NARROW_MATCH));
 
@@ -194,7 +194,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosNarrowMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.NARROW_MATCH));
                 List<OWLObjectPropertyAssertion> skosBroadMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.BROAD_MATCH));
 
@@ -218,7 +218,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosCloseMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH));
 
                 //skos:closeMatch
@@ -240,7 +240,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosExactMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.EXACT_MATCH));
 
                 //skos:exactMatch
@@ -281,7 +281,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConcept != null && ontology != null)
             {
-                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosRelatedMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH));
 
                 //skos:relatedMatch
@@ -293,24 +293,6 @@ namespace OWLSharp.Extensions.SKOS
 
             relatedMatchConcepts.RemoveAll(c => c.Equals(skosConcept));
             return RDFQueryUtilities.RemoveDuplicates(relatedMatchConcepts);
-        }
-        #endregion
-
-        #region Utilities
-        internal static List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(OWLOntology ontology)
-        {
-            List<OWLObjectPropertyAssertion> objPropAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-
-            OWLIndividualExpression swapIdvExpr;
-            for (int i = 0; i < objPropAsns.Count; i++)
-                if (objPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                {
-                    swapIdvExpr = objPropAsns[i].SourceIndividualExpression;
-                    objPropAsns[i].SourceIndividualExpression = objPropAsns[i].TargetIndividualExpression;
-                    objPropAsns[i].TargetIndividualExpression = swapIdvExpr;
-                    objPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-                }
-            return OWLAxiomHelper.RemoveDuplicates(objPropAsns);
         }
         #endregion
     }
