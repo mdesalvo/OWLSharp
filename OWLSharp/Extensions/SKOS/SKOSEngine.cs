@@ -140,6 +140,28 @@ namespace OWLSharp.Extensions.SKOS
             return narrowerTransitiveConcepts;
         }
 
+        public static bool CheckHasRelatedConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
+            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetRelatedConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+        public static List<RDFResource> GetRelatedConcepts(this OWLOntology ontology, RDFResource skosConcept)
+        {
+            List<RDFResource> relatedConcepts = new List<RDFResource>();
+
+            if (skosConcept != null && ontology != null)
+            {
+                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosRelatedAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.RELATED));
+
+                //skos:related
+                foreach (OWLObjectPropertyAssertion skosRelatedAsn in skosRelatedAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConcept)))
+                    relatedConcepts.Add(skosRelatedAsn.TargetIndividualExpression.GetIRI());
+                foreach (OWLObjectPropertyAssertion skosRelatedAsn in skosRelatedAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConcept)))
+                    relatedConcepts.Add(skosRelatedAsn.SourceIndividualExpression.GetIRI());
+            }
+
+            relatedConcepts.RemoveAll(c => c.Equals(skosConcept));
+            return RDFQueryUtilities.RemoveDuplicates(relatedConcepts);
+        }
+
         public static bool CheckHasBroadMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
             => leftConcept != null && rightConcept != null && ontology != null && ontology.GetBroadMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
         public static List<RDFResource> GetBroadMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)

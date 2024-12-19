@@ -217,6 +217,62 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
+        public void ShouldCheckAndGetRelatedConcepts()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
+            ontology.AddEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
+            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.RELATED));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept1")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept2")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept3")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept4")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept5")));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept3"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
+                new OWLNamedIndividual(new RDFResource("ex:concept1")),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
+                new OWLNamedIndividual(new RDFResource("ex:concept2")),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+
+            List<RDFResource> c1RelatedConcepts = ontology.GetRelatedConcepts(new RDFResource("ex:concept1"));
+
+            Assert.IsTrue(c1RelatedConcepts.Count == 2);
+            Assert.IsTrue(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"))); //inference (via simmetry)
+
+            Assert.IsTrue(ontology.GetRelatedConcepts(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetRelatedConcepts(new RDFResource("ex:concept1")).Count == 0);
+            Assert.IsFalse((null as OWLOntology).CheckHasRelatedConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsFalse(ontology.CheckHasRelatedConcept(null, new RDFResource("ex:concept5")));
+            Assert.IsFalse(ontology.CheckHasRelatedConcept(new RDFResource("ex:concept1"), null));
+        }
+
+        [TestMethod]
         public void ShouldCheckAndGetBroadMatchConcepts()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
