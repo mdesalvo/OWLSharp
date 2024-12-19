@@ -30,7 +30,7 @@ namespace OWLSharp.Reasoner
             //Temporary working variables
             OWLIndividualExpression swapIdvExpr;
             HashSet<long> visitContext = new HashSet<long>();
-            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             //TransitiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV3) -> ObjectPropertyAssertion(OP,IDV1,IDV3)
             foreach (OWLTransitiveObjectProperty trnObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>())
@@ -42,15 +42,6 @@ namespace OWLSharp.Reasoner
                 List <OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
                 {
-                    //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                    if (trnObjPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                    {   
-                        swapIdvExpr = trnObjPropAsns[i].SourceIndividualExpression;
-                        trnObjPropAsns[i].SourceIndividualExpression = trnObjPropAsns[i].TargetIndividualExpression;
-                        trnObjPropAsns[i].TargetIndividualExpression = swapIdvExpr;
-                        trnObjPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-                    }
-
                     //In case the transitive object property works under inverse logic, we must swap source/target of the object assertion
                     if (trnObjPropInvOfValue != null)
                     {

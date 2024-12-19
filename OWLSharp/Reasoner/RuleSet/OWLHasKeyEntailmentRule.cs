@@ -28,7 +28,7 @@ namespace OWLSharp.Reasoner
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 			
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
@@ -49,7 +49,6 @@ namespace OWLSharp.Reasoner
 			//Temporary working variables
 			Dictionary<string, List<OWLIndividualExpression>> objectKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
 			Dictionary<string, List<OWLIndividualExpression>> dataKeyValueRegister = new Dictionary<string, List<OWLIndividualExpression>>();
-			OWLIndividualExpression swapIdvExpr;
 
 			#region Compute Keys
 			//Iterate individuals of the HasKey axiom's class in order to calculate their key values
@@ -64,22 +63,7 @@ namespace OWLSharp.Reasoner
 					StringBuilder objSB = new StringBuilder();
 					foreach (OWLObjectPropertyExpression keyObjectProperty in hasKeyAxiom.ObjectPropertyExpressions.Where(opex => opex is OWLObjectProperty))
 					{
-						#region Calibration
 						List<OWLObjectPropertyAssertion> keyObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, keyObjectProperty);
-						for (int i=0; i<keyObjectPropertyAsns.Count; i++)
-						{
-							//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-							if (keyObjectPropertyAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-							{   
-								swapIdvExpr = keyObjectPropertyAsns[i].SourceIndividualExpression;
-								keyObjectPropertyAsns[i].SourceIndividualExpression = keyObjectPropertyAsns[i].TargetIndividualExpression;
-								keyObjectPropertyAsns[i].TargetIndividualExpression = swapIdvExpr;
-								keyObjectPropertyAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-							}
-						}
-						keyObjectPropertyAsns = OWLAxiomHelper.RemoveDuplicates(keyObjectPropertyAsns);
-						#endregion
-
 						if (keyObjectPropertyAsns.Count > 0)
 							objSB.Append(string.Join("§§", keyObjectPropertyAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(idvExprIRI))
 																				.Select(asn => asn.TargetIndividualExpression.GetIRI().ToString())));
