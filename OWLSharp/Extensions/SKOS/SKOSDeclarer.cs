@@ -38,7 +38,6 @@ namespace OWLSharp.Extensions.SKOS
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
                 new OWLNamedIndividual(conceptSchemeUri)));
 
-            //skos:inScheme
             if (concepts?.Count() > 0)
             {
                 ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
