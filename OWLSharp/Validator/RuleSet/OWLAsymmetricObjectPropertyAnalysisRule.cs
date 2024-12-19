@@ -30,7 +30,7 @@ namespace OWLSharp.Validator
 
             //Temporary working variables
 			OWLIndividualExpression swapIdvExpr;
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 			List<OWLAsymmetricObjectProperty> asymObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>();
 			List<OWLSymmetricObjectProperty> symObjProps = ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>();
 
@@ -56,15 +56,6 @@ namespace OWLSharp.Validator
                 List <OWLObjectPropertyAssertion> asymObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, asymObjProp.ObjectPropertyExpression);
                 for (int i=0; i<asymObjPropAsns.Count; i++)
                 {
-                    //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                    if (asymObjPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                    {   
-                        swapIdvExpr = asymObjPropAsns[i].SourceIndividualExpression;
-                        asymObjPropAsns[i].SourceIndividualExpression = asymObjPropAsns[i].TargetIndividualExpression;
-                        asymObjPropAsns[i].TargetIndividualExpression = swapIdvExpr;
-                        asymObjPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-                    }
-
                     //In case the asymmetric object property works under inverse logic, we must swap source/target of the object assertion
                     if (asymObjPropInvOfValue != null)
                     {
