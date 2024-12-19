@@ -24,19 +24,19 @@ namespace OWLSharp.Extensions.SKOS
     public static class SKOSDeclarer
     {
         #region Methods
-        public static OWLOntology DeclareSKOSConceptScheme(this OWLOntology ontology, RDFResource conceptSchemeUri,
+        public static OWLOntology DeclareSKOSConceptScheme(this OWLOntology ontology, RDFResource conceptScheme,
             RDFResource[] concepts=null)
         {
             #region Guards
-            if (conceptSchemeUri == null)
-                throw new OWLException("Cannot declare concept scheme because given \"conceptSchemeUri\" parameter is null");
+            if (conceptScheme == null)
+                throw new OWLException("Cannot declare concept scheme because given \"conceptScheme\" parameter is null");
             #endregion
 
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME));
-            ontology.DeclareEntity(new OWLNamedIndividual(conceptSchemeUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(conceptScheme));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
-                new OWLNamedIndividual(conceptSchemeUri)));
+                new OWLNamedIndividual(conceptScheme)));
 
             if (concepts?.Count() > 0)
             {
@@ -51,26 +51,26 @@ namespace OWLSharp.Extensions.SKOS
                     ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                         new OWLNamedIndividual(concept),
-                        new OWLNamedIndividual(conceptSchemeUri)));
+                        new OWLNamedIndividual(conceptScheme)));
                 }
             }
 
             return ontology;
         }
 
-        public static OWLOntology DeclareSKOSConcept(this OWLOntology ontology, RDFResource conceptUri,
+        public static OWLOntology DeclareSKOSConcept(this OWLOntology ontology, RDFResource concept,
             RDFPlainLiteral[] labels=null)
         {
             #region Guards
-            if (conceptUri == null)
-                throw new OWLException("Cannot declare concept because given \"conceptUri\" parameter is null");
+            if (concept == null)
+                throw new OWLException("Cannot declare concept because given \"concept\" parameter is null");
             #endregion
 
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
-            ontology.DeclareEntity(new OWLNamedIndividual(conceptUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(concept));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                new OWLNamedIndividual(conceptUri)));
+                new OWLNamedIndividual(concept)));
 
             if (labels?.Count() > 0)
             {
@@ -81,12 +81,12 @@ namespace OWLSharp.Extensions.SKOS
                 {
                     //(S14) skos:prefLabel annotation requires uniqueness of language tags foreach rdfs:Resource
                     if (langtagLookup.Contains(preferredLabel.Language))
-                        throw new OWLException($"Cannot setup preferred label of concept {conceptUri} because having more than one occurrence of the same language tag is not allowed!");
+                        throw new OWLException($"Cannot setup preferred label of concept {concept} because having more than one occurrence of the same language tag is not allowed!");
 
                     langtagLookup.Add(preferredLabel.Language);
                     ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
-                        conceptUri,
+                        concept,
                         new OWLLiteral(preferredLabel)));
                 }   
             }
@@ -94,12 +94,12 @@ namespace OWLSharp.Extensions.SKOS
             return ontology;
         }
 
-        public static OWLOntology DeclareSKOSCollection(this OWLOntology ontology, RDFResource collectionUri,
+        public static OWLOntology DeclareSKOSCollection(this OWLOntology ontology, RDFResource collection,
             RDFResource[] concepts, RDFPlainLiteral[] labels=null)
         {
             #region Guards
-            if (collectionUri == null)
-                throw new OWLException("Cannot declare collection because given \"collectionUri\" parameter is null");
+            if (collection == null)
+                throw new OWLException("Cannot declare collection because given \"collection\" parameter is null");
             if (concepts == null)
                 throw new OWLException("Cannot declare collection because given \"concepts\" parameter is null");
             if (concepts.Length == 0)
@@ -108,17 +108,17 @@ namespace OWLSharp.Extensions.SKOS
 
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.COLLECTION));
             ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER));
-            ontology.DeclareEntity(new OWLNamedIndividual(collectionUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(collection));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.COLLECTION),
-                new OWLNamedIndividual(collectionUri)));
+                new OWLNamedIndividual(collection)));
 
             foreach (RDFResource concept in concepts)
             {
                 ontology.DeclareSKOSConcept(concept);
                 ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER),
-                    new OWLNamedIndividual(collectionUri),
+                    new OWLNamedIndividual(collection),
                     new OWLNamedIndividual(concept)));
             }
 
@@ -131,12 +131,12 @@ namespace OWLSharp.Extensions.SKOS
                 {
                     //(S14) skos:prefLabel annotation requires uniqueness of language tags foreach rdfs:Resource
                     if (langtagLookup.Contains(preferredLabel.Language))
-                        throw new OWLException($"Cannot setup preferred label of collection {collectionUri} because having more than one occurrence of the same language tag is not allowed!");
+                        throw new OWLException($"Cannot setup preferred label of collection {collection} because having more than one occurrence of the same language tag is not allowed!");
 
                     langtagLookup.Add(preferredLabel.Language);
                     ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
-                        collectionUri,
+                        collection,
                         new OWLLiteral(preferredLabel)));
                 }
             }
