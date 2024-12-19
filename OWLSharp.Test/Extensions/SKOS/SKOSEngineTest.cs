@@ -435,6 +435,62 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.IsFalse(ontology.CheckHasExactMatchConcept(null, new RDFResource("ex:concept5")));
             Assert.IsFalse(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), null));
         }
+
+        [TestMethod]
+        public void ShouldCheckAndGetRelatedMatchConcepts()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
+            ontology.AddEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
+            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept1")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept2")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept3")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept4")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept5")));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept3"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept1")),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept2")),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+
+            List<RDFResource> c1RelatedMatchConcepts = ontology.GetRelatedMatchConcepts(new RDFResource("ex:concept1"));
+
+            Assert.IsTrue(c1RelatedMatchConcepts.Count == 2);
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"))); //inference (via simmetry)
+
+            Assert.IsTrue(ontology.GetRelatedMatchConcepts(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetRelatedMatchConcepts(new RDFResource("ex:concept1")).Count == 0);
+            Assert.IsFalse((null as OWLOntology).CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsFalse(ontology.CheckHasRelatedMatchConcept(null, new RDFResource("ex:concept5")));
+            Assert.IsFalse(ontology.CheckHasRelatedMatchConcept(new RDFResource("ex:concept1"), null));
+        }
         #endregion
     }
 }

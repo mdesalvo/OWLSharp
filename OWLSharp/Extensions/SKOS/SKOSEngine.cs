@@ -250,6 +250,28 @@ namespace OWLSharp.Extensions.SKOS
 
             return exactMatchConcepts;
         }
+
+        public static bool CheckHasRelatedMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
+            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetRelatedMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+        public static List<RDFResource> GetRelatedMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
+        {
+            List<RDFResource> relatedMatchConcepts = new List<RDFResource>();
+
+            if (skosConcept != null && ontology != null)
+            {
+                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosRelatedMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH));
+
+                //skos:relatedMatch
+                foreach (OWLObjectPropertyAssertion skosRelatedMatchAsn in skosRelatedMatchAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConcept)))
+                    relatedMatchConcepts.Add(skosRelatedMatchAsn.TargetIndividualExpression.GetIRI());
+                foreach (OWLObjectPropertyAssertion skosRelatedMatchAsn in skosRelatedMatchAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConcept)))
+                    relatedMatchConcepts.Add(skosRelatedMatchAsn.SourceIndividualExpression.GetIRI());
+            }
+
+            relatedMatchConcepts.RemoveAll(c => c.Equals(skosConcept));
+            return RDFQueryUtilities.RemoveDuplicates(relatedMatchConcepts);
+        }
         #endregion
 
         #region Utilities
