@@ -22,7 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace OWLSharp.Test.Extensions.GEO
 {
     [TestClass]
-    public class GEOHelperTest
+    public class GEODeclarerTest
     {
         #region Methods
         [TestMethod]

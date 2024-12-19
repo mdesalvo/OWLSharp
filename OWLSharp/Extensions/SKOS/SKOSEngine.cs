@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace OWLSharp.Extensions.SKOS
 {
-    public static class SKOSHelper
+    public static class SKOSEngine
     {
         #region Methods
         public static bool CheckHasConcept(this OWLOntology ontology, RDFResource conceptScheme, RDFResource concept)
