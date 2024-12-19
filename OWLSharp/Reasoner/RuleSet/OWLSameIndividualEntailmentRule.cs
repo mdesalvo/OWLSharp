@@ -24,28 +24,12 @@ namespace OWLSharp.Reasoner
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
-            #region Utilities
-            List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(List<OWLObjectPropertyAssertion> objectPropertyAssertions)
-            {
-                OWLIndividualExpression swapIdvExpr;
-                for (int i = 0; i < objectPropertyAssertions.Count; i++)
-                    if (objectPropertyAssertions[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                    {
-                        swapIdvExpr = objectPropertyAssertions[i].SourceIndividualExpression;
-                        objectPropertyAssertions[i].SourceIndividualExpression = objectPropertyAssertions[i].TargetIndividualExpression;
-                        objectPropertyAssertions[i].TargetIndividualExpression = swapIdvExpr;
-                        objectPropertyAssertions[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-                    }
-                return OWLAxiomHelper.RemoveDuplicates(objectPropertyAssertions);
-            }
-            #endregion
-
             List<OWLInference> inferences = new List<OWLInference>();
             if (ontology.GetAssertionAxiomsOfType<OWLSameIndividual>().Count == 0)
                 return inferences;
 
             //Temporary working variables (general)
-            List<OWLObjectPropertyAssertion> opAsns = CalibrateObjectAssertions(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>());
+            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 
             foreach (OWLNamedIndividual declaredIdv in ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
