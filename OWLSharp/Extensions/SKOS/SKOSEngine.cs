@@ -36,13 +36,15 @@ namespace OWLSharp.Extensions.SKOS
 
             if (skosConceptScheme != null && ontology != null)
             {
+                OWLClass skosConcept = new OWLClass(RDFVocabulary.SKOS.CONCEPT);
                 List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosInSchemeAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
                 List<OWLObjectPropertyAssertion> skosHasTopConceptAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.HAS_TOP_CONCEPT));
                 List<OWLObjectPropertyAssertion> skosTopConceptOfAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.TOP_CONCEPT_OF));
                 
                 //skos:inScheme
-                foreach (OWLObjectPropertyAssertion skosInSchemeAsn in skosInSchemeAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConceptScheme)))
+                foreach (OWLObjectPropertyAssertion skosInSchemeAsn in skosInSchemeAsns.Where(asn => ontology.CheckIsIndividualOf(skosConcept, asn.SourceIndividualExpression)
+                                                                                                      && asn.TargetIndividualExpression.GetIRI().Equals(skosConceptScheme)))
                     conceptsInScheme.Add(skosInSchemeAsn.SourceIndividualExpression.GetIRI());
                 //skos:hasTopConcept
                 foreach (OWLObjectPropertyAssertion skosHasTopConceptAsn in skosHasTopConceptAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConceptScheme)))
@@ -53,6 +55,29 @@ namespace OWLSharp.Extensions.SKOS
             }
 
             return RDFQueryUtilities.RemoveDuplicates(conceptsInScheme);
+        }
+
+        public static bool CheckHasCollection(this OWLOntology ontology, RDFResource conceptScheme, RDFResource collection)
+            => conceptScheme != null && collection != null && ontology != null && ontology.GetCollectionsInScheme(conceptScheme).Any(cl => cl.Equals(collection));
+        public static List<RDFResource> GetCollectionsInScheme(this OWLOntology ontology, RDFResource skosConceptScheme)
+        {
+            List<RDFResource> collectionsInScheme = new List<RDFResource>();
+
+            if (skosConceptScheme != null && ontology != null)
+            {
+                OWLClass skosCollection = new OWLClass(RDFVocabulary.SKOS.COLLECTION);
+                OWLClass skosOrderedCollection = new OWLClass(RDFVocabulary.SKOS.ORDERED_COLLECTION);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosInSchemeAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
+                
+                //skos:inScheme
+                foreach (OWLObjectPropertyAssertion skosInSchemeAsn in skosInSchemeAsns.Where(asn => (ontology.CheckIsIndividualOf(skosCollection, asn.SourceIndividualExpression)
+                                                                                                      || ontology.CheckIsIndividualOf(skosOrderedCollection, asn.SourceIndividualExpression))
+                                                                                                      && asn.TargetIndividualExpression.GetIRI().Equals(skosConceptScheme)))
+                    collectionsInScheme.Add(skosInSchemeAsn.SourceIndividualExpression.GetIRI());
+            }
+
+            return RDFQueryUtilities.RemoveDuplicates(collectionsInScheme);
         }
 
         public static bool CheckHasBroaderConcept(this OWLOntology ontology, RDFResource childConcept, RDFResource parentConcept)

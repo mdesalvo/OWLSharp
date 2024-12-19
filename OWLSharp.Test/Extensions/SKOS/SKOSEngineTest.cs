@@ -125,6 +125,89 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
+        public void ShouldCheckAndGetCollectionsInScheme()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.COLLECTION));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.ORDERED_COLLECTION));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:conceptScheme1")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:collection1")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:collection2")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:concept1")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:concept2")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:concept3")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:concept4")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:concept5")));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.COLLECTION),
+                new OWLNamedIndividual(new RDFResource("ex:collection1"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.ORDERED_COLLECTION),
+                new OWLNamedIndividual(new RDFResource("ex:collection2"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept3"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+               new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+               new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+               new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+               new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:concept1")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:concept2")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:concept4")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:concept5")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:collection1")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:collection2")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+
+            List<RDFResource> cs1Collections = ontology.GetCollectionsInScheme(new RDFResource("ex:conceptScheme1"));
+
+            Assert.IsTrue(cs1Collections.Count == 2);
+            Assert.IsTrue(ontology.CheckHasCollection(new RDFResource("ex:conceptScheme1"), new RDFResource("ex:collection1")));
+            Assert.IsTrue(ontology.CheckHasCollection(new RDFResource("ex:conceptScheme1"), new RDFResource("ex:collection2")));
+
+            Assert.IsTrue((null as OWLOntology).GetCollectionsInScheme(new RDFResource("ex:conceptScheme1")).Count == 0);
+            Assert.IsTrue(ontology.GetCollectionsInScheme(null).Count == 0);
+            Assert.IsFalse((null as OWLOntology).CheckHasCollection(new RDFResource("ex:conceptScheme1"), new RDFResource("ex:concept2")));
+            Assert.IsFalse(ontology.CheckHasCollection(null, new RDFResource("ex:conceptScheme1")));
+            Assert.IsFalse(ontology.CheckHasCollection(new RDFResource("ex:conceptScheme1"), null));
+        }
+
+        [TestMethod]
         public void ShouldCheckAndGetBroaderConcepts()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
