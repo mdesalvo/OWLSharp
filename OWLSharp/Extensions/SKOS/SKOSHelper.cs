@@ -16,6 +16,7 @@
 
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using RDFSharp.Query;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,12 +43,13 @@ namespace OWLSharp.Extensions.SKOS
                     broaderConcepts.Add(skosBroaderAsn.TargetIndividualExpression.GetIRI());
 
                 //skos:broaderTransitive
-                broaderConcepts.AddRange(ontology.SubsumeBroaderConceptTransitivity(skosConcept, skosBroaderTransitiveAsns, new Dictionary<long, RDFResource>()));
+                broaderConcepts.AddRange(ontology.SubsumeBroaderTransitivity(skosConcept, skosBroaderTransitiveAsns, new Dictionary<long, RDFResource>()));
             }
 
+            broaderConcepts.RemoveAll(c => c.Equals(skosConcept));
             return broaderConcepts;
         }
-        internal static List<RDFResource> SubsumeBroaderConceptTransitivity(this OWLOntology ontology, RDFResource skosConcept, List<OWLObjectPropertyAssertion> skosBroaderTransitiveAsns, Dictionary<long, RDFResource> visitContext)
+        internal static List<RDFResource> SubsumeBroaderTransitivity(this OWLOntology ontology, RDFResource skosConcept, List<OWLObjectPropertyAssertion> skosBroaderTransitiveAsns, Dictionary<long, RDFResource> visitContext)
         {
             List<RDFResource> broaderTransitiveConcepts = new List<RDFResource>();
 
@@ -63,7 +65,7 @@ namespace OWLSharp.Extensions.SKOS
                 broaderTransitiveConcepts.Add(skosBroaderTransitiveAsn.TargetIndividualExpression.GetIRI());
 
             foreach (RDFResource broaderTransitiveConcept in broaderTransitiveConcepts.ToList())
-                broaderTransitiveConcepts.AddRange(ontology.SubsumeBroaderConceptTransitivity(broaderTransitiveConcept, skosBroaderTransitiveAsns, visitContext));
+                broaderTransitiveConcepts.AddRange(ontology.SubsumeBroaderTransitivity(broaderTransitiveConcept, skosBroaderTransitiveAsns, visitContext));
 
             return broaderTransitiveConcepts;
         }
@@ -86,12 +88,13 @@ namespace OWLSharp.Extensions.SKOS
                     narrowerConcepts.Add(skosNarrowerAsn.TargetIndividualExpression.GetIRI());
 
                 //skos:narrowerTransitive
-                narrowerConcepts.AddRange(ontology.SubsumeNarrowerConceptTransitivity(skosConcept, skosNarrowerTransitiveAsns, new Dictionary<long, RDFResource>()));
+                narrowerConcepts.AddRange(ontology.SubsumeNarrowerTransitivity(skosConcept, skosNarrowerTransitiveAsns, new Dictionary<long, RDFResource>()));
             }
 
+            narrowerConcepts.RemoveAll(c => c.Equals(skosConcept));
             return narrowerConcepts;
         }
-        internal static List<RDFResource> SubsumeNarrowerConceptTransitivity(this OWLOntology ontology, RDFResource skosConcept, List<OWLObjectPropertyAssertion> skosNarrowerTransitiveAsns, Dictionary<long, RDFResource> visitContext)
+        internal static List<RDFResource> SubsumeNarrowerTransitivity(this OWLOntology ontology, RDFResource skosConcept, List<OWLObjectPropertyAssertion> skosNarrowerTransitiveAsns, Dictionary<long, RDFResource> visitContext)
         {
             List<RDFResource> narrowerTransitiveConcepts = new List<RDFResource>();
 
@@ -107,9 +110,51 @@ namespace OWLSharp.Extensions.SKOS
                 narrowerTransitiveConcepts.Add(skosNarrowerTransitiveAsn.TargetIndividualExpression.GetIRI());
 
             foreach (RDFResource narrowerTransitiveConcept in narrowerTransitiveConcepts.ToList())
-                narrowerTransitiveConcepts.AddRange(ontology.SubsumeNarrowerConceptTransitivity(narrowerTransitiveConcept, skosNarrowerTransitiveAsns, visitContext));
+                narrowerTransitiveConcepts.AddRange(ontology.SubsumeNarrowerTransitivity(narrowerTransitiveConcept, skosNarrowerTransitiveAsns, visitContext));
 
             return narrowerTransitiveConcepts;
+        }
+
+        public static bool CheckHasExactMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
+            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetExactMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+
+        public static List<RDFResource> GetExactMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
+        {
+            List<RDFResource> exactMatchConcepts = new List<RDFResource>();
+
+            if (skosConcept != null && ontology != null)
+            {
+                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosExactMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.EXACT_MATCH));
+
+                //skos:exactMatch
+                exactMatchConcepts.AddRange(ontology.SubsumeExactMatchTransitivity(skosConcept, skosExactMatchAsns, new Dictionary<long, RDFResource>()));
+            }
+
+            exactMatchConcepts.RemoveAll(c => c.Equals(skosConcept));
+            return RDFQueryUtilities.RemoveDuplicates(exactMatchConcepts);
+        }
+        internal static List<RDFResource> SubsumeExactMatchTransitivity(this OWLOntology ontology, RDFResource skosConcept, List<OWLObjectPropertyAssertion> skosExactMatchAsns, Dictionary<long, RDFResource> visitContext)
+        {
+            List<RDFResource> exactMatchConcepts = new List<RDFResource>();
+
+            #region visitContext
+            if (!visitContext.ContainsKey(skosConcept.PatternMemberID))
+                visitContext.Add(skosConcept.PatternMemberID, skosConcept);
+            else
+                return exactMatchConcepts;
+            #endregion
+
+            //skos:exactMatch
+            foreach (OWLObjectPropertyAssertion skosExactMatchAsn in skosExactMatchAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConcept)))
+                exactMatchConcepts.Add(skosExactMatchAsn.TargetIndividualExpression.GetIRI());
+            foreach (OWLObjectPropertyAssertion skosExactMatchAsn in skosExactMatchAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConcept)))
+                exactMatchConcepts.Add(skosExactMatchAsn.SourceIndividualExpression.GetIRI());
+
+            foreach (RDFResource exactMatchConcept in exactMatchConcepts.ToList())
+                exactMatchConcepts.AddRange(ontology.SubsumeExactMatchTransitivity(exactMatchConcept, skosExactMatchAsns, visitContext));
+
+            return exactMatchConcepts;
         }
         #endregion
 
