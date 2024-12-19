@@ -217,6 +217,115 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
+        public void ShouldCheckAndGetBroadMatchConcepts()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
+            ontology.AddEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
+            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.BROAD_MATCH));
+            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.NARROW_MATCH));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept1")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept2")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept3")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept4")));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept3"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.BROAD_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept1")),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.NARROW_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.BROAD_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept2")),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.BROAD_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+
+            List<RDFResource> c1BroadMatchConcepts = ontology.GetBroadMatchConcepts(new RDFResource("ex:concept1"));
+
+            Assert.IsTrue(c1BroadMatchConcepts.Count == 2);
+            Assert.IsTrue(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"))); //inference (via inverse)
+
+            Assert.IsTrue(ontology.GetBroadMatchConcepts(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetBroadMatchConcepts(new RDFResource("ex:concept1")).Count == 0);
+            Assert.IsFalse((null as OWLOntology).CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsFalse(ontology.CheckHasBroadMatchConcept(null, new RDFResource("ex:concept5")));
+            Assert.IsFalse(ontology.CheckHasBroadMatchConcept(new RDFResource("ex:concept1"), null));
+        }
+
+        [TestMethod]
+        public void ShouldCheckAndGetCloseMatchConcepts()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
+            ontology.AddEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
+            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept1")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept2")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept3")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept4")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept5")));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept3"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept1")),
+                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept2")),
+                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
+                new OWLNamedIndividual(new RDFResource("ex:concept3")),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
+
+            List<RDFResource> c1CloseMatchConcepts = ontology.GetCloseMatchConcepts(new RDFResource("ex:concept1"));
+
+            Assert.IsTrue(c1CloseMatchConcepts.Count == 2);
+            Assert.IsTrue(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"))); //inference (via simmetry)
+
+            Assert.IsTrue(ontology.GetCloseMatchConcepts(null).Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetCloseMatchConcepts(new RDFResource("ex:concept1")).Count == 0);
+            Assert.IsFalse((null as OWLOntology).CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
+            Assert.IsFalse(ontology.CheckHasCloseMatchConcept(null, new RDFResource("ex:concept5")));
+            Assert.IsFalse(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), null));
+        }
+
+        [TestMethod]
         public void ShouldCheckAndGetExactMatchConcepts()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
@@ -239,6 +348,9 @@ namespace OWLSharp.Test.Extensions.SKOS
             ontology.AddAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                 new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
             ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.SKOS.EXACT_MATCH),
                 new OWLNamedIndividual(new RDFResource("ex:concept1")),
@@ -269,59 +381,6 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.IsFalse((null as OWLOntology).CheckHasExactMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
             Assert.IsFalse(ontology.CheckHasExactMatchConcept(null, new RDFResource("ex:concept5")));
             Assert.IsFalse(ontology.CheckHasExactMatchConcept(new RDFResource("ex:concept1"), null));
-        }
-
-        [TestMethod]
-        public void ShouldCheckAndGetCloseMatchConcepts()
-        {
-            OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH));
-            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept1")));
-            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept2")));
-            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept3")));
-            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept4")));
-            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept5")));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
-                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
-                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
-                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                new OWLNamedIndividual(new RDFResource("ex:concept3"))));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
-                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
-            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
-                new OWLNamedIndividual(new RDFResource("ex:concept1")),
-                new OWLNamedIndividual(new RDFResource("ex:concept2"))));
-            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
-                new OWLNamedIndividual(new RDFResource("ex:concept3")),
-                new OWLNamedIndividual(new RDFResource("ex:concept1"))));
-            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
-                new OWLNamedIndividual(new RDFResource("ex:concept2")),
-                new OWLNamedIndividual(new RDFResource("ex:concept4"))));
-            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
-                new OWLNamedIndividual(new RDFResource("ex:concept3")),
-                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
-
-            List<RDFResource> c1CloseMatchConcepts = ontology.GetCloseMatchConcepts(new RDFResource("ex:concept1"));
-
-            Assert.IsTrue(c1CloseMatchConcepts.Count == 2);
-            Assert.IsTrue(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
-            Assert.IsTrue(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept3"))); //inference (via simmetry)
-
-            Assert.IsTrue(ontology.GetCloseMatchConcepts(null).Count == 0);
-            Assert.IsTrue((null as OWLOntology).GetCloseMatchConcepts(new RDFResource("ex:concept1")).Count == 0);
-            Assert.IsFalse((null as OWLOntology).CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), new RDFResource("ex:concept2")));
-            Assert.IsFalse(ontology.CheckHasCloseMatchConcept(null, new RDFResource("ex:concept5")));
-            Assert.IsFalse(ontology.CheckHasCloseMatchConcept(new RDFResource("ex:concept1"), null));
         }
         #endregion
     }
