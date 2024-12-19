@@ -37,6 +37,8 @@ namespace OWLSharp.Extensions.SKOS
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
                 new OWLNamedIndividual(conceptSchemeUri)));
+
+            //skos:inScheme
             if (concepts?.Count() > 0)
             {
                 ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
@@ -70,6 +72,8 @@ namespace OWLSharp.Extensions.SKOS
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                 new OWLNamedIndividual(conceptUri)));
+
+            //skos:prefLabel
             if (preferredLabels?.Count() > 0)
             {
                 ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
@@ -77,7 +81,7 @@ namespace OWLSharp.Extensions.SKOS
                 HashSet<string> langtagLookup = new HashSet<string>();
                 foreach (RDFPlainLiteral preferredLabel in preferredLabels)
                 {
-                    //skos:prefLabel annotation requires uniqueness of language tags within each skos:Concept
+                    //(S14) skos:prefLabel annotation requires uniqueness of language tags within each rdfs:Resource
                     if (langtagLookup.Contains(preferredLabel.Language))
                         throw new OWLException($"Cannot setup preferred label of concept {conceptUri} because more than one occurrence of the same language tag is not allowed!");
 
@@ -87,6 +91,58 @@ namespace OWLSharp.Extensions.SKOS
                         conceptUri,
                         new OWLLiteral(preferredLabel)));
                 }   
+            }
+
+            return ontology;
+        }
+
+        public static OWLOntology DeclareSKOSCollection(this OWLOntology ontology, RDFResource collectionUri,
+            RDFResource[] concepts, RDFPlainLiteral[] preferredLabels=null)
+        {
+            #region Guards
+            if (collectionUri == null)
+                throw new OWLException("Cannot declare collection because given \"collectionUri\" parameter is null");
+            if (concepts == null)
+                throw new OWLException("Cannot declare collection because given \"concepts\" parameter is null");
+            if (concepts.Length == 0)
+                throw new OWLException("Cannot declare collection because given \"concepts\" parameter must contain at least 1 concept");
+            #endregion
+
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.COLLECTION));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER));
+            ontology.DeclareEntity(new OWLNamedIndividual(collectionUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.COLLECTION),
+                new OWLNamedIndividual(collectionUri)));
+
+            //skos:member
+            foreach (RDFResource concept in concepts)
+            {
+                ontology.DeclareSKOSConcept(concept);
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER),
+                    new OWLNamedIndividual(collectionUri),
+                    new OWLNamedIndividual(concept)));
+            }
+
+            //skos:prefLabel
+            if (preferredLabels?.Count() > 0)
+            {
+                ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
+
+                HashSet<string> langtagLookup = new HashSet<string>();
+                foreach (RDFPlainLiteral preferredLabel in preferredLabels)
+                {
+                    //(S14) skos:prefLabel annotation requires uniqueness of language tags within each rdfs:Resource
+                    if (langtagLookup.Contains(preferredLabel.Language))
+                        throw new OWLException($"Cannot setup preferred label of collection {collectionUri} because more than one occurrence of the same language tag is not allowed!");
+
+                    langtagLookup.Add(preferredLabel.Language);
+                    ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
+                        collectionUri,
+                        new OWLLiteral(preferredLabel)));
+                }
             }
 
             return ontology;
