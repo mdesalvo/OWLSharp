@@ -28,6 +28,26 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
+        public void ShouldCheckConceptScheme()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:conceptScheme1")));
+            ontology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:conceptScheme2")));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme2"))));
+
+            Assert.IsTrue(ontology.CheckHasConceptScheme(new RDFResource("ex:conceptScheme1")));
+            Assert.IsFalse(ontology.CheckHasConceptScheme(new RDFResource("ex:conceptScheme3")));
+            Assert.IsFalse((null as OWLOntology).CheckHasConceptScheme(new RDFResource("ex:conceptScheme3")));
+            Assert.IsFalse(ontology.CheckHasConceptScheme(null));
+        }
+
+        [TestMethod]
         public void ShouldCheckAndGetConceptsInScheme()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ontology"));

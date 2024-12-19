@@ -25,6 +25,9 @@ namespace OWLSharp.Extensions.SKOS
     public static class SKOSEngine
     {
         #region Methods
+        public static bool CheckHasConceptScheme(this OWLOntology ontology, RDFResource conceptScheme)
+            => conceptScheme != null && ontology != null && ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)).Any(cs => cs.GetIRI().Equals(conceptScheme));
+
         public static bool CheckHasConcept(this OWLOntology ontology, RDFResource conceptScheme, RDFResource concept)
             => conceptScheme != null && concept != null && ontology != null && ontology.GetConceptsInScheme(conceptScheme).Any(c => c.Equals(concept));
         public static List<RDFResource> GetConceptsInScheme(this OWLOntology ontology, RDFResource skosConceptScheme)
