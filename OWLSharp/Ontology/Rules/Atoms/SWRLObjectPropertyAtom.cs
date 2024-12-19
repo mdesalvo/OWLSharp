@@ -54,7 +54,6 @@ namespace OWLSharp.Ontology
         {
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
-            OWLIndividualExpression swapIdvExpr;
 
             //Initialize the structure of the atom result
             DataTable atomResult = new DataTable();
@@ -63,22 +62,8 @@ namespace OWLSharp.Ontology
                 RDFQueryEngine.AddColumn(atomResult, rightArgumentString);
 
             //Extract object property assertions of the atom predicate
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLObjectPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, (OWLObjectProperty)Predicate);
-            #region Calibration
-            for (int i = 0; i < atomPredicateAssertions.Count; i++)
-            {
-                //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-                if (atomPredicateAssertions[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                {
-                    swapIdvExpr = atomPredicateAssertions[i].SourceIndividualExpression;
-                    atomPredicateAssertions[i].SourceIndividualExpression = atomPredicateAssertions[i].TargetIndividualExpression;
-                    atomPredicateAssertions[i].TargetIndividualExpression = swapIdvExpr;
-                    atomPredicateAssertions[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-                }
-            }
-            atomPredicateAssertions = OWLAxiomHelper.RemoveDuplicates(atomPredicateAssertions);
-            #endregion
             if (RightArgument is SWRLIndividualArgument rightArgumentIndividual)
                 atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(rightArgumentIndividual.GetResource()))
 																 .ToList();
