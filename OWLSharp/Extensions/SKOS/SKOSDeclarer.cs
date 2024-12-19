@@ -77,7 +77,7 @@ namespace OWLSharp.Extensions.SKOS
                 HashSet<string> langtagLookup = new HashSet<string>();
                 foreach (RDFPlainLiteral preferredLabel in preferredLabels)
                 {
-                    //skos:prefLabel annotation requires uniqueness of language tags foreach skos:Concept
+                    //skos:prefLabel annotation requires uniqueness of language tags within each skos:Concept
                     if (langtagLookup.Contains(preferredLabel.Language))
                         throw new OWLException($"Cannot setup preferred label of concept {conceptUri} because more than one occurrence of the same language tag is not allowed!");
 
