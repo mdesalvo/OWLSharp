@@ -26,125 +26,125 @@ namespace OWLSharp.Test.Extensions.GEO
     {
         #region Methods
         [TestMethod]
-        public void ShouldDeclarePointFeatureWithDefaultGeometry()
+        public void ShouldDeclareGEOPointFeatureWithDefaultGeometry()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 45.464664));
+            ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 45.464664));
 
             Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(null, new RDFResource("ex:MilanGM"), (9.188540, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), null, (9.188540, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (-182.0, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (182.0, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, -92.0)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 92.0)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(null, new RDFResource("ex:MilanGM"), (9.188540, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), null, (9.188540, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (-182.0, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (182.0, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, -92.0)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 92.0)));
         }
 
         [TestMethod]
-        public void ShouldDeclarePointFeatureWithNotDefaultGeometry()
+        public void ShouldDeclareGEOPointFeatureWithNotDefaultGeometry()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 45.464664), false);
+            ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 45.464664), false);
 
             Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(null, new RDFResource("ex:MilanGM"), (9.188540, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), null, (9.188540, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (-182.0, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (182.0, 45.464664)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, -92.0)));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 92.0)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(null, new RDFResource("ex:MilanGM"), (9.188540, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), null, (9.188540, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (-182.0, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (182.0, 45.464664)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, -92.0)));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOPointFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), (9.188540, 92.0)));
         }
 
         [TestMethod]
-        public void ShouldDeclareLineFeatureWithDefaultGeometry()
+        public void ShouldDeclareGEOLineFeatureWithDefaultGeometry()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)]);
+            ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)]);
 
             Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), null, null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), null, null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664)]));
         }
 
         [TestMethod]
-        public void ShouldDeclareLineFeatureWithNotDefaultGeometry()
+        public void ShouldDeclareGEOLineFeatureWithNotDefaultGeometry()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)], false);
+            ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)], false);
 
             Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), null, null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), null, null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOLineFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664)]));
         }
 
         [TestMethod]
-        public void ShouldDeclareAreaFeatureWithDefaultGeometry()
+        public void ShouldDeclareGEOAreaFeatureWithDefaultGeometry()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]);
+            ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]);
 
             Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), null, null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), null, null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
         }
 
         [TestMethod]
-        public void ShouldDeclareAreaFeatureWithNotDefaultGeometry()
+        public void ShouldDeclareGEOAreaFeatureWithNotDefaultGeometry()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.288540, 45.664664)], false);
+            ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.288540, 45.664664)], false);
 
             Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), null, null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(null, new RDFResource("ex:MilanGM"), [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), null, null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), null, [(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(182.188540, 45.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, -92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareGEOAreaFeature(new RDFResource("ex:MilanFT"), new RDFResource("ex:MilanGM"), [(9.188540, 92.464664),(9.198540, 45.474664),(9.188540, 45.464664)]));
         }
         #endregion
     }

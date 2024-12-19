@@ -25,7 +25,7 @@ namespace OWLSharp.Extensions.GEO
     public static class GEODeclarer
     {
         #region Methods
-        public static OWLOntology DeclarePointFeature(this OWLOntology ontology, RDFResource featureUri, 
+        public static OWLOntology DeclareGEOPointFeature(this OWLOntology ontology, RDFResource featureUri, 
             RDFResource geometryUri, (double longitude, double latitude) wgs84Coordinate, bool isDefaultGeometry=true)
         {
             #region Guards
@@ -70,7 +70,7 @@ namespace OWLSharp.Extensions.GEO
             return ontology;
         }
 
-        public static OWLOntology DeclareLineFeature(this OWLOntology ontology, RDFResource featureUri, 
+        public static OWLOntology DeclareGEOLineFeature(this OWLOntology ontology, RDFResource featureUri, 
             RDFResource geometryUri, (double longitude, double latitude)[] wgs84Coordinates, bool isDefaultGeometry=true)
         {
             #region Guards
@@ -119,7 +119,7 @@ namespace OWLSharp.Extensions.GEO
             return ontology;
         }
 
-        public static OWLOntology DeclareAreaFeature(this OWLOntology ontology, RDFResource featureUri, 
+        public static OWLOntology DeclareGEOAreaFeature(this OWLOntology ontology, RDFResource featureUri, 
             RDFResource geometryUri, (double longitude, double latitude)[] wgs84Coordinates, bool isDefaultGeometry=true)
         {
             #region Guards
