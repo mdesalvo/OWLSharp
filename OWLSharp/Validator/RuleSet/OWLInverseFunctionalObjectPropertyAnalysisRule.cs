@@ -33,7 +33,7 @@ namespace OWLSharp.Validator
 
 			foreach (OWLInverseFunctionalObjectProperty ifop in ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>())
 			{
-				#region Calibration (InverseFunctionalObjectProperty)
+				#region Recalibration (InverseFunctionalObjectProperty)
 				List<OWLObjectPropertyAssertion> ifopAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, ifop.ObjectPropertyExpression);
             	foreach (OWLObjectPropertyAssertion ifopAsn in ifopAsns)
 				{

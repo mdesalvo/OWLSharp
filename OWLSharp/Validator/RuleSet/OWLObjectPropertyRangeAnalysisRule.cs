@@ -26,31 +26,13 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-			OWLIndividualExpression swapIdvExpr;
-            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
 			//ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyRange(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV2) -> ERROR
 			foreach (OWLObjectPropertyRange opRange in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>())
 			{
 				bool isObjectInverseOf = opRange.ObjectPropertyExpression is OWLObjectInverseOf;
-				List<OWLObjectPropertyAssertion> opRangeAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opRange.ObjectPropertyExpression);
-
-            	#region Calibration
-				for (int i=0; i<opRangeAsns.Count; i++)
-				{
-					//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-					if (opRangeAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-					{   
-						swapIdvExpr = opRangeAsns[i].SourceIndividualExpression;
-						opRangeAsns[i].SourceIndividualExpression = opRangeAsns[i].TargetIndividualExpression;
-						opRangeAsns[i].TargetIndividualExpression = swapIdvExpr;
-						opRangeAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-					}
-				}
-				opRangeAsns = OWLAxiomHelper.RemoveDuplicates(opRangeAsns);
-				#endregion
-
-            	foreach (OWLObjectPropertyAssertion opRangeAsn in opRangeAsns)
+				foreach (OWLObjectPropertyAssertion opRangeAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opRange.ObjectPropertyExpression))
 				{
 					if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, isObjectInverseOf ? opRangeAsn.SourceIndividualExpression : opRangeAsn.TargetIndividualExpression))
 						issues.Add(new OWLIssue(

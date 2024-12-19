@@ -27,26 +27,10 @@ namespace OWLSharp.Validator
 
 		internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
 		{
-			#region Utilities
-            List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(List<OWLObjectPropertyAssertion> objectPropertyAssertions)
-            {
-                OWLIndividualExpression swapIdvExpr;
-                for (int i = 0; i < objectPropertyAssertions.Count; i++)
-                    if (objectPropertyAssertions[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                    {
-                        swapIdvExpr = objectPropertyAssertions[i].SourceIndividualExpression;
-                        objectPropertyAssertions[i].SourceIndividualExpression = objectPropertyAssertions[i].TargetIndividualExpression;
-                        objectPropertyAssertions[i].TargetIndividualExpression = swapIdvExpr;
-                        objectPropertyAssertions[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-                    }
-                return OWLAxiomHelper.RemoveDuplicates(objectPropertyAssertions);
-            }
-            #endregion
-
 			List<OWLIssue> issues = new List<OWLIssue>();
 
 			//Temporary working variables
-			List<OWLObjectPropertyAssertion> opAsns = CalibrateObjectAssertions(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>());
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
 			Dictionary<string, List<OWLIndividualExpression>> individualsCache = new Dictionary<string, List<OWLIndividualExpression>>();
 

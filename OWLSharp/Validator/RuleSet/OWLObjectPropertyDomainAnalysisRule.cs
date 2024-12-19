@@ -26,31 +26,13 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-			OWLIndividualExpression swapIdvExpr;
-            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
 			//ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyDomain(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV1) -> ERROR
 			foreach (OWLObjectPropertyDomain opDomain in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>())
 			{
 				bool isObjectInverseOf = opDomain.ObjectPropertyExpression is OWLObjectInverseOf;
-            	List<OWLObjectPropertyAssertion> opDomainAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opDomain.ObjectPropertyExpression);
-
-				#region Calibration
-				for (int i=0; i<opDomainAsns.Count; i++)
-				{
-					//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-					if (opDomainAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-					{   
-						swapIdvExpr = opDomainAsns[i].SourceIndividualExpression;
-						opDomainAsns[i].SourceIndividualExpression = opDomainAsns[i].TargetIndividualExpression;
-						opDomainAsns[i].TargetIndividualExpression = swapIdvExpr;
-						opDomainAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-					}
-				}
-				opDomainAsns = OWLAxiomHelper.RemoveDuplicates(opDomainAsns);
-				#endregion
-
-				foreach (OWLObjectPropertyAssertion opDomainAsn in opDomainAsns)
+            	foreach (OWLObjectPropertyAssertion opDomainAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opDomain.ObjectPropertyExpression))
 				{
 					if (ontology.CheckIsNegativeIndividualOf(opDomain.ClassExpression, isObjectInverseOf ? opDomainAsn.TargetIndividualExpression : opDomainAsn.SourceIndividualExpression))
 						issues.Add(new OWLIssue(

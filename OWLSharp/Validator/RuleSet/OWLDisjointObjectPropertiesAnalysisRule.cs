@@ -28,8 +28,7 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
 			//Temporary working variables
-			OWLIndividualExpression swapIdvExpr;
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 			List<OWLObjectPropertyAssertion> disjObPropAsns = new List<OWLObjectPropertyAssertion>();
 
             //DisjointObjectProperties(OP1,OP2) ^ ObjectPropertyAssertion(OP1,IDV1,IDV2) ^ ObjectPropertyAssertion(OP2,IDV1,IDV2) -> ERROR
@@ -38,21 +37,6 @@ namespace OWLSharp.Validator
 				disjObPropAsns.Clear();
 				foreach (OWLObjectPropertyExpression disjObPropExpr in disjObProps.ObjectPropertyExpressions)
 					disjObPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, disjObPropExpr));
-
-				#region Calibration
-				for (int i=0; i<disjObPropAsns.Count; i++)
-				{
-					//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-					if (disjObPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-					{   
-						swapIdvExpr = disjObPropAsns[i].SourceIndividualExpression;
-						disjObPropAsns[i].SourceIndividualExpression = disjObPropAsns[i].TargetIndividualExpression;
-						disjObPropAsns[i].TargetIndividualExpression = swapIdvExpr;
-						disjObPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-					}
-				}
-				disjObPropAsns = OWLAxiomHelper.RemoveDuplicates(disjObPropAsns);
-				#endregion
 
 				foreach (var conflictingDisjObPropAsnsGroup in disjObPropAsns.GroupBy(opAsn => new { 
 																	SrcIdv = opAsn.SourceIndividualExpression.GetIRI().ToString(), 

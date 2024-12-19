@@ -28,39 +28,8 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-			OWLIndividualExpression swapIdvExpr;
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-			List<OWLNegativeObjectPropertyAssertion> nopAsns = ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>();
-
-			#region Calibration (ObjectPropertyAssertion)
-			for (int i=0; i<opAsns.Count; i++)
-			{
-				//In case the object assertion works under inverse logic, we must swap source/target of the object assertion
-				if (opAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-				{   
-					swapIdvExpr = opAsns[i].SourceIndividualExpression;
-					opAsns[i].SourceIndividualExpression = opAsns[i].TargetIndividualExpression;
-					opAsns[i].TargetIndividualExpression = swapIdvExpr;
-					opAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-				}
-			}
-			opAsns = OWLAxiomHelper.RemoveDuplicates(opAsns);
-			#endregion
-
-			#region Calibration (NegativeObjectPropertyAssertion)
-			for (int i=0; i<nopAsns.Count; i++)
-			{
-				//In case the negative object assertion works under inverse logic, we must swap source/target of the object assertion
-				if (nopAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-				{   
-					swapIdvExpr = nopAsns[i].SourceIndividualExpression;
-					nopAsns[i].SourceIndividualExpression = nopAsns[i].TargetIndividualExpression;
-					nopAsns[i].TargetIndividualExpression = swapIdvExpr;
-					nopAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
-				}
-			}
-			nopAsns = OWLAxiomHelper.RemoveDuplicates(nopAsns);
-			#endregion
+			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+			List<OWLNegativeObjectPropertyAssertion> nopAsns = OWLAssertionAxiomHelper.CalibrateNegativeObjectAssertions(ontology);
 
 			//NegativeObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ERROR
             foreach (OWLNegativeObjectPropertyAssertion nopAsn in nopAsns)
