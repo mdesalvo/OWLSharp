@@ -25,6 +25,26 @@ namespace OWLSharp.Extensions.SKOS
     public static class SKOSHelper
     {
         #region Methods
+        public static bool CheckHasConcept(this OWLOntology ontology, RDFResource conceptScheme, RDFResource concept)
+            => conceptScheme != null && concept != null && ontology != null && ontology.GetConceptsInScheme(conceptScheme).Any(c => c.Equals(concept));
+
+        public static List<RDFResource> GetConceptsInScheme(this OWLOntology ontology, RDFResource skosConceptScheme)
+        {
+            List<RDFResource> conceptsInScheme = new List<RDFResource>();
+
+            if (skosConceptScheme != null && ontology != null)
+            {
+                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosInSchemeAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
+
+                //skos:inScheme
+                foreach (OWLObjectPropertyAssertion skosInSchemeAsn in skosInSchemeAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConceptScheme)))
+                    conceptsInScheme.Add(skosInSchemeAsn.SourceIndividualExpression.GetIRI());
+            }
+
+            return RDFQueryUtilities.RemoveDuplicates(conceptsInScheme);
+        }
+
         public static bool CheckHasBroaderConcept(this OWLOntology ontology, RDFResource childConcept, RDFResource parentConcept)
             => childConcept != null && parentConcept != null && ontology != null && ontology.GetBroaderConcepts(childConcept).Any(concept => concept.Equals(parentConcept));
 
