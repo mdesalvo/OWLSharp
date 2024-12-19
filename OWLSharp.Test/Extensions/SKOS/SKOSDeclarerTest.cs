@@ -35,7 +35,24 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 2);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSConceptScheme(null, [ new RDFResource("ex:MilanGM") ]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSConceptScheme(null, [ new RDFResource("ex:ConceptScheme") ]));
+        }
+
+        [TestMethod]
+        public void ShouldDeclareConcept()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclareSKOSConcept(new RDFResource("ex:Concept"), [
+                new RDFPlainLiteral("This is a concept"), 
+                new RDFPlainLiteral("This is a concept", "en-US")]);
+
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 3);
+            Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 1);
+            Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
+
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSConcept(null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSConcept(new RDFResource("ex:Concept"), [
+                new RDFPlainLiteral("This is a concept"), new RDFPlainLiteral("This is the same concept")]));
         }
         #endregion
     }

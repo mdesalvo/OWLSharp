@@ -16,6 +16,7 @@
 
 using OWLSharp.Ontology;
 using RDFSharp.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Extensions.SKOS
@@ -51,6 +52,41 @@ namespace OWLSharp.Extensions.SKOS
                         new OWLNamedIndividual(concept),
                         new OWLNamedIndividual(conceptSchemeUri)));
                 }
+            }
+
+            return ontology;
+        }
+
+        public static OWLOntology DeclareSKOSConcept(this OWLOntology ontology, RDFResource conceptUri,
+            RDFPlainLiteral[] preferredLabels=null)
+        {
+            #region Guards
+            if (conceptUri == null)
+                throw new OWLException("Cannot declare concept because given \"conceptUri\" parameter is null");
+            #endregion
+
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
+            ontology.DeclareEntity(new OWLNamedIndividual(conceptUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+                new OWLNamedIndividual(conceptUri)));
+            if (preferredLabels?.Count() > 0)
+            {
+                ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
+
+                HashSet<string> langtagLookup = new HashSet<string>();
+                foreach (RDFPlainLiteral preferredLabel in preferredLabels)
+                {
+                    //skos:prefLabel annotation requires uniqueness of language tags foreach skos:Concept
+                    if (langtagLookup.Contains(preferredLabel.Language))
+                        throw new OWLException($"Cannot setup preferred label of concept {conceptUri} because more than one occurrence of the same language tag is not allowed!");
+
+                    langtagLookup.Add(preferredLabel.Language);
+                    ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
+                        new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
+                        conceptUri,
+                        new OWLLiteral(preferredLabel)));
+                }   
             }
 
             return ontology;
