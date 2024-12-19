@@ -164,6 +164,30 @@ namespace OWLSharp.Extensions.SKOS
             return RDFQueryUtilities.RemoveDuplicates(broadMatchConcepts);
         }
 
+        public static bool CheckHasNarrowMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
+            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetNarrowMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+        public static List<RDFResource> GetNarrowMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
+        {
+            List<RDFResource> narrowMatchConcepts = new List<RDFResource>();
+
+            if (skosConcept != null && ontology != null)
+            {
+                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosNarrowMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.NARROW_MATCH));
+                List<OWLObjectPropertyAssertion> skosBroadMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.BROAD_MATCH));
+
+                //skos:narrowMatch
+                foreach (OWLObjectPropertyAssertion skosNarrowMatchAsn in skosNarrowMatchAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConcept)))
+                    narrowMatchConcepts.Add(skosNarrowMatchAsn.TargetIndividualExpression.GetIRI());
+                //skos:broadMatch
+                foreach (OWLObjectPropertyAssertion skosBroadMatchAsn in skosBroadMatchAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConcept)))
+                    narrowMatchConcepts.Add(skosBroadMatchAsn.SourceIndividualExpression.GetIRI());
+            }
+
+            narrowMatchConcepts.RemoveAll(c => c.Equals(skosConcept));
+            return RDFQueryUtilities.RemoveDuplicates(narrowMatchConcepts);
+        }
+
         public static bool CheckHasCloseMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
             => leftConcept != null && rightConcept != null && ontology != null && ontology.GetCloseMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
         public static List<RDFResource> GetCloseMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
