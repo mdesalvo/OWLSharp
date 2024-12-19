@@ -67,6 +67,50 @@ namespace OWLSharp.Extensions.SKOS
 
             return broaderTransitiveConcepts;
         }
+
+        public static bool CheckHasNarrowerConcept(this OWLOntology ontology, RDFResource parentConcept, RDFResource childConcept)
+            => parentConcept != null && childConcept != null && ontology != null && ontology.GetNarrowerConcepts(parentConcept).Any(concept => concept.Equals(childConcept));
+
+        public static List<RDFResource> GetNarrowerConcepts(this OWLOntology ontology, RDFResource skosConcept)
+        {
+            List<RDFResource> narrowerConcepts = new List<RDFResource>();
+
+            if (skosConcept != null && ontology != null)
+            {
+                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosNarrowerAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER));
+                List<OWLObjectPropertyAssertion> skosNarrowerTransitiveAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER_TRANSITIVE));
+
+                //skos:narrower
+                foreach (OWLObjectPropertyAssertion skosNarrowerAsn in skosNarrowerAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConcept)))
+                    narrowerConcepts.Add(skosNarrowerAsn.TargetIndividualExpression.GetIRI());
+
+                //skos:narrowerTransitive
+                narrowerConcepts.AddRange(ontology.SubsumeNarrowerConceptTransitivity(skosConcept, skosNarrowerTransitiveAsns, new Dictionary<long, RDFResource>()));
+            }
+
+            return narrowerConcepts;
+        }
+        internal static List<RDFResource> SubsumeNarrowerConceptTransitivity(this OWLOntology ontology, RDFResource skosConcept, List<OWLObjectPropertyAssertion> skosNarrowerTransitiveAsns, Dictionary<long, RDFResource> visitContext)
+        {
+            List<RDFResource> narrowerTransitiveConcepts = new List<RDFResource>();
+
+            #region visitContext
+            if (!visitContext.ContainsKey(skosConcept.PatternMemberID))
+                visitContext.Add(skosConcept.PatternMemberID, skosConcept);
+            else
+                return narrowerTransitiveConcepts;
+            #endregion
+
+            //skos:narrowerTransitive
+            foreach (OWLObjectPropertyAssertion skosNarrowerTransitiveAsn in skosNarrowerTransitiveAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConcept)))
+                narrowerTransitiveConcepts.Add(skosNarrowerTransitiveAsn.TargetIndividualExpression.GetIRI());
+
+            foreach (RDFResource narrowerTransitiveConcept in narrowerTransitiveConcepts.ToList())
+                narrowerTransitiveConcepts.AddRange(ontology.SubsumeNarrowerConceptTransitivity(narrowerTransitiveConcept, skosNarrowerTransitiveAsns, visitContext));
+
+            return narrowerTransitiveConcepts;
+        }
         #endregion
 
         #region Utilities
