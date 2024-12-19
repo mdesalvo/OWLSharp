@@ -58,7 +58,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static OWLOntology DeclareSKOSConcept(this OWLOntology ontology, RDFResource concept,
-            RDFPlainLiteral[] labels=null)
+            RDFPlainLiteral[] labels=null, RDFResource conceptScheme=null)
         {
             #region Guards
             if (concept == null)
@@ -90,11 +90,21 @@ namespace OWLSharp.Extensions.SKOS
                 }   
             }
 
+            if (conceptScheme != null)
+            {
+                ontology.DeclareSKOSConceptScheme(conceptScheme);
+                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                    new OWLNamedIndividual(concept),
+                    new OWLNamedIndividual(conceptScheme)));
+            }
+
             return ontology;
         }
 
         public static OWLOntology DeclareSKOSCollection(this OWLOntology ontology, RDFResource collection,
-            RDFResource[] concepts, RDFPlainLiteral[] labels=null)
+            RDFResource[] concepts, RDFPlainLiteral[] labels=null, RDFResource conceptScheme=null)
         {
             #region Guards
             if (collection == null)
@@ -138,6 +148,16 @@ namespace OWLSharp.Extensions.SKOS
                         collection,
                         new OWLLiteral(preferredLabel)));
                 }
+            }
+
+            if (conceptScheme != null)
+            {
+                ontology.DeclareSKOSConceptScheme(conceptScheme);
+                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
+                    new OWLNamedIndividual(collection),
+                    new OWLNamedIndividual(conceptScheme)));
             }
 
             return ontology;

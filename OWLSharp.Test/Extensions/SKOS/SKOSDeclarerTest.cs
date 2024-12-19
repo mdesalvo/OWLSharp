@@ -56,6 +56,20 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
+        public void ShouldDeclareConceptInScheme()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclareSKOSConcept(new RDFResource("ex:Concept"), [
+                new RDFPlainLiteral("This is a concept"), 
+                new RDFPlainLiteral("This is a concept", "en-US")], new RDFResource("ex:ConceptScheme"));
+
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 6);
+            Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 2);
+            Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
+            Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
+        }
+
+        [TestMethod]
         public void ShouldDeclareCollection()
         {
             OWLOntology ontology = new OWLOntology();
@@ -73,6 +87,20 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSCollection(new RDFResource("ex:Collection"), 
                 [ new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB") ],
                 [ new RDFPlainLiteral("This is a collection", "en-US"), new RDFPlainLiteral("This is the same collection", "en-US") ]));
+        }
+
+        [TestMethod]
+        public void ShouldDeclareCollectionInScheme()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclareSKOSCollection(new RDFResource("ex:Collection"), 
+                [ new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB") ], 
+                [ new RDFPlainLiteral("This is a collection"), new RDFPlainLiteral("This is a collection", "en-US") ], new RDFResource("ex:ConceptScheme"));
+
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 10);
+            Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 4);
+            Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
+            Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 3);
         }
         #endregion
     }
