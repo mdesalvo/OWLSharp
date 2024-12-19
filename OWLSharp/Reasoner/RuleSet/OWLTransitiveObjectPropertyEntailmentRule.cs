@@ -38,7 +38,6 @@ namespace OWLSharp.Reasoner
                 OWLObjectProperty trnObjPropInvOfValue = (trnObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
                 #region Recalibration
-                //Extract (calibrated and deduplicated) object assertions of the current transitive property
                 List <OWLObjectPropertyAssertion> trnObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, trnObjProp.ObjectPropertyExpression);
                 for (int i=0; i<trnObjPropAsns.Count; i++)
                 {

@@ -51,8 +51,7 @@ namespace OWLSharp.Validator
 			{
 				OWLObjectProperty asymObjPropInvOfValue = (asymObjProp.ObjectPropertyExpression as OWLObjectInverseOf)?.ObjectProperty;
 
-				#region Calibration
-                //Extract (calibrated and deduplicated) object assertions of the current asymmetric property
+				#region Recalibration
                 List <OWLObjectPropertyAssertion> asymObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, asymObjProp.ObjectPropertyExpression);
                 for (int i=0; i<asymObjPropAsns.Count; i++)
                 {
