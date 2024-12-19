@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareRule()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.AddRule(new SWRLRule(
+            ontology.DeclareRule(new SWRLRule(
                 new RDFPlainLiteral("SWRL1"),
                 new RDFPlainLiteral("This is a test SWRL rule"),
                 new SWRLAntecedent(),
@@ -40,9 +40,9 @@ namespace OWLSharp.Test.Ontology
                 new RDFPlainLiteral("This is a test SWRL rule"),
                 new SWRLAntecedent(),
                 new SWRLConsequent())));
-            Assert.ThrowsException<OWLException>(() => ontology.AddRule(null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareRule(null));
 
-            ontology.AddRule(new SWRLRule(
+            ontology.DeclareRule(new SWRLRule(
                 new RDFPlainLiteral("SWRL1"),
                 new RDFPlainLiteral("This is a test SWRL rule"),
                 new SWRLAntecedent(),

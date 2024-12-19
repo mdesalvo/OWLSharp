@@ -93,7 +93,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareObjectPropertyAxiom()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.AddObjectPropertyAxiom(new OWLSubObjectPropertyOf(
+            ontology.DeclareObjectPropertyAxiom(new OWLSubObjectPropertyOf(
                 new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE))));
 
@@ -101,9 +101,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasObjectPropertyAxiom(new OWLSubObjectPropertyOf(
                 new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE)))));
-            Assert.ThrowsException<OWLException>(() => ontology.AddObjectPropertyAxiom(null as OWLObjectPropertyAxiom));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareObjectPropertyAxiom(null as OWLObjectPropertyAxiom));
 
-            ontology.AddObjectPropertyAxiom(new OWLSubObjectPropertyOf(
+            ontology.DeclareObjectPropertyAxiom(new OWLSubObjectPropertyOf(
                 new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE)))); //will be discarded, since duplicates are not allowed
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 1);

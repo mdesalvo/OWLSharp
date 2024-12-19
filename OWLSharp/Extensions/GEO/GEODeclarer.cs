@@ -40,29 +40,29 @@ namespace OWLSharp.Extensions.GEO
             #endregion
 
             string wktLiteral = GEOEngine.WKTWriter.Write(new Point(wgs84Coordinate.longitude, wgs84Coordinate.latitude) { SRID = 4326 });
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POINT));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
-            ontology.AddEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
-            ontology.AddEntity(new OWLNamedIndividual(featureUri));
-            ontology.AddEntity(new OWLNamedIndividual(geometryUri));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
                 new OWLNamedIndividual(featureUri)));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.SF.POINT),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 isDefaultGeometry ? new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)
                                   : new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
                 new OWLNamedIndividual(featureUri),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLDataPropertyAssertion(
+            ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                 new OWLNamedIndividual(geometryUri),
                 new OWLLiteral(new RDFTypedLiteral(wktLiteral, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))));
@@ -89,29 +89,29 @@ namespace OWLSharp.Extensions.GEO
             #endregion
 
             string wktLiteral = GEOEngine.WKTWriter.Write(new LineString(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray()) { SRID = 4326 });
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.LINESTRING));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
-            ontology.AddEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
-            ontology.AddEntity(new OWLNamedIndividual(featureUri));
-            ontology.AddEntity(new OWLNamedIndividual(geometryUri));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.LINESTRING));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
                 new OWLNamedIndividual(featureUri)));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.SF.LINESTRING),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 isDefaultGeometry ? new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)
                                   : new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
                 new OWLNamedIndividual(featureUri),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLDataPropertyAssertion(
+            ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                 new OWLNamedIndividual(geometryUri),
                 new OWLLiteral(new RDFTypedLiteral(wktLiteral, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))));
@@ -147,29 +147,29 @@ namespace OWLSharp.Extensions.GEO
             #endregion
 
             string wktLiteral = GEOEngine.WKTWriter.Write(new Polygon(new LinearRing(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray())) { SRID = 4326 });
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POLYGON));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
-            ontology.AddEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
-            ontology.AddEntity(new OWLNamedIndividual(featureUri));
-            ontology.AddEntity(new OWLNamedIndividual(geometryUri));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POLYGON));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
                 new OWLNamedIndividual(featureUri)));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLClassAssertion(
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.GEOSPARQL.SF.POLYGON),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 isDefaultGeometry ? new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)
                                   : new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
                 new OWLNamedIndividual(featureUri),
                 new OWLNamedIndividual(geometryUri)));
-            ontology.AddAssertionAxiom(new OWLDataPropertyAssertion(
+            ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                 new OWLNamedIndividual(geometryUri),
                 new OWLLiteral(new RDFTypedLiteral(wktLiteral, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))));

@@ -21,7 +21,7 @@ namespace OWLSharp.Ontology
 	public static class OWLExpressionHelper
 	{
 		#region Methods
-		public static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
+		internal static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
         {
             List<T> deduplicatedExpressions = new List<T>();
             if (expressions?.Count > 0)

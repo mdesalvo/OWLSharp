@@ -30,7 +30,7 @@ namespace OWLSharp.Ontology
         public static bool CheckHasAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
             => GetAssertionAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), assertionAxiom?.GetXML()));
 
-        public static void AddAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
+        public static void DeclareAssertionAxiom<T>(this OWLOntology ontology, T assertionAxiom) where T : OWLAssertionAxiom
         {
             #region Guards
             if (assertionAxiom == null)

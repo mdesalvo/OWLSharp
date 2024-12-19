@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology
         public static bool CheckHasDatatypeDefinition(this OWLOntology ontology, OWLDatatypeDefinition datatypeDefinition)
             => ontology?.DatatypeDefinitionAxioms.Any(ax => string.Equals(ax.GetXML(), datatypeDefinition?.GetXML())) ?? false;
 
-        public static void AddDatatypeDefinition(this OWLOntology ontology, OWLDatatypeDefinition datatypeDefinition)
+        public static void DeclareDatatypeDefinition(this OWLOntology ontology, OWLDatatypeDefinition datatypeDefinition)
         {
             #region Guards
             if (datatypeDefinition == null)

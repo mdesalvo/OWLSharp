@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareDataPropertyAxiom()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.AddDataPropertyAxiom(new OWLSubDataPropertyOf(
+            ontology.DeclareDataPropertyAxiom(new OWLSubDataPropertyOf(
                 new OWLDataProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLDataProperty(RDFVocabulary.FOAF.TITLE)));
 
@@ -73,9 +73,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasDataPropertyAxiom(new OWLSubDataPropertyOf(
                 new OWLDataProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLDataProperty(RDFVocabulary.FOAF.TITLE))));
-            Assert.ThrowsException<OWLException>(() => ontology.AddDataPropertyAxiom(null as OWLDataPropertyAxiom));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareDataPropertyAxiom(null as OWLDataPropertyAxiom));
 
-            ontology.AddDataPropertyAxiom(new OWLSubDataPropertyOf(
+            ontology.DeclareDataPropertyAxiom(new OWLSubDataPropertyOf(
                 new OWLDataProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLDataProperty(RDFVocabulary.FOAF.TITLE))); //will be discarded, since duplicates are not allowed
             Assert.IsTrue(ontology.DataPropertyAxioms.Count == 1);

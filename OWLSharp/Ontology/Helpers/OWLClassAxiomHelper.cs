@@ -29,7 +29,7 @@ namespace OWLSharp.Ontology
         public static bool CheckHasClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
             => GetClassAxiomsOfType<T>(ontology).Any(ax => string.Equals(ax.GetXML(), classAxiom?.GetXML()));
 
-        public static void AddClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
+        public static void DeclareClassAxiom<T>(this OWLOntology ontology, T classAxiom) where T : OWLClassAxiom
         {
             #region Guards
             if (classAxiom == null)

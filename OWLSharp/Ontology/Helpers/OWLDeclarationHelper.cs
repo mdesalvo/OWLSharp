@@ -31,7 +31,7 @@ namespace OWLSharp.Ontology
 		public static bool CheckHasEntity<T>(this OWLOntology ontology, T entity) where T : OWLExpression, IOWLEntity
             => GetDeclarationAxiomsOfType<T>(ontology).Any(ax => ax.Expression.GetIRI().Equals(entity?.GetIRI()));
 
-		public static void AddEntity<T>(this OWLOntology ontology, T entityIRI) where T : OWLExpression, IOWLEntity
+		public static void DeclareEntity<T>(this OWLOntology ontology, T entityIRI) where T : OWLExpression, IOWLEntity
         {
             #region Guards
             if (entityIRI == null)

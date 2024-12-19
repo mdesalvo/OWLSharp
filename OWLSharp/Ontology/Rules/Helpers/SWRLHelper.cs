@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology
         public static bool CheckHasRule(this OWLOntology ontology, SWRLRule rule)
             => ontology?.Rules.Any(rl => string.Equals(rl.GetXML(), rule?.GetXML())) ?? false;
 
-        public static void AddRule(this OWLOntology ontology, SWRLRule rule)
+        public static void DeclareRule(this OWLOntology ontology, SWRLRule rule)
         {
             #region Guards
             if (rule == null)

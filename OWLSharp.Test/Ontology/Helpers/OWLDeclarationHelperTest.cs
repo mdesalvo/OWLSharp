@@ -87,14 +87,14 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeclareEntities()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.FOAF.PERSON));
-            ontology.AddEntity(new OWLClass(RDFVocabulary.FOAF.PERSON)); //will be discarded, since duplicates are not allowed
-            ontology.AddEntity(new OWLDatatype(RDFVocabulary.FOAF.IMG));
-            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            ontology.AddEntity(new OWLDataProperty(RDFVocabulary.FOAF.AGE));
-            ontology.AddEntity(new OWLAnnotationProperty(RDFVocabulary.FOAF.MAKER));
-            ontology.AddEntity(new OWLNamedIndividual(RDFVocabulary.FOAF.SHA1));
-            (null as OWLOntology).AddEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)); //will be discarded, since null ontology
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.FOAF.PERSON));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.FOAF.PERSON)); //will be discarded, since duplicates are not allowed
+            ontology.DeclareEntity(new OWLDatatype(RDFVocabulary.FOAF.IMG));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.FOAF.AGE));
+            ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.FOAF.MAKER));
+            ontology.DeclareEntity(new OWLNamedIndividual(RDFVocabulary.FOAF.SHA1));
+            (null as OWLOntology).DeclareEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)); //will be discarded, since null ontology
 
             Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLClass>().Count == 1);
             Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLDatatype>().Count == 1);
@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLDataProperty>().Count == 1);
             Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>().Count == 1);
             Assert.IsTrue(ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>().Count == 1);
-            Assert.ThrowsException<OWLException>(() => new OWLOntology().AddEntity(null as OWLClass));
+            Assert.ThrowsException<OWLException>(() => new OWLOntology().DeclareEntity(null as OWLClass));
         }
         #endregion
     }
