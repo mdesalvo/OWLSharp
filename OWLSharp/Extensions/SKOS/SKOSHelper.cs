@@ -115,6 +115,29 @@ namespace OWLSharp.Extensions.SKOS
             return narrowerTransitiveConcepts;
         }
 
+        public static bool CheckHasCloseMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
+            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetCloseMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+
+        public static List<RDFResource> GetCloseMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
+        {
+            List<RDFResource> closeMatchConcepts = new List<RDFResource>();
+
+            if (skosConcept != null && ontology != null)
+            {
+                List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
+                List<OWLObjectPropertyAssertion> skosCloseMatchAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH));
+
+                //skos:closeMatch
+                foreach (OWLObjectPropertyAssertion skosCloseMatchAsn in skosCloseMatchAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConcept)))
+                    closeMatchConcepts.Add(skosCloseMatchAsn.TargetIndividualExpression.GetIRI());
+                foreach (OWLObjectPropertyAssertion skosCloseMatchAsn in skosCloseMatchAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConcept)))
+                    closeMatchConcepts.Add(skosCloseMatchAsn.SourceIndividualExpression.GetIRI());
+            }
+
+            closeMatchConcepts.RemoveAll(c => c.Equals(skosConcept));
+            return RDFQueryUtilities.RemoveDuplicates(closeMatchConcepts);
+        }
+
         public static bool CheckHasExactMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
             => leftConcept != null && rightConcept != null && ontology != null && ontology.GetExactMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
 
