@@ -34,11 +34,15 @@ namespace OWLSharp.Test.Extensions.SKOS
             ontology.AddEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME));
             ontology.AddEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
             ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
+            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.HAS_TOP_CONCEPT));
+            ontology.AddEntity(new OWLObjectProperty(RDFVocabulary.SKOS.TOP_CONCEPT_OF));
             ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:conceptScheme1")));
             ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:conceptScheme2")));
             ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept1")));
             ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept2")));
             ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept3")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept4")));
+            ontology.AddEntity(new OWLNamedIndividual(new RDFResource("ex:concept5")));
             ontology.AddAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
                 new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
@@ -54,6 +58,12 @@ namespace OWLSharp.Test.Extensions.SKOS
             ontology.AddAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                 new OWLNamedIndividual(new RDFResource("ex:concept3"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+               new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+               new OWLNamedIndividual(new RDFResource("ex:concept4"))));
+            ontology.AddAssertionAxiom(new OWLClassAssertion(
+               new OWLClass(RDFVocabulary.SKOS.CONCEPT),
+               new OWLNamedIndividual(new RDFResource("ex:concept5"))));
             ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                 new OWLNamedIndividual(new RDFResource("ex:concept1")),
@@ -62,6 +72,14 @@ namespace OWLSharp.Test.Extensions.SKOS
                 new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                 new OWLNamedIndividual(new RDFResource("ex:concept2")),
                 new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.TOP_CONCEPT_OF),
+                new OWLNamedIndividual(new RDFResource("ex:concept4")),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1"))));
+            ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.SKOS.HAS_TOP_CONCEPT),
+                new OWLNamedIndividual(new RDFResource("ex:conceptScheme1")),
+                new OWLNamedIndividual(new RDFResource("ex:concept5"))));
             ontology.AddAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                 new OWLNamedIndividual(new RDFResource("ex:concept1")),
@@ -73,9 +91,11 @@ namespace OWLSharp.Test.Extensions.SKOS
 
             List<RDFResource> cs1Concepts = ontology.GetConceptsInScheme(new RDFResource("ex:conceptScheme1"));
 
-            Assert.IsTrue(cs1Concepts.Count == 2);
+            Assert.IsTrue(cs1Concepts.Count == 4);
             Assert.IsTrue(ontology.CheckHasConcept(new RDFResource("ex:conceptScheme1"), new RDFResource("ex:concept1")));
             Assert.IsTrue(ontology.CheckHasConcept(new RDFResource("ex:conceptScheme1"), new RDFResource("ex:concept2")));
+            Assert.IsTrue(ontology.CheckHasConcept(new RDFResource("ex:conceptScheme1"), new RDFResource("ex:concept4"))); //via skos:topConceptOf
+            Assert.IsTrue(ontology.CheckHasConcept(new RDFResource("ex:conceptScheme1"), new RDFResource("ex:concept5"))); //via skos:hasTopConcept
 
             Assert.IsTrue((null as OWLOntology).GetConceptsInScheme(new RDFResource("ex:concept1")).Count == 0);
             Assert.IsTrue(ontology.GetConceptsInScheme(null).Count == 0);

@@ -36,10 +36,18 @@ namespace OWLSharp.Extensions.SKOS
             {
                 List<OWLObjectPropertyAssertion> objPropAsns = CalibrateObjectAssertions(ontology);
                 List<OWLObjectPropertyAssertion> skosInSchemeAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
-
+                List<OWLObjectPropertyAssertion> skosHasTopConceptAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.HAS_TOP_CONCEPT));
+                List<OWLObjectPropertyAssertion> skosTopConceptOfAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.SKOS.TOP_CONCEPT_OF));
+                
                 //skos:inScheme
                 foreach (OWLObjectPropertyAssertion skosInSchemeAsn in skosInSchemeAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConceptScheme)))
                     conceptsInScheme.Add(skosInSchemeAsn.SourceIndividualExpression.GetIRI());
+                //skos:hasTopConcept
+                foreach (OWLObjectPropertyAssertion skosHasTopConceptAsn in skosHasTopConceptAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(skosConceptScheme)))
+                    conceptsInScheme.Add(skosHasTopConceptAsn.TargetIndividualExpression.GetIRI());
+                //skos:topConceptOf
+                foreach (OWLObjectPropertyAssertion skosTopConceptOfAsn in skosTopConceptOfAsns.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(skosConceptScheme)))
+                    conceptsInScheme.Add(skosTopConceptOfAsn.SourceIndividualExpression.GetIRI());
             }
 
             return RDFQueryUtilities.RemoveDuplicates(conceptsInScheme);
