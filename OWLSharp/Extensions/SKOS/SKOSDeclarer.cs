@@ -17,7 +17,6 @@
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OWLSharp.Extensions.SKOS
 {
@@ -38,7 +37,7 @@ namespace OWLSharp.Extensions.SKOS
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
                 new OWLNamedIndividual(conceptScheme)));
 
-            if (concepts?.Count() > 0)
+            if (concepts?.Length > 0)
             {
                 ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
                 ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
@@ -72,7 +71,7 @@ namespace OWLSharp.Extensions.SKOS
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT),
                 new OWLNamedIndividual(concept)));
 
-            if (labels?.Count() > 0)
+            if (labels?.Length > 0)
             {
                 ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
 
@@ -81,7 +80,7 @@ namespace OWLSharp.Extensions.SKOS
                 {
                     //(S14) skos:prefLabel annotation requires uniqueness of language tags foreach rdfs:Resource
                     if (langtagLookup.Contains(preferredLabel.Language))
-                        throw new OWLException($"Cannot setup preferred label of concept {concept} because having more than one occurrence of the same language tag is not allowed!");
+                        throw new OWLException($"Cannot setup preferred label of concept '{concept}' because having more than one occurrence of the same language tag is not allowed!");
 
                     langtagLookup.Add(preferredLabel.Language);
                     ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
@@ -122,7 +121,7 @@ namespace OWLSharp.Extensions.SKOS
                     new OWLNamedIndividual(concept)));
             }
 
-            if (labels?.Count() > 0)
+            if (labels?.Length > 0)
             {
                 ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
 
@@ -131,7 +130,7 @@ namespace OWLSharp.Extensions.SKOS
                 {
                     //(S14) skos:prefLabel annotation requires uniqueness of language tags foreach rdfs:Resource
                     if (langtagLookup.Contains(preferredLabel.Language))
-                        throw new OWLException($"Cannot setup preferred label of collection {collection} because having more than one occurrence of the same language tag is not allowed!");
+                        throw new OWLException($"Cannot setup preferred label of collection '{collection}' because having more than one occurrence of the same language tag is not allowed!");
 
                     langtagLookup.Add(preferredLabel.Language);
                     ontology.DeclareAnnotationAxiom(new OWLAnnotationAssertion(
