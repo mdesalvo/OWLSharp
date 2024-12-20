@@ -143,6 +143,7 @@ namespace OWLSharp.Extensions.TIME
                         new OWLNamedIndividual(timeInstant.Description),
                         new OWLLiteral(new RDFTypedLiteral($"{Convert.ToString(timeInstant.Description.Coordinate.Second, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
                 }
+
                 if (timeInstant.Description.Coordinate.Metadata.MonthOfYear != null)
                 {
                     ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.MONTH_OF_YEAR));
@@ -172,21 +173,68 @@ namespace OWLSharp.Extensions.TIME
             //Add knowledge to the A-BOX (time:inTimePosition)
             if (timeInstant.Position != null)
             {
-                ontology.Data.DeclareObjectAssertion(timeInstant, RDFVocabulary.TIME.IN_TIME_POSITION, timeInstant.Position);
-                ontology.Data.DeclareIndividual(timeInstant.Position);
-                ontology.Data.DeclareIndividualType(timeInstant.Position, RDFVocabulary.TIME.TIME_POSITION);
-                ontology.Data.DeclareObjectAssertion(timeInstant.Position, RDFVocabulary.TIME.HAS_TRS, timeInstant.Position.TRS);
+                ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.TIME_POSITION));
+                ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.TRS));
+                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION));
+                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS));
+                ontology.DeclareEntity(new OWLNamedIndividual(timeInstant.Position));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION),
+                    new OWLNamedIndividual(timeInstant),
+                    new OWLNamedIndividual(timeInstant.Position)));
+                ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.TIME_POSITION),
+                    new OWLNamedIndividual(timeInstant.Position)));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                    new OWLNamedIndividual(timeInstant.Position),
+                    new OWLNamedIndividual(timeInstant.Position.TRS)));
+
                 if (timeInstant.Position.IsNominal)
-                    ontology.Data.DeclareObjectAssertion(timeInstant.Position, RDFVocabulary.TIME.NOMINAL_POSITION, timeInstant.Position.NominalValue);
+                {
+                    ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.NOMINAL_POSITION));
+                    ontology.DeclareEntity(new OWLNamedIndividual(timeInstant.Position.NominalValue));
+                    ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.TIME.NOMINAL_POSITION),
+                        new OWLNamedIndividual(timeInstant.Position),
+                        new OWLNamedIndividual(timeInstant.Position.NominalValue)));
+                }
                 else
-                    ontology.Data.DeclareDatatypeAssertion(timeInstant.Position, RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral($"{Convert.ToString(timeInstant.Position.NumericValue, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE));
+                {
+                    ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION));
+                    ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION),
+                        new OWLNamedIndividual(timeInstant.Position),
+                        new OWLLiteral(new RDFTypedLiteral($"{Convert.ToString(timeInstant.Position.NumericValue, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
+                }
+
                 if (timeInstant.Position.PositionalUncertainty != null)
                 {
-                    ontology.Data.DeclareObjectAssertion(timeInstant.Position, RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY, timeInstant.Position.PositionalUncertainty);
-                    ontology.Data.DeclareIndividual(timeInstant.Position.PositionalUncertainty);
-                    ontology.Data.DeclareIndividualType(timeInstant.Position.PositionalUncertainty, RDFVocabulary.TIME.DURATION);
-                    ontology.Data.DeclareObjectAssertion(timeInstant.Position.PositionalUncertainty, RDFVocabulary.TIME.UNIT_TYPE, timeInstant.Position.PositionalUncertainty.UnitType);
-                    ontology.Data.DeclareDatatypeAssertion(timeInstant.Position.PositionalUncertainty, RDFVocabulary.TIME.NUMERIC_DURATION, new RDFTypedLiteral($"{Convert.ToString(timeInstant.Position.PositionalUncertainty.Value, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE));
+                    ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.TEMPORAL_UNIT));
+                    ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.DURATION));
+                    ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE));
+                    ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_DURATION));
+                    ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY));
+                    ontology.DeclareEntity(new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty));
+                    ontology.DeclareEntity(new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty.UnitType));
+                    ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.TIME.TEMPORAL_UNIT),
+                        new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty.UnitType)));
+                    ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                        new OWLClass(RDFVocabulary.TIME.DURATION),
+                        new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty)));
+                    ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY),
+                        new OWLNamedIndividual(timeInstant.Position),
+                        new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty)));
+                    ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE),
+                        new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty),
+                        new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty.UnitType)));
+                    ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_DURATION),
+                        new OWLNamedIndividual(timeInstant.Position.PositionalUncertainty),
+                        new OWLLiteral(new RDFTypedLiteral($"{Convert.ToString(timeInstant.Position.PositionalUncertainty.Value, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
                 }
             }
 
