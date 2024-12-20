@@ -251,70 +251,91 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX
-            ontology.Data.DeclareIndividual(featureUri);
-            ontology.Data.DeclareObjectAssertion(featureUri, RDFVocabulary.TIME.HAS_TIME, timeInterval);
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME));
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(featureUri),
+                new OWLNamedIndividual(timeInterval)));
             ontology.DeclareTIMEIntervalFeatureInternal(timeInterval);
 
             return ontology;
         }
-        internal static OWLOntology DeclareTIMEIntervalFeatureInternal(this OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static OWLOntology DeclareTIMEIntervalFeatureInternal(this OWLOntology ontology, TIMEInterval timeInterval)
         {
             //Add knowledge to the A-BOX
-            timeOntology.Data.DeclareIndividual(timeInterval);
-            timeOntology.Data.DeclareIndividualType(timeInterval, RDFVocabulary.TIME.PROPER_INTERVAL);
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.INTERVAL));
+            ontology.DeclareEntity(new OWLNamedIndividual(timeInterval));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(timeInterval)));
 
             //Add knowledge to the A-BOX (time:hasXSDDuration)
             if (timeInterval.TimeSpan.HasValue)
-                timeOntology.Data.DeclareDatatypeAssertion(timeInterval, RDFVocabulary.TIME.HAS_XSD_DURATION, new RDFTypedLiteral($"{XmlConvert.ToString(timeInterval.TimeSpan.Value)}", RDFModelEnums.RDFDatatypes.XSD_DURATION));
+            {
+                ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION));
+                ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION),
+                    new OWLNamedIndividual(timeInterval),
+                    new OWLLiteral(new RDFTypedLiteral($"{XmlConvert.ToString(timeInterval.TimeSpan.Value)}", RDFModelEnums.RDFDatatypes.XSD_DURATION))));
+            }
 
             //Add knowledge to the A-BOX (time:hasBeginning)
             if (timeInterval.Beginning != null)
             {
-                timeOntology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_BEGINNING, timeInterval.Beginning);
-                timeOntology.DeclareTIMEInstantFeatureInternal(timeInterval.Beginning);
+                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.HAS_BEGINNING));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.HAS_BEGINNING),
+                    new OWLNamedIndividual(timeInterval),
+                    new OWLNamedIndividual(timeInterval.Beginning)));
+                ontology.DeclareTIMEInstantFeatureInternal(timeInterval.Beginning);
             }
 
             //Add knowledge to the A-BOX (time:hasEnd)
             if (timeInterval.End != null)
             {
-                timeOntology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_END, timeInterval.End);
-                timeOntology.DeclareTIMEInstantFeatureInternal(timeInterval.End);
+                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.HAS_END));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.HAS_END),
+                    new OWLNamedIndividual(timeInterval),
+                    new OWLNamedIndividual(timeInterval.End)));
+                ontology.DeclareTIMEInstantFeatureInternal(timeInterval.End);
             }
 
             //Add knowledge to the A-BOX (time:hasDurationDescription)
             if (timeInterval.Description != null)
             {
-                timeOntology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, timeInterval.Description);
-                timeOntology.Data.DeclareIndividual(timeInterval.Description);
-                timeOntology.Data.DeclareIndividualType(timeInterval.Description, RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION);
-                timeOntology.Data.DeclareObjectAssertion(timeInterval.Description, RDFVocabulary.TIME.HAS_TRS, timeInterval.Description.Extent.Metadata.TRS);
+                ontology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, timeInterval.Description);
+                ontology.Data.DeclareIndividual(timeInterval.Description);
+                ontology.Data.DeclareIndividualType(timeInterval.Description, RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION);
+                ontology.Data.DeclareObjectAssertion(timeInterval.Description, RDFVocabulary.TIME.HAS_TRS, timeInterval.Description.Extent.Metadata.TRS);
                 if (timeInterval.Description.Extent.Years.HasValue)
-                    timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.YEARS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Years, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+                    ontology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.YEARS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Years, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
                 if (timeInterval.Description.Extent.Months.HasValue)
-                    timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.MONTHS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Months, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+                    ontology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.MONTHS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Months, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
                 if (timeInterval.Description.Extent.Weeks.HasValue)
-                    timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.WEEKS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Weeks, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+                    ontology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.WEEKS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Weeks, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
                 if (timeInterval.Description.Extent.Days.HasValue)
-                    timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.DAYS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Days, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+                    ontology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.DAYS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Days, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
                 if (timeInterval.Description.Extent.Hours.HasValue)
-                    timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.HOURS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Hours, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+                    ontology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.HOURS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Hours, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
                 if (timeInterval.Description.Extent.Minutes.HasValue)
-                    timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.MINUTES, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Minutes, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+                    ontology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.MINUTES, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Minutes, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
                 if (timeInterval.Description.Extent.Seconds.HasValue)
-                    timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.SECONDS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Seconds, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
+                    ontology.Data.DeclareDatatypeAssertion(timeInterval.Description, RDFVocabulary.TIME.SECONDS, new RDFTypedLiteral(Convert.ToString(timeInterval.Description.Extent.Seconds, CultureInfo.InvariantCulture), RDFModelEnums.RDFDatatypes.XSD_DECIMAL));
             }
 
             //Add knowledge to the A-BOX (time:hasDuration)
             if (timeInterval.Duration != null)
             {
-                timeOntology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_DURATION, timeInterval.Duration);
-                timeOntology.Data.DeclareIndividual(timeInterval.Duration);
-                timeOntology.Data.DeclareIndividualType(timeInterval.Duration, RDFVocabulary.TIME.DURATION);
-                timeOntology.Data.DeclareObjectAssertion(timeInterval.Duration, RDFVocabulary.TIME.UNIT_TYPE, timeInterval.Duration.UnitType);
-                timeOntology.Data.DeclareDatatypeAssertion(timeInterval.Duration, RDFVocabulary.TIME.NUMERIC_DURATION, new RDFTypedLiteral($"{Convert.ToString(timeInterval.Duration.Value, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE));
+                ontology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_DURATION, timeInterval.Duration);
+                ontology.Data.DeclareIndividual(timeInterval.Duration);
+                ontology.Data.DeclareIndividualType(timeInterval.Duration, RDFVocabulary.TIME.DURATION);
+                ontology.Data.DeclareObjectAssertion(timeInterval.Duration, RDFVocabulary.TIME.UNIT_TYPE, timeInterval.Duration.UnitType);
+                ontology.Data.DeclareDatatypeAssertion(timeInterval.Duration, RDFVocabulary.TIME.NUMERIC_DURATION, new RDFTypedLiteral($"{Convert.ToString(timeInterval.Duration.Value, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE));
             }
 
-            return timeOntology;
+            return ontology;
         }
         #endregion
 
