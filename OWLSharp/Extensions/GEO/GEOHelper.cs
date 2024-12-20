@@ -33,12 +33,10 @@ namespace OWLSharp.Extensions.GEO
         // LON => X (West/East, -180 ->180)
         // LAT => Y (North/South, -90->90)
 
-        #region Properties
         internal static WKTReader WKTReader = new WKTReader();
         internal static WKTWriter WKTWriter = new WKTWriter();
         internal static GMLReader GMLReader = new GMLReader();
         internal static GMLWriter GMLWriter = new GMLWriter();
-        #endregion
 
         #region Declarer
         public static OWLOntology DeclareGEOPointFeature(this OWLOntology ontology, RDFResource featureUri,
