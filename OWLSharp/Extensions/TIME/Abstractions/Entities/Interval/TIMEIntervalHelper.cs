@@ -45,9 +45,6 @@ namespace OWLSharp.Extensions.TIME
             return aTimeIntervalBeginningCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 1;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalBefore the given bInterval
-        /// </summary>
         public static bool CheckBefore(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -74,9 +71,6 @@ namespace OWLSharp.Extensions.TIME
             return aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalBeginningCoordinate) == -1;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalContains the given bInterval
-        /// </summary>
         public static bool CheckContains(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -114,17 +108,11 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 1;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalDisjoint the given bInterval
-        /// </summary>
         public static bool CheckDisjoint(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
             TIMECalendarReferenceSystem calendarTRS=null)
             => CheckBefore(timeOntology, aTimeIntervalURI, bTimeIntervalURI, calendarTRS)
                  || CheckAfter(timeOntology, aTimeIntervalURI, bTimeIntervalURI, calendarTRS);
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalDuring the given bInterval
-        /// </summary>
         public static bool CheckDuring(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -162,9 +150,6 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == -1;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalEquals the given bInterval
-        /// </summary>
         public static bool CheckEquals(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -202,9 +187,6 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.Equals(bTimeIntervalEndCoordinate);
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalFinishedBy the given bInterval
-        /// </summary>
         public static bool CheckFinishedBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -242,9 +224,6 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 0;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalFinishes the given bInterval
-        /// </summary>
         public static bool CheckFinishes(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -282,9 +261,6 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 0;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalIn the given bInterval
-        /// </summary>
         public static bool CheckIn(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -323,9 +299,6 @@ namespace OWLSharp.Extensions.TIME
                       && !CheckEquals(timeOntology, aTimeIntervalURI, bTimeIntervalURI);
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalMeets the given bInterval
-        /// </summary>
         public static bool CheckMeets(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -352,9 +325,6 @@ namespace OWLSharp.Extensions.TIME
             return aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalBeginningCoordinate) == 0;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalMetBy the given bInterval
-        /// </summary>
         public static bool CheckMetBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -381,9 +351,6 @@ namespace OWLSharp.Extensions.TIME
             return aTimeIntervalBeginningCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 0;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalOverlaps the given bInterval
-        /// </summary>
         public static bool CheckOverlaps(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -422,9 +389,6 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == -1;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalOverlappedBy the given bInterval
-        /// </summary>
         public static bool CheckOverlappedBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -463,9 +427,6 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 1;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalStarts the given bInterval
-        /// </summary>
         public static bool CheckStarts(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
@@ -503,9 +464,6 @@ namespace OWLSharp.Extensions.TIME
                     && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == -1;
         }
 
-        /// <summary>
-        /// Checks if the given aInterval is time:intervalStartedBy the given bInterval
-        /// </summary>
         public static bool CheckStartedBy(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS = null)
         {

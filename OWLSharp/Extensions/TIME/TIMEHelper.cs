@@ -23,10 +23,10 @@ using System.Xml;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public static class TIMEOntologyHelper
+    public static class TIMEHelper
     {
         #region Declarer
-        public static OWLOntology DeclareInstantFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInstant timeInstant)
+        public static OWLOntology DeclareTIMEInstantFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInstant timeInstant)
         {
             #region Guards
             if (featureUri == null)
@@ -104,7 +104,7 @@ namespace OWLSharp.Extensions.TIME
             return ontology;
         }
 
-        public static OWLOntology DeclareIntervalFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInterval timeInterval)
+        public static OWLOntology DeclareTIMEIntervalFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInterval timeInterval)
         {
             #region Guards
             if (featureUri == null)
@@ -975,7 +975,6 @@ namespace OWLSharp.Extensions.TIME
 
             return compatibleBeginning;
         }
-
         public static TIMECoordinate GetEndOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards

@@ -79,8 +79,8 @@ namespace OWLSharp.Extensions.TIME
             Metadata = new TIMECoordinateMetadata(
                 TIMECalendarReferenceSystem.Gregorian, 
                 RDFVocabulary.TIME.UNIT_SECOND,
-                TIMEOntologyHelper.GetMonthOfYear(utcDateTime.Month),
-                TIMEOntologyHelper.GetDayOfWeek(utcDateTime.DayOfWeek),
+                TIMEHelper.GetMonthOfYear(utcDateTime.Month),
+                TIMEHelper.GetDayOfWeek(utcDateTime.DayOfWeek),
                 Convert.ToUInt32(utcDateTime.DayOfYear));
         }
         #endregion
