@@ -35,22 +35,33 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot declare temporal instant because given \"timeInstant\" parameter is null");
             #endregion
 
-            //Add knowledge to the A-BOX
-            ontology.Data.DeclareIndividual(featureUri);
-            ontology.Data.DeclareObjectAssertion(featureUri, RDFVocabulary.TIME.HAS_TIME, timeInstant);
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(featureUri),
+                new OWLNamedIndividual(timeInstant)));
             ontology.DeclareInstantFeatureInternal(timeInstant);
 
             return ontology;
         }
         internal static OWLOntology DeclareInstantFeatureInternal(this OWLOntology ontology, TIMEInstant timeInstant)
         {
-            //Add knowledge to the A-BOX
-            ontology.Data.DeclareIndividual(timeInstant);
-            ontology.Data.DeclareIndividualType(timeInstant, RDFVocabulary.TIME.INSTANT);
+            ontology.DeclareEntity(new OWLNamedIndividual(timeInstant));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.INSTANT));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(timeInstant)));
 
             //Add knowledge to the A-BOX (time:inXSDDateTimeStamp)
             if (timeInstant.DateTime.HasValue)
-                ontology.Data.DeclareDatatypeAssertion(timeInstant, RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral(XmlConvert.ToString(timeInstant.DateTime.Value.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ"), RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP));
+            {
+                ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP));
+                ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
+                    new OWLNamedIndividual(timeInstant),
+                    new OWLLiteral(new RDFTypedLiteral(XmlConvert.ToString(timeInstant.DateTime.Value.ToUniversalTime(), "yyyy-MM-ddTHH:mm:ssZ"), RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
+            }
 
             //Add knowledge to the A-BOX (time:inDateTime)
             if (timeInstant.Description != null)
