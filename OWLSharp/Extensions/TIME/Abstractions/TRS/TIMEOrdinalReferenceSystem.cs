@@ -56,13 +56,13 @@ namespace OWLSharp.Extensions.TIME
             Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.SYSTEM, this); //inference
 
             //Add knowledge to the A-BOX (begin)
-            Ontology.DeclareInstantFeatureInternal(eraBeginning);
+            Ontology.DeclareTIMEInstantFeatureInternal(eraBeginning);
             Ontology.Data.DeclareIndividualType(eraBeginning, RDFVocabulary.TIME.THORS.ERA_BOUNDARY);
             Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.BEGIN, eraBeginning);
             Ontology.Data.DeclareObjectAssertion(eraBeginning, RDFVocabulary.TIME.THORS.NEXT_ERA, era); //inference
 
             //Add knowledge to the A-BOX (end)
-            Ontology.DeclareInstantFeatureInternal(eraEnd);
+            Ontology.DeclareTIMEInstantFeatureInternal(eraEnd);
             Ontology.Data.DeclareIndividualType(eraEnd, RDFVocabulary.TIME.THORS.ERA_BOUNDARY);
             Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.END, eraEnd);
             Ontology.Data.DeclareObjectAssertion(eraEnd, RDFVocabulary.TIME.THORS.PREVIOUS_ERA, era); //inference
@@ -101,7 +101,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX (referencePoint)
-            Ontology.DeclareInstantFeatureInternal(referencePoint);
+            Ontology.DeclareTIMEInstantFeatureInternal(referencePoint);
             Ontology.Data.DeclareIndividualType(referencePoint, RDFVocabulary.TIME.THORS.ERA_BOUNDARY);
             Ontology.Data.DeclareObjectAssertion(this, RDFVocabulary.TIME.THORS.REFERENCE_POINT, referencePoint);
 
