@@ -24,7 +24,7 @@ using System.Collections.Generic;
 namespace OWLSharp.Test.Extensions.SKOS
 {
     [TestClass]
-    public class SKOSEngineTest
+    public class SKOSHelperTest
     {
         #region Tests
         [TestMethod]

@@ -39,7 +39,7 @@ namespace OWLSharp.Extensions.GEO
                 throw new OWLException("Cannot declare point feature because given \"wgs84Coordinate\" parameter has not a valid WGS84 latitude");
             #endregion
 
-            string wktLiteral = GEOEngine.WKTWriter.Write(new Point(wgs84Coordinate.longitude, wgs84Coordinate.latitude) { SRID = 4326 });
+            string wktLiteral = GEOHelper.WKTWriter.Write(new Point(wgs84Coordinate.longitude, wgs84Coordinate.latitude) { SRID = 4326 });
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POINT));
@@ -88,7 +88,7 @@ namespace OWLSharp.Extensions.GEO
                 throw new OWLException("Cannot declare line feature because given \"wgs84Coordinates\" parameter contains a point with invalid WGS84 latitude");
             #endregion
 
-            string wktLiteral = GEOEngine.WKTWriter.Write(new LineString(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray()) { SRID = 4326 });
+            string wktLiteral = GEOHelper.WKTWriter.Write(new LineString(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray()) { SRID = 4326 });
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.LINESTRING));
@@ -146,7 +146,7 @@ namespace OWLSharp.Extensions.GEO
             }
             #endregion
 
-            string wktLiteral = GEOEngine.WKTWriter.Write(new Polygon(new LinearRing(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray())) { SRID = 4326 });
+            string wktLiteral = GEOHelper.WKTWriter.Write(new Polygon(new LinearRing(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray())) { SRID = 4326 });
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POLYGON));

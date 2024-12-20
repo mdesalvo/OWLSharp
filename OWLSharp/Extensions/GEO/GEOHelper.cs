@@ -27,7 +27,7 @@ using RDFSharp.Query;
 
 namespace OWLSharp.Extensions.GEO
 {
-    public static class GEOEngine
+    public static class GEOHelper
     {
         // WGS84 uses LON/LAT coordinates
         // LON => X (West/East, -180 ->180)
