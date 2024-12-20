@@ -391,11 +391,29 @@ namespace OWLSharp.Extensions.TIME
             //Add knowledge to the A-BOX (time:hasDuration)
             if (timeInterval.Duration != null)
             {
-                ontology.Data.DeclareObjectAssertion(timeInterval, RDFVocabulary.TIME.HAS_DURATION, timeInterval.Duration);
-                ontology.Data.DeclareIndividual(timeInterval.Duration);
-                ontology.Data.DeclareIndividualType(timeInterval.Duration, RDFVocabulary.TIME.DURATION);
-                ontology.Data.DeclareObjectAssertion(timeInterval.Duration, RDFVocabulary.TIME.UNIT_TYPE, timeInterval.Duration.UnitType);
-                ontology.Data.DeclareDatatypeAssertion(timeInterval.Duration, RDFVocabulary.TIME.NUMERIC_DURATION, new RDFTypedLiteral($"{Convert.ToString(timeInterval.Duration.Value, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE));
+                ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.DURATION));
+                ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_DURATION));
+                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.TEMPORAL_UNIT));
+                ontology.DeclareEntity(new OWLNamedIndividual(timeInterval.Duration));
+                ontology.DeclareEntity(new OWLNamedIndividual(timeInterval.Duration.UnitType));
+                ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.DURATION),
+                    new OWLNamedIndividual(timeInterval.Duration)));
+                ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.TEMPORAL_UNIT),
+                    new OWLNamedIndividual(timeInterval.Duration.UnitType)));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.HAS_DURATION),
+                    new OWLNamedIndividual(timeInterval),
+                    new OWLNamedIndividual(timeInterval.Duration)));
+                ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE),
+                    new OWLNamedIndividual(timeInterval.Duration),
+                    new OWLNamedIndividual(timeInterval.Duration.UnitType)));
+                ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                        new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_DURATION),
+                        new OWLNamedIndividual(timeInterval.Duration),
+                        new OWLLiteral(new RDFTypedLiteral($"{Convert.ToString(timeInterval.Duration.Value, CultureInfo.InvariantCulture)}", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
             }
 
             return ontology;
