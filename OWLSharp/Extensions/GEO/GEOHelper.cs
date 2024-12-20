@@ -40,7 +40,161 @@ namespace OWLSharp.Extensions.GEO
         internal static GMLWriter GMLWriter = new GMLWriter();
         #endregion
 
-        #region Methods (Distance)
+        #region Declarer
+        public static OWLOntology DeclareGEOPointFeature(this OWLOntology ontology, RDFResource featureUri,
+            RDFResource geometryUri, (double longitude, double latitude) wgs84Coordinate, bool isDefaultGeometry = true)
+        {
+            #region Guards
+            if (featureUri == null)
+                throw new OWLException("Cannot declare point feature because given \"featureUri\" parameter is null");
+            if (geometryUri == null)
+                throw new OWLException("Cannot declare point feature because given \"geometryUri\" parameter is null");
+            if (wgs84Coordinate.longitude < -180 || wgs84Coordinate.longitude > 180)
+                throw new OWLException("Cannot declare point feature because given \"wgs84Coordinate\" parameter has not a valid WGS84 longitude");
+            if (wgs84Coordinate.latitude < -90 || wgs84Coordinate.latitude > 90)
+                throw new OWLException("Cannot declare point feature because given \"wgs84Coordinate\" parameter has not a valid WGS84 latitude");
+            #endregion
+
+            string wktLiteral = GEOHelper.WKTWriter.Write(new Point(wgs84Coordinate.longitude, wgs84Coordinate.latitude) { SRID = 4326 });
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POINT));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                new OWLNamedIndividual(featureUri)));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.SF.POINT),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                isDefaultGeometry ? new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)
+                                  : new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                new OWLNamedIndividual(featureUri),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                new OWLNamedIndividual(geometryUri),
+                new OWLLiteral(new RDFTypedLiteral(wktLiteral, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))));
+
+            return ontology;
+        }
+
+        public static OWLOntology DeclareGEOLineFeature(this OWLOntology ontology, RDFResource featureUri,
+            RDFResource geometryUri, (double longitude, double latitude)[] wgs84Coordinates, bool isDefaultGeometry = true)
+        {
+            #region Guards
+            if (featureUri == null)
+                throw new OWLException("Cannot declare line feature because given \"featureUri\" parameter is null");
+            if (geometryUri == null)
+                throw new OWLException("Cannot declare line feature because given \"geometryUri\" parameter is null");
+            if (wgs84Coordinates == null)
+                throw new OWLException("Cannot declare line feature because given \"wgs84Coordinates\" parameter is null");
+            if (wgs84Coordinates.Length < 2)
+                throw new OWLException("Cannot declare line feature because given \"wgs84Coordinates\" parameter contains less than 2 points");
+            if (wgs84Coordinates.Any(pt => pt.longitude < -180 || pt.longitude > 180))
+                throw new OWLException("Cannot declare line feature because given \"wgs84Coordinates\" parameter contains a point with invalid WGS84 longitude");
+            if (wgs84Coordinates.Any(pt => pt.latitude < -90 || pt.latitude > 90))
+                throw new OWLException("Cannot declare line feature because given \"wgs84Coordinates\" parameter contains a point with invalid WGS84 latitude");
+            #endregion
+
+            string wktLiteral = GEOHelper.WKTWriter.Write(new LineString(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray()) { SRID = 4326 });
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.LINESTRING));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                new OWLNamedIndividual(featureUri)));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.SF.LINESTRING),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                isDefaultGeometry ? new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)
+                                  : new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                new OWLNamedIndividual(featureUri),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                new OWLNamedIndividual(geometryUri),
+                new OWLLiteral(new RDFTypedLiteral(wktLiteral, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))));
+
+            return ontology;
+        }
+
+        public static OWLOntology DeclareGEOAreaFeature(this OWLOntology ontology, RDFResource featureUri,
+            RDFResource geometryUri, (double longitude, double latitude)[] wgs84Coordinates, bool isDefaultGeometry = true)
+        {
+            #region Guards
+            if (featureUri == null)
+                throw new OWLException("Cannot declare area feature because given \"featureUri\" parameter is null");
+            if (geometryUri == null)
+                throw new OWLException("Cannot declare area feature because given \"geometryUri\" parameter is null");
+            if (wgs84Coordinates == null)
+                throw new OWLException("Cannot declare area feature because given \"wgs84Coordinates\" parameter is null");
+            if (wgs84Coordinates.Length < 3)
+                throw new OWLException("Cannot declare area feature because given \"wgs84Coordinates\" parameter contains less than 2 points");
+            if (wgs84Coordinates.Any(pt => pt.longitude < -180 || pt.longitude > 180))
+                throw new OWLException("Cannot declare area feature because given \"wgs84Coordinates\" parameter contains a point with invalid WGS84 longitude");
+            if (wgs84Coordinates.Any(pt => pt.latitude < -90 || pt.latitude > 90))
+                throw new OWLException("Cannot declare area feature because given \"wgs84Coordinates\" parameter contains a point with invalid WGS84 latitude");
+
+            //Automatically close polygon (if the last coordinate does not match with the first one)
+            if (wgs84Coordinates[0].longitude != wgs84Coordinates[wgs84Coordinates.Length - 1].longitude
+                 && wgs84Coordinates[0].latitude != wgs84Coordinates[wgs84Coordinates.Length - 1].latitude)
+            {
+                List<(double, double)> wgs84CoordinatesList = wgs84Coordinates.ToList();
+                wgs84CoordinatesList.Add(wgs84Coordinates[0]);
+                wgs84Coordinates = wgs84CoordinatesList.ToArray();
+            }
+            #endregion
+
+            string wktLiteral = GEOHelper.WKTWriter.Write(new Polygon(new LinearRing(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray())) { SRID = 4326 });
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POLYGON));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
+            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
+            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
+            ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
+                new OWLNamedIndividual(featureUri)));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.GEOSPARQL.SF.POLYGON),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                isDefaultGeometry ? new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY)
+                                  : new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
+                new OWLNamedIndividual(featureUri),
+                new OWLNamedIndividual(geometryUri)));
+            ontology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
+                new OWLNamedIndividual(geometryUri),
+                new OWLLiteral(new RDFTypedLiteral(wktLiteral, RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))));
+
+            return ontology;
+        }
+        #endregion
+
+        #region Engine (Distance)
         public static async Task<double?> GetDistanceBetweenFeaturesAsync(OWLOntology ontology, RDFResource fromFeatureUri, RDFResource toFeatureUri)
         {
             #region Guards
@@ -148,7 +302,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Measure)
+        #region Engine (Measure)
         public static async Task<double?> GetLengthOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -242,7 +396,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Centroid)
+        #region Engine (Centroid)
         public static async Task<RDFTypedLiteral> GetCentroidOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -295,7 +449,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Boundary)
+        #region Engine (Boundary)
         public static async Task<RDFTypedLiteral> GetBoundaryOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -348,7 +502,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Buffer)
+        #region Engine (Buffer)
         public static async Task<RDFTypedLiteral> GetBufferAroundFeatureAsync(OWLOntology ontology, RDFResource featureUri, double bufferMeters)
         {
             #region Guards
@@ -401,7 +555,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (ConvexHull)
+        #region Engine (ConvexHull)
         public static async Task<RDFTypedLiteral> GetConvexHullOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -454,7 +608,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Envelope)
+        #region Engine (Envelope)
         public static async Task<RDFTypedLiteral> GetEnvelopeOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -507,7 +661,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (NearBy)
+        #region Engine (NearBy)
         public static async Task<List<RDFResource>> GetFeaturesNearBy(OWLOntology ontology, RDFResource featureUri, double distanceMeters)
         {
             #region Guards
@@ -593,7 +747,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Direction)
+        #region Engine (Direction)
         public static async Task<List<RDFResource>> GetFeaturesDirectionAsync(OWLOntology ontology, RDFResource featureUri, GEOEnums.GeoDirections geoDirection)
         {
             #region Guards
@@ -694,7 +848,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Methods (Interaction)
+        #region Engine (Interaction)
         public static async Task<List<RDFResource>> GetFeaturesCrossedByAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
