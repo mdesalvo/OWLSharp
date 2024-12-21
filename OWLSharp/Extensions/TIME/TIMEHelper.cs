@@ -786,9 +786,9 @@ namespace OWLSharp.Extensions.TIME
         internal static void FillValueOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //time:hasXSDDuration
-            RDFPatternMember hasXSDDurationLiteral = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_XSD_DURATION, null, null]
-                                                       ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-            if (hasXSDDurationLiteral is RDFTypedLiteral hasXSDDurationTLiteral
+            OWLLiteral hasXSDDurationLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION))
+                                                .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInterval)).Literal;
+            if (hasXSDDurationLiteral?.GetLiteral() is RDFTypedLiteral hasXSDDurationTLiteral
                  && hasXSDDurationTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
                 timeInterval.TimeSpan = XmlConvert.ToTimeSpan(hasXSDDurationTLiteral.Value);
         }
