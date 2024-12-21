@@ -535,23 +535,17 @@ namespace OWLSharp.Extensions.TIME
             #region Utilities
             RDFResource GetTRSOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember trs = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.HAS_TRS, null, null]
-                                            ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                if (trs is RDFResource trsResource)
-                    return trsResource;
-
+                RDFResource trs = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS))
+                                   .FirstOrDefault()?.TargetIndividualExpression.GetIRI();
                 //Default to Gregorian if this required information is not provided
-                return TIMECalendarReferenceSystem.Gregorian;
+                return  trs ?? TIMECalendarReferenceSystem.Gregorian;
             }
             RDFResource GetUnitTypeOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember unitType = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.UNIT_TYPE, null, null]
-                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                if (unitType is RDFResource unitTypeResource)
-                    return unitTypeResource;
-
-                //Default to Second if this required information is not provided
-                return RDFVocabulary.TIME.UNIT_SECOND;
+                RDFResource unitType = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE))
+                                        .FirstOrDefault()?.TargetIndividualExpression.GetIRI();
+                //Default to Gregorian if this required information is not provided
+                return  unitType ?? TIMEUnit.Second;
             }
             double? GetYearOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
