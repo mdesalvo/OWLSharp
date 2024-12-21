@@ -43,8 +43,8 @@ namespace OWLSharp.Extensions.TIME
         public TIMEPositionReferenceSystem(RDFResource trsUri, TIMECoordinate trsOrigin, TIMEUnit trsUnit, bool hasLargeScaleSemantic=false)
             : base(trsUri)
         {
-            Origin = trsOrigin ?? throw new OWLException("Cannot create TimeReferenceSystem because given \"trsOrigin\" parameter is null");
-            Unit = trsUnit ?? throw new OWLException("Cannot create TimeReferenceSystem because given \"trsUnit\" parameter is null");
+            Origin = trsOrigin ?? throw new OWLException("Cannot create PositionReferenceSystem because given \"trsOrigin\" parameter is null");
+            Unit = trsUnit ?? throw new OWLException("Cannot create PositionReferenceSystem because given \"trsUnit\" parameter is null");
             HasLargeScaleSemantic = hasLargeScaleSemantic;
         }
         #endregion
