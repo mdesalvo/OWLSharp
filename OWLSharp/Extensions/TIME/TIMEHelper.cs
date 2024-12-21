@@ -421,7 +421,7 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Analyzer
-        public static List<TIMEEntity> GetTemporalExtentOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static List<TIMEEntity> GetTIMEEntityOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
             if (featureUri == null)
@@ -432,6 +432,7 @@ namespace OWLSharp.Extensions.TIME
             OWLObjectProperty hasTimeOP = new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME);
             OWLClass timeInstantCLS = new OWLClass(RDFVocabulary.TIME.INSTANT);
             OWLClass timeIntervalCLS = new OWLClass(RDFVocabulary.TIME.INTERVAL);
+            List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLObjectPropertyAssertion> hasTimeObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTimeOP);
 
@@ -452,9 +453,9 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant timeInstant = new TIMEInstant(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(ontology, timeInstant);
-                    FillDescriptionOfInstant(ontology, timeInstant);
-                    FillPositionOfInstant(ontology, timeInstant);
+                    FillValueOfInstant(ontology, timeInstant, objPropAsns, dtPropAsns);
+                    FillDescriptionOfInstant(ontology, timeInstant, objPropAsns, dtPropAsns);
+                    FillPositionOfInstant(ontology, timeInstant, objPropAsns, dtPropAsns);
 
                     //Collect the time instant into temporal extent of feature
                     temporalExtentOfFeature.Add(timeInstant);
@@ -467,11 +468,11 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInterval timeInterval = new TIMEInterval(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time interval
-                    FillValueOfInterval(ontology, timeInterval);
-                    FillDescriptionOfInterval(ontology, timeInterval);
-                    FillDurationOfInterval(ontology, timeInterval);
-                    FillBeginningOfInterval(ontology, timeInterval);
-                    FillEndOfInterval(ontology, timeInterval);
+                    FillValueOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
+                    FillDescriptionOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
+                    FillDurationOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
+                    FillBeginningOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
+                    FillEndOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
 
                     //Collect the time interval into temporal extent of feature
                     temporalExtentOfFeature.Add(timeInterval);
@@ -480,12 +481,12 @@ namespace OWLSharp.Extensions.TIME
 
             return temporalExtentOfFeature;
         }
-        internal static void FillValueOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillValueOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //time:inXSDDateTimeStamp
-            RDFPatternMember inXSDDateTimeStampLiteral = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, null, null]
-                                                           ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-            if (inXSDDateTimeStampLiteral is RDFTypedLiteral inXSDDateTimeStampTLiteral
+            OWLLiteral inXSDDateTimeStampLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP))
+                                                    ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+            if (inXSDDateTimeStampLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTimeStampTLiteral
                  && inXSDDateTimeStampTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDDateTimeStampTLiteral.Value, XmlDateTimeSerializationMode.Utc);
@@ -493,9 +494,9 @@ namespace OWLSharp.Extensions.TIME
             }
 
             //time:inXSDDateTime
-            RDFPatternMember inXSDDateTimeLiteral = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_XSD_DATETIME, null, null]
-                                                      ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-            if (inXSDDateTimeLiteral is RDFTypedLiteral inXSDDateTimeTLiteral
+            OWLLiteral inXSDDateTimeLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIME))
+                                               ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+            if (inXSDDateTimeLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTimeTLiteral
                  && inXSDDateTimeTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIME))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDDateTimeTLiteral.Value, XmlDateTimeSerializationMode.Utc);
@@ -529,7 +530,7 @@ namespace OWLSharp.Extensions.TIME
                  && inXSDGYearTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearTLiteral.Value, XmlDateTimeSerializationMode.Utc);
         }
-        internal static void FillDescriptionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillDescriptionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetTRSOfInstantDescription(RDFResource dateTimeDescriptionURI)
@@ -696,7 +697,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInstant.Description = descriptionsOfTimeInstant.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillPositionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant)
+        internal static void FillPositionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetTRSOfPosition(RDFResource temporalExtentURI)
@@ -785,7 +786,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInstant.Position = positionsOfTimeInstant.FirstOrDefault(); //We currently support one position, but this may evolve in future
         }
-        internal static void FillValueOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillValueOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //time:hasXSDDuration
             RDFPatternMember hasXSDDurationLiteral = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_XSD_DURATION, null, null]
@@ -794,7 +795,7 @@ namespace OWLSharp.Extensions.TIME
                  && hasXSDDurationTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
                 timeInterval.TimeSpan = XmlConvert.ToTimeSpan(hasXSDDurationTLiteral.Value);
         }
-        internal static void FillDescriptionOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillDescriptionOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetTRSOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -898,7 +899,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Description = descriptionsOfTimeInterval.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillDurationOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillDurationOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetUnitTypeOfDuration(RDFResource temporalExtentURI)
@@ -948,7 +949,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Duration = durationsOfTimeInterval.FirstOrDefault(); //We currently support one duration, but this may evolve in future
         }
-        internal static void FillBeginningOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillBeginningOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //We need first to determine assertions having "time:hasBeginning" compatible predicates for the given time interval
             List<RDFResource> hasBeginningProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)
@@ -978,7 +979,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Beginning = beginningsOfTimeInterval.FirstOrDefault(); //We currently support one beginning instant, but this may evolve in future
         }
-        internal static void FillEndOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval)
+        internal static void FillEndOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //We need first to determine assertions having "time:hasEnd" compatible predicates for the given time interval
             List<RDFResource> hasEndProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_END)
