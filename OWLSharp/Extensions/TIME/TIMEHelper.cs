@@ -745,7 +745,7 @@ namespace OWLSharp.Extensions.TIME
                 if (ontology.CheckIsIndividualOf(temporalPositionCLS, inTimePositionObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time position (numeric VS nominal)
-                    RDFResource inTimePositionObjPropAsnTargetIRI = inTimePositionObjPropAsn.TargetIndividualExpression.GetIRI();                    
+                    RDFResource inTimePositionObjPropAsnTargetIRI = inTimePositionObjPropAsn.TargetIndividualExpression.GetIRI();
                     RDFResource positionTRS = GetTRSOfPosition(inTimePositionObjPropAsnTargetIRI);
                     if (positionTRS != null)
                     {
@@ -917,27 +917,35 @@ namespace OWLSharp.Extensions.TIME
             }
             #endregion
 
-            //We need first to determine assertions having "time:hasDuration" compatible predicates for the given time interval
-            List<RDFResource> hasDurationProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_DURATION)
-                                                        .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_DURATION)
-                                                          //We need to also support "thors:positionalUncertainty" (even if not related with "time:hasDuration")
-                                                          .Union(new List<RDFResource>() { RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY })).ToList();
-            RDFGraph hasDurationAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_DURATION, null, null];
-            foreach (RDFResource hasDurationProperty in hasDurationProperties)
-                hasDurationAssertions = hasDurationAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasDurationProperty, null, null]);
+            //Temporary working variables
+            OWLObjectProperty hasDurationOP = new OWLObjectProperty(RDFVocabulary.TIME.HAS_DURATION);
+            OWLObjectProperty positionalUncertaintyOP = new OWLObjectProperty(RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY);
+            OWLClass durationCLS = new OWLClass(RDFVocabulary.TIME.DURATION);
+            List<OWLObjectPropertyAssertion> hasDurationObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasDurationOP)
+                                                                       .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, positionalUncertaintyOP)).ToList();
 
-            //Then we need to iterate these assertions in order to reconstruct the duration of the time interval in its available aspects
+            //Filter assertions compatible with "time:hasDuration" object property
+            List<OWLObjectPropertyExpression> hasDurationObjPropExprs = ontology.GetSubObjectPropertiesOf(hasDurationOP)
+                                                                         .Union(ontology.GetEquivalentObjectProperties(hasDurationOP)).ToList();
+            //Filter assertions compatible with "thors:positionalUncertainty" object property
+            List<OWLObjectPropertyExpression> positionalUncertaintyObjPropExprs = ontology.GetSubObjectPropertiesOf(positionalUncertaintyOP)
+                                                                                   .Union(ontology.GetEquivalentObjectProperties(positionalUncertaintyOP)).ToList();
+            foreach (OWLObjectPropertyExpression hasDurationObjPropExpr in hasDurationObjPropExprs.Union(positionalUncertaintyObjPropExprs))
+                hasDurationObjPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasDurationObjPropExpr));
+
+            //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEIntervalDuration> durationsOfTimeInterval = new List<TIMEIntervalDuration>();
-            foreach (RDFTriple hasDurationAssertion in hasDurationAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (OWLObjectPropertyAssertion hasDurationObjPropAsn in hasDurationObjPropAsns)
             {
-                //time:Duration
-                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasDurationAssertion.Object, RDFVocabulary.TIME.DURATION))
+                 //Detect if the temporal extent is a temporal duration
+                if (ontology.CheckIsIndividualOf(durationCLS, hasDurationObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time duration
-                    TIMEIntervalDuration timeIntervalDuration = new TIMEIntervalDuration((RDFResource)hasDurationAssertion.Object)
+                    RDFResource hasDurationObjPropAsnTargetIRI = hasDurationObjPropAsn.TargetIndividualExpression.GetIRI();
+                    TIMEIntervalDuration timeIntervalDuration = new TIMEIntervalDuration(hasDurationObjPropAsnTargetIRI)
                     {
-                        UnitType = GetUnitTypeOfDuration((RDFResource)hasDurationAssertion.Object),
-                        Value = GetValueOfDuration((RDFResource)hasDurationAssertion.Object)                        
+                        UnitType = GetUnitTypeOfDuration(hasDurationObjPropAsnTargetIRI),
+                        Value = GetValueOfDuration(hasDurationObjPropAsnTargetIRI)
                     };
                     durationsOfTimeInterval.Add(timeIntervalDuration);
                 }
