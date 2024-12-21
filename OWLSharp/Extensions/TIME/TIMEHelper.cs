@@ -514,9 +514,9 @@ namespace OWLSharp.Extensions.TIME
             }
 
             //time:inXSDgYearMonth
-            RDFPatternMember inXSDGYearMonthLiteral = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_XSD_GYEARMONTH, null, null]
-                                                        ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-            if (inXSDGYearMonthLiteral is RDFTypedLiteral inXSDGYearMonthTLiteral
+            OWLLiteral inXSDGYearMonthLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_GYEARMONTH))
+                                                 ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+            if (inXSDGYearMonthLiteral?.GetLiteral() is RDFTypedLiteral inXSDGYearMonthTLiteral
                  && inXSDGYearMonthTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearMonthTLiteral.Value, XmlDateTimeSerializationMode.Utc);
@@ -524,9 +524,9 @@ namespace OWLSharp.Extensions.TIME
             }
 
             //time:inXSDgYear
-            RDFPatternMember inXSDGYearLiteral = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_XSD_GYEAR, null, null]
-                                                   ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-            if (inXSDGYearLiteral is RDFTypedLiteral inXSDGYearTLiteral
+            OWLLiteral inXSDGYearLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_GYEAR))
+                                            ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+            if (inXSDGYearLiteral?.GetLiteral() is RDFTypedLiteral inXSDGYearTLiteral
                  && inXSDGYearTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearTLiteral.Value, XmlDateTimeSerializationMode.Utc);
         }
