@@ -224,12 +224,12 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringInstantBecauseNullFeature()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt")
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt"))
                 .DeclareInstantFeature(null, new TIMEInstant(new RDFResource("ex:timeInst"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringInstantBecauseNullInstant()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt")
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt"))
                 .DeclareInstantFeature(new RDFResource("ex:feat"), null));
 
         [TestMethod]
@@ -465,12 +465,12 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntervalBecauseNullFeature()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").DeclareIntervalFeature(
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).DeclareIntervalFeature(
                 null, new TIMEInterval(new RDFResource("ex:timeIntr"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntervalBecauseNullInterval()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").DeclareIntervalFeature(
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).DeclareIntervalFeature(
                 new RDFResource("ex:feat"), null));
 
         [TestMethod]
@@ -529,7 +529,7 @@ namespace OWLSharp.Test.Extensions.TIME
         #region Tests (Analyzer)
         [TestMethod]
         public void ShouldThrowExceptionOnGettingTemporalExtentOfFeatureBecauseNullURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").GetTemporalExtentOfFeature(null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetTemporalExtentOfFeature(null));
 
         [TestMethod]
         public void ShouldNotGetTemporalExtentOfInstantFeatureBecauseNoData()
@@ -1249,7 +1249,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingInstantCoordinateBecauseNullInstantURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").GetCoordinateOfInstant(null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetCoordinateOfInstant(null));
 
         [DataTestMethod]
         [DataRow("http://www.w3.org/2006/time#inXSDDateTimeStamp", "1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP, 1939, 9, 1, 8, 0, 0)]
@@ -1425,7 +1425,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingIntervalExtentBecauseNullIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").GetExtentOfInterval(null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetExtentOfInterval(null));
 
         [TestMethod]
         public void ShouldGetIntervalExtentByTimeSpan()
@@ -1902,7 +1902,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingRelatedIntervalsBecauseNullURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").GetRelatedIntervals(null, TIMEEnums.TIMEIntervalRelation.Meets));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetRelatedIntervals(null, TIMEEnums.TIMEIntervalRelation.Meets));
 
         [DataTestMethod]
         [DataRow(TIMEEnums.TIMEInstantRelation.After)]
@@ -1934,7 +1934,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingRelatedInstantsBecauseNullURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology("ex:timeOnt").GetRelatedInstants(null, TIMEEnums.TIMEInstantRelation.Before));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetRelatedInstants(null, TIMEEnums.TIMEInstantRelation.Before));
 
         //E2E Tests
 

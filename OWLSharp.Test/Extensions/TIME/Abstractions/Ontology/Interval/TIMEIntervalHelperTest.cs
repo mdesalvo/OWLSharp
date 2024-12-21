@@ -15,6 +15,8 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.TIME;
+using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System;
 
@@ -28,11 +30,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckAfter(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckAfter(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckAfter(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckAfter(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckAfter()
@@ -107,11 +109,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckBefore(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckBefore(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckBefore(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckBefore(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckBefore()
@@ -186,11 +188,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalContainsIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckContains(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckContains(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalContainsIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckContains(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckContains(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalContainsInterval()
@@ -356,11 +358,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalIsDisjointWithIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDisjoint(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDisjoint(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalIsDisjointWithIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDisjoint(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDisjoint(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalIsDisjointWithInterval()
@@ -398,11 +400,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalDuringIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDuring(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDuring(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalDuringIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDuring(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckDuring(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalDuringInterval()
@@ -568,11 +570,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalEqualsIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckEquals(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckEquals(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalEqualsIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckEquals(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckEquals(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalEqualsInterval()
@@ -738,11 +740,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishedByIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishedBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishedBy(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishedByIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishedBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishedBy(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalFinishedByInterval()
@@ -909,11 +911,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishesIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishes(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishes(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalFinishesIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishes(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckFinishes(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalFinishesInterval()
@@ -1080,11 +1082,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalInIntervalBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckIn(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckIn(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingIntervalInIntervalBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckIn(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckIn(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckIntervalInInterval()
@@ -1250,11 +1252,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMeetsBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMeets(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMeets(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMeetsBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMeets(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMeets(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckMeets()
@@ -1329,11 +1331,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMetByBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMetBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMetBy(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingMetByBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMetBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckMetBy(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckMetBy()
@@ -1408,11 +1410,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlapsBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlaps(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlaps(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlapsBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlaps(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlaps(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckOverlaps()
@@ -1529,11 +1531,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlappedByBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlappedBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlappedBy(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingOverlappedByBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlappedBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckOverlappedBy(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckOverlappedBy()
@@ -1650,11 +1652,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartsBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStarts(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStarts(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartsBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStarts(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStarts(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckStarts()
@@ -1770,11 +1772,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartedByBecauseNullLeftIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStartedBy(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStartedBy(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingStartedByBecauseNullRightIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStartedBy(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEIntervalHelper.CheckStartedBy(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckStartedBy()

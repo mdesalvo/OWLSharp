@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System;
 
@@ -28,11 +29,11 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldCreateIntervalDuration()
         {
             TIMEIntervalDuration timeIntervalDuration = new TIMEIntervalDuration(
-                new RDFResource("ex:intvDur"), TIMEUnit.MYA, 12.23);
+                new RDFResource("ex:intvDur"), TIMEUnit.MillionYearsAgo, 12.23);
 
             Assert.IsNotNull(timeIntervalDuration);
             Assert.IsTrue(timeIntervalDuration.URI.Equals(new Uri("ex:intvDur")));
-            Assert.IsTrue(timeIntervalDuration.UnitType.Equals(TIMEUnit.MYA));
+            Assert.IsTrue(timeIntervalDuration.UnitType.Equals(TIMEUnit.MillionYearsAgo));
             Assert.IsTrue(timeIntervalDuration.Value == 12.23);
         }
 

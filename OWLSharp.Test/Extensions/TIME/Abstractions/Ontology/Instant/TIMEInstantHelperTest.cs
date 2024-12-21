@@ -15,6 +15,8 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.TIME;
+using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System;
 
@@ -28,11 +30,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingInsideBecauseNullInstantURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckInsideInterval(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckInsideInterval(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingInsideBecauseNullIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckInsideInterval(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckInsideInterval(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckInside()
@@ -132,11 +134,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterBecauseNullAInstantURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfter(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfter(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterBecauseNullBInstantURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfter(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfter(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckAfter()
@@ -172,11 +174,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterIntervalBecauseNullInstantURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfterInterval(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfterInterval(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingAfterIntervalBecauseNullIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfterInterval(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckAfterInterval(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckAfterInterval()
@@ -243,11 +245,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeBecauseNullAInstantURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBefore(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBefore(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeBecauseNullBInstantURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBefore(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBefore(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckBefore()
@@ -283,11 +285,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeIntervalBecauseNullInstantURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBeforeInterval(new OWLOntology("ex:timeOnt"), null, new RDFResource()));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBeforeInterval(new OWLOntology(new Uri("ex:timeOnt")), null, new RDFResource()));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCheckingBeforeIntervalBecauseNullIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBeforeInterval(new OWLOntology("ex:timeOnt"), new RDFResource(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEInstantHelper.CheckBeforeInterval(new OWLOntology(new Uri("ex:timeOnt")), new RDFResource(), null));
 
         [TestMethod]
         public void ShouldCheckBeforeInterval()

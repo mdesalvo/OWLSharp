@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System;
 
@@ -87,7 +88,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldCreateInstantFromPosition()
         {
             TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"),
-                new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTRS, 141.25));
+                new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, 141.25));
 
             Assert.IsNotNull(timeInstant);
             Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
@@ -95,7 +96,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInstant.Description);
             Assert.IsNotNull(timeInstant.Position);
             Assert.IsTrue(timeInstant.Position.URI.Equals(new Uri("ex:instPos")));
-            Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTRS));
+            Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
             Assert.IsTrue(timeInstant.Position.NumericValue == 141.25);
         }
 
