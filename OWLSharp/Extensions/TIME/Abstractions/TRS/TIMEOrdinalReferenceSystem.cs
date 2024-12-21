@@ -300,7 +300,7 @@ namespace OWLSharp.Extensions.TIME
             //Get begin boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraBeginBoundaryCoordinate = null;
             OWLObjectPropertyAssertion thorsBeginEraAsn = thorsBeginObjPropAsns.FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(era)
-                                                             && CheckHasTHORSEraBoundary(asn.TargetIndividualExpression.GetIRI()));
+                                                           && CheckHasTHORSEraBoundary(asn.TargetIndividualExpression.GetIRI()));
             if (thorsBeginEraAsn != null)
                 eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(thorsBeginEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
 
