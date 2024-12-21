@@ -79,9 +79,9 @@ namespace OWLSharp.Extensions.TIME
 
                 //Execute the clock emulator on the transformed time position
                 if (scaledTimePositionSeconds > 0)
-                    ClockForward(scaledTimePositionSeconds, coordinate, calendarTRS);
+                    ClockForwardToPositionalTRSOrigin(scaledTimePositionSeconds, coordinate, calendarTRS);
                 else if (scaledTimePositionSeconds < 0)
-                    ClockBackward(scaledTimePositionSeconds, coordinate, calendarTRS);
+                    ClockBackwardFromPositionalTRSOrigin(scaledTimePositionSeconds, coordinate, calendarTRS);
             }
             #endregion
 
@@ -291,7 +291,7 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Utilities
-        internal static void ClockForward(double secondsToConsume, TIMECoordinate positionTRSOrigin, TIMECalendarReferenceSystem calendarTRS)
+        internal static void ClockForwardToPositionalTRSOrigin(double secondsToConsume, TIMECoordinate positionTRSOrigin, TIMECalendarReferenceSystem calendarTRS)
         {
             uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(positionTRSOrigin.Year ?? 0) 
                                     ?? calendarTRS.Metrics.Months;
@@ -330,7 +330,7 @@ namespace OWLSharp.Extensions.TIME
             positionTRSOrigin.Second = Math.Truncate(positionTRSOrigin.Second.Value + secondsToConsume);
         }
 
-        internal static void ClockBackward(double secondsToConsume, TIMECoordinate positionTRSOrigin, TIMECalendarReferenceSystem calendarTRS)
+        internal static void ClockBackwardFromPositionalTRSOrigin(double secondsToConsume, TIMECoordinate positionTRSOrigin, TIMECalendarReferenceSystem calendarTRS)
         {
             uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(positionTRSOrigin.Year ?? 0)
                                     ?? calendarTRS.Metrics.Months;
