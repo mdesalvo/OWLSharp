@@ -615,7 +615,7 @@ namespace OWLSharp.Extensions.TIME
             double? GetHourOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
                 OWLLiteral hourPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.HOUR))
-                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;;
+                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (hourPM?.GetLiteral() is RDFTypedLiteral hourTL && hourTL.HasDecimalDatatype())
                     return Convert.ToDouble(hourTL.Value, CultureInfo.InvariantCulture);
                 return null;
@@ -623,7 +623,7 @@ namespace OWLSharp.Extensions.TIME
             double? GetMinuteOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
                 OWLLiteral minutePM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.MINUTE))
-                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;;
+                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (minutePM?.GetLiteral() is RDFTypedLiteral minuteTL && minuteTL.HasDecimalDatatype())
                     return Convert.ToDouble(minuteTL.Value, CultureInfo.InvariantCulture);
                 return null;
@@ -639,20 +639,20 @@ namespace OWLSharp.Extensions.TIME
             void FillTextualDecorators(TIMEInstantDescription timeInstantDescription)
             {
                 //time:MonthOfYear
-                RDFPatternMember monthOfYearPM = ontology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.MONTH_OF_YEAR, null, null]
-                                                   ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                timeInstantDescription.Coordinate.Metadata.MonthOfYear = monthOfYearPM is RDFResource monthOfYearResource ? monthOfYearResource : null;
+                RDFResource monthOfYearPM = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.MONTH_OF_YEAR))
+                                             .FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInstantDescription))?.TargetIndividualExpression.GetIRI();
+                timeInstantDescription.Coordinate.Metadata.MonthOfYear = monthOfYearPM;
 
                 //time:DayOfYear
-                RDFPatternMember dayOfYearPM = ontology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.DAY_OF_YEAR, null, null]
-                                   ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (dayOfYearPM is RDFTypedLiteral dayOfYearTL && dayOfYearTL.HasDecimalDatatype())
+                OWLLiteral dayOfYearPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.DAY_OF_YEAR))
+                                          .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstantDescription))?.Literal;
+                if (dayOfYearPM?.GetLiteral() is RDFTypedLiteral dayOfYearTL && dayOfYearTL.HasDecimalDatatype())
                     timeInstantDescription.Coordinate.Metadata.DayOfYear = Convert.ToUInt32(dayOfYearTL.Value, CultureInfo.InvariantCulture);
 
                 //time:DayOfWeek
-                RDFPatternMember dayOfWeek = ontology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.DAY_OF_WEEK, null, null]
-                                               ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                timeInstantDescription.Coordinate.Metadata.DayOfWeek = dayOfWeek is RDFResource dayOfWeekResource ? dayOfWeekResource : null;
+                RDFResource dayOfWeek = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.DAY_OF_WEEK))
+                                         .FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInstantDescription))?.TargetIndividualExpression.GetIRI();
+                timeInstantDescription.Coordinate.Metadata.DayOfWeek = dayOfWeek;
             }
             #endregion
 
