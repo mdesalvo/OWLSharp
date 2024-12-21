@@ -775,7 +775,6 @@ namespace OWLSharp.Extensions.TIME
                                 if (positionalUncertaintyInterval.Duration != null)
                                     timeInstantPosition.PositionalUncertainty = positionalUncertaintyInterval.Duration;
                             }
-
                             positionsOfTimeInstant.Add(timeInstantPosition);
                         }   
                     }
