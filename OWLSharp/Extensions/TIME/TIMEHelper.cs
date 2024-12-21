@@ -561,17 +561,16 @@ namespace OWLSharp.Extensions.TIME
                     }
 
                     //time:generalYear or numeric literals
-                    if (yearTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALYEAR)
-                         || yearTL.HasDecimalDatatype())
+                    if (yearTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALYEAR) || yearTL.HasDecimalDatatype())
                         return Convert.ToDouble(yearTL.Value, CultureInfo.InvariantCulture);
                 }
                 return null;
             }
             double? GetMonthOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember monthPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.MONTH, null, null]
-                                             ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (monthPM is RDFTypedLiteral monthTL)
+                OWLLiteral monthPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.MONTH))
+                                      .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
+                if (monthPM?.GetLiteral() is RDFTypedLiteral monthTL)
                 {
                     //xsd:gMonth
                     if (monthTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GMONTH))
@@ -592,9 +591,9 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetDayOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember dayPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.DAY, null, null]
-                                           ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (dayPM is RDFTypedLiteral dayTL)
+                OWLLiteral dayPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.DAY))
+                                    .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
+                if (dayPM?.GetLiteral() is RDFTypedLiteral dayTL)
                 {
                     //xsd:gDay
                     if (dayTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GDAY))
@@ -615,25 +614,25 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetHourOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember hourPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.HOUR, null, null]
-                                            ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (hourPM is RDFTypedLiteral hourTL && hourTL.HasDecimalDatatype())
+                OWLLiteral hourPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.HOUR))
+                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;;
+                if (hourPM?.GetLiteral() is RDFTypedLiteral hourTL && hourTL.HasDecimalDatatype())
                     return Convert.ToDouble(hourTL.Value, CultureInfo.InvariantCulture);
                 return null;
             }
             double? GetMinuteOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember minutePM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.MINUTE, null, null]
-                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (minutePM is RDFTypedLiteral minuteTL && minuteTL.HasDecimalDatatype())
+                OWLLiteral minutePM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.MINUTE))
+                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;;
+                if (minutePM?.GetLiteral() is RDFTypedLiteral minuteTL && minuteTL.HasDecimalDatatype())
                     return Convert.ToDouble(minuteTL.Value, CultureInfo.InvariantCulture);
                 return null;
             }
             double? GetSecondOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember secondPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.SECOND, null, null]
-                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (secondPM is RDFTypedLiteral secondTL && secondTL.HasDecimalDatatype())
+                OWLLiteral secondPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.SECOND))
+                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;;
+                if (secondPM?.GetLiteral() is RDFTypedLiteral secondTL && secondTL.HasDecimalDatatype())
                     return Convert.ToDouble(secondTL.Value, CultureInfo.InvariantCulture);
                 return null;
             }
