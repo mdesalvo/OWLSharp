@@ -1154,7 +1154,8 @@ namespace OWLSharp.Ontology
 					}
 					void LoadObjectPropertyAssertions(OWLOntology ont, RDFGraph annAxiomsGraph)
 					{
-						foreach (RDFTriple objPropTriple in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null])
+						foreach (RDFTriple objPropTriple in typeGraph[null, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null]
+															  .Where(t => !((RDFResource)t.Subject).IsBlank))
 						{
                             #region SKOS
                             //S36:For any resource, every item in the list given as the value of the skos:memberList property is also a value of the skos:member property.
