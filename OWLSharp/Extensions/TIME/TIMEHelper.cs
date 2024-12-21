@@ -428,16 +428,20 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot get temporal extent of feature because given \"featureUri\" parameter is null");
             #endregion
 
-            //We need first to determine assertions having "time:hasTime" compatible predicates for the given feature subject
-            List<RDFResource> hasTimeProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_TIME)
-                                                    .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_TIME)).ToList();
-            RDFGraph hasTimeAssertions = ontology.Data.ABoxGraph[featureUri, RDFVocabulary.TIME.HAS_TIME, null, null];
-            foreach (RDFResource hasTimeProperty in hasTimeProperties)
-                hasTimeAssertions = hasTimeAssertions.UnionWith(ontology.Data.ABoxGraph[featureUri, hasTimeProperty, null, null]);
+            //Temporary working variables
+            OWLObjectProperty hasTime = new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME);
+            List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+            List<OWLObjectPropertyAssertion> hasTimeObjPropsAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTime);
+
+            //We need to determine assertions having "time:hasTime" compatible predicates for the given feature subject
+            List<OWLObjectPropertyExpression> hasTimeObjPropExprs = ontology.GetSubObjectPropertiesOf(hasTime)
+                                                                      .Union(ontology.GetEquivalentObjectProperties(hasTime)).ToList();
+            foreach (OWLObjectPropertyExpression hasTimeObjPropExpr in hasTimeObjPropExprs)
+                hasTimeObjPropsAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTimeObjPropExpr));
 
             //Then we need to iterate these assertions in order to reconstruct the temporal extent in its available aspects
             List<TIMEEntity> temporalExtentOfFeature = new List<TIMEEntity>();
-            foreach (RDFTriple hasTimeAssertion in hasTimeAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (RDFTriple hasTimeAssertion in hasTimeObjPropsAsns.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //Detect if the temporal extent of the feature describes a time instant
                 if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasTimeAssertion.Object, RDFVocabulary.TIME.INSTANT))
