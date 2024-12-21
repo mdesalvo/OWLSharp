@@ -22,13 +22,13 @@ namespace OWLSharp.Extensions.TIME
     {
         #region Built-Ins
         public static readonly TIMEPositionReferenceSystem UnixTRS = new TIMEPositionReferenceSystem(
-            new RDFResource("https://en.wikipedia.org/wiki/Unix_time"), TIMECoordinate.UnixTime, TIMEUnit.Second, false);
+            new RDFResource("https://en.wikipedia.org/wiki/Unix_time"), TIMECoordinate.UnixTime, TIMEUnit.Second);
 
         public static readonly TIMEPositionReferenceSystem GeologicTRS = new TIMEPositionReferenceSystem(
             new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale"), TIMECoordinate.GeologicTime, TIMEUnit.MillionYearsAgo, true);
 
         public static readonly TIMEPositionReferenceSystem GlobalPositioningSystemTRS = new TIMEPositionReferenceSystem(
-            new RDFResource("https://en.wikipedia.org/wiki/Global_Positioning_System"), TIMECoordinate.GPSTime, TIMEUnit.Second, false);
+            new RDFResource("https://en.wikipedia.org/wiki/Global_Positioning_System"), TIMECoordinate.GPSTime, TIMEUnit.Second);
         #endregion
 
         #region Properties
@@ -40,12 +40,12 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Ctors
-        public TIMEPositionReferenceSystem(RDFResource trsUri, TIMECoordinate trsOrigin, TIMEUnit trsUnit, bool isLargeScaleTRS)
+        public TIMEPositionReferenceSystem(RDFResource trsUri, TIMECoordinate trsOrigin, TIMEUnit trsUnit, bool hasLargeScaleSemantic=false)
             : base(trsUri)
         {
             Origin = trsOrigin ?? throw new OWLException("Cannot create TimeReferenceSystem because given \"trsOrigin\" parameter is null");
             Unit = trsUnit ?? throw new OWLException("Cannot create TimeReferenceSystem because given \"trsUnit\" parameter is null");
-            HasLargeScaleSemantic = isLargeScaleTRS;
+            HasLargeScaleSemantic = hasLargeScaleSemantic;
         }
         #endregion
     }
