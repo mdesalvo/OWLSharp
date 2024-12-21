@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
@@ -35,10 +36,11 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldOperateOnRegistry()
         {
             //Test initial configuration (built-in TRS)
-            Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 3);
+            Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 4);
             Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMECalendarReferenceSystem.Gregorian));
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.UnixTRS));
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GeologicTRS));
+            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.UnixTime));
+            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GPS));
+            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GeologicTime));
 
             //Test different forms of iteration
             IEnumerator<TIMEReferenceSystem> trsEnumerator = TIMEReferenceSystemRegistry.TRSEnumerator;

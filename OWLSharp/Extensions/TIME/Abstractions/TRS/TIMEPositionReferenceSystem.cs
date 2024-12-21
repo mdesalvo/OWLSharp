@@ -21,13 +21,13 @@ namespace OWLSharp.Extensions.TIME
     public class TIMEPositionReferenceSystem : TIMEReferenceSystem
     {
         #region Built-Ins
-        public static readonly TIMEPositionReferenceSystem UnixTRS = new TIMEPositionReferenceSystem(
+        public static readonly TIMEPositionReferenceSystem UnixTime = new TIMEPositionReferenceSystem(
             new RDFResource("https://en.wikipedia.org/wiki/Unix_time"), TIMECoordinate.UnixTime, TIMEUnit.Second);
 
-        public static readonly TIMEPositionReferenceSystem GeologicTRS = new TIMEPositionReferenceSystem(
+        public static readonly TIMEPositionReferenceSystem GeologicTime = new TIMEPositionReferenceSystem(
             new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale"), TIMECoordinate.GeologicTime, TIMEUnit.MillionYearsAgo, true);
 
-        public static readonly TIMEPositionReferenceSystem GlobalPositioningSystemTRS = new TIMEPositionReferenceSystem(
+        public static readonly TIMEPositionReferenceSystem GPS = new TIMEPositionReferenceSystem(
             new RDFResource("https://en.wikipedia.org/wiki/Global_Positioning_System"), TIMECoordinate.GPSTime, TIMEUnit.Second);
         #endregion
 

@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 
 namespace OWLSharp.Test.Extensions.TIME
@@ -29,8 +30,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEPositionReferenceSystem MillenniumTimeTRS = new TIMEPositionReferenceSystem(
                 new RDFResource("ex:MillenniumTime"),
                 new TIMECoordinate(2000, 1, 1, 0, 0, 0),
-                TIMEUnit.Day, 
-                false);
+                TIMEUnit.Day);
 
             Assert.IsNotNull(MillenniumTimeTRS);
             Assert.IsTrue(MillenniumTimeTRS.Equals(new RDFResource("ex:MillenniumTime")));
@@ -44,7 +44,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(MillenniumTimeTRS.Unit);
             Assert.IsTrue(MillenniumTimeTRS.Unit.UnitType == TIMEEnums.TIMEUnitType.Day);
             Assert.IsTrue(MillenniumTimeTRS.Unit.ScaleFactor == 1);
-            Assert.IsFalse(MillenniumTimeTRS.IsLargeScaleTRS);
+            Assert.IsFalse(MillenniumTimeTRS.HasLargeScaleSemantic);
         }
 
         [TestMethod]

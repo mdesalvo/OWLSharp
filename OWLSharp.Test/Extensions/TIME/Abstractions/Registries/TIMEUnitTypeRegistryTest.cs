@@ -15,6 +15,7 @@
 */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
@@ -46,8 +47,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.Hour));
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.Minute));
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.Second));
-            Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.BYA));
-            Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.MYA));
+            Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.BillionYearsAgo));
+            Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.MillionYearsAgo));
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.MarsSol));
 
             //Test different forms of iteration
@@ -59,7 +60,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
             //Test addition of unit types
             TIMEUnit timeUnit = new TIMEUnit(new RDFResource("ex:HalfHour"), TIMEEnums.TIMEUnitType.Hour, 0.5);
-            Assert.IsFalse(TIMEUnitTypeRegistry.ContainsUnitType(timeUnit));            
+            Assert.IsFalse(TIMEUnitTypeRegistry.ContainsUnitType(timeUnit));
             TIMEUnitTypeRegistry.AddUnitType(timeUnit);
             TIMEUnitTypeRegistry.AddUnitType(timeUnit); //Duplicates are avoided
             Assert.IsTrue(TIMEUnitTypeRegistry.UnitTypeCount == 14);

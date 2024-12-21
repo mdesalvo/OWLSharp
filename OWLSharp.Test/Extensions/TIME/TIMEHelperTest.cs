@@ -135,7 +135,7 @@ namespace OWLSharp.Test.Extensions.TIME
             OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
             timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
                 new TIMEInstant(new RDFResource("ex:timeInst"),
-                    new TIMEInstantPosition(new RDFResource("ex:timeInstPos"), TIMEPositionReferenceSystem.UnixTRS, 1679477734))); //2023-03-22T09:35:34Z
+                    new TIMEInstantPosition(new RDFResource("ex:timeInstPos"), TIMEPositionReferenceSystem.UnixTime, 1679477734))); //2023-03-22T09:35:34Z
 
             //Test persistence of TIME knowledge
             Assert.IsNotNull(timeOntology);
@@ -152,7 +152,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TEMPORAL_POSITION));
             Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TIME_POSITION));
             Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("1679477734", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:timeInstPosUnc"), RDFVocabulary.TIME.UNIT_SECOND, 4.04);
             TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:timeInst"),
                 new TIMEInstantPosition(new RDFResource("ex:timeInstPos"),
-                    TIMEPositionReferenceSystem.UnixTRS,
+                    TIMEPositionReferenceSystem.UnixTime,
                     1679477734) //2023-03-22T09:35:34Z
                 .SetPositionalUncertainty(timeInstantUncertainty)); 
             timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), timeInstant);
@@ -184,7 +184,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TEMPORAL_POSITION));
             Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TIME_POSITION));
             Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("1679477734", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY, new RDFResource("ex:timeInstPosUnc")));
             Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInstPosUnc")));
             Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPosUnc"), RDFVocabulary.TIME.TEMPORAL_DURATION));
@@ -753,7 +753,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIITemporalExtentPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalExtentOfFeature(new RDFResource("ex:WorldWarII"));
@@ -768,7 +768,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsFalse(timeInstant.DateTime.HasValue);
             Assert.IsNull(timeInstant.Description);
             Assert.IsNotNull(timeInstant.Position);
-            Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.UnixTRS));
+            Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.UnixTime));
             Assert.IsTrue(timeInstant.Position.NumericValue == -957315600);
         }
 
@@ -782,7 +782,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), new RDFResource("ex:isInTimePosition"), new RDFResource("ex:WorldWarIITemporalExtentPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalExtentOfFeature(new RDFResource("ex:WorldWarII"));
@@ -797,7 +797,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsFalse(timeInstant.DateTime.HasValue);
             Assert.IsNull(timeInstant.Description);
             Assert.IsNotNull(timeInstant.Position);
-            Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.UnixTRS));
+            Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.UnixTime));
             Assert.IsTrue(timeInstant.Position.NumericValue == -957315600);
         }
 
@@ -1350,7 +1350,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIITemporalExtentPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalExtent"));
@@ -1525,13 +1525,13 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIIBeginningPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.TIME.HAS_END, new RDFResource("ex:WorldWarIIEnd")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIEnd"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIEnd"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIIEndPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIEndPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIEndPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIEndPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIEndPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-767807939", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
@@ -1556,7 +1556,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIIBeginningPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
@@ -1574,7 +1574,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIIBeginningPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
@@ -1598,7 +1598,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginning"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIIBeginningPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
 
@@ -1617,7 +1617,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIExtentBeginningInstant"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIExtentBeginningInstant"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIIBeginningInstantPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningInstantPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningInstantPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
@@ -1643,7 +1643,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIExtentBeginningInstant"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIExtentBeginningInstant"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIIBeginningInstantPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningInstantPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIBeginningInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
 
@@ -1662,7 +1662,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIExtentEndInstant"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIExtentEndInstant"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
@@ -1688,7 +1688,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIExtentEndInstant"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIExtentEndInstant"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTRS));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:PrecedingWorldWarIIEndInstantPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             OWLOntology timeOntology = OWLOntology.FromRDFGraph(graph, new OWLOntologyLoaderOptions() { EnableTIMESupport=true });
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalExtent"));
 
@@ -1971,13 +1971,13 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(archeanTimeInterval.Beginning.DateTime);
             Assert.IsNull(archeanTimeInterval.Beginning.Description);
             Assert.IsNotNull(archeanTimeInterval.Beginning.Position);
-            Assert.IsTrue(archeanTimeInterval.Beginning.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTRS));
+            Assert.IsTrue(archeanTimeInterval.Beginning.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
             Assert.IsTrue(archeanTimeInterval.Beginning.Position.NumericValue == 4000);
             Assert.IsNotNull(archeanTimeInterval.End);
             Assert.IsNull(archeanTimeInterval.End.DateTime);
             Assert.IsNull(archeanTimeInterval.End.Description);
             Assert.IsNotNull(archeanTimeInterval.End.Position);
-            Assert.IsTrue(archeanTimeInterval.End.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTRS));
+            Assert.IsTrue(archeanTimeInterval.End.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
             Assert.IsTrue(archeanTimeInterval.End.Position.NumericValue == 2500);
         }
 
