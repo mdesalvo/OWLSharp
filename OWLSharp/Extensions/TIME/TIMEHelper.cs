@@ -504,9 +504,9 @@ namespace OWLSharp.Extensions.TIME
             }
 
             //time:inXSDDate
-            RDFPatternMember inXSDDateLiteral = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_XSD_DATE, null, null]
-                                                  ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-            if (inXSDDateLiteral is RDFTypedLiteral inXSDDateTLiteral
+            OWLLiteral inXSDDateLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATE))
+                                           ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+            if (inXSDDateLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTLiteral
                  && inXSDDateTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATE))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDDateTLiteral.Value, XmlDateTimeSerializationMode.Utc);
