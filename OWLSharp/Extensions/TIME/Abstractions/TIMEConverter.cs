@@ -22,7 +22,7 @@ namespace OWLSharp.Extensions.TIME
     public static class TIMEConverter
     {
         #region Methods
-        public static TIMECoordinate PositionToCoordinate(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMECoordinate GetCoordinateFromTemporalPosition(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (positionTRS == null)
@@ -32,7 +32,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Normalize origin of the given positional TRS according to the metrics of the given calendar TRS
-            TIMECoordinate coordinate = NormalizeCoordinate(positionTRS.Origin, calendarTRS);
+            TIMECoordinate coordinate = NormalizeCoordinateToCalendar(positionTRS.Origin, calendarTRS);
 
             //Scale the given time position of the factor specified by the unit of the given position TRS
             double scaledTimePosition = timePosition * positionTRS.Unit.ScaleFactor;
@@ -88,7 +88,7 @@ namespace OWLSharp.Extensions.TIME
             return coordinate;
         }
 
-        public static TIMECoordinate NormalizeCoordinate(TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMECoordinate NormalizeCoordinateToCalendar(TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeCoordinate == null)
@@ -171,7 +171,7 @@ namespace OWLSharp.Extensions.TIME
                 normalizedSecond) { Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_SECOND) };
         }
 
-        public static TIMEExtent DurationToExtent(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMEExtent GetExtentFromTemporalDuration(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeDuration < 0)
@@ -216,7 +216,7 @@ namespace OWLSharp.Extensions.TIME
             return extent;
         }
 
-        public static TIMEExtent NormalizeExtent(TIMEExtent timeExtent, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMEExtent NormalizeExtentToCalendar(TIMEExtent timeExtent, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeExtent == null)
@@ -240,10 +240,10 @@ namespace OWLSharp.Extensions.TIME
                 new TIMECalendarReferenceSystemMetrics(calendarTRS.Metrics.SecondsInMinute, calendarTRS.Metrics.MinutesInHour, calendarTRS.Metrics.HoursInDay, calendarTRS.Metrics.Months));
             inexactCalendarTRS.Metrics.HasExactMetric = false;
 
-            return DurationToExtent(timeExtentSeconds, TIMEUnit.Second, calendarTRS);
+            return GetExtentFromTemporalDuration(timeExtentSeconds, TIMEUnit.Second, calendarTRS);
         }
 
-        public static TIMEExtent CalculateExtent(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMEExtent CalculateExtentBetweenCoordinates(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeCoordinateStart == null)
@@ -255,8 +255,8 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Normalize the given coordinates according to the metrics of the given calendar TRS
-            TIMECoordinate normalizedStart = NormalizeCoordinate(timeCoordinateStart, calendarTRS);
-            TIMECoordinate normalizedEnd = NormalizeCoordinate(timeCoordinateEnd, calendarTRS);
+            TIMECoordinate normalizedStart = NormalizeCoordinateToCalendar(timeCoordinateStart, calendarTRS);
+            TIMECoordinate normalizedEnd = NormalizeCoordinateToCalendar(timeCoordinateEnd, calendarTRS);
 
             //Determine if the extent would be negative: if so, just swap the parameters
             if (normalizedStart.CompareTo(normalizedEnd) > -1)
@@ -285,7 +285,7 @@ namespace OWLSharp.Extensions.TIME
                                              + (normalizedEnd.Year.Value     * calendarTRS.Metrics.SecondsInMinute * calendarTRS.Metrics.MinutesInHour * calendarTRS.Metrics.HoursInDay * calendarTRS.Metrics.DaysInYear);
 
             //Return extent between start/end coordinates
-            TIMEExtent extent = DurationToExtent(normalizedEndSeconds - normalizedStartSeconds, TIMEUnit.Second, calendarTRS);
+            TIMEExtent extent = GetExtentFromTemporalDuration(normalizedEndSeconds - normalizedStartSeconds, TIMEUnit.Second, calendarTRS);
             return extent;
         }
         #endregion
