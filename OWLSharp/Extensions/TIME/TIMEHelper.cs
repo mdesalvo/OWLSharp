@@ -937,7 +937,7 @@ namespace OWLSharp.Extensions.TIME
             List<TIMEIntervalDuration> durationsOfTimeInterval = new List<TIMEIntervalDuration>();
             foreach (OWLObjectPropertyAssertion hasDurationObjPropAsn in hasDurationObjPropAsns)
             {
-                 //Detect if the temporal extent is a temporal duration
+                //Detect if the temporal extent is a temporal duration
                 if (ontology.CheckIsIndividualOf(durationCLS, hasDurationObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time duration
@@ -954,63 +954,71 @@ namespace OWLSharp.Extensions.TIME
         }
         internal static void FillBeginningOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
-            //We need first to determine assertions having "time:hasBeginning" compatible predicates for the given time interval
-            List<RDFResource> hasBeginningProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)
-                                                         .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)).ToList();
-            RDFGraph hasBeginningAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_BEGINNING, null, null];
-            foreach (RDFResource hasBeginningProperty in hasBeginningProperties)
-                hasBeginningAssertions = hasBeginningAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasBeginningProperty, null, null]);
+            //Temporary working variables
+            OWLObjectProperty hasBeginningOP = new OWLObjectProperty(RDFVocabulary.TIME.HAS_BEGINNING);
+            OWLClass instantCLS = new OWLClass(RDFVocabulary.TIME.INSTANT);
+            List<OWLObjectPropertyAssertion> hasBeginningObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasBeginningOP);
 
-            //Then we need to iterate these assertions in order to reconstruct the time instant in its available aspects
+            //Filter assertions compatible with "time:hasBeginning" object property
+            List<OWLObjectPropertyExpression> hasBeginningObjPropExprs = ontology.GetSubObjectPropertiesOf(hasBeginningOP)
+                                                                          .Union(ontology.GetEquivalentObjectProperties(hasBeginningOP)).ToList();
+            foreach (OWLObjectPropertyExpression hasBeginningObjPropExpr in hasBeginningObjPropExprs)
+                hasBeginningObjPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasBeginningObjPropExpr));
+
+            //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstant> beginningsOfTimeInterval = new List<TIMEInstant>();
-            foreach (RDFTriple hasBeginningAssertion in hasBeginningAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (OWLObjectPropertyAssertion hasBeginningObjPropAsn in hasBeginningObjPropAsns)
             {
-                //time:Instant
-                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasBeginningAssertion.Object, RDFVocabulary.TIME.INSTANT))
+                //Detect if the temporal extent is a time instant
+                if (ontology.CheckIsIndividualOf(instantCLS, hasBeginningObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time instant
-                    TIMEInstant beginningTimeInstant = new TIMEInstant((RDFResource)hasBeginningAssertion.Object);
+                    TIMEInstant beginningTimeInstant = new TIMEInstant(hasBeginningObjPropAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(ontology, beginningTimeInstant);
-                    FillDescriptionOfInstant(ontology, beginningTimeInstant);
-                    FillPositionOfInstant(ontology, beginningTimeInstant);
+                    FillValueOfInstant(ontology, beginningTimeInstant, dtPropAsns, objPropAsns);
+                    FillDescriptionOfInstant(ontology, beginningTimeInstant, dtPropAsns, objPropAsns);
+                    FillPositionOfInstant(ontology, beginningTimeInstant, dtPropAsns, objPropAsns);
 
-                    //Collect the time instant into temporal extent of the time interval
+                    //Collect the time instant
                     beginningsOfTimeInterval.Add(beginningTimeInstant);
                 }
             }
-            timeInterval.Beginning = beginningsOfTimeInterval.FirstOrDefault(); //We currently support one beginning instant, but this may evolve in future
+            timeInterval.Beginning = beginningsOfTimeInterval.FirstOrDefault();
         }
         internal static void FillEndOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
-            //We need first to determine assertions having "time:hasEnd" compatible predicates for the given time interval
-            List<RDFResource> hasEndProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_END)
-                                                   .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_END)).ToList();
-            RDFGraph hasEndAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_END, null, null];
-            foreach (RDFResource hasEndProperty in hasEndProperties)
-                hasEndAssertions = hasEndAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasEndProperty, null, null]);
+            //Temporary working variables
+            OWLObjectProperty hasEndOP = new OWLObjectProperty(RDFVocabulary.TIME.HAS_END);
+            OWLClass instantCLS = new OWLClass(RDFVocabulary.TIME.INSTANT);
+            List<OWLObjectPropertyAssertion> hasEndObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasEndOP);
 
-            //Then we need to iterate these assertions in order to reconstruct the time instant in its available aspects
+            //Filter assertions compatible with "time:hasEnd" object property
+            List<OWLObjectPropertyExpression> hasEndObjPropExprs = ontology.GetSubObjectPropertiesOf(hasEndOP)
+                                                                    .Union(ontology.GetEquivalentObjectProperties(hasEndOP)).ToList();
+            foreach (OWLObjectPropertyExpression hasEndObjPropExpr in hasEndObjPropExprs)
+                hasEndObjPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasEndObjPropExpr));
+
+            //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstant> endsOfTimeInterval = new List<TIMEInstant>();
-            foreach (RDFTriple hasEndAssertion in hasEndAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (OWLObjectPropertyAssertion hasEndObjPropAsn in hasEndObjPropAsns)
             {
-                //time:Instant
-                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasEndAssertion.Object, RDFVocabulary.TIME.INSTANT))
+                //Detect if the temporal extent is a time instant
+                if (ontology.CheckIsIndividualOf(instantCLS, hasEndObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time instant
-                    TIMEInstant endTimeInstant = new TIMEInstant((RDFResource)hasEndAssertion.Object);
+                    TIMEInstant endTimeInstant = new TIMEInstant(hasEndObjPropAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(ontology, endTimeInstant);
-                    FillDescriptionOfInstant(ontology, endTimeInstant);
-                    FillPositionOfInstant(ontology, endTimeInstant);
+                    FillValueOfInstant(ontology, endTimeInstant, dtPropAsns, objPropAsns);
+                    FillDescriptionOfInstant(ontology, endTimeInstant, dtPropAsns, objPropAsns);
+                    FillPositionOfInstant(ontology, endTimeInstant, dtPropAsns, objPropAsns);
 
-                    //Collect the time instant into temporal extent of the time interval
+                    //Collect the time instant
                     endsOfTimeInterval.Add(endTimeInstant);
                 }
             }
-            timeInterval.End = endsOfTimeInterval.FirstOrDefault(); //We currently support one end instant, but this may evolve in future
+            timeInterval.End = endsOfTimeInterval.FirstOrDefault();
         }
         [ExcludeFromCodeCoverage]
         internal static RDFResource GetMonthOfYear(int? month)
