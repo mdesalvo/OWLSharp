@@ -162,7 +162,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldThrowExceptionOnDeclaringreferencePointBecauseNullReferencePoint()
+        public void ShouldThrowExceptionOnDeclaringReferencePointBecauseNullReferencePoint()
             => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"))
                 .DeclareTHORSReferencePoint(null));
 
