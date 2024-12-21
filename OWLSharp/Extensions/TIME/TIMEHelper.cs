@@ -699,35 +699,30 @@ namespace OWLSharp.Extensions.TIME
             #region Utilities
             RDFResource GetTRSOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember trs = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.HAS_TRS, null, null]
-                                            ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                if (trs is RDFResource trsResource)
-                    return trsResource;
-                return null;
+                RDFResource trs = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS))
+                                   .FirstOrDefault(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(temporalExtentURI))?.TargetIndividualExpression.GetIRI();
+                //Default to Gregorian if this required information is not provided
+                return  trs ?? TIMECalendarReferenceSystem.Gregorian;
             }
             double? GetNumericValueOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember numericPositionPM = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NUMERIC_POSITION, null, null]
-                                                       ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (numericPositionPM is RDFTypedLiteral numericPositionTL && numericPositionTL.HasDecimalDatatype())
+                OWLLiteral numericPositionPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION))
+                                                .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(temporalExtentURI))?.Literal;
+                if (numericPositionPM?.GetLiteral() is RDFTypedLiteral numericPositionTL && numericPositionTL.HasDecimalDatatype())
                     return Convert.ToDouble(numericPositionTL.Value, CultureInfo.InvariantCulture);
                 return null;
             }
             RDFResource GetNominalValueOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember nominalPositionPM = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NOMINAL_POSITION, null, null]
-                                                       ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                if (nominalPositionPM is RDFResource nominalPositionResource)
-                    return nominalPositionResource;
-                return null;
+                RDFResource nominalPosition = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.NOMINAL_POSITION))
+                                               .FirstOrDefault(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(temporalExtentURI))?.TargetIndividualExpression.GetIRI();
+                return nominalPosition;
             }
             RDFResource GetUncertaintyOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember uncertainty = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY, null, null]
-                                                ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                if (uncertainty is RDFResource uncertaintyResource)
-                    return uncertaintyResource;
-                return null;
+                RDFResource positionalUncertainty = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY))
+                                                     .FirstOrDefault(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(temporalExtentURI))?.TargetIndividualExpression.GetIRI();
+                return positionalUncertainty;
             }
             #endregion
 
