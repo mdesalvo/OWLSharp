@@ -686,8 +686,7 @@ namespace OWLSharp.Extensions.TIME
                     double? second = GetSecondOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
                     TIMECoordinate timeInstantCoordinate = new TIMECoordinate(
                         year, month, day, hour, minute, second, new TIMECoordinateMetadata(trs, unitType));
-                    TIMEInstantDescription timeInstantDescription = new TIMEInstantDescription(
-                        inDateTimeObjPropAsnTargetIRI, timeInstantCoordinate);
+                    TIMEInstantDescription timeInstantDescription = new TIMEInstantDescription(inDateTimeObjPropAsnTargetIRI, timeInstantCoordinate);
                     FillTextualDecorators(timeInstantDescription);
 
                     descriptionsOfTimeInstant.Add(timeInstantDescription);
