@@ -1178,11 +1178,14 @@ namespace OWLSharp.Extensions.TIME
             #region Allen
             //There's no direct representation of the time interval's beginning instant:
             //we can indirectly obtain it by exploiting specific Allen interval relations
+            OWLObjectProperty timeIntervalEqualsOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS);
+            OWLObjectProperty timeIntervalStartsOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS);
+            OWLObjectProperty timeIntervalStartedByOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY);
             List<RDFResource> compatibleStartingIntervals = RDFQueryUtilities.RemoveDuplicates(
-                GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.Equals)
-                 .Union(GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.Starts))
-                  .Union(GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.StartedBy))
-                  .ToList());
+                OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalEqualsOP)
+                 .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalStartsOP))
+                 .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalStartedByOP))
+                 .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
             //Perform a sequential search of the beginning instant on the set of compatible intervals
             TIMECoordinate compatibleBeginning = null;
@@ -1194,8 +1197,10 @@ namespace OWLSharp.Extensions.TIME
                 #region MetBy
                 //There's still no direct representation of the time interval's beginning instant:
                 //we can indirectly obtain it by exploiting Allen interval-meeting relations
+                OWLObjectProperty timeIntervalMetByOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MET_BY);
                 List<RDFResource> metByIntervals = RDFQueryUtilities.RemoveDuplicates(
-                    GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.MetBy));
+                    OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalMetByOP)
+                     .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
                 //Perform a sequential search of the start instant on the set of metBy intervals
                 IEnumerator<RDFResource> metByIntervalsEnumerator = metByIntervals.GetEnumerator();
