@@ -764,9 +764,9 @@ namespace OWLSharp.Extensions.TIME
                                 timeInstantPosition = new TIMEInstantPosition(inTimePositionObjPropAsnTargetIRI, positionTRS, nominalPositionValue);
                         }
 
+                        //thors:positionalUncertainty
                         if (timeInstantPosition != null)
                         {
-                            //thors:positionalUncertainty
                             RDFResource positionalUncertainty = GetUncertaintyOfPosition(inTimePositionObjPropAsnTargetIRI);
                             if (positionalUncertainty != null)
                             {
