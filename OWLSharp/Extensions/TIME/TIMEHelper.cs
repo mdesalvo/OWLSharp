@@ -485,7 +485,7 @@ namespace OWLSharp.Extensions.TIME
         {
             //time:inXSDDateTimeStamp
             OWLLiteral inXSDDateTimeStampLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP))
-                                                    ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+                                                    .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDDateTimeStampLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTimeStampTLiteral
                  && inXSDDateTimeStampTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))
             {
@@ -495,7 +495,7 @@ namespace OWLSharp.Extensions.TIME
 
             //time:inXSDDateTime
             OWLLiteral inXSDDateTimeLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIME))
-                                               ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+                                               .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDDateTimeLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTimeTLiteral
                  && inXSDDateTimeTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIME))
             {
@@ -505,7 +505,7 @@ namespace OWLSharp.Extensions.TIME
 
             //time:inXSDDate
             OWLLiteral inXSDDateLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATE))
-                                           ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+                                           .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDDateLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTLiteral
                  && inXSDDateTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATE))
             {
@@ -515,7 +515,7 @@ namespace OWLSharp.Extensions.TIME
 
             //time:inXSDgYearMonth
             OWLLiteral inXSDGYearMonthLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_GYEARMONTH))
-                                                 ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+                                                 .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDGYearMonthLiteral?.GetLiteral() is RDFTypedLiteral inXSDGYearMonthTLiteral
                  && inXSDGYearMonthTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH))
             {
@@ -525,7 +525,7 @@ namespace OWLSharp.Extensions.TIME
 
             //time:inXSDgYear
             OWLLiteral inXSDGYearLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_GYEAR))
-                                            ?.FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
+                                            .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDGYearLiteral?.GetLiteral() is RDFTypedLiteral inXSDGYearTLiteral
                  && inXSDGYearTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearTLiteral.Value, XmlDateTimeSerializationMode.Utc);
@@ -536,22 +536,22 @@ namespace OWLSharp.Extensions.TIME
             RDFResource GetTRSOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
                 RDFResource trs = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS))
-                                   .FirstOrDefault()?.TargetIndividualExpression.GetIRI();
+                                   .FirstOrDefault(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.TargetIndividualExpression.GetIRI();
                 //Default to Gregorian if this required information is not provided
                 return  trs ?? TIMECalendarReferenceSystem.Gregorian;
             }
             RDFResource GetUnitTypeOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
                 RDFResource unitType = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE))
-                                        .FirstOrDefault()?.TargetIndividualExpression.GetIRI();
+                                        .FirstOrDefault(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.TargetIndividualExpression.GetIRI();
                 //Default to Gregorian if this required information is not provided
                 return  unitType ?? TIMEUnit.Second;
             }
             double? GetYearOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember yearPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.YEAR, null, null]
-                                            ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (yearPM is RDFTypedLiteral yearTL)
+                OWLLiteral yearPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.YEAR))
+                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
+                if (yearPM?.GetLiteral() is RDFTypedLiteral yearTL)
                 {
                     //xsd:gYear
                     if (yearTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
