@@ -481,7 +481,7 @@ namespace OWLSharp.Extensions.TIME
 
             return temporalExtentOfFeature;
         }
-        internal static void FillValueOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillValueOfInstant(OWLOntology ontology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //time:inXSDDateTimeStamp
             OWLLiteral inXSDDateTimeStampLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP))
@@ -530,12 +530,12 @@ namespace OWLSharp.Extensions.TIME
                  && inXSDGYearTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearTLiteral.Value, XmlDateTimeSerializationMode.Utc);
         }
-        internal static void FillDescriptionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillDescriptionOfInstant(OWLOntology ontology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetTRSOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember trs = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.HAS_TRS, null, null]
+                RDFPatternMember trs = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.HAS_TRS, null, null]
                                             ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 if (trs is RDFResource trsResource)
                     return trsResource;
@@ -545,7 +545,7 @@ namespace OWLSharp.Extensions.TIME
             }
             RDFResource GetUnitTypeOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember unitType = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.UNIT_TYPE, null, null]
+                RDFPatternMember unitType = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.UNIT_TYPE, null, null]
                                               ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 if (unitType is RDFResource unitTypeResource)
                     return unitTypeResource;
@@ -555,7 +555,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetYearOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember yearPM = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.YEAR, null, null]
+                RDFPatternMember yearPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.YEAR, null, null]
                                             ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (yearPM is RDFTypedLiteral yearTL)
                 {
@@ -575,7 +575,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetMonthOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember monthPM = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.MONTH, null, null]
+                RDFPatternMember monthPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.MONTH, null, null]
                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (monthPM is RDFTypedLiteral monthTL)
                 {
@@ -598,7 +598,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetDayOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember dayPM = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.DAY, null, null]
+                RDFPatternMember dayPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.DAY, null, null]
                                            ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (dayPM is RDFTypedLiteral dayTL)
                 {
@@ -621,7 +621,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetHourOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember hourPM = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.HOUR, null, null]
+                RDFPatternMember hourPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.HOUR, null, null]
                                             ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (hourPM is RDFTypedLiteral hourTL && hourTL.HasDecimalDatatype())
                     return Convert.ToDouble(hourTL.Value, CultureInfo.InvariantCulture);
@@ -629,7 +629,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetMinuteOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember minutePM = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.MINUTE, null, null]
+                RDFPatternMember minutePM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.MINUTE, null, null]
                                               ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (minutePM is RDFTypedLiteral minuteTL && minuteTL.HasDecimalDatatype())
                     return Convert.ToDouble(minuteTL.Value, CultureInfo.InvariantCulture);
@@ -637,7 +637,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetSecondOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
-                RDFPatternMember secondPM = timeOntology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.SECOND, null, null]
+                RDFPatternMember secondPM = ontology.Data.ABoxGraph[dateTimeDescriptionURI, RDFVocabulary.TIME.SECOND, null, null]
                                               ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (secondPM is RDFTypedLiteral secondTL && secondTL.HasDecimalDatatype())
                     return Convert.ToDouble(secondTL.Value, CultureInfo.InvariantCulture);
@@ -646,36 +646,36 @@ namespace OWLSharp.Extensions.TIME
             void FillTextualDecorators(TIMEInstantDescription timeInstantDescription)
             {
                 //time:MonthOfYear
-                RDFPatternMember monthOfYearPM = timeOntology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.MONTH_OF_YEAR, null, null]
+                RDFPatternMember monthOfYearPM = ontology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.MONTH_OF_YEAR, null, null]
                                                    ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 timeInstantDescription.Coordinate.Metadata.MonthOfYear = monthOfYearPM is RDFResource monthOfYearResource ? monthOfYearResource : null;
 
                 //time:DayOfYear
-                RDFPatternMember dayOfYearPM = timeOntology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.DAY_OF_YEAR, null, null]
+                RDFPatternMember dayOfYearPM = ontology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.DAY_OF_YEAR, null, null]
                                    ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (dayOfYearPM is RDFTypedLiteral dayOfYearTL && dayOfYearTL.HasDecimalDatatype())
                     timeInstantDescription.Coordinate.Metadata.DayOfYear = Convert.ToUInt32(dayOfYearTL.Value, CultureInfo.InvariantCulture);
 
                 //time:DayOfWeek
-                RDFPatternMember dayOfWeek = timeOntology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.DAY_OF_WEEK, null, null]
+                RDFPatternMember dayOfWeek = ontology.Data.ABoxGraph[timeInstantDescription, RDFVocabulary.TIME.DAY_OF_WEEK, null, null]
                                                ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 timeInstantDescription.Coordinate.Metadata.DayOfWeek = dayOfWeek is RDFResource dayOfWeekResource ? dayOfWeekResource : null;
             }
             #endregion
 
             //We need first to determine assertions having "time:inDateTime" compatible predicates for the given time instant
-            List<RDFResource> inDateTimeProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.IN_DATETIME)
-                                                       .Union(timeOntology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.IN_DATETIME)).ToList();
-            RDFGraph inDateTimeAssertions = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_DATETIME, null, null];
+            List<RDFResource> inDateTimeProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.IN_DATETIME)
+                                                       .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.IN_DATETIME)).ToList();
+            RDFGraph inDateTimeAssertions = ontology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_DATETIME, null, null];
             foreach (RDFResource inDateTimeProperty in inDateTimeProperties)
-                inDateTimeAssertions = inDateTimeAssertions.UnionWith(timeOntology.Data.ABoxGraph[timeInstant, inDateTimeProperty, null, null]);
+                inDateTimeAssertions = inDateTimeAssertions.UnionWith(ontology.Data.ABoxGraph[timeInstant, inDateTimeProperty, null, null]);
 
             //Then we need to iterate these assertions in order to reconstruct the description of the time instant in its available aspects
             List<TIMEInstantDescription> descriptionsOfTimeInstant = new List<TIMEInstantDescription>();
             foreach (RDFTriple inDateTimeAssertion in inDateTimeAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //time:GeneralDateTimeDescription
-                if (timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, (RDFResource)inDateTimeAssertion.Object, RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION))
+                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)inDateTimeAssertion.Object, RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION))
                 {
                     //Declare the discovered time instant description
                     RDFResource trs = GetTRSOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
@@ -697,12 +697,12 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInstant.Description = descriptionsOfTimeInstant.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillPositionOfInstant(OWLOntology timeOntology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillPositionOfInstant(OWLOntology ontology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetTRSOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember trs = timeOntology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.HAS_TRS, null, null]
+                RDFPatternMember trs = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.HAS_TRS, null, null]
                                             ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 if (trs is RDFResource trsResource)
                     return trsResource;
@@ -710,7 +710,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetNumericValueOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember numericPositionPM = timeOntology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NUMERIC_POSITION, null, null]
+                RDFPatternMember numericPositionPM = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NUMERIC_POSITION, null, null]
                                                        ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (numericPositionPM is RDFTypedLiteral numericPositionTL && numericPositionTL.HasDecimalDatatype())
                     return Convert.ToDouble(numericPositionTL.Value, CultureInfo.InvariantCulture);
@@ -718,7 +718,7 @@ namespace OWLSharp.Extensions.TIME
             }
             RDFResource GetNominalValueOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember nominalPositionPM = timeOntology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NOMINAL_POSITION, null, null]
+                RDFPatternMember nominalPositionPM = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NOMINAL_POSITION, null, null]
                                                        ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 if (nominalPositionPM is RDFResource nominalPositionResource)
                     return nominalPositionResource;
@@ -726,7 +726,7 @@ namespace OWLSharp.Extensions.TIME
             }
             RDFResource GetUncertaintyOfPosition(RDFResource temporalExtentURI)
             {
-                RDFPatternMember uncertainty = timeOntology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY, null, null]
+                RDFPatternMember uncertainty = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY, null, null]
                                                 ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 if (uncertainty is RDFResource uncertaintyResource)
                     return uncertaintyResource;
@@ -735,18 +735,18 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //We need first to determine assertions having "time:inTimePosition" compatible predicates for the given time instant
-            List<RDFResource> inTimePositionProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.IN_TIME_POSITION)
-                                                           .Union(timeOntology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.IN_TIME_POSITION)).ToList();
-            RDFGraph inTimePositionAssertions = timeOntology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_TIME_POSITION, null, null];
+            List<RDFResource> inTimePositionProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.IN_TIME_POSITION)
+                                                           .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.IN_TIME_POSITION)).ToList();
+            RDFGraph inTimePositionAssertions = ontology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_TIME_POSITION, null, null];
             foreach (RDFResource inTimePositionProperty in inTimePositionProperties)
-                inTimePositionAssertions = inTimePositionAssertions.UnionWith(timeOntology.Data.ABoxGraph[timeInstant, inTimePositionProperty, null, null]);
+                inTimePositionAssertions = inTimePositionAssertions.UnionWith(ontology.Data.ABoxGraph[timeInstant, inTimePositionProperty, null, null]);
 
             //Then we need to iterate these assertions in order to reconstruct the position of the time instant in its available aspects
             List<TIMEInstantPosition> positionsOfTimeInstant = new List<TIMEInstantPosition>();
             foreach (RDFTriple inTimePositionAssertion in inTimePositionAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //time:TemporalPosition
-                if (timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, (RDFResource)inTimePositionAssertion.Object, RDFVocabulary.TIME.TEMPORAL_POSITION))
+                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)inTimePositionAssertion.Object, RDFVocabulary.TIME.TEMPORAL_POSITION))
                 {
                     //Declare the discovered time position (numeric VS nominal)
                     RDFResource positionTRS = GetTRSOfPosition((RDFResource)inTimePositionAssertion.Object);
@@ -774,7 +774,7 @@ namespace OWLSharp.Extensions.TIME
                             if (positionalUncertainty != null)
                             {
                                 TIMEInterval positionalUncertaintyInterval = new TIMEInterval(positionalUncertainty);
-                                FillDurationOfInterval(timeOntology, positionalUncertaintyInterval);
+                                FillDurationOfInterval(ontology, positionalUncertaintyInterval);
                                 if (positionalUncertaintyInterval.Duration != null)
                                     timeInstantPosition.SetPositionalUncertainty(positionalUncertaintyInterval.Duration);
                             }
@@ -786,21 +786,21 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInstant.Position = positionsOfTimeInstant.FirstOrDefault(); //We currently support one position, but this may evolve in future
         }
-        internal static void FillValueOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillValueOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //time:hasXSDDuration
-            RDFPatternMember hasXSDDurationLiteral = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_XSD_DURATION, null, null]
+            RDFPatternMember hasXSDDurationLiteral = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_XSD_DURATION, null, null]
                                                        ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
             if (hasXSDDurationLiteral is RDFTypedLiteral hasXSDDurationTLiteral
                  && hasXSDDurationTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
                 timeInterval.TimeSpan = XmlConvert.ToTimeSpan(hasXSDDurationTLiteral.Value);
         }
-        internal static void FillDescriptionOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillDescriptionOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetTRSOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember trs = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.HAS_TRS, null, null]
+                RDFPatternMember trs = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.HAS_TRS, null, null]
                                          ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 if (trs is RDFResource trsResource)
                     return trsResource;
@@ -810,7 +810,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetYearsOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember yearsPM = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.YEARS, null, null]
+                RDFPatternMember yearsPM = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.YEARS, null, null]
                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (yearsPM is RDFTypedLiteral yearsTL && yearsTL.HasDecimalDatatype())
                     return Convert.ToDouble(yearsTL.Value, CultureInfo.InvariantCulture);
@@ -818,7 +818,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetMonthsOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember monthsPM = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.MONTHS, null, null]
+                RDFPatternMember monthsPM = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.MONTHS, null, null]
                                               ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (monthsPM is RDFTypedLiteral monthsTL && monthsTL.HasDecimalDatatype())
                     return Convert.ToDouble(monthsTL.Value, CultureInfo.InvariantCulture);
@@ -826,7 +826,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetWeeksOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember weeksPM = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.WEEKS, null, null]
+                RDFPatternMember weeksPM = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.WEEKS, null, null]
                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (weeksPM is RDFTypedLiteral weeksTL && weeksTL.HasDecimalDatatype())
                     return Convert.ToDouble(weeksTL.Value, CultureInfo.InvariantCulture);
@@ -834,7 +834,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetDaysOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember daysPM = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.DAYS, null, null]
+                RDFPatternMember daysPM = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.DAYS, null, null]
                                             ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (daysPM is RDFTypedLiteral daysTL && daysTL.HasDecimalDatatype())
                     return Convert.ToDouble(daysTL.Value, CultureInfo.InvariantCulture);
@@ -842,7 +842,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetHoursOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember hoursPM = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.HOURS, null, null]
+                RDFPatternMember hoursPM = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.HOURS, null, null]
                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (hoursPM is RDFTypedLiteral hoursTL && hoursTL.HasDecimalDatatype())
                     return Convert.ToDouble(hoursTL.Value, CultureInfo.InvariantCulture);
@@ -850,7 +850,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetMinutesOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember minutesPM = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.MINUTES, null, null]
+                RDFPatternMember minutesPM = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.MINUTES, null, null]
                                                ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (minutesPM is RDFTypedLiteral minutesTL && minutesTL.HasDecimalDatatype())
                     return Convert.ToDouble(minutesTL.Value, CultureInfo.InvariantCulture);
@@ -858,7 +858,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double? GetSecondsOfIntervalDescription(RDFResource durationDescriptionURI)
             {
-                RDFPatternMember secondsPM = timeOntology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.SECONDS, null, null]
+                RDFPatternMember secondsPM = ontology.Data.ABoxGraph[durationDescriptionURI, RDFVocabulary.TIME.SECONDS, null, null]
                                                ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (secondsPM is RDFTypedLiteral secondsTL && secondsTL.HasDecimalDatatype())
                     return Convert.ToDouble(secondsTL.Value, CultureInfo.InvariantCulture);
@@ -867,18 +867,18 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //We need first to determine assertions having "time:hasDurationDescription" compatible predicates for the given time interval
-            List<RDFResource> hasDurationDescriptionProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION)
-                                                                   .Union(timeOntology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION)).ToList();
-            RDFGraph hasDurationDescriptionAssertions = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, null, null];
+            List<RDFResource> hasDurationDescriptionProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION)
+                                                                   .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION)).ToList();
+            RDFGraph hasDurationDescriptionAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, null, null];
             foreach (RDFResource hasDurationDescriptionProperty in hasDurationDescriptionProperties)
-                hasDurationDescriptionAssertions = hasDurationDescriptionAssertions.UnionWith(timeOntology.Data.ABoxGraph[timeInterval, hasDurationDescriptionProperty, null, null]);
+                hasDurationDescriptionAssertions = hasDurationDescriptionAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasDurationDescriptionProperty, null, null]);
 
             //Then we need to iterate these assertions in order to reconstruct the description of the time interval in its available aspects
             List<TIMEIntervalDescription> descriptionsOfTimeInterval = new List<TIMEIntervalDescription>();
             foreach (RDFTriple hasDurationDescriptionAssertion in hasDurationDescriptionAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //time:GeneralDurationDescription
-                if (timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, (RDFResource)hasDurationDescriptionAssertion.Object, RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION))
+                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasDurationDescriptionAssertion.Object, RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION))
                 {
                     //Declare the discovered time interval description
                     RDFResource trs = GetTRSOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
@@ -899,12 +899,12 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Description = descriptionsOfTimeInterval.FirstOrDefault(); //We currently support one description, but this may evolve in future
         }
-        internal static void FillDurationOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillDurationOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             #region Utilities
             RDFResource GetUnitTypeOfDuration(RDFResource temporalExtentURI)
             {
-                RDFPatternMember unitType = timeOntology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.UNIT_TYPE, null, null]
+                RDFPatternMember unitType = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.UNIT_TYPE, null, null]
                                               ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
                 if (unitType is RDFResource unitTypeResource)
                     return unitTypeResource;
@@ -914,7 +914,7 @@ namespace OWLSharp.Extensions.TIME
             }
             double GetValueOfDuration(RDFResource temporalExtentURI)
             {
-                RDFPatternMember numericDurationPM = timeOntology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NUMERIC_DURATION, null, null]
+                RDFPatternMember numericDurationPM = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NUMERIC_DURATION, null, null]
                                                        ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
                 if (numericDurationPM is RDFTypedLiteral numericDurationTL && numericDurationTL.HasDecimalDatatype())
                     return Convert.ToDouble(numericDurationTL.Value, CultureInfo.InvariantCulture);
@@ -923,20 +923,20 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //We need first to determine assertions having "time:hasDuration" compatible predicates for the given time interval
-            List<RDFResource> hasDurationProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_DURATION)
-                                                        .Union(timeOntology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_DURATION)
+            List<RDFResource> hasDurationProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_DURATION)
+                                                        .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_DURATION)
                                                           //We need to also support "thors:positionalUncertainty" (even if not related with "time:hasDuration")
                                                           .Union(new List<RDFResource>() { RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY })).ToList();
-            RDFGraph hasDurationAssertions = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_DURATION, null, null];
+            RDFGraph hasDurationAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_DURATION, null, null];
             foreach (RDFResource hasDurationProperty in hasDurationProperties)
-                hasDurationAssertions = hasDurationAssertions.UnionWith(timeOntology.Data.ABoxGraph[timeInterval, hasDurationProperty, null, null]);
+                hasDurationAssertions = hasDurationAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasDurationProperty, null, null]);
 
             //Then we need to iterate these assertions in order to reconstruct the duration of the time interval in its available aspects
             List<TIMEIntervalDuration> durationsOfTimeInterval = new List<TIMEIntervalDuration>();
             foreach (RDFTriple hasDurationAssertion in hasDurationAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //time:Duration
-                if (timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, (RDFResource)hasDurationAssertion.Object, RDFVocabulary.TIME.DURATION))
+                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasDurationAssertion.Object, RDFVocabulary.TIME.DURATION))
                 {
                     //Declare the discovered time duration
                     TIMEIntervalDuration timeIntervalDuration = new TIMEIntervalDuration((RDFResource)hasDurationAssertion.Object)
@@ -949,29 +949,29 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Duration = durationsOfTimeInterval.FirstOrDefault(); //We currently support one duration, but this may evolve in future
         }
-        internal static void FillBeginningOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillBeginningOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //We need first to determine assertions having "time:hasBeginning" compatible predicates for the given time interval
-            List<RDFResource> hasBeginningProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)
-                                                         .Union(timeOntology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)).ToList();
-            RDFGraph hasBeginningAssertions = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_BEGINNING, null, null];
+            List<RDFResource> hasBeginningProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)
+                                                         .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_BEGINNING)).ToList();
+            RDFGraph hasBeginningAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_BEGINNING, null, null];
             foreach (RDFResource hasBeginningProperty in hasBeginningProperties)
-                hasBeginningAssertions = hasBeginningAssertions.UnionWith(timeOntology.Data.ABoxGraph[timeInterval, hasBeginningProperty, null, null]);
+                hasBeginningAssertions = hasBeginningAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasBeginningProperty, null, null]);
 
             //Then we need to iterate these assertions in order to reconstruct the time instant in its available aspects
             List<TIMEInstant> beginningsOfTimeInterval = new List<TIMEInstant>();
             foreach (RDFTriple hasBeginningAssertion in hasBeginningAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //time:Instant
-                if (timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, (RDFResource)hasBeginningAssertion.Object, RDFVocabulary.TIME.INSTANT))
+                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasBeginningAssertion.Object, RDFVocabulary.TIME.INSTANT))
                 {
                     //Declare the discovered time instant
                     TIMEInstant beginningTimeInstant = new TIMEInstant((RDFResource)hasBeginningAssertion.Object);
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(timeOntology, beginningTimeInstant);
-                    FillDescriptionOfInstant(timeOntology, beginningTimeInstant);
-                    FillPositionOfInstant(timeOntology, beginningTimeInstant);
+                    FillValueOfInstant(ontology, beginningTimeInstant);
+                    FillDescriptionOfInstant(ontology, beginningTimeInstant);
+                    FillPositionOfInstant(ontology, beginningTimeInstant);
 
                     //Collect the time instant into temporal extent of the time interval
                     beginningsOfTimeInterval.Add(beginningTimeInstant);
@@ -979,29 +979,29 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.Beginning = beginningsOfTimeInterval.FirstOrDefault(); //We currently support one beginning instant, but this may evolve in future
         }
-        internal static void FillEndOfInterval(OWLOntology timeOntology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillEndOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
             //We need first to determine assertions having "time:hasEnd" compatible predicates for the given time interval
-            List<RDFResource> hasEndProperties = timeOntology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_END)
-                                                   .Union(timeOntology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_END)).ToList();
-            RDFGraph hasEndAssertions = timeOntology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_END, null, null];
+            List<RDFResource> hasEndProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_END)
+                                                   .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_END)).ToList();
+            RDFGraph hasEndAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_END, null, null];
             foreach (RDFResource hasEndProperty in hasEndProperties)
-                hasEndAssertions = hasEndAssertions.UnionWith(timeOntology.Data.ABoxGraph[timeInterval, hasEndProperty, null, null]);
+                hasEndAssertions = hasEndAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasEndProperty, null, null]);
 
             //Then we need to iterate these assertions in order to reconstruct the time instant in its available aspects
             List<TIMEInstant> endsOfTimeInterval = new List<TIMEInstant>();
             foreach (RDFTriple hasEndAssertion in hasEndAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
             {
                 //time:Instant
-                if (timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, (RDFResource)hasEndAssertion.Object, RDFVocabulary.TIME.INSTANT))
+                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasEndAssertion.Object, RDFVocabulary.TIME.INSTANT))
                 {
                     //Declare the discovered time instant
                     TIMEInstant endTimeInstant = new TIMEInstant((RDFResource)hasEndAssertion.Object);
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(timeOntology, endTimeInstant);
-                    FillDescriptionOfInstant(timeOntology, endTimeInstant);
-                    FillPositionOfInstant(timeOntology, endTimeInstant);
+                    FillValueOfInstant(ontology, endTimeInstant);
+                    FillDescriptionOfInstant(ontology, endTimeInstant);
+                    FillPositionOfInstant(ontology, endTimeInstant);
 
                     //Collect the time instant into temporal extent of the time interval
                     endsOfTimeInterval.Add(endTimeInstant);
