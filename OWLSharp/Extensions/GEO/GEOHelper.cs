@@ -14,7 +14,9 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using NetTopologySuite.Geometries;
@@ -37,6 +39,16 @@ namespace OWLSharp.Extensions.GEO
         internal static WKTWriter WKTWriter = new WKTWriter();
         internal static GMLReader GMLReader = new GMLReader();
         internal static GMLWriter GMLWriter = new GMLWriter();
+
+        #region Initializer
+        [ExcludeFromCodeCoverage]
+        public static async Task InitializeGEO(this OWLOntology ontology)
+        {
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI));
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.SF.DEREFERENCE_URI));
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.GEOF.DEREFERENCE_URI));
+        }
+        #endregion
 
         #region Declarer
         public static OWLOntology DeclarePointFeature(this OWLOntology ontology, RDFResource featureUri,
@@ -192,7 +204,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Distance)
+        #region Analyzer (Distance)
         public static async Task<double?> GetDistanceBetweenFeaturesAsync(OWLOntology ontology, RDFResource fromFeatureUri, RDFResource toFeatureUri)
         {
             #region Guards
@@ -300,7 +312,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Measure)
+        #region Analyzer (Measure)
         public static async Task<double?> GetLengthOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -394,7 +406,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Centroid)
+        #region Analyzer (Centroid)
         public static async Task<RDFTypedLiteral> GetCentroidOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -447,7 +459,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Boundary)
+        #region Analyzer (Boundary)
         public static async Task<RDFTypedLiteral> GetBoundaryOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -500,7 +512,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Buffer)
+        #region Analyzer (Buffer)
         public static async Task<RDFTypedLiteral> GetBufferAroundFeatureAsync(OWLOntology ontology, RDFResource featureUri, double bufferMeters)
         {
             #region Guards
@@ -553,7 +565,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (ConvexHull)
+        #region Analyzer (ConvexHull)
         public static async Task<RDFTypedLiteral> GetConvexHullOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -606,7 +618,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Envelope)
+        #region Analyzer (Envelope)
         public static async Task<RDFTypedLiteral> GetEnvelopeOfFeatureAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
@@ -659,7 +671,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (NearBy)
+        #region Analyzer (NearBy)
         public static async Task<List<RDFResource>> GetFeaturesNearBy(OWLOntology ontology, RDFResource featureUri, double distanceMeters)
         {
             #region Guards
@@ -745,7 +757,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Direction)
+        #region Analyzer (Direction)
         public static async Task<List<RDFResource>> GetFeaturesDirectionAsync(OWLOntology ontology, RDFResource featureUri, GEOEnums.GeoDirections geoDirection)
         {
             #region Guards
@@ -846,7 +858,7 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
-        #region Engine (Interaction)
+        #region Analyzer (Interaction)
         public static async Task<List<RDFResource>> GetFeaturesCrossedByAsync(OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards

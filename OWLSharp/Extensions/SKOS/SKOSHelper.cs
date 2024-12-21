@@ -17,14 +17,26 @@
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
     public static class SKOSHelper
     {
-        #region Methods
+        #region Initializer
+        [ExcludeFromCodeCoverage]
+        public static async Task InitializeSKOS(this OWLOntology ontology)
+        {
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI));
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.SKOSXL.DEREFERENCE_URI));
+        }
+        #endregion
+
+        #region Declarer
         public static OWLOntology DeclareConceptScheme(this OWLOntology ontology, RDFResource conceptScheme,
             RDFResource[] concepts = null)
         {
@@ -164,7 +176,9 @@ namespace OWLSharp.Extensions.SKOS
 
             return ontology;
         }
+        #endregion
 
+        #region Analyzer
         public static bool CheckHasConceptScheme(this OWLOntology ontology, RDFResource conceptScheme)
             => conceptScheme != null && ontology != null && ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)).Any(cs => cs.GetIRI().Equals(conceptScheme));
 

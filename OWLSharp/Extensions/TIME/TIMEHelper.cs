@@ -19,12 +19,23 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace OWLSharp.Extensions.TIME
 {
     public static class TIMEHelper
     {
+        #region Initializer
+        [ExcludeFromCodeCoverage]
+        public static async Task InitializeTIME(this OWLOntology ontology)
+        {
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.DEREFERENCE_URI));
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.THORS.DEREFERENCE_URI));
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.GREG.DEREFERENCE_URI));
+        }
+        #endregion
+
         #region Declarer
         public static OWLOntology DeclareInstantFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInstant timeInstant)
         {
