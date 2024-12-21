@@ -688,7 +688,7 @@ namespace OWLSharp.Extensions.TIME
                     descriptionsOfTimeInstant.Add(timeInstantDescription);
                 }
             }
-            timeInstant.Description = descriptionsOfTimeInstant.FirstOrDefault(); //We currently support one description, but this may evolve in future
+            timeInstant.Description = descriptionsOfTimeInstant.FirstOrDefault();
         }
         internal static void FillPositionOfInstant(OWLOntology ontology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
