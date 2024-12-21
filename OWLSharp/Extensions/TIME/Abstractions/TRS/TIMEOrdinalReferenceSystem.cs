@@ -108,7 +108,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"era\" parameter is null");
             if (subEra == null)
                 throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"subEra\" parameter is null");
-            if (CheckHasSubEra(subEra, era, true))
+            if (CheckHasTHORSSubEra(subEra, era, true))
                 throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"era\" parameter is already defined as sub-era of the given \"subEra\" parameter, so the requested operation would generate an A-BOX inconsistency");
             #endregion
 
@@ -155,29 +155,29 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Analyzer
-        public bool CheckHasEra(RDFResource era)
+        public bool CheckHasTHORSEra(RDFResource era)
         {
             #region Guards
             if (era == null)
                 throw new OWLException("Cannot check if ordinal TRS has era because given \"era\" parameter is null");
             #endregion
 
-            return Ontology.Data.GetIndividualsOf(Ontology.Model, RDFVocabulary.TIME.THORS.ERA)
+            return Ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA))
                     .Any(idv => idv.Equals(era));
         }
 
-        public bool CheckHasEraBoundary(RDFResource eraBoundary)
+        public bool CheckHasTHORSEraBoundary(RDFResource eraBoundary)
         {
             #region Guards
             if (eraBoundary == null)
                 throw new OWLException("Cannot check if ordinal TRS has era boundary because given \"eraBoundary\" parameter is null");
             #endregion
 
-            return Ontology.Data.GetIndividualsOf(Ontology.Model, RDFVocabulary.TIME.THORS.ERA_BOUNDARY)
+            return Ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
                     .Any(idv => idv.Equals(eraBoundary));
         }
 
-        public bool CheckHasReferencePoint(RDFResource referencePoint)
+        public bool CheckHasTHORSReferencePoint(RDFResource referencePoint)
         {
             #region Guards
             if (referencePoint == null)
@@ -190,13 +190,13 @@ namespace OWLSharp.Extensions.TIME
 
         //thors:member
 
-        public bool CheckHasSubEra(RDFResource era, RDFResource subEra, bool enableReasoning=true)
-            => era != null && subEra != null && GetSuperErasOf(subEra, enableReasoning).Any(e => e.Equals(era));
+        public bool CheckHasTHORSSubEra(RDFResource era, RDFResource subEra, bool enableReasoning=true)
+            => era != null && subEra != null && GetTHORSSuperEras(subEra, enableReasoning).Any(e => e.Equals(era));
 
-        public bool CheckHasSuperEra(RDFResource era, RDFResource superEra, bool enableReasoning=true)
-            => era != null && superEra != null && GetSubErasOf(superEra, enableReasoning).Any(e => e.Equals(era));
+        public bool CheckHasTHORSSuperEra(RDFResource era, RDFResource superEra, bool enableReasoning=true)
+            => era != null && superEra != null && GetTHORSSubEras(superEra, enableReasoning).Any(e => e.Equals(era));
 
-        public List<RDFResource> GetSubErasOf(RDFResource era, bool enableReasoning=true)
+        public List<RDFResource> GetTHORSSubEras(RDFResource era, bool enableReasoning=true)
         {
             List<RDFResource> subEras = new List<RDFResource>();
 
@@ -205,7 +205,7 @@ namespace OWLSharp.Extensions.TIME
                 Dictionary<long, RDFResource> visitContext = new Dictionary<long, RDFResource>();
 
                 //Reason on the given era
-                subEras.AddRange(FindSubErasOf(era, visitContext, enableReasoning));
+                subEras.AddRange(FindTHORSSubEras(era, visitContext, enableReasoning));
 
                 //We don't want to also enlist the given thors:Era
                 subEras.RemoveAll(cls => cls.Equals(era));
@@ -213,7 +213,7 @@ namespace OWLSharp.Extensions.TIME
 
             return RDFQueryUtilities.RemoveDuplicates(subEras);
         }
-        internal List<RDFResource> FindSubErasOf(RDFResource era, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
+        internal List<RDFResource> FindTHORSSubEras(RDFResource era, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
         {
             List<RDFResource> subEras = new List<RDFResource>();
 
@@ -233,13 +233,13 @@ namespace OWLSharp.Extensions.TIME
             if (enableReasoning)
             {
                 foreach (RDFResource subEra in subEras.ToList())
-                    subEras.AddRange(FindSubErasOf(subEra, visitContext, enableReasoning));
+                    subEras.AddRange(FindTHORSSubEras(subEra, visitContext, enableReasoning));
             }
 
             return subEras;
         }
 
-        public List<RDFResource> GetSuperErasOf(RDFResource era, bool enableReasoning=true)
+        public List<RDFResource> GetTHORSSuperEras(RDFResource era, bool enableReasoning=true)
         {
             List<RDFResource> superEras = new List<RDFResource>();
 
@@ -248,7 +248,7 @@ namespace OWLSharp.Extensions.TIME
                 Dictionary<long, RDFResource> visitContext = new Dictionary<long, RDFResource>();
 
                 //Reason on the given era
-                superEras.AddRange(FindSuperErasOf(era, visitContext, enableReasoning));
+                superEras.AddRange(FindTHORSSuperEras(era, visitContext, enableReasoning));
 
                 //We don't want to also enlist the given thors:Era
                 superEras.RemoveAll(cls => cls.Equals(era));
@@ -256,7 +256,7 @@ namespace OWLSharp.Extensions.TIME
 
             return RDFQueryUtilities.RemoveDuplicates(superEras);
         }
-        internal List<RDFResource> FindSuperErasOf(RDFResource era, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
+        internal List<RDFResource> FindTHORSSuperEras(RDFResource era, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
         {
             List<RDFResource> superEras = new List<RDFResource>();
 
@@ -276,18 +276,18 @@ namespace OWLSharp.Extensions.TIME
             if (enableReasoning)
             {
                 foreach (RDFResource superEra in superEras.ToList())
-                    superEras.AddRange(FindSuperErasOf(superEra, visitContext, enableReasoning));
+                    superEras.AddRange(FindTHORSSuperEras(superEra, visitContext, enableReasoning));
             }            
 
             return superEras;
         }
 
-        public (TIMECoordinate,TIMECoordinate) GetEraCoordinates(RDFResource era, TIMECalendarReferenceSystem calendarTRS=null)
+        public (TIMECoordinate,TIMECoordinate) GetTHORSEraCoordinates(RDFResource era, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (era == null)
                 throw new OWLException("Cannot get coordinates of era because given \"era\" parameter is null");
-            if (!CheckHasEra(era))
+            if (!CheckHasTHORSEra(era))
                 throw new OWLException("Cannot get coordinates of era because given \"era\" parameter is not a component of this ordinal TRS");
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
@@ -298,7 +298,7 @@ namespace OWLSharp.Extensions.TIME
             if (Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.BEGIN, null, null]
                             ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
                             ?.FirstOrDefault()
-                            ?.Object is RDFResource eraBeginBoundary && CheckHasEraBoundary(eraBeginBoundary))
+                            ?.Object is RDFResource eraBeginBoundary && CheckHasTHORSEraBoundary(eraBeginBoundary))
                 eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(eraBeginBoundary, calendarTRS);
 
             //Get end boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
@@ -306,25 +306,25 @@ namespace OWLSharp.Extensions.TIME
             if (Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.END, null, null]
                             ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
                             ?.FirstOrDefault()
-                            ?.Object is RDFResource eraEndBoundary && CheckHasEraBoundary(eraEndBoundary))
+                            ?.Object is RDFResource eraEndBoundary && CheckHasTHORSEraBoundary(eraEndBoundary))
                 eraEndBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(eraEndBoundary, calendarTRS);
 
             return (eraBeginBoundaryCoordinate, eraEndBoundaryCoordinate);
         }
 
-        public TIMEExtent GetEraExtent(RDFResource era, TIMECalendarReferenceSystem calendarTRS=null)
+        public TIMEExtent GetTHORSEraExtent(RDFResource era, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (era == null)
                 throw new OWLException("Cannot get extent of era because given \"era\" parameter is null");
-            if (!CheckHasEra(era))
+            if (!CheckHasTHORSEra(era))
                 throw new OWLException("Cannot get extent of era because given \"era\" parameter is not a component of this ordinal TRS");
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
             //Get coordinates of era (if correctly declared to the ordinal TRS with THORS semantics)
-            (TIMECoordinate,TIMECoordinate) eraCoordinates = GetEraCoordinates(era, calendarTRS);
+            (TIMECoordinate,TIMECoordinate) eraCoordinates = GetTHORSEraCoordinates(era, calendarTRS);
 
             //Get extent of era
             if (eraCoordinates.Item1 != null && eraCoordinates.Item2 != null)
