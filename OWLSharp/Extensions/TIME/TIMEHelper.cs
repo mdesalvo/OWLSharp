@@ -902,19 +902,16 @@ namespace OWLSharp.Extensions.TIME
             #region Utilities
             RDFResource GetUnitTypeOfDuration(RDFResource temporalExtentURI)
             {
-                RDFPatternMember unitType = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.UNIT_TYPE, null, null]
-                                              ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)?.Object;
-                if (unitType is RDFResource unitTypeResource)
-                    return unitTypeResource;
-
-                //Default to Second if this required information is not provided
-                return RDFVocabulary.TIME.UNIT_SECOND;
+                RDFResource unitType = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE))
+                                        .FirstOrDefault(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(temporalExtentURI))?.TargetIndividualExpression.GetIRI();
+                //Default to Gregorian if this required information is not provided
+                return  unitType ?? TIMEUnit.Second;
             }
             double GetValueOfDuration(RDFResource temporalExtentURI)
             {
-                RDFPatternMember numericDurationPM = ontology.Data.ABoxGraph[temporalExtentURI, RDFVocabulary.TIME.NUMERIC_DURATION, null, null]
-                                                       ?.FirstOrDefault(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)?.Object;
-                if (numericDurationPM is RDFTypedLiteral numericDurationTL && numericDurationTL.HasDecimalDatatype())
+                OWLLiteral numericDuration = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_DURATION))
+                                              .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(temporalExtentURI))?.Literal;
+                if (numericDuration?.GetLiteral() is RDFTypedLiteral numericDurationTL && numericDurationTL.HasDecimalDatatype())
                     return Convert.ToDouble(numericDurationTL.Value, CultureInfo.InvariantCulture);
                 return 0;
             }
@@ -945,7 +942,7 @@ namespace OWLSharp.Extensions.TIME
                     durationsOfTimeInterval.Add(timeIntervalDuration);
                 }
             }
-            timeInterval.Duration = durationsOfTimeInterval.FirstOrDefault(); //We currently support one duration, but this may evolve in future
+            timeInterval.Duration = durationsOfTimeInterval.FirstOrDefault();
         }
         internal static void FillBeginningOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
