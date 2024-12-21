@@ -430,21 +430,23 @@ namespace OWLSharp.Extensions.TIME
 
             //Temporary working variables
             OWLObjectProperty hasTime = new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME);
+            OWLClass timeInstant = new OWLClass(RDFVocabulary.TIME.INSTANT);
+            OWLClass timeInterval = new OWLClass(RDFVocabulary.TIME.INTERVAL);
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLObjectPropertyAssertion> hasTimeObjPropsAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTime);
 
-            //We need to determine assertions having "time:hasTime" compatible predicates for the given feature subject
+            //Filter assertions compatible with "time:hasTime" object property
             List<OWLObjectPropertyExpression> hasTimeObjPropExprs = ontology.GetSubObjectPropertiesOf(hasTime)
                                                                       .Union(ontology.GetEquivalentObjectProperties(hasTime)).ToList();
             foreach (OWLObjectPropertyExpression hasTimeObjPropExpr in hasTimeObjPropExprs)
                 hasTimeObjPropsAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTimeObjPropExpr));
 
-            //Then we need to iterate these assertions in order to reconstruct the temporal extent in its available aspects
+            //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEEntity> temporalExtentOfFeature = new List<TIMEEntity>();
-            foreach (RDFTriple hasTimeAssertion in hasTimeObjPropsAsns.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (OWLObjectPropertyAssertion hasTimeObjPropsAsn in hasTimeObjPropsAsns)
             {
-                //Detect if the temporal extent of the feature describes a time instant
-                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasTimeAssertion.Object, RDFVocabulary.TIME.INSTANT))
+                //Detect if the temporal extent is a time instant
+                if (ontology.CheckIsIndividualOf(timeInstant, hasTimeObjPropsAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time instant
                     TIMEInstant timeInstant = new TIMEInstant((RDFResource)hasTimeAssertion.Object);
@@ -458,8 +460,8 @@ namespace OWLSharp.Extensions.TIME
                     temporalExtentOfFeature.Add(timeInstant);
                 }
 
-                //Detect if the temporal extent of the feature describes a time interval
-                else if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasTimeAssertion.Object, RDFVocabulary.TIME.INTERVAL))
+                //Detect if the temporal extent is a time interval
+                else if (ontology.CheckIsIndividualOf(timeInterval, hasTimeObjPropsAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time interval
                     TIMEInterval timeInterval = new TIMEInterval((RDFResource)hasTimeAssertion.Object);
