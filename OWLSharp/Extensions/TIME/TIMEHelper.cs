@@ -429,27 +429,27 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Temporary working variables
-            OWLObjectProperty hasTime = new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME);
-            OWLClass timeInstant = new OWLClass(RDFVocabulary.TIME.INSTANT);
-            OWLClass timeInterval = new OWLClass(RDFVocabulary.TIME.INTERVAL);
+            OWLObjectProperty hasTimeOP = new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME);
+            OWLClass timeInstantCLS = new OWLClass(RDFVocabulary.TIME.INSTANT);
+            OWLClass timeIntervalCLS = new OWLClass(RDFVocabulary.TIME.INTERVAL);
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
-            List<OWLObjectPropertyAssertion> hasTimeObjPropsAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTime);
+            List<OWLObjectPropertyAssertion> hasTimeObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTimeOP);
 
             //Filter assertions compatible with "time:hasTime" object property
-            List<OWLObjectPropertyExpression> hasTimeObjPropExprs = ontology.GetSubObjectPropertiesOf(hasTime)
-                                                                      .Union(ontology.GetEquivalentObjectProperties(hasTime)).ToList();
+            List<OWLObjectPropertyExpression> hasTimeObjPropExprs = ontology.GetSubObjectPropertiesOf(hasTimeOP)
+                                                                      .Union(ontology.GetEquivalentObjectProperties(hasTimeOP)).ToList();
             foreach (OWLObjectPropertyExpression hasTimeObjPropExpr in hasTimeObjPropExprs)
-                hasTimeObjPropsAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTimeObjPropExpr));
+                hasTimeObjPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTimeObjPropExpr));
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEEntity> temporalExtentOfFeature = new List<TIMEEntity>();
-            foreach (OWLObjectPropertyAssertion hasTimeObjPropsAsn in hasTimeObjPropsAsns)
+            foreach (OWLObjectPropertyAssertion hasTimeObjPropsAsn in hasTimeObjPropAsns)
             {
                 //Detect if the temporal extent is a time instant
-                if (ontology.CheckIsIndividualOf(timeInstant, hasTimeObjPropsAsn.TargetIndividualExpression))
+                if (ontology.CheckIsIndividualOf(timeInstantCLS, hasTimeObjPropsAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time instant
-                    TIMEInstant timeInstant = new TIMEInstant((RDFResource)hasTimeAssertion.Object);
+                    TIMEInstant timeInstant = new TIMEInstant(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
                     FillValueOfInstant(ontology, timeInstant);
@@ -461,10 +461,10 @@ namespace OWLSharp.Extensions.TIME
                 }
 
                 //Detect if the temporal extent is a time interval
-                else if (ontology.CheckIsIndividualOf(timeInterval, hasTimeObjPropsAsn.TargetIndividualExpression))
+                else if (ontology.CheckIsIndividualOf(timeIntervalCLS, hasTimeObjPropsAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time interval
-                    TIMEInterval timeInterval = new TIMEInterval((RDFResource)hasTimeAssertion.Object);
+                    TIMEInterval timeInterval = new TIMEInterval(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time interval
                     FillValueOfInterval(ontology, timeInterval);
