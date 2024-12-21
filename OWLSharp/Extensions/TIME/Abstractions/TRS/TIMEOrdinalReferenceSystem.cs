@@ -189,8 +189,6 @@ namespace OWLSharp.Extensions.TIME
                                  && idv.GetIRI().Equals(referencePoint));
         }
 
-        //thors:member
-
         public bool CheckHasTHORSSubEra(RDFResource era, RDFResource subEra, bool enableReasoning=true)
             => era != null && subEra != null && GetTHORSSuperEras(subEra, enableReasoning).Any(e => e.Equals(era));
 
