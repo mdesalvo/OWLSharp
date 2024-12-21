@@ -55,9 +55,6 @@ namespace OWLSharp.Extensions.TIME
 
             //Add knowledge to the A-BOX (era)
             Ontology.DeclareEntity(new OWLNamedIndividual(era));
-            Ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.THORS.ERA));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.COMPONENT));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.SYSTEM));
             Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA),
                 new OWLNamedIndividual(era)));
@@ -72,9 +69,6 @@ namespace OWLSharp.Extensions.TIME
 
             //Add knowledge to the A-BOX (begin)
             Ontology.DeclareTIMEInstantFeatureInternal(eraBeginning);
-            Ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.BEGIN));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.NEXT_ERA));
             Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
                 new OWLNamedIndividual(eraBeginning)));
@@ -89,9 +83,6 @@ namespace OWLSharp.Extensions.TIME
 
             //Add knowledge to the A-BOX (end)
             Ontology.DeclareTIMEInstantFeatureInternal(eraEnd);
-            Ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.END));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.PREVIOUS_ERA));
             Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
                 new OWLNamedIndividual(eraEnd)));
@@ -121,8 +112,6 @@ namespace OWLSharp.Extensions.TIME
             //Add knowledge to the A-BOX
             Ontology.DeclareEntity(new OWLNamedIndividual(era));
             Ontology.DeclareEntity(new OWLNamedIndividual(subEra));
-            Ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.THORS.ERA));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER));
             Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA),
                 new OWLNamedIndividual(era)));
@@ -146,8 +135,6 @@ namespace OWLSharp.Extensions.TIME
 
             //Add knowledge to the A-BOX (referencePoint)
             Ontology.DeclareTIMEInstantFeatureInternal(referencePoint);
-            Ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY));
-            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT));
             Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
                 new OWLNamedIndividual(referencePoint)));
