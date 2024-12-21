@@ -286,7 +286,7 @@ namespace OWLSharp.Extensions.TIME
                             ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
                             ?.FirstOrDefault()
                             ?.Object is RDFResource eraBeginBoundary && CheckHasEraBoundary(eraBeginBoundary))
-                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfInstant(eraBeginBoundary, calendarTRS);
+                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(eraBeginBoundary, calendarTRS);
 
             //Get end boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraEndBoundaryCoordinate = null;
@@ -294,7 +294,7 @@ namespace OWLSharp.Extensions.TIME
                             ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
                             ?.FirstOrDefault()
                             ?.Object is RDFResource eraEndBoundary && CheckHasEraBoundary(eraEndBoundary))
-                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfInstant(eraEndBoundary, calendarTRS);
+                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(eraEndBoundary, calendarTRS);
 
             return (eraBeginBoundaryCoordinate, eraEndBoundaryCoordinate);
         }

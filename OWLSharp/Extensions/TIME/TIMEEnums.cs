@@ -27,32 +27,5 @@ namespace OWLSharp.Extensions.TIME
             Minute = 5,
             Second = 6
         }
-
-        public enum TIMEInstantRelation
-        {
-            After = 1,
-            Before = 2
-        }
-
-        public enum TIMEIntervalRelation
-        {
-            After = 1,
-            Before = 2,
-            Contains = 3,
-            Disjoint = 4,
-            During = 5,
-            Equals = 6,
-            Finishes = 7,
-            FinishedBy = 8,
-            HasInside = 9,
-            In = 10,
-            Meets = 11,
-            MetBy = 12,
-            NotDisjoint = 13,
-            Overlaps = 14,
-            OverlappedBy = 15,
-            Starts = 16,
-            StartedBy = 17
-        }
     }
 }
