@@ -292,21 +292,24 @@ namespace OWLSharp.Extensions.TIME
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
+            //Temporary working variables
+            List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(Ontology);
+            List<OWLObjectPropertyAssertion> thorsBeginObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.BEGIN));
+            List<OWLObjectPropertyAssertion> thorsEndObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.END));
+
             //Get begin boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraBeginBoundaryCoordinate = null;
-            if (Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.BEGIN, null, null]
-                            ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
-                            ?.FirstOrDefault()
-                            ?.Object is RDFResource eraBeginBoundary && CheckHasTHORSEraBoundary(eraBeginBoundary))
-                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(eraBeginBoundary, calendarTRS);
+            OWLObjectPropertyAssertion thorsBeginEraAsn = thorsBeginObjPropAsns.FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(era)
+                                                             && CheckHasTHORSEraBoundary(asn.TargetIndividualExpression.GetIRI()));
+            if (thorsBeginEraAsn != null)
+                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(thorsBeginEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
 
             //Get end boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraEndBoundaryCoordinate = null;
-            if (Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.END, null, null]
-                            ?.Where(t => t.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO)
-                            ?.FirstOrDefault()
-                            ?.Object is RDFResource eraEndBoundary && CheckHasTHORSEraBoundary(eraEndBoundary))
-                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(eraEndBoundary, calendarTRS);
+            OWLObjectPropertyAssertion thorsEndEraAsn = thorsEndObjPropAsns.FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(era)
+                                                         && CheckHasTHORSEraBoundary(asn.TargetIndividualExpression.GetIRI()));
+            if (thorsEndEraAsn != null)
+                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfTIMEInstant(thorsEndEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
 
             return (eraBeginBoundaryCoordinate, eraEndBoundaryCoordinate);
         }
