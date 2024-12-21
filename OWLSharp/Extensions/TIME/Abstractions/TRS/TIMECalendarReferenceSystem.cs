@@ -29,7 +29,8 @@ namespace OWLSharp.Extensions.TIME
                 .SetLeapYearRule(year => {
                     return (year >= 1582 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
                         ? new uint[] { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
-                        : new uint[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; }));
+                        : new uint[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; 
+                }));
         #endregion
 
         #region Properties
