@@ -22,7 +22,7 @@ namespace OWLSharp.Extensions.TIME
     public static class TIMEConverter
     {
         #region Methods
-        public static TIMECoordinate GetCoordinateFromTemporalPosition(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMECoordinate GetCoordinateFromNumericPosition(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (positionTRS == null)
@@ -171,7 +171,7 @@ namespace OWLSharp.Extensions.TIME
                 normalizedSecond) { Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_SECOND) };
         }
 
-        public static TIMEExtent GetExtentFromTemporalDuration(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMEExtent GetExtentFromNumericDuration(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeDuration < 0)
@@ -240,7 +240,7 @@ namespace OWLSharp.Extensions.TIME
                 new TIMECalendarReferenceSystemMetrics(calendarTRS.Metrics.SecondsInMinute, calendarTRS.Metrics.MinutesInHour, calendarTRS.Metrics.HoursInDay, calendarTRS.Metrics.Months));
             inexactCalendarTRS.Metrics.HasExactMetric = false;
 
-            return GetExtentFromTemporalDuration(timeExtentSeconds, TIMEUnit.Second, calendarTRS);
+            return GetExtentFromNumericDuration(timeExtentSeconds, TIMEUnit.Second, calendarTRS);
         }
 
         public static TIMEExtent CalculateExtentBetweenCoordinates(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
@@ -285,7 +285,7 @@ namespace OWLSharp.Extensions.TIME
                                              + (normalizedEnd.Year.Value     * calendarTRS.Metrics.SecondsInMinute * calendarTRS.Metrics.MinutesInHour * calendarTRS.Metrics.HoursInDay * calendarTRS.Metrics.DaysInYear);
 
             //Return extent between start/end coordinates
-            TIMEExtent extent = GetExtentFromTemporalDuration(normalizedEndSeconds - normalizedStartSeconds, TIMEUnit.Second, calendarTRS);
+            TIMEExtent extent = GetExtentFromNumericDuration(normalizedEndSeconds - normalizedStartSeconds, TIMEUnit.Second, calendarTRS);
             return extent;
         }
         #endregion
