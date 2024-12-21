@@ -184,9 +184,6 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if ordinal TRS has reference point because given \"referencePoint\" parameter is null");
             #endregion
 
-            //Temporary working variables
-            List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(Ontology);
-
             return Ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
                     .Any(idv => Ontology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT), new OWLNamedIndividual(this), idv)) 
                                  && idv.GetIRI().Equals(referencePoint));
