@@ -17,6 +17,7 @@
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using RDFSharp.Query;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +31,12 @@ namespace OWLSharp.Extensions.TIME
 
         #region Ctors
         public TIMEOrdinalReferenceSystem(RDFResource trsUri) : base(trsUri)
-            => Ontology = new OWLOntology(URI);
+        {
+            Ontology = new OWLOntology(URI);
+
+            //Import THORS ontology
+            Ontology.ImportAsync(new Uri(RDFVocabulary.TIME.THORS.DEREFERENCE_URI)).GetAwaiter().GetResult();
+        }
         #endregion
 
         #region Methods
