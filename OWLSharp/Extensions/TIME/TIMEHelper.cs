@@ -1020,45 +1020,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInterval.End = endsOfTimeInterval.FirstOrDefault();
         }
-        [ExcludeFromCodeCoverage]
-        internal static RDFResource GetMonthOfYear(int? month)
-        {
-            if (!month.HasValue)
-                return null;
 
-            switch (month)
-            {
-                case  1: return RDFVocabulary.TIME.GREG.JANUARY;
-                case  2: return RDFVocabulary.TIME.GREG.FEBRUARY;
-                case  3: return RDFVocabulary.TIME.GREG.MARCH;
-                case  4: return RDFVocabulary.TIME.GREG.APRIL;
-                case  5: return RDFVocabulary.TIME.GREG.MAY;
-                case  6: return RDFVocabulary.TIME.GREG.JUNE;
-                case  7: return RDFVocabulary.TIME.GREG.JULY;
-                case  8: return RDFVocabulary.TIME.GREG.AUGUST;
-                case  9: return RDFVocabulary.TIME.GREG.SEPTEMBER;
-                case 10: return RDFVocabulary.TIME.GREG.OCTOBER;
-                case 11: return RDFVocabulary.TIME.GREG.NOVEMBER;
-                case 12: return RDFVocabulary.TIME.GREG.DECEMBER;
-                default: return null;
-            }
-        }
-        [ExcludeFromCodeCoverage]
-        internal static RDFResource GetDayOfWeek(DayOfWeek dayOfWeek)
-        {
-            switch (dayOfWeek)
-            {
-                case DayOfWeek.Sunday:    return RDFVocabulary.TIME.SUNDAY;
-                case DayOfWeek.Monday:    return RDFVocabulary.TIME.MONDAY;
-                case DayOfWeek.Tuesday:   return RDFVocabulary.TIME.TUESDAY;
-                case DayOfWeek.Wednesday: return RDFVocabulary.TIME.WEDNESDAY;
-                case DayOfWeek.Thursday:  return RDFVocabulary.TIME.THURSDAY;
-                case DayOfWeek.Friday:    return RDFVocabulary.TIME.FRIDAY;
-                case DayOfWeek.Saturday:  return RDFVocabulary.TIME.SATURDAY;
-                default:                  return null;
-            }
-        }
-        
         public static TIMECoordinate GetCoordinateOfInstant(this OWLOntology ontology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -1293,6 +1255,45 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             return compatibleEnd;
+        }
+
+        [ExcludeFromCodeCoverage]
+        internal static RDFResource GetMonthOfYear(int? month)
+        {
+            if (!month.HasValue)
+                return null;
+
+            switch (month)
+            {
+                case  1: return RDFVocabulary.TIME.GREG.JANUARY;
+                case  2: return RDFVocabulary.TIME.GREG.FEBRUARY;
+                case  3: return RDFVocabulary.TIME.GREG.MARCH;
+                case  4: return RDFVocabulary.TIME.GREG.APRIL;
+                case  5: return RDFVocabulary.TIME.GREG.MAY;
+                case  6: return RDFVocabulary.TIME.GREG.JUNE;
+                case  7: return RDFVocabulary.TIME.GREG.JULY;
+                case  8: return RDFVocabulary.TIME.GREG.AUGUST;
+                case  9: return RDFVocabulary.TIME.GREG.SEPTEMBER;
+                case 10: return RDFVocabulary.TIME.GREG.OCTOBER;
+                case 11: return RDFVocabulary.TIME.GREG.NOVEMBER;
+                case 12: return RDFVocabulary.TIME.GREG.DECEMBER;
+                default: return null;
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        internal static RDFResource GetDayOfWeek(DayOfWeek dayOfWeek)
+        {
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Sunday:    return RDFVocabulary.TIME.SUNDAY;
+                case DayOfWeek.Monday:    return RDFVocabulary.TIME.MONDAY;
+                case DayOfWeek.Tuesday:   return RDFVocabulary.TIME.TUESDAY;
+                case DayOfWeek.Wednesday: return RDFVocabulary.TIME.WEDNESDAY;
+                case DayOfWeek.Thursday:  return RDFVocabulary.TIME.THURSDAY;
+                case DayOfWeek.Friday:    return RDFVocabulary.TIME.FRIDAY;
+                case DayOfWeek.Saturday:  return RDFVocabulary.TIME.SATURDAY;
+                default:                  return null;
+            }
         }
         #endregion
     }
