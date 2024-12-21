@@ -36,7 +36,7 @@ namespace OWLSharp.Extensions.TIME
 
         public TIMEUnit Unit { get; internal set; }
 
-        public bool IsLargeScaleTRS { get; internal set; }
+        public bool HasLargeScaleSemantic { get; internal set; }
         #endregion
 
         #region Ctors
@@ -45,7 +45,7 @@ namespace OWLSharp.Extensions.TIME
         {
             Origin = trsOrigin ?? throw new OWLException("Cannot create TimeReferenceSystem because given \"trsOrigin\" parameter is null");
             Unit = trsUnit ?? throw new OWLException("Cannot create TimeReferenceSystem because given \"trsUnit\" parameter is null");
-            IsLargeScaleTRS = isLargeScaleTRS;
+            HasLargeScaleSemantic = isLargeScaleTRS;
         }
         #endregion
     }

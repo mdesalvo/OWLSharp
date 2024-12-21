@@ -38,7 +38,7 @@ namespace OWLSharp.Extensions.TIME
             double scaledTimePosition = timePosition * positionTRS.Unit.ScaleFactor;
 
             #region Large-Scale
-            if (positionTRS.IsLargeScaleTRS)
+            if (positionTRS.HasLargeScaleSemantic)
             {
                 coordinate.Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_YEAR);
 
