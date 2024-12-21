@@ -1181,15 +1181,16 @@ namespace OWLSharp.Extensions.TIME
             OWLObjectProperty timeIntervalEqualsOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS);
             OWLObjectProperty timeIntervalStartsOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS);
             OWLObjectProperty timeIntervalStartedByOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY);
-            List<RDFResource> compatibleStartingIntervals = RDFQueryUtilities.RemoveDuplicates(
+            List<RDFResource> compatibleStartIntervals = RDFQueryUtilities.RemoveDuplicates(
                 OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalEqualsOP)
                  .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalStartsOP))
                  .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalStartedByOP))
+                 .Where(objPropAsn  => objPropAsn.SourceIndividualExpression.GetIRI().Equals(timeIntervalURI))
                  .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
             //Perform a sequential search of the beginning instant on the set of compatible intervals
             TIMECoordinate compatibleBeginning = null;
-            IEnumerator<RDFResource> compatibleStartingIntervalsEnumerator = compatibleStartingIntervals.GetEnumerator();
+            IEnumerator<RDFResource> compatibleStartingIntervalsEnumerator = compatibleStartIntervals.GetEnumerator();
             while (compatibleBeginning == null && compatibleStartingIntervalsEnumerator.MoveNext())
                 compatibleBeginning = GetBeginningOfIntervalInternal(ontology, compatibleStartingIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
             if (compatibleBeginning == null)
@@ -1200,6 +1201,7 @@ namespace OWLSharp.Extensions.TIME
                 OWLObjectProperty timeIntervalMetByOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MET_BY);
                 List<RDFResource> metByIntervals = RDFQueryUtilities.RemoveDuplicates(
                     OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalMetByOP)
+                     .Where(objPropAsn  => objPropAsn.SourceIndividualExpression.GetIRI().Equals(timeIntervalURI))
                      .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
                 //Perform a sequential search of the start instant on the set of metBy intervals
@@ -1257,6 +1259,7 @@ namespace OWLSharp.Extensions.TIME
                 OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalEqualsOP)
                  .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalFinishesOP))
                  .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalFinishedByOP))
+                 .Where(objPropAsn  => objPropAsn.SourceIndividualExpression.GetIRI().Equals(timeIntervalURI))
                  .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
             //Perform a sequential search of the end instant on the set of compatible ending intervals
@@ -1272,6 +1275,7 @@ namespace OWLSharp.Extensions.TIME
                 OWLObjectProperty timeIntervalMeetsOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS);
                 List<RDFResource> meetsIntervals = RDFQueryUtilities.RemoveDuplicates(
                     OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalMeetsOP)
+                     .Where(objPropAsn  => objPropAsn.SourceIndividualExpression.GetIRI().Equals(timeIntervalURI))
                      .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
                 //Perform a sequential search of the end instant on the set of meets intervals
