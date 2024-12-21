@@ -860,38 +860,42 @@ namespace OWLSharp.Extensions.TIME
             }
             #endregion
 
-            //We need first to determine assertions having "time:hasDurationDescription" compatible predicates for the given time interval
-            List<RDFResource> hasDurationDescriptionProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION)
-                                                                   .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION)).ToList();
-            RDFGraph hasDurationDescriptionAssertions = ontology.Data.ABoxGraph[timeInterval, RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, null, null];
-            foreach (RDFResource hasDurationDescriptionProperty in hasDurationDescriptionProperties)
-                hasDurationDescriptionAssertions = hasDurationDescriptionAssertions.UnionWith(ontology.Data.ABoxGraph[timeInterval, hasDurationDescriptionProperty, null, null]);
+            //Temporary working variables
+            OWLObjectProperty hasDurationDescriptionOP = new OWLObjectProperty(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION);
+            OWLClass timeGeneralDurationDescriptionCLS = new OWLClass(RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION);
+            List<OWLObjectPropertyAssertion> hasDurationDescriptionObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasDurationDescriptionOP);
 
-            //Then we need to iterate these assertions in order to reconstruct the description of the time interval in its available aspects
+            //Filter assertions compatible with "time:hasDurationDescription" object property
+            List<OWLObjectPropertyExpression> hasDurationDescriptionObjPropExprs = ontology.GetSubObjectPropertiesOf(hasDurationDescriptionOP)
+                                                                                    .Union(ontology.GetEquivalentObjectProperties(hasDurationDescriptionOP)).ToList();
+            foreach (OWLObjectPropertyExpression hasDurationDescriptionObjPropExpr in hasDurationDescriptionObjPropExprs)
+                hasDurationDescriptionObjPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasDurationDescriptionObjPropExpr));
+
+            //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEIntervalDescription> descriptionsOfTimeInterval = new List<TIMEIntervalDescription>();
-            foreach (RDFTriple hasDurationDescriptionAssertion in hasDurationDescriptionAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (OWLObjectPropertyAssertion hasDurationDescriptionObjPropAsn in hasDurationDescriptionObjPropAsns)
             {
-                //time:GeneralDurationDescription
-                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)hasDurationDescriptionAssertion.Object, RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION))
+                //Detect if the temporal extent is a general duration description
+                if (ontology.CheckIsIndividualOf(timeGeneralDurationDescriptionCLS, hasDurationDescriptionObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time interval description
-                    RDFResource trs = GetTRSOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
-                    double? years = GetYearsOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
-                    double? months = GetMonthsOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
-                    double? weeks = GetWeeksOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
-                    double? days = GetDaysOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
-                    double? hours = GetHoursOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
-                    double? minutes = GetMinutesOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
-                    double? seconds = GetSecondsOfIntervalDescription((RDFResource)hasDurationDescriptionAssertion.Object);
+                    RDFResource hasDurationDescriptionObjPropAsnTargetIRI = hasDurationDescriptionObjPropAsn.TargetIndividualExpression.GetIRI();
+                    RDFResource trs = GetTRSOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
+                    double? years = GetYearsOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
+                    double? months = GetMonthsOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
+                    double? weeks = GetWeeksOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
+                    double? days = GetDaysOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
+                    double? hours = GetHoursOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
+                    double? minutes = GetMinutesOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
+                    double? seconds = GetSecondsOfIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI);
                     TIMEExtent timeIntervalLength = new TIMEExtent(
                         years, months, weeks, days, hours, minutes, seconds, new TIMEExtentMetadata(trs));
-                    TIMEIntervalDescription timeIntervalDescription = new TIMEIntervalDescription(
-                        (RDFResource)hasDurationDescriptionAssertion.Object, timeIntervalLength);
+                    TIMEIntervalDescription timeIntervalDescription = new TIMEIntervalDescription(hasDurationDescriptionObjPropAsnTargetIRI, timeIntervalLength);
 
                     descriptionsOfTimeInterval.Add(timeIntervalDescription);
                 }
             }
-            timeInterval.Description = descriptionsOfTimeInterval.FirstOrDefault(); //We currently support one description, but this may evolve in future
+            timeInterval.Description = descriptionsOfTimeInterval.FirstOrDefault();
         }
         internal static void FillDurationOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
