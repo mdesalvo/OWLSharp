@@ -201,10 +201,12 @@ namespace OWLSharp.Extensions.TIME
 
             if (era != null)
             {
-                Dictionary<long, RDFResource> visitContext = new Dictionary<long, RDFResource>();
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(Ontology);
+                List<OWLObjectPropertyAssertion> thorsMemberObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER));
 
                 //Reason on the given era
-                subEras.AddRange(FindTHORSSubEras(era, visitContext, enableReasoning));
+                subEras.AddRange(FindTHORSSubEras(era, thorsMemberObjPropAsns, new Dictionary<long, RDFResource>(), enableReasoning));
 
                 //We don't want to also enlist the given thors:Era
                 subEras.RemoveAll(cls => cls.Equals(era));
@@ -212,7 +214,7 @@ namespace OWLSharp.Extensions.TIME
 
             return RDFQueryUtilities.RemoveDuplicates(subEras);
         }
-        internal List<RDFResource> FindTHORSSubEras(RDFResource era, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
+        internal List<RDFResource> FindTHORSSubEras(RDFResource era, List<OWLObjectPropertyAssertion> thorsMemberObjPropAsns, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
         {
             List<RDFResource> subEras = new List<RDFResource>();
 
@@ -224,15 +226,14 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             // DIRECT: thors:member(A,B)
-            subEras.AddRange(Ontology.Data.ABoxGraph[era, RDFVocabulary.TIME.THORS.MEMBER, null, null]
-                   .Select(t => t.Object)
-                   .OfType<RDFResource>());
+            subEras.AddRange(thorsMemberObjPropAsns.Where(asn  => asn.SourceIndividualExpression.GetIRI().Equals(era))
+                                                   .Select(asn => asn.TargetIndividualExpression.GetIRI()));
 
             // INDIRECT: thors:member(A,B) ^ thors:member(B,C) -> thors:member(A,C)
             if (enableReasoning)
             {
                 foreach (RDFResource subEra in subEras.ToList())
-                    subEras.AddRange(FindTHORSSubEras(subEra, visitContext, enableReasoning));
+                    subEras.AddRange(FindTHORSSubEras(subEra, thorsMemberObjPropAsns, visitContext, enableReasoning));
             }
 
             return subEras;
@@ -244,10 +245,12 @@ namespace OWLSharp.Extensions.TIME
 
             if (era != null)
             {
-                Dictionary<long, RDFResource> visitContext = new Dictionary<long, RDFResource>();
+                //Temporary working variables
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(Ontology);
+                List<OWLObjectPropertyAssertion> thorsMemberObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER));
 
                 //Reason on the given era
-                superEras.AddRange(FindTHORSSuperEras(era, visitContext, enableReasoning));
+                superEras.AddRange(FindTHORSSuperEras(era, thorsMemberObjPropAsns, new Dictionary<long, RDFResource>(), enableReasoning));
 
                 //We don't want to also enlist the given thors:Era
                 superEras.RemoveAll(cls => cls.Equals(era));
@@ -255,7 +258,7 @@ namespace OWLSharp.Extensions.TIME
 
             return RDFQueryUtilities.RemoveDuplicates(superEras);
         }
-        internal List<RDFResource> FindTHORSSuperEras(RDFResource era, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
+        internal List<RDFResource> FindTHORSSuperEras(RDFResource era, List<OWLObjectPropertyAssertion> thorsMemberObjPropAsns, Dictionary<long, RDFResource> visitContext, bool enableReasoning)
         {
             List<RDFResource> superEras = new List<RDFResource>();
 
@@ -267,15 +270,14 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             // DIRECT: thors:member(A,B)
-            superEras.AddRange(Ontology.Data.ABoxGraph[null, RDFVocabulary.TIME.THORS.MEMBER, era, null]
-                     .Select(t => t.Subject)
-                     .OfType<RDFResource>());
+            superEras.AddRange(thorsMemberObjPropAsns.Where(asn  => asn.TargetIndividualExpression.GetIRI().Equals(era))
+                                                     .Select(asn => asn.SourceIndividualExpression.GetIRI()));
 
             // INDIRECT: thors:member(A,B) ^ thors:member(B,C) -> thors:member(A,C)
             if (enableReasoning)
             {
                 foreach (RDFResource superEra in superEras.ToList())
-                    superEras.AddRange(FindTHORSSuperEras(superEra, visitContext, enableReasoning));
+                    superEras.AddRange(FindTHORSSuperEras(superEra, thorsMemberObjPropAsns, visitContext, enableReasoning));
             }            
 
             return superEras;
