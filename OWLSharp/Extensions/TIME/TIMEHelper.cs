@@ -1205,7 +1205,7 @@ namespace OWLSharp.Extensions.TIME
                 //Perform a sequential search of the start instant on the set of metBy intervals
                 IEnumerator<RDFResource> metByIntervalsEnumerator = metByIntervals.GetEnumerator();
                 while (compatibleBeginning == null && metByIntervalsEnumerator.MoveNext())
-                    compatibleBeginning = GetEndOfIntervalInternal(ontology, metByIntervalsEnumerator.Current, calendarTRS, visitContext);
+                    compatibleBeginning = GetEndOfIntervalInternal(ontology, metByIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
                 #endregion
             }
             #endregion
@@ -1221,9 +1221,14 @@ namespace OWLSharp.Extensions.TIME
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
-            return GetEndOfIntervalInternal(ontology, timeIntervalURI, calendarTRS, new Dictionary<long, RDFResource>());
+            //Temporary working variables
+            List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
+            List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+
+            return GetEndOfIntervalInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());
         }
-        internal static TIMECoordinate GetEndOfIntervalInternal(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS, Dictionary<long,RDFResource> visitContext)
+        internal static TIMECoordinate GetEndOfIntervalInternal(this OWLOntology ontology, RDFResource timeIntervalURI,  TIMECalendarReferenceSystem calendarTRS, 
+            List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns, Dictionary<long,RDFResource> visitContext)
         {
             #region visitContext
             if (!visitContext.ContainsKey(timeIntervalURI.PatternMemberID))
@@ -1236,7 +1241,7 @@ namespace OWLSharp.Extensions.TIME
             TIMEInterval timeInterval = new TIMEInterval(timeIntervalURI);
 
             //Analyze ontology to extract knowledge of the time interval
-            FillEndOfInterval(ontology, timeInterval);
+            FillEndOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
 
             //Get the coordinate of the time interval's end instant
             if (timeInterval.End != null)
@@ -1245,29 +1250,34 @@ namespace OWLSharp.Extensions.TIME
             #region Allen
             //There's no direct representation of the time interval's end instant:
             //we can indirectly obtain it by exploiting Allen interval-ending relations
+            OWLObjectProperty timeIntervalEqualsOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS);
+            OWLObjectProperty timeIntervalFinishesOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHES);
+            OWLObjectProperty timeIntervalFinishedByOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY);
             List<RDFResource> compatibleEndIntervals = RDFQueryUtilities.RemoveDuplicates(
-                GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.Equals)
-                 .Union(GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.Finishes))
-                  .Union(GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.FinishedBy))
-                  .ToList());
+                OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalEqualsOP)
+                 .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalFinishesOP))
+                 .Union(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalFinishedByOP))
+                 .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
             //Perform a sequential search of the end instant on the set of compatible ending intervals
             TIMECoordinate compatibleEnd = null;
             IEnumerator<RDFResource> compatibleEndIntervalsEnumerator = compatibleEndIntervals.GetEnumerator();
             while (compatibleEnd == null && compatibleEndIntervalsEnumerator.MoveNext())
-                compatibleEnd = GetEndOfIntervalInternal(ontology, compatibleEndIntervalsEnumerator.Current, calendarTRS, visitContext);
+                compatibleEnd = GetEndOfIntervalInternal(ontology, compatibleEndIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
             if (compatibleEnd == null)
             {
                 #region Meets
                 //There's still no direct representation of the time interval's end instant:
                 //we can indirectly obtain it by exploiting Allen interval-meeting relations
+                OWLObjectProperty timeIntervalMeetsOP = new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS);
                 List<RDFResource> meetsIntervals = RDFQueryUtilities.RemoveDuplicates(
-                    GetRelatedIntervals(ontology, timeIntervalURI, TIMEEnums.TIMEIntervalRelation.Meets));
+                    OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, timeIntervalMeetsOP)
+                     .Select(objPropAsn => objPropAsn.TargetIndividualExpression.GetIRI()).ToList());
 
                 //Perform a sequential search of the end instant on the set of meets intervals
                 IEnumerator<RDFResource> meetsIntervalsEnumerator = meetsIntervals.GetEnumerator();
                 while (compatibleEnd == null && meetsIntervalsEnumerator.MoveNext())
-                    compatibleEnd = GetBeginningOfIntervalInternal(ontology, meetsIntervalsEnumerator.Current, calendarTRS, visitContext);
+                    compatibleEnd = GetBeginningOfIntervalInternal(ontology, meetsIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
                 #endregion
             }
             #endregion
