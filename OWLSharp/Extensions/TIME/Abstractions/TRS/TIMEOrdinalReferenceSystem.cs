@@ -101,9 +101,6 @@ namespace OWLSharp.Extensions.TIME
             return this;
         }
 
-        /// <summary>
-        /// Declares the existence of the given "thors:member(era,subEra)" relation to the ordinal TRS
-        /// </summary>
         public TIMEOrdinalReferenceSystem DeclareSubEra(RDFResource era, RDFResource subEra)
         {
             #region Guards
@@ -116,7 +113,20 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX
-            Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.MEMBER, subEra);
+            Ontology.DeclareEntity(new OWLNamedIndividual(era));
+            Ontology.DeclareEntity(new OWLNamedIndividual(subEra));
+            Ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.THORS.ERA));
+            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER));
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.THORS.ERA),
+                new OWLNamedIndividual(era)));
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.THORS.ERA),
+                new OWLNamedIndividual(subEra)));
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER),
+                new OWLNamedIndividual(era),
+                new OWLNamedIndividual(subEra)));
 
             return this;
         }
