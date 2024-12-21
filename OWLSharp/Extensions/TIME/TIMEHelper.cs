@@ -726,49 +726,54 @@ namespace OWLSharp.Extensions.TIME
             }
             #endregion
 
-            //We need first to determine assertions having "time:inTimePosition" compatible predicates for the given time instant
-            List<RDFResource> inTimePositionProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.IN_TIME_POSITION)
-                                                           .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.IN_TIME_POSITION)).ToList();
-            RDFGraph inTimePositionAssertions = ontology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_TIME_POSITION, null, null];
-            foreach (RDFResource inTimePositionProperty in inTimePositionProperties)
-                inTimePositionAssertions = inTimePositionAssertions.UnionWith(ontology.Data.ABoxGraph[timeInstant, inTimePositionProperty, null, null]);
+            //Temporary working variables
+            OWLObjectProperty inTimePositionOP = new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION);
+            OWLClass temporalPositionCLS = new OWLClass(RDFVocabulary.TIME.TEMPORAL_POSITION);
+            List<OWLObjectPropertyAssertion> inTimePositionObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, inTimePositionOP);
 
-            //Then we need to iterate these assertions in order to reconstruct the position of the time instant in its available aspects
+            //Filter assertions compatible with "time:inTimePosition" object property
+            List<OWLObjectPropertyExpression> inTimePositionObjPropExprs = ontology.GetSubObjectPropertiesOf(inTimePositionOP)
+                                                                            .Union(ontology.GetEquivalentObjectProperties(inTimePositionOP)).ToList();
+            foreach (OWLObjectPropertyExpression inTimePositionObjPropExpr in inTimePositionObjPropExprs)
+                inTimePositionObjPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, inTimePositionObjPropExpr));
+
+            //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstantPosition> positionsOfTimeInstant = new List<TIMEInstantPosition>();
-            foreach (RDFTriple inTimePositionAssertion in inTimePositionAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (OWLObjectPropertyAssertion inTimePositionObjPropAsn in inTimePositionObjPropAsns)
             {
-                //time:TemporalPosition
-                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)inTimePositionAssertion.Object, RDFVocabulary.TIME.TEMPORAL_POSITION))
+                //Detect if the temporal extent is a temporal position
+                if (ontology.CheckIsIndividualOf(temporalPositionCLS, inTimePositionObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time position (numeric VS nominal)
-                    RDFResource positionTRS = GetTRSOfPosition((RDFResource)inTimePositionAssertion.Object);
+                    RDFResource inTimePositionObjPropAsnTargetIRI = inTimePositionObjPropAsn.TargetIndividualExpression.GetIRI();                    
+                    RDFResource positionTRS = GetTRSOfPosition(inTimePositionObjPropAsnTargetIRI);
                     if (positionTRS != null)
                     {
                         TIMEInstantPosition timeInstantPosition = null;
 
                         //time:numericPosition
-                        double? numericPositionValue = GetNumericValueOfPosition((RDFResource)inTimePositionAssertion.Object);
+                        double? numericPositionValue = GetNumericValueOfPosition(inTimePositionObjPropAsnTargetIRI);
                         if (numericPositionValue.HasValue)
-                            timeInstantPosition = new TIMEInstantPosition((RDFResource)inTimePositionAssertion.Object, positionTRS, numericPositionValue.Value);
+                            timeInstantPosition = new TIMEInstantPosition(inTimePositionObjPropAsnTargetIRI, positionTRS, numericPositionValue.Value);
 
                         //time:nominalPosition
                         else
                         {
-                            RDFResource nominalPositionValue = GetNominalValueOfPosition((RDFResource)inTimePositionAssertion.Object);
+                            RDFResource nominalPositionValue = GetNominalValueOfPosition(inTimePositionObjPropAsnTargetIRI);
                             if (nominalPositionValue != null)
-                                timeInstantPosition = new TIMEInstantPosition((RDFResource)inTimePositionAssertion.Object, positionTRS, nominalPositionValue);
+                                timeInstantPosition = new TIMEInstantPosition(inTimePositionObjPropAsnTargetIRI, positionTRS, nominalPositionValue);
                         }
 
                         if (timeInstantPosition != null)
                         {
                             //thors:positionalUncertainty
-                            RDFResource positionalUncertainty = GetUncertaintyOfPosition((RDFResource)inTimePositionAssertion.Object);
+                            RDFResource positionalUncertainty = GetUncertaintyOfPosition(inTimePositionObjPropAsnTargetIRI);
                             if (positionalUncertainty != null)
                             {
                                 TIMEInterval positionalUncertaintyInterval = new TIMEInterval(positionalUncertainty);
-                                FillDurationOfInterval(ontology, positionalUncertaintyInterval);
+                                FillDurationOfInterval(ontology, positionalUncertaintyInterval, dtPropAsns, objPropAsns);
                                 if (positionalUncertaintyInterval.Duration != null)
-                                    timeInstantPosition.SetPositionalUncertainty(positionalUncertaintyInterval.Duration);
+                                    timeInstantPosition.PositionalUncertainty = positionalUncertaintyInterval.Duration;
                             }
 
                             positionsOfTimeInstant.Add(timeInstantPosition);
@@ -776,7 +781,7 @@ namespace OWLSharp.Extensions.TIME
                     }
                 }
             }
-            timeInstant.Position = positionsOfTimeInstant.FirstOrDefault(); //We currently support one position, but this may evolve in future
+            timeInstant.Position = positionsOfTimeInstant.FirstOrDefault();
         }
         internal static void FillValueOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
         {
