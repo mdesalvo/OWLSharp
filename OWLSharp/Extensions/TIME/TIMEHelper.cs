@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.TIME
     public static class TIMEHelper
     {
         #region Declarer
-        public static OWLOntology DeclareTIMEInstantFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInstant timeInstant)
+        public static OWLOntology DeclareInstantFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInstant timeInstant)
         {
             #region Guards
             if (featureUri == null)
@@ -41,11 +41,11 @@ namespace OWLSharp.Extensions.TIME
                 new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
                 new OWLNamedIndividual(featureUri),
                 new OWLNamedIndividual(timeInstant)));
-            ontology.DeclareTIMEInstantFeatureInternal(timeInstant);
+            ontology.DeclareInstantFeatureInternal(timeInstant);
 
             return ontology;
         }
-        internal static OWLOntology DeclareTIMEInstantFeatureInternal(this OWLOntology ontology, TIMEInstant timeInstant)
+        internal static OWLOntology DeclareInstantFeatureInternal(this OWLOntology ontology, TIMEInstant timeInstant)
         {
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.INSTANT));
             ontology.DeclareEntity(new OWLNamedIndividual(timeInstant));
@@ -245,7 +245,7 @@ namespace OWLSharp.Extensions.TIME
             return ontology;
         }
 
-        public static OWLOntology DeclareTIMEIntervalFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInterval timeInterval)
+        public static OWLOntology DeclareIntervalFeature(this OWLOntology ontology, RDFResource featureUri, TIMEInterval timeInterval)
         {
             #region Guards
             if (featureUri == null)
@@ -261,11 +261,11 @@ namespace OWLSharp.Extensions.TIME
                 new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
                 new OWLNamedIndividual(featureUri),
                 new OWLNamedIndividual(timeInterval)));
-            ontology.DeclareTIMEIntervalFeatureInternal(timeInterval);
+            ontology.DeclareIntervalFeatureInternal(timeInterval);
 
             return ontology;
         }
-        internal static OWLOntology DeclareTIMEIntervalFeatureInternal(this OWLOntology ontology, TIMEInterval timeInterval)
+        internal static OWLOntology DeclareIntervalFeatureInternal(this OWLOntology ontology, TIMEInterval timeInterval)
         {
             //Add knowledge to the A-BOX
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.INTERVAL));
@@ -292,7 +292,7 @@ namespace OWLSharp.Extensions.TIME
                     new OWLObjectProperty(RDFVocabulary.TIME.HAS_BEGINNING),
                     new OWLNamedIndividual(timeInterval),
                     new OWLNamedIndividual(timeInterval.Beginning)));
-                ontology.DeclareTIMEInstantFeatureInternal(timeInterval.Beginning);
+                ontology.DeclareInstantFeatureInternal(timeInterval.Beginning);
             }
 
             //Add knowledge to the A-BOX (time:hasEnd)
@@ -303,7 +303,7 @@ namespace OWLSharp.Extensions.TIME
                     new OWLObjectProperty(RDFVocabulary.TIME.HAS_END),
                     new OWLNamedIndividual(timeInterval),
                     new OWLNamedIndividual(timeInterval.End)));
-                ontology.DeclareTIMEInstantFeatureInternal(timeInterval.End);
+                ontology.DeclareInstantFeatureInternal(timeInterval.End);
             }
 
             //Add knowledge to the A-BOX (time:hasDurationDescription)
@@ -421,7 +421,7 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Analyzer
-        public static List<TIMEEntity> GetTemporalExtentOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static List<TIMEEntity> GetTemporalRepresentationsOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
             if (featureUri == null)
@@ -1021,7 +1021,7 @@ namespace OWLSharp.Extensions.TIME
             timeInterval.End = endsOfTimeInterval.FirstOrDefault();
         }
 
-        public static TIMECoordinate GetCoordinateOfTIMEInstant(this OWLOntology ontology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetCoordinateOfInstant(this OWLOntology ontology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeInstantURI == null)
@@ -1056,7 +1056,7 @@ namespace OWLSharp.Extensions.TIME
                 //Nominal position (e.g: Uri of a well-known interval, which is part of an ordinal TRS)
                 if (timeInstant.Position.IsNominal)
                 {
-                    TIMECoordinate nominalPositionCoordinate = GetBeginningOfTIMEInterval(ontology, timeInstant.Position.NominalValue, calendarTRS);
+                    TIMECoordinate nominalPositionCoordinate = GetBeginningOfInterval(ontology, timeInstant.Position.NominalValue, calendarTRS);
                     if (nominalPositionCoordinate != null)
                         return TIMEConverter.NormalizeCoordinate(nominalPositionCoordinate, calendarTRS);
                 }
@@ -1082,7 +1082,7 @@ namespace OWLSharp.Extensions.TIME
             return null;
         }
 
-        public static TIMEExtent GetExtentOfTIMEInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMEExtent GetExtentOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1130,8 +1130,8 @@ namespace OWLSharp.Extensions.TIME
             //The time interval has been encoded in Beginning/End time instants
             if (timeInterval.Beginning != null && timeInterval.End != null)
             {
-                TIMECoordinate timeIntervalBeginning = GetCoordinateOfTIMEInstant(ontology, timeInterval.Beginning, calendarTRS);
-                TIMECoordinate timeIntervalEnd = GetCoordinateOfTIMEInstant(ontology, timeInterval.End, calendarTRS);
+                TIMECoordinate timeIntervalBeginning = GetCoordinateOfInstant(ontology, timeInterval.Beginning, calendarTRS);
+                TIMECoordinate timeIntervalEnd = GetCoordinateOfInstant(ontology, timeInterval.End, calendarTRS);
                 if (timeIntervalBeginning != null && timeIntervalEnd != null)
                     return TIMEConverter.CalculateExtent(timeIntervalBeginning, timeIntervalEnd, calendarTRS);
             }
@@ -1140,7 +1140,7 @@ namespace OWLSharp.Extensions.TIME
             return null;
         }
 
-        public static TIMECoordinate GetBeginningOfTIMEInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetBeginningOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1173,7 +1173,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Get the coordinate of the time interval's beginning instant
             if (timeInterval.Beginning != null)
-                return GetCoordinateOfTIMEInstant(ontology, timeInterval.Beginning, calendarTRS);
+                return GetCoordinateOfInstant(ontology, timeInterval.Beginning, calendarTRS);
 
             #region Allen
             //There's no direct representation of the time interval's beginning instant:
@@ -1214,7 +1214,7 @@ namespace OWLSharp.Extensions.TIME
 
             return compatibleBeginning;
         }
-        public static TIMECoordinate GetEndOfTIMEInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetEndOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1247,7 +1247,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Get the coordinate of the time interval's end instant
             if (timeInterval.End != null)
-                return GetCoordinateOfTIMEInstant(ontology, timeInterval.End, calendarTRS);
+                return GetCoordinateOfInstant(ontology, timeInterval.End, calendarTRS);
 
             #region Allen
             //There's no direct representation of the time interval's end instant:

@@ -31,20 +31,20 @@ namespace OWLSharp.Test.Extensions.SKOS
         public void ShouldDeclareConceptScheme()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareSKOSConceptScheme(new RDFResource("ex:ConceptScheme"), [new RDFResource("ex:ConceptA")]);
+            ontology.DeclareConceptScheme(new RDFResource("ex:ConceptScheme"), [new RDFResource("ex:ConceptA")]);
 
             Assert.IsTrue(ontology.DeclarationAxioms.Count == 5);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 2);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSConceptScheme(null, [new RDFResource("ex:ConceptScheme")]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareConceptScheme(null, [new RDFResource("ex:ConceptScheme")]));
         }
 
         [TestMethod]
         public void ShouldDeclareConcept()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareSKOSConcept(new RDFResource("ex:Concept"), [
+            ontology.DeclareConcept(new RDFResource("ex:Concept"), [
                 new RDFPlainLiteral("This is a concept"),
                 new RDFPlainLiteral("This is a concept", "en-US")]);
 
@@ -52,8 +52,8 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSConcept(null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSConcept(new RDFResource("ex:Concept"), [
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareConcept(null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareConcept(new RDFResource("ex:Concept"), [
                 new RDFPlainLiteral("This is a concept"), new RDFPlainLiteral("This is the same concept")]));
         }
 
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         public void ShouldDeclareConceptInScheme()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareSKOSConcept(new RDFResource("ex:Concept"), [
+            ontology.DeclareConcept(new RDFResource("ex:Concept"), [
                 new RDFPlainLiteral("This is a concept"),
                 new RDFPlainLiteral("This is a concept", "en-US")], new RDFResource("ex:ConceptScheme"));
 
@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         public void ShouldDeclareCollection()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareSKOSCollection(new RDFResource("ex:Collection"),
+            ontology.DeclareCollection(new RDFResource("ex:Collection"),
                 [new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB")],
                 [new RDFPlainLiteral("This is a collection"), new RDFPlainLiteral("This is a collection", "en-US")]);
 
@@ -83,10 +83,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSCollection(null, [new RDFResource("ex:ConceptA")]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSCollection(new RDFResource("ex:Collection"), null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSCollection(new RDFResource("ex:Collection"), []));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareSKOSCollection(new RDFResource("ex:Collection"),
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(null, [new RDFResource("ex:ConceptA")]));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(new RDFResource("ex:Collection"), null));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(new RDFResource("ex:Collection"), []));
+            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(new RDFResource("ex:Collection"),
                 [new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB")],
                 [new RDFPlainLiteral("This is a collection", "en-US"), new RDFPlainLiteral("This is the same collection", "en-US")]));
         }
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         public void ShouldDeclareCollectionInScheme()
         {
             OWLOntology ontology = new OWLOntology();
-            ontology.DeclareSKOSCollection(new RDFResource("ex:Collection"),
+            ontology.DeclareCollection(new RDFResource("ex:Collection"),
                 [new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB")],
                 [new RDFPlainLiteral("This is a collection"), new RDFPlainLiteral("This is a collection", "en-US")], new RDFResource("ex:ConceptScheme"));
 

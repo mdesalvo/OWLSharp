@@ -25,7 +25,7 @@ namespace OWLSharp.Extensions.SKOS
     public static class SKOSHelper
     {
         #region Methods
-        public static OWLOntology DeclareSKOSConceptScheme(this OWLOntology ontology, RDFResource conceptScheme,
+        public static OWLOntology DeclareConceptScheme(this OWLOntology ontology, RDFResource conceptScheme,
             RDFResource[] concepts = null)
         {
             #region Guards
@@ -59,7 +59,7 @@ namespace OWLSharp.Extensions.SKOS
             return ontology;
         }
 
-        public static OWLOntology DeclareSKOSConcept(this OWLOntology ontology, RDFResource concept,
+        public static OWLOntology DeclareConcept(this OWLOntology ontology, RDFResource concept,
             RDFPlainLiteral[] labels = null, RDFResource conceptScheme = null)
         {
             #region Guards
@@ -94,7 +94,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (conceptScheme != null)
             {
-                ontology.DeclareSKOSConceptScheme(conceptScheme);
+                ontology.DeclareConceptScheme(conceptScheme);
                 ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
                 ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
@@ -105,7 +105,7 @@ namespace OWLSharp.Extensions.SKOS
             return ontology;
         }
 
-        public static OWLOntology DeclareSKOSCollection(this OWLOntology ontology, RDFResource collection,
+        public static OWLOntology DeclareCollection(this OWLOntology ontology, RDFResource collection,
             RDFResource[] concepts, RDFPlainLiteral[] labels = null, RDFResource conceptScheme = null)
         {
             #region Guards
@@ -126,7 +126,7 @@ namespace OWLSharp.Extensions.SKOS
 
             foreach (RDFResource concept in concepts)
             {
-                ontology.DeclareSKOSConcept(concept);
+                ontology.DeclareConcept(concept);
                 ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER),
                     new OWLNamedIndividual(collection),
@@ -154,7 +154,7 @@ namespace OWLSharp.Extensions.SKOS
 
             if (conceptScheme != null)
             {
-                ontology.DeclareSKOSConceptScheme(conceptScheme);
+                ontology.DeclareConceptScheme(conceptScheme);
                 ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
                 ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
