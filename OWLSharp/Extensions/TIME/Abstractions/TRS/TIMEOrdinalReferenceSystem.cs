@@ -85,9 +85,18 @@ namespace OWLSharp.Extensions.TIME
             Ontology.DeclareTIMEInstantFeatureInternal(eraEnd);
             Ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY));
             Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.END));
-            Ontology.Data.DeclareIndividualType(eraEnd, RDFVocabulary.TIME.THORS.ERA_BOUNDARY);
-            Ontology.Data.DeclareObjectAssertion(era, RDFVocabulary.TIME.THORS.END, eraEnd);
-            Ontology.Data.DeclareObjectAssertion(eraEnd, RDFVocabulary.TIME.THORS.PREVIOUS_ERA, era); //inference
+            Ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.TIME.THORS.PREVIOUS_ERA));
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
+                new OWLNamedIndividual(eraEnd)));
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.THORS.END),
+                new OWLNamedIndividual(era),
+                new OWLNamedIndividual(eraEnd)));
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.THORS.PREVIOUS_ERA),
+                new OWLNamedIndividual(eraEnd),
+                new OWLNamedIndividual(era))); //inference
 
             return this;
         }
