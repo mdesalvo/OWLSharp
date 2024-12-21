@@ -453,11 +453,11 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant timeInstant = new TIMEInstant(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(ontology, timeInstant, objPropAsns, dtPropAsns);
-                    FillDescriptionOfInstant(ontology, timeInstant, objPropAsns, dtPropAsns);
-                    FillPositionOfInstant(ontology, timeInstant, objPropAsns, dtPropAsns);
+                    FillValueOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
+                    FillDescriptionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
+                    FillPositionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
 
-                    //Collect the time instant into temporal extent of feature
+                    //Collect the time instant
                     temporalExtentOfFeature.Add(timeInstant);
                 }
 
@@ -468,13 +468,13 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInterval timeInterval = new TIMEInterval(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time interval
-                    FillValueOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
-                    FillDescriptionOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
-                    FillDurationOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
-                    FillBeginningOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
-                    FillEndOfInterval(ontology, timeInterval, objPropAsns, dtPropAsns);
+                    FillValueOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
+                    FillDescriptionOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
+                    FillDurationOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
+                    FillBeginningOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
+                    FillEndOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
 
-                    //Collect the time interval into temporal extent of feature
+                    //Collect the time interval
                     temporalExtentOfFeature.Add(timeInterval);
                 }
             }
@@ -656,33 +656,38 @@ namespace OWLSharp.Extensions.TIME
             }
             #endregion
 
-            //We need first to determine assertions having "time:inDateTime" compatible predicates for the given time instant
-            List<RDFResource> inDateTimeProperties = ontology.Model.PropertyModel.GetSubPropertiesOf(RDFVocabulary.TIME.IN_DATETIME)
-                                                       .Union(ontology.Model.PropertyModel.GetEquivalentPropertiesOf(RDFVocabulary.TIME.IN_DATETIME)).ToList();
-            RDFGraph inDateTimeAssertions = ontology.Data.ABoxGraph[timeInstant, RDFVocabulary.TIME.IN_DATETIME, null, null];
-            foreach (RDFResource inDateTimeProperty in inDateTimeProperties)
-                inDateTimeAssertions = inDateTimeAssertions.UnionWith(ontology.Data.ABoxGraph[timeInstant, inDateTimeProperty, null, null]);
+            //Temporary working variables
+            OWLObjectProperty inDateTimeOP = new OWLObjectProperty(RDFVocabulary.TIME.IN_DATETIME);
+            OWLClass timeGeneralDateTimeDescriptionCLS = new OWLClass(RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION);
+            List<OWLObjectPropertyAssertion> inDateTimeObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, inDateTimeOP);
 
-            //Then we need to iterate these assertions in order to reconstruct the description of the time instant in its available aspects
+            //Filter assertions compatible with "time:inDateTime" object property
+            List<OWLObjectPropertyExpression> inDateTimeObjPropExprs = ontology.GetSubObjectPropertiesOf(inDateTimeOP)
+                                                                        .Union(ontology.GetEquivalentObjectProperties(inDateTimeOP)).ToList();
+            foreach (OWLObjectPropertyExpression inDateTimeObjPropExpr in inDateTimeObjPropExprs)
+                inDateTimeObjPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, inDateTimeObjPropExpr));
+
+            //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstantDescription> descriptionsOfTimeInstant = new List<TIMEInstantDescription>();
-            foreach (RDFTriple inDateTimeAssertion in inDateTimeAssertions.Where(asn => asn.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO))
+            foreach (OWLObjectPropertyAssertion inDateTimeObjPropAsn in inDateTimeObjPropAsns)
             {
-                //time:GeneralDateTimeDescription
-                if (ontology.Data.CheckIsIndividualOf(ontology.Model, (RDFResource)inDateTimeAssertion.Object, RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION))
+                //Detect if the temporal extent is a general datetime description
+                if (ontology.CheckIsIndividualOf(timeGeneralDateTimeDescriptionCLS, inDateTimeObjPropAsn.TargetIndividualExpression))
                 {
                     //Declare the discovered time instant description
-                    RDFResource trs = GetTRSOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
-                    RDFResource unitType = GetUnitTypeOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
-                    double? year = GetYearOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
-                    double? month = GetMonthOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
-                    double? day = GetDayOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
-                    double? hour = GetHourOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
-                    double? minute = GetMinuteOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
-                    double? second = GetSecondOfInstantDescription((RDFResource)inDateTimeAssertion.Object);
+                    RDFResource inDateTimeObjPropAsnTargetIRI = inDateTimeObjPropAsn.TargetIndividualExpression.GetIRI();
+                    RDFResource trs = GetTRSOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
+                    RDFResource unitType = GetUnitTypeOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
+                    double? year = GetYearOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
+                    double? month = GetMonthOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
+                    double? day = GetDayOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
+                    double? hour = GetHourOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
+                    double? minute = GetMinuteOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
+                    double? second = GetSecondOfInstantDescription(inDateTimeObjPropAsnTargetIRI);
                     TIMECoordinate timeInstantCoordinate = new TIMECoordinate(
                         year, month, day, hour, minute, second, new TIMECoordinateMetadata(trs, unitType));
                     TIMEInstantDescription timeInstantDescription = new TIMEInstantDescription(
-                        (RDFResource)inDateTimeAssertion.Object, timeInstantCoordinate);
+                        inDateTimeObjPropAsnTargetIRI, timeInstantCoordinate);
                     FillTextualDecorators(timeInstantDescription);
 
                     descriptionsOfTimeInstant.Add(timeInstantDescription);
