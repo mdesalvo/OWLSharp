@@ -1133,7 +1133,7 @@ namespace OWLSharp.Extensions.TIME
                 TIMECoordinate timeIntervalBeginning = GetCoordinateOfInstant(ontology, timeInterval.Beginning, calendarTRS);
                 TIMECoordinate timeIntervalEnd = GetCoordinateOfInstant(ontology, timeInterval.End, calendarTRS);
                 if (timeIntervalBeginning != null && timeIntervalEnd != null)
-                    return TIMEConverter.CalculateExtentBetweenCoordinatesBetweenCoordinates(timeIntervalBeginning, timeIntervalEnd, calendarTRS);
+                    return TIMEConverter.CalculateExtentBetweenCoordinates(timeIntervalBeginning, timeIntervalEnd, calendarTRS);
             }
 
             //In absence of a valid time interval encoding we simply cannot proceed

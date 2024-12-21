@@ -325,7 +325,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Get extent of era
             if (eraCoordinates.Item1 != null && eraCoordinates.Item2 != null)
-                return TIMEConverter.CalculateExtentBetweenCoordinatesBetweenCoordinates(eraCoordinates.Item1, eraCoordinates.Item2, calendarTRS);
+                return TIMEConverter.CalculateExtentBetweenCoordinates(eraCoordinates.Item1, eraCoordinates.Item2, calendarTRS);
 
             return null;
         }
