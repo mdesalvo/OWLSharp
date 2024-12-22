@@ -498,7 +498,7 @@ namespace OWLSharp.Extensions.TIME
             OWLLiteral inXSDDateTimeStampLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP))
                                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDDateTimeStampLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTimeStampTLiteral
-                 && inXSDDateTimeStampTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))
+                 && inXSDDateTimeStampTLiteral.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDDateTimeStampTLiteral.Value, XmlDateTimeSerializationMode.Utc);
                 return;
@@ -508,7 +508,7 @@ namespace OWLSharp.Extensions.TIME
             OWLLiteral inXSDDateTimeLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIME))
                                                .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDDateTimeLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTimeTLiteral
-                 && inXSDDateTimeTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIME))
+                 && inXSDDateTimeTLiteral.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATETIME))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDDateTimeTLiteral.Value, XmlDateTimeSerializationMode.Utc);
                 return;
@@ -518,7 +518,7 @@ namespace OWLSharp.Extensions.TIME
             OWLLiteral inXSDDateLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATE))
                                            .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDDateLiteral?.GetLiteral() is RDFTypedLiteral inXSDDateTLiteral
-                 && inXSDDateTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATE))
+                 && inXSDDateTLiteral.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DATE))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDDateTLiteral.Value, XmlDateTimeSerializationMode.Utc);
                 return;
@@ -528,7 +528,7 @@ namespace OWLSharp.Extensions.TIME
             OWLLiteral inXSDGYearMonthLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_GYEARMONTH))
                                                  .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDGYearMonthLiteral?.GetLiteral() is RDFTypedLiteral inXSDGYearMonthTLiteral
-                 && inXSDGYearMonthTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH))
+                 && inXSDGYearMonthTLiteral.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH))
             {
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearMonthTLiteral.Value, XmlDateTimeSerializationMode.Utc);
                 return;
@@ -538,7 +538,7 @@ namespace OWLSharp.Extensions.TIME
             OWLLiteral inXSDGYearLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_GYEAR))
                                             .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInstant))?.Literal;
             if (inXSDGYearLiteral?.GetLiteral() is RDFTypedLiteral inXSDGYearTLiteral
-                 && inXSDGYearTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
+                 && inXSDGYearTLiteral.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                 timeInstant.DateTime = XmlConvert.ToDateTime(inXSDGYearTLiteral.Value, XmlDateTimeSerializationMode.Utc);
         }
         internal static void FillDescriptionOfInstant(OWLOntology ontology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
@@ -565,14 +565,14 @@ namespace OWLSharp.Extensions.TIME
                 if (yearPM?.GetLiteral() is RDFTypedLiteral yearTL)
                 {
                     //xsd:gYear
-                    if (yearTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
+                    if (yearTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GYEAR))
                     {
                         DateTime yearDT = XmlConvert.ToDateTime(yearTL.Value, XmlDateTimeSerializationMode.Utc);
                         return Convert.ToDouble(yearDT.Year);
                     }
 
                     //time:generalYear or numeric literals
-                    if (yearTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALYEAR) || yearTL.HasDecimalDatatype())
+                    if (yearTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALYEAR) || yearTL.HasDecimalDatatype())
                         return Convert.ToDouble(yearTL.Value, CultureInfo.InvariantCulture);
                 }
                 return null;
@@ -584,14 +584,14 @@ namespace OWLSharp.Extensions.TIME
                 if (monthPM?.GetLiteral() is RDFTypedLiteral monthTL)
                 {
                     //xsd:gMonth
-                    if (monthTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GMONTH))
+                    if (monthTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GMONTH))
                     {
                         DateTime monthDT = XmlConvert.ToDateTime(monthTL.Value, XmlDateTimeSerializationMode.Utc);
                         return Convert.ToDouble(monthDT.Month);
                     }
 
                     //time:generalMonth
-                    if (monthTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALMONTH))
+                    if (monthTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALMONTH))
                         return Convert.ToDouble(monthTL.Value.Replace("--", string.Empty), CultureInfo.InvariantCulture);
 
                     //numeric literals
@@ -607,14 +607,14 @@ namespace OWLSharp.Extensions.TIME
                 if (dayPM?.GetLiteral() is RDFTypedLiteral dayTL)
                 {
                     //xsd:gDay
-                    if (dayTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GDAY))
+                    if (dayTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GDAY))
                     {
                         DateTime dayDT = XmlConvert.ToDateTime(dayTL.Value, XmlDateTimeSerializationMode.Utc);
                         return Convert.ToDouble(dayDT.Day);
                     }
 
                     //time:generalDay
-                    if (dayTL.Datatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALDAY))
+                    if (dayTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALDAY))
                         return Convert.ToDouble(dayTL.Value.Replace("---", string.Empty), CultureInfo.InvariantCulture);
 
                     //numeric literals
@@ -800,7 +800,7 @@ namespace OWLSharp.Extensions.TIME
             OWLLiteral hasXSDDurationLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION))
                                                 .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInterval)).Literal;
             if (hasXSDDurationLiteral?.GetLiteral() is RDFTypedLiteral hasXSDDurationTLiteral
-                 && hasXSDDurationTLiteral.Datatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
+                 && hasXSDDurationTLiteral.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
                 timeInterval.TimeSpan = XmlConvert.ToTimeSpan(hasXSDDurationTLiteral.Value);
         }
         internal static void FillDescriptionOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
