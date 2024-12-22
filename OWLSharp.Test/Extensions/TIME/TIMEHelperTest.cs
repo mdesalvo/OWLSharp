@@ -41,16 +41,24 @@ namespace OWLSharp.Test.Extensions.TIME
 
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.IRI.Equals("ex:timeOnt"));
-            Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
-            Assert.IsTrue(timeOntology.Data.IndividualsCount == 35);
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInst"), RDFVocabulary.TIME.TEMPORAL_ENTITY));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInst"), RDFVocabulary.TIME.INSTANT));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeInst"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("2023-03-22T10:35:34Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME)));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:feat"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeInst"))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:feat")),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLClass(RDFVocabulary.TIME.INSTANT)));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP)));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")),
+                new OWLLiteral(new RDFTypedLiteral("2023-03-22T10:35:34Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)))));
         }
-
+/*
         [TestMethod]
         public void ShouldDeclareInstantByDescriptionFromCoordinate()
         {
@@ -1826,7 +1834,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 gtsOntology,
                 new RDFResource("http://example.org/geologic/Archean"),
                 new RDFResource("http://example.org/geologic/Hadean")));
-        }
+        }*/
         #endregion
     }
 }

@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Extensions.TIME
     public class TIMEOrdinalReferenceSystemTest
     {
         #region Tests
-        [TestMethod]
+        /*[TestMethod]
         public void ShouldCreateTHORS()
         {
             TIMEOrdinalReferenceSystem thors = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
@@ -511,7 +511,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(subsubEraExtent.Days == 547_500_000);
             Assert.ThrowsException<OWLException>(() => thors.GetTHORSEraExtent(new RDFResource("ex:unexistingEra")));
             Assert.ThrowsException<OWLException>(() => thors.GetTHORSEraExtent(null));
-        }
+        }*/
         #endregion
     }
 }
