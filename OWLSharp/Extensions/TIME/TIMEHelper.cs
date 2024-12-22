@@ -58,7 +58,11 @@ namespace OWLSharp.Extensions.TIME
         }
         internal static OWLOntology DeclareInstantFeatureInternal(this OWLOntology ontology, TIMEInstant timeInstant)
         {
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.TEMPORAL_ENTITY));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.INSTANT));
+            ontology.DeclareClassAxiom(new OWLSubClassOf(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLClass(RDFVocabulary.TIME.TEMPORAL_ENTITY)));
             ontology.DeclareEntity(new OWLNamedIndividual(timeInstant));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.INSTANT),
@@ -279,7 +283,11 @@ namespace OWLSharp.Extensions.TIME
         internal static OWLOntology DeclareIntervalFeatureInternal(this OWLOntology ontology, TIMEInterval timeInterval)
         {
             //Add knowledge to the A-BOX
+            ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.TEMPORAL_ENTITY));
             ontology.DeclareEntity(new OWLClass(RDFVocabulary.TIME.INTERVAL));
+            ontology.DeclareClassAxiom(new OWLSubClassOf(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLClass(RDFVocabulary.TIME.TEMPORAL_ENTITY)));
             ontology.DeclareEntity(new OWLNamedIndividual(timeInterval));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.INTERVAL),

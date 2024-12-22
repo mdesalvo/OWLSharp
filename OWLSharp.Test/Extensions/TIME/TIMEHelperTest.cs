@@ -48,7 +48,11 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
                 new OWLNamedIndividual(new RDFResource("ex:feat")),
                 new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLClass(RDFVocabulary.TIME.TEMPORAL_ENTITY)));
             Assert.IsTrue(timeOntology.CheckHasEntity(new OWLClass(RDFVocabulary.TIME.INSTANT)));
+            Assert.IsTrue(timeOntology.CheckHasClassAxiom(new OWLSubClassOf(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLClass(RDFVocabulary.TIME.TEMPORAL_ENTITY))));
             Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.INSTANT),
                 new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
