@@ -455,7 +455,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEEntity> temporalExtentOfFeature = new List<TIMEEntity>();
-            foreach (OWLObjectPropertyAssertion hasTimeObjPropsAsn in hasTimeObjPropAsns)
+            foreach (OWLObjectPropertyAssertion hasTimeObjPropsAsn in hasTimeObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(featureUri)))
             {
                 //Detect if the temporal extent is a time instant
                 if (ontology.CheckIsIndividualOf(timeInstantCLS, hasTimeObjPropsAsn.TargetIndividualExpression))
@@ -680,7 +680,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstantDescription> descriptionsOfTimeInstant = new List<TIMEInstantDescription>();
-            foreach (OWLObjectPropertyAssertion inDateTimeObjPropAsn in inDateTimeObjPropAsns)
+            foreach (OWLObjectPropertyAssertion inDateTimeObjPropAsn in inDateTimeObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInstant)))
             {
                 //Detect if the temporal extent is a general datetime description
                 if (ontology.CheckIsIndividualOf(timeGeneralDateTimeDescriptionCLS, inDateTimeObjPropAsn.TargetIndividualExpression))
@@ -750,7 +750,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstantPosition> positionsOfTimeInstant = new List<TIMEInstantPosition>();
-            foreach (OWLObjectPropertyAssertion inTimePositionObjPropAsn in inTimePositionObjPropAsns)
+            foreach (OWLObjectPropertyAssertion inTimePositionObjPropAsn in inTimePositionObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInstant)))
             {
                 //Detect if the temporal extent is a temporal position
                 if (ontology.CheckIsIndividualOf(temporalPositionCLS, inTimePositionObjPropAsn.TargetIndividualExpression))
@@ -884,7 +884,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEIntervalDescription> descriptionsOfTimeInterval = new List<TIMEIntervalDescription>();
-            foreach (OWLObjectPropertyAssertion hasDurationDescriptionObjPropAsn in hasDurationDescriptionObjPropAsns)
+            foreach (OWLObjectPropertyAssertion hasDurationDescriptionObjPropAsn in hasDurationDescriptionObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInterval)))
             {
                 //Detect if the temporal extent is a general duration description
                 if (ontology.CheckIsIndividualOf(timeGeneralDurationDescriptionCLS, hasDurationDescriptionObjPropAsn.TargetIndividualExpression))
@@ -946,7 +946,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEIntervalDuration> durationsOfTimeInterval = new List<TIMEIntervalDuration>();
-            foreach (OWLObjectPropertyAssertion hasDurationObjPropAsn in hasDurationObjPropAsns)
+            foreach (OWLObjectPropertyAssertion hasDurationObjPropAsn in hasDurationObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInterval)))
             {
                 //Detect if the temporal extent is a temporal duration
                 if (ontology.CheckIsIndividualOf(durationCLS, hasDurationObjPropAsn.TargetIndividualExpression))
@@ -978,7 +978,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstant> beginningsOfTimeInterval = new List<TIMEInstant>();
-            foreach (OWLObjectPropertyAssertion hasBeginningObjPropAsn in hasBeginningObjPropAsns)
+            foreach (OWLObjectPropertyAssertion hasBeginningObjPropAsn in hasBeginningObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInterval)))
             {
                 //Detect if the temporal extent is a time instant
                 if (ontology.CheckIsIndividualOf(instantCLS, hasBeginningObjPropAsn.TargetIndividualExpression))
@@ -1012,7 +1012,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEInstant> endsOfTimeInterval = new List<TIMEInstant>();
-            foreach (OWLObjectPropertyAssertion hasEndObjPropAsn in hasEndObjPropAsns)
+            foreach (OWLObjectPropertyAssertion hasEndObjPropAsn in hasEndObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(timeInterval)))
             {
                 //Detect if the temporal extent is a time instant
                 if (ontology.CheckIsIndividualOf(instantCLS, hasEndObjPropAsn.TargetIndividualExpression))
