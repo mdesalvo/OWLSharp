@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Extensions.SKOS
             OWLOntology ontology = new OWLOntology();
             ontology.DeclareConceptScheme(new RDFResource("ex:ConceptScheme"), [new RDFResource("ex:ConceptA")]);
 
-            Assert.IsTrue(ontology.DeclarationAxioms.Count == 5);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 2);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 2);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
 
@@ -48,7 +48,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                 new RDFPlainLiteral("This is a concept"),
                 new RDFPlainLiteral("This is a concept", "en-US")]);
 
-            Assert.IsTrue(ontology.DeclarationAxioms.Count == 3);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 1);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 1);
             Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
 
@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                 new RDFPlainLiteral("This is a concept"),
                 new RDFPlainLiteral("This is a concept", "en-US")], new RDFResource("ex:ConceptScheme"));
 
-            Assert.IsTrue(ontology.DeclarationAxioms.Count == 6);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 2);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 2);
             Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 1);
@@ -79,7 +79,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                 [new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB")],
                 [new RDFPlainLiteral("This is a collection"), new RDFPlainLiteral("This is a collection", "en-US")]);
 
-            Assert.IsTrue(ontology.DeclarationAxioms.Count == 7);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 3);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 3);
             Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
 
@@ -99,7 +99,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                 [new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB")],
                 [new RDFPlainLiteral("This is a collection"), new RDFPlainLiteral("This is a collection", "en-US")], new RDFResource("ex:ConceptScheme"));
 
-            Assert.IsTrue(ontology.DeclarationAxioms.Count == 10);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 4);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 4);
             Assert.IsTrue(ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count == 2);
             Assert.IsTrue(ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count == 3);

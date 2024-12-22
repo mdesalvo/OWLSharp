@@ -65,13 +65,7 @@ namespace OWLSharp.Extensions.GEO
                 throw new OWLException("Cannot declare point feature because given \"wgs84Coordinate\" parameter has not a valid WGS84 latitude");
             #endregion
 
-            string wktLiteral = GEOHelper.WKTWriter.Write(new Point(wgs84Coordinate.longitude, wgs84Coordinate.latitude) { SRID = 4326 });
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POINT));
-            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
-            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
-            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            string wktLiteral = WKTWriter.Write(new Point(wgs84Coordinate.longitude, wgs84Coordinate.latitude) { SRID = 4326 });
             ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
             ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
@@ -114,13 +108,7 @@ namespace OWLSharp.Extensions.GEO
                 throw new OWLException("Cannot declare line feature because given \"wgs84Coordinates\" parameter contains a point with invalid WGS84 latitude");
             #endregion
 
-            string wktLiteral = GEOHelper.WKTWriter.Write(new LineString(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray()) { SRID = 4326 });
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.LINESTRING));
-            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
-            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
-            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            string wktLiteral = WKTWriter.Write(new LineString(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray()) { SRID = 4326 });
             ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
             ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
@@ -172,13 +160,7 @@ namespace OWLSharp.Extensions.GEO
             }
             #endregion
 
-            string wktLiteral = GEOHelper.WKTWriter.Write(new Polygon(new LinearRing(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray())) { SRID = 4326 });
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE));
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY));
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.GEOSPARQL.SF.POLYGON));
-            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY));
-            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY));
-            ontology.DeclareEntity(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT));
+            string wktLiteral = WKTWriter.Write(new Polygon(new LinearRing(wgs84Coordinates.Select(wgs84Point => new Coordinate(wgs84Point.longitude, wgs84Point.latitude)).ToArray())) { SRID = 4326 });
             ontology.DeclareEntity(new OWLNamedIndividual(featureUri));
             ontology.DeclareEntity(new OWLNamedIndividual(geometryUri));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(

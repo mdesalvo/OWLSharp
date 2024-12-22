@@ -45,16 +45,12 @@ namespace OWLSharp.Extensions.SKOS
                 throw new OWLException("Cannot declare concept scheme because given \"conceptScheme\" parameter is null");
             #endregion
 
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME));
             ontology.DeclareEntity(new OWLNamedIndividual(conceptScheme));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
                 new OWLNamedIndividual(conceptScheme)));
 
             if (concepts?.Length > 0)
-            {
-                ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
-                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
                 foreach (RDFResource concept in concepts)
                 {
                     ontology.DeclareEntity(new OWLNamedIndividual(concept));
@@ -66,7 +62,6 @@ namespace OWLSharp.Extensions.SKOS
                         new OWLNamedIndividual(concept),
                         new OWLNamedIndividual(conceptScheme)));
                 }
-            }
 
             return ontology;
         }
@@ -79,7 +74,6 @@ namespace OWLSharp.Extensions.SKOS
                 throw new OWLException("Cannot declare concept because given \"concept\" parameter is null");
             #endregion
 
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.CONCEPT));
             ontology.DeclareEntity(new OWLNamedIndividual(concept));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -87,8 +81,6 @@ namespace OWLSharp.Extensions.SKOS
 
             if (labels?.Length > 0)
             {
-                ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
-
                 HashSet<string> langtagLookup = new HashSet<string>();
                 foreach (RDFPlainLiteral preferredLabel in labels)
                 {
@@ -107,7 +99,6 @@ namespace OWLSharp.Extensions.SKOS
             if (conceptScheme != null)
             {
                 ontology.DeclareConceptScheme(conceptScheme);
-                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
                 ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                     new OWLNamedIndividual(concept),
@@ -129,8 +120,6 @@ namespace OWLSharp.Extensions.SKOS
                 throw new OWLException("Cannot declare collection because given \"concepts\" parameter must contain at least 1 element");
             #endregion
 
-            ontology.DeclareEntity(new OWLClass(RDFVocabulary.SKOS.COLLECTION));
-            ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.MEMBER));
             ontology.DeclareEntity(new OWLNamedIndividual(collection));
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.SKOS.COLLECTION),
@@ -147,8 +136,6 @@ namespace OWLSharp.Extensions.SKOS
 
             if (labels?.Length > 0)
             {
-                ontology.DeclareEntity(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL));
-
                 HashSet<string> langtagLookup = new HashSet<string>();
                 foreach (RDFPlainLiteral preferredLabel in labels)
                 {
@@ -167,7 +154,6 @@ namespace OWLSharp.Extensions.SKOS
             if (conceptScheme != null)
             {
                 ontology.DeclareConceptScheme(conceptScheme);
-                ontology.DeclareEntity(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME));
                 ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                     new OWLNamedIndividual(collection),
