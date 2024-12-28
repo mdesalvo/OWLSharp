@@ -28,11 +28,11 @@ namespace OWLSharp.Extensions.TIME
     {
         #region Initializer
         [ExcludeFromCodeCoverage]
-        public static async Task InitializeTIME(this OWLOntology ontology)
+        public static async Task InitializeTIME(this OWLOntology ontology, int timeoutMilliseconds=20000)
         {
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.DEREFERENCE_URI));
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.THORS.DEREFERENCE_URI));
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.GREG.DEREFERENCE_URI));
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.DEREFERENCE_URI), timeoutMilliseconds);
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.THORS.DEREFERENCE_URI), timeoutMilliseconds);
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.TIME.GREG.DEREFERENCE_URI), timeoutMilliseconds);
         }
         #endregion
 
