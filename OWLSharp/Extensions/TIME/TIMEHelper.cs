@@ -356,11 +356,11 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Analyzer
-        public static List<TIMEEntity> GetTemporalRepresentationsOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static List<TIMEEntity> GetTemporalDimensionOfFeature(this OWLOntology ontology, RDFResource featureUri)
         {
             #region Guards
             if (featureUri == null)
-                throw new OWLException("Cannot get temporal extent of feature because given \"featureUri\" parameter is null");
+                throw new OWLException("Cannot get temporal dimension of feature because given \"featureUri\" parameter is null");
             #endregion
 
             //Temporary working variables

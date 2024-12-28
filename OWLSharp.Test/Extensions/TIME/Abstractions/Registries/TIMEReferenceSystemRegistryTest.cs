@@ -40,7 +40,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMECalendarReferenceSystem.Gregorian));
             Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.UnixTime));
             Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GPS));
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GeologicTime));
+            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.ChronometricGeologicTime));
 
             //Test different forms of iteration
             IEnumerator<TIMEReferenceSystem> trsEnumerator = TIMEReferenceSystemRegistry.TRSEnumerator;

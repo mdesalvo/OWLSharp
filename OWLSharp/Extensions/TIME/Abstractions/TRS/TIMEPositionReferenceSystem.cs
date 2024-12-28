@@ -24,8 +24,8 @@ namespace OWLSharp.Extensions.TIME
         public static readonly TIMEPositionReferenceSystem UnixTime = new TIMEPositionReferenceSystem(
             new RDFResource("https://en.wikipedia.org/wiki/Unix_time"), TIMECoordinate.UnixTime, TIMEUnit.Second);
 
-        public static readonly TIMEPositionReferenceSystem GeologicTime = new TIMEPositionReferenceSystem(
-            new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale"), TIMECoordinate.GeologicTime, TIMEUnit.MillionYearsAgo, true);
+        public static readonly TIMEPositionReferenceSystem ChronometricGeologicTime = new TIMEPositionReferenceSystem(
+            new RDFResource("http://www.opengis.net/def/crs/OGC/0/ChronometricGeologicTime"), TIMECoordinate.ChronometricGeologicTime, TIMEUnit.MillionYearsAgo, true);
 
         public static readonly TIMEPositionReferenceSystem GPS = new TIMEPositionReferenceSystem(
             new RDFResource("https://en.wikipedia.org/wiki/Global_Positioning_System"), TIMECoordinate.GPSTime, TIMEUnit.Second);

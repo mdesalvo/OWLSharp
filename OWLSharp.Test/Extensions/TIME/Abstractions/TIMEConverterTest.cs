@@ -172,7 +172,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldGetCalendarFromGeologicTRS(double timePosition, double? expectedYear, double? expectedMonth, double? expectedDay,
             double? expectedHour, double? expectedMinute, double? expectedSecond)
         {
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(timePosition, TIMEPositionReferenceSystem.GeologicTime, TIMECalendarReferenceSystem.Gregorian);
+            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(timePosition, TIMEPositionReferenceSystem.ChronometricGeologicTime, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
             Assert.IsTrue(tc.Year == expectedYear);

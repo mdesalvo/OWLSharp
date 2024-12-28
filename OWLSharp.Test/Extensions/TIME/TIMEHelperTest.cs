@@ -667,10 +667,9 @@ namespace OWLSharp.Test.Extensions.TIME
         #endregion
 
         #region Tests (Analyzer)
-        /*
         [TestMethod]
-        public void ShouldThrowExceptionOnGettingTemporalExtentOfFeatureBecauseNullURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetTemporalRepresentationsOfFeature(null));
+        public void ShouldThrowExceptionOnGettingTemporalRepresentationOfFeatureBecauseNullURI()
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetTemporalDimensionOfFeature(null));
 
         [TestMethod]
         public async Task ShouldNotGetTemporalExtentOfInstantFeatureBecauseNoData()
@@ -679,7 +678,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarII"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:WorldWarIITemporalExtent")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -702,11 +701,14 @@ namespace OWLSharp.Test.Extensions.TIME
         public async Task ShouldGetTemporalExtentOfInstantFeatureByDateTime(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, string expectedTimeValue)
         {
             RDFGraph graph = new RDFGraph();
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarII"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:WorldWarIITemporalExtent")));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIIOntology"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY));
+            graph.AddTriple(new RDFTriple(RDFVocabulary.TIME.HAS_TIME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarII"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
+            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarII"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:WorldWarIITemporalExtent")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), new RDFResource(timeProperty), new RDFTypedLiteral(timeValue, timeDataType)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -735,7 +737,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), new RDFResource(timeProperty), new RDFTypedLiteral(timeValue, timeDataType)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -769,7 +771,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.DAY_OF_WEEK, RDFVocabulary.TIME.FRIDAY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.DAY_OF_YEAR, new RDFTypedLiteral("244", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -817,7 +819,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.DAY_OF_WEEK, RDFVocabulary.TIME.FRIDAY));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.DAY_OF_YEAR, new RDFTypedLiteral("244", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -862,7 +864,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.MINUTE, new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.SECOND, new RDFTypedLiteral("1.25", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:AbbyBirthday"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:AbbyBirthday"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -897,7 +899,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -926,7 +928,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -953,7 +955,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.HAS_TRS, TIMECalendarReferenceSystem.Gregorian));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentPosition"), RDFVocabulary.TIME.NOMINAL_POSITION, new RDFResource("ex:September1939")));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -976,7 +978,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarII"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:WorldWarIITemporalExtent")));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1000,7 +1002,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.TIME.HAS_XSD_DURATION, new RDFTypedLiteral("P6Y", RDFModelEnums.RDFDatatypes.XSD_DURATION)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1026,7 +1028,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtent"), RDFVocabulary.TIME.HAS_XSD_DURATION, new RDFTypedLiteral("P6Y", RDFModelEnums.RDFDatatypes.XSD_DURATION)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1059,7 +1061,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.MINUTES, new RDFTypedLiteral("7", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.SECONDS, new RDFTypedLiteral("8.7", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1103,7 +1105,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.MINUTES, new RDFTypedLiteral("7", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.SECONDS, new RDFTypedLiteral("8.7", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1145,7 +1147,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.MINUTES, new RDFTypedLiteral("7.14", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDescription"), RDFVocabulary.TIME.SECONDS, new RDFTypedLiteral("8", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1180,7 +1182,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDuration"), RDFVocabulary.TIME.UNIT_TYPE, RDFVocabulary.TIME.UNIT_YEAR));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDuration"), RDFVocabulary.TIME.NUMERIC_DURATION, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1211,7 +1213,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDuration"), RDFVocabulary.TIME.UNIT_TYPE, RDFVocabulary.TIME.UNIT_YEAR));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentDuration"), RDFVocabulary.TIME.NUMERIC_DURATION, new RDFTypedLiteral("6.01", RDFModelEnums.RDFDatatypes.XSD_FLOAT)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1239,7 +1241,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentBeginning"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1271,7 +1273,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentBeginning"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1301,7 +1303,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentEnd"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentEnd"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1332,7 +1334,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentEnd"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentEnd"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1364,7 +1366,7 @@ namespace OWLSharp.Test.Extensions.TIME
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentEnd"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
             graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalExtentEnd"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1945-09-02T08:01:01Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
             OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:WorldWarII"));
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
             Assert.IsTrue(timeEntities.Count == 1);
@@ -1971,9 +1973,12 @@ namespace OWLSharp.Test.Extensions.TIME
 
             RDFGraph gtsGraph = RDFGraph.FromStream(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(memoryStream.ToArray()));
             OWLOntology gtsOntology = await OWLOntology.FromRDFGraphAsync(gtsGraph);
-            gtsOntology.Data.DeclareIndividual(new RDFResource("ex:ArcheanFeature"));
-            gtsOntology.Data.DeclareObjectAssertion(new RDFResource("ex:ArcheanFeature"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("http://example.org/geologic/Archean"));
-            List<TIMEEntity> archeanTimeExtent = gtsOntology.GetTemporalRepresentationsOfFeature(new RDFResource("ex:ArcheanFeature"));
+            gtsOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:ArcheanFeature")));
+            gtsOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:ArcheanFeature")),
+                new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"))));
+            List<TIMEEntity> archeanTimeExtent = gtsOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:ArcheanFeature"));
 
             Assert.IsNotNull(archeanTimeExtent);
             Assert.IsTrue(archeanTimeExtent.Count == 1);
@@ -1988,13 +1993,13 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(archeanTimeInterval.Beginning.DateTime);
             Assert.IsNull(archeanTimeInterval.Beginning.Description);
             Assert.IsNotNull(archeanTimeInterval.Beginning.Position);
-            Assert.IsTrue(archeanTimeInterval.Beginning.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
+            Assert.IsTrue(archeanTimeInterval.Beginning.Position.TRS.Equals(TIMEPositionReferenceSystem.ChronometricGeologicTime));
             Assert.IsTrue(archeanTimeInterval.Beginning.Position.NumericValue == 4000);
             Assert.IsNotNull(archeanTimeInterval.End);
             Assert.IsNull(archeanTimeInterval.End.DateTime);
             Assert.IsNull(archeanTimeInterval.End.Description);
             Assert.IsNotNull(archeanTimeInterval.End.Position);
-            Assert.IsTrue(archeanTimeInterval.End.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
+            Assert.IsTrue(archeanTimeInterval.End.Position.TRS.Equals(TIMEPositionReferenceSystem.ChronometricGeologicTime));
             Assert.IsTrue(archeanTimeInterval.End.Position.NumericValue == 2500);
         }
 
@@ -2013,19 +2018,22 @@ namespace OWLSharp.Test.Extensions.TIME
             }
 
             RDFGraph gtsGraph = RDFGraph.FromStream(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(memoryStream.ToArray()));
-            OWLOntology gtsOntology = await OWLOntology.FromRDFGraphAsync(gtsGraph, new OWLOntologyLoaderOptions());
-            gtsOntology.Data.DeclareIndividual(new RDFResource("ex:ArcheanFeature"));
-            gtsOntology.Data.DeclareObjectAssertion(new RDFResource("ex:ArcheanFeature"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("http://example.org/geologic/Archean"));
-            
-            TIMECoordinate archeanBeginning = gtsOntology.GetBeginningOfInterval(new RDFResource("http://example.org/geologic/Archean"));
+            OWLOntology gtsOntology = await OWLOntology.FromRDFGraphAsync(gtsGraph);
+            gtsOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:ArcheanFeature")));
+            gtsOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:ArcheanFeature")),
+                new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"))));
+
+            TIMECoordinate archeanBeginning = gtsOntology.GetBeginningOfInterval(new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"));
             Assert.IsNotNull(archeanBeginning);
             Assert.IsTrue(archeanBeginning.Year == -3_999_998_050);
 
-            TIMECoordinate archeanEnd = gtsOntology.GetEndOfInterval(new RDFResource("http://example.org/geologic/Archean"));
+            TIMECoordinate archeanEnd = gtsOntology.GetEndOfInterval(new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"));
             Assert.IsNotNull(archeanEnd);
             Assert.IsTrue(archeanEnd.Year == -2_499_998_050);
 
-            TIMEExtent archeanExtent = gtsOntology.GetExtentOfInterval(new RDFResource("http://example.org/geologic/Archean"));
+            TIMEExtent archeanExtent = gtsOntology.GetExtentOfInterval(new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"));
             Assert.IsNotNull(archeanExtent);
             Assert.IsTrue(archeanExtent.Days == 547_500_000_000);
         }
@@ -2046,18 +2054,21 @@ namespace OWLSharp.Test.Extensions.TIME
 
             RDFGraph gtsGraph = RDFGraph.FromStream(RDFModelEnums.RDFFormats.Turtle, new MemoryStream(memoryStream.ToArray()));
             OWLOntology gtsOntology = await OWLOntology.FromRDFGraphAsync(gtsGraph);
-            gtsOntology.Data.DeclareIndividual(new RDFResource("ex:ArcheanFeature"));
-            gtsOntology.Data.DeclareObjectAssertion(new RDFResource("ex:ArcheanFeature"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("http://example.org/geologic/Archean"));
+            gtsOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:ArcheanFeature")));
+            gtsOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:ArcheanFeature")),
+                new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"))));
 
             Assert.IsTrue(TIMEIntervalHelper.CheckMeets(
                 gtsOntology, 
-                new RDFResource("http://example.org/geologic/Archean"), 
-                new RDFResource("http://example.org/geologic/Proterozoic")));
+                new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"), 
+                new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Proterozoic")));
             Assert.IsTrue(TIMEIntervalHelper.CheckMetBy(
                 gtsOntology,
-                new RDFResource("http://example.org/geologic/Archean"),
-                new RDFResource("http://example.org/geologic/Hadean")));
-        }*/
+                new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"),
+                new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Hadean")));
+        }
         #endregion
     }
 }

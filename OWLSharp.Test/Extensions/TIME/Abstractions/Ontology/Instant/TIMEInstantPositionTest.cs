@@ -59,7 +59,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldCreateNominalInstantPosition()
         {
             TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
-                new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, new RDFResource("geol:Archean"));
+                new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.ChronometricGeologicTime, new RDFResource("geol:Archean"));
 
             Assert.IsNotNull(timeInstantPosition);
             Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
@@ -78,7 +78,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNominalInstantPositionBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, null));
+            => Assert.ThrowsException<OWLException>(() => new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.ChronometricGeologicTime, null));
         #endregion
     }
 }

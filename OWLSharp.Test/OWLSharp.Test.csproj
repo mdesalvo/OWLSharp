@@ -22,4 +22,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\OWLSharp\OWLSharp.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Extensions\TIME\GeologicTimeExample.ttl" />
+	</ItemGroup>
 </Project>

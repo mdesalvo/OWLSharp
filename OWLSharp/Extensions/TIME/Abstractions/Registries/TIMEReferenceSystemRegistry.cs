@@ -46,7 +46,7 @@ namespace OWLSharp.Extensions.TIME
                     //Position TRS
                     { TIMEPositionReferenceSystem.UnixTime.ToString(), TIMEPositionReferenceSystem.UnixTime },
                     { TIMEPositionReferenceSystem.GPS.ToString(), TIMEPositionReferenceSystem.GPS },
-                    { TIMEPositionReferenceSystem.GeologicTime.ToString(), TIMEPositionReferenceSystem.GeologicTime }                    
+                    { TIMEPositionReferenceSystem.ChronometricGeologicTime.ToString(), TIMEPositionReferenceSystem.ChronometricGeologicTime }
                 }
             };
         }

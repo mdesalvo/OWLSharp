@@ -25,7 +25,7 @@ namespace OWLSharp.Extensions.TIME
         public static readonly TIMECoordinate Zero = new TIMECoordinate(0, 0, 0, 0, 0, 0);
         public static readonly TIMECoordinate UnixTime = new TIMECoordinate(1970, 1, 1, 0, 0, 0);
         public static readonly TIMECoordinate GPSTime = new TIMECoordinate(1980, 1, 6, 0, 0, 0);
-        public static readonly TIMECoordinate GeologicTime = new TIMECoordinate(1950, 1, 1, 0, 0, 0);
+        public static readonly TIMECoordinate ChronometricGeologicTime = new TIMECoordinate(1950, 1, 1, 0, 0, 0);
         #endregion
 
         #region Properties
