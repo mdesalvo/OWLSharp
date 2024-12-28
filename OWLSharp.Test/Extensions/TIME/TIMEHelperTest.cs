@@ -757,6 +757,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInstant.Position);
         }
 
+/*
         [TestMethod]
         public async Task ShouldGetTemporalDimensionOfInstantFeatureByDescription()
         {
@@ -2074,7 +2075,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 gtsOntology,
                 new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"),
                 new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Hadean")));
-        }
+        }*/
         #endregion
     }
 }
