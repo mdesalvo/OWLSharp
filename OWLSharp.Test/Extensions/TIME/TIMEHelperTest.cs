@@ -500,39 +500,69 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLLiteral(new RDFTypedLiteral("2023-03-25T10:35:34Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)))));
         }
 
-        /*
         [TestMethod]
         public void ShouldDeclareIntervalByDescriptionFromExtent()
         {
             OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
             
-            TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntr"),
-                new TIMEIntervalDescription(new RDFResource("ex:timeIntrDesc"),
+            TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
+                new TIMEIntervalDescription(new RDFResource("ex:timeIntvDesc"),
                     new TIMEExtent(1, 2, 3, 4, 5, 6, 7, new TIMEExtentMetadata(new RDFResource("ex:TRS")))));
             timeOntology.DeclareIntervalFeature(new RDFResource("ex:feat"), timeInterval);
 
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.IRI.Equals("ex:timeOnt"));
-            Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
-            Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.TEMPORAL_ENTITY));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.INTERVAL));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.PROPER_INTERVAL));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, new RDFResource("ex:timeIntrDesc")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntrDesc")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.TEMPORAL_DURATION));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.YEARS, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.MONTHS, new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.WEEKS, new RDFTypedLiteral("3", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.DAYS, new RDFTypedLiteral("4", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.HOURS, new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.MINUTES, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.SECONDS, new RDFTypedLiteral("7", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.HAS_TRS, new RDFResource("ex:TRS")));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:feat"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeIntv"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:TRS"))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:feat")),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntv")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntv")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntv")),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLNamedIndividual(new RDFResource("ex:TRS")))));
+            
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.YEARS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MONTHS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("2", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.WEEKS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("3", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.DAYS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("4", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.HOURS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MINUTES),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.SECONDS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("7", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
         }
 
         [TestMethod]
@@ -540,31 +570,49 @@ namespace OWLSharp.Test.Extensions.TIME
         {
             OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
             
-            TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntr"),
-                new TIMEIntervalDescription(new RDFResource("ex:timeIntrDesc"),
+            TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
+                new TIMEIntervalDescription(new RDFResource("ex:timeIntvDesc"),
                     new TIMEExtent(XmlConvert.ToTimeSpan("P1Y1M1DT1H1M1S"))));
             timeOntology.DeclareIntervalFeature(new RDFResource("ex:feat"), timeInterval);
 
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.IRI.Equals("ex:timeOnt"));
-            Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
-            Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeIntr")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntr")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.TEMPORAL_ENTITY));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.INTERVAL));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.PROPER_INTERVAL));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntr"), RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION, new RDFResource("ex:timeIntrDesc")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeIntrDesc")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.TEMPORAL_DURATION));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.DAYS, new RDFTypedLiteral("396", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.HOURS, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.MINUTES, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.SECONDS, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeIntrDesc"), RDFVocabulary.TIME.HAS_TRS, TIMECalendarReferenceSystem.Gregorian));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:feat"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeIntv"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc"))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:feat")),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntv")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntv")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.GENERAL_DURATION_DESCRIPTION),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_DURATION_DESCRIPTION),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntv")),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")))));
+
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.DAYS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("396", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.HOURS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MINUTES),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.SECONDS),
+                new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
+                new OWLLiteral(new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)))));
         }
+/*
 
         [TestMethod]
         public void ShouldDeclareIntervalByDuration()
