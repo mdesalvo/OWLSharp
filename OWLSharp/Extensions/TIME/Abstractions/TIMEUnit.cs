@@ -27,10 +27,10 @@ namespace OWLSharp.Extensions.TIME
         public static readonly TIMEUnit Year = new TIMEUnit(RDFVocabulary.TIME.UNIT_YEAR, TIMEEnums.TIMEUnitType.Year, 1);
         public static readonly TIMEUnit Month = new TIMEUnit(RDFVocabulary.TIME.UNIT_MONTH, TIMEEnums.TIMEUnitType.Month, 1);
         public static readonly TIMEUnit Week = new TIMEUnit(RDFVocabulary.TIME.UNIT_WEEK, TIMEEnums.TIMEUnitType.Day, 7);
-        public static readonly TIMEUnit Day = new TIMEUnit(RDFVocabulary.TIME.DAY, TIMEEnums.TIMEUnitType.Day, 1);
-        public static readonly TIMEUnit Hour = new TIMEUnit(RDFVocabulary.TIME.HOUR, TIMEEnums.TIMEUnitType.Hour, 1);
-        public static readonly TIMEUnit Minute = new TIMEUnit(RDFVocabulary.TIME.MINUTE, TIMEEnums.TIMEUnitType.Minute, 1);
-        public static readonly TIMEUnit Second = new TIMEUnit(RDFVocabulary.TIME.SECOND, TIMEEnums.TIMEUnitType.Second, 1);
+        public static readonly TIMEUnit Day = new TIMEUnit(RDFVocabulary.TIME.UNIT_DAY, TIMEEnums.TIMEUnitType.Day, 1);
+        public static readonly TIMEUnit Hour = new TIMEUnit(RDFVocabulary.TIME.UNIT_HOUR, TIMEEnums.TIMEUnitType.Hour, 1);
+        public static readonly TIMEUnit Minute = new TIMEUnit(RDFVocabulary.TIME.UNIT_MINUTE, TIMEEnums.TIMEUnitType.Minute, 1);
+        public static readonly TIMEUnit Second = new TIMEUnit(RDFVocabulary.TIME.UNIT_SECOND, TIMEEnums.TIMEUnitType.Second, 1);
 
         //Derived
 

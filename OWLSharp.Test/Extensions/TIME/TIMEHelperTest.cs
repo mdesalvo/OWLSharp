@@ -208,7 +208,6 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLLiteral(new RDFTypedLiteral("81", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)))));
         }
 
-/*
         [TestMethod]
         public void ShouldDeclareInstantByNumericPosition()
         {
@@ -219,19 +218,31 @@ namespace OWLSharp.Test.Extensions.TIME
 
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.IRI.Equals("ex:timeOnt"));
-            Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
-            Assert.IsTrue(timeOntology.Data.IndividualsCount == 36);
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInst"), RDFVocabulary.TIME.TEMPORAL_ENTITY));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInst"), RDFVocabulary.TIME.INSTANT));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInst"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:timeInstPos")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInstPos")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TEMPORAL_POSITION));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TIME_POSITION));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("1679477734", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:feat"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeInst"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeInstPos"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Unix_time"))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:feat")),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPos")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPos")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPos")),
+                new OWLLiteral(new RDFTypedLiteral("1679477734", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TRS),
+                new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Unix_time")))));
         }
 
         [TestMethod]
@@ -250,27 +261,54 @@ namespace OWLSharp.Test.Extensions.TIME
 
             Assert.IsNotNull(timeOntology);
             Assert.IsTrue(timeOntology.IRI.Equals("ex:timeOnt"));
-            Assert.IsTrue(timeOntology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(timeOntology.Model.PropertyModel.PropertiesCount == 71);
-            Assert.IsTrue(timeOntology.Data.IndividualsCount == 37);
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:feat"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:timeInst")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInst")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInst"), RDFVocabulary.TIME.TEMPORAL_ENTITY));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInst"), RDFVocabulary.TIME.INSTANT));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInst"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:timeInstPos")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInstPos")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TEMPORAL_POSITION));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.TIME_POSITION));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("1679477734", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPos"), RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY, new RDFResource("ex:timeInstPosUnc")));
-            Assert.IsTrue(timeOntology.Data.CheckHasIndividual(new RDFResource("ex:timeInstPosUnc")));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPosUnc"), RDFVocabulary.TIME.TEMPORAL_DURATION));
-            Assert.IsTrue(timeOntology.Data.CheckIsIndividualOf(timeOntology.Model, new RDFResource("ex:timeInstPosUnc"), RDFVocabulary.TIME.DURATION));
-            Assert.IsTrue(timeOntology.Data.CheckHasObjectAssertion(new RDFResource("ex:timeInstPosUnc"), RDFVocabulary.TIME.UNIT_TYPE, RDFVocabulary.TIME.UNIT_SECOND));
-            Assert.IsTrue(timeOntology.Data.CheckHasDatatypeAssertion(new RDFResource("ex:timeInstPosUnc"), RDFVocabulary.TIME.NUMERIC_DURATION, new RDFTypedLiteral("4.04", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:feat"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeInst"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeInstPos"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:timeInstPosUnc"))));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(TIMEUnit.Second)));
+            Assert.IsTrue(timeOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Unix_time"))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:feat")),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInst")),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPos")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPos")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPos")),
+                new OWLLiteral(new RDFTypedLiteral("1679477734", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TRS),
+                new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Unix_time")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TEMPORAL_UNIT),
+                new OWLNamedIndividual(TIMEUnit.Second))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.DURATION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPosUnc")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.THORS.POSITIONAL_UNCERTAINTY),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPos")),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPosUnc")))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPosUnc")),
+                new OWLNamedIndividual(TIMEUnit.Second))));
+            Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_DURATION),
+                new OWLNamedIndividual(new RDFResource("ex:timeInstPosUnc")),
+                new OWLLiteral(new RDFTypedLiteral("4.04", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)))));
         }
 
+/*
         [TestMethod]
         public void ShouldDeclareInstantByNominalPosition()
         {
