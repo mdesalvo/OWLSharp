@@ -42,7 +42,7 @@ namespace OWLSharp.Extensions.GEO
 
         #region Initializer
         [ExcludeFromCodeCoverage]
-        public static async Task InitializeGEO(this OWLOntology ontology, int timeoutMilliseconds=20000)
+        public static async Task InitializeGEOAsync(this OWLOntology ontology, int timeoutMilliseconds=20000)
         {
             await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI), timeoutMilliseconds);
             await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.SF.DEREFERENCE_URI), timeoutMilliseconds);
