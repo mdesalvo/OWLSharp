@@ -950,26 +950,70 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeInstant.Description.Coordinate.Second.HasValue && timeInstant.Description.Coordinate.Second == 1);
             Assert.IsNull(timeInstant.Position);
         }
-/*
+
         [TestMethod]
-        public async Task ShouldGetTemporalDimensionOfInstantFeatureByGeneralDescription()
+        public void ShouldGetTemporalDimensionOfInstantFeatureByGeneralDescription()
         {
-            RDFGraph graph = new RDFGraph();
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthday"), RDFVocabulary.TIME.HAS_TIME, new RDFResource("ex:AbbyBirthdayTemporalExtent")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtent"), RDFVocabulary.TIME.IN_DATETIME, new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.HAS_TRS, new RDFResource("http://dbpedia.org/resource/Hebrew_calendar")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.YEAR, new RDFTypedLiteral("5761", RDFModelEnums.RDFDatatypes.TIME_GENERALYEAR)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.MONTH, new RDFTypedLiteral("--03", RDFModelEnums.RDFDatatypes.TIME_GENERALMONTH)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.MONTH_OF_YEAR, new RDFResource("ex:Sivan")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.DAY, new RDFTypedLiteral("---01", RDFModelEnums.RDFDatatypes.TIME_GENERALDAY)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.DAY_OF_YEAR, new RDFTypedLiteral("45", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.DAY_OF_WEEK, new RDFResource("ex:RoshChodesh")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.HOUR, new RDFTypedLiteral("08", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.MINUTE, new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_DECIMAL)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"), RDFVocabulary.TIME.SECOND, new RDFTypedLiteral("1.25", RDFModelEnums.RDFDatatypes.XSD_DOUBLE)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:AbbyBirthday")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtent")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("http://dbpedia.org/resource/Hebrew_calendar")));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtent"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.GENERAL_DATETIME_DESCRIPTION),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthday")),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtent"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_DATETIME),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtent")),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLNamedIndividual(new RDFResource("http://dbpedia.org/resource/Hebrew_calendar"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.YEAR),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLLiteral(new RDFTypedLiteral("5761", RDFModelEnums.RDFDatatypes.TIME_GENERALYEAR))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MONTH),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLLiteral(new RDFTypedLiteral("--03", RDFModelEnums.RDFDatatypes.TIME_GENERALMONTH))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.DAY),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLLiteral(new RDFTypedLiteral("---01", RDFModelEnums.RDFDatatypes.TIME_GENERALDAY))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.HOUR),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLLiteral(new RDFTypedLiteral("08", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MINUTE),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLLiteral(new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_DECIMAL))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.SECOND),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLLiteral(new RDFTypedLiteral("1.25", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.MONTH_OF_YEAR),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLNamedIndividual(new RDFResource("ex:Sivan"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.DAY_OF_WEEK),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLNamedIndividual(new RDFResource("ex:RoshChodesh"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.DAY_OF_YEAR),
+                new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")),
+                new OWLLiteral(new RDFTypedLiteral("45", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
+
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:AbbyBirthday"));
 
             Assert.IsNotNull(timeEntities);
@@ -993,7 +1037,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeInstant.Description.Coordinate.Second.HasValue && timeInstant.Description.Coordinate.Second == 1.25);
             Assert.IsNull(timeInstant.Position);
         }
-
+/*
         [TestMethod]
         public async Task ShouldGetTemporalDimensionOfInstantFeatureByNumericPosition()
         {
