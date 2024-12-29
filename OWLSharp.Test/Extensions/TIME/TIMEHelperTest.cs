@@ -1184,29 +1184,6 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 /*
         [TestMethod]
-        public async Task ShouldNotgetTemporalDimensionOfIntervalFeatureBecauseNoData()
-        {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
-
-            Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
-            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
-
-            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
-
-            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
-            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
-            Assert.IsNull(timeInterval.Description);
-            Assert.IsNull(timeInterval.Duration);
-            Assert.IsNull(timeInterval.Beginning);
-            Assert.IsNull(timeInterval.End);
-        }
-
-        [TestMethod]
         public async Task ShouldGetTemporalDimensionOfIntervalFeatureByTimeSpan()
         {
             RDFGraph graph = new RDFGraph();
