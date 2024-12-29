@@ -1579,6 +1579,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInterval.End.Position);
         }
 
+        //GetCoordinateOfInstant
+
         [TestMethod]
         public void ShouldThrowExceptionOnGettingInstantCoordinateBecauseNullInstantURI()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetCoordinateOfInstant(null));
@@ -1755,6 +1757,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeCoordinate.Second == 0);
         }
 
+        //GetExtentOfInterval
+
         [TestMethod]
         public void ShouldThrowExceptionOnGettingIntervalExtentBecauseNullIntervalURI()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetExtentOfInterval(null));
@@ -1896,6 +1900,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeExtent);
         }
 
+        //GetBeginningOfInterval
+
         [TestMethod]
         public async Task ShouldGetBeginningOfInterval()
         {
@@ -2026,6 +2032,8 @@ namespace OWLSharp.Test.Extensions.TIME
 
             Assert.IsNull(tc);
         }
+
+        //GetEndOfInterval
 
         [TestMethod]
         public async Task ShouldGetEndOfInterval()
