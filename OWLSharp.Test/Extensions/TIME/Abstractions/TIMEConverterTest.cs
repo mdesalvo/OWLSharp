@@ -210,7 +210,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldGetCalendarFromGPS()
         {
             TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(1367682497, 
-                TIMEPositionReferenceSystem.GPS, TIMECalendarReferenceSystem.Gregorian);
+                TIMEPositionReferenceSystem.GPSTime, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
             Assert.IsTrue(tc.Year == 2023);
