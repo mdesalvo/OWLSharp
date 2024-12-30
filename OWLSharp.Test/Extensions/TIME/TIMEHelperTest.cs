@@ -2061,11 +2061,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
             Assert.IsNotNull(timeCoordinate);
             Assert.IsTrue(timeCoordinate.Year == 1939);
-            Assert.IsTrue(timeCoordinate.Month == 9);
-            Assert.IsTrue(timeCoordinate.Day == 1);
-            Assert.IsTrue(timeCoordinate.Hour == 8);
-            Assert.IsTrue(timeCoordinate.Minute == 1);
-            Assert.IsTrue(timeCoordinate.Second == 1);
+            Assert.IsTrue(timeCoordinate.Month == 8);
+            Assert.IsTrue(timeCoordinate.Day == 31);
+            Assert.IsTrue(timeCoordinate.Hour == 23);
+            Assert.IsTrue(timeCoordinate.Minute == 00);
+            Assert.IsTrue(timeCoordinate.Second == 00);
         }
 
         [TestMethod]
