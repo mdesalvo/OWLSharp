@@ -1182,57 +1182,79 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMECalendarReferenceSystem.Gregorian));
             Assert.IsTrue(timeInstant.Position.NominalValue.Equals(new RDFResource("ex:September1939")));
         }
+
+        [TestMethod]
+        public void ShouldGetTemporalDimensionOfIntervalFeatureByTimeSpan()
+        {
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLLiteral(new RDFTypedLiteral("P6Y", RDFModelEnums.RDFDatatypes.XSD_DURATION))));
+
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
+
+            Assert.IsNotNull(timeEntities);
+            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
+
+            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
+
+            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
+            Assert.IsTrue(timeInterval.TimeSpan.HasValue && timeInterval.TimeSpan.Equals(XmlConvert.ToTimeSpan("P6Y")));
+            Assert.IsNull(timeInterval.Description);
+            Assert.IsNull(timeInterval.Duration);
+            Assert.IsNull(timeInterval.Beginning);
+            Assert.IsNull(timeInterval.End);
+        }
+
+        [TestMethod]
+        public void ShouldGetTemporalDimensionOfIntervalFeatureByTimeSpanThroughInferredProperty()
+        {
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")));
+            timeOntology.DeclareObjectPropertyAxiom(new OWLSubObjectPropertyOf(
+                new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")),
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME)));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLLiteral(new RDFTypedLiteral("P6Y", RDFModelEnums.RDFDatatypes.XSD_DURATION))));
+
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
+
+            Assert.IsNotNull(timeEntities);
+            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
+
+            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
+
+            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
+            Assert.IsTrue(timeInterval.TimeSpan.HasValue && timeInterval.TimeSpan.Equals(XmlConvert.ToTimeSpan("P6Y")));
+            Assert.IsNull(timeInterval.Description);
+            Assert.IsNull(timeInterval.Duration);
+            Assert.IsNull(timeInterval.Beginning);
+            Assert.IsNull(timeInterval.End);
+        }
 /*
-        [TestMethod]
-        public async Task ShouldGetTemporalDimensionOfIntervalFeatureByTimeSpan()
-        {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.HAS_XSD_DURATION, new RDFTypedLiteral("P6Y", RDFModelEnums.RDFDatatypes.XSD_DURATION)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
-
-            Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
-            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
-
-            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
-
-            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
-            Assert.IsTrue(timeInterval.TimeSpan.HasValue && timeInterval.TimeSpan.Equals(XmlConvert.ToTimeSpan("P6Y")));
-            Assert.IsNull(timeInterval.Description);
-            Assert.IsNull(timeInterval.Duration);
-            Assert.IsNull(timeInterval.Beginning);
-            Assert.IsNull(timeInterval.End);
-        }
-
-        [TestMethod]
-        public async Task ShouldGetTemporalDimensionOfIntervalFeatureByTimeSpanThroughInferredProperty()
-        {
-            RDFGraph graph = new RDFGraph();
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:hasTemporalExtent"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:hasTemporalExtent"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.TIME.HAS_TIME));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarII"), new RDFResource("ex:hasTemporalExtent"), new RDFResource("ex:WorldWarIITemporalDimension")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.HAS_XSD_DURATION, new RDFTypedLiteral("P6Y", RDFModelEnums.RDFDatatypes.XSD_DURATION)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
-
-            Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
-            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
-
-            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
-
-            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
-            Assert.IsTrue(timeInterval.TimeSpan.HasValue && timeInterval.TimeSpan.Equals(XmlConvert.ToTimeSpan("P6Y")));
-            Assert.IsNull(timeInterval.Description);
-            Assert.IsNull(timeInterval.Duration);
-            Assert.IsNull(timeInterval.Beginning);
-            Assert.IsNull(timeInterval.End);
-        }
-
         [TestMethod]
         public async Task ShouldGetTemporalDimensionOfIntervalFeatureByDescription()
         {
