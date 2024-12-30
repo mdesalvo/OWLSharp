@@ -7,8 +7,8 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
   <li><b>Reasoning</b> on them with a set of <b>25 OWL2 inference rules</b></li>
   <li><b>Validating</b> them with a set of <b>29 OWL2 analysis rules</b></li>
 </ul>
-It also integrates a powerful <b>SWRL engine</b> for modeling, exchange and execution of custom inference rules
-<hr style="height:0.05em !important" />
+It also integrates a powerful <b>SWRL engine</b> for modeling, exchanging and executing custom inference rules
+<hr />
 
 Along with core ontology features, it also includes a set of extensions providing additional capabilities:
 <ul>
