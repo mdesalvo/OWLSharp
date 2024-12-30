@@ -971,20 +971,18 @@ namespace OWLSharp.Extensions.TIME
             //Declare the time instant
             TIMEInstant timeInstant = new TIMEInstant(timeInstantURI);
 
-            //Analyze ontology to extract knowledge of the time instant
-            FillValueOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
-            FillDescriptionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
-            FillPositionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
-
             //The time instant has been encoded in DateTime
+            FillValueOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
             if (timeInstant.DateTime.HasValue)
                 return TIMEConverter.NormalizeCoordinateToCalendar(new TIMECoordinate(timeInstant.DateTime.Value), calendarTRS);
 
             //The time instant has been encoded in a structured 6-component description
+            FillDescriptionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
             if (timeInstant.Description != null)
                 return TIMEConverter.NormalizeCoordinateToCalendar(timeInstant.Description.Coordinate, calendarTRS);
 
             //The time instant has been encoded in a nominal value or a numeric coordinate
+            FillPositionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
             if (timeInstant.Position != null)
             {
                 //Nominal position (e.g: Uri of a well-known interval, which is part of an ordinal TRS)
@@ -1032,22 +1030,18 @@ namespace OWLSharp.Extensions.TIME
             //Declare the time interval
             TIMEInterval timeInterval = new TIMEInterval(timeIntervalURI);
 
-            //Analyze ontology to extract knowledge of the time interval
-            FillValueOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
-            FillDescriptionOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
-            FillDurationOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
-            FillBeginningOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
-            FillEndOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
-
             //The time interval has been encoded in TimeSpan
+            FillValueOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
             if (timeInterval.TimeSpan.HasValue)
                 return TIMEConverter.NormalizeExtentToCalendar(new TIMEExtent(timeInterval.TimeSpan.Value), calendarTRS);
 
             //The time interval has been encoded in a structured 7-component description
+            FillDescriptionOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
             if (timeInterval.Description != null)
                 return TIMEConverter.NormalizeExtentToCalendar(timeInterval.Description.Extent, calendarTRS);
 
             //The time interval has been encoded in a numeric duration extent
+            FillDurationOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
             if (timeInterval.Duration != null)
             {
                 #region Guards
@@ -1062,6 +1056,8 @@ namespace OWLSharp.Extensions.TIME
             }
 
             //The time interval has been encoded in Beginning/End time instants
+            FillBeginningOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
+            FillEndOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
             if (timeInterval.Beginning != null && timeInterval.End != null)
             {
                 TIMECoordinate timeIntervalBeginning = GetCoordinateOfInstant(ontology, timeInterval.Beginning, calendarTRS);
