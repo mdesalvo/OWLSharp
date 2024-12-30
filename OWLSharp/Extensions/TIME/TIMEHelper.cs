@@ -721,7 +721,7 @@ namespace OWLSharp.Extensions.TIME
         {
             //time:hasXSDDuration
             OWLLiteral hasXSDDurationLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION))
-                                                .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInterval)).Literal;
+                                                .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(timeInterval))?.Literal;
             if (hasXSDDurationLiteral?.GetLiteral() is RDFTypedLiteral hasXSDDurationTLiteral
                  && hasXSDDurationTLiteral.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_DURATION))
                 timeInterval.TimeSpan = XmlConvert.ToTimeSpan(hasXSDDurationTLiteral.Value);
