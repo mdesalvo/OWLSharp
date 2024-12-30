@@ -1840,12 +1840,12 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInterval.Duration);
             Assert.IsNotNull(timeInterval.Beginning);
             Assert.IsTrue(timeInterval.Beginning.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionBeginning")));
-            Assert.IsTrue(timeInterval.Beginning.DateTime.HasValue && timeInterval.Beginning.DateTime.Equals(DateTime.Parse("1939-09-01T08:01:01Z").ToUniversalTime()));
+            Assert.IsTrue(timeInterval.Beginning.DateTime.HasValue && timeInterval.Beginning.DateTime.Equals(DateTime.Parse("1939-09-01T08:00:00Z").ToUniversalTime()));
             Assert.IsNull(timeInterval.Beginning.Description);
             Assert.IsNull(timeInterval.Beginning.Position);
             Assert.IsNotNull(timeInterval.End);
             Assert.IsTrue(timeInterval.End.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionEnd")));
-            Assert.IsTrue(timeInterval.End.DateTime.HasValue && timeInterval.End.DateTime.Equals(DateTime.Parse("1945-09-02T08:01:01Z").ToUniversalTime()));
+            Assert.IsTrue(timeInterval.End.DateTime.HasValue && timeInterval.End.DateTime.Equals(DateTime.Parse("1945-09-02T08:00:00Z").ToUniversalTime()));
             Assert.IsNull(timeInterval.End.Description);
             Assert.IsNull(timeInterval.End.Position);
         }
