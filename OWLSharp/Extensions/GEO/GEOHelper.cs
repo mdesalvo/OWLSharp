@@ -1278,8 +1278,8 @@ namespace OWLSharp.Extensions.GEO
                             new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
                         new SWRLClassAtom(
-                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
-                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
+                            new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                            new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")),
@@ -1408,8 +1408,8 @@ namespace OWLSharp.Extensions.GEO
                             new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
                         new SWRLClassAtom(
-                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
-                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
+                            new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                            new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY), 
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")),
