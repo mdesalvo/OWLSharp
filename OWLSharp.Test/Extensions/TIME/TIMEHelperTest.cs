@@ -1889,27 +1889,62 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeCoordinate.Minute == expectedMinute);
             Assert.IsTrue(timeCoordinate.Second == expectedSecond);
         }
-/*
+
         [TestMethod]
-        public async Task ShouldGetInstantCoordinateByDescription()
+        public void ShouldGetInstantCoordinateByDescription()
         {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.IN_DATETIME, new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.DATETIME_DESCRIPTION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.HAS_TRS, TIMECalendarReferenceSystem.Gregorian));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.UNIT_TYPE, RDFVocabulary.TIME.UNIT_SECOND));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.YEAR, new RDFTypedLiteral("1939", RDFModelEnums.RDFDatatypes.XSD_GYEAR)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.MONTH, new RDFTypedLiteral("--09", RDFModelEnums.RDFDatatypes.XSD_GMONTH)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.DAY, new RDFTypedLiteral("---01", RDFModelEnums.RDFDatatypes.XSD_GDAY)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.HOUR, new RDFTypedLiteral("07", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.MINUTE, new RDFTypedLiteral("60", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.SECOND, new RDFTypedLiteral("61", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.MONTH_OF_YEAR, RDFVocabulary.TIME.GREG.SEPTEMBER));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.DAY_OF_WEEK, RDFVocabulary.TIME.FRIDAY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.DAY_OF_YEAR, new RDFTypedLiteral("244", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(TIMECalendarReferenceSystem.Gregorian));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.DATETIME_DESCRIPTION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_DATETIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLNamedIndividual(TIMECalendarReferenceSystem.Gregorian)));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLNamedIndividual(TIMEUnit.Second)));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.YEAR),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("1939", RDFModelEnums.RDFDatatypes.XSD_GYEAR))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MONTH),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("--09", RDFModelEnums.RDFDatatypes.XSD_GMONTH))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.DAY),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("---01", RDFModelEnums.RDFDatatypes.XSD_GDAY))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.HOUR),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("08", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MINUTE),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.SECOND),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
+
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
@@ -1922,29 +1957,64 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public async Task ShouldGetInstantCoordinateByDescriptionWithNormalization()
+        public void ShouldGetInstantCoordinateByDescriptionWithNormalization()
         {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.IN_DATETIME, new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.DATETIME_DESCRIPTION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.HAS_TRS, TIMECalendarReferenceSystem.Gregorian));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.UNIT_TYPE, RDFVocabulary.TIME.UNIT_SECOND));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.YEAR, new RDFTypedLiteral("1939", RDFModelEnums.RDFDatatypes.XSD_GYEAR)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.MONTH, new RDFTypedLiteral("--09", RDFModelEnums.RDFDatatypes.XSD_GMONTH)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.DAY, new RDFTypedLiteral("---01", RDFModelEnums.RDFDatatypes.XSD_GDAY)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.HOUR, new RDFTypedLiteral("8", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.MINUTE, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.SECOND, new RDFTypedLiteral("1", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.MONTH_OF_YEAR, RDFVocabulary.TIME.GREG.SEPTEMBER));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.DAY_OF_WEEK, RDFVocabulary.TIME.FRIDAY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionDescription"), RDFVocabulary.TIME.DAY_OF_YEAR, new RDFTypedLiteral("244", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(TIMECalendarReferenceSystem.Gregorian));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.DATETIME_DESCRIPTION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_DATETIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLNamedIndividual(TIMECalendarReferenceSystem.Gregorian)));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.UNIT_TYPE),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLNamedIndividual(TIMEUnit.Second)));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.YEAR),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("1939", RDFModelEnums.RDFDatatypes.XSD_GYEAR))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MONTH),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("--09", RDFModelEnums.RDFDatatypes.XSD_GMONTH))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.DAY),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("---01", RDFModelEnums.RDFDatatypes.XSD_GDAY))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.HOUR),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("08", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.MINUTE),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.SECOND),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
+                new OWLLiteral(new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
             TIMECalendarReferenceSystem myCalendarTRS = new TIMECalendarReferenceSystem(
                 new RDFResource("ex:MyCalendarTRS"),
                 new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18]));
             TIMEReferenceSystemRegistry.AddTRS(myCalendarTRS);
+
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"), myCalendarTRS);
 
             Assert.IsNotNull(timeCoordinate);
@@ -1955,7 +2025,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeCoordinate.Minute == 1);
             Assert.IsTrue(timeCoordinate.Second == 1);
         }
-
+/*
         [TestMethod]
         public async Task ShouldGetInstantCoordinateByNumericPosition()
         {
