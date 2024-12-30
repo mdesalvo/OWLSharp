@@ -1595,129 +1595,199 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInterval.Beginning);
             Assert.IsNull(timeInterval.End);
         }
+
+        [TestMethod]
+        public void ShouldGetTemporalDimensionOfIntervalFeatureByBeginningInstant()
+        {
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_BEGINNING),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")),
+                new OWLLiteral(new RDFTypedLiteral("1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
+
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
+
+            Assert.IsNotNull(timeEntities);
+            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
+
+            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
+
+            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
+            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
+            Assert.IsNull(timeInterval.Description);
+            Assert.IsNull(timeInterval.Duration);
+            Assert.IsNotNull(timeInterval.Beginning);
+            Assert.IsTrue(timeInterval.Beginning.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionBeginning")));
+            Assert.IsTrue(timeInterval.Beginning.DateTime.HasValue && timeInterval.Beginning.DateTime.Equals(DateTime.Parse("1939-09-01T08:00:00Z").ToUniversalTime()));
+            Assert.IsNull(timeInterval.Beginning.Description);
+            Assert.IsNull(timeInterval.Beginning.Position);
+            Assert.IsNull(timeInterval.End);
+        }
+
+        [TestMethod]
+        public void ShouldGetTemporalDimensionOfIntervalFeatureByBeginningInstantThroughInferredProperty()
+        {
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
+            timeOntology.DeclareEntity(new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")));
+            timeOntology.DeclareObjectPropertyAxiom(new OWLSubObjectPropertyOf(
+                new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")),
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME)));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_BEGINNING),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")),
+                new OWLLiteral(new RDFTypedLiteral("1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
+
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
+
+            Assert.IsNotNull(timeEntities);
+            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
+
+            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
+
+            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
+            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
+            Assert.IsNull(timeInterval.Description);
+            Assert.IsNull(timeInterval.Duration);
+            Assert.IsNotNull(timeInterval.Beginning);
+            Assert.IsTrue(timeInterval.Beginning.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionBeginning")));
+            Assert.IsTrue(timeInterval.Beginning.DateTime.HasValue && timeInterval.Beginning.DateTime.Equals(DateTime.Parse("1939-09-01T08:00:00Z").ToUniversalTime()));
+            Assert.IsNull(timeInterval.Beginning.Description);
+            Assert.IsNull(timeInterval.Beginning.Position);
+            Assert.IsNull(timeInterval.End);
+        }
+
+        [TestMethod]
+        public void ShouldGetTemporalDimensionOfIntervalFeatureByEndInstant()
+        {
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_END),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")),
+                new OWLLiteral(new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
+
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
+
+            Assert.IsNotNull(timeEntities);
+            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
+
+            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
+
+            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
+            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
+            Assert.IsNull(timeInterval.Description);
+            Assert.IsNull(timeInterval.Duration);
+            Assert.IsNull(timeInterval.Beginning);
+            Assert.IsNotNull(timeInterval.End);
+            Assert.IsTrue(timeInterval.End.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionEnd")));
+            Assert.IsTrue(timeInterval.End.DateTime.HasValue && timeInterval.End.DateTime.Equals(DateTime.Parse("1945-09-02T08:00:00Z").ToUniversalTime()));
+            Assert.IsNull(timeInterval.End.Description);
+            Assert.IsNull(timeInterval.End.Position);
+        }
+
+        [TestMethod]
+        public void ShouldGetTemporalDimensionOfIntervalFeatureByEndInstantThroughInferredProperty()
+        {
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
+            timeOntology.DeclareEntity(new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")));
+            timeOntology.DeclareObjectPropertyAxiom(new OWLSubObjectPropertyOf(
+                new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")),
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME)));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_END),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")),
+                new OWLLiteral(new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
+
+            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
+
+            Assert.IsNotNull(timeEntities);
+            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
+
+            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
+
+            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
+            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
+            Assert.IsNull(timeInterval.Description);
+            Assert.IsNull(timeInterval.Duration);
+            Assert.IsNull(timeInterval.Beginning);
+            Assert.IsNotNull(timeInterval.End);
+            Assert.IsTrue(timeInterval.End.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionEnd")));
+            Assert.IsTrue(timeInterval.End.DateTime.HasValue && timeInterval.End.DateTime.Equals(DateTime.Parse("1945-09-02T08:00:00Z").ToUniversalTime()));
+            Assert.IsNull(timeInterval.End.Description);
+            Assert.IsNull(timeInterval.End.Position);
+        }
 /*
-        [TestMethod]
-        public async Task ShouldGetTemporalDimensionOfIntervalFeatureByBeginningInstant()
-        {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.HAS_BEGINNING, new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
-
-            Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
-            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
-
-            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
-
-            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
-            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
-            Assert.IsNull(timeInterval.Description);
-            Assert.IsNull(timeInterval.Duration);
-            Assert.IsNotNull(timeInterval.Beginning);
-            Assert.IsTrue(timeInterval.Beginning.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionBeginning")));
-            Assert.IsTrue(timeInterval.Beginning.DateTime.HasValue && timeInterval.Beginning.DateTime.Equals(DateTime.Parse("1939-09-01T08:00:00Z").ToUniversalTime()));
-            Assert.IsNull(timeInterval.Beginning.Description);
-            Assert.IsNull(timeInterval.Beginning.Position);
-            Assert.IsNull(timeInterval.End);
-        }
-
-        [TestMethod]
-        public async Task ShouldGetTemporalDimensionOfIntervalFeatureByBeginningInstantThroughInferredProperty()
-        {
-            RDFGraph graph = new RDFGraph();
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:beginsAt"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:beginsAt"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.TIME.HAS_BEGINNING));
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), new RDFResource("ex:beginsAt"), new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionBeginning"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
-
-            Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
-            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
-
-            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
-
-            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
-            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
-            Assert.IsNull(timeInterval.Description);
-            Assert.IsNull(timeInterval.Duration);
-            Assert.IsNotNull(timeInterval.Beginning);
-            Assert.IsTrue(timeInterval.Beginning.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionBeginning")));
-            Assert.IsTrue(timeInterval.Beginning.DateTime.HasValue && timeInterval.Beginning.DateTime.Equals(DateTime.Parse("1939-09-01T08:00:00Z").ToUniversalTime()));
-            Assert.IsNull(timeInterval.Beginning.Description);
-            Assert.IsNull(timeInterval.Beginning.Position);
-            Assert.IsNull(timeInterval.End);
-        }
-
-        [TestMethod]
-        public async Task ShouldGetTemporalDimensionOfIntervalFeatureByEndInstant()
-        {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.HAS_END, new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionEnd"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionEnd"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
-
-            Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
-            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
-
-            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
-
-            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
-            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
-            Assert.IsNull(timeInterval.Description);
-            Assert.IsNull(timeInterval.Duration);
-            Assert.IsNull(timeInterval.Beginning);
-            Assert.IsTrue(timeInterval.End.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionEnd")));
-            Assert.IsTrue(timeInterval.End.DateTime.HasValue && timeInterval.End.DateTime.Equals(DateTime.Parse("1945-09-02T08:00:00Z").ToUniversalTime()));
-            Assert.IsNull(timeInterval.End.Description);
-            Assert.IsNull(timeInterval.End.Position);
-        }
-
-        [TestMethod]
-        public async Task ShouldGetTemporalDimensionOfIntervalFeatureByEndInstantThroughInferredProperty()
-        {
-            RDFGraph graph = new RDFGraph();
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:endsAt"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:endsAt"), RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.TIME.HAS_END));
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INTERVAL));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), new RDFResource("ex:endsAt"), new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionEnd"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionEnd"), RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP, new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
-            List<TIMEEntity> timeEntities = timeOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:WorldWarII"));
-
-            Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
-            Assert.IsTrue(timeEntities.Single() is TIMEInterval);
-
-            TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
-
-            Assert.IsTrue(timeInterval.URI.Equals(new Uri("ex:WorldWarIITemporalDimension")));
-            Assert.IsFalse(timeInterval.TimeSpan.HasValue);
-            Assert.IsNull(timeInterval.Description);
-            Assert.IsNull(timeInterval.Duration);
-            Assert.IsNull(timeInterval.Beginning);
-            Assert.IsTrue(timeInterval.End.URI.Equals(new Uri("ex:WorldWarIITemporalDimensionEnd")));
-            Assert.IsTrue(timeInterval.End.DateTime.HasValue && timeInterval.End.DateTime.Equals(DateTime.Parse("1945-09-02T08:00:00Z").ToUniversalTime()));
-            Assert.IsNull(timeInterval.End.Description);
-            Assert.IsNull(timeInterval.End.Position);
-        }
-
         [TestMethod]
         public async Task ShouldGetTemporalDimensionOfIntervalFeatureByBeginningEndInstants()
         {
