@@ -355,11 +355,11 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Analyzer
-        public static List<TIMEEntity> GetTemporalDimensionOfFeature(this OWLOntology ontology, RDFResource featureUri)
+        public static List<TIMEEntity> GetTemporalDimensionOfFeature(this OWLOntology ontology, RDFResource featureURI)
         {
             #region Guards
-            if (featureUri == null)
-                throw new OWLException("Cannot get temporal dimension of feature because given \"featureUri\" parameter is null");
+            if (featureURI == null)
+                throw new OWLException("Cannot get temporal dimension of feature because given \"featureURI\" parameter is null");
             #endregion
 
             //Temporary working variables
@@ -378,7 +378,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Iterate these assertions to reconstruct the temporal extent of corresponding temporal entity
             List<TIMEEntity> temporalExtentOfFeature = new List<TIMEEntity>();
-            foreach (OWLObjectPropertyAssertion hasTimeObjPropsAsn in hasTimeObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(featureUri)))
+            foreach (OWLObjectPropertyAssertion hasTimeObjPropsAsn in hasTimeObjPropAsns.Where(asn => asn.SourceIndividualExpression.GetIRI().Equals(featureURI)))
             {
                 //Detect if the temporal extent is a time instant
                 if (ontology.CheckIsIndividualOf(timeInstantCLS, hasTimeObjPropsAsn.TargetIndividualExpression))
@@ -1074,7 +1074,7 @@ namespace OWLSharp.Extensions.TIME
             return null;
         }
 
-        public static TIMECoordinate GetBeginningOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        internal static TIMECoordinate GetBeginningOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1148,7 +1148,7 @@ namespace OWLSharp.Extensions.TIME
 
             return compatibleBeginning;
         }
-        public static TIMECoordinate GetEndOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        internal static TIMECoordinate GetEndOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
