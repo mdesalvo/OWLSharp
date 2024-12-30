@@ -2025,18 +2025,38 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeCoordinate.Minute == 1);
             Assert.IsTrue(timeCoordinate.Second == 1);
         }
-/*
+
         [TestMethod]
-        public async Task ShouldGetInstantCoordinateByNumericPosition()
+        public void ShouldGetInstantCoordinateByNumericPosition()
         {
-            RDFGraph graph = new RDFGraph();
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(TIMEPositionReferenceSystem.UnixTime));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
+                new OWLNamedIndividual(TIMEPositionReferenceSystem.UnixTime)));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
+                new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
             
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.TIME.HAS_TRS, TIMEPositionReferenceSystem.UnixTime));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
@@ -2049,38 +2069,76 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public async Task ShouldThrowExceptionOnGettingInstantCoordinateByNumericPositionBecauseUnregisteredTRS()
+        public void ShouldThrowExceptionOnGettingInstantCoordinateByNumericPositionBecauseUnregisteredTRS()
         {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.TIME.HAS_TRS, new RDFResource("ex:MyUnregisteredTRS")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(TIMEPositionReferenceSystem.UnixTime));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                new OWLNamedIndividual(new RDFResource("ex:MyUnregisteredTRS")),
+                new OWLNamedIndividual(TIMEPositionReferenceSystem.UnixTime)));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
+                new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
             Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
 
         [TestMethod]
-        public async Task ShouldThrowExceptionOnGettingInstantCoordinateByNumericPositionBecauseCalendarTRSDetected()
+        public void ShouldThrowExceptionOnGettingInstantCoordinateByNumericPositionBecauseCalendarTRSDetected()
         {
-            RDFGraph graph = new RDFGraph();
-            
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.INSTANT));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimension"), RDFVocabulary.TIME.IN_TIME_POSITION, new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.RDF.TYPE, RDFVocabulary.TIME.TIME_POSITION));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.TIME.HAS_TRS, new RDFResource("ex:MyCalendarTRS")));
-            graph.AddTriple(new RDFTriple(new RDFResource("ex:WorldWarIITemporalDimensionPosition"), RDFVocabulary.TIME.NUMERIC_POSITION, new RDFTypedLiteral("-957283139", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-            OWLOntology timeOntology = await OWLOntology.FromRDFGraphAsync(graph);
+            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
+            timeOntology.DeclareEntity(new OWLNamedIndividual(TIMEPositionReferenceSystem.UnixTime));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarII")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.IN_TIME_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition"))));
+            timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
+                new OWLNamedIndividual(new RDFResource("ex:MyCalendarTRS"))));
+            timeOntology.DeclareAssertionAxiom(new OWLDataPropertyAssertion(
+                new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION),
+                new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
+                new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
             TIMEReferenceSystemRegistry.AddTRS(new TIMECalendarReferenceSystem(
                 new RDFResource("ex:MyCalendarTRS"), 
                 new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18])));
 
             Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
-
+/*
         [TestMethod]
         public async Task ShouldGetInstantCoordinateByNominalPosition()
         {
