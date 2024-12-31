@@ -524,12 +524,12 @@ namespace OWLSharp.Test.Extensions.TIME
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
 
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:era"), true));
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:era"), true));
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"), true));
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:era"), false));
-            Assert.IsFalse(thors.CheckIsSuperEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:era"), false));
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"), false));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subEra"), true));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"), true));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subsubEra"), true));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subEra"), false));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"), false));
+            Assert.IsFalse(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subsubEra"), false));
         }
 
         [TestMethod]
