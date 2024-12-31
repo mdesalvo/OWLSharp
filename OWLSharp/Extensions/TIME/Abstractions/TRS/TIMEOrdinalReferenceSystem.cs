@@ -129,22 +129,29 @@ namespace OWLSharp.Extensions.TIME
             return this;
         }
 
-        public TIMEOrdinalReferenceSystem DeclareReferencePoint(TIMEInstant referencePoint)
+        public TIMEOrdinalReferenceSystem DeclareReferencePoints(TIMEInstant[] referencePoints)
         {
             #region Guards
-            if (referencePoint == null)
-                throw new OWLException("Cannot declare reference point to ordinal TRS because given \"referencePoint\" parameter is null");
+            if (referencePoints == null)
+                throw new OWLException("Cannot declare reference points to ordinal TRS because given \"referencePoints\" parameter is null");
+            if (referencePoints.Any(rp => rp == null))
+                throw new OWLException("Cannot declare reference points to ordinal TRS because given \"referencePoints\" parameter contains null elements");
+            if (referencePoints.Length < 2)
+                throw new OWLException("Cannot declare reference points to ordinal TRS because given \"referencePoints\" parameter must contain at least 2 elements");
             #endregion
 
             //Add knowledge to the A-BOX
-            THORSOntology.DeclareInstantFeatureInternal(referencePoint);
-            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
-                new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
-                new OWLNamedIndividual(referencePoint)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT),
-                new OWLNamedIndividual(this),
-                new OWLNamedIndividual(referencePoint)));
+            for (int i=0; i<referencePoints.Length; i++)
+            {
+                THORSOntology.DeclareInstantFeatureInternal(referencePoints[i]);
+                THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
+                    new OWLNamedIndividual(referencePoints[i])));
+                THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT),
+                    new OWLNamedIndividual(this),
+                    new OWLNamedIndividual(referencePoints[i])));
+            }
 
             return this;
         }
