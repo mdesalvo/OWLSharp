@@ -59,6 +59,8 @@ namespace OWLSharp.Test.Extensions.GEO
             Assert.IsTrue(string.Equals(geom.ToWKT(), "LINESTRING (9.18854 45.464664, 9.19854 45.474664)"));
             Assert.IsTrue(string.Equals(geom.ToGML(), "<gml:LineString xmlns:gml=\"http://www.opengis.net/gml\"><gml:coordinates>9.18854,45.464664 9.19854,45.474664</gml:coordinates></gml:LineString>"));
 
+            Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), null));
+            Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), [(9.188540, 45.464664)]));
             Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664), (9.198540, 45.474664)]));
             Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), [(182.188540, 45.464664), (9.198540, 45.474664)]));
             Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), [(9.188540, -92.464664), (9.198540, 45.474664)]));
@@ -77,6 +79,7 @@ namespace OWLSharp.Test.Extensions.GEO
             Assert.IsTrue(string.Equals(geom.ToWKT(), "POLYGON ((9.18854 45.464664, 9.19854 45.474664, 9.20854 45.484664, 9.18854 45.464664))"));
             Assert.IsTrue(string.Equals(geom.ToGML(), "<gml:Polygon xmlns:gml=\"http://www.opengis.net/gml\"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>9.18854,45.464664 9.19854,45.474664 9.20854,45.484664 9.18854,45.464664</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon>"));
 
+            Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), null));
             Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), [(9.188540, 45.464664)]));
             Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), [(-182.188540, 45.464664), (9.198540, 45.474664), (-82.188540, 45.464664)]));
             Assert.ThrowsException<OWLException>(() => new GEOLine(new RDFResource("ex:MilanGM"), [(182.188540, 45.464664), (9.198540, 45.474664), (82.188540, 45.464664)]));
