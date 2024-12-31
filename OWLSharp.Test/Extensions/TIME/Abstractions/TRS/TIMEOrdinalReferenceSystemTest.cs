@@ -581,7 +581,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(superErasOfSubSubEraWithoutReasoning.Count == 1);
             Assert.IsTrue(superErasOfSubSubEraWithoutReasoning.Any(x => x.Equals(new RDFResource("ex:subEra"))));
         }
-/*
+
         [TestMethod]
         public void ShouldGetEraCoordinates()
         {
@@ -610,8 +610,8 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
                     new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
-            thors.DeclareSubEra(new RDFResource("ex:era"), new RDFResource("ex:subEra"));
-            thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"));
+            thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
+            thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
             (TIMECoordinate, TIMECoordinate) eraCoordinates = thors.GetEraCoordinates(new RDFResource("ex:era"));
             (TIMECoordinate, TIMECoordinate) subEraCoordinates = thors.GetEraCoordinates(new RDFResource("ex:subEra"));
             (TIMECoordinate, TIMECoordinate) subsubEraCoordinates = thors.GetEraCoordinates(new RDFResource("ex:subsubEra"));
@@ -663,8 +663,8 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
                     new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
-            thors.DeclareSubEra(new RDFResource("ex:era"), new RDFResource("ex:subEra"));
-            thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"));
+            thors.DeclareSubEra(new RDFResource("ex:subera"), new RDFResource("ex:era"));
+            thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
             TIMEExtent eraExtent = thors.GetEraExtent(new RDFResource("ex:era"));
             TIMEExtent subEraExtent = thors.GetEraExtent(new RDFResource("ex:subEra"));
             TIMEExtent subsubEraExtent = thors.GetEraExtent(new RDFResource("ex:subsubEra"));
@@ -677,7 +677,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(subsubEraExtent.Days == 547_500_000);
             Assert.ThrowsException<OWLException>(() => thors.GetEraExtent(new RDFResource("ex:unexistingEra")));
             Assert.ThrowsException<OWLException>(() => thors.GetEraExtent(null));
-        }*/
+        }
         #endregion
     }
 }
