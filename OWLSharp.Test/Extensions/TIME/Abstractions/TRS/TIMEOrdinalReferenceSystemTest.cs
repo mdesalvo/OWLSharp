@@ -328,7 +328,6 @@ namespace OWLSharp.Test.Extensions.TIME
             => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                 .DeclareReferencePoints([new TIMEInstant(new RDFResource("ex:massExtinctionEvent"))]));
 
-/*
 
         [TestMethod]
         public void ShouldCheckHasEra()
@@ -385,7 +384,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsFalse(thors.CheckHasEraBoundary(new RDFResource("ex:erazz")));
             Assert.ThrowsException<OWLException>(() => thors.CheckHasEraBoundary(null));
         }
-
+/*
         [TestMethod]
         public void ShouldCheckHasReferencePoint()
         {

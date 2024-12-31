@@ -166,7 +166,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             return THORSOntology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA))
-                    .Any(idv => idv.Equals(era));
+                    .Any(idv => idv.GetIRI().Equals(era));
         }
 
         public bool CheckHasEraBoundary(RDFResource eraBoundary)
@@ -177,7 +177,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             return THORSOntology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
-                    .Any(idv => idv.Equals(eraBoundary));
+                    .Any(idv => idv.GetIRI().Equals(eraBoundary));
         }
 
         public bool CheckHasReferencePoint(RDFResource referencePoint)
