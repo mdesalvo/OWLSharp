@@ -16,6 +16,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.TIME;
+using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,63 +63,86 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(newTRS.THORSOntology.ObjectPropertyAxioms.Count == 119);
             Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), null));
         }
-/*
+
         [TestMethod]
         public void ShouldDeclareEra()
         {
-            TIMEOrdinalReferenceSystem thors = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
+            TIMEOrdinalReferenceSystem thors = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS);
             thors.DeclareEra(
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"), 
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
 
-            //Test evolution of TIME+THORS knowledge
-            Assert.IsTrue(thors.Ontology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 71);
-            Assert.IsTrue(thors.Ontology.Data.IndividualsCount == 39);
-            Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:era")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:eraBeginning")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:eraBeginningPosition")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:eraEnd")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:eraEndPosition")));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:era"), RDFVocabulary.TIME.THORS.ERA));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:era"), RDFVocabulary.TIME.PROPER_INTERVAL));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:era"), RDFVocabulary.TIME.INTERVAL));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraBeginning"), RDFVocabulary.TIME.THORS.ERA_BOUNDARY));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraBeginning"), RDFVocabulary.TIME.INSTANT));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraBeginningPosition"), RDFVocabulary.TIME.TIME_POSITION));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraBeginningPosition"), RDFVocabulary.TIME.TEMPORAL_POSITION));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraEnd"), RDFVocabulary.TIME.THORS.ERA_BOUNDARY));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraEnd"), RDFVocabulary.TIME.INSTANT));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraEndPosition"), RDFVocabulary.TIME.TIME_POSITION));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:eraEndPosition"), RDFVocabulary.TIME.TEMPORAL_POSITION));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:Thors"), RDFVocabulary.TIME.THORS.COMPONENT, new RDFResource("ex:era")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:era"), RDFVocabulary.TIME.THORS.SYSTEM, new RDFResource("ex:Thors")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:era"), RDFVocabulary.TIME.THORS.BEGIN, new RDFResource("ex:eraBeginning")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:eraBeginning"), RDFVocabulary.TIME.THORS.NEXT_ERA, new RDFResource("ex:era")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:era"), RDFVocabulary.TIME.THORS.END, new RDFResource("ex:eraEnd")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:eraEnd"), RDFVocabulary.TIME.THORS.PREVIOUS_ERA, new RDFResource("ex:era")));
+            Assert.IsTrue(thors.THORSOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:era"))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.THORS.ERA),
+                    new OWLNamedIndividual(new RDFResource("ex:era")))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.COMPONENT),
+                    new OWLNamedIndividual(new RDFResource("ex:Thors2")),
+                    new OWLNamedIndividual(new RDFResource("ex:era")))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.SYSTEM),
+                    new OWLNamedIndividual(new RDFResource("ex:era")),
+                    new OWLNamedIndividual(new RDFResource("ex:Thors2")))));
+
+            Assert.IsTrue(thors.THORSOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:eraBeginning"))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:eraBeginningPosition"))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
+                    new OWLNamedIndividual(new RDFResource("ex:eraBeginning")))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.BEGIN),
+                    new OWLNamedIndividual(new RDFResource("ex:era")),
+                    new OWLNamedIndividual(new RDFResource("ex:eraBeginning")))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.NEXT_ERA),
+                    new OWLNamedIndividual(new RDFResource("ex:eraBeginning")),
+                    new OWLNamedIndividual(new RDFResource("ex:era")))));
+
+            Assert.IsTrue(thors.THORSOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:eraEnd"))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:eraEndPosition"))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
+                    new OWLNamedIndividual(new RDFResource("ex:eraEnd")))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.END),
+                    new OWLNamedIndividual(new RDFResource("ex:era")),
+                    new OWLNamedIndividual(new RDFResource("ex:eraEnd")))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.PREVIOUS_ERA),
+                    new OWLNamedIndividual(new RDFResource("ex:eraEnd")),
+                    new OWLNamedIndividual(new RDFResource("ex:era")))));
         }
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEraBecauseNullEra()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"))
-                .DeclareEra(null, new TIMEInstant(new RDFResource("ex:begin")), new TIMEInstant(new RDFResource("ex:begin"))));
+            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+                                                            .DeclareEra(null, new TIMEInstant(new RDFResource("ex:begin")), new TIMEInstant(new RDFResource("ex:end"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEraBecauseNullBegin()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"))
-                .DeclareEra(new RDFResource("ex:era"), null, new TIMEInstant(new RDFResource("ex:begin"))));
+            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+                                                            .DeclareEra(new RDFResource("ex:era"), null, new TIMEInstant(new RDFResource("ex:end"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEraBecauseNullEnd()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"))
-                .DeclareEra(new RDFResource("ex:era"), new TIMEInstant(new RDFResource("ex:begin")), null));
-
+            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+                                                            .DeclareEra(new RDFResource("ex:era"), new TIMEInstant(new RDFResource("ex:begin")), null));
+/*
         [TestMethod]
         public void ShouldDeclareSubEra()
         {

@@ -66,7 +66,7 @@ namespace OWLSharp.Extensions.TIME
                 new OWLNamedIndividual(this),
                 new OWLNamedIndividual(era)));
             THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.THORS.COMPONENT),
+                new OWLObjectProperty(RDFVocabulary.TIME.THORS.SYSTEM),
                 new OWLNamedIndividual(era),
                 new OWLNamedIndividual(this))); //inference
 
