@@ -355,7 +355,7 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Analyzer
-        public static List<TIMEEntity> GetTemporalDimensionOfFeature(this OWLOntology ontology, RDFResource featureURI)
+        public static List<TIMEEntity> GetTemporalFeature(this OWLOntology ontology, RDFResource featureURI)
         {
             #region Guards
             if (featureURI == null)
