@@ -129,22 +129,34 @@ namespace OWLSharp.Extensions.TIME
             return this;
         }
 
-        public TIMEOrdinalReferenceSystem DeclareReferencePoint(TIMEInstant referencePoint)
+        public TIMEOrdinalReferenceSystem DeclareReferencePoint(TIMEInstant leftEraBoundaryPoint, TIMEInstant rightEraBoundaryPoint)
         {
             #region Guards
-            if (referencePoint == null)
-                throw new OWLException("Cannot declare reference point to ordinal TRS because given \"referencePoint\" parameter is null");
+            if (leftEraBoundaryPoint == null)
+                throw new OWLException("Cannot declare reference point to ordinal TRS because given \"leftEraBoundaryPoint\" parameter is null");
+            if (rightEraBoundaryPoint == null)
+                throw new OWLException("Cannot declare reference point to ordinal TRS because given \"rightEraBoundaryPoint\" parameter is null");
             #endregion
 
-            //Add knowledge to the A-BOX (referencePoint)
-            THORSOntology.DeclareInstantFeatureInternal(referencePoint);
+            //Add knowledge to the A-BOX (left reference point)
+            THORSOntology.DeclareInstantFeatureInternal(leftEraBoundaryPoint);
             THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
-                new OWLNamedIndividual(referencePoint)));
+                new OWLNamedIndividual(leftEraBoundaryPoint)));
             THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT),
                 new OWLNamedIndividual(this),
-                new OWLNamedIndividual(referencePoint)));
+                new OWLNamedIndividual(leftEraBoundaryPoint)));
+
+            //Add knowledge to the A-BOX (right reference point)
+            THORSOntology.DeclareInstantFeatureInternal(rightEraBoundaryPoint);
+            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
+                new OWLNamedIndividual(rightEraBoundaryPoint)));
+            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT),
+                new OWLNamedIndividual(this),
+                new OWLNamedIndividual(rightEraBoundaryPoint)));
 
             return this;
         }
