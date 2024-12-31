@@ -37,8 +37,7 @@ namespace OWLSharp.Extensions.SKOS
         #endregion
 
         #region Declarer
-        public static OWLOntology DeclareConceptScheme(this OWLOntology ontology, RDFResource conceptScheme,
-            RDFResource[] concepts = null)
+        public static OWLOntology DeclareConceptScheme(this OWLOntology ontology, RDFResource conceptScheme, RDFResource[] concepts = null)
         {
             #region Guards
             if (conceptScheme == null)
@@ -66,8 +65,7 @@ namespace OWLSharp.Extensions.SKOS
             return ontology;
         }
 
-        public static OWLOntology DeclareConcept(this OWLOntology ontology, RDFResource concept,
-            RDFPlainLiteral[] labels = null, RDFResource conceptScheme = null)
+        public static OWLOntology DeclareConcept(this OWLOntology ontology, RDFResource concept, RDFPlainLiteral[] labels = null, RDFResource conceptScheme = null)
         {
             #region Guards
             if (concept == null)
@@ -108,8 +106,7 @@ namespace OWLSharp.Extensions.SKOS
             return ontology;
         }
 
-        public static OWLOntology DeclareCollection(this OWLOntology ontology, RDFResource collection,
-            RDFResource[] concepts, RDFPlainLiteral[] labels = null, RDFResource conceptScheme = null)
+        public static OWLOntology DeclareCollection(this OWLOntology ontology, RDFResource collection, RDFResource[] concepts, RDFPlainLiteral[] labels = null, RDFResource conceptScheme = null)
         {
             #region Guards
             if (collection == null)
