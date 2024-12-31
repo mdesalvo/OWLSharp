@@ -51,8 +51,7 @@ namespace OWLSharp.Extensions.GEO
         #endregion
 
         #region Declarer
-        public static OWLOntology DeclarePointFeature(this OWLOntology ontology, RDFResource featureUri,
-            GEOPoint geoPoint, bool isDefaultGeometry = true)
+        public static OWLOntology DeclarePointFeature(this OWLOntology ontology, RDFResource featureUri, GEOPoint geoPoint, bool isDefaultGeometry = true)
         {
             #region Guards
             if (featureUri == null)
@@ -89,8 +88,7 @@ namespace OWLSharp.Extensions.GEO
             return ontology;
         }
 
-        public static OWLOntology DeclareLineFeature(this OWLOntology ontology, RDFResource featureUri,
-            GEOLine geoLine, bool isDefaultGeometry = true)
+        public static OWLOntology DeclareLineFeature(this OWLOntology ontology, RDFResource featureUri, GEOLine geoLine, bool isDefaultGeometry = true)
         {
             #region Guards
             if (featureUri == null)
@@ -127,8 +125,7 @@ namespace OWLSharp.Extensions.GEO
             return ontology;
         }
 
-        public static OWLOntology DeclareAreaFeature(this OWLOntology ontology, RDFResource featureUri,
-            GEOArea geoArea, bool isDefaultGeometry = true)
+        public static OWLOntology DeclareAreaFeature(this OWLOntology ontology, RDFResource featureUri, GEOArea geoArea, bool isDefaultGeometry = true)
         {
             #region Guards
             if (featureUri == null)
