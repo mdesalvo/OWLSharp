@@ -279,33 +279,33 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldThrowExceptionOnDeclaringSubEraBecauseNullSubEra()
             => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                                                             .DeclareSubEra(new RDFResource("ex:era"), null));
-/*
+
         [TestMethod]
         public void ShouldDeclareReferencePoint()
         {
-            TIMEOrdinalReferenceSystem thors = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
+            TIMEOrdinalReferenceSystem thors = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS);
             thors.DeclareReferencePoint(
                 new TIMEInstant(
                     new RDFResource("ex:massExtinctionEvent"),
-                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPosition"), TIMEPositionReferenceSystem.GeologicTime, 65.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 65.5)));
 
-            //Test evolution of TIME+THORS knowledge
-            Assert.IsTrue(thors.Ontology.Model.ClassModel.ClassesCount == 76);
-            Assert.IsTrue(thors.Ontology.Model.PropertyModel.PropertiesCount == 71);
-            Assert.IsTrue(thors.Ontology.Data.IndividualsCount == 36);
-            Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:massExtinctionEvent")));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasIndividual(new RDFResource("ex:massExtinctionEventPosition")));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:massExtinctionEvent"), RDFVocabulary.TIME.THORS.ERA_BOUNDARY));
-            Assert.IsTrue(thors.Ontology.Data.CheckIsIndividualOf(thors.Ontology.Model, new RDFResource("ex:massExtinctionEvent"), RDFVocabulary.TIME.INSTANT));
-            Assert.IsTrue(thors.Ontology.Data.CheckHasObjectAssertion(new RDFResource("ex:Thors"), RDFVocabulary.TIME.THORS.REFERENCE_POINT, new RDFResource("ex:massExtinctionEvent")));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
+                    new OWLNamedIndividual(new RDFResource("ex:massExtinctionEvent")))));
+            Assert.IsTrue(thors.THORSOntology.CheckHasAssertionAxiom(
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT),
+                    new OWLNamedIndividual(new RDFResource("ex:Thors2")),
+                    new OWLNamedIndividual(new RDFResource("ex:massExtinctionEvent")))));
         }
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringReferencePointBecauseNullReferencePoint()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"))
+            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                 .DeclareReferencePoint(null));
 
-        //Analyzer
+/*
 
         [TestMethod]
         public void ShouldCheckHasTHORSEra()
