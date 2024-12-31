@@ -37,6 +37,19 @@ namespace OWLSharp.Extensions.TIME
             //Initialize TIME+THORS
             THORSOntology.InitializeTIMEAsync().GetAwaiter().GetResult();
         }
+
+        public TIMEOrdinalReferenceSystem(RDFResource trsUri, TIMEOrdinalReferenceSystem ordinalTRS) : base(trsUri)
+        {
+            if (ordinalTRS == null)
+            {
+                THORSOntology = new OWLOntology(URI);
+
+                //Initialize TIME+THORS
+                THORSOntology.InitializeTIMEAsync().GetAwaiter().GetResult();
+            }
+            else
+                THORSOntology = ordinalTRS.THORSOntology;
+        }
         #endregion
 
         #region Methods
