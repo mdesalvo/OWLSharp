@@ -32,12 +32,12 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -58,12 +58,12 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
@@ -84,22 +84,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -126,22 +126,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -163,22 +163,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -200,22 +200,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -237,22 +237,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -274,22 +274,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -312,12 +312,12 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
@@ -338,12 +338,12 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -364,22 +364,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -402,22 +402,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -440,22 +440,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 
@@ -477,22 +477,22 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Retrieve the temporal coordinate of the given aInterval's beginning instant
-            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given aInterval's end instant
-            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(aTimeIntervalURI, calendarTRS);
+            TIMECoordinate aTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(aTimeIntervalURI, calendarTRS);
             if (aTimeIntervalEndCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's beginning instant
-            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalBeginningCoordinate = timeOntology?.GetBeginningOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalBeginningCoordinate == null)
                 return false;
 
             //Retrieve the temporal coordinate of the given bInterval's end instant
-            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfIntervalTemporalFeature(bTimeIntervalURI, calendarTRS);
+            TIMECoordinate bTimeIntervalEndCoordinate = timeOntology?.GetEndOfInterval(bTimeIntervalURI, calendarTRS);
             if (bTimeIntervalEndCoordinate == null)
                 return false;
 

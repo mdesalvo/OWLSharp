@@ -297,14 +297,14 @@ namespace OWLSharp.Extensions.TIME
             OWLObjectPropertyAssertion thorsBeginEraAsn = thorsBeginObjPropAsns.FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(era)
                                                            && CheckHasTHORSEraBoundary(asn.TargetIndividualExpression.GetIRI()));
             if (thorsBeginEraAsn != null)
-                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfInstantTemporalFeature(thorsBeginEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
+                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfInstant(thorsBeginEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
 
             //Get end boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraEndBoundaryCoordinate = null;
             OWLObjectPropertyAssertion thorsEndEraAsn = thorsEndObjPropAsns.FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(era)
                                                          && CheckHasTHORSEraBoundary(asn.TargetIndividualExpression.GetIRI()));
             if (thorsEndEraAsn != null)
-                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfInstantTemporalFeature(thorsEndEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
+                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfInstant(thorsEndEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
 
             return (eraBeginBoundaryCoordinate, eraEndBoundaryCoordinate);
         }

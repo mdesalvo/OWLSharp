@@ -955,7 +955,7 @@ namespace OWLSharp.Extensions.TIME
             timeInterval.End = endsOfTimeInterval.FirstOrDefault();
         }
 
-        public static TIMECoordinate GetCoordinateOfInstantTemporalFeature(this OWLOntology ontology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetCoordinateOfInstant(this OWLOntology ontology, RDFResource timeInstantURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeInstantURI == null)
@@ -988,7 +988,7 @@ namespace OWLSharp.Extensions.TIME
                 //Nominal position (e.g: Uri of a well-known interval, which is part of an ordinal TRS)
                 if (timeInstant.Position.IsNominal)
                 {
-                    TIMECoordinate nominalPositionCoordinate = GetBeginningOfIntervalTemporalFeature(ontology, timeInstant.Position.NominalValue, calendarTRS);
+                    TIMECoordinate nominalPositionCoordinate = GetBeginningOfInterval(ontology, timeInstant.Position.NominalValue, calendarTRS);
                     if (nominalPositionCoordinate != null)
                         return TIMEConverter.NormalizeCoordinateToCalendar(nominalPositionCoordinate, calendarTRS);
                 }
@@ -1014,7 +1014,7 @@ namespace OWLSharp.Extensions.TIME
             return null;
         }
 
-        public static TIMEExtent GetExtentOfIntervalTemporalFeature(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMEExtent GetExtentOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1060,8 +1060,8 @@ namespace OWLSharp.Extensions.TIME
             FillEndOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
             if (timeInterval.Beginning != null && timeInterval.End != null)
             {
-                TIMECoordinate timeIntervalBeginning = GetCoordinateOfInstantTemporalFeature(ontology, timeInterval.Beginning, calendarTRS);
-                TIMECoordinate timeIntervalEnd = GetCoordinateOfInstantTemporalFeature(ontology, timeInterval.End, calendarTRS);
+                TIMECoordinate timeIntervalBeginning = GetCoordinateOfInstant(ontology, timeInterval.Beginning, calendarTRS);
+                TIMECoordinate timeIntervalEnd = GetCoordinateOfInstant(ontology, timeInterval.End, calendarTRS);
                 if (timeIntervalBeginning != null && timeIntervalEnd != null)
                     return TIMEConverter.CalculateExtentBetweenCoordinates(timeIntervalBeginning, timeIntervalEnd, calendarTRS);
             }
@@ -1070,7 +1070,7 @@ namespace OWLSharp.Extensions.TIME
             return null;
         }
 
-        public static TIMECoordinate GetBeginningOfIntervalTemporalFeature(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetBeginningOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1083,9 +1083,9 @@ namespace OWLSharp.Extensions.TIME
             List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
-            return GetBeginningOfIntervalTemporalFeatureInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());
+            return GetBeginningOfIntervalInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());
         }
-        internal static TIMECoordinate GetBeginningOfIntervalTemporalFeatureInternal(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS,
+        internal static TIMECoordinate GetBeginningOfIntervalInternal(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS,
             List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns, Dictionary<long,RDFResource> visitContext)
         {
             #region visitContext
@@ -1103,7 +1103,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Get the coordinate of the time interval's beginning instant
             if (timeInterval.Beginning != null)
-                return GetCoordinateOfInstantTemporalFeature(ontology, timeInterval.Beginning, calendarTRS);
+                return GetCoordinateOfInstant(ontology, timeInterval.Beginning, calendarTRS);
 
             #region Allen
             //There's no direct representation of the time interval's beginning instant:
@@ -1122,7 +1122,7 @@ namespace OWLSharp.Extensions.TIME
             TIMECoordinate compatibleBeginning = null;
             IEnumerator<RDFResource> compatibleStartingIntervalsEnumerator = compatibleStartIntervals.GetEnumerator();
             while (compatibleBeginning == null && compatibleStartingIntervalsEnumerator.MoveNext())
-                compatibleBeginning = GetBeginningOfIntervalTemporalFeatureInternal(ontology, compatibleStartingIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
+                compatibleBeginning = GetBeginningOfIntervalInternal(ontology, compatibleStartingIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
             if (compatibleBeginning == null)
             {
                 #region MetBy
@@ -1137,14 +1137,14 @@ namespace OWLSharp.Extensions.TIME
                 //Perform a sequential search of the start instant on the set of metBy intervals
                 IEnumerator<RDFResource> metByIntervalsEnumerator = metByIntervals.GetEnumerator();
                 while (compatibleBeginning == null && metByIntervalsEnumerator.MoveNext())
-                    compatibleBeginning = GetEndOfIntervalTemporalFeatureInternal(ontology, metByIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
+                    compatibleBeginning = GetEndOfIntervalInternal(ontology, metByIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
                 #endregion
             }
             #endregion
 
             return compatibleBeginning;
         }
-        public static TIMECoordinate GetEndOfIntervalTemporalFeature(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
+        public static TIMECoordinate GetEndOfInterval(this OWLOntology ontology, RDFResource timeIntervalURI, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeIntervalURI == null)
@@ -1157,9 +1157,9 @@ namespace OWLSharp.Extensions.TIME
             List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
-            return GetEndOfIntervalTemporalFeatureInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());
+            return GetEndOfIntervalInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());
         }
-        internal static TIMECoordinate GetEndOfIntervalTemporalFeatureInternal(this OWLOntology ontology, RDFResource timeIntervalURI,  TIMECalendarReferenceSystem calendarTRS, 
+        internal static TIMECoordinate GetEndOfIntervalInternal(this OWLOntology ontology, RDFResource timeIntervalURI,  TIMECalendarReferenceSystem calendarTRS, 
             List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns, Dictionary<long,RDFResource> visitContext)
         {
             #region visitContext
@@ -1177,7 +1177,7 @@ namespace OWLSharp.Extensions.TIME
 
             //Get the coordinate of the time interval's end instant
             if (timeInterval.End != null)
-                return GetCoordinateOfInstantTemporalFeature(ontology, timeInterval.End, calendarTRS);
+                return GetCoordinateOfInstant(ontology, timeInterval.End, calendarTRS);
 
             #region Allen
             //There's no direct representation of the time interval's end instant:
@@ -1196,7 +1196,7 @@ namespace OWLSharp.Extensions.TIME
             TIMECoordinate compatibleEnd = null;
             IEnumerator<RDFResource> compatibleEndIntervalsEnumerator = compatibleEndIntervals.GetEnumerator();
             while (compatibleEnd == null && compatibleEndIntervalsEnumerator.MoveNext())
-                compatibleEnd = GetEndOfIntervalTemporalFeatureInternal(ontology, compatibleEndIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
+                compatibleEnd = GetEndOfIntervalInternal(ontology, compatibleEndIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
             if (compatibleEnd == null)
             {
                 #region Meets
@@ -1211,7 +1211,7 @@ namespace OWLSharp.Extensions.TIME
                 //Perform a sequential search of the end instant on the set of meets intervals
                 IEnumerator<RDFResource> meetsIntervalsEnumerator = meetsIntervals.GetEnumerator();
                 while (compatibleEnd == null && meetsIntervalsEnumerator.MoveNext())
-                    compatibleEnd = GetBeginningOfIntervalTemporalFeatureInternal(ontology, meetsIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
+                    compatibleEnd = GetBeginningOfIntervalInternal(ontology, meetsIntervalsEnumerator.Current, calendarTRS, dtPropAsns, objPropAsns, visitContext);
                 #endregion
             }
             #endregion
