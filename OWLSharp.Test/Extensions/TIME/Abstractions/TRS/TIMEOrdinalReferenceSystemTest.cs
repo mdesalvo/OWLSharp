@@ -432,15 +432,15 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
                     new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
-            thors.DeclareSubEra(new RDFResource("ex:era"), new RDFResource("ex:subEra"));
-            thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"));
+            thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
+            thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
 
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:era"), new RDFResource("ex:subEra"), true));
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:era"), new RDFResource("ex:subsubEra"), true));
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"), true));
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:era"), new RDFResource("ex:subEra"), false));
-            Assert.IsFalse(thors.CheckIsSubEraOf(new RDFResource("ex:era"), new RDFResource("ex:subsubEra"), false));
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"), false));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:era"), true));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"), true));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:era"), true));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:era"), false));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"), false));
+            Assert.IsFalse(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:era"), false));
         }
 
         [TestMethod]
