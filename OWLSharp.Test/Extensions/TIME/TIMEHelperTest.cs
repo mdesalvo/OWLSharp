@@ -680,7 +680,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         #region Tests (Analyzer)
         [TestMethod]
-        public void ShouldThrowExceptionOnGettingTemporalDimensionOfFeatureBecauseNullURI()
+        public void ShouldThrowExceptionOnGettingTemporalFeatureBecauseNullURI()
             => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetTemporalFeature(null));
 
         [DataTestMethod]
@@ -689,7 +689,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [DataRow("http://www.w3.org/2006/time#inXSDDate", "1939-09-01", RDFModelEnums.RDFDatatypes.XSD_DATE, "1939-09-01T00:00:00Z")]
         [DataRow("http://www.w3.org/2006/time#inXSDgYear", "1939", RDFModelEnums.RDFDatatypes.XSD_GYEAR, "1939-01-01T00:00:00Z")]
         [DataRow("http://www.w3.org/2006/time#inXSDgYearMonth", "1939-09", RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH, "1939-09-01T00:00:00Z")]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByDateTime(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, string expectedTimeValue)
+        public void ShouldGetTemporalInstantFeatureByDateTime(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, string expectedTimeValue)
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -726,7 +726,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [DataRow("http://www.w3.org/2006/time#inXSDDate", "1939-09-01", RDFModelEnums.RDFDatatypes.XSD_DATE, "1939-09-01T00:00:00Z")]
         [DataRow("http://www.w3.org/2006/time#inXSDgYear", "1939", RDFModelEnums.RDFDatatypes.XSD_GYEAR, "1939-01-01T00:00:00Z")]
         [DataRow("http://www.w3.org/2006/time#inXSDgYearMonth", "1939-09", RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH, "1939-09-01T00:00:00Z")]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByDateTimeThroughInferredProperty(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, string expectedTimeValue)
+        public void ShouldGetTemporalInstantFeatureByDateTimeThroughInferredProperty(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, string expectedTimeValue)
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")));
@@ -762,7 +762,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByDescription()
+        public void ShouldGetTemporalInstantFeatureByDescription()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -855,7 +855,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByDescriptionThroughInferredProperty()
+        public void ShouldGetTemporalInstantFeatureByDescriptionThroughInferredProperty()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -952,7 +952,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByGeneralDescription()
+        public void ShouldGetTemporalInstantFeatureByGeneralDescription()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:AbbyBirthday")));
@@ -1039,7 +1039,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByNumericPosition()
+        public void ShouldGetTemporalInstantFeatureByNumericPosition()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1086,7 +1086,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByNumericPositionThroughInferredProperty()
+        public void ShouldGetTemporalInstantFeatureByNumericPositionThroughInferredProperty()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1137,7 +1137,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfInstantFeatureByNominalPosition()
+        public void ShouldGetTemporalInstantFeatureByNominalPosition()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1185,7 +1185,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByTimeSpan()
+        public void ShouldGetTemporalIntervalFeatureByTimeSpan()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1219,7 +1219,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByTimeSpanThroughInferredProperty()
+        public void ShouldGetTemporalIntervalFeatureByTimeSpanThroughInferredProperty()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1257,7 +1257,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByDescription()
+        public void ShouldGetTemporalIntervalFeatureByDescription()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1336,7 +1336,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByDescriptionThroughInferredProperty()
+        public void ShouldGetTemporalIntervalFeatureByDescriptionThroughInferredProperty()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1419,7 +1419,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByGeneralDescription()
+        public void ShouldGetTemporalIntervalFeatureByGeneralDescription()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1498,7 +1498,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByDuration()
+        public void ShouldGetTemporalIntervalFeatureByDuration()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1546,7 +1546,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByDurationThroughInferredProperty()
+        public void ShouldGetTemporalIntervalFeatureByDurationThroughInferredProperty()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1598,7 +1598,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByBeginningInstant()
+        public void ShouldGetTemporalIntervalFeatureByBeginningInstant()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1644,7 +1644,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByBeginningInstantThroughInferredProperty()
+        public void ShouldGetTemporalIntervalFeatureByBeginningInstantThroughInferredProperty()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1694,7 +1694,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByEndInstant()
+        public void ShouldGetTemporalIntervalFeatureByEndInstant()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1740,7 +1740,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByEndInstantThroughInferredProperty()
+        public void ShouldGetTemporalIntervalFeatureByEndInstantThroughInferredProperty()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1790,7 +1790,7 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetTemporalDimensionOfIntervalFeatureByBeginningEndInstants()
+        public void ShouldGetTemporalIntervalFeatureByBeginningEndInstants()
         {
             OWLOntology timeOntology = new OWLOntology(TestOntology);
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
@@ -1851,11 +1851,9 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInterval.End.Position);
         }
 
-        //GetCoordinateOfInstant
-
         [TestMethod]
         public void ShouldThrowExceptionOnGettingInstantCoordinateBecauseNullInstantURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetCoordinateOfInstant(null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetCoordinateOfInstantTemporalFeature(null));
 
         [DataTestMethod]
         [DataRow("http://www.w3.org/2006/time#inXSDDateTimeStamp", "1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP, 1939, 9, 1, 8, 0, 0)]
@@ -1880,7 +1878,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLDataProperty(new RDFResource(timeProperty)),
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
                 new OWLLiteral(new RDFTypedLiteral(timeValue, timeDataType))));
-            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstantTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
             Assert.IsTrue(timeCoordinate.Year == expectedYear);
@@ -1946,7 +1944,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
                 new OWLLiteral(new RDFTypedLiteral("01", RDFModelEnums.RDFDatatypes.XSD_NONNEGATIVEINTEGER))));
 
-            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstantTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
             Assert.IsTrue(timeCoordinate.Year == 1939);
@@ -2016,7 +2014,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18]));
             TIMEReferenceSystemRegistry.AddTRS(myCalendarTRS);
 
-            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"), myCalendarTRS);
+            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstantTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"), myCalendarTRS);
 
             Assert.IsNotNull(timeCoordinate);
             Assert.IsTrue(timeCoordinate.Year == 1941);
@@ -2058,7 +2056,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
                 new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
             
-            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstantTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
             Assert.IsTrue(timeCoordinate.Year == 1939);
@@ -2100,7 +2098,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
                 new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
-            Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
+            Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstantTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
 
         [TestMethod]
@@ -2137,7 +2135,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:MyCalendarTRS"), 
                 new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18])));
 
-            Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
+            Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstantTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
 
         [TestMethod]
@@ -2198,7 +2196,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLNamedIndividual(new RDFResource("ex:September1939End")),
                 new OWLLiteral(new RDFTypedLiteral("1945-09-02Z", RDFModelEnums.RDFDatatypes.XSD_DATE))));
 
-            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstantTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
             Assert.IsTrue(timeCoordinate.Year == 1939);
@@ -2209,11 +2207,9 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeCoordinate.Second == 0);
         }
 
-        //GetExtentOfInterval
-
         [TestMethod]
         public void ShouldThrowExceptionOnGettingIntervalExtentBecauseNullIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetExtentOfInterval(null));
+            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetExtentOfIntervalTemporalFeature(null));
 
         [TestMethod]
         public void ShouldGetIntervalExtentByTimeSpan()
@@ -2232,7 +2228,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION),
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
                 new OWLLiteral(new RDFTypedLiteral("P6YT1H1M1S", RDFModelEnums.RDFDatatypes.XSD_DURATION))));
-            TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMEExtent timeExtent = timeOntology.GetExtentOfIntervalTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
             Assert.IsTrue(timeExtent.Years == 0);
@@ -2297,7 +2293,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLDataProperty(RDFVocabulary.TIME.SECONDS),
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")),
                 new OWLLiteral(new RDFTypedLiteral("61", RDFModelEnums.RDFDatatypes.XSD_DOUBLE))));
-            TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMEExtent timeExtent = timeOntology.GetExtentOfIntervalTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
             Assert.IsTrue(timeExtent.Years == 0);
@@ -2338,7 +2334,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_DURATION),
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDuration")),
                 new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
-            TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMEExtent timeExtent = timeOntology.GetExtentOfIntervalTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
             Assert.IsTrue(timeExtent.Years == 0);
@@ -2381,7 +2377,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDuration")),
                 new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
-            Assert.ThrowsException<OWLException>(() => timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension")));
+            Assert.ThrowsException<OWLException>(() => timeOntology.GetExtentOfIntervalTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
 
         [TestMethod]
@@ -2421,7 +2417,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")),
                 new OWLLiteral(new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
-            TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMEExtent timeExtent = timeOntology.GetExtentOfIntervalTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
             Assert.IsTrue(timeExtent.Years == 0);
@@ -2458,7 +2454,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")),
                 new OWLLiteral(new RDFTypedLiteral("1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
-            TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
+            TIMEExtent timeExtent = timeOntology.GetExtentOfIntervalTemporalFeature(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNull(timeExtent);
         }
@@ -2738,7 +2734,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME),
                 new OWLNamedIndividual(new RDFResource("ex:ArcheanFeature")),
                 new OWLNamedIndividual(new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale#Archean"))));
-            List<TIMEEntity> archeanTimeExtent = gtsOntology.GetTemporalDimensionOfFeature(new RDFResource("ex:ArcheanFeature"));
+            List<TIMEEntity> archeanTimeExtent = gtsOntology.GetTemporalFeature(new RDFResource("ex:ArcheanFeature"));
 
             Assert.IsNotNull(archeanTimeExtent);
             Assert.IsTrue(archeanTimeExtent.Count == 1);
