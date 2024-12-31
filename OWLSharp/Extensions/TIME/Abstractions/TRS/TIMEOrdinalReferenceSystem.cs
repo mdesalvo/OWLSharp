@@ -101,29 +101,29 @@ namespace OWLSharp.Extensions.TIME
             return this;
         }
 
-        public TIMEOrdinalReferenceSystem DeclareSubEra(RDFResource era, RDFResource subEra)
+        public TIMEOrdinalReferenceSystem DeclareSubEra(RDFResource subEra, RDFResource superEra)
         {
             #region Guards
-            if (era == null)
-                throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"era\" parameter is null");
             if (subEra == null)
                 throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"subEra\" parameter is null");
-            if (CheckHasSubEra(subEra, era, true))
-                throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"era\" parameter is already defined as sub-era of the given \"subEra\" parameter, so the requested operation would generate an A-BOX inconsistency");
+            if (superEra == null)
+                throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"superEra\" parameter is null");
+            if (CheckIsSubEraOf(superEra, subEra, true))
+                throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"superEra\" parameter is already defined as sub-era of the given \"subEra\" parameter!");
             #endregion
 
             //Add knowledge to the A-BOX
-            THORSOntology.DeclareEntity(new OWLNamedIndividual(era));
             THORSOntology.DeclareEntity(new OWLNamedIndividual(subEra));
-            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
-                new OWLClass(RDFVocabulary.TIME.THORS.ERA),
-                new OWLNamedIndividual(era)));
+            THORSOntology.DeclareEntity(new OWLNamedIndividual(superEra));
             THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA),
                 new OWLNamedIndividual(subEra)));
+            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.THORS.ERA),
+                new OWLNamedIndividual(superEra)));
             THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER),
-                new OWLNamedIndividual(era),
+                new OWLNamedIndividual(superEra),
                 new OWLNamedIndividual(subEra)));
 
             return this;
@@ -185,11 +185,11 @@ namespace OWLSharp.Extensions.TIME
                                  && idv.GetIRI().Equals(referencePoint));
         }
 
-        public bool CheckHasSubEra(RDFResource era, RDFResource subEra, bool enableReasoning=true)
-            => era != null && subEra != null && GetSuperErasOf(subEra, enableReasoning).Any(e => e.Equals(era));
+        public bool CheckIsSubEraOf(RDFResource subEra, RDFResource superEra, bool enableReasoning=true)
+            => subEra != null && superEra != null && GetSubErasOf(superEra, enableReasoning).Any(e => e.Equals(subEra));
 
-        public bool CheckHasSuperEra(RDFResource era, RDFResource superEra, bool enableReasoning=true)
-            => era != null && superEra != null && GetSubErasOf(superEra, enableReasoning).Any(e => e.Equals(era));
+        public bool CheckIsSuperEraOf(RDFResource superEra, RDFResource subEra, bool enableReasoning=true)
+            => superEra != null && subEra != null && GetSuperErasOf(subEra, enableReasoning).Any(e => e.Equals(superEra));
 
         public List<RDFResource> GetSubErasOf(RDFResource era, bool enableReasoning=true)
         {
