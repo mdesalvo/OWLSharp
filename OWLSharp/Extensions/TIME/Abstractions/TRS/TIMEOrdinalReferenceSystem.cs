@@ -39,17 +39,7 @@ namespace OWLSharp.Extensions.TIME
         }
 
         public TIMEOrdinalReferenceSystem(RDFResource trsUri, TIMEOrdinalReferenceSystem ordinalTRS) : base(trsUri)
-        {
-            if (ordinalTRS == null)
-            {
-                THORSOntology = new OWLOntology(URI);
-
-                //Initialize TIME+THORS
-                THORSOntology.InitializeTIMEAsync().GetAwaiter().GetResult();
-            }
-            else
-                THORSOntology = ordinalTRS.THORSOntology;
-        }
+            => THORSOntology = ordinalTRS?.THORSOntology ?? throw new OWLException("Cannot create ordinal TRS because given \"ordinalTRS\" parameter is null");
         #endregion
 
         #region Methods
