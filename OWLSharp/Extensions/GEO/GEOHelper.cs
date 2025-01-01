@@ -163,6 +163,32 @@ namespace OWLSharp.Extensions.GEO
         }
         #endregion
 
+        #region Analyzer
+        public static async Task<List<GEOEntity>> GetSpatialFeatureAsync(this OWLOntology ontology, RDFResource featureURI)
+        {
+            #region Guards
+            if (featureURI == null)
+                throw new OWLException("Cannot get spatial dimension of feature because given \"featureURI\" parameter is null");
+            #endregion
+
+            List<GEOEntity> spatialExtentOfFeature = new List<GEOEntity>();
+            Dictionary<string,List<(Geometry,Geometry)>> featuresWithGeometry = await GetFeaturesWithGeometriesAsync(ontology);
+            if (featuresWithGeometry.TryGetValue(featureURI.ToString(), out List<(Geometry,Geometry)> featureGeometries))
+                foreach ((Geometry wgs84Geom,Geometry lazGeom) in featureGeometries)
+                {
+                    RDFResource geometryUri = new RDFResource((string)wgs84Geom.UserData);
+                    if (wgs84Geom is Point wgs84Point)
+                        spatialExtentOfFeature.Add(new GEOPoint(geometryUri, (wgs84Point.Coordinate.X,wgs84Point.Coordinate.Y)));
+                    else if (wgs84Geom is LineString wgs84Line)
+                        spatialExtentOfFeature.Add(new GEOLine(geometryUri, wgs84Line.Coordinates.Select(c => (c.X,c.Y)).ToArray()));
+                    else if (wgs84Geom is Polygon wgs84Area)
+                        spatialExtentOfFeature.Add(new GEOArea(geometryUri, wgs84Area.Coordinates.Select(c => (c.X,c.Y)).ToArray()));
+                    //other types of OGC geometries are not supported yet...
+                }
+            return spatialExtentOfFeature;
+        }
+        #endregion
+
         #region Analyzer (Distance)
         public static async Task<double?> GetDistanceBetweenFeaturesAsync(OWLOntology ontology, RDFResource fromFeatureUri, RDFResource toFeatureUri)
         {
@@ -1216,7 +1242,7 @@ namespace OWLSharp.Extensions.GEO
         #endregion
 
         #region Utilities
-        internal static async Task<Dictionary<string,List<(Geometry,Geometry)>>> GetFeaturesWithGeometriesAsync(this OWLOntology ontology)
+        internal static async Task<Dictionary<string,List<(Geometry wgs84Geom,Geometry lazGeom)>>> GetFeaturesWithGeometriesAsync(this OWLOntology ontology)
         {
             Dictionary<string,List<(Geometry,Geometry)>> featuresWithGeometry = new Dictionary<string,List<(Geometry,Geometry)>>();
 
@@ -1225,15 +1251,15 @@ namespace OWLSharp.Extensions.GEO
                 RDFResource featureIRI = featureIdv.GetIRI();
                 string featureIRIString = featureIRI.ToString();
                 if (!featuresWithGeometry.ContainsKey(featureIRIString))
-                    featuresWithGeometry.Add(featureIRIString, new List<(Geometry, Geometry)>());
+                    featuresWithGeometry.Add(featureIRIString, new List<(Geometry wgs84Geom, Geometry lazGeom)>());
 
                 //Analyze default geometry of feature
-                (Geometry,Geometry) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureIRI);
-                if (defaultGeometry.Item1 != null && defaultGeometry.Item2 != null)
+                (Geometry wgs84Geom,Geometry lazGeom) defaultGeometry = await ontology.GetDefaultGeometryOfFeatureAsync(featureIRI);
+                if (defaultGeometry.wgs84Geom != null && defaultGeometry.lazGeom != null)
                     featuresWithGeometry[featureIRIString].Add(defaultGeometry);
 
                 //Analyze secondary geometries of feature
-                List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureIRI);
+                List<(Geometry wgs84Geom, Geometry lazGeom)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureIRI);
                 if (secondaryGeometries.Count > 0)
                     featuresWithGeometry[featureIRIString].AddRange(secondaryGeometries);
             }
@@ -1241,7 +1267,7 @@ namespace OWLSharp.Extensions.GEO
             return featuresWithGeometry;
         }
 
-        internal static async Task<(Geometry,Geometry)> GetDefaultGeometryOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
+        internal static async Task<(Geometry wgs84Geom,Geometry lazGeom)> GetDefaultGeometryOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
         {
             //Execute SWRL rule to retrieve WKT serialization of the given feature's default geometry
             List<OWLInference> inferences = new List<OWLInference>();
@@ -1279,7 +1305,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asWKT")),
-                            new SWRLVariableArgument(new RDFVariable("?FEATURE")),
+                            new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                             new SWRLVariableArgument(new RDFVariable("?WKT")))
                     }
                 }
@@ -1323,7 +1349,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             new SWRLDataPropertyAtom(
                                 new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asGML")),
-                                new SWRLVariableArgument(new RDFVariable("?FEATURE")),
+                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                                 new SWRLVariableArgument(new RDFVariable("?GML")))
                         }
                     }
@@ -1341,6 +1367,7 @@ namespace OWLSharp.Extensions.GEO
                     RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
                     Geometry wgs84Geometry = WKTReader.Read(inferenceLiteral.Value);
                     wgs84Geometry.SRID = 4326;
+                    wgs84Geometry.UserData = inferenceAxiom.IndividualExpression.GetIRI().ToString();
 
                     //Project default geometry from WGS84 to Lambert Azimuthal
                     Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
@@ -1357,9 +1384,11 @@ namespace OWLSharp.Extensions.GEO
                     RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
                     Geometry wgs84Geometry = GMLReader.Read(inferenceLiteral.Value);
                     wgs84Geometry.SRID = 4326;
+                    wgs84Geometry.UserData = inferenceAxiom.IndividualExpression.GetIRI().ToString();
 
                     //Project default geometry from WGS84 to Lambert Azimuthal
                     Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                    lazGeometry.UserData = inferenceAxiom.IndividualExpression.GetIRI().ToString();
 
                     return (wgs84Geometry, lazGeometry);
                 }
@@ -1369,7 +1398,7 @@ namespace OWLSharp.Extensions.GEO
             return (null,null);
         }
 
-        internal static async Task<List<(Geometry,Geometry)>> GetSecondaryGeometriesOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
+        internal static async Task<List<(Geometry wgs84Geom,Geometry lazGeom)>> GetSecondaryGeometriesOfFeatureAsync(this OWLOntology ontology, RDFResource featureUri)
         {
             List<(Geometry,Geometry)> secondaryGeometries = new List<(Geometry,Geometry)>();
 
@@ -1409,7 +1438,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asWKT")),
-                            new SWRLVariableArgument(new RDFVariable("?FEATURE")),
+                            new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                             new SWRLVariableArgument(new RDFVariable("?WKT")))
                     }
                 }
@@ -1453,7 +1482,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             new SWRLDataPropertyAtom(
                                 new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asGML")),
-                                new SWRLVariableArgument(new RDFVariable("?FEATURE")),
+                                new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                                 new SWRLVariableArgument(new RDFVariable("?GML")))
                         }
                     }
@@ -1473,9 +1502,11 @@ namespace OWLSharp.Extensions.GEO
                         RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
                         Geometry wgs84Geometry = WKTReader.Read(inferenceLiteral.Value);
                         wgs84Geometry.SRID = 4326;
+                        wgs84Geometry.UserData = inferenceAxiom.IndividualExpression.GetIRI().ToString();
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
                         Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        lazGeometry.UserData = inferenceAxiom.IndividualExpression.GetIRI().ToString();
 
                         secondaryGeometries.Add((wgs84Geometry, lazGeometry));
                     }
@@ -1489,9 +1520,11 @@ namespace OWLSharp.Extensions.GEO
                         RDFTypedLiteral inferenceLiteral = (RDFTypedLiteral)inferenceAxiom.Literal.GetLiteral();
                         Geometry wgs84Geometry = GMLReader.Read(inferenceLiteral.Value);
                         wgs84Geometry.SRID = 4326;
+                        wgs84Geometry.UserData = inferenceAxiom.IndividualExpression.GetIRI().ToString();
 
                         //Project default geometry from WGS84 to Lambert Azimuthal
                         Geometry lazGeometry = RDFGeoConverter.GetLambertAzimuthalGeometryFromWGS84(wgs84Geometry);
+                        lazGeometry.UserData = inferenceAxiom.IndividualExpression.GetIRI().ToString();
 
                         secondaryGeometries.Add((wgs84Geometry, lazGeometry));
                     }

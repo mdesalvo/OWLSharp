@@ -117,7 +117,53 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Distance)
+        #region Tests (Analyzer)
+        [TestMethod]
+        public async Task ShouldThrowExceptionOnGettingSpatialFeatureBecauseNullFeatureUri()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await new OWLOntology().GetSpatialFeatureAsync(null));
+
+        [TestMethod]
+        public async Task ShouldGetSpatialPointFeatureAsync()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclarePointFeature(new RDFResource("ex:MilanFT"), new GEOPoint(new RDFResource("ex:MilanGM"), (9.188540, 45.464664)));
+            List<GEOEntity> geoEntities = await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanFT"));
+
+            Assert.IsNotNull(geoEntities);
+            Assert.IsTrue(geoEntities.Single() is GEOPoint geoPoint 
+                            && geoPoint.URI.Equals(new Uri("ex:MilanGM"))
+                            && string.Equals(geoPoint.ToWKT(), "POINT (9.18854 45.464664)"));
+            Assert.IsTrue((await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanGGGGFT"))).Count == 0);
+        }
+
+        [TestMethod]
+        public async Task ShouldGetSpatialLineFeatureAsync()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclareLineFeature(new RDFResource("ex:MilanFT"), new GEOLine(new RDFResource("ex:MilanGM"), [(9.188540, 45.464664), (9.198540, 45.474664)]));
+            List<GEOEntity> geoEntities = await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanFT"));
+
+            Assert.IsNotNull(geoEntities);
+            Assert.IsTrue(geoEntities.Single() is GEOLine geoLine 
+                            && geoLine.URI.Equals(new Uri("ex:MilanGM"))
+                            && string.Equals(geoLine.ToWKT(), "LINESTRING (9.18854 45.464664, 9.19854 45.474664)"));
+        }
+
+        [TestMethod]
+        public async Task ShouldGetSpatialAreaFeatureAsync()
+        {
+            OWLOntology ontology = new OWLOntology();
+            ontology.DeclareAreaFeature(new RDFResource("ex:MilanFT"), new GEOArea(new RDFResource("ex:MilanGM"), [(9.188540, 45.464664), (9.198540, 45.474664), (9.208540, 45.484664)]));
+            List<GEOEntity> geoEntities = await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanFT"));
+
+            Assert.IsNotNull(geoEntities);
+            Assert.IsTrue(geoEntities.Single() is GEOArea geoArea 
+                            && geoArea.URI.Equals(new Uri("ex:MilanGM"))
+                            && string.Equals(geoArea.ToWKT(), "POLYGON ((9.18854 45.464664, 9.19854 45.474664, 9.20854 45.484664, 9.18854 45.464664))"));
+        }
+        #endregion
+
+        #region Tests (Analyzer:Distance)
         [TestMethod]
         public async Task ShouldGetDistanceBetweenFeaturesAsync()
         {
@@ -274,7 +320,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Measure)
+        #region Tests (Analyzer:Measure)
         [TestMethod]
         public async Task ShouldGetLengthOfFeatureAsync()
         {
@@ -438,7 +484,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Centroid)
+        #region Tests (Analyzer:Centroid)
         [TestMethod]
         public async Task ShouldGetCentroidOfFeatureAsync()
         {
@@ -525,7 +571,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Boundary)
+        #region Tests (Analyzer:Boundary)
         [TestMethod]
         public async Task ShouldGetBoundaryOfFeatureAsync()
         {
@@ -612,7 +658,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Buffer)
+        #region Tests (Analyzer:Buffer)
         [TestMethod]
         public async Task ShouldGetBufferAroundFeatureAsync()
         {
@@ -699,7 +745,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:ConvexHull)
+        #region Tests (Analyzer:ConvexHull)
         [TestMethod]
         public async Task ShouldGetConvexHullOfFeatureAsync()
         {
@@ -785,7 +831,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Envelope)
+        #region Tests (Analyzer:Envelope)
         [TestMethod]
         public async Task ShouldGetEnvelopeOfFeatureAsync()
         {
@@ -871,7 +917,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
     
-        #region Tests (Engine:NearBy)
+        #region Tests (Analyzer:NearBy)
         [TestMethod]
         public async Task ShouldGetFeaturesNearByAsync()
         {
@@ -1020,7 +1066,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Direction)
+        #region Tests (Analyzer:Direction)
         [TestMethod]
         public async Task ShouldGetFeaturesNorthDirectionOfAsync()
         {
@@ -2382,7 +2428,7 @@ namespace OWLSharp.Test.Extensions.GEO
         }
         #endregion
 
-        #region Tests (Engine:Interaction)
+        #region Tests (Analyzer:Interaction)
         [TestMethod]
         public async Task ShouldGetFeaturesCrossedByAsync()
         {
