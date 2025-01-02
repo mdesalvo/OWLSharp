@@ -18,13 +18,26 @@ using System;
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// OWLException represents an exception thrown during manipulation of OWL2 ontologies
+    /// </summary>
+    [Serializable]
     public class OWLException : Exception
     {
         #region Ctors
+        /// <summary>
+        /// Throws an empty OWLException
+        /// </summary>
         public OWLException() { }
 
+        /// <summary>
+        /// Throws an OWLException with the given error message
+        /// </summary>
         public OWLException(string message) : base(message) { }
 
+        /// <summary>
+        /// Throws an OWLException with the given error message and root cause
+        /// </summary>
         public OWLException(string message, Exception innerException) : base(message, innerException) { }
         #endregion
     }
