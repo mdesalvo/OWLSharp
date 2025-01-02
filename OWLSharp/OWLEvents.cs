@@ -16,19 +16,28 @@ using System.Threading.Tasks;
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// OWLEvents represents a collector for events which may be subscribed in order to receive runtime notifications from library internals
+    /// </summary>
     public static class OWLEvents
     {
         #region OnInfo
+        /// <summary>
+        /// OnInfo represents an informative log event (e.g: reasoner or validator processes which are going to start or finish)
+        /// </summary>
         public static event OWLInfoEventHandler OnInfo = delegate { };
-		public delegate void OWLInfoEventHandler(string eventMessage);
-		internal static void RaiseInfo(string eventMessage)
+        public delegate void OWLInfoEventHandler(string eventMessage);
+        internal static void RaiseInfo(string eventMessage)
             => Parallel.Invoke(() => OnInfo(string.Concat(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"), ";INFO;", eventMessage)));
         #endregion
 
         #region OnWarning
+        /// <summary>
+        /// OnWarning represents a warning log event (e.g: detection of potential runtime ontology inconsistencies)
+        /// </summary>
         public static event OWLWarningEventHandler OnWarning = delegate { };
-		public delegate void OWLWarningEventHandler(string eventMessage);
-		internal static void RaiseWarning(string eventMessage)
+        public delegate void OWLWarningEventHandler(string eventMessage);
+        internal static void RaiseWarning(string eventMessage)
             => Parallel.Invoke(() => OnWarning(string.Concat(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"), ";WARNING;", eventMessage)));
         #endregion
     }
