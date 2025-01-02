@@ -25,8 +25,14 @@ using System;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLSerializer is responsible for handling automatic XML serialization/deserialization of ontologies
+    /// </summary>
     internal static class OWLSerializer
     {
+        /// <summary>
+        /// Gives the OWL2/XML string representation of the given ontology
+        /// </summary>
         internal static string SerializeOntology(OWLOntology ontology)
         {
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
@@ -83,6 +89,9 @@ namespace OWLSharp.Ontology
             }
         }
 
+        /// <summary>
+        /// Gives the ontology representation of the given OWL2/XML string
+        /// </summary>
         internal static OWLOntology DeserializeOntology(string ontology)
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
@@ -112,12 +121,15 @@ namespace OWLSharp.Ontology
                 }
             }
         }
-    
-		internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
+
+        /// <summary>
+        /// Gives the OWL2/XML string representation of the given T object
+        /// </summary>
+        internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
         {
             //Hide hard-coded .NET prefixes (e.g: xsi)
-			if (xmlSerializerNamespaces == null)
-            	xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            if (xmlSerializerNamespaces == null)
+                xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
             
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
@@ -138,6 +150,9 @@ namespace OWLSharp.Ontology
             }
         }
 
+        /// <summary>
+        /// Gives the T object representation of the given OWL2/XML string
+        /// </summary>
         internal static T DeserializeObject<T>(string objectToDeserialize) where T : class
         {
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
@@ -156,8 +171,11 @@ namespace OWLSharp.Ontology
                 }
             }
         }
-	}
+    }
 
+    /// <summary>
+    /// UTF8StringWriter is a StringWriter specialized for using UTF-8 encoding
+    /// </summary>
     internal class UTF8StringWriter : StringWriter
     {
         public override Encoding Encoding => Encoding.UTF8;
