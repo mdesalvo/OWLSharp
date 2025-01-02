@@ -143,7 +143,7 @@ namespace OWLSharp.Ontology
             return graph;
         }
         /// <summary>
-        /// Reifies the sub-annotation attached to this annotation into the corresponding set of axiom-based RDF triples (for internal purposes)
+        /// Reifies the nested sub-annotation of this annotation into the corresponding set of axiom-based RDF triples (for internal purposes)
         /// </summary>
         internal RDFGraph ToRDFGraphInternal(RDFResource axiomIRI)
         {
