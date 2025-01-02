@@ -19,16 +19,30 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLImport represents the IRI of a remote ontology declared for use by an ontology
+    /// </summary>
     [XmlRoot("Import")]
     public class OWLImport
     {
         #region Properties
+        /// <summary>
+        /// IRI of the remote ontology (e.g: http://xmlns.com/foaf/0.1/)
+        /// </summary>
         [XmlText(DataType="anyURI")]
         public string IRI { get; set; }
         #endregion
 
         #region Ctors
+        /// <summary>
+        /// Builds an empty ontology import (for internal serialization purposes)
+        /// </summary>
         internal OWLImport() { }
+
+        /// <summary>
+        /// Builds an ontology import from the given resource
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given resource is null or blank</exception>
         public OWLImport(RDFResource iri)
         {
             #region Guards
