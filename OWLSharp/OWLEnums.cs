@@ -16,15 +16,28 @@
 
 namespace OWLSharp
 {
+    /// <summary>
+    /// OWLEnums represents a collector for all the enumerations used by the "OWLSharp" namespace
+    /// </summary>
     public static class OWLEnums
     {
+        /// <summary>
+        /// OWLFormats represents an enumeration for supported OWL2 ontology serialization data formats
+        /// </summary>
+
         public enum OWLFormats
         {
+            /// <summary>
+            /// XML serialization (https://www.w3.org/TR/owl2-xml-serialization/)
+            /// </summary>
             OWL2XML = 1
         };
 
-		public enum OWLReasonerRules
-		{
+        /// <summary>
+        /// OWLReasonerRules represents an enumeration for OWL2 inference rules available to reasoners
+        /// </summary>
+        public enum OWLReasonerRules
+        {
             ClassAssertionEntailment = 1,
             DataPropertyDomainEntailment = 2,
             DifferentIndividualsEntailment = 3,
@@ -52,13 +65,10 @@ namespace OWLSharp
             TransitiveObjectPropertyEntailment = 25
         }
 
-		public enum OWLIssueSeverity
-		{
-			Warning = 1,
-			Error = 2
-		}
-
-		public enum OWLValidatorRules
+        /// <summary>
+        /// OWLValidatorRules represents an enumeration for OWL2 validator rules available to validators
+        /// </summary>
+        public enum OWLValidatorRules
 		{
 			AsymmetricObjectPropertyAnalysis = 1,
 			ClassAssertionAnalysis = 2,
@@ -90,5 +100,14 @@ namespace OWLSharp
             ThingNothingAnalysis = 28,
 			TopBottomAnalysis = 29
 		}
+
+        /// <summary>
+        /// OWLIssueSeverity represents an enumeration for supported types of validator rule's evidences
+        /// </summary>
+        public enum OWLIssueSeverity
+        {
+            Warning = 1,
+            Error = 2
+        }
     }
 }
