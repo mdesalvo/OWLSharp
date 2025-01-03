@@ -2906,7 +2906,7 @@ namespace OWLSharp.Ontology
                 });
 
         /// <summary>
-        /// Imports the given remote ontology into the ontology, respecting the eventual maximum timeout
+        /// Imports the given remote ontology into the ontology, respecting the eventual timeout
         /// </summary>
         /// <exception cref="OWLException">Thrown when the given ontologyIRI is null, or when something wrong happens during the process</exception>
         public Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds=20000)
@@ -2953,7 +2953,7 @@ namespace OWLSharp.Ontology
                 });
 
         /// <summary>
-        /// Tries to dereference every Import directive declared to the ontology, each respecting the eventual maximum timeout.
+        /// Tries to dereference every Import directive declared to the ontology, each respecting the eventual timeout
         /// </summary>
         public Task ResolveImportsAsync(int timeoutMilliseconds=20000)
             => Task.Run(async () =>
