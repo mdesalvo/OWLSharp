@@ -153,7 +153,7 @@ namespace OWLSharp.Ontology
         //Rules
 
         /// <summary>
-        /// SWRL rules expressing the business logic required for A-BOX inferencing processes
+        /// SWRL rules expressing the business logic required for custom A-BOX inferencing processes
         /// </summary>
         [XmlElement("DLSafeRule")]
         public List<SWRLRule> Rules { get; internal set; }
