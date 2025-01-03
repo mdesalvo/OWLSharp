@@ -108,7 +108,7 @@ namespace OWLSharp.Ontology
 
         #region Methods
         /// <summary>
-        /// Builds the OWL2/XML representation of the axiom
+        /// Lazily builds the OWL2/XML representation of the axiom
         /// </summary>
         public virtual string GetXML()
         {
