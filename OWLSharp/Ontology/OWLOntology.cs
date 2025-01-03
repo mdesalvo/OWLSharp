@@ -130,7 +130,7 @@ namespace OWLSharp.Ontology
         public List<OWLHasKey> KeyAxioms { get; internal set; }
 
         /// <summary>
-        /// Axioms stating behavioral, logical and connecting or describing relationships between A-BOX individuals
+        /// Axioms stating creational, logical and connecting or constraining relationships between A-BOX individuals
         /// </summary>
         [XmlElement(typeof(OWLSameIndividual), ElementName="SameIndividual")]
         [XmlElement(typeof(OWLDifferentIndividuals), ElementName="DifferentIndividuals")]
@@ -160,6 +160,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
+        /// <summary>
+        /// Builds an empty ontology
+        /// </summary>
         public OWLOntology()
         {
             Prefixes = new List<OWLPrefix>()
@@ -187,12 +190,18 @@ namespace OWLSharp.Ontology
             Rules = new List<SWRLRule>();
         }
 
+        /// <summary>
+        /// Builds an ontology having the given IRI and eventual version IRI
+        /// </summary>
         public OWLOntology(Uri ontologyIRI, Uri ontologyVersionIRI = null) : this()
         {
             IRI = ontologyIRI?.ToString();
             VersionIRI = ontologyVersionIRI?.ToString();
         }
 
+        /// <summary>
+        /// Clones the given ontology into a new instance having the same T-BOX, A-BOX, R-BOX
+        /// </summary>
         public OWLOntology(OWLOntology ontology)
         {
             IRI = ontology?.IRI;
@@ -225,12 +234,23 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Annotates the ontology with the given annotation
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given annotation is null</exception>
         public void Annotate(OWLAnnotation annotation)
             => Annotations.Add(annotation ?? throw new OWLException("Cannot annotate ontology because given \"annotation\" parameter is null"));
 
+        /// <summary>
+        /// Declares the use of the given prefix to the ontology
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given prefix is null</exception>
         public void Prefix(OWLPrefix prefix)
             => Prefixes.Add(prefix ?? throw new OWLException("Cannot prefix ontology because given \"prefix\" parameter is null"));
 
+        /// <summary>
+        /// Builds a graph representation of the ontology, eventually including available inferences
+        /// </summary>
         public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
             => Task.Run(() =>
                 {
@@ -283,6 +303,10 @@ namespace OWLSharp.Ontology
                     return graph;
                 });
 
+        /// <summary>
+        /// Writes the ontology to a file in the given OWL format, eventually including available inferences
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given outputFile is null or whitespace</exception>
         public Task ToFileAsync(OWLEnums.OWLFormats owlFormat, string outputFile, bool includeInferences=true)
         {
             if (string.IsNullOrWhiteSpace(outputFile))
@@ -291,6 +315,10 @@ namespace OWLSharp.Ontology
             return ToStreamAsync(owlFormat, new FileStream(outputFile, FileMode.Create), includeInferences);
         }
 
+        /// <summary>
+        /// Writes the ontology to a stream in the given OWL format, eventually including available inferences
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given outputStream is null, or when something wrong happens during the process</exception>
         public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream, bool includeInferences=true)
             => Task.Run(() =>
                 {
@@ -331,6 +359,12 @@ namespace OWLSharp.Ontology
                     }
                 });
 
+        /// <summary>
+        /// Builds an ontology representation of the given graph by reconstructing the detected entities, axioms and rules.<br/><br/>
+        /// It is worth noting that this process may not succeed at transforming 100% of lower-expressivity artifacts (RDF)<br/>
+        /// into equivalent higher-expressivity artifacts (OWL2) due to intrinsic differences between these KR frameworks.
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given graph is null</exception> 
         public static Task<OWLOntology> FromRDFGraphAsync(RDFGraph graph)
             => Task.Run(() =>
                 {
@@ -2831,6 +2865,10 @@ namespace OWLSharp.Ontology
                     return ontology;
                 });
 
+        /// <summary>
+        /// Reads an ontology from a file in the given OWL format
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given inputFile is null or whitespace, or when it does not exist</exception>
         public static Task<OWLOntology> FromFileAsync(OWLEnums.OWLFormats owlFormat, string inputFile)
         {
             if (string.IsNullOrWhiteSpace(inputFile))
@@ -2841,6 +2879,10 @@ namespace OWLSharp.Ontology
             return FromStreamAsync(owlFormat, new FileStream(inputFile, FileMode.Open));
         }
 
+        /// <summary>
+        /// Reads an ontology from a stream in the given OWL format
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given inputStream is null, or when something wrong happens during the process</exception>
         public static Task<OWLOntology> FromStreamAsync(OWLEnums.OWLFormats owlFormat, Stream inputStream)
             => Task.Run(() =>
                 {
