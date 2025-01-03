@@ -32,9 +32,9 @@ namespace OWLSharp.Ontology
     /// It is named by an IRI and may have an IRI representing its current version (being a software artifact).<br/><br/>
     /// It defines a set of axioms expressing:<br/>
     /// <list type="bullet">
-    /// <item>T-BOX: entities (classes) characterizing the domain, along with their relationships (properties)</item>
-    /// <item>A-BOX: facts (individuals, assertions) available from the real world in terms of T-BOX instances</item>
-    /// <item>R-BOX: business logic rules driving the discovery of inedited A-BOX knowledge (inferences)</item>
+    /// <item>T-BOX: entities (classes) characterizing the domain, along with their constraints and relationships (properties)</item>
+    /// <item>A-BOX: facts (assertions) available from the real world in terms of T-BOX instances (individuals)</item>
+    /// <item>R-BOX: business logic rules driving the materialization of inedited A-BOX knowledge (inferences)</item>
     /// </list>
     /// </summary>
     [XmlRoot("Ontology")]
@@ -74,7 +74,7 @@ namespace OWLSharp.Ontology
         //Axioms
 
         /// <summary>
-        /// Axioms stating the existence of ontology entities (like classes, properties and individuals)
+        /// Axioms stating the existence of ontology entities (like classes, datatypes, properties, individuals)
         /// </summary>
         [XmlElement("Declaration")]
         public List<OWLDeclaration> DeclarationAxioms { get; internal set; }
@@ -88,6 +88,9 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLDisjointUnion), ElementName="DisjointUnion")]
         public List<OWLClassAxiom> ClassAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating hierarchical or set-theory relationships between T-BOX individual-connecting properties
+        /// </summary>
         [XmlElement(typeof(OWLSubObjectPropertyOf), ElementName="SubObjectPropertyOf")]
         [XmlElement(typeof(OWLEquivalentObjectProperties), ElementName="EquivalentObjectProperties")]
         [XmlElement(typeof(OWLDisjointObjectProperties), ElementName="DisjointObjectProperties")]
@@ -103,6 +106,9 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLTransitiveObjectProperty), ElementName="TransitiveObjectProperty")]
         public List<OWLObjectPropertyAxiom> ObjectPropertyAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating hierarchical or set-theory relationships between T-BOX individual-describing properties
+        /// </summary>
         [XmlElement(typeof(OWLSubDataPropertyOf), ElementName="SubDataPropertyOf")]
         [XmlElement(typeof(OWLEquivalentDataProperties), ElementName="EquivalentDataProperties")]
         [XmlElement(typeof(OWLDisjointDataProperties), ElementName="DisjointDataProperties")]
@@ -111,12 +117,21 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLFunctionalDataProperty), ElementName="FunctionalDataProperty")]
         public List<OWLDataPropertyAxiom> DataPropertyAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating the definition of a non-standard datatype used inside the ontology
+        /// </summary>
         [XmlElement(ElementName="DatatypeDefinition")]
         public List<OWLDatatypeDefinition> DatatypeDefinitionAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating the properties whose values will unambiguously identify the individuals of specific T-BOX classes
+        /// </summary>
         [XmlElement(ElementName="HasKey")]
         public List<OWLHasKey> KeyAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating behavioral, logical and connecting or describing relationships between A-BOX individuals
+        /// </summary>
         [XmlElement(typeof(OWLSameIndividual), ElementName="SameIndividual")]
         [XmlElement(typeof(OWLDifferentIndividuals), ElementName="DifferentIndividuals")]
         [XmlElement(typeof(OWLClassAssertion), ElementName="ClassAssertion")]
@@ -126,6 +141,9 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLNegativeDataPropertyAssertion), ElementName="NegativeDataPropertyAssertion")]
         public List<OWLAssertionAxiom> AssertionAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating annotations describing any kind of domain entity (without participation to inference processes)
+        /// </summary>
         [XmlElement(typeof(OWLAnnotationAssertion), ElementName="AnnotationAssertion")]
         [XmlElement(typeof(OWLSubAnnotationPropertyOf), ElementName="SubAnnotationPropertyOf")]
         [XmlElement(typeof(OWLAnnotationPropertyDomain), ElementName="AnnotationPropertyDomain")]
@@ -134,6 +152,9 @@ namespace OWLSharp.Ontology
 
         //Rules
 
+        /// <summary>
+        /// SWRL rules expressing the business logic required for A-BOX inferencing processes
+        /// </summary>
         [XmlElement("DLSafeRule")]
         public List<SWRLRule> Rules { get; internal set; }
         #endregion
