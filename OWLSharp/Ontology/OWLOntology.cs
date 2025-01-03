@@ -27,6 +27,16 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
+    /// <summary>
+    /// OWLOntology represents an OWL2 formalization of the knowledge describing an application domain.<br/><br/>
+    /// It is named by an IRI and may have an IRI representing its current version (being a software artifact).<br/><br/>
+    /// It defines a set of axioms expressing:<br/>
+    /// <list type="bullet">
+    /// <item>T-BOX: entities (classes) characterizing the domain, along with their relationships (properties)</item>
+    /// <item>A-BOX: facts (individuals, assertions) available from the real world in terms of T-BOX instances</item>
+    /// <item>R-BOX: business logic rules driving the discovery of inedited A-BOX knowledge (inferences)</item>
+    /// </list>
+    /// </summary>
     [XmlRoot("Ontology")]
     public class OWLOntology
     {
