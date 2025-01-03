@@ -66,11 +66,11 @@ namespace OWLSharp.Ontology
                 RDFQueryEngine.AddColumn(atomResult, rightArgumentString);
 
             //Extract annotation property assertions of the atom predicate
-			List<OWLAnnotationAssertion> annAsns = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
+            List<OWLAnnotationAssertion> annAsns = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
             List<OWLAnnotationAssertion> atomPredicateAssertions = OWLAnnotationAxiomHelper.SelectAnnotationAssertionsByAPEX(annAsns, (OWLAnnotationProperty)Predicate);
             if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
                 atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.ValueLiteral?.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()) ?? false)
-																 .ToList();
+                                                                 .ToList();
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
@@ -134,16 +134,16 @@ namespace OWLSharp.Ontology
                 if (leftArgumentValue is RDFResource leftArgumentValueResource
                      && rightArgumentValue is RDFLiteral rightArgumentValueLiteral)
                 {
-					//Create the inference
+                    //Create the inference
                     OWLAnnotationAssertion inference = new OWLAnnotationAssertion(
-						(OWLAnnotationProperty)Predicate,
+                        (OWLAnnotationProperty)Predicate,
                         leftArgumentValueResource,
                         new OWLLiteral(rightArgumentValueLiteral)) 
-						{ 
-							IsInference=true 
-						};
-					inference.GetXML();
-					inferences.Add(new OWLInference(annotationPropertyAtomString, inference));
+                        { 
+                            IsInference=true 
+                        };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(annotationPropertyAtomString, inference));
                 }
             }
 

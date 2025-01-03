@@ -104,9 +104,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
   <EquivalentDataProperties>
     <Annotation>
-		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		<Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
     <DataProperty abbreviatedIRI=""foaf:title"" />
   </EquivalentDataProperties>
@@ -117,10 +117,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLEquivalentDataProperties djDtProps
                             && string.Equals(djDtProps.DataProperties[0].IRI, "http://xmlns.com/foaf/0.1/age")
                             && string.Equals(djDtProps.DataProperties[1].AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:title"));
-			Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLEquivalentDataProperties djDtProps1
-							&& string.Equals(djDtProps1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLEquivalentDataProperties djDtProps1
+                            && string.Equals(djDtProps1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]

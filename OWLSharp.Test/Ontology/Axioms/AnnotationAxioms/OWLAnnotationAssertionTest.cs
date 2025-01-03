@@ -332,14 +332,14 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(annAsn.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertAnnotationIRIAssertionToGraph()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj"));
-			RDFGraph graph = annotationAssertion.ToRDFGraph();
+            RDFGraph graph = annotationAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 2);
@@ -347,7 +347,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.RDFS.COMMENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertAnnotationLiteralAssertionToGraph()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
@@ -362,26 +362,26 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.RDFS.COMMENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertAnnotationIRIAssertionWithAnnotationToGraph()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj"))
-			{
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
             };
-			RDFGraph graph = annotationAssertion.ToRDFGraph();
+            RDFGraph graph = annotationAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 8);
             Assert.IsTrue(graph[new RDFResource("ex:Subj"), RDFVocabulary.RDFS.COMMENT, new RDFResource("ex:Obj"), null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.RDFS.COMMENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			//Annotations
-			Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            //Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:Subj"), null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.COMMENT, null].TriplesCount == 1);
@@ -389,14 +389,14 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertAnnotationLiteralAssertionWithAnnotationToGraph()
         {
             OWLAnnotationAssertion annotationAssertion = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new OWLLiteral(new RDFPlainLiteral("hello", "en--ltr")))
-			{
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
@@ -407,8 +407,8 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph.TriplesCount == 8);
             Assert.IsTrue(graph[new RDFResource("ex:Subj"), RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("hello", "en--ltr")].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.RDFS.COMMENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			//Annotations
-			Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            //Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:Subj"), null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.COMMENT, null].TriplesCount == 1);

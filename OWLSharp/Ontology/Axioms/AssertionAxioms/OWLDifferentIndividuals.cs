@@ -55,40 +55,40 @@ namespace OWLSharp.Ontology
 
             //differentFrom
             if (IndividualExpressions.Count == 2)
-			{
-				RDFResource leftIdvExpressionIRI = IndividualExpressions[0].GetIRI();
-				RDFResource rightIdvExpressionIRI = IndividualExpressions[1].GetIRI();
-				graph = graph.UnionWith(IndividualExpressions[0].ToRDFGraph(leftIdvExpressionIRI))
-							 .UnionWith(IndividualExpressions[1].ToRDFGraph(rightIdvExpressionIRI));
+            {
+                RDFResource leftIdvExpressionIRI = IndividualExpressions[0].GetIRI();
+                RDFResource rightIdvExpressionIRI = IndividualExpressions[1].GetIRI();
+                graph = graph.UnionWith(IndividualExpressions[0].ToRDFGraph(leftIdvExpressionIRI))
+                             .UnionWith(IndividualExpressions[1].ToRDFGraph(rightIdvExpressionIRI));
 
-				//Axiom Triple
+                //Axiom Triple
                 RDFTriple axiomTriple = new RDFTriple(leftIdvExpressionIRI, RDFVocabulary.OWL.DIFFERENT_FROM, rightIdvExpressionIRI);
                 graph.AddTriple(axiomTriple);
 
                 //Annotations
                 foreach (OWLAnnotation annotation in Annotations)
                     graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
-			}
+            }
 
-			//AllDifferent
-			else
-			{
-				RDFResource allDifferentIRI = new RDFResource(); 
-				RDFCollection differentIndividualsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
-				foreach (OWLIndividualExpression idvExpression in IndividualExpressions)
-				{
-					RDFResource idvExpressionIRI = idvExpression.GetIRI();
-					differentIndividualsCollection.AddItem(idvExpressionIRI);
-					graph = graph.UnionWith(idvExpression.ToRDFGraph(idvExpressionIRI));
-				}
-				graph.AddCollection(differentIndividualsCollection);
-				graph.AddTriple(new RDFTriple(allDifferentIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DIFFERENT));
-				graph.AddTriple(new RDFTriple(allDifferentIRI, RDFVocabulary.OWL.DISTINCT_MEMBERS, differentIndividualsCollection.ReificationSubject));
+            //AllDifferent
+            else
+            {
+                RDFResource allDifferentIRI = new RDFResource(); 
+                RDFCollection differentIndividualsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+                foreach (OWLIndividualExpression idvExpression in IndividualExpressions)
+                {
+                    RDFResource idvExpressionIRI = idvExpression.GetIRI();
+                    differentIndividualsCollection.AddItem(idvExpressionIRI);
+                    graph = graph.UnionWith(idvExpression.ToRDFGraph(idvExpressionIRI));
+                }
+                graph.AddCollection(differentIndividualsCollection);
+                graph.AddTriple(new RDFTriple(allDifferentIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DIFFERENT));
+                graph.AddTriple(new RDFTriple(allDifferentIRI, RDFVocabulary.OWL.DISTINCT_MEMBERS, differentIndividualsCollection.ReificationSubject));
 
-				//Annotations
-				foreach (OWLAnnotation annotation in Annotations)
-					graph = graph.UnionWith(annotation.ToRDFGraphInternal(allDifferentIRI));
-			}
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraphInternal(allDifferentIRI));
+            }
 
             return graph;
         }

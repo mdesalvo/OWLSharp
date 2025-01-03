@@ -72,21 +72,21 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(anonIdv.NodeID, "AnonIdv"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertAnonymousIndividualToGraph()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-			RDFGraph graph = anonIdv.ToRDFGraph();
+            RDFGraph graph = anonIdv.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 0);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertAnonymousIndividualToResource()
         {
             OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual("AnonIdv");
-			RDFResource representative = anonIdv.GetIRI();
+            RDFResource representative = anonIdv.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(new RDFResource($"bnode:{anonIdv.NodeID}")));

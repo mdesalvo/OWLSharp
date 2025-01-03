@@ -28,8 +28,8 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateSubObjectPropertyOf()
         {
-			OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
-				new OWLObjectProperty(new RDFResource("ex:objPropA")),
+            OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(
+                new OWLObjectProperty(new RDFResource("ex:objPropA")),
                 new OWLObjectProperty(new RDFResource("ex:objPropB")));
 
             Assert.IsNotNull(subObjectPropertyOf);
@@ -452,9 +452,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <SubObjectPropertyOf>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectProperty IRI=""ex:objPropA"" />
     <ObjectProperty IRI=""ex:objPropB"" />
   </SubObjectPropertyOf>
@@ -467,10 +467,10 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(subObjProp.IRI, "ex:objPropA")
                             && subObjPropOf.SuperObjectPropertyExpression is OWLObjectProperty superObjProp
                             && string.Equals(superObjProp.IRI, "ex:objPropB"));
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf subObjPropOf1
-							&& string.Equals(subObjPropOf1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf subObjPropOf1
+                            && string.Equals(subObjPropOf1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]
@@ -486,9 +486,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <SubObjectPropertyOf>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectPropertyChain>
       <ObjectProperty IRI=""ex:hasFather"" />
       <ObjectProperty IRI=""ex:hasBrother"" />
@@ -621,7 +621,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[new RDFResource("ex:hasUncle"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertSubObjectPropertyOfWithAnnotationToGraph()
         {
             OWLSubObjectPropertyOf subObjectPropertyOf = new OWLSubObjectPropertyOf(

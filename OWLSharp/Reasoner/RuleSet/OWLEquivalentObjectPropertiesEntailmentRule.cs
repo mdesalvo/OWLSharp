@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,15 +25,15 @@ namespace OWLSharp.Reasoner
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-			//Temporary working variables
-			OWLIndividualExpression swapIdvExpr;
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+            //Temporary working variables
+            OWLIndividualExpression swapIdvExpr;
+            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
-            															 .Select(ax => (OWLObjectProperty)ax.Expression))
-			{
-				//EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
-				List<OWLObjectPropertyExpression> equivObjectPropertyExprs = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
+                                                                         .Select(ax => (OWLObjectProperty)ax.Expression))
+            {
+                //EquivalentObjectProperties(P1,P2) ^ EquivalentObjectProperties(P2,P3) -> EquivalentObjectProperties(P1,P3)
+                List<OWLObjectPropertyExpression> equivObjectPropertyExprs = ontology.GetEquivalentObjectProperties(declaredObjectProperty);
                 if (equivObjectPropertyExprs.Count == 0)
                     continue;
                 foreach (OWLObjectProperty equivalentObjectProperty in equivObjectPropertyExprs.OfType<OWLObjectProperty>())
@@ -49,9 +49,9 @@ namespace OWLSharp.Reasoner
                     inferences.Add(new OWLInference(rulename, inference));
                 }
 
-				//EquivalentObjectProperties(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
-				List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty);
-				for (int i = 0; i < declaredObjectPropertyAsns.Count; i++)
+                //EquivalentObjectProperties(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
+                List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty);
+                for (int i = 0; i < declaredObjectPropertyAsns.Count; i++)
                     if (declaredObjectPropertyAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                     {   
                         swapIdvExpr = declaredObjectPropertyAsns[i].SourceIndividualExpression;
@@ -59,8 +59,8 @@ namespace OWLSharp.Reasoner
                         declaredObjectPropertyAsns[i].TargetIndividualExpression = swapIdvExpr;
                         declaredObjectPropertyAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
                     }
-				foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in OWLAxiomHelper.RemoveDuplicates(declaredObjectPropertyAsns))
-					foreach (OWLObjectPropertyExpression equivObjectPropertyExpr in equivObjectPropertyExprs)
+                foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in OWLAxiomHelper.RemoveDuplicates(declaredObjectPropertyAsns))
+                    foreach (OWLObjectPropertyExpression equivObjectPropertyExpr in equivObjectPropertyExprs)
                     {
                         if (equivObjectPropertyExpr is OWLObjectInverseOf objInvOf)
                         {
@@ -75,8 +75,8 @@ namespace OWLSharp.Reasoner
                             inferences.Add(new OWLInference(rulename, inference));
                         }
                     }
-			}
-			
+            }
+            
             return inferences;
         }
     }

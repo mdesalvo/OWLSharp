@@ -63,19 +63,19 @@ namespace OWLSharp.Ontology
         }
 
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
-		{
-			RDFGraph graph = new RDFGraph();
+        {
+            RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
             RDFCollection dataOneOfCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Literal);
-			foreach (OWLLiteral dataOneOfLiteral in Literals)
-				dataOneOfCollection.AddItem(dataOneOfLiteral.GetLiteral());
-			graph.AddCollection(dataOneOfCollection);
+            foreach (OWLLiteral dataOneOfLiteral in Literals)
+                dataOneOfCollection.AddItem(dataOneOfLiteral.GetLiteral());
+            graph.AddCollection(dataOneOfCollection);
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ONE_OF, dataOneOfCollection.ReificationSubject));
 
             return graph;
-		}
-		#endregion
+        }
+        #endregion
     }
 }

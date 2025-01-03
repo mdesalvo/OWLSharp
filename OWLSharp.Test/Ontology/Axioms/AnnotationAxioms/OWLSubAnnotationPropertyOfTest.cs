@@ -195,7 +195,7 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(subannProp.SuperAnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/creator")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertSubAnnotationPropertyOfToGraph()
         {
             OWLSubAnnotationPropertyOf subAnnotationPropertyOf = new OWLSubAnnotationPropertyOf(
@@ -210,13 +210,13 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertSubAnnotationPropertyOfWithAnnotationToGraph()
         {
             OWLSubAnnotationPropertyOf subAnnotationPropertyOf = new OWLSubAnnotationPropertyOf(
                 new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE),
                 new OWLAnnotationProperty(RDFVocabulary.DC.TITLE))
-			{
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
@@ -228,7 +228,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			//Annotations
+            //Annotations
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.DC.DCTERMS.TITLE, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null].TriplesCount == 1);

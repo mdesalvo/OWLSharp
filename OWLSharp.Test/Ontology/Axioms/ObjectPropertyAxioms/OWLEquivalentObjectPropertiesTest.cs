@@ -103,9 +103,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <EquivalentObjectProperties>
     <Annotation>
-		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		<Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" />
   </EquivalentObjectProperties>
@@ -116,10 +116,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLEquivalentObjectProperties djObjProps
                             && string.Equals(((OWLObjectProperty)djObjProps.ObjectPropertyExpressions[0]).IRI, "http://xmlns.com/foaf/0.1/knows")
                             && string.Equals(((OWLObjectProperty)djObjProps.ObjectPropertyExpressions[1]).IRI, "http://xmlns.com/foaf/0.1/member"));
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLEquivalentObjectProperties djDtProps1
-							&& string.Equals(djDtProps1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLEquivalentObjectProperties djDtProps1
+                            && string.Equals(djDtProps1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]
@@ -155,12 +155,12 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.FOAF.MEMBER, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.ACCOUNT, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvert2EquivalentObjectPropertiesWithAnnotationToGraph()
         {
             OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties(
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLObjectProperty(RDFVocabulary.FOAF.MEMBER)])
-			{
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
@@ -172,7 +172,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.MEMBER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.MEMBER, null].TriplesCount == 1);
-			//Annotations
+            //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
@@ -181,14 +181,14 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvert3EquivalentObjectPropertiesWithAnnotationToGraph()
         {
             OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties(
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
                  new OWLObjectProperty(RDFVocabulary.FOAF.MEMBER),
                  new OWLObjectProperty(RDFVocabulary.FOAF.ACCOUNT)])
-			{
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
@@ -203,14 +203,14 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.MEMBER, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.ACCOUNT, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.MEMBER, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, RDFVocabulary.FOAF.ACCOUNT, null].TriplesCount == 1);
-			//Annotations
+            //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 3);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.MEMBER, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.MEMBER, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.EQUIVALENT_PROPERTY, null].TriplesCount == 3);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.MEMBER, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.ACCOUNT, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.ACCOUNT, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 3);
         }
         #endregion

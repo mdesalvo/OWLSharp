@@ -30,18 +30,18 @@ namespace OWLSharp.Test.Ontology
         {
             OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
 
             Assert.IsNotNull(differentIndividuals);
             Assert.IsNotNull(differentIndividuals.IndividualExpressions);
-			Assert.IsTrue(differentIndividuals.IndividualExpressions.Count == 3);
+            Assert.IsTrue(differentIndividuals.IndividualExpressions.Count == 3);
             Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Alice")));
-			Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Bob")));
-			Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Carl")));
+                            && string.Equals(nidv.IRI, "ex:Alice")));
+            Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Bob")));
+            Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Carl")));
         }
 
         [TestMethod]
@@ -61,50 +61,50 @@ namespace OWLSharp.Test.Ontology
         {
             OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
             string serializedXML = OWLSerializer.SerializeObject(differentIndividuals);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></DifferentIndividuals>"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldSerializeDifferentIndividualsViaOntology()
         {
-			OWLOntology ontology = new OWLOntology();
-			ontology.AssertionAxioms.Add(
-				new OWLDifferentIndividuals(
+            OWLOntology ontology = new OWLOntology();
+            ontology.AssertionAxioms.Add(
+                new OWLDifferentIndividuals(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLAnonymousIndividual("AnonIdv") ]));
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLAnonymousIndividual("AnonIdv") ]));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></DifferentIndividuals></Ontology>"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeserializeNamedIndividuals()
         {
             OWLDifferentIndividuals differentIndividuals = OWLSerializer.DeserializeObject<OWLDifferentIndividuals>(
 @"<DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></DifferentIndividuals>");
         
-			Assert.IsNotNull(differentIndividuals);
+            Assert.IsNotNull(differentIndividuals);
             Assert.IsNotNull(differentIndividuals.IndividualExpressions);
-			Assert.IsTrue(differentIndividuals.IndividualExpressions.Count == 3);
+            Assert.IsTrue(differentIndividuals.IndividualExpressions.Count == 3);
             Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Alice")));
-			Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Bob")));
-			Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Carl")));
-		}
+                            && string.Equals(nidv.IRI, "ex:Alice")));
+            Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Bob")));
+            Assert.IsTrue(differentIndividuals.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Carl")));
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeserializeNamedIndividualsViaOntology()
         {
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <Ontology>
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -114,9 +114,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <DifferentIndividuals>
     <Annotation>
-		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		<Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <NamedIndividual IRI=""ex:Alice"" />
     <NamedIndividual IRI=""ex:Bob"" />
     <AnonymousIndividual nodeID=""AnonIdv"" />
@@ -124,28 +124,28 @@ namespace OWLSharp.Test.Ontology
 </Ontology>
 ");
 
-			Assert.IsNotNull(ontology);
+            Assert.IsNotNull(ontology);
             Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDifferentIndividuals diffAsn
                             && diffAsn.IndividualExpressions.Count == 3
-							&& diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
-								&& string.Equals(nidv.IRI, "ex:Alice"))
-							&& diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
-								&& string.Equals(nidv.IRI, "ex:Bob"))
-							&& diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv 
-								&& string.Equals(anonidv.NodeID, "AnonIdv")));
-			Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDifferentIndividuals diffAsn1
-							&& string.Equals(diffAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+                            && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                                && string.Equals(nidv.IRI, "ex:Alice"))
+                            && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                                && string.Equals(nidv.IRI, "ex:Bob"))
+                            && diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv 
+                                && string.Equals(anonidv.NodeID, "AnonIdv")));
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDifferentIndividuals diffAsn1
+                            && string.Equals(diffAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvert2DifferentIndividualsToGraph()
         {
             OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")) ]);
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")) ]);
             RDFGraph graph = differentIndividuals.ToRDFGraph();
 
             Assert.IsNotNull(graph);
@@ -160,8 +160,8 @@ namespace OWLSharp.Test.Ontology
         {
             OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
             RDFGraph graph = differentIndividuals.ToRDFGraph();
 
             Assert.IsNotNull(graph);
@@ -178,13 +178,13 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[new RDFResource("ex:Carl"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvert2DifferentIndividualsWithAnnotationToGraph()
         {
             OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")) ])
-			{
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")) ])
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
@@ -196,7 +196,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[new RDFResource("ex:Alice"), RDFVocabulary.OWL.DIFFERENT_FROM, new RDFResource("ex:Bob"), null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:Alice"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
-			//Annotations
+            //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:Alice"), null].TriplesCount == 1);
@@ -210,9 +210,9 @@ namespace OWLSharp.Test.Ontology
         {
             OWLDifferentIndividuals differentIndividuals = new OWLDifferentIndividuals(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ])
-			{
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLNamedIndividual(new RDFResource("ex:Carl")) ])
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
@@ -231,7 +231,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[new RDFResource("ex:Alice"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:Carl"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
-			//Annotations
+            //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 0);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, null, null].TriplesCount == 0);

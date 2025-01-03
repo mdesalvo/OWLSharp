@@ -54,14 +54,14 @@ namespace OWLSharp.Ontology
         {
             RDFGraph graph = new RDFGraph();
 
-			RDFResource sidvExpressionIRI = SourceIndividualExpression.GetIRI();
-			RDFResource tidvExpressionIRI = TargetIndividualExpression.GetIRI();
+            RDFResource sidvExpressionIRI = SourceIndividualExpression.GetIRI();
+            RDFResource tidvExpressionIRI = TargetIndividualExpression.GetIRI();
             RDFTriple axiomTriple;
 
-			//ObjectInverseOf
-			if (ObjectPropertyExpression is OWLObjectInverseOf objectInverseOf)
-			{
-				RDFResource objectInverseOfIRI = objectInverseOf.ObjectProperty.GetIRI();
+            //ObjectInverseOf
+            if (ObjectPropertyExpression is OWLObjectInverseOf objectInverseOf)
+            {
+                RDFResource objectInverseOfIRI = objectInverseOf.ObjectProperty.GetIRI();
                 graph = graph.UnionWith(objectInverseOf.ObjectProperty.ToRDFGraph())
                              .UnionWith(SourceIndividualExpression.ToRDFGraph(sidvExpressionIRI))
                              .UnionWith(TargetIndividualExpression.ToRDFGraph(tidvExpressionIRI));
@@ -69,11 +69,11 @@ namespace OWLSharp.Ontology
                 //Axiom Triple
                 axiomTriple = new RDFTriple(tidvExpressionIRI, objectInverseOfIRI, sidvExpressionIRI);
                 graph.AddTriple(axiomTriple);
-			}
+            }
 
-			//ObjectProperty
-			else
-			{
+            //ObjectProperty
+            else
+            {
                 RDFResource objPropExpressionIRI = ObjectPropertyExpression.GetIRI();
                 graph = graph.UnionWith(ObjectPropertyExpression.ToRDFGraph(objPropExpressionIRI))
                              .UnionWith(SourceIndividualExpression.ToRDFGraph(sidvExpressionIRI))
@@ -82,11 +82,11 @@ namespace OWLSharp.Ontology
                 //Axiom Triple
                 axiomTriple = new RDFTriple(sidvExpressionIRI, objPropExpressionIRI, tidvExpressionIRI);
                 graph.AddTriple(axiomTriple);
-			}
+            }
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

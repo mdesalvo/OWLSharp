@@ -33,10 +33,10 @@ namespace OWLSharp.Ontology
 
         [XmlText(DataType="string")]
         public string Value { get; set; } = string.Empty;
-		#endregion
+        #endregion
 
-		#region Ctors
-		internal OWLLiteral() { }
+        #region Ctors
+        internal OWLLiteral() { }
         public OWLLiteral(RDFLiteral literal)
         {
             Value = literal?.Value ?? string.Empty;
@@ -56,12 +56,12 @@ namespace OWLSharp.Ontology
         }
 
         public RDFLiteral GetLiteral()
-		{
-			if (DatatypeIRI != null)
-				return new RDFTypedLiteral(Value, RDFDatatypeRegister.GetDatatype(DatatypeIRI));
-			else
-				return new RDFPlainLiteral(Value, Language);
-		}
-		#endregion
+        {
+            if (DatatypeIRI != null)
+                return new RDFTypedLiteral(Value, RDFDatatypeRegister.GetDatatype(DatatypeIRI));
+            else
+                return new RDFPlainLiteral(Value, Language);
+        }
+        #endregion
     }
 }

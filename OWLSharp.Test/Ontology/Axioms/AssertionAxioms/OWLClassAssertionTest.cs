@@ -140,9 +140,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <ClassAssertion>
     <Annotation>
-		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		<Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
     <NamedIndividual IRI=""ex:Bob"" />
   </ClassAssertion>
@@ -153,46 +153,46 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLClassAssertion clsAsn
                             && string.Equals(((OWLClass)clsAsn.ClassExpression).IRI, "http://xmlns.com/foaf/0.1/Agent")
                             && string.Equals(((OWLNamedIndividual)clsAsn.IndividualExpression).IRI, "ex:Bob"));
-			Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLClassAssertion clsAsn1
-							&& string.Equals(clsAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(clsAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(clsAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLClassAssertion clsAsn1
+                            && string.Equals(clsAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(clsAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(clsAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertClassAssertionToGraph()
         {
             OWLClassAssertion classAssertion = new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")));
-			RDFGraph graph = classAssertion.ToRDFGraph();
+            RDFGraph graph = classAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 3);
             Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertClassAssertionWithAnnotationToGraph()
         {
             OWLClassAssertion classAssertion = new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")))
-			{
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
             };
-			RDFGraph graph = classAssertion.ToRDFGraph();
+            RDFGraph graph = classAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 9);
             Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-			//Annotations
+            //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:Bob"), null].TriplesCount == 1);

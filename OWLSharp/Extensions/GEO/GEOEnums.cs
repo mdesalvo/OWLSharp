@@ -19,7 +19,7 @@ namespace OWLSharp.Extensions.GEO
     public static class GEOEnums
     {
         public enum GeoDirections
-		{
+        {
             North = 1,
             East = 2,
             South = 3,

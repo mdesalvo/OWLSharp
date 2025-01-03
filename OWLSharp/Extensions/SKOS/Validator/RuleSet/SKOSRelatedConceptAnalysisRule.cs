@@ -23,7 +23,7 @@ namespace OWLSharp.Extensions.SKOS
     internal class SKOSRelatedConceptAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis.ToString();
-		internal static readonly string rulesugg1A = "There should not be SKOS concepts having a clash in associative VS hierarchical relations (skos:related VS skos:broader)";
+        internal static readonly string rulesugg1A = "There should not be SKOS concepts having a clash in associative VS hierarchical relations (skos:related VS skos:broader)";
         internal static readonly string rulesugg1B = "There should not be SKOS concepts having a clash in associative VS hierarchical relations (skos:relatedMatch VS skos:broader)";
         internal static readonly string rulesugg2A = "There should not be SKOS concepts having a clash in associative VS hierarchical relations (skos:related VS skos:narrower)";
         internal static readonly string rulesugg2B = "There should not be SKOS concepts having a clash in associative VS hierarchical relations (skos:relatedMatch VS skos:narrower)";

@@ -63,7 +63,7 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.HAS_VALUE, Literal.GetLiteral()));
-			graph = graph.UnionWith(DataProperty.ToRDFGraph());
+            graph = graph.UnionWith(DataProperty.ToRDFGraph());
 
             return graph;
         }

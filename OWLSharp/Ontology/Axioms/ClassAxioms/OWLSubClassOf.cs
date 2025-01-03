@@ -80,9 +80,9 @@ namespace OWLSharp.Ontology
         {
             RDFGraph graph = new RDFGraph();
             RDFResource subClassExpressionIRI = SubClassExpression.GetIRI();
-			RDFResource superClassExpressionIRI = SuperClassExpression.GetIRI();
-			graph = graph.UnionWith(SubClassExpression.ToRDFGraph(subClassExpressionIRI))
-						 .UnionWith(SuperClassExpression.ToRDFGraph(superClassExpressionIRI));
+            RDFResource superClassExpressionIRI = SuperClassExpression.GetIRI();
+            graph = graph.UnionWith(SubClassExpression.ToRDFGraph(subClassExpressionIRI))
+                         .UnionWith(SuperClassExpression.ToRDFGraph(superClassExpressionIRI));
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(subClassExpressionIRI, RDFVocabulary.RDFS.SUB_CLASS_OF, superClassExpressionIRI);
@@ -90,7 +90,7 @@ namespace OWLSharp.Ontology
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

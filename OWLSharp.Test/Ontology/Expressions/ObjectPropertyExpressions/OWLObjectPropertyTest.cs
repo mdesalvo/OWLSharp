@@ -109,43 +109,43 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(op.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/knows"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIObjectPropertyToGraph()
         {
             OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
-			RDFGraph graph = op.ToRDFGraph();
+            RDFGraph graph = op.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameObjectPropertyToGraph()
         {
             OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = op.ToRDFGraph();
+            RDFGraph graph = op.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIObjectPropertyToResource()
         {
             OWLObjectProperty op = new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS);
-			RDFResource representative = op.GetIRI();
+            RDFResource representative = op.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameObjectPropertyToResource()
         {
             OWLObjectProperty op = new OWLObjectProperty(new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = op.GetIRI();
+            RDFResource representative = op.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.KNOWS));

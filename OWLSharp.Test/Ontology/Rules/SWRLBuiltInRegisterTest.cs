@@ -28,8 +28,8 @@ namespace OWLSharp.Test.Ontology
     {
         #region Tests
         [TestMethod]
-		public void ShouldExcerciseFeaturesOfRegister()
-		{
+        public void ShouldExcerciseFeaturesOfRegister()
+        {
             bool Evaluator(DataRow datarow) => string.Equals(datarow["?VAR"].ToString(), "value");
 
             SWRLBuiltIn builtIn = new SWRLBuiltIn(
@@ -39,20 +39,20 @@ namespace OWLSharp.Test.Ontology
                 new SWRLIndividualArgument(new RDFResource("http://test.org/")),
                 new SWRLLiteralArgument(new RDFPlainLiteral("lit")));
 
-			SWRLBuiltInRegister.AddBuiltIn(builtIn);
-			SWRLBuiltInRegister.AddBuiltIn(builtIn); //This will not be added again, since we avoid duplicates
-			SWRLBuiltInRegister.AddBuiltIn(null); //This will not be added, since we avoid nulls
+            SWRLBuiltInRegister.AddBuiltIn(builtIn);
+            SWRLBuiltInRegister.AddBuiltIn(builtIn); //This will not be added again, since we avoid duplicates
+            SWRLBuiltInRegister.AddBuiltIn(null); //This will not be added, since we avoid nulls
 
-			Assert.IsTrue(SWRLBuiltInRegister.BuiltInsCount >= 1);
-			Assert.IsNotNull(SWRLBuiltInRegister.GetBuiltIn("http://www.w3.org/2003/11/swrl#exampleRegistered2"));
+            Assert.IsTrue(SWRLBuiltInRegister.BuiltInsCount >= 1);
+            Assert.IsNotNull(SWRLBuiltInRegister.GetBuiltIn("http://www.w3.org/2003/11/swrl#exampleRegistered2"));
             Assert.IsNull(SWRLBuiltInRegister.GetBuiltIn("http://www.w3.org/2003/11/swrl#exampleGTDFFR"));
             Assert.IsNull(SWRLBuiltInRegister.GetBuiltIn(null));
 
             int i=0;
-			IEnumerator<SWRLBuiltIn> builtins = SWRLBuiltInRegister.BuiltInsEnumerator;
-			while(builtins.MoveNext())
-				i++;
-			Assert.IsTrue(i >= 1);
+            IEnumerator<SWRLBuiltIn> builtins = SWRLBuiltInRegister.BuiltInsEnumerator;
+            while(builtins.MoveNext())
+                i++;
+            Assert.IsTrue(i >= 1);
         }
         #endregion
     }

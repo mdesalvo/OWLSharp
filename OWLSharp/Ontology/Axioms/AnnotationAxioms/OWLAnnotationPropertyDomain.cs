@@ -49,18 +49,18 @@ namespace OWLSharp.Ontology
         {
             RDFGraph graph = new RDFGraph();
 
-			string domainIRI = IRI;
+            string domainIRI = IRI;
             if (string.IsNullOrEmpty(domainIRI))
                 domainIRI = string.Concat(AbbreviatedIRI.Namespace, AbbreviatedIRI.Name);
             graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
 
-			//Axiom Triple
-			RDFTriple axiomTriple = new RDFTriple(AnnotationProperty.GetIRI(), RDFVocabulary.RDFS.DOMAIN, new RDFResource(domainIRI));
-			graph.AddTriple(axiomTriple);
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(AnnotationProperty.GetIRI(), RDFVocabulary.RDFS.DOMAIN, new RDFResource(domainIRI));
+            graph.AddTriple(axiomTriple);
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

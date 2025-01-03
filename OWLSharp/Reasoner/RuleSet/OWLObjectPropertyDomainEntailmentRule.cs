@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,14 +24,14 @@ namespace OWLSharp.Reasoner
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-			//Temporary working variables
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+            //Temporary working variables
+            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
-			//ObjectPropertyDomain(OP,C) ^ ObjectPropertyAssertion(OP, I1, I2) -> ClassAssertion(C,I1)
+            //ObjectPropertyDomain(OP,C) ^ ObjectPropertyAssertion(OP, I1, I2) -> ClassAssertion(C,I1)
             foreach (OWLObjectPropertyDomain objectPropertyDomain in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>())
-				foreach (OWLObjectPropertyAssertion objectPropertyAssertion in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, objectPropertyDomain.ObjectPropertyExpression))
-				{
-					OWLIndividualExpression opAsnSourceIdvExpr = objectPropertyAssertion.SourceIndividualExpression;
+                foreach (OWLObjectPropertyAssertion objectPropertyAssertion in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, objectPropertyDomain.ObjectPropertyExpression))
+                {
+                    OWLIndividualExpression opAsnSourceIdvExpr = objectPropertyAssertion.SourceIndividualExpression;
                     OWLIndividualExpression opAsnTargetIdvExpr = objectPropertyAssertion.TargetIndividualExpression;
 
                     //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
@@ -40,15 +40,15 @@ namespace OWLSharp.Reasoner
                         opAsnSourceIdvExpr = objectPropertyAssertion.TargetIndividualExpression;
                         opAsnTargetIdvExpr = objectPropertyAssertion.SourceIndividualExpression;
                     }
-	
-					//In case the object property domain works under inverse logic, we must swap source/target of the object assertion
-					if (objectPropertyDomain.ObjectPropertyExpression is OWLObjectInverseOf)
+    
+                    //In case the object property domain works under inverse logic, we must swap source/target of the object assertion
+                    if (objectPropertyDomain.ObjectPropertyExpression is OWLObjectInverseOf)
                     {
                         OWLClassAssertion inference = new OWLClassAssertion(objectPropertyDomain.ClassExpression) { IndividualExpression=opAsnTargetIdvExpr, IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
-                    }						
-					else
+                    }                        
+                    else
                     {
                         OWLClassAssertion inference = new OWLClassAssertion(objectPropertyDomain.ClassExpression) { IndividualExpression=opAsnSourceIdvExpr, IsInference=true };
                         inference.GetXML();

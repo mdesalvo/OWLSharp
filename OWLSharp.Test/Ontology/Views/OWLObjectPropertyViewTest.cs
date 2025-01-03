@@ -22,28 +22,28 @@ using RDFSharp.Model;
 namespace OWLSharp.Test.Ontology
 {
     [TestClass]
-	public class OWLObjectPropertyViewTest
-	{
-		private OWLOntology Ontology { get; set; }
-		private OWLObjectPropertyView KnowsView { get; set; }
-		private OWLObjectPropertyView FriendOfView { get; set; }
-		private OWLObjectPropertyView BestFriendOfView { get; set; }
+    public class OWLObjectPropertyViewTest
+    {
+        private OWLOntology Ontology { get; set; }
+        private OWLObjectPropertyView KnowsView { get; set; }
+        private OWLObjectPropertyView FriendOfView { get; set; }
+        private OWLObjectPropertyView BestFriendOfView { get; set; }
 
-		[TestInitialize]
-		public void Initialize()
-		{
-			Ontology = new OWLOntology() 
-			{
-				DeclarationAxioms = [
-					new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),
-					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows"))),
-					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
-					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:hasFriend"))),
-					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:bestFriendOf"))),
-					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:isFavoriteFriendOf"))),
-					new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:loves"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Valentine"))),
+        [TestInitialize]
+        public void Initialize()
+        {
+            Ontology = new OWLOntology() 
+            {
+                DeclarationAxioms = [
+                    new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:friendOf"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:hasFriend"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:bestFriendOf"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:isFavoriteFriendOf"))),
+                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:loves"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                	new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Valentine"))),
 					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
 					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
 				],

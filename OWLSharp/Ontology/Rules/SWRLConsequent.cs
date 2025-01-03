@@ -41,7 +41,7 @@ namespace OWLSharp.Ontology
             => Atoms = new List<SWRLAtom>();
         #endregion
 
-		#region Interfaces
+        #region Interfaces
         public override string ToString()
             => string.Join(" ^ ", Atoms);
         #endregion

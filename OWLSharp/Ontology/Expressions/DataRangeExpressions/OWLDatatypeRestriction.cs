@@ -64,8 +64,8 @@ namespace OWLSharp.Ontology
         }
 
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
-		{
-			RDFGraph graph = new RDFGraph();
+        {
+            RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE));
@@ -83,12 +83,12 @@ namespace OWLSharp.Ontology
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_DATATYPE, Datatype.GetIRI()));
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.WITH_RESTRICTIONS, facetsRestrictions.ReificationSubject));
             }
-			else
+            else
                 graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.EQUIVALENT_CLASS, Datatype.GetIRI()));
 
             return graph;
-		}
-		#endregion
+        }
+        #endregion
     }
 
     [XmlRoot("FacetRestriction")]

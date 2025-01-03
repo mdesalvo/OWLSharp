@@ -78,8 +78,8 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
-		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
-		{
+        internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
+        {
             RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
@@ -96,6 +96,6 @@ namespace OWLSharp.Ontology
 
             return graph;
         }
-		#endregion
+        #endregion
     }
 }

@@ -24,7 +24,7 @@ namespace OWLSharp.Test.Ontology
     public class OWLHasKeyHelperTest
     {
         #region Tests
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeclareHasKey()
         {
             OWLOntology ontology = new OWLOntology();

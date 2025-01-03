@@ -90,7 +90,7 @@ namespace OWLSharp.Ontology
         }
         #endregion
 
-		#region Interfaces
+        #region Interfaces
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();

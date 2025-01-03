@@ -52,18 +52,18 @@ namespace OWLSharp.Ontology
 
         #region Methods
         public override RDFGraph ToRDFGraph()
-    	{
-			RDFGraph graph = Expression.ToRDFGraph();
+        {
+            RDFGraph graph = Expression.ToRDFGraph();
 
             //Axiom Triple
             RDFTriple axiomTriple = graph[null, RDFVocabulary.RDF.TYPE, null, null].FirstOrDefault();
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
-			return graph;
-		}
+            return graph;
+        }
         #endregion
     }
 }

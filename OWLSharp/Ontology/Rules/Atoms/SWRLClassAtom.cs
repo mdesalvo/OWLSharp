@@ -88,22 +88,22 @@ namespace OWLSharp.Ontology
                 RDFPatternMember leftArgumentValue = RDFQueryUtilities.ParseRDFPatternMember(currentRow[leftArgumentString].ToString());
                 if (leftArgumentValue is RDFResource leftArgumentValueResource)
                 {
-					//Build the inference individual
-					OWLIndividualExpression clsAsnIdvExpr;
-					if (leftArgumentValueResource.IsBlank)
-						clsAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
-					else
-						clsAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
+                    //Build the inference individual
+                    OWLIndividualExpression clsAsnIdvExpr;
+                    if (leftArgumentValueResource.IsBlank)
+                        clsAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
+                    else
+                        clsAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 
-					//Create the inference
+                    //Create the inference
                     OWLClassAssertion inference = new OWLClassAssertion(
-						(OWLClassExpression)Predicate) 
-						{ 
-							IndividualExpression = clsAsnIdvExpr, 
-							IsInference = true
-						};
-					inference.GetXML();
-					inferences.Add(new OWLInference(classAtomString, inference));
+                        (OWLClassExpression)Predicate) 
+                        { 
+                            IndividualExpression = clsAsnIdvExpr, 
+                            IsInference = true
+                        };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(classAtomString, inference));
                 }
             }
 
