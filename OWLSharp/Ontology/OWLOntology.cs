@@ -41,18 +41,33 @@ namespace OWLSharp.Ontology
     public class OWLOntology
     {
         #region Properties
+        /// <summary>
+        /// IRI of the ontology (e.g: http://example.org/myOntology/)
+        /// </summary>
         [XmlAttribute("ontologyIRI", DataType="anyURI")]
         public string IRI { get; set; }
 
+        /// <summary>
+        /// IRI representing the current version of the ontology (e.g: http://example.org/myOntology/v4/)
+        /// </summary>
         [XmlAttribute("ontologyVersion", DataType="anyURI")]
         public string VersionIRI { get; set; }
 
+        /// <summary>
+        /// Namespaces declared to the ontology
+        /// </summary>
         [XmlElement("Prefix")]
         public List<OWLPrefix> Prefixes { get; internal set; }
 
+        /// <summary>
+        /// Remote ontology IRIs declared for use by the ontology
+        /// </summary>
         [XmlElement("Import")]
         public List<OWLImport> Imports { get; internal set; }
 
+        /// <summary>
+        /// Annotations attached to the ontology itself (e.g: authors, comments)
+        /// </summary>
         [XmlElement("Annotation")]
         public List<OWLAnnotation> Annotations { get; internal set; }
 
