@@ -73,9 +73,15 @@ namespace OWLSharp.Ontology
 
         //Axioms
 
+        /// <summary>
+        /// Axioms stating the existence of ontology entities (like classes, properties and individuals)
+        /// </summary>
         [XmlElement("Declaration")]
         public List<OWLDeclaration> DeclarationAxioms { get; internal set; }
 
+        /// <summary>
+        /// Axioms stating hierarchical or set-theory relationships between T-BOX classes
+        /// </summary>
         [XmlElement(typeof(OWLSubClassOf), ElementName="SubClassOf")]
         [XmlElement(typeof(OWLEquivalentClasses), ElementName="EquivalentClasses")]
         [XmlElement(typeof(OWLDisjointClasses), ElementName="DisjointClasses")]
