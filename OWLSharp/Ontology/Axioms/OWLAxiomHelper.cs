@@ -19,7 +19,7 @@ using System.Collections.Generic;
 namespace OWLSharp.Ontology
 {
     /// <summary>
-    /// OWLAxiomHelper extends the capabilities of OWLAxiom with a set of common recurring facilities
+    /// OWLAxiomHelper extends the capabilities of OWLAxiom with a set of common facilities
     /// </summary>
     public static class OWLAxiomHelper
     {
