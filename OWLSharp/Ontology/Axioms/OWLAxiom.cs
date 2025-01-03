@@ -20,7 +20,19 @@ using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
 {
-    //Register here all derived types of OWLAxiom
+    /// <summary>
+    /// OWLAxiom represents a statement of "what is true" in the application domain described by an ontology.<br/><br/>
+    /// OWL2 provides an extensive set of axioms, all of which extend this class in the structural specification:<br/>
+    /// <list type="bullet">
+    /// <item>AnnotationAxiom</item>
+    /// <item>AssertionAxiom</item>
+    /// <item>ClassAxiom</item>
+    /// <item>DataPropertyAxiom</item>
+    /// <item>DatatypeDefinition</item>
+    /// <item>HasKey</item>
+    /// <item>ObjectPropertyAxiom</item>
+    /// </list>
+    /// </summary>
     [XmlInclude(typeof(OWLAnnotationAssertion))]
     [XmlInclude(typeof(OWLAnnotationPropertyDomain))]
     [XmlInclude(typeof(OWLAnnotationPropertyRange))]
