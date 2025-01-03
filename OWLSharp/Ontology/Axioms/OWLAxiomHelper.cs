@@ -18,12 +18,22 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Ontology
 {
-	public static class OWLAxiomHelper
-	{
-		#region Methods
+    /// <summary>
+    /// OWLAxiomHelper extends the capabilities of OWLAxiom with a set of common recurring facilities
+    /// </summary>
+    public static class OWLAxiomHelper
+    {
+        #region Methods
+        /// <summary>
+        /// Annotates the axiom with the given annotation
+        /// </summary>
+        /// <exception cref="OWLException">Thrown when the given annotation is null</exception>
         public static void Annotate(this OWLAxiom axiom, OWLAnnotation annotation)
             => axiom?.Annotations.Add(annotation ?? throw new OWLException("Cannot annotate axiom because given \"annotation\" parameter is null"));
 
+        /// <summary>
+        /// Deduplicates the given list of axioms by exploiting their XML representation
+        /// </summary>
         internal static List<T> RemoveDuplicates<T>(List<T> axioms) where T : OWLAxiom
         {
             List<T> deduplicatedAxioms = new List<T>();
@@ -32,7 +42,7 @@ namespace OWLSharp.Ontology
                 HashSet<string> lookup = new HashSet<string>();
                 axioms.ForEach(axiom =>
                 {
-					string axiomID = axiom.GetXML();
+                    string axiomID = axiom.GetXML();
                     if (!lookup.Contains(axiomID))
                     {
                         lookup.Add(axiomID);
@@ -42,6 +52,6 @@ namespace OWLSharp.Ontology
             }
             return deduplicatedAxioms;
         }
-		#endregion
-	}
+        #endregion
+    }
 }
