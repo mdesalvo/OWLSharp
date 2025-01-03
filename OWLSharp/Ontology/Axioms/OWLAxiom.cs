@@ -107,6 +107,9 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Builds the OWL2/XML representation of the axiom
+        /// </summary>
         public virtual string GetXML()
         {
             if (AxiomXML == null)
@@ -114,6 +117,9 @@ namespace OWLSharp.Ontology
             return AxiomXML;
         }
 
+        /// <summary>
+        /// Builds a graph representation of the axiom
+        /// </summary>
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
         #endregion
