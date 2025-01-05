@@ -66,17 +66,17 @@ namespace OWLSharp.Ontology
             RDFGraph graph = new RDFGraph();
 
             RDFResource clsExpressionIRI = ClassExpression.GetIRI();
-			RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
-			graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI))
-						 .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
+            RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
+            graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI))
+                         .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
 
-			//Axiom Triple
-			RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, RDFVocabulary.RDF.TYPE, clsExpressionIRI); 
-			graph.AddTriple(axiomTriple);
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, RDFVocabulary.RDF.TYPE, clsExpressionIRI); 
+            graph.AddTriple(axiomTriple);
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

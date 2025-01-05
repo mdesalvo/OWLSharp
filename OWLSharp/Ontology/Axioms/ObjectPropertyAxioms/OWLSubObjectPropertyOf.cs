@@ -74,42 +74,42 @@ namespace OWLSharp.Ontology
         #region Methods
         public override RDFGraph ToRDFGraph()
         {
-			RDFTriple axiomTriple;
-			RDFGraph graph = new RDFGraph();
-			RDFResource superObjPropExpressionIRI = SuperObjectPropertyExpression.GetIRI();
-			graph = graph.UnionWith(SuperObjectPropertyExpression.ToRDFGraph(superObjPropExpressionIRI));
+            RDFTriple axiomTriple;
+            RDFGraph graph = new RDFGraph();
+            RDFResource superObjPropExpressionIRI = SuperObjectPropertyExpression.GetIRI();
+            graph = graph.UnionWith(SuperObjectPropertyExpression.ToRDFGraph(superObjPropExpressionIRI));
 
-			//ObjectProperty/ObjectInverseOf
-			if (SubObjectPropertyChain == null)
-			{
-				RDFResource subObjPropExpressionIRI = SubObjectPropertyExpression.GetIRI();
-				graph = graph.UnionWith(SubObjectPropertyExpression.ToRDFGraph(subObjPropExpressionIRI));
+            //ObjectProperty/ObjectInverseOf
+            if (SubObjectPropertyChain == null)
+            {
+                RDFResource subObjPropExpressionIRI = SubObjectPropertyExpression.GetIRI();
+                graph = graph.UnionWith(SubObjectPropertyExpression.ToRDFGraph(subObjPropExpressionIRI));
 
-				//Axiom Triple
-				axiomTriple = new RDFTriple(subObjPropExpressionIRI, RDFVocabulary.RDFS.SUB_PROPERTY_OF, superObjPropExpressionIRI);
-				graph.AddTriple(axiomTriple);
-			}
+                //Axiom Triple
+                axiomTriple = new RDFTriple(subObjPropExpressionIRI, RDFVocabulary.RDFS.SUB_PROPERTY_OF, superObjPropExpressionIRI);
+                graph.AddTriple(axiomTriple);
+            }
 
-			//ObjectPropertyChain
-			else
-			{	
-				RDFCollection chainObjectPropertyExpressions = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource, true);
-				foreach (OWLObjectPropertyExpression chainObjectPropertyExpression in SubObjectPropertyChain.ObjectPropertyExpressions)
+            //ObjectPropertyChain
+            else
+            {    
+                RDFCollection chainObjectPropertyExpressions = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource, true);
+                foreach (OWLObjectPropertyExpression chainObjectPropertyExpression in SubObjectPropertyChain.ObjectPropertyExpressions)
                 {
                     RDFResource chainObjectPropertyExpressionIRI = chainObjectPropertyExpression.GetIRI();
                     chainObjectPropertyExpressions.AddItem(chainObjectPropertyExpressionIRI);
                     graph = graph.UnionWith(chainObjectPropertyExpression.ToRDFGraph(chainObjectPropertyExpressionIRI));
-                }	
-				graph.AddCollection(chainObjectPropertyExpressions);
+                }    
+                graph.AddCollection(chainObjectPropertyExpressions);
 
-				//Axiom Triple
-				axiomTriple = new RDFTriple(superObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, chainObjectPropertyExpressions.ReificationSubject);
-				graph.AddTriple(axiomTriple);
-			}            
+                //Axiom Triple
+                axiomTriple = new RDFTriple(superObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, chainObjectPropertyExpressions.ReificationSubject);
+                graph.AddTriple(axiomTriple);
+            }            
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

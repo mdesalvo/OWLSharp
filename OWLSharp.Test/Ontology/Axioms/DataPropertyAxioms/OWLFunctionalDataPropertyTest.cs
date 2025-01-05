@@ -28,23 +28,23 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateFunctionalDataProperty()
         {
-			OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(
-				new OWLDataProperty(RDFVocabulary.RDFS.LABEL));
+            OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(
+                new OWLDataProperty(RDFVocabulary.RDFS.LABEL));
 
-			Assert.IsNotNull(functionalDataProperty);
-			Assert.IsNotNull(functionalDataProperty.DataProperty);
+            Assert.IsNotNull(functionalDataProperty);
+            Assert.IsNotNull(functionalDataProperty.DataProperty);
             Assert.IsTrue(string.Equals(functionalDataProperty.DataProperty.IRI, RDFVocabulary.RDFS.LABEL.ToString()));
-		}
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldThrowExceptionOnCreatingFunctionalDataPropertyBecauseNullDataProperty()
             => Assert.ThrowsException<OWLException>(() => new OWLFunctionalDataProperty(null));
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldSerializeFunctionalDataProperty()
         {
             OWLFunctionalDataProperty functionalDataProperty = new OWLFunctionalDataProperty(
-				new OWLDataProperty(RDFVocabulary.RDFS.LABEL));
+                new OWLDataProperty(RDFVocabulary.RDFS.LABEL));
             string serializedXML = OWLSerializer.SerializeObject(functionalDataProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology();
             ontology.DataPropertyAxioms.Add(
                 new OWLFunctionalDataProperty(
-					new OWLDataProperty(RDFVocabulary.RDFS.LABEL)));
+                    new OWLDataProperty(RDFVocabulary.RDFS.LABEL)));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology
 </FunctionalDataProperty>");
 
             Assert.IsNotNull(functionalDataProperty);
-			Assert.IsNotNull(functionalDataProperty.DataProperty);
+            Assert.IsNotNull(functionalDataProperty.DataProperty);
             Assert.IsTrue(string.Equals(functionalDataProperty.DataProperty.IRI, RDFVocabulary.RDFS.LABEL.ToString()));
         }
 
@@ -90,9 +90,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <FunctionalDataProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
   </FunctionalDataProperty>
 </Ontology>");
@@ -101,10 +101,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.DataPropertyAxioms.Count == 1);
             Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLFunctionalDataProperty funcDtProp
                             && string.Equals(funcDtProp.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
-			Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLFunctionalDataProperty funcDtProp1
-							&& string.Equals(funcDtProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(funcDtProp1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(funcDtProp1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLFunctionalDataProperty funcDtProp1
+                            && string.Equals(funcDtProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(funcDtProp1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(funcDtProp1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]

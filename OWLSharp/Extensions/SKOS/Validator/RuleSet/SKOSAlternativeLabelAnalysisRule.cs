@@ -23,7 +23,7 @@ namespace OWLSharp.Extensions.SKOS
     internal class SKOSAlternativeLabelAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis.ToString();
-		internal static readonly string rulesugg1 = "There should not be SKOS concepts having the same value for skos:altLabel and skos:prefLabel data annotations.";
+        internal static readonly string rulesugg1 = "There should not be SKOS concepts having the same value for skos:altLabel and skos:prefLabel data annotations.";
         internal static readonly string rulesugg2 = "There should not be SKOS concepts having the same value for skos:altLabel and skos:hiddenLabel data annotations.";
         internal static readonly string rulesugg3 = "There should not be SKOS-XL concepts having the same value for skosxl:altLabel and skosxl:prefLabel data relations.";
         internal static readonly string rulesugg4 = "There should not be SKOS-XL concepts having the same value for skosxl:altLabel and skosxl:hiddenLabel data relations.";

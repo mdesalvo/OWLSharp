@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,21 +31,21 @@ namespace OWLSharp.Test.Reasoner
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")))
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")))
                 ],
                 DataPropertyAxioms = [ 
                     new OWLDataPropertyDomain(
-						new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
                 ],
-				AssertionAxioms = [
-					new OWLDataPropertyAssertion(
-						new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
-						new OWLLiteral(new RDFTypedLiteral("22", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER))
-					)
-				]
+                AssertionAxioms = [
+                    new OWLDataPropertyAssertion(
+                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+                        new OWLLiteral(new RDFTypedLiteral("22", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER))
+                    )
+                ]
             };
             List<OWLInference> inferences = OWLDataPropertyDomainEntailmentRule.ExecuteRule(ontology);
 

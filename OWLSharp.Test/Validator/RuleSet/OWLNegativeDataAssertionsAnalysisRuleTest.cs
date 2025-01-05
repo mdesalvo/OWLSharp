@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,14 +23,14 @@ namespace OWLSharp.Test.Validator
     public class OWLNegativeDataAssertionsAnalysisRuleTest
     {
         #region Tests
-		[TestMethod]
+        [TestMethod]
         public void ShouldAnalyzeNegativeDataAssertionsCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
                 ],
                 AssertionAxioms = [
@@ -42,7 +42,7 @@ namespace OWLSharp.Test.Validator
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
                         new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
-					new OWLNegativeDataPropertyAssertion(
+                    new OWLNegativeDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
                         new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
@@ -51,11 +51,11 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLNegativeDataAssertionsAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLNegativeDataAssertionsAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLNegativeDataAssertionsAnalysisRule.rulesugg)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLNegativeDataAssertionsAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLNegativeDataAssertionsAnalysisRule.rulesugg)));
         }
-		#endregion
+        #endregion
     }
 }

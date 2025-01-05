@@ -47,18 +47,18 @@ namespace OWLSharp.Ontology
         public override RDFGraph ToRDFGraph()
         {
             RDFGraph graph = new RDFGraph();
-			RDFResource leftObjPropExpressionIRI = LeftObjectPropertyExpression.GetIRI();
-			RDFResource rightObjPropExpressionIRI = RightObjectPropertyExpression.GetIRI();
-			graph = graph.UnionWith(LeftObjectPropertyExpression.ToRDFGraph(leftObjPropExpressionIRI))
-						 .UnionWith(RightObjectPropertyExpression.ToRDFGraph(rightObjPropExpressionIRI));
+            RDFResource leftObjPropExpressionIRI = LeftObjectPropertyExpression.GetIRI();
+            RDFResource rightObjPropExpressionIRI = RightObjectPropertyExpression.GetIRI();
+            graph = graph.UnionWith(LeftObjectPropertyExpression.ToRDFGraph(leftObjPropExpressionIRI))
+                         .UnionWith(RightObjectPropertyExpression.ToRDFGraph(rightObjPropExpressionIRI));
 
-			//Axiom Triple
-			RDFTriple axiomTriple = new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, rightObjPropExpressionIRI); 
-			graph.AddTriple(axiomTriple);			
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, rightObjPropExpressionIRI); 
+            graph.AddTriple(axiomTriple);            
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

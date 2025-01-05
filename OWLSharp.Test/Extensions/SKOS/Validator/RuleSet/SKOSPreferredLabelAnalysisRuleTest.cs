@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -73,10 +73,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = SKOSPreferredLabelAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues.Count == 2);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSPreferredLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSPreferredLabelAnalysisRule.rulesugg1)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSPreferredLabelAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSPreferredLabelAnalysisRule.rulesugg1)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not have more than one occurrence of the same language tag in skos:prefLabel values")));
         }
 
@@ -169,10 +169,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = SKOSPreferredLabelAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues.Count == 2);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSPreferredLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSPreferredLabelAnalysisRule.rulesugg2)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSPreferredLabelAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSPreferredLabelAnalysisRule.rulesugg2)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not have more than one occurrence of the same language tag in skosxl:prefLabel values")));
         }
         #endregion

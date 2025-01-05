@@ -23,8 +23,8 @@ namespace OWLSharp
             OWL2XML = 1
         };
 
-		public enum OWLReasonerRules
-		{
+        public enum OWLReasonerRules
+        {
             ClassAssertionEntailment = 1,
             DataPropertyDomainEntailment = 2,
             DifferentIndividualsEntailment = 3,
@@ -52,43 +52,43 @@ namespace OWLSharp
             TransitiveObjectPropertyEntailment = 25
         }
 
-		public enum OWLIssueSeverity
-		{
-			Warning = 1,
-			Error = 2
-		}
+        public enum OWLIssueSeverity
+        {
+            Warning = 1,
+            Error = 2
+        }
 
-		public enum OWLValidatorRules
-		{
-			AsymmetricObjectPropertyAnalysis = 1,
-			ClassAssertionAnalysis = 2,
-			DataPropertyDomainAnalysis = 3,
-			DataPropertyRangeAnalysis = 4,
-			DifferentIndividualsAnalysis = 5,
-			DisjointClassesAnalysis = 6,
-			DisjointDataPropertiesAnalysis = 7,
-			DisjointObjectPropertiesAnalysis = 8,
-			DisjointUnionAnalysis = 9,
-			EquivalentClassesAnalysis = 10,
-			EquivalentDataPropertiesAnalysis = 11,
-			EquivalentObjectPropertiesAnalysis = 12,
-			FunctionalDataPropertyAnalysis = 13,
-			FunctionalObjectPropertyAnalysis = 14,
-			HasKeyAnalysis = 15,
-			InverseFunctionalObjectPropertyAnalysis = 16,
-			IrreflexiveObjectPropertyAnalysis = 17,
-			NegativeDataAssertionsAnalysis = 18,
-			NegativeObjectAssertionsAnalysis = 19,
-			ObjectPropertyChainAnalysis = 20,
-			ObjectPropertyDomainAnalysis = 21,
-			ObjectPropertyRangeAnalysis = 22,
-			SubClassOfAnalysis = 23,
-			SubDataPropertyOfAnalysis = 24,
-			SubObjectPropertyOfAnalysis = 25,
-			TermsDeprecationAnalysis = 26,
-			TermsDisjointnessAnalysis = 27,
+        public enum OWLValidatorRules
+        {
+            AsymmetricObjectPropertyAnalysis = 1,
+            ClassAssertionAnalysis = 2,
+            DataPropertyDomainAnalysis = 3,
+            DataPropertyRangeAnalysis = 4,
+            DifferentIndividualsAnalysis = 5,
+            DisjointClassesAnalysis = 6,
+            DisjointDataPropertiesAnalysis = 7,
+            DisjointObjectPropertiesAnalysis = 8,
+            DisjointUnionAnalysis = 9,
+            EquivalentClassesAnalysis = 10,
+            EquivalentDataPropertiesAnalysis = 11,
+            EquivalentObjectPropertiesAnalysis = 12,
+            FunctionalDataPropertyAnalysis = 13,
+            FunctionalObjectPropertyAnalysis = 14,
+            HasKeyAnalysis = 15,
+            InverseFunctionalObjectPropertyAnalysis = 16,
+            IrreflexiveObjectPropertyAnalysis = 17,
+            NegativeDataAssertionsAnalysis = 18,
+            NegativeObjectAssertionsAnalysis = 19,
+            ObjectPropertyChainAnalysis = 20,
+            ObjectPropertyDomainAnalysis = 21,
+            ObjectPropertyRangeAnalysis = 22,
+            SubClassOfAnalysis = 23,
+            SubDataPropertyOfAnalysis = 24,
+            SubObjectPropertyOfAnalysis = 25,
+            TermsDeprecationAnalysis = 26,
+            TermsDisjointnessAnalysis = 27,
             ThingNothingAnalysis = 28,
-			TopBottomAnalysis = 29
-		}
+            TopBottomAnalysis = 29
+        }
     }
 }

@@ -28,14 +28,14 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateFunctionalObjectProperty()
         {
-			OWLFunctionalObjectProperty functionalObjectProperty = new OWLFunctionalObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            OWLFunctionalObjectProperty functionalObjectProperty = new OWLFunctionalObjectProperty(
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
 
-			Assert.IsNotNull(functionalObjectProperty);
-			Assert.IsNotNull(functionalObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(functionalObjectProperty);
+            Assert.IsNotNull(functionalObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(functionalObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-		}
+        }
 
         [TestMethod]
         public void ShouldCreateFunctionalObjectInverseOf()
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldSerializeFunctionalObjectProperty()
         {
             OWLFunctionalObjectProperty functionalObjectProperty = new OWLFunctionalObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
             string serializedXML = OWLSerializer.SerializeObject(functionalObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -85,7 +85,7 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology();
             ontology.ObjectPropertyAxioms.Add(
                 new OWLFunctionalObjectProperty(
-					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -114,7 +114,7 @@ namespace OWLSharp.Test.Ontology
 </FunctionalObjectProperty>");
 
             Assert.IsNotNull(functionalObjectProperty);
-			Assert.IsNotNull(functionalObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(functionalObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(functionalObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         }
@@ -148,9 +148,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <FunctionalObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   </FunctionalObjectProperty>
 </Ontology>");
@@ -160,10 +160,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty funcObjProp
                             && funcObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty funcObjProp1
-							&& string.Equals(funcObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(funcObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(funcObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty funcObjProp1
+                            && string.Equals(funcObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(funcObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(funcObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]
@@ -179,9 +179,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <FunctionalObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectInverseOf>
       <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
     </ObjectInverseOf>

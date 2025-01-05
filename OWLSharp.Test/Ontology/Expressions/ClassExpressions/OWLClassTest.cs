@@ -127,43 +127,43 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(cls.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/Person"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIClassToGraph()
         {
             OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
-			RDFGraph graph = cls.ToRDFGraph();
+            RDFGraph graph = cls.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameClassToGraph()
         {
             OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = cls.ToRDFGraph();
+            RDFGraph graph = cls.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIClassToResource()
         {
             OWLClass cls = new OWLClass(RDFVocabulary.FOAF.PERSON);
-			RDFResource representative = cls.GetIRI();
+            RDFResource representative = cls.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameClassToResource()
         {
             OWLClass cls = new OWLClass(new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = cls.GetIRI();
+            RDFResource representative = cls.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.PERSON));

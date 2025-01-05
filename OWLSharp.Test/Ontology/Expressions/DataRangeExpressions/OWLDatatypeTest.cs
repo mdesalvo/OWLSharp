@@ -127,43 +127,43 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(dt.ExpressionIRI.ToString().Equals("http://www.w3.org/2001/XMLSchema#string"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIDatatypeToGraph()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
-			RDFGraph graph = dt.ToRDFGraph();
+            RDFGraph graph = dt.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameDatatypeToGraph()
         {
             OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
-			RDFGraph graph = dt.ToRDFGraph();
+            RDFGraph graph = dt.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIDatatypeToResource()
         {
             OWLDatatype dt = new OWLDatatype(RDFVocabulary.XSD.STRING);
-			RDFResource representative = dt.GetIRI();
+            RDFResource representative = dt.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.XSD.STRING));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameDatatypeToResource()
         {
             OWLDatatype dt = new OWLDatatype(new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI));
-			RDFResource representative = dt.GetIRI();
+            RDFResource representative = dt.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.XSD.STRING));

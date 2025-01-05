@@ -18,10 +18,10 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Ontology
 {
-	public static class OWLExpressionHelper
-	{
-		#region Methods
-		internal static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
+    public static class OWLExpressionHelper
+    {
+        #region Methods
+        internal static List<T> RemoveDuplicates<T>(List<T> expressions) where T : OWLExpression
         {
             List<T> deduplicatedExpressions = new List<T>();
             if (expressions?.Count > 0)
@@ -29,7 +29,7 @@ namespace OWLSharp.Ontology
                 HashSet<long> lookup = new HashSet<long>();
                 expressions.ForEach(expression =>
                 {
-					long expressionID = expression.GetIRI().PatternMemberID;
+                    long expressionID = expression.GetIRI().PatternMemberID;
                     if (!lookup.Contains(expressionID))
                     {
                         lookup.Add(expressionID);
@@ -39,6 +39,6 @@ namespace OWLSharp.Ontology
             }
             return deduplicatedExpressions;
         }
-		#endregion
-	}
+        #endregion
+    }
 }

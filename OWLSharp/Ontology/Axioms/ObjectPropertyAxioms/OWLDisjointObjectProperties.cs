@@ -55,40 +55,40 @@ namespace OWLSharp.Ontology
 
             //propertyDisjointWith
             if (ObjectPropertyExpressions.Count == 2)
-			{
-				RDFResource leftObjPropExpressionIRI = ObjectPropertyExpressions[0].GetIRI();
-				RDFResource rightObjPropExpressionIRI = ObjectPropertyExpressions[1].GetIRI();
-				graph = graph.UnionWith(ObjectPropertyExpressions[0].ToRDFGraph(leftObjPropExpressionIRI))
-							 .UnionWith(ObjectPropertyExpressions[1].ToRDFGraph(rightObjPropExpressionIRI));
+            {
+                RDFResource leftObjPropExpressionIRI = ObjectPropertyExpressions[0].GetIRI();
+                RDFResource rightObjPropExpressionIRI = ObjectPropertyExpressions[1].GetIRI();
+                graph = graph.UnionWith(ObjectPropertyExpressions[0].ToRDFGraph(leftObjPropExpressionIRI))
+                             .UnionWith(ObjectPropertyExpressions[1].ToRDFGraph(rightObjPropExpressionIRI));
 
-				//Axiom Triple
-				RDFTriple axiomTriple = new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, rightObjPropExpressionIRI);
-				graph.AddTriple(axiomTriple);
+                //Axiom Triple
+                RDFTriple axiomTriple = new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_DISJOINT_WITH, rightObjPropExpressionIRI);
+                graph.AddTriple(axiomTriple);
 
-				//Annotations
-				foreach (OWLAnnotation annotation in Annotations)
-					graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
-			}
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            }
 
-			//AllDisjointProperties
-			else
-			{
-				RDFResource allDisjointPropertiesIRI = new RDFResource(); 
-				RDFCollection disjointObjectPropertiesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
-				foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
-				{
-					RDFResource objectPropertyExpressionIRI = objectPropertyExpression.GetIRI();
-					disjointObjectPropertiesCollection.AddItem(objectPropertyExpressionIRI);
-					graph = graph.UnionWith(objectPropertyExpression.ToRDFGraph(objectPropertyExpressionIRI));
-				}
-				graph.AddCollection(disjointObjectPropertiesCollection);
-				graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES));
-				graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.OWL.MEMBERS, disjointObjectPropertiesCollection.ReificationSubject));
+            //AllDisjointProperties
+            else
+            {
+                RDFResource allDisjointPropertiesIRI = new RDFResource(); 
+                RDFCollection disjointObjectPropertiesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
+                foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
+                {
+                    RDFResource objectPropertyExpressionIRI = objectPropertyExpression.GetIRI();
+                    disjointObjectPropertiesCollection.AddItem(objectPropertyExpressionIRI);
+                    graph = graph.UnionWith(objectPropertyExpression.ToRDFGraph(objectPropertyExpressionIRI));
+                }
+                graph.AddCollection(disjointObjectPropertiesCollection);
+                graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ALL_DISJOINT_PROPERTIES));
+                graph.AddTriple(new RDFTriple(allDisjointPropertiesIRI, RDFVocabulary.OWL.MEMBERS, disjointObjectPropertiesCollection.ReificationSubject));
 
-				//Annotations
-				foreach (OWLAnnotation annotation in Annotations)
-					graph = graph.UnionWith(annotation.ToRDFGraphInternal(allDisjointPropertiesIRI));
-			}
+                //Annotations
+                foreach (OWLAnnotation annotation in Annotations)
+                    graph = graph.UnionWith(annotation.ToRDFGraphInternal(allDisjointPropertiesIRI));
+            }
 
             return graph;
         }

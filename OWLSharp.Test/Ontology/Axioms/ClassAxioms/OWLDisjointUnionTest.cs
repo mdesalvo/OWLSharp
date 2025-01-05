@@ -109,21 +109,21 @@ namespace OWLSharp.Test.Ontology
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<Ontology xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
-	<Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#""/>
-	<Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#""/>
-	<Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""/>
-	<Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#""/>
-	<Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace""/>
+    <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#""/>
+    <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#""/>
+    <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""/>
+    <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#""/>
+    <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace""/>
     <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-	<DisjointUnion>
+    <DisjointUnion>
         <Annotation>
-		    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		    <Literal xml:lang=""EN"">Steve</Literal>
-	    </Annotation>
-		<Class IRI=""http://xmlns.com/foaf/0.1/Agent""/>
-		<Class IRI=""http://xmlns.com/foaf/0.1/Person""/>
-		<Class abbreviatedIRI=""foaf:Organization""/>
-	</DisjointUnion>
+            <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+            <Literal xml:lang=""EN"">Steve</Literal>
+        </Annotation>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Agent""/>
+        <Class IRI=""http://xmlns.com/foaf/0.1/Person""/>
+        <Class abbreviatedIRI=""foaf:Organization""/>
+    </DisjointUnion>
 </Ontology>");
 
             Assert.IsNotNull(ontology);
@@ -132,30 +132,30 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(djUnAsn.ClassIRI.IRI, "http://xmlns.com/foaf/0.1/Agent")
                             && string.Equals(((OWLClass)djUnAsn.ClassExpressions[0]).IRI, "http://xmlns.com/foaf/0.1/Person")
                             && string.Equals(((OWLClass)djUnAsn.ClassExpressions[1]).AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:Organization"));
-			Assert.IsTrue(ontology.ClassAxioms.Single() is OWLDisjointUnion djUnAsn1
-							&& string.Equals(djUnAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(djUnAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(djUnAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ClassAxioms.Single() is OWLDisjointUnion djUnAsn1
+                            && string.Equals(djUnAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(djUnAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(djUnAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertDisjointUnionToGraph()
         {
             OWLDisjointUnion disjointUnion = new OWLDisjointUnion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]);
-			RDFGraph graph = disjointUnion.ToRDFGraph();
+            RDFGraph graph = disjointUnion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 10);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.DISJOINT_UNION_OF, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
         }
 
         [TestMethod]

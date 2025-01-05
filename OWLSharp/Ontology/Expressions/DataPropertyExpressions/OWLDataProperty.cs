@@ -66,13 +66,13 @@ namespace OWLSharp.Ontology
         }
 
         internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
-		{
-			RDFGraph graph = new RDFGraph();
+        {
+            RDFGraph graph = new RDFGraph();
 
-			graph.AddTriple(new RDFTriple(GetIRI(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY));
+            graph.AddTriple(new RDFTriple(GetIRI(), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY));
 
-			return graph;
-		}
-		#endregion
+            return graph;
+        }
+        #endregion
     }
 }

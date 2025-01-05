@@ -24,7 +24,7 @@ namespace OWLSharp.Test.Ontology
     public class OWLDatatypeDefinitionHelperTest
     {
         #region Tests
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeclareDatatypeDefinition()
         {
             OWLOntology ontology = new OWLOntology();

@@ -294,13 +294,13 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(annPropRng.AnnotationProperty.IRI, "http://xmlns.com/foaf/0.1/title")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIAnnotationPropertyRangeToGraph()
         {
             OWLAnnotationPropertyRange annotationPropertyRange = new OWLAnnotationPropertyRange(
                 new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
                 RDFVocabulary.FOAF.PERSON);
-			RDFGraph graph = annotationPropertyRange.ToRDFGraph();
+            RDFGraph graph = annotationPropertyRange.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 2);
@@ -308,25 +308,25 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIAnnotationPropertyRangeWithAnnotationToGraph()
         {
             OWLAnnotationPropertyRange annotationPropertyRange = new OWLAnnotationPropertyRange(
                 new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
                 RDFVocabulary.FOAF.PERSON)
-			{
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
             };
-			RDFGraph graph = annotationPropertyRange.ToRDFGraph();
+            RDFGraph graph = annotationPropertyRange.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 8);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDFS.RANGE, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			//Annotations
-			Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            //Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.RANGE, null].TriplesCount == 1);

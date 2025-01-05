@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -89,10 +89,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSAlternativeLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSAlternativeLabelAnalysisRule.rulesugg1)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSAlternativeLabelAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSAlternativeLabelAnalysisRule.rulesugg1)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skos:altLabel and skos:prefLabel values")));
         }
 
@@ -148,10 +148,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSHiddenLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSHiddenLabelAnalysisRule.rulesugg1)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSHiddenLabelAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSHiddenLabelAnalysisRule.rulesugg1)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not clash on skos:hiddenLabel and skos:altLabel values")));
         }
 
@@ -205,10 +205,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues.Count == 2);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSPreferredLabelAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSPreferredLabelAnalysisRule.rulesugg1)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, SKOSPreferredLabelAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, SKOSPreferredLabelAnalysisRule.rulesugg1)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, "SKOS concept 'ex:ConceptA' should be adjusted to not have more than one occurrence of the same language tag in skos:prefLabel values")));
         }
         
@@ -270,14 +270,14 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues.Count == 2);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNotationAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNotationAnalysisRule.rulesugg));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNotationAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSNotationAnalysisRule.rulesugg));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on skos:Notation values"));
             Assert.IsTrue(issues[1].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[1].RuleName, SKOSNotationAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[1].Description, SKOSNotationAnalysisRule.rulesugg));
+            Assert.IsTrue(string.Equals(issues[1].RuleName, SKOSNotationAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[1].Description, SKOSNotationAnalysisRule.rulesugg));
             Assert.IsTrue(string.Equals(issues[1].Suggestion, "SKOS concepts 'ex:ConceptB' and 'ex:ConceptA' should be adjusted to not clash on skos:Notation values"));
         }
         
@@ -340,10 +340,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg1A));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSBroaderConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSBroaderConceptAnalysisRule.rulesugg1A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical relations (skos:broader VS skos:narrower)"));
         }
         
@@ -406,10 +406,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg1A));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSNarrowerConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg1A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical relations (skos:narrower VS skos:broader)"));
         }
 
@@ -472,10 +472,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1A));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:related)"));
         }
         
@@ -538,10 +538,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg1A));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSRelatedConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSRelatedConceptAnalysisRule.rulesugg1A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on associative VS hierarchical relations (skos:related VS skos:broader)"));
         }
 

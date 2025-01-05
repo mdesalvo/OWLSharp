@@ -62,11 +62,11 @@ namespace OWLSharp.Ontology
                 RDFQueryEngine.AddColumn(atomResult, rightArgumentString);
 
             //Extract object property assertions of the atom predicate
-			List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
+            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLObjectPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, (OWLObjectProperty)Predicate);
             if (RightArgument is SWRLIndividualArgument rightArgumentIndividual)
                 atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.TargetIndividualExpression.GetIRI().Equals(rightArgumentIndividual.GetResource()))
-																 .ToList();
+                                                                 .ToList();
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
@@ -130,12 +130,12 @@ namespace OWLSharp.Ontology
                 if (leftArgumentValue is RDFResource leftArgumentValueResource
                      && rightArgumentValue is RDFResource rightArgumentValueResource)
                 {
-					//Build the inference individual (source)
-					OWLIndividualExpression opAsnSrcIdvExpr;
-					if (leftArgumentValueResource.IsBlank)
-						opAsnSrcIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
-					else
-						opAsnSrcIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
+                    //Build the inference individual (source)
+                    OWLIndividualExpression opAsnSrcIdvExpr;
+                    if (leftArgumentValueResource.IsBlank)
+                        opAsnSrcIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
+                    else
+                        opAsnSrcIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 
                     //Build the inference individual (target)
                     OWLIndividualExpression opAsnTgtIdvExpr;
@@ -146,8 +146,8 @@ namespace OWLSharp.Ontology
 
                     //Create the inference
                     OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion((OWLObjectProperty)Predicate, opAsnSrcIdvExpr, opAsnTgtIdvExpr) { IsInference = true };
-					inference.GetXML();
-					inferences.Add(new OWLInference(objectPropertyAtomString, inference));
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(objectPropertyAtomString, inference));
                 }
             }
 

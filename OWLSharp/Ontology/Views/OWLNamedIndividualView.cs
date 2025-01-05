@@ -21,66 +21,66 @@ using System.Threading.Tasks;
 namespace OWLSharp.Ontology
 {
     public class OWLNamedIndividualView
-	{
-		#region Properties
-		public OWLNamedIndividual NamedIndividual { get; internal set; }
-		internal string NamedIndividualIRI { get; set; }
+    {
+        #region Properties
+        public OWLNamedIndividual NamedIndividual { get; internal set; }
+        internal string NamedIndividualIRI { get; set; }
 
-		public OWLOntology Ontology { get; internal set; }
-		#endregion
+        public OWLOntology Ontology { get; internal set; }
+        #endregion
 
-		#region Ctors
-		public OWLNamedIndividualView(OWLNamedIndividual idv, OWLOntology ont)
-		{
-			NamedIndividual = idv ?? throw new OWLException("Cannot create named individual view because given \"idv\" parameter is null");
-			Ontology = ont ?? throw new OWLException("Cannot create named individual view because given \"ont\" parameter is null");
-			NamedIndividualIRI = NamedIndividual.GetIRI().ToString();
-		}
-		#endregion
+        #region Ctors
+        public OWLNamedIndividualView(OWLNamedIndividual idv, OWLOntology ont)
+        {
+            NamedIndividual = idv ?? throw new OWLException("Cannot create named individual view because given \"idv\" parameter is null");
+            Ontology = ont ?? throw new OWLException("Cannot create named individual view because given \"ont\" parameter is null");
+            NamedIndividualIRI = NamedIndividual.GetIRI().ToString();
+        }
+        #endregion
 
-		#region Methods
-		public Task<List<OWLIndividualExpression>> SameIndividualsAsync()
-			=> Task.Run(() => Ontology.GetSameIndividuals(NamedIndividual));
+        #region Methods
+        public Task<List<OWLIndividualExpression>> SameIndividualsAsync()
+            => Task.Run(() => Ontology.GetSameIndividuals(NamedIndividual));
 
-		public Task<List<OWLIndividualExpression>> DifferentIndividualsAsync()
-			=> Task.Run(() => Ontology.GetDifferentIndividuals(NamedIndividual));
+        public Task<List<OWLIndividualExpression>> DifferentIndividualsAsync()
+            => Task.Run(() => Ontology.GetDifferentIndividuals(NamedIndividual));
 
-		public Task<List<OWLClassAssertion>> ClassAssertionsAsync()
-			=> Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLClassAssertion>()
-									  .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-									  .ToList()); 
+        public Task<List<OWLClassAssertion>> ClassAssertionsAsync()
+            => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLClassAssertion>()
+                                      .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
+                                      .ToList()); 
 
-		public Task<List<OWLObjectPropertyAssertion>> ObjectAssertionsAsync()
-			=> Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>()
-									  .Where(ax => string.Equals(ax.SourceIndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-									  .ToList()); 
-		
-		public Task<List<OWLDataPropertyAssertion>> DataAssertionsAsync()
-			=> Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
-									  .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-									  .ToList()); 
+        public Task<List<OWLObjectPropertyAssertion>> ObjectAssertionsAsync()
+            => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>()
+                                      .Where(ax => string.Equals(ax.SourceIndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
+                                      .ToList()); 
+        
+        public Task<List<OWLDataPropertyAssertion>> DataAssertionsAsync()
+            => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+                                      .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
+                                      .ToList()); 
 
-		public Task<List<OWLNegativeObjectPropertyAssertion>> NegativeObjectAssertionsAsync()
-			=> Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>()
-									  .Where(ax => string.Equals(ax.SourceIndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-									  .ToList()); 
-		
-		public Task<List<OWLNegativeDataPropertyAssertion>> NegativeDataAssertionsAsync()
-			=> Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>()
-									  .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-									  .ToList()); 
+        public Task<List<OWLNegativeObjectPropertyAssertion>> NegativeObjectAssertionsAsync()
+            => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>()
+                                      .Where(ax => string.Equals(ax.SourceIndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
+                                      .ToList()); 
+        
+        public Task<List<OWLNegativeDataPropertyAssertion>> NegativeDataAssertionsAsync()
+            => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>()
+                                      .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
+                                      .ToList()); 
 
-		public Task<List<OWLAnnotationAssertion>> ObjectAnnotationsAsync()
-			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Where(ann => string.Equals(ann.SubjectIRI, NamedIndividualIRI)
-									  				 && ann.ValueLiteral == null && !string.IsNullOrEmpty(ann.ValueIRI))
-									  .ToList());
+        public Task<List<OWLAnnotationAssertion>> ObjectAnnotationsAsync()
+            => Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
+                                      .Where(ann => string.Equals(ann.SubjectIRI, NamedIndividualIRI)
+                                                       && ann.ValueLiteral == null && !string.IsNullOrEmpty(ann.ValueIRI))
+                                      .ToList());
 
-		public Task<List<OWLAnnotationAssertion>> DataAnnotationsAsync()
-			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Where(ann => string.Equals(ann.SubjectIRI, NamedIndividualIRI)
-									  				 && ann.ValueLiteral != null && string.IsNullOrEmpty(ann.ValueIRI))
-									  .ToList());
-		#endregion
-	}
+        public Task<List<OWLAnnotationAssertion>> DataAnnotationsAsync()
+            => Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
+                                      .Where(ann => string.Equals(ann.SubjectIRI, NamedIndividualIRI)
+                                                       && ann.ValueLiteral != null && string.IsNullOrEmpty(ann.ValueIRI))
+                                      .ToList());
+        #endregion
+    }
 }

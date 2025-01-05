@@ -18,9 +18,9 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Ontology
 {
-	public static class OWLAxiomHelper
-	{
-		#region Methods
+    public static class OWLAxiomHelper
+    {
+        #region Methods
         public static void Annotate(this OWLAxiom axiom, OWLAnnotation annotation)
             => axiom?.Annotations.Add(annotation ?? throw new OWLException("Cannot annotate axiom because given \"annotation\" parameter is null"));
 
@@ -32,7 +32,7 @@ namespace OWLSharp.Ontology
                 HashSet<string> lookup = new HashSet<string>();
                 axioms.ForEach(axiom =>
                 {
-					string axiomID = axiom.GetXML();
+                    string axiomID = axiom.GetXML();
                     if (!lookup.Contains(axiomID))
                     {
                         lookup.Add(axiomID);
@@ -42,6 +42,6 @@ namespace OWLSharp.Ontology
             }
             return deduplicatedAxioms;
         }
-		#endregion
-	}
+        #endregion
+    }
 }

@@ -109,43 +109,43 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(dp.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/age"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIDataPropertyToGraph()
         {
             OWLDataProperty dp = new OWLDataProperty(RDFVocabulary.FOAF.AGE);
-			RDFGraph graph = dp.ToRDFGraph();
+            RDFGraph graph = dp.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameDataPropertyToGraph()
         {
             OWLDataProperty dp = new OWLDataProperty(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = dp.ToRDFGraph();
+            RDFGraph graph = dp.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIDataPropertyToResource()
         {
             OWLDataProperty dp = new OWLDataProperty(RDFVocabulary.FOAF.AGE);
-			RDFResource representative = dp.GetIRI();
+            RDFResource representative = dp.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameDataPropertyToResource()
         {
             OWLDataProperty dp = new OWLDataProperty(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = dp.GetIRI();
+            RDFResource representative = dp.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));

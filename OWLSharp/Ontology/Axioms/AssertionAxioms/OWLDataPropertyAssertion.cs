@@ -37,15 +37,15 @@ namespace OWLSharp.Ontology
 
         #region Ctors
         internal OWLDataPropertyAssertion() : base() { }
-		internal OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this() 
-		{ 
-			DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"dataProperty\" parameter is null");
+        internal OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this() 
+        { 
+            DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"dataProperty\" parameter is null");
             Literal = literal ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"literal\" parameter is null");
-		}
+        }
         public OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLNamedIndividual namedIndividual, OWLLiteral literal) : this(dataProperty, literal)
-        	=> IndividualExpression = namedIndividual ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"namedIndividual\" parameter is null");
-		public OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLAnonymousIndividual anonymousIndividual, OWLLiteral literal) : this(dataProperty, literal)
-        	=> IndividualExpression = anonymousIndividual ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"anonymousIndividual\" parameter is null");
+            => IndividualExpression = namedIndividual ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"namedIndividual\" parameter is null");
+        public OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLAnonymousIndividual anonymousIndividual, OWLLiteral literal) : this(dataProperty, literal)
+            => IndividualExpression = anonymousIndividual ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"anonymousIndividual\" parameter is null");
         #endregion
 
         #region Methods
@@ -54,16 +54,16 @@ namespace OWLSharp.Ontology
             RDFGraph graph = new RDFGraph();
 
             RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
-			graph = graph.UnionWith(DataProperty.ToRDFGraph())
-						 .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
-			
-			//Axiom Triple
-			RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, DataProperty.GetIRI(), Literal.GetLiteral()); 
-			graph.AddTriple(axiomTriple);
+            graph = graph.UnionWith(DataProperty.ToRDFGraph())
+                         .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
+            
+            //Axiom Triple
+            RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, DataProperty.GetIRI(), Literal.GetLiteral()); 
+            graph.AddTriple(axiomTriple);
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

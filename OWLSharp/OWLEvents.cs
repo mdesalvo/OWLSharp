@@ -20,15 +20,15 @@ namespace OWLSharp
     {
         #region OnInfo
         public static event OWLInfoEventHandler OnInfo = delegate { };
-		public delegate void OWLInfoEventHandler(string eventMessage);
-		internal static void RaiseInfo(string eventMessage)
+        public delegate void OWLInfoEventHandler(string eventMessage);
+        internal static void RaiseInfo(string eventMessage)
             => Parallel.Invoke(() => OnInfo(string.Concat(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"), ";INFO;", eventMessage)));
         #endregion
 
         #region OnWarning
         public static event OWLWarningEventHandler OnWarning = delegate { };
-		public delegate void OWLWarningEventHandler(string eventMessage);
-		internal static void RaiseWarning(string eventMessage)
+        public delegate void OWLWarningEventHandler(string eventMessage);
+        internal static void RaiseWarning(string eventMessage)
             => Parallel.Invoke(() => OnWarning(string.Concat(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"), ";WARNING;", eventMessage)));
         #endregion
     }

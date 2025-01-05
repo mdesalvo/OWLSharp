@@ -53,7 +53,7 @@ namespace OWLSharp.Ontology
             => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectComplementOf because given \"classExpression\" parameter is null");
         #endregion
 
-		#region Methods
+        #region Methods
         public override string ToSWRLString()
         {
             StringBuilder sb = new StringBuilder();
@@ -66,9 +66,9 @@ namespace OWLSharp.Ontology
             return sb.ToString();
         }
 
-		internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
-		{
-			RDFGraph graph = new RDFGraph();
+        internal override RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
+        {
+            RDFGraph graph = new RDFGraph();
             expressionIRI = expressionIRI ?? GetIRI();
 
             RDFResource clsExpressionIRI = ClassExpression.GetIRI();
@@ -76,8 +76,8 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, clsExpressionIRI));
             graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
 
-			return graph;
-		}
-		#endregion
+            return graph;
+        }
+        #endregion
     }
 }

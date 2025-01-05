@@ -156,57 +156,57 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(lit.DatatypeIRI, RDFVocabulary.XSD.STRING.ToString()));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertLiteralToGraph()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFGraph graph = lit.ToRDFGraph();
+            RDFGraph graph = lit.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 0);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertLiteralToResource()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFResource representative = lit.GetIRI();
+            RDFResource representative = lit.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.IsBlank);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertLiteralToPlainLiteral()
         {
             OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello"));
-			RDFLiteral rdfLit = lit.GetLiteral();
+            RDFLiteral rdfLit = lit.GetLiteral();
 
             Assert.IsNotNull(rdfLit);
             Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL 
-							&& string.Equals(rdfLitPL.ToString(), "hello"));
+                            && string.Equals(rdfLitPL.ToString(), "hello"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertLiteralToPlainLiteralWithLanguage()
         {
             OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello", "en-US--ltr"));
-			RDFLiteral rdfLit = lit.GetLiteral();
+            RDFLiteral rdfLit = lit.GetLiteral();
 
             Assert.IsNotNull(rdfLit);
             Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL 
-							&& string.Equals(rdfLitPL.ToString(), "hello@EN-US--LTR"));
+                            && string.Equals(rdfLitPL.ToString(), "hello@EN-US--LTR"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertLiteralToTypedLiteral()
         {
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
-			RDFLiteral rdfLit = lit.GetLiteral();
+            RDFLiteral rdfLit = lit.GetLiteral();
 
             Assert.IsNotNull(rdfLit);
             Assert.IsTrue(rdfLit is RDFTypedLiteral rdfLitTL 
-							&& string.Equals(rdfLitTL.ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
+                            && string.Equals(rdfLitTL.ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
         }
         #endregion
     }

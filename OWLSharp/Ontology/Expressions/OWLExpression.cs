@@ -53,7 +53,7 @@ namespace OWLSharp.Ontology
     [XmlInclude(typeof(OWLObjectSomeValuesFrom))]
     [XmlInclude(typeof(OWLObjectUnionOf))]
     public class OWLExpression 
-	{
+    {
         #region Properties
         [XmlIgnore]
         internal RDFResource ExpressionIRI { get; set; }
@@ -72,7 +72,7 @@ namespace OWLSharp.Ontology
             => RDFModelUtilities.GetShortUri(GetIRI().URI);
 
         internal virtual RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
-			=> new RDFGraph();
+            => new RDFGraph();
         #endregion
     }
 

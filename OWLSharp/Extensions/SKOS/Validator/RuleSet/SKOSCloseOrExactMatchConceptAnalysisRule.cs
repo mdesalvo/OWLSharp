@@ -23,7 +23,7 @@ namespace OWLSharp.Extensions.SKOS
     internal class SKOSCloseOrExactMatchConceptAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis.ToString();
-		internal static readonly string rulesugg1A = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:closeMatch VS skos:related)";
+        internal static readonly string rulesugg1A = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:closeMatch VS skos:related)";
         internal static readonly string rulesugg1B = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:closeMatch VS skos:relatedMatch)";
         internal static readonly string rulesugg2A = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:related)";
         internal static readonly string rulesugg2B = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:relatedMatch)";

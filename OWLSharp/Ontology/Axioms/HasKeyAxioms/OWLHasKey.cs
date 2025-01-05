@@ -95,11 +95,11 @@ namespace OWLSharp.Ontology
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(clsExprIRI, RDFVocabulary.OWL.HAS_KEY, keyPropsCollection.ReificationSubject);
-			graph.AddTriple(axiomTriple);
+            graph.AddTriple(axiomTriple);
 
-			//Annotations
-			foreach (OWLAnnotation annotation in Annotations)
-				graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
+            //Annotations
+            foreach (OWLAnnotation annotation in Annotations)
+                graph = graph.UnionWith(annotation.ToRDFGraph(axiomTriple));
 
             return graph;
         }

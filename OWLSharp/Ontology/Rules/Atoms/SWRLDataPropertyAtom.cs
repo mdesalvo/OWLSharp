@@ -62,11 +62,11 @@ namespace OWLSharp.Ontology
                 RDFQueryEngine.AddColumn(atomResult, rightArgumentString);
 
             //Extract data property assertions of the atom predicate
-			List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLDataPropertyAssertion> atomPredicateAssertions = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, (OWLDataProperty)Predicate);
             if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
                 atomPredicateAssertions = atomPredicateAssertions.Where(asn => asn.Literal.GetLiteral().Equals(rightArgumentLiteral.GetLiteral()))
-																 .ToList();
+                                                                 .ToList();
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
@@ -130,23 +130,23 @@ namespace OWLSharp.Ontology
                 if (leftArgumentValue is RDFResource leftArgumentValueResource
                      && rightArgumentValue is RDFLiteral rightArgumentValueLiteral)
                 {
-					//Build the inference individual
-					OWLIndividualExpression dpAsnIdvExpr;
-					if (leftArgumentValueResource.IsBlank)
-						dpAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
-					else
-						dpAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
+                    //Build the inference individual
+                    OWLIndividualExpression dpAsnIdvExpr;
+                    if (leftArgumentValueResource.IsBlank)
+                        dpAsnIdvExpr = new OWLAnonymousIndividual(leftArgumentValueResource.ToString().Substring(6));
+                    else
+                        dpAsnIdvExpr = new OWLNamedIndividual(leftArgumentValueResource);
 
-					//Create the inference
+                    //Create the inference
                     OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(
-						(OWLDataProperty)Predicate, 
-						new OWLLiteral(rightArgumentValueLiteral)) 
-						{ 
-							IndividualExpression = dpAsnIdvExpr, 
-							IsInference = true 
-						};
-					inference.GetXML();
-					inferences.Add(new OWLInference(dataPropertyAtomString, inference));
+                        (OWLDataProperty)Predicate, 
+                        new OWLLiteral(rightArgumentValueLiteral)) 
+                        { 
+                            IndividualExpression = dpAsnIdvExpr, 
+                            IsInference = true 
+                        };
+                    inference.GetXML();
+                    inferences.Add(new OWLInference(dataPropertyAtomString, inference));
                 }
             }
 

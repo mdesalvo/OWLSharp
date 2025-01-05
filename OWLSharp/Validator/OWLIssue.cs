@@ -16,19 +16,19 @@ namespace OWLSharp.Validator
     public class OWLIssue
     {
         #region Properties
-		public OWLEnums.OWLIssueSeverity Severity { get; internal set; }
+        public OWLEnums.OWLIssueSeverity Severity { get; internal set; }
         public string RuleName { get; internal set; }
         public string Description { get; internal set; }
-		public string Suggestion { get; internal set; }
+        public string Suggestion { get; internal set; }
         #endregion
 
         #region Ctors
         public OWLIssue(OWLEnums.OWLIssueSeverity severity , string ruleName, string description, string suggestion)
         {
-			Severity = severity;
+            Severity = severity;
             RuleName = ruleName?.Trim() ?? throw new OWLException("Cannot emit issue because given \"ruleName\" parameter is null");
             Description = description?.Trim() ?? throw new OWLException("Cannot emit issue because given \"description\" parameter is null");
-			Suggestion = suggestion?.Trim() ?? throw new OWLException("Cannot emit issue because given \"suggestion\" parameter is null");
+            Suggestion = suggestion?.Trim() ?? throw new OWLException("Cannot emit issue because given \"suggestion\" parameter is null");
         }
         #endregion
     }

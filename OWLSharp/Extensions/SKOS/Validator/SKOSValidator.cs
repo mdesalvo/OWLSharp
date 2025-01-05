@@ -30,7 +30,7 @@ namespace OWLSharp.Extensions.SKOS
 
         #region Ctors
         public SKOSValidator()
-			=> Rules = new List<SKOSEnums.SKOSValidatorRules>();
+            => Rules = new List<SKOSEnums.SKOSValidatorRules>();
         #endregion
 
         #region Methods
@@ -47,57 +47,57 @@ namespace OWLSharp.Extensions.SKOS
             if (ontology != null)
             {
                 OWLEvents.RaiseInfo($"Launching SKOS validator on ontology '{ontology.IRI}'...");
-				Rules = Rules.Distinct().ToList();
+                Rules = Rules.Distinct().ToList();
 
                 //Initialize issue registry
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>();
-				Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
+                Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
                 //Execute validator rules
                 Parallel.ForEach(Rules, rule =>
-				{
-					OWLEvents.RaiseInfo($"Launching SKOS rule {rule}...");
+                {
+                    OWLEvents.RaiseInfo($"Launching SKOS rule {rule}...");
 
-					switch (rule)
-					{
-						case SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis:
-							issueRegistry[SKOSAlternativeLabelAnalysisRule.rulename] = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
-							break;
+                    switch (rule)
+                    {
+                        case SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis:
+                            issueRegistry[SKOSAlternativeLabelAnalysisRule.rulename] = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.HiddenLabelAnalysis:
-							issueRegistry[SKOSHiddenLabelAnalysisRule.rulename] = SKOSHiddenLabelAnalysisRule.ExecuteRule(ontology);
-							break;
+                            issueRegistry[SKOSHiddenLabelAnalysisRule.rulename] = SKOSHiddenLabelAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.PreferredLabelAnalysis:
-							issueRegistry[SKOSPreferredLabelAnalysisRule.rulename] = SKOSPreferredLabelAnalysisRule.ExecuteRule(ontology);
-							break;
+                            issueRegistry[SKOSPreferredLabelAnalysisRule.rulename] = SKOSPreferredLabelAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.NotationAnalysis:
-							issueRegistry[SKOSNotationAnalysisRule.rulename] = SKOSNotationAnalysisRule.ExecuteRule(ontology);
-							break;
+                            issueRegistry[SKOSNotationAnalysisRule.rulename] = SKOSNotationAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.BroaderConceptAnalysis:
-							issueRegistry[SKOSBroaderConceptAnalysisRule.rulename] = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
-							break;
+                            issueRegistry[SKOSBroaderConceptAnalysisRule.rulename] = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis:
-							issueRegistry[SKOSNarrowerConceptAnalysisRule.rulename] = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
-							break;
+                            issueRegistry[SKOSNarrowerConceptAnalysisRule.rulename] = SKOSNarrowerConceptAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis:
-							issueRegistry[SKOSCloseOrExactMatchConceptAnalysisRule.rulename] = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
-							break;
+                            issueRegistry[SKOSCloseOrExactMatchConceptAnalysisRule.rulename] = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis:
-							issueRegistry[SKOSRelatedConceptAnalysisRule.rulename] = SKOSRelatedConceptAnalysisRule.ExecuteRule(ontology);
-							break;
+                            issueRegistry[SKOSRelatedConceptAnalysisRule.rulename] = SKOSRelatedConceptAnalysisRule.ExecuteRule(ontology);
+                            break;
                         case SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis:
                             issueRegistry[SKOSXLLiteralFormAnalysisRule.rulename] = SKOSXLLiteralFormAnalysisRule.ExecuteRule(ontology);
                             break;
                     }
 
-					OWLEvents.RaiseInfo($"Completed SKOS rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
-				});
+                    OWLEvents.RaiseInfo($"Completed SKOS rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
+                });
 
                 //Process issues registry
                 await Task.Run(() => 
-				{
-					issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
-					issueRegistry.Clear();
-				});           
+                {
+                    issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
+                    issueRegistry.Clear();
+                });           
 
                 OWLEvents.RaiseInfo($"Completed SKOS validator on ontology {ontology.IRI} => {issues.Count} issues");
             }

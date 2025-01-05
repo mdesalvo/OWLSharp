@@ -28,14 +28,14 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateReflexiveObjectProperty()
         {
-			OWLReflexiveObjectProperty reflexiveObjectProperty = new OWLReflexiveObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            OWLReflexiveObjectProperty reflexiveObjectProperty = new OWLReflexiveObjectProperty(
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
 
-			Assert.IsNotNull(reflexiveObjectProperty);
-			Assert.IsNotNull(reflexiveObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(reflexiveObjectProperty);
+            Assert.IsNotNull(reflexiveObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(reflexiveObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-		}
+        }
 
         [TestMethod]
         public void ShouldCreateReflexiveObjectInverseOf()
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldSerializeReflexiveObjectProperty()
         {
             OWLReflexiveObjectProperty reflexiveObjectProperty = new OWLReflexiveObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
             string serializedXML = OWLSerializer.SerializeObject(reflexiveObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -85,7 +85,7 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology();
             ontology.ObjectPropertyAxioms.Add(
                 new OWLReflexiveObjectProperty(
-					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -114,7 +114,7 @@ namespace OWLSharp.Test.Ontology
 </ReflexiveObjectProperty>");
 
             Assert.IsNotNull(reflexiveObjectProperty);
-			Assert.IsNotNull(reflexiveObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(reflexiveObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(reflexiveObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         }
@@ -148,9 +148,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <ReflexiveObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   </ReflexiveObjectProperty>
 </Ontology>");
@@ -160,10 +160,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty reflObjProp
                             && reflObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty reflObjProp1
-							&& string.Equals(reflObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(reflObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(reflObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty reflObjProp1
+                            && string.Equals(reflObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(reflObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(reflObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]
@@ -179,9 +179,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <ReflexiveObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectInverseOf>
       <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
     </ObjectInverseOf>

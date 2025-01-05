@@ -109,43 +109,43 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(annotation.ExpressionIRI.ToString().Equals("http://purl.org/dc/elements/1.1/creator"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIAnnotationPropertyToGraph()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR);
-			RDFGraph graph = ann.ToRDFGraph();
+            RDFGraph graph = ann.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameAnnotationPropertyToGraph()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
-			RDFGraph graph = ann.ToRDFGraph();
+            RDFGraph graph = ann.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.CREATOR, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRIAnnotationPropertyToResource()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(RDFVocabulary.DC.CREATOR);
-			RDFResource representative = ann.GetIRI();
+            RDFResource representative = ann.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.DC.CREATOR));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameAnnotationPropertyToResource()
         {
             OWLAnnotationProperty ann = new OWLAnnotationProperty(new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI));
-			RDFResource representative = ann.GetIRI();
+            RDFResource representative = ann.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.DC.CREATOR));

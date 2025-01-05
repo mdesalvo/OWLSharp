@@ -103,9 +103,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <EquivalentClasses>
     <Annotation>
-		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		<Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
     <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
   </EquivalentClasses>
@@ -116,13 +116,13 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.ClassAxioms.Single() is OWLEquivalentClasses djclsAsn
                             && string.Equals(((OWLClass)djclsAsn.ClassExpressions[0]).IRI, "http://xmlns.com/foaf/0.1/Agent")
                             && string.Equals(((OWLClass)djclsAsn.ClassExpressions[1]).IRI, "http://xmlns.com/foaf/0.1/Organization"));
-			Assert.IsTrue(ontology.ClassAxioms.Single() is OWLEquivalentClasses djclsAsn1
-							&& string.Equals(djclsAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(djclsAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(djclsAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ClassAxioms.Single() is OWLEquivalentClasses djclsAsn1
+                            && string.Equals(djclsAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(djclsAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(djclsAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvert2EquivalentClassesToGraph()
         {
             OWLEquivalentClasses equivalentClasses = new OWLEquivalentClasses(
@@ -141,8 +141,8 @@ namespace OWLSharp.Test.Ontology
         {
             OWLEquivalentClasses equivalentClasses = new OWLEquivalentClasses(
                 [ new OWLClass(RDFVocabulary.FOAF.AGENT), 
-				  new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
-				  new OWLClass(RDFVocabulary.FOAF.PERSON) ]);
+                  new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+                  new OWLClass(RDFVocabulary.FOAF.PERSON) ]);
             RDFGraph graph = equivalentClasses.ToRDFGraph();
 
             Assert.IsNotNull(graph);

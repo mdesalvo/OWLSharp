@@ -28,14 +28,14 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateSymmetricObjectProperty()
         {
-			OWLSymmetricObjectProperty symmetricObjectProperty = new OWLSymmetricObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            OWLSymmetricObjectProperty symmetricObjectProperty = new OWLSymmetricObjectProperty(
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
 
-			Assert.IsNotNull(symmetricObjectProperty);
-			Assert.IsNotNull(symmetricObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(symmetricObjectProperty);
+            Assert.IsNotNull(symmetricObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(symmetricObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-		}
+        }
 
         [TestMethod]
         public void ShouldCreateSymmetricObjectInverseOf()
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldSerializeSymmetricObjectProperty()
         {
             OWLSymmetricObjectProperty symmetricObjectProperty = new OWLSymmetricObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
             string serializedXML = OWLSerializer.SerializeObject(symmetricObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -85,7 +85,7 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology();
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSymmetricObjectProperty(
-					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -114,7 +114,7 @@ namespace OWLSharp.Test.Ontology
 </SymmetricObjectProperty>");
 
             Assert.IsNotNull(symmetricObjectProperty);
-			Assert.IsNotNull(symmetricObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(symmetricObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(symmetricObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         }
@@ -148,9 +148,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <SymmetricObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   </SymmetricObjectProperty>
 </Ontology>");
@@ -160,10 +160,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSymmetricObjectProperty symObjProp
                             && symObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSymmetricObjectProperty symObjProp1
-							&& string.Equals(symObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(symObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(symObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSymmetricObjectProperty symObjProp1
+                            && string.Equals(symObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(symObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(symObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]
@@ -179,9 +179,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <SymmetricObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectInverseOf>
       <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
     </ObjectInverseOf>

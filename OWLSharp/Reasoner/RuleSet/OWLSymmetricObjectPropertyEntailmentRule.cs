@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,15 +25,15 @@ namespace OWLSharp.Reasoner
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-			List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
+            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
             
             //SymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV2,IDV1)
             foreach (OWLSymmetricObjectProperty symObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>())
-			{
+            {
                 //Extract object assertions of the current symmetric property
                 foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, symObjProp.ObjectPropertyExpression))
-				{
-					OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
+                {
+                    OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
                     OWLIndividualExpression opAsnTargetIdvExpr = opAsn.TargetIndividualExpression;
 
                     //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
@@ -57,7 +57,7 @@ namespace OWLSharp.Reasoner
                         inferences.Add(new OWLInference(rulename, inference));
                     }   
                 }
-			}
+            }
 
             return inferences;
         }

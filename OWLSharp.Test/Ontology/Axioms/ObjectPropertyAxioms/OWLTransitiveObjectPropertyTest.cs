@@ -28,14 +28,14 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateTransitiveObjectProperty()
         {
-			OWLTransitiveObjectProperty transitiveObjectProperty = new OWLTransitiveObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+            OWLTransitiveObjectProperty transitiveObjectProperty = new OWLTransitiveObjectProperty(
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
 
-			Assert.IsNotNull(transitiveObjectProperty);
-			Assert.IsNotNull(transitiveObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(transitiveObjectProperty);
+            Assert.IsNotNull(transitiveObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(transitiveObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-		}
+        }
 
         [TestMethod]
         public void ShouldCreateTransitiveObjectInverseOf()
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldSerializeTransitiveObjectProperty()
         {
             OWLTransitiveObjectProperty transitiveObjectProperty = new OWLTransitiveObjectProperty(
-				new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
             string serializedXML = OWLSerializer.SerializeObject(transitiveObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -85,7 +85,7 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology();
             ontology.ObjectPropertyAxioms.Add(
                 new OWLTransitiveObjectProperty(
-					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -114,7 +114,7 @@ namespace OWLSharp.Test.Ontology
 </TransitiveObjectProperty>");
 
             Assert.IsNotNull(transitiveObjectProperty);
-			Assert.IsNotNull(transitiveObjectProperty.ObjectPropertyExpression);
+            Assert.IsNotNull(transitiveObjectProperty.ObjectPropertyExpression);
             Assert.IsTrue(transitiveObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         }
@@ -148,9 +148,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <TransitiveObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
   </TransitiveObjectProperty>
 </Ontology>");
@@ -160,10 +160,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLTransitiveObjectProperty transObjProp
                             && transObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
                             && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLTransitiveObjectProperty transObjProp1
-							&& string.Equals(transObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(transObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(transObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLTransitiveObjectProperty transObjProp1
+                            && string.Equals(transObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(transObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(transObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]
@@ -179,9 +179,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <TransitiveObjectProperty>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <ObjectInverseOf>
       <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
     </ObjectInverseOf>

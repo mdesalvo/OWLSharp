@@ -86,6 +86,6 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(OWLAxiomHelper.RemoveDuplicates(new List<OWLAxiom>()).Count == 0);
             Assert.IsTrue(OWLAxiomHelper.RemoveDuplicates(null as List<OWLAxiom>).Count == 0);
         }
-		#endregion
+        #endregion
     }
 }

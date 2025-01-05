@@ -16,12 +16,8 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.GEO;
-using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OWLSharp.Test.Extensions.GEO
 {

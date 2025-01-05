@@ -29,7 +29,7 @@ namespace OWLSharp.Ontology
 
         [XmlAttribute("abbreviatedIRI", DataType="QName")]
         public XmlQualifiedName AbbreviatedIRI { get; set; }
-		#endregion
+        #endregion
 
         #region Ctors
         internal OWLNamedIndividual() { }

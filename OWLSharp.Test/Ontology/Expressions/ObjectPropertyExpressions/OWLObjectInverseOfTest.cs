@@ -70,23 +70,23 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(objectInverseOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertObjectInverseOfToGraph()
         {
             OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-			RDFGraph graph = objectInverseOf.ToRDFGraph();
+            RDFGraph graph = objectInverseOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertObjectInverseOfToResource()
         {
             OWLObjectInverseOf objectInverseOf = new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-			RDFResource representative = objectInverseOf.GetIRI();
+            RDFResource representative = objectInverseOf.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.IsBlank);

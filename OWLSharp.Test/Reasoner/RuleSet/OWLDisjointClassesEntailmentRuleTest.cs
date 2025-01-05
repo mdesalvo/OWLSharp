@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,37 +31,37 @@ namespace OWLSharp.Test.Reasoner
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Vegetal"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Fungine")))
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Vegetal"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom"))),
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Fungine")))
                 ],
                 ClassAxioms = [ 
                     new OWLDisjointClasses([
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal")),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Vegetal"))]),
-					new OWLDisjointClasses([
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal")),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom"))]),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Vegetal"))]),
+                    new OWLDisjointClasses([
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom"))]),
                     new OWLDisjointClasses([
                         new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Vegetal")),
                         new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom"))]),
                     new OWLEquivalentClasses([
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom")),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Fungine"))
-					])
-				]
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mushroom")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Fungine"))
+                    ])
+                ]
             };
             List<OWLInference> inferences = OWLDisjointClassesEntailmentRule.ExecuteRule(ontology);
             
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-			Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf 
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf 
                             && string.Equals(inf.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Vegetal")
                             && string.Equals(inf.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf1 
                             && string.Equals(inf1.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mushroom")
                             && string.Equals(inf1.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
-			Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf2 
+            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf2 
                             && string.Equals(inf2.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mushroom")
                             && string.Equals(inf2.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Vegetal")));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf3

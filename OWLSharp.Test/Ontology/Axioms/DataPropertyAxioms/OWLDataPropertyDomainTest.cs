@@ -28,19 +28,19 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateDataPropertyDomain()
         {
-			OWLDataPropertyDomain dataPropertyDomain = new OWLDataPropertyDomain(
-				new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
-				new OWLClass(RDFVocabulary.FOAF.PERSON));
+            OWLDataPropertyDomain dataPropertyDomain = new OWLDataPropertyDomain(
+                new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLClass(RDFVocabulary.FOAF.PERSON));
 
-			Assert.IsNotNull(dataPropertyDomain);
-			Assert.IsNotNull(dataPropertyDomain.DataProperty);
+            Assert.IsNotNull(dataPropertyDomain);
+            Assert.IsNotNull(dataPropertyDomain.DataProperty);
             Assert.IsTrue(string.Equals(dataPropertyDomain.DataProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
             Assert.IsNotNull(dataPropertyDomain.ClassExpression);
             Assert.IsTrue(dataPropertyDomain.ClassExpression is OWLClass cls 
-							&& string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
-		}
+                            && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyDomainBecauseNullDataProperty()
             => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyDomain(
                 null,
@@ -52,12 +52,12 @@ namespace OWLSharp.Test.Ontology
                 new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
                 null));
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldSerializeDataPropertyDomain()
         {
             OWLDataPropertyDomain dataPropertyDomain = new OWLDataPropertyDomain(
-				new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
-				new OWLClass(RDFVocabulary.FOAF.PERSON));
+                new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
+                new OWLClass(RDFVocabulary.FOAF.PERSON));
             string serializedXML = OWLSerializer.SerializeObject(dataPropertyDomain);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -70,8 +70,8 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology();
             ontology.DataPropertyAxioms.Add(
                 new OWLDataPropertyDomain(
-					new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
-					new OWLClass(RDFVocabulary.FOAF.PERSON)));
+                    new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
+                    new OWLClass(RDFVocabulary.FOAF.PERSON)));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
@@ -88,11 +88,11 @@ namespace OWLSharp.Test.Ontology
 </DataPropertyDomain>");
 
             Assert.IsNotNull(dataPropertyDomain);
-			Assert.IsNotNull(dataPropertyDomain.DataProperty);
+            Assert.IsNotNull(dataPropertyDomain.DataProperty);
             Assert.IsTrue(string.Equals(dataPropertyDomain.DataProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
             Assert.IsNotNull(dataPropertyDomain.ClassExpression);
             Assert.IsTrue(dataPropertyDomain.ClassExpression is OWLClass cls 
-							&& string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
+                            && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
         }
 
         [TestMethod]
@@ -108,9 +108,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <DataPropertyDomain>
     <Annotation>
-	  <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-	  <Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+      <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
     <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
   </DataPropertyDomain>
@@ -121,10 +121,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDataPropertyDomain dtPropDom
                             && string.Equals(dtPropDom.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString())
                             && string.Equals(((OWLClass)dtPropDom.ClassExpression).IRI, RDFVocabulary.FOAF.PERSON.ToString()));
-			Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDataPropertyDomain dtPropDom1
-							&& string.Equals(dtPropDom1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(dtPropDom1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(dtPropDom1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDataPropertyDomain dtPropDom1
+                            && string.Equals(dtPropDom1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(dtPropDom1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(dtPropDom1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]

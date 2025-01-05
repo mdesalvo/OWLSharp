@@ -27,25 +27,25 @@ namespace OWLSharp.Test.Ontology
     {
         #region Tests
         [TestMethod]
-		public void ShouldCreateHasKey()
-		{
-			OWLHasKey hasKey = new OWLHasKey(
-				new OWLClass(RDFVocabulary.FOAF.AGENT),
-				[new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-				[new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
+        public void ShouldCreateHasKey()
+        {
+            OWLHasKey hasKey = new OWLHasKey(
+                new OWLClass(RDFVocabulary.FOAF.AGENT),
+                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+                [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
 
-			Assert.IsNotNull(hasKey);
-			Assert.IsTrue(hasKey.ClassExpression is OWLClass cls 
-							&& string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
+            Assert.IsNotNull(hasKey);
+            Assert.IsTrue(hasKey.ClassExpression is OWLClass cls 
+                            && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
             Assert.IsTrue(hasKey.ObjectPropertyExpressions.Single() is OWLObjectProperty objProp 
-							&& string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
+                            && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
             Assert.IsTrue(hasKey.DataProperties.Single() is OWLDataProperty dtProp
                             && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
         }
 
-		[TestMethod]
-		public void ShouldSerializeHasKey()
-		{
+        [TestMethod]
+        public void ShouldSerializeHasKey()
+        {
             OWLHasKey hasKey = new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLObjectProperty(RDFVocabulary.FOAF.FOCUS)],
@@ -54,12 +54,12 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<HasKey><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/focus"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></HasKey>"));
-		}
+        }
 
-		[TestMethod]
-		public void ShouldDeserializeHasKey()
-		{
-			OWLHasKey hasKey = OWLSerializer.DeserializeObject<OWLHasKey>(
+        [TestMethod]
+        public void ShouldDeserializeHasKey()
+        {
+            OWLHasKey hasKey = OWLSerializer.DeserializeObject<OWLHasKey>(
 @"<HasKey><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/focus"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></HasKey>");
 
             Assert.IsNotNull(hasKey);
@@ -73,9 +73,9 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
         }
 
-		[TestMethod]
-		public void ShouldThrowExceptionOnCreatingHasKeyBecauseNullClassExpression()
-			=> Assert.ThrowsException<OWLException>(() => new OWLHasKey(
+        [TestMethod]
+        public void ShouldThrowExceptionOnCreatingHasKeyBecauseNullClassExpression()
+            => Assert.ThrowsException<OWLException>(() => new OWLHasKey(
                 null,
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
@@ -115,18 +115,18 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertHasKeyWithAnnotationToGraph()
         {
             OWLHasKey hasKey = new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])
-				{
-					Annotations = [
-						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
-					]
-				};
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                    ]
+                };
             RDFGraph graph = hasKey.ToRDFGraph();
 
             Assert.IsNotNull(graph);
@@ -139,30 +139,30 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			//Annotations
-			Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+            //Annotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.HAS_KEY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertHasKeyWithSubAnnotationToGraph()
         {
             OWLHasKey hasKey = new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])
-				{
-					Annotations = [
-						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
-						{
-							Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("title", RDFModelEnums.RDFDatatypes.XSD_STRING)))
-						}
-					]
-				};
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("title", RDFModelEnums.RDFDatatypes.XSD_STRING)))
+                        }
+                    ]
+                };
             RDFGraph graph = hasKey.ToRDFGraph();
 
             Assert.IsNotNull(graph);
@@ -175,18 +175,18 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			//Annotations+SubAnnotations
-			Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, null, null].TriplesCount == 2);
+            //Annotations+SubAnnotations
+            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, null, null].TriplesCount == 2);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.HAS_KEY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFResource("ex:title"), null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.DC.DCTERMS.TITLE, null, new RDFTypedLiteral("title", RDFModelEnums.RDFDatatypes.XSD_STRING)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, new RDFResource("ex:title"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.DC.DCTERMS.TITLE, null, new RDFTypedLiteral("title", RDFModelEnums.RDFDatatypes.XSD_STRING)].TriplesCount == 1);
         }
         #endregion
     }

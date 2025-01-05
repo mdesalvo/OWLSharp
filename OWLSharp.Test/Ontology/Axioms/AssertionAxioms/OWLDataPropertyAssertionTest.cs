@@ -31,16 +31,16 @@ namespace OWLSharp.Test.Ontology
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
 
             Assert.IsNotNull(dataPropertyAssertion);
             Assert.IsNotNull(dataPropertyAssertion.DataProperty);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
             Assert.IsNotNull(dataPropertyAssertion.IndividualExpression);
             Assert.IsTrue(string.Equals(((OWLNamedIndividual)dataPropertyAssertion.IndividualExpression).IRI, "ex:Bob"));
-			Assert.IsNotNull(dataPropertyAssertion.Literal);
+            Assert.IsNotNull(dataPropertyAssertion.Literal);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
-			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
         }
 
         [TestMethod]
@@ -48,21 +48,21 @@ namespace OWLSharp.Test.Ontology
             => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
                 null,
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualDataPropertyAssertionBecauseNullNamedIndividual()
             => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 null as OWLNamedIndividual,
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualDataPropertyAssertionBecauseNullLiteral()
             => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				null));
+                null));
 
         [TestMethod]
         public void ShouldSerializeNamedIndividualDataPropertyAssertion()
@@ -70,51 +70,51 @@ namespace OWLSharp.Test.Ontology
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             string serializedXML = OWLSerializer.SerializeObject(dataPropertyAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><NamedIndividual IRI=""ex:Bob"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldSerializeNamedIndividualDataPropertyAssertionViaOntology()
         {
-			OWLOntology ontology = new OWLOntology();
-			ontology.AssertionAxioms.Add(
-				new OWLDataPropertyAssertion(
-					new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-					new OWLNamedIndividual(new RDFResource("ex:Bob")),
-					new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
-					{
-						Annotations = [ new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR), new OWLLiteral(new RDFPlainLiteral("Steve","en"))) ]
-					});
+            OWLOntology ontology = new OWLOntology();
+            ontology.AssertionAxioms.Add(
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                    new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+                    {
+                        Annotations = [ new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR), new OWLLiteral(new RDFPlainLiteral("Steve","en"))) ]
+                    });
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DataPropertyAssertion><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN"">Steve</Literal></Annotation><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><NamedIndividual IRI=""ex:Bob"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion></Ontology>"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeserializeNamedIndividualDataPropertyAssertion()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = OWLSerializer.DeserializeObject<OWLDataPropertyAssertion>(
 @"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><NamedIndividual IRI=""ex:Bob"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>");
         
-			Assert.IsNotNull(dataPropertyAssertion);
+            Assert.IsNotNull(dataPropertyAssertion);
             Assert.IsNotNull(dataPropertyAssertion.DataProperty);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
             Assert.IsNotNull(dataPropertyAssertion.IndividualExpression);
             Assert.IsTrue(string.Equals(((OWLNamedIndividual)dataPropertyAssertion.IndividualExpression).IRI, "ex:Bob"));
-			Assert.IsNotNull(dataPropertyAssertion.Literal);
+            Assert.IsNotNull(dataPropertyAssertion.Literal);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
-			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
-		}
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeserializeNamedIndividualDataPropertyAssertionViaOntology()
         {
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
     <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -133,35 +133,35 @@ namespace OWLSharp.Test.Ontology
     </DataPropertyAssertion>
 </Ontology>");
 
-			Assert.IsNotNull(ontology);
+            Assert.IsNotNull(ontology);
             Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDataPropertyAssertion dpAsn
                             && string.Equals(dpAsn.DataProperty.IRI, "http://xmlns.com/foaf/0.1/age")
                             && string.Equals(((OWLNamedIndividual)dpAsn.IndividualExpression).IRI, "ex:Bob")
-							&& string.Equals(dpAsn.Literal.Value, "25")
-							&& string.Equals(dpAsn.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
-			Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDataPropertyAssertion dpAsn1
-							&& string.Equals(dpAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+                            && string.Equals(dpAsn.Literal.Value, "25")
+                            && string.Equals(dpAsn.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDataPropertyAssertion dpAsn1
+                            && string.Equals(dpAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldCreateAnonymousIndividualDataPropertyAssertion()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLAnonymousIndividual("AnonIdv"),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
 
             Assert.IsNotNull(dataPropertyAssertion);
             Assert.IsNotNull(dataPropertyAssertion.DataProperty);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
             Assert.IsNotNull(dataPropertyAssertion.IndividualExpression);
             Assert.IsTrue(string.Equals(((OWLAnonymousIndividual)dataPropertyAssertion.IndividualExpression).NodeID, "AnonIdv"));
-			Assert.IsNotNull(dataPropertyAssertion.Literal);
+            Assert.IsNotNull(dataPropertyAssertion.Literal);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
-			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
         }
 
         [TestMethod]
@@ -169,21 +169,21 @@ namespace OWLSharp.Test.Ontology
             => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
                 null,
                 new OWLAnonymousIndividual("AnonIdv"),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullAnonymousIndividual()
             => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 null as OWLAnonymousIndividual,
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullLiteral()
             => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLAnonymousIndividual("AnonIdv"),
-				null));
+                null));
 
         [TestMethod]
         public void ShouldSerializeAnonymousIndividualDataPropertyAssertion()
@@ -191,53 +191,53 @@ namespace OWLSharp.Test.Ontology
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLAnonymousIndividual("AnonIdv"),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             string serializedXML = OWLSerializer.SerializeObject(dataPropertyAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><AnonymousIndividual nodeID=""AnonIdv"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeserializeAnonymousIndividualDataPropertyAssertion()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = OWLSerializer.DeserializeObject<OWLDataPropertyAssertion>(
 @"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><AnonymousIndividual nodeID=""AnonIdv"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>");
         
-			Assert.IsNotNull(dataPropertyAssertion);
+            Assert.IsNotNull(dataPropertyAssertion);
             Assert.IsNotNull(dataPropertyAssertion.DataProperty);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
             Assert.IsNotNull(dataPropertyAssertion.IndividualExpression);
             Assert.IsTrue(string.Equals(((OWLAnonymousIndividual)dataPropertyAssertion.IndividualExpression).NodeID, "AnonIdv"));
-			Assert.IsNotNull(dataPropertyAssertion.Literal);
+            Assert.IsNotNull(dataPropertyAssertion.Literal);
             Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.Value, "25"));
-			Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
-		}
+            Assert.IsTrue(string.Equals(dataPropertyAssertion.Literal.DatatypeIRI, "http://www.w3.org/2001/XMLSchema#integer"));
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertDataPropertyAssertionToGraph()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-			RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+            RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 3);
             Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.FOAF.AGE, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertDataPropertyAssertionWithAnonymousIndividualToGraph()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLAnonymousIndividual("Bob"),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-			RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
+            RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 2);
@@ -245,26 +245,26 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertDataPropertyAssertionWithAnnotationToGraph()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
-			{
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
             };
-			RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
+            RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 9);
             Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.FOAF.AGE, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
-			//Annotations
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:Bob"), null].TriplesCount == 1);
@@ -273,25 +273,25 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertDataPropertyAssertionWithAnonymousIndividualWithAnnotationToGraph()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLAnonymousIndividual("Bob"),
-				new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
-			{
+                new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            {
                 Annotations = [
                     new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                 ]
             };
-			RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
+            RDFGraph graph = dataPropertyAssertion.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 8);
             Assert.IsTrue(graph[new RDFResource("bnode:Bob"), RDFVocabulary.FOAF.AGE, null, new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER)].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			//Annotations
+            //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("bnode:Bob"), null].TriplesCount == 1);

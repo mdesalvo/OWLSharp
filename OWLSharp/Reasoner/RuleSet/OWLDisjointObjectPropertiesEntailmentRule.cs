@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,11 +26,11 @@ namespace OWLSharp.Reasoner
             List<OWLInference> inferences = new List<OWLInference>();
 
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
-            															 .Select(ax => (OWLObjectProperty)ax.Expression))
-			{
-				List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
+                                                                         .Select(ax => (OWLObjectProperty)ax.Expression))
+            {
+                List<OWLObjectPropertyExpression> disjointObjectPropertyExpressions = ontology.GetDisjointObjectProperties(declaredObjectProperty);
                 foreach (OWLObjectProperty disjointObjectProperty in disjointObjectPropertyExpressions.OfType<OWLObjectProperty>())
-				{
+                {
                     OWLDisjointObjectProperties inferenceA = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectProperty }) { IsInference=true };
                     inferenceA.GetXML();
                     inferences.Add(new OWLInference(rulename, inferenceA));
@@ -40,7 +40,7 @@ namespace OWLSharp.Reasoner
                     inferences.Add(new OWLInference(rulename, inferenceB));
                 }
                 foreach (OWLObjectInverseOf disjointObjectInverseOf in disjointObjectPropertyExpressions.OfType<OWLObjectInverseOf>())
-				{
+                {
                     OWLDisjointObjectProperties inferenceA = new OWLDisjointObjectProperties(new List<OWLObjectPropertyExpression>() { declaredObjectProperty, disjointObjectInverseOf }) { IsInference=true };
                     inferenceA.GetXML();
                     inferences.Add(new OWLInference(rulename, inferenceA));
@@ -49,7 +49,7 @@ namespace OWLSharp.Reasoner
                     inferenceB.GetXML();
                     inferences.Add(new OWLInference(rulename, inferenceB));
                 }
-			}
+            }
             
             return inferences;
         }

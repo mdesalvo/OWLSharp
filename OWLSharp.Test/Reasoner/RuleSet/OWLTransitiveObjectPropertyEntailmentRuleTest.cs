@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,11 +31,11 @@ namespace OWLSharp.Test.Reasoner
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")))
@@ -49,11 +49,11 @@ namespace OWLSharp.Test.Reasoner
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-					new OWLObjectPropertyAssertion(
+                    new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny"))),
-					new OWLObjectPropertyAssertion(
+                    new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))

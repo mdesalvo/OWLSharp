@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,80 +28,80 @@ namespace OWLSharp.Test.Validator
         {
             OWLOntology ontology = new OWLOntology()
             {
-				DataPropertyAxioms = [
+                DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-						new OWLDataProperty(new RDFResource("ex:age")) ),
-					new OWLSubDataPropertyOf(
-						new OWLDataProperty(new RDFResource("ex:age")), 
-						new OWLDataProperty(RDFVocabulary.FOAF.AGE))
+                        new OWLDataProperty(new RDFResource("ex:age")) ),
+                    new OWLSubDataPropertyOf(
+                        new OWLDataProperty(new RDFResource("ex:age")), 
+                        new OWLDataProperty(RDFVocabulary.FOAF.AGE))
                 ],
-				DeclarationAxioms = [ 
+                DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
                 ]
             };
             List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 2);
+            Assert.IsTrue(issues.Count == 2);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldAnalyzeSubDataPropertyOfEquivalentDataPropertiesCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
-				DataPropertyAxioms = [
+                DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-						new OWLDataProperty(new RDFResource("ex:age")) ),
-					new OWLEquivalentDataProperties([
+                        new OWLDataProperty(new RDFResource("ex:age")) ),
+                    new OWLEquivalentDataProperties([
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-						new OWLDataProperty(new RDFResource("ex:age")) ])
+                        new OWLDataProperty(new RDFResource("ex:age")) ])
                 ],
-				DeclarationAxioms = [ 
+                DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
                 ]
             };
             List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldAnalyzeSubDataPropertyOfDisjointDataPropertiesCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
-				DataPropertyAxioms = [
+                DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-						new OWLDataProperty(new RDFResource("ex:age")) ),
-					new OWLDisjointDataProperties([
+                        new OWLDataProperty(new RDFResource("ex:age")) ),
+                    new OWLDisjointDataProperties([
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-						new OWLDataProperty(new RDFResource("ex:age")) ])
+                        new OWLDataProperty(new RDFResource("ex:age")) ])
                 ],
-				DeclarationAxioms = [ 
+                DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-					new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
+                    new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
                 ]
             };
             List<OWLIssue> issues = OWLSubDataPropertyOfAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
-			Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
+            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
         }
         #endregion
     }

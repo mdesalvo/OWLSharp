@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Ontology
     public class OWLDeclarationHelperTest
     {
         #region Tests
-		[TestMethod]
+        [TestMethod]
         public void ShouldGetDeclarationAxioms()
         {
             OWLOntology ontology = new OWLOntology()
@@ -47,40 +47,40 @@ namespace OWLSharp.Test.Ontology
 
             List<OWLDeclaration> classDeclarations = ontology.GetDeclarationAxiomsOfType<OWLClass>();
             Assert.IsTrue(classDeclarations.Count == 3);
-			List<OWLClass> declaredClasses = ontology.GetDeclaredEntitiesOfType<OWLClass>();
-			Assert.IsTrue(declaredClasses.Count == 3);
-			Assert.IsTrue(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
-			Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.DOCUMENT)));
-			Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(null));
-			Assert.IsFalse((null as OWLOntology).CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
+            List<OWLClass> declaredClasses = ontology.GetDeclaredEntitiesOfType<OWLClass>();
+            Assert.IsTrue(declaredClasses.Count == 3);
+            Assert.IsTrue(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
+            Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.DOCUMENT)));
+            Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(null));
+            Assert.IsFalse((null as OWLOntology).CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
 
             List<OWLDeclaration> datatypeDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDatatype>();
             Assert.IsTrue(datatypeDeclarations.Count == 2);
-			List<OWLDatatype> declaredDatatypes = ontology.GetDeclaredEntitiesOfType<OWLDatatype>();
-			Assert.IsTrue(declaredDatatypes.Count == 2);
+            List<OWLDatatype> declaredDatatypes = ontology.GetDeclaredEntitiesOfType<OWLDatatype>();
+            Assert.IsTrue(declaredDatatypes.Count == 2);
 
             List<OWLDeclaration> objectPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>();
             Assert.IsTrue(objectPropertyDeclarations.Count == 1);
-			List<OWLObjectProperty> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>();
-			Assert.IsTrue(declaredObjectProperties.Count == 1);
+            List<OWLObjectProperty> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>();
+            Assert.IsTrue(declaredObjectProperties.Count == 1);
 
             List<OWLDeclaration> dataPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDataProperty>();
             Assert.IsTrue(dataPropertyDeclarations.Count == 1);
-			List<OWLDataProperty> declaredDataProperties = ontology.GetDeclaredEntitiesOfType<OWLDataProperty>();
-			Assert.IsTrue(declaredDataProperties.Count == 1);
+            List<OWLDataProperty> declaredDataProperties = ontology.GetDeclaredEntitiesOfType<OWLDataProperty>();
+            Assert.IsTrue(declaredDataProperties.Count == 1);
 
             List<OWLDeclaration> annotationPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>();
             Assert.IsTrue(annotationPropertyDeclarations.Count == 1);
-			List<OWLAnnotationProperty> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>();
-			Assert.IsTrue(declaredAnnotationProperties.Count == 1);
+            List<OWLAnnotationProperty> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>();
+            Assert.IsTrue(declaredAnnotationProperties.Count == 1);
 
             List<OWLDeclaration> individualDeclarations = ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>();
             Assert.IsTrue(individualDeclarations.Count == 1);
-			List<OWLNamedIndividual> declaredIndividuals = ontology.GetDeclaredEntitiesOfType<OWLNamedIndividual>();
-			Assert.IsTrue(declaredIndividuals.Count == 1);
+            List<OWLNamedIndividual> declaredIndividuals = ontology.GetDeclaredEntitiesOfType<OWLNamedIndividual>();
+            Assert.IsTrue(declaredIndividuals.Count == 1);
 
             Assert.IsTrue((null as OWLOntology).GetDeclarationAxiomsOfType<OWLClass>().Count == 0);
-			Assert.IsTrue((null as OWLOntology).GetDeclaredEntitiesOfType<OWLClass>().Count == 0);
+            Assert.IsTrue((null as OWLOntology).GetDeclaredEntitiesOfType<OWLClass>().Count == 0);
         }
 
         [TestMethod]

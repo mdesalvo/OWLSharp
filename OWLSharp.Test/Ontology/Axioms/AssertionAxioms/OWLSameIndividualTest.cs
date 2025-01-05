@@ -30,18 +30,18 @@ namespace OWLSharp.Test.Ontology
         {
             OWLSameIndividual SameIndividual = new OWLSameIndividual(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
 
             Assert.IsNotNull(SameIndividual);
             Assert.IsNotNull(SameIndividual.IndividualExpressions);
-			Assert.IsTrue(SameIndividual.IndividualExpressions.Count == 3);
+            Assert.IsTrue(SameIndividual.IndividualExpressions.Count == 3);
             Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Alice")));
-			Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Bob")));
-			Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Carl")));
+                            && string.Equals(nidv.IRI, "ex:Alice")));
+            Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Bob")));
+            Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Carl")));
         }
 
         [TestMethod]
@@ -61,50 +61,50 @@ namespace OWLSharp.Test.Ontology
         {
             OWLSameIndividual SameIndividual = new OWLSameIndividual(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
             string serializedXML = OWLSerializer.SerializeObject(SameIndividual);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<SameIndividual><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></SameIndividual>"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldSerializeSameIndividualViaOntology()
         {
-			OWLOntology ontology = new OWLOntology();
-			ontology.AssertionAxioms.Add(
-				new OWLSameIndividual(
+            OWLOntology ontology = new OWLOntology();
+            ontology.AssertionAxioms.Add(
+                new OWLSameIndividual(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLAnonymousIndividual("AnonIdv") ]));
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLAnonymousIndividual("AnonIdv") ]));
             string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
 @"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><SameIndividual><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></SameIndividual></Ontology>"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeserializeSameIndividual()
         {
             OWLSameIndividual SameIndividual = OWLSerializer.DeserializeObject<OWLSameIndividual>(
 @"<SameIndividual><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></SameIndividual>");
         
-			Assert.IsNotNull(SameIndividual);
+            Assert.IsNotNull(SameIndividual);
             Assert.IsNotNull(SameIndividual.IndividualExpressions);
-			Assert.IsTrue(SameIndividual.IndividualExpressions.Count == 3);
+            Assert.IsTrue(SameIndividual.IndividualExpressions.Count == 3);
             Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Alice")));
-			Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Bob")));
-			Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
-							&& string.Equals(nidv.IRI, "ex:Carl")));
-		}
+                            && string.Equals(nidv.IRI, "ex:Alice")));
+            Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Bob")));
+            Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
+                            && string.Equals(nidv.IRI, "ex:Carl")));
+        }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeserializeSameIndividualViaOntology()
         {
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <Ontology>
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -114,39 +114,39 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <SameIndividual>
     <Annotation>
-		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		<Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <NamedIndividual IRI=""ex:Alice"" />
     <NamedIndividual IRI=""ex:Bob"" />
     <AnonymousIndividual nodeID=""AnonIdv"" />
   </SameIndividual>
 </Ontology>");
 
-			Assert.IsNotNull(ontology);
+            Assert.IsNotNull(ontology);
             Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLSameIndividual diffAsn
                             && diffAsn.IndividualExpressions.Count == 3
-							&& diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
-								&& string.Equals(nidv.IRI, "ex:Alice"))
-							&& diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
-								&& string.Equals(nidv.IRI, "ex:Bob"))
-							&& diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv 
-								&& string.Equals(anonidv.NodeID, "AnonIdv")));
-			Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLSameIndividual diffAsn1
-							&& string.Equals(diffAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
+                            && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                                && string.Equals(nidv.IRI, "ex:Alice"))
+                            && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                                && string.Equals(nidv.IRI, "ex:Bob"))
+                            && diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv 
+                                && string.Equals(anonidv.NodeID, "AnonIdv")));
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLSameIndividual diffAsn1
+                            && string.Equals(diffAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(diffAsn1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertSameIndividualToGraph()
         {
             OWLSameIndividual sameIndividual = new OWLSameIndividual(
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
-				  new OWLNamedIndividual(new RDFResource("ex:Bob")),
-				  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
-			RDFGraph graph = sameIndividual.ToRDFGraph();
+                  new OWLNamedIndividual(new RDFResource("ex:Bob")),
+                  new OWLNamedIndividual(new RDFResource("ex:Carl")) ]);
+            RDFGraph graph = sameIndividual.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 6);

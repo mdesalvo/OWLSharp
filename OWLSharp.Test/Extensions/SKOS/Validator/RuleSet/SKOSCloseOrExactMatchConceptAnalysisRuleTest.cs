@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,10 +82,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1A));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:related)"));
         }
 
@@ -147,10 +147,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1B));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1B));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:relatedMatch)"));
         }
         
@@ -212,10 +212,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg2A));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg2A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:exactMatch VS skos:related)"));
         }
         
@@ -277,10 +277,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-			Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues.Count == 1);
             Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
-			Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
-			Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg2B));
+            Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg2B));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:exactMatch VS skos:relatedMatch)"));
         }
         #endregion

@@ -113,11 +113,11 @@ namespace OWLSharp.Ontology
             }
         }
     
-		internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
+        internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
         {
             //Hide hard-coded .NET prefixes (e.g: xsi)
-			if (xmlSerializerNamespaces == null)
-            	xmlSerializerNamespaces = new XmlSerializerNamespaces();
+            if (xmlSerializerNamespaces == null)
+                xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
             
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
@@ -156,7 +156,7 @@ namespace OWLSharp.Ontology
                 }
             }
         }
-	}
+    }
 
     internal class UTF8StringWriter : StringWriter
     {

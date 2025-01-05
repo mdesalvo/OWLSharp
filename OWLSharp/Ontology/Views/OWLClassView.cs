@@ -22,69 +22,69 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     public class OWLClassView
-	{
-		#region Properties
-		public OWLClass Class { get; internal set; }
-		internal string ClassIRI { get; set; }
+    {
+        #region Properties
+        public OWLClass Class { get; internal set; }
+        internal string ClassIRI { get; set; }
 
-		public OWLOntology Ontology { get; internal set; }
-		#endregion
+        public OWLOntology Ontology { get; internal set; }
+        #endregion
 
-		#region Ctors
-		public OWLClassView(OWLClass cls, OWLOntology ont)
-		{
-			Class = cls ?? throw new OWLException("Cannot create class view because given \"cls\" parameter is null");
-			Ontology = ont ?? throw new OWLException("Cannot create class view because given \"ont\" parameter is null");
-			ClassIRI = Class.GetIRI().ToString();
-		}
-		#endregion
+        #region Ctors
+        public OWLClassView(OWLClass cls, OWLOntology ont)
+        {
+            Class = cls ?? throw new OWLException("Cannot create class view because given \"cls\" parameter is null");
+            Ontology = ont ?? throw new OWLException("Cannot create class view because given \"ont\" parameter is null");
+            ClassIRI = Class.GetIRI().ToString();
+        }
+        #endregion
 
-		#region Methods
-		public Task<List<OWLClassExpression>> SubClassesAsync()
-			=> Task.Run(() => Ontology.GetSubClassesOf(Class));
+        #region Methods
+        public Task<List<OWLClassExpression>> SubClassesAsync()
+            => Task.Run(() => Ontology.GetSubClassesOf(Class));
 
-		public Task<List<OWLClassExpression>> SuperClassesAsync()
-			=> Task.Run(() => Ontology.GetSuperClassesOf(Class));
+        public Task<List<OWLClassExpression>> SuperClassesAsync()
+            => Task.Run(() => Ontology.GetSuperClassesOf(Class));
 
-		public Task<List<OWLClassExpression>> EquivalentClassesAsync()
-			=> Task.Run(() => Ontology.GetEquivalentClasses(Class));
+        public Task<List<OWLClassExpression>> EquivalentClassesAsync()
+            => Task.Run(() => Ontology.GetEquivalentClasses(Class));
 
-		public Task<List<OWLClassExpression>> DisjointClassesAsync()
-			=> Task.Run(() => Ontology.GetDisjointClasses(Class));
+        public Task<List<OWLClassExpression>> DisjointClassesAsync()
+            => Task.Run(() => Ontology.GetDisjointClasses(Class));
 
-		public Task<List<OWLIndividualExpression>> IndividualsAsync()
-			=> Task.Run(() => Ontology.GetIndividualsOf(Class));
+        public Task<List<OWLIndividualExpression>> IndividualsAsync()
+            => Task.Run(() => Ontology.GetIndividualsOf(Class));
 
-		public Task<List<OWLNamedIndividual>> NegativeIndividualsAsync()
-			=> Task.Run(() => Ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
-									  .Select(dax => (OWLNamedIndividual)dax.Expression)
-									  .Where(idv => Ontology.CheckIsNegativeIndividualOf(Class, idv))
-									  .ToList());
+        public Task<List<OWLNamedIndividual>> NegativeIndividualsAsync()
+            => Task.Run(() => Ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>()
+                                      .Select(dax => (OWLNamedIndividual)dax.Expression)
+                                      .Where(idv => Ontology.CheckIsNegativeIndividualOf(Class, idv))
+                                      .ToList());
 
-		public Task<List<IOWLEntity>> KeysAsync()
-			=> Task.Run(() => Ontology.KeyAxioms.Where(kax => string.Equals(kax.ClassExpression.GetIRI().ToString(), ClassIRI))
-												.SelectMany(kax => kax.DataProperties.Cast<IOWLEntity>()
-																	.Union(kax.ObjectPropertyExpressions.Cast<IOWLEntity>()))
-												.ToList());
+        public Task<List<IOWLEntity>> KeysAsync()
+            => Task.Run(() => Ontology.KeyAxioms.Where(kax => string.Equals(kax.ClassExpression.GetIRI().ToString(), ClassIRI))
+                                                .SelectMany(kax => kax.DataProperties.Cast<IOWLEntity>()
+                                                                    .Union(kax.ObjectPropertyExpressions.Cast<IOWLEntity>()))
+                                                .ToList());
 
-		public Task<List<OWLAnnotationAssertion>> ObjectAnnotationsAsync()
-			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Where(ann => string.Equals(ann.SubjectIRI, ClassIRI)
-									  				 && ann.ValueLiteral == null && !string.IsNullOrEmpty(ann.ValueIRI))
-									  .ToList());
+        public Task<List<OWLAnnotationAssertion>> ObjectAnnotationsAsync()
+            => Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
+                                      .Where(ann => string.Equals(ann.SubjectIRI, ClassIRI)
+                                                       && ann.ValueLiteral == null && !string.IsNullOrEmpty(ann.ValueIRI))
+                                      .ToList());
 
-		public Task<List<OWLAnnotationAssertion>> DataAnnotationsAsync()
-			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Where(ann => string.Equals(ann.SubjectIRI, ClassIRI)
-									  				 && ann.ValueLiteral != null && string.IsNullOrEmpty(ann.ValueIRI))
-									  .ToList());
+        public Task<List<OWLAnnotationAssertion>> DataAnnotationsAsync()
+            => Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
+                                      .Where(ann => string.Equals(ann.SubjectIRI, ClassIRI)
+                                                       && ann.ValueLiteral != null && string.IsNullOrEmpty(ann.ValueIRI))
+                                      .ToList());
 
-		public Task<bool> IsDeprecatedAsync()
-			=> Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
-									  .Any(ann => string.Equals(ann.SubjectIRI, ClassIRI)
-									  				&& ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
-													&& ann.ValueLiteral != null
-													&& ann.ValueLiteral.GetLiteral().Equals(RDFTypedLiteral.True)));
-		#endregion
-	}
+        public Task<bool> IsDeprecatedAsync()
+            => Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
+                                      .Any(ann => string.Equals(ann.SubjectIRI, ClassIRI)
+                                                      && ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
+                                                    && ann.ValueLiteral != null
+                                                    && ann.ValueLiteral.GetLiteral().Equals(RDFTypedLiteral.True)));
+        #endregion
+    }
 }

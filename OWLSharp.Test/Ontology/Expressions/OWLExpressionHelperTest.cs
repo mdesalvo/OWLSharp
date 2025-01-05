@@ -25,27 +25,27 @@ namespace OWLSharp.Test.Ontology
     public class OWLExpressionHelperTest
     {
         #region Tests
-		[TestMethod]
-		public void ShouldRemoveDuplicates()
-		{
-			OWLDataOneOf dataOneOf = new OWLDataOneOf([new OWLLiteral(new RDFPlainLiteral("hello","en"))]);
-			OWLNamedIndividual namedIdv = new OWLNamedIndividual(new RDFResource("ex:Mark"));
+        [TestMethod]
+        public void ShouldRemoveDuplicates()
+        {
+            OWLDataOneOf dataOneOf = new OWLDataOneOf([new OWLLiteral(new RDFPlainLiteral("hello","en"))]);
+            OWLNamedIndividual namedIdv = new OWLNamedIndividual(new RDFResource("ex:Mark"));
 
-			List<OWLExpression>	expressions = new List<OWLExpression>()
-			{
-				new OWLClass(RDFVocabulary.FOAF.PERSON),
-				namedIdv,
-				new OWLClass(RDFVocabulary.FOAF.AGENT),
-				new OWLClass(RDFVocabulary.FOAF.PERSON),
-				dataOneOf,
-				dataOneOf,
-				namedIdv
-			};
+            List<OWLExpression>    expressions = new List<OWLExpression>()
+            {
+                new OWLClass(RDFVocabulary.FOAF.PERSON),
+                namedIdv,
+                new OWLClass(RDFVocabulary.FOAF.AGENT),
+                new OWLClass(RDFVocabulary.FOAF.PERSON),
+                dataOneOf,
+                dataOneOf,
+                namedIdv
+            };
 
-			Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(expressions).Count == 4);
-			Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(new List<OWLExpression>()).Count == 0);
-			Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(null as List<OWLExpression>).Count == 0);
-		}
-		#endregion
-	}
+            Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(expressions).Count == 4);
+            Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(new List<OWLExpression>()).Count == 0);
+            Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(null as List<OWLExpression>).Count == 0);
+        }
+        #endregion
+    }
 }

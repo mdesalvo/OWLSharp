@@ -37,136 +37,136 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
-			Assert.IsNotNull(ontology.Prefixes);
-			Assert.IsTrue(ontology.Prefixes.Count == 5);
-			Assert.IsNotNull(ontology.Imports);
-			Assert.IsTrue(ontology.Imports.Count == 0);
-			Assert.IsNotNull(ontology.Annotations);
-			Assert.IsTrue(ontology.Annotations.Count == 0);
-			Assert.IsNotNull(ontology.DeclarationAxioms);
-			Assert.IsTrue(ontology.DeclarationAxioms.Count == 0);
-			Assert.IsNotNull(ontology.ClassAxioms);
-			Assert.IsTrue(ontology.ClassAxioms.Count == 0);
-			Assert.IsNotNull(ontology.ObjectPropertyAxioms);
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 0);
-			Assert.IsNotNull(ontology.DataPropertyAxioms);
-			Assert.IsTrue(ontology.DataPropertyAxioms.Count == 0);
-			Assert.IsNotNull(ontology.DatatypeDefinitionAxioms);
-			Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
-			Assert.IsNotNull(ontology.KeyAxioms);
-			Assert.IsTrue(ontology.KeyAxioms.Count == 0);
-			Assert.IsNotNull(ontology.AssertionAxioms);
-			Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
-			Assert.IsNotNull(ontology.AnnotationAxioms);
-			Assert.IsTrue(ontology.AnnotationAxioms.Count == 0);
+            Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
+            Assert.IsNotNull(ontology.Prefixes);
+            Assert.IsTrue(ontology.Prefixes.Count == 5);
+            Assert.IsNotNull(ontology.Imports);
+            Assert.IsTrue(ontology.Imports.Count == 0);
+            Assert.IsNotNull(ontology.Annotations);
+            Assert.IsTrue(ontology.Annotations.Count == 0);
+            Assert.IsNotNull(ontology.DeclarationAxioms);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 0);
+            Assert.IsNotNull(ontology.ClassAxioms);
+            Assert.IsTrue(ontology.ClassAxioms.Count == 0);
+            Assert.IsNotNull(ontology.ObjectPropertyAxioms);
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 0);
+            Assert.IsNotNull(ontology.DataPropertyAxioms);
+            Assert.IsTrue(ontology.DataPropertyAxioms.Count == 0);
+            Assert.IsNotNull(ontology.DatatypeDefinitionAxioms);
+            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
+            Assert.IsNotNull(ontology.KeyAxioms);
+            Assert.IsTrue(ontology.KeyAxioms.Count == 0);
+            Assert.IsNotNull(ontology.AssertionAxioms);
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
+            Assert.IsNotNull(ontology.AnnotationAxioms);
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 0);
             Assert.IsNotNull(ontology.Rules);
             Assert.IsTrue(ontology.Rules.Count == 0);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldCreateOntologyFromExisting()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
-			ontology.Prefixes.Add(
-				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
-			ontology.Imports.Add(
-				new OWLImport(new RDFResource("ex:ont2")));
-			ontology.Annotations.Add(
-				new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
-				{ 
-					Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
-				});
-			ontology.DeclarationAxioms.AddRange(
-				[ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
-				  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
-				  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-				  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
-			ontology.ClassAxioms.Add(
-				new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
-			ontology.ObjectPropertyAxioms.Add(
-				new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-			ontology.DataPropertyAxioms.Add(
-				new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
-			ontology.DatatypeDefinitionAxioms.Add(
-				new OWLDatatypeDefinition(
-					new OWLDatatype(new RDFResource("ex:length6to10")),
-					new OWLDatatypeRestriction(
-						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
-			ontology.KeyAxioms.Add(
-				new OWLHasKey(
-					new OWLClass(RDFVocabulary.FOAF.AGENT),
-					[ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-					[ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
-			ontology.AssertionAxioms.Add(
-				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
-			ontology.AnnotationAxioms.Add(
-				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                { 
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+                [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
+                  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
+                  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                          new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
+                    [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
             ontology.Rules.Add(new SWRLRule());
 
-			//Test cloning an ontology
-			OWLOntology clonedOntology = new OWLOntology(ontology);
-			Assert.IsNotNull(clonedOntology);
+            //Test cloning an ontology
+            OWLOntology clonedOntology = new OWLOntology(ontology);
+            Assert.IsNotNull(clonedOntology);
             Assert.IsTrue(string.Equals(clonedOntology.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(clonedOntology.VersionIRI, "ex:ont/v1"));
-			Assert.IsNotNull(clonedOntology.Prefixes);
-			Assert.IsTrue(clonedOntology.Prefixes.Count == 6);
-			Assert.IsNotNull(clonedOntology.Imports);
-			Assert.IsTrue(clonedOntology.Imports.Count == 1);
-			Assert.IsNotNull(clonedOntology.Annotations);
-			Assert.IsTrue(clonedOntology.Annotations.Count == 1);
-			Assert.IsNotNull(clonedOntology.DeclarationAxioms);
-			Assert.IsTrue(clonedOntology.DeclarationAxioms.Count == 8);
-			Assert.IsNotNull(clonedOntology.ClassAxioms);
-			Assert.IsTrue(clonedOntology.ClassAxioms.Count == 1);
-			Assert.IsNotNull(clonedOntology.ObjectPropertyAxioms);
-			Assert.IsTrue(clonedOntology.ObjectPropertyAxioms.Count == 1);
-			Assert.IsNotNull(clonedOntology.DataPropertyAxioms);
-			Assert.IsTrue(clonedOntology.DataPropertyAxioms.Count == 1);
-			Assert.IsNotNull(clonedOntology.DatatypeDefinitionAxioms);
-			Assert.IsTrue(clonedOntology.DatatypeDefinitionAxioms.Count == 1);
-			Assert.IsNotNull(clonedOntology.KeyAxioms);
-			Assert.IsTrue(clonedOntology.KeyAxioms.Count == 1);
-			Assert.IsNotNull(clonedOntology.AssertionAxioms);
-			Assert.IsTrue(clonedOntology.AssertionAxioms.Count == 1);
-			Assert.IsNotNull(clonedOntology.AnnotationAxioms);
-			Assert.IsTrue(clonedOntology.AnnotationAxioms.Count == 1);
+            Assert.IsTrue(string.Equals(clonedOntology.VersionIRI, "ex:ont/v1"));
+            Assert.IsNotNull(clonedOntology.Prefixes);
+            Assert.IsTrue(clonedOntology.Prefixes.Count == 6);
+            Assert.IsNotNull(clonedOntology.Imports);
+            Assert.IsTrue(clonedOntology.Imports.Count == 1);
+            Assert.IsNotNull(clonedOntology.Annotations);
+            Assert.IsTrue(clonedOntology.Annotations.Count == 1);
+            Assert.IsNotNull(clonedOntology.DeclarationAxioms);
+            Assert.IsTrue(clonedOntology.DeclarationAxioms.Count == 8);
+            Assert.IsNotNull(clonedOntology.ClassAxioms);
+            Assert.IsTrue(clonedOntology.ClassAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.ObjectPropertyAxioms);
+            Assert.IsTrue(clonedOntology.ObjectPropertyAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.DataPropertyAxioms);
+            Assert.IsTrue(clonedOntology.DataPropertyAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.DatatypeDefinitionAxioms);
+            Assert.IsTrue(clonedOntology.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.KeyAxioms);
+            Assert.IsTrue(clonedOntology.KeyAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.AssertionAxioms);
+            Assert.IsTrue(clonedOntology.AssertionAxioms.Count == 1);
+            Assert.IsNotNull(clonedOntology.AnnotationAxioms);
+            Assert.IsTrue(clonedOntology.AnnotationAxioms.Count == 1);
             Assert.IsNotNull(clonedOntology.Rules);
             Assert.IsTrue(clonedOntology.Rules.Count == 1);
 
             //Test cloning a null ontology
             OWLOntology clonedEmptyOntology = new OWLOntology(null);
-			Assert.IsNotNull(clonedEmptyOntology);
+            Assert.IsNotNull(clonedEmptyOntology);
             Assert.IsNull(clonedEmptyOntology.IRI);
-			Assert.IsNull(clonedEmptyOntology.VersionIRI);
-			Assert.IsNotNull(clonedEmptyOntology.Prefixes);
-			Assert.IsTrue(clonedEmptyOntology.Prefixes.Count == 5);
-			Assert.IsNotNull(clonedEmptyOntology.Imports);
-			Assert.IsTrue(clonedEmptyOntology.Imports.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.Annotations);
-			Assert.IsTrue(clonedEmptyOntology.Annotations.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.DeclarationAxioms);
-			Assert.IsTrue(clonedEmptyOntology.DeclarationAxioms.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.ClassAxioms);
-			Assert.IsTrue(clonedEmptyOntology.ClassAxioms.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.ObjectPropertyAxioms);
-			Assert.IsTrue(clonedEmptyOntology.ObjectPropertyAxioms.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.DataPropertyAxioms);
-			Assert.IsTrue(clonedEmptyOntology.DataPropertyAxioms.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.DatatypeDefinitionAxioms);
-			Assert.IsTrue(clonedEmptyOntology.DatatypeDefinitionAxioms.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.KeyAxioms);
-			Assert.IsTrue(clonedEmptyOntology.KeyAxioms.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.AssertionAxioms);
-			Assert.IsTrue(clonedEmptyOntology.AssertionAxioms.Count == 0);
-			Assert.IsNotNull(clonedEmptyOntology.AnnotationAxioms);
-			Assert.IsTrue(clonedEmptyOntology.AnnotationAxioms.Count == 0);
+            Assert.IsNull(clonedEmptyOntology.VersionIRI);
+            Assert.IsNotNull(clonedEmptyOntology.Prefixes);
+            Assert.IsTrue(clonedEmptyOntology.Prefixes.Count == 5);
+            Assert.IsNotNull(clonedEmptyOntology.Imports);
+            Assert.IsTrue(clonedEmptyOntology.Imports.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.Annotations);
+            Assert.IsTrue(clonedEmptyOntology.Annotations.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.DeclarationAxioms);
+            Assert.IsTrue(clonedEmptyOntology.DeclarationAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.ClassAxioms);
+            Assert.IsTrue(clonedEmptyOntology.ClassAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.ObjectPropertyAxioms);
+            Assert.IsTrue(clonedEmptyOntology.ObjectPropertyAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.DataPropertyAxioms);
+            Assert.IsTrue(clonedEmptyOntology.DataPropertyAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.DatatypeDefinitionAxioms);
+            Assert.IsTrue(clonedEmptyOntology.DatatypeDefinitionAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.KeyAxioms);
+            Assert.IsTrue(clonedEmptyOntology.KeyAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.AssertionAxioms);
+            Assert.IsTrue(clonedEmptyOntology.AssertionAxioms.Count == 0);
+            Assert.IsNotNull(clonedEmptyOntology.AnnotationAxioms);
+            Assert.IsTrue(clonedEmptyOntology.AnnotationAxioms.Count == 0);
             Assert.IsNotNull(clonedEmptyOntology.Rules);
             Assert.IsTrue(clonedEmptyOntology.Rules.Count == 0);
         }
@@ -194,49 +194,49 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-		public void ShouldSerializeOntology()
-		{
-			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
-			ontology.Prefixes.Add(
-				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
-			ontology.Imports.Add(
-				new OWLImport(new RDFResource("ex:ont2")));
-			ontology.Annotations.Add(
-				new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
-				{ 
-					Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
-				});
-			ontology.DeclarationAxioms.AddRange(
-				[ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
-				  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
-				  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-				  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
-			ontology.ClassAxioms.Add(
-				new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
-			ontology.ObjectPropertyAxioms.Add(
-				new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-			ontology.DataPropertyAxioms.Add(
-				new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
-			ontology.DatatypeDefinitionAxioms.Add(
-				new OWLDatatypeDefinition(
-					new OWLDatatype(new RDFResource("ex:length6to10")),
-					new OWLDatatypeRestriction(
-						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
-			ontology.KeyAxioms.Add(
-				new OWLHasKey(
-					new OWLClass(RDFVocabulary.FOAF.AGENT),
-					[ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-					[ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
-			ontology.AssertionAxioms.Add(
-				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
-			ontology.AnnotationAxioms.Add(
-				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+        public void ShouldSerializeOntology()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                { 
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+                [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
+                  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
+                  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                          new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
+                    [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
             ontology.Rules.Add(
                 new SWRLRule(
                     new RDFPlainLiteral("SWRL1"),
@@ -363,12 +363,12 @@ namespace OWLSharp.Test.Ontology
     </Head>
   </DLSafeRule>
 </Ontology>")); 
-		}
+        }
 
-		[TestMethod]
-		public void ShouldDeserializeOntology()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public void ShouldDeserializeOntology()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -472,39 +472,39 @@ namespace OWLSharp.Test.Ontology
   </DLSafeRule>
 </Ontology>");
 
-			Assert.IsNotNull(ontology);
-			Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
-			Assert.IsNotNull(ontology.Prefixes);
-			Assert.IsTrue(ontology.Prefixes.Count == 6);
-			Assert.IsNotNull(ontology.Imports);
-			Assert.IsTrue(ontology.Imports.Count == 1);
-			Assert.IsNotNull(ontology.Annotations);
-			Assert.IsTrue(ontology.Annotations.Count == 1);
-			Assert.IsNotNull(ontology.DeclarationAxioms);
-			Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
-			Assert.IsNotNull(ontology.ClassAxioms);
-			Assert.IsTrue(ontology.ClassAxioms.Count == 1);
-			Assert.IsNotNull(ontology.ObjectPropertyAxioms);
-			Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology.DataPropertyAxioms);
-			Assert.IsTrue(ontology.DataPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology.DatatypeDefinitionAxioms);
-			Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 1);
-			Assert.IsNotNull(ontology.KeyAxioms);
-			Assert.IsTrue(ontology.KeyAxioms.Count == 1);
-			Assert.IsNotNull(ontology.AssertionAxioms);
-			Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
-			Assert.IsNotNull(ontology.AnnotationAxioms);
-			Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+            Assert.IsNotNull(ontology);
+            Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
+            Assert.IsNotNull(ontology.Prefixes);
+            Assert.IsTrue(ontology.Prefixes.Count == 6);
+            Assert.IsNotNull(ontology.Imports);
+            Assert.IsTrue(ontology.Imports.Count == 1);
+            Assert.IsNotNull(ontology.Annotations);
+            Assert.IsTrue(ontology.Annotations.Count == 1);
+            Assert.IsNotNull(ontology.DeclarationAxioms);
+            Assert.IsTrue(ontology.DeclarationAxioms.Count == 8);
+            Assert.IsNotNull(ontology.ClassAxioms);
+            Assert.IsTrue(ontology.ClassAxioms.Count == 1);
+            Assert.IsNotNull(ontology.ObjectPropertyAxioms);
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology.DataPropertyAxioms);
+            Assert.IsTrue(ontology.DataPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology.DatatypeDefinitionAxioms);
+            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsNotNull(ontology.KeyAxioms);
+            Assert.IsTrue(ontology.KeyAxioms.Count == 1);
+            Assert.IsNotNull(ontology.AssertionAxioms);
+            Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
+            Assert.IsNotNull(ontology.AnnotationAxioms);
+            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
             Assert.IsNotNull(ontology.Rules);
             Assert.IsTrue(ontology.Rules.Count == 1);
         }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -518,114 +518,114 @@ namespace OWLSharp.Test.Ontology
     <Literal>v1.0</Literal>
   </Annotation>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.Context.Equals(new Uri("ex:ont")));
-			Assert.IsTrue(graph.TriplesCount == 11);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.Context.Equals(new Uri("ex:ont")));
+            Assert.IsTrue(graph.TriplesCount == 11);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1"), null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.OWL.IMPORTS, new RDFResource("ex:ont2"), null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_INFO, null, new RDFPlainLiteral("v1.0")].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.OWL.VERSION_INFO, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
             //Annotations
             Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, new RDFResource("ex:ont"), null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.VERSION_INFO, null].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, null, new RDFPlainLiteral("v1.0")].TriplesCount == 1);
             Assert.IsTrue(graph[null, RDFVocabulary.DC.DESCRIPTION, null, new RDFPlainLiteral("nested annotation")].TriplesCount == 1);
-		}
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithDeclarationToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithDeclarationToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Declaration>
-	<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
+    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
   </Declaration>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.TriplesCount == 2);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 2);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-		}
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithClassAxiomToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithClassAxiomToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <SubClassOf>
-	<Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-	<Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
+    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
+    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
   </SubClassOf>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.TriplesCount == 4);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDFS.SUB_CLASS_OF, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
-		}
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDFS.SUB_CLASS_OF, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithObjectPropertyAxiomToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithObjectPropertyAxiomToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <SubObjectPropertyOf>
-	<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-	<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" />
+    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
+    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" />
   </SubObjectPropertyOf>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.TriplesCount == 4);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.MEMBER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.FOAF.MEMBER, null].TriplesCount == 1);
-		}
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.MEMBER, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.FOAF.MEMBER, null].TriplesCount == 1);
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithDataPropertyAxiomToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithDataPropertyAxiomToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <SubDataPropertyOf>
-	<DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-	<DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
+    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
+    <DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
   </SubDataPropertyOf>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.TriplesCount == 4);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.FOAF.NAME, null].TriplesCount == 1);
-		}
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.FOAF.NAME, null].TriplesCount == 1);
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithDatatypeDefinitionAxiomToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithDatatypeDefinitionAxiomToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<Ontology>
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
@@ -645,57 +645,57 @@ namespace OWLSharp.Test.Ontology
     </DatatypeRestriction>
   </DatatypeDefinition>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.Context.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
-			Assert.IsTrue(graph.TriplesCount == 15);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.Context.Equals(RDFNamespaceRegister.DefaultNamespace.NamespaceUri));
+            Assert.IsTrue(graph.TriplesCount == 15);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:length6to10"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource("ex:length6to10"), RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 3);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_DATATYPE, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.XSD.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.XSD.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
-		}
+            Assert.IsTrue(graph[new RDFResource("ex:length6to10"), RDFVocabulary.OWL.EQUIVALENT_CLASS, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 3);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_DATATYPE, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithHasKeyAxiomToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithHasKeyAxiomToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
   <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
   <HasKey>
     <Class abbreviatedIRI=""foaf:Person"" />
-	<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-	<DataProperty abbreviatedIRI=""foaf:name"" />
+    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
+    <DataProperty abbreviatedIRI=""foaf:name"" />
   </HasKey>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.TriplesCount == 11);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 11);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.NAME, null].TriplesCount == 1);
-			Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-		}
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.NAME, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.OWL.HAS_KEY, null, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.KNOWS, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.FOAF.NAME, null].TriplesCount == 1);
+            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithAssertionAxiomToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithAssertionAxiomToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -708,20 +708,20 @@ namespace OWLSharp.Test.Ontology
     <NamedIndividual IRI=""ex:Bob"" />
   </ObjectPropertyAssertion>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.TriplesCount == 4);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 4);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.FOAF.KNOWS, new RDFResource("bnode:Alice"), null].TriplesCount == 1);
-		}
+            Assert.IsTrue(graph[new RDFResource("ex:Bob"), RDFVocabulary.FOAF.KNOWS, new RDFResource("bnode:Alice"), null].TriplesCount == 1);
+        }
 
-		[TestMethod]
-		public async Task ShouldConvertOntologyWithAnnotationAxiomToGraphAsync()
-		{
-			OWLOntology ontology = OWLSerializer.DeserializeOntology(
+        [TestMethod]
+        public async Task ShouldConvertOntologyWithAnnotationAxiomToGraphAsync()
+        {
+            OWLOntology ontology = OWLSerializer.DeserializeOntology(
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
   <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
@@ -732,14 +732,14 @@ namespace OWLSharp.Test.Ontology
     <Literal xml:lang=""en-US"">States the age of a person</Literal>    
   </AnnotationAssertion>
 </Ontology>");
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
 
-			Assert.IsNotNull(graph);
-			Assert.IsTrue(graph.TriplesCount == 3);
-			Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
+            Assert.IsNotNull(graph);
+            Assert.IsTrue(graph.TriplesCount == 3);
+            Assert.IsTrue(graph[new RDFResource("ex:ont"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ONTOLOGY, null].TriplesCount == 1);
             Assert.IsTrue(graph[RDFVocabulary.RDFS.COMMENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("States the age of a person", "en-US")].TriplesCount == 1);
-		}
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDFS.COMMENT, null, new RDFPlainLiteral("States the age of a person", "en-US")].TriplesCount == 1);
+        }
 
         [TestMethod]
         public async Task ShouldConvertOntologyWithRuleToGraphAsync()
@@ -1148,83 +1148,83 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-		public async Task ShouldWriteOntologyToFileAsync()
-		{
-			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
-			ontology.Prefixes.Add(
-				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
-			ontology.Imports.Add(
-				new OWLImport(new RDFResource("ex:ont2")));
-			ontology.Annotations.Add(
-				new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
-				{ 
-					Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
-				});
-			ontology.DeclarationAxioms.AddRange(
-				[ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
-				  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
-				  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-				  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
-			ontology.ClassAxioms.Add(
-				new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
-			ontology.ObjectPropertyAxioms.Add(
-				new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-			ontology.DataPropertyAxioms.Add(
-				new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
-			ontology.DatatypeDefinitionAxioms.Add(
-				new OWLDatatypeDefinition(
-					new OWLDatatype(new RDFResource("ex:length6to10")),
-					new OWLDatatypeRestriction(
-						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
-			ontology.KeyAxioms.Add(
-				new OWLHasKey(
-					new OWLClass(RDFVocabulary.FOAF.AGENT),
-					[ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-					[ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
-			ontology.AssertionAxioms.Add(
-				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
-			ontology.AnnotationAxioms.Add(
-				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			
-			//Write to file
-			await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx"));
-			Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx")));
+        public async Task ShouldWriteOntologyToFileAsync()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                { 
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+                [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
+                  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
+                  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                          new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
+                    [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+            
+            //Write to file
+            await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx"));
+            Assert.IsTrue(File.Exists(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx")));
 
-			//Read from file and deserialize to test content
-			OWLOntology ontology2 = OWLSerializer.DeserializeOntology(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx")));
+            //Read from file and deserialize to test content
+            OWLOntology ontology2 = OWLSerializer.DeserializeOntology(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx")));
 
-			Assert.IsNotNull(ontology2);
-			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
-			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 6);
-			Assert.IsNotNull(ontology2.Imports);
-			Assert.IsTrue(ontology2.Imports.Count == 1);
-			Assert.IsNotNull(ontology2.Annotations);
-			Assert.IsTrue(ontology2.Annotations.Count == 1);
-			Assert.IsNotNull(ontology2.DeclarationAxioms);
-			Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
-			Assert.IsNotNull(ontology2.ClassAxioms);
-			Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DataPropertyAxioms);
-			Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-			Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.KeyAxioms);
-			Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AssertionAxioms);
-			Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AnnotationAxioms);
-			Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);			
-		}
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsNotNull(ontology2.Prefixes);
+            Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsNotNull(ontology2.Imports);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsNotNull(ontology2.Annotations);
+            Assert.IsTrue(ontology2.Annotations.Count == 1);
+            Assert.IsNotNull(ontology2.DeclarationAxioms);
+            Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
+            Assert.IsNotNull(ontology2.ClassAxioms);
+            Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DataPropertyAxioms);
+            Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.KeyAxioms);
+            Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AssertionAxioms);
+            Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AnnotationAxioms);
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);            
+        }
 
         [TestMethod]
         public async Task ShouldWriteOntologyToFileWithIgnoredImportKnowledgeAsync()
@@ -1385,263 +1385,263 @@ namespace OWLSharp.Test.Ontology
         }
 
         [TestMethod]
-		public async Task ShouldThrowExceptionOnWritingOntologyToFileBecauseNullPathAsync()
-			=> await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
+        public async Task ShouldThrowExceptionOnWritingOntologyToFileBecauseNullPathAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
-		[TestMethod]
-		public async Task ShouldWriteOntologyToStreamAsync()
-		{
-			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
-			ontology.Prefixes.Add(
-				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
-			ontology.Imports.Add(
-				new OWLImport(new RDFResource("ex:ont2")));
-			ontology.Annotations.Add(
-				new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
-				{ 
-					Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
-				});
-			ontology.DeclarationAxioms.AddRange(
-				[ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
-				  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
-				  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-				  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
-			ontology.ClassAxioms.Add(
-				new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
-			ontology.ObjectPropertyAxioms.Add(
-				new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-			ontology.DataPropertyAxioms.Add(
-				new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
-			ontology.DatatypeDefinitionAxioms.Add(
-				new OWLDatatypeDefinition(
-					new OWLDatatype(new RDFResource("ex:length6to10")),
-					new OWLDatatypeRestriction(
-						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
-			ontology.KeyAxioms.Add(
-				new OWLHasKey(
-					new OWLClass(RDFVocabulary.FOAF.AGENT),
-					[ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-					[ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
-			ontology.AssertionAxioms.Add(
-				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
-			ontology.AnnotationAxioms.Add(
-				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			
-			//Write to stream
-			MemoryStream stream = new MemoryStream();
-			await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream);
+        [TestMethod]
+        public async Task ShouldWriteOntologyToStreamAsync()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                { 
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+                [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
+                  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
+                  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                          new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
+                    [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+            
+            //Write to stream
+            MemoryStream stream = new MemoryStream();
+            await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream);
 
-			//Read from stream and deserialize to test content
-			string fileContent;
+            //Read from stream and deserialize to test content
+            string fileContent;
             using (StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray())))
                 fileContent = reader.ReadToEnd();
-			OWLOntology ontology2 = OWLSerializer.DeserializeOntology(fileContent);
+            OWLOntology ontology2 = OWLSerializer.DeserializeOntology(fileContent);
 
-			Assert.IsNotNull(ontology2);
-			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
-			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 6);
-			Assert.IsNotNull(ontology2.Imports);
-			Assert.IsTrue(ontology2.Imports.Count == 1);
-			Assert.IsNotNull(ontology2.Annotations);
-			Assert.IsTrue(ontology2.Annotations.Count == 1);
-			Assert.IsNotNull(ontology2.DeclarationAxioms);
-			Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
-			Assert.IsNotNull(ontology2.ClassAxioms);
-			Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DataPropertyAxioms);
-			Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-			Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.KeyAxioms);
-			Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AssertionAxioms);
-			Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AnnotationAxioms);
-			Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);			
-		}
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsNotNull(ontology2.Prefixes);
+            Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsNotNull(ontology2.Imports);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsNotNull(ontology2.Annotations);
+            Assert.IsTrue(ontology2.Annotations.Count == 1);
+            Assert.IsNotNull(ontology2.DeclarationAxioms);
+            Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
+            Assert.IsNotNull(ontology2.ClassAxioms);
+            Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DataPropertyAxioms);
+            Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.KeyAxioms);
+            Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AssertionAxioms);
+            Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AnnotationAxioms);
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);            
+        }
 
-		[TestMethod]
-		public async Task ShouldThrowExceptionOnWritingOntologyToStreamBecauseNullStreamAsync()
-			=> await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
+        [TestMethod]
+        public async Task ShouldThrowExceptionOnWritingOntologyToStreamBecauseNullStreamAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
-		[TestMethod]
-		public async Task ShouldReadOntologyFromFileAsync()
-		{
-			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
-			ontology.Prefixes.Add(
-				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
-			ontology.Imports.Add(
-				new OWLImport(new RDFResource("ex:ont2")));
-			ontology.Annotations.Add(
-				new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
-				{ 
-					Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
-				});
-			ontology.DeclarationAxioms.AddRange(
-				[ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
-				  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
-				  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-				  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
-			ontology.ClassAxioms.Add(
-				new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
-			ontology.ObjectPropertyAxioms.Add(
-				new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-			ontology.DataPropertyAxioms.Add(
-				new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
-			ontology.DatatypeDefinitionAxioms.Add(
-				new OWLDatatypeDefinition(
-					new OWLDatatype(new RDFResource("ex:length6to10")),
-					new OWLDatatypeRestriction(
-						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
-			ontology.KeyAxioms.Add(
-				new OWLHasKey(
-					new OWLClass(RDFVocabulary.FOAF.AGENT),
-					[ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-					[ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
-			ontology.AssertionAxioms.Add(
-				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
-			ontology.AnnotationAxioms.Add(
-				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			
-			//Write to file
-			await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFileAsync.owx"));
-			
-			//Read from file
-			OWLOntology ontology2 = await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFileAsync.owx"));
+        [TestMethod]
+        public async Task ShouldReadOntologyFromFileAsync()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                { 
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+                [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
+                  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
+                  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                          new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
+                    [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+            
+            //Write to file
+            await ontology.ToFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFileAsync.owx"));
+            
+            //Read from file
+            OWLOntology ontology2 = await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldReadOntologyFromFileAsync.owx"));
 
-			Assert.IsNotNull(ontology2);
-			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
-			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 6);
-			Assert.IsNotNull(ontology2.Imports);
-			Assert.IsTrue(ontology2.Imports.Count == 1);
-			Assert.IsNotNull(ontology2.Annotations);
-			Assert.IsTrue(ontology2.Annotations.Count == 1);
-			Assert.IsNotNull(ontology2.DeclarationAxioms);
-			Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
-			Assert.IsNotNull(ontology2.ClassAxioms);
-			Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DataPropertyAxioms);
-			Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-			Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.KeyAxioms);
-			Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AssertionAxioms);
-			Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AnnotationAxioms);
-			Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);			
-		}
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsNotNull(ontology2.Prefixes);
+            Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsNotNull(ontology2.Imports);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsNotNull(ontology2.Annotations);
+            Assert.IsTrue(ontology2.Annotations.Count == 1);
+            Assert.IsNotNull(ontology2.DeclarationAxioms);
+            Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
+            Assert.IsNotNull(ontology2.ClassAxioms);
+            Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DataPropertyAxioms);
+            Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.KeyAxioms);
+            Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AssertionAxioms);
+            Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AnnotationAxioms);
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);            
+        }
 
-		[TestMethod]
-		public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseNullPathAsync()
-			=> await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
+        [TestMethod]
+        public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseNullPathAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
-		[TestMethod]
-		public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseUnexistingPathAsync()
-			=> await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, "test/test"));
+        [TestMethod]
+        public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseUnexistingPathAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, "test/test"));
 
-		[TestMethod]
-		public async Task ShouldReadOntologyFromStreamAsync()
-		{
-			OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
-			ontology.Prefixes.Add(
-				new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
-			ontology.Imports.Add(
-				new OWLImport(new RDFResource("ex:ont2")));
-			ontology.Annotations.Add(
-				new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
-				{ 
-					Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
-				});
-			ontology.DeclarationAxioms.AddRange(
-				[ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
-				  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
-				  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-				  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
-				  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-				  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
-			ontology.ClassAxioms.Add(
-				new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
-			ontology.ObjectPropertyAxioms.Add(
-				new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-			ontology.DataPropertyAxioms.Add(
-				new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
-			ontology.DatatypeDefinitionAxioms.Add(
-				new OWLDatatypeDefinition(
-					new OWLDatatype(new RDFResource("ex:length6to10")),
-					new OWLDatatypeRestriction(
-						new OWLDatatype(RDFVocabulary.XSD.STRING),
-						[ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-						  new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
-			ontology.KeyAxioms.Add(
-				new OWLHasKey(
-					new OWLClass(RDFVocabulary.FOAF.AGENT),
-					[ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
-					[ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
-			ontology.AssertionAxioms.Add(
-				new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
-			ontology.AnnotationAxioms.Add(
-				new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
-			
-			//Write to stream
-			MemoryStream stream = new MemoryStream();
-			await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream);
+        [TestMethod]
+        public async Task ShouldReadOntologyFromStreamAsync()
+        {
+            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
+            ontology.Prefixes.Add(
+                new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
+            ontology.Imports.Add(
+                new OWLImport(new RDFResource("ex:ont2")));
+            ontology.Annotations.Add(
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("annotation")))
+                { 
+                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION), new OWLLiteral(new RDFPlainLiteral("nested annotation")))
+                });
+            ontology.DeclarationAxioms.AddRange(
+                [ new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)), 
+                  new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)), 
+                  new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                  new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION)),
+                  new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                  new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Steve"))) ]);
+            ontology.ClassAxioms.Add(
+                new OWLDisjointClasses([ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]));
+            ontology.ObjectPropertyAxioms.Add(
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+            ontology.DataPropertyAxioms.Add(
+                new OWLDataPropertyDomain(new OWLDataProperty(RDFVocabulary.FOAF.AGE), new OWLClass(RDFVocabulary.FOAF.PERSON)));
+            ontology.DatatypeDefinitionAxioms.Add(
+                new OWLDatatypeDefinition(
+                    new OWLDatatype(new RDFResource("ex:length6to10")),
+                    new OWLDatatypeRestriction(
+                        new OWLDatatype(RDFVocabulary.XSD.STRING),
+                        [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                          new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ])));
+            ontology.KeyAxioms.Add(
+                new OWLHasKey(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ],
+                    [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
+            ontology.AssertionAxioms.Add(
+                new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLNamedIndividual(new RDFResource("ex:Mark")), new OWLNamedIndividual(new RDFResource("ex:Steve"))));
+            ontology.AnnotationAxioms.Add(
+                new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),new RDFResource("ex:Mark"),new OWLLiteral(new RDFPlainLiteral("This is Mark"))));
+            
+            //Write to stream
+            MemoryStream stream = new MemoryStream();
+            await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream);
 
-			//Read from stream
-			OWLOntology ontology2 = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, new MemoryStream(stream.ToArray()));
+            //Read from stream
+            OWLOntology ontology2 = await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, new MemoryStream(stream.ToArray()));
 
-			Assert.IsNotNull(ontology2);
-			Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
-			Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
-			Assert.IsNotNull(ontology2.Prefixes);
-			Assert.IsTrue(ontology2.Prefixes.Count == 6);
-			Assert.IsNotNull(ontology2.Imports);
-			Assert.IsTrue(ontology2.Imports.Count == 1);
-			Assert.IsNotNull(ontology2.Annotations);
-			Assert.IsTrue(ontology2.Annotations.Count == 1);
-			Assert.IsNotNull(ontology2.DeclarationAxioms);
-			Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
-			Assert.IsNotNull(ontology2.ClassAxioms);
-			Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DataPropertyAxioms);
-			Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-			Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.KeyAxioms);
-			Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AssertionAxioms);
-			Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
-			Assert.IsNotNull(ontology2.AnnotationAxioms);
-			Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);			
-		}
+            Assert.IsNotNull(ontology2);
+            Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
+            Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
+            Assert.IsNotNull(ontology2.Prefixes);
+            Assert.IsTrue(ontology2.Prefixes.Count == 6);
+            Assert.IsNotNull(ontology2.Imports);
+            Assert.IsTrue(ontology2.Imports.Count == 1);
+            Assert.IsNotNull(ontology2.Annotations);
+            Assert.IsTrue(ontology2.Annotations.Count == 1);
+            Assert.IsNotNull(ontology2.DeclarationAxioms);
+            Assert.IsTrue(ontology2.DeclarationAxioms.Count == 8);
+            Assert.IsNotNull(ontology2.ClassAxioms);
+            Assert.IsTrue(ontology2.ClassAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DataPropertyAxioms);
+            Assert.IsTrue(ontology2.DataPropertyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
+            Assert.IsTrue(ontology2.DatatypeDefinitionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.KeyAxioms);
+            Assert.IsTrue(ontology2.KeyAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AssertionAxioms);
+            Assert.IsTrue(ontology2.AssertionAxioms.Count == 1);
+            Assert.IsNotNull(ontology2.AnnotationAxioms);
+            Assert.IsTrue(ontology2.AnnotationAxioms.Count == 1);            
+        }
 
-		[TestMethod]
-		public async Task ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStreamAsync()
-			=> await Assert.ThrowsExceptionAsync<OWLException>(async() => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
+        [TestMethod]
+        public async Task ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStreamAsync()
+            => await Assert.ThrowsExceptionAsync<OWLException>(async() => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnReadingOntologyFromGraphBecauseNullGraphAsync()
@@ -1817,20 +1817,20 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
                 new OWLAsymmetricObjectProperty(
-					new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
-					{
-						Annotations = [
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
-							}
-						]
-					});
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+                    {
+                        Annotations = [
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                            }
+                        ]
+                    });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLAsymmetricObjectProperty(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
-					{
-						Annotations = [
+                    {
+                        Annotations = [
                             new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
                             {
                                 Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
@@ -1840,7 +1840,7 @@ namespace OWLSharp.Test.Ontology
                                 Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
                             }
                         ]
-					});
+                    });
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -1849,18 +1849,18 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 2);
             Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLAsymmetricObjectProperty asymObjProp
-							&& asymObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
-							&& objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-							 && asymObjProp.Annotations.Count == 1
-							 && asymObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-							 && string.Equals(asymObjProp.Annotations.Single().ValueIRI, "ex:title")
-							  && asymObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
+                            && asymObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
+                            && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                             && asymObjProp.Annotations.Count == 1
+                             && asymObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
+                             && string.Equals(asymObjProp.Annotations.Single().ValueIRI, "ex:title")
+                              && asymObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && asymObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLAsymmetricObjectProperty asymObjProp1
                             && asymObjProp1.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
                             && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-							&& asymObjProp1.Annotations.Count == 2
-							 && asymObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
+                            && asymObjProp1.Annotations.Count == 2
+                             && asymObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                              && string.Equals(asymObjProp1.Annotations[0].ValueIRI, "ex:comment1")
                               && asymObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && asymObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
@@ -1877,29 +1877,29 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSymmetricObjectProperty(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
-					{
-						Annotations = [
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
-							}
-						]
-					});
+                    {
+                        Annotations = [
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                            }
+                        ]
+                    });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSymmetricObjectProperty(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
-					{
-						Annotations = [
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-							},
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-							}
-						]
-					});
+                    {
+                        Annotations = [
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                            },
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                            }
+                        ]
+                    });
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -1936,29 +1936,29 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLIrreflexiveObjectProperty(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
-					{
-						Annotations = [
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
-							}
-						]
-					});
+                    {
+                        Annotations = [
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
+                            }
+                        ]
+                    });
             ontology.ObjectPropertyAxioms.Add(
                 new OWLIrreflexiveObjectProperty(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
-					{
-						Annotations = [
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-							},
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-							}
-						]
-					});
+                    {
+                        Annotations = [
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                            },
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                            }
+                        ]
+                    });
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -2224,7 +2224,7 @@ namespace OWLSharp.Test.Ontology
                               && funcObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadInverseObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -2286,10 +2286,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 4);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLInverseObjectProperties invObjProps0
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLInverseObjectProperties invObjProps0
                             && invObjProps0.LeftObjectPropertyExpression is OWLObjectProperty objPropA1
                             && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
-							&& invObjProps0.RightObjectPropertyExpression is OWLObjectProperty objPropB1
+                            && invObjProps0.RightObjectPropertyExpression is OWLObjectProperty objPropB1
                             && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                              && invObjProps0.Annotations.Count == 1
                              && invObjProps0.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
@@ -2305,7 +2305,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLInverseObjectProperties invObjProps2
                             && invObjProps2.LeftObjectPropertyExpression is OWLObjectInverseOf objInvOfObjPropA2
                             && objInvOfObjPropA2.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA2"))
-							&& invObjProps2.RightObjectPropertyExpression is OWLObjectProperty objPropB2
+                            && invObjProps2.RightObjectPropertyExpression is OWLObjectProperty objPropB2
                             && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                             && invObjProps2.Annotations.Count == 2
                              && invObjProps2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2338,7 +2338,7 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
             ontology.ObjectPropertyAxioms.Add(
                 new OWLEquivalentObjectProperties(
-					[ new OWLObjectProperty(new RDFResource("ex:objPropA1")), new OWLObjectProperty(new RDFResource("ex:objPropB1")) ])
+                    [ new OWLObjectProperty(new RDFResource("ex:objPropA1")), new OWLObjectProperty(new RDFResource("ex:objPropB1")) ])
                     {
                         Annotations = [
                             new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
@@ -2347,9 +2347,9 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
                     });
-			ontology.ObjectPropertyAxioms.Add(
+            ontology.ObjectPropertyAxioms.Add(
                 new OWLEquivalentObjectProperties(
-					[ new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA2"))), new OWLObjectProperty(new RDFResource("ex:objPropB2")) ])
+                    [ new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA2"))), new OWLObjectProperty(new RDFResource("ex:objPropB2")) ])
                     {
                         Annotations = [
                             new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
@@ -2362,15 +2362,15 @@ namespace OWLSharp.Test.Ontology
                             }
                         ]
                     });
-			ontology.ObjectPropertyAxioms.Add(
+            ontology.ObjectPropertyAxioms.Add(
                 new OWLEquivalentObjectProperties(
-					[ new OWLObjectProperty(new RDFResource("ex:objPropA3")), new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))) ])
+                    [ new OWLObjectProperty(new RDFResource("ex:objPropA3")), new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))) ])
                     {
                         Annotations = []
                     });
-			ontology.ObjectPropertyAxioms.Add(
+            ontology.ObjectPropertyAxioms.Add(
                 new OWLEquivalentObjectProperties(
-					[ new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))), new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))) ])
+                    [ new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropA4"))), new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))) ])
                     {
                         Annotations = [
                             new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
@@ -2390,20 +2390,20 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 4);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLEquivalentObjectProperties equivObjProps
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLEquivalentObjectProperties equivObjProps
                             && equivObjProps.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA1
                             && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
-							&& equivObjProps.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB1
+                            && equivObjProps.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB1
                             && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                              && equivObjProps.Annotations.Count == 1
                              && equivObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                              && string.Equals(equivObjProps.Annotations.Single().ValueIRI, "ex:title")
                               && equivObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && equivObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLEquivalentObjectProperties equivObjProps1
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLEquivalentObjectProperties equivObjProps1
                             && equivObjProps1.ObjectPropertyExpressions[0] is OWLObjectInverseOf objInvOfA2
                             && objInvOfA2.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA2"))
-							&& equivObjProps1.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB2
+                            && equivObjProps1.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB2
                             && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                             && equivObjProps1.Annotations.Count == 2
                              && equivObjProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2414,16 +2414,16 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(equivObjProps1.Annotations[1].ValueIRI, "ex:comment2")
                               && equivObjProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && equivObjProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLEquivalentObjectProperties equivObjProps2
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLEquivalentObjectProperties equivObjProps2
                             && equivObjProps2.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA3
                             && objPropA3.GetIRI().Equals(new RDFResource("ex:objPropA3"))
-							&& equivObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB3
+                            && equivObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB3
                             && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
                             && equivObjProps2.Annotations.Count == 0);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLEquivalentObjectProperties equivObjProps3
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLEquivalentObjectProperties equivObjProps3
                             && equivObjProps3.ObjectPropertyExpressions[0] is OWLObjectInverseOf objInvOfA4
                             && objInvOfA4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA4"))
-							&& equivObjProps3.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB4
+                            && equivObjProps3.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB4
                             && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
                             && equivObjProps3.Annotations.Count == 2
                              && equivObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2436,7 +2436,7 @@ namespace OWLSharp.Test.Ontology
                               && equivObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadDisjointObjectPropertyFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -2471,7 +2471,7 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLDisjointObjectProperties([
                     new OWLObjectProperty(new RDFResource("ex:objPropA3")),
-					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))),])
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))),])
                          {
                              Annotations = [
                                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
@@ -2500,18 +2500,18 @@ namespace OWLSharp.Test.Ontology
                                    }
                         ]
                 });
-			ontology.ObjectPropertyAxioms.Add(
+            ontology.ObjectPropertyAxioms.Add(
                 new OWLDisjointObjectProperties([
                     new OWLObjectProperty(new RDFResource("ex:objPropA5")), 
                     new OWLObjectProperty(new RDFResource("ex:objPropB5")),
-					new OWLObjectProperty(new RDFResource("ex:objPropC5")),
-					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropD5")))])
+                    new OWLObjectProperty(new RDFResource("ex:objPropC5")),
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropD5")))])
                 {
                     Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                         {
                             Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT")))
-						}
+                        }
                     ]
                 });
             RDFGraph graph = await ontology.ToRDFGraphAsync();
@@ -2521,20 +2521,20 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 5);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLDisjointObjectProperties disjObjProps
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLDisjointObjectProperties disjObjProps
                             && disjObjProps.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA1
                             && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
-							&& disjObjProps.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB1
+                            && disjObjProps.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB1
                             && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                              && disjObjProps.Annotations.Count == 1
                              && disjObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                              && string.Equals(disjObjProps.Annotations.Single().ValueIRI, "ex:title")
                               && disjObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && disjObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLDisjointObjectProperties disjObjProps1
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLDisjointObjectProperties disjObjProps1
                             && disjObjProps1.ObjectPropertyExpressions[0] is OWLObjectInverseOf objInvOfA2
                             && objInvOfA2.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA2"))
-							&& disjObjProps1.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB2
+                            && disjObjProps1.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB2
                             && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                             && disjObjProps1.Annotations.Count == 2
                              && disjObjProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2545,10 +2545,10 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(disjObjProps1.Annotations[1].ValueIRI, "ex:comment2")
                               && disjObjProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && disjObjProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLDisjointObjectProperties disjObjProps2
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLDisjointObjectProperties disjObjProps2
                             && disjObjProps2.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA3
                             && objPropA3.GetIRI().Equals(new RDFResource("ex:objPropA3"))
-							&& disjObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB3
+                            && disjObjProps2.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB3
                             && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
                             && disjObjProps2.Annotations.Count == 2
                              && disjObjProps2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2559,10 +2559,10 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(disjObjProps2.Annotations[1].ValueIRI, "ex:comment2")
                               && disjObjProps2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && disjObjProps2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLDisjointObjectProperties disjObjProps3
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLDisjointObjectProperties disjObjProps3
                             && disjObjProps3.ObjectPropertyExpressions[0] is OWLObjectInverseOf objInvOfA4
                             && objInvOfA4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA4"))
-							&& disjObjProps3.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB4
+                            && disjObjProps3.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB4
                             && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
                             && disjObjProps3.Annotations.Count == 2
                              && disjObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2573,14 +2573,14 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(disjObjProps3.Annotations[1].ValueIRI, "ex:comment2")
                               && disjObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && disjObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLDisjointObjectProperties disjObjProps4
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLDisjointObjectProperties disjObjProps4
                             && disjObjProps4.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA5
                             && objPropA5.GetIRI().Equals(new RDFResource("ex:objPropA5"))
-							&& disjObjProps4.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB5
+                            && disjObjProps4.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB5
                             && objPropB5.GetIRI().Equals(new RDFResource("ex:objPropB5"))
-							&& disjObjProps4.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC5
+                            && disjObjProps4.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC5
                             && objPropC5.GetIRI().Equals(new RDFResource("ex:objPropC5"))
-							&& disjObjProps4.ObjectPropertyExpressions[3] is OWLObjectInverseOf objInvOfD5
+                            && disjObjProps4.ObjectPropertyExpressions[3] is OWLObjectInverseOf objInvOfD5
                             && objInvOfD5.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropD5"))
                              && disjObjProps4.Annotations.Count == 1
                              && disjObjProps4.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
@@ -2589,7 +2589,7 @@ namespace OWLSharp.Test.Ontology
                               && disjObjProps4.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadSubObjectPropertyOfFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -2624,7 +2624,7 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLSubObjectPropertyOf(
                     new OWLObjectProperty(new RDFResource("ex:objPropA3")),
-					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))))
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))))
                          {
                              Annotations = [
                                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
@@ -2643,29 +2643,29 @@ namespace OWLSharp.Test.Ontology
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB4"))))
                 {
                     Annotations = [
-						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-								{
-									Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-								},
-								new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-								{
-									Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-								}
-					]
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                                {
+                                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                                },
+                                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                                {
+                                    Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                                }
+                    ]
                 });
-			ontology.ObjectPropertyAxioms.Add(
+            ontology.ObjectPropertyAxioms.Add(
                 new OWLSubObjectPropertyOf(
                     new OWLObjectPropertyChain([
                         new OWLObjectProperty(new RDFResource("ex:objPropA5")), 
                         new OWLObjectProperty(new RDFResource("ex:objPropB5")),
                         new OWLObjectProperty(new RDFResource("ex:objPropC5"))]),
-					new OWLObjectProperty(new RDFResource("ex:objPropD5")))
+                    new OWLObjectProperty(new RDFResource("ex:objPropD5")))
                 {
                     Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                         {
                             Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)))
-						}
+                        }
                     ]
                 });
             ontology.ObjectPropertyAxioms.Add(
@@ -2674,13 +2674,13 @@ namespace OWLSharp.Test.Ontology
                         new OWLObjectProperty(new RDFResource("ex:objPropA6")), 
                         new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB6"))),
                         new OWLObjectProperty(new RDFResource("ex:objPropC6"))]),
-					new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropD6"))))
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropD6"))))
                 {
                     Annotations = [
                         new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
                         {
                             Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLLiteral(new RDFPlainLiteral("titolo", "it-IT--ltr")))
-						}
+                        }
                     ]
                 });
             RDFGraph graph = await ontology.ToRDFGraphAsync();
@@ -2690,48 +2690,48 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.ObjectPropertyAxioms.Count == 6);
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLSubObjectPropertyOf subObjProps
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLSubObjectPropertyOf subObjProps
                             && subObjProps.SubObjectPropertyChain.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA5
                             && objPropA5.GetIRI().Equals(new RDFResource("ex:objPropA5"))
-							&& subObjProps.SubObjectPropertyChain.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB5
+                            && subObjProps.SubObjectPropertyChain.ObjectPropertyExpressions[1] is OWLObjectProperty objPropB5
                             && objPropB5.GetIRI().Equals(new RDFResource("ex:objPropB5"))
-							&& subObjProps.SubObjectPropertyChain.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC5
+                            && subObjProps.SubObjectPropertyChain.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC5
                             && objPropC5.GetIRI().Equals(new RDFResource("ex:objPropC5"))
-							&& subObjProps.SuperObjectPropertyExpression is OWLObjectProperty objPropD5
+                            && subObjProps.SuperObjectPropertyExpression is OWLObjectProperty objPropD5
                             && objPropD5.GetIRI().Equals(new RDFResource("ex:objPropD5"))
                              && subObjProps.Annotations.Count == 1
                              && subObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                              && string.Equals(subObjProps.Annotations.Single().ValueIRI, "ex:title")
                               && subObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && subObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLSubObjectPropertyOf subObjProps1
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLSubObjectPropertyOf subObjProps1
                             && subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA6
                             && objPropA6.GetIRI().Equals(new RDFResource("ex:objPropA6"))
-							&& subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB6
+                            && subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[1] is OWLObjectInverseOf objInvOfB6
                             && objInvOfB6.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB6"))
-							&& subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC6
+                            && subObjProps1.SubObjectPropertyChain.ObjectPropertyExpressions[2] is OWLObjectProperty objPropC6
                             && objPropC6.GetIRI().Equals(new RDFResource("ex:objPropC6"))
-							&& subObjProps1.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfD6
+                            && subObjProps1.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfD6
                             && objInvOfD6.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropD6"))
                              && subObjProps1.Annotations.Count == 1
                              && subObjProps1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                              && string.Equals(subObjProps1.Annotations.Single().ValueIRI, "ex:title")
                               && subObjProps1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && subObjProps1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT--ltr")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLSubObjectPropertyOf subObjProps2
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLSubObjectPropertyOf subObjProps2
                             && subObjProps2.SubObjectPropertyExpression is OWLObjectProperty objPropA1
                             && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
-							&& subObjProps2.SuperObjectPropertyExpression is OWLObjectProperty objPropB1
+                            && subObjProps2.SuperObjectPropertyExpression is OWLObjectProperty objPropB1
                             && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                              && subObjProps2.Annotations.Count == 1
                              && subObjProps2.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                              && string.Equals(subObjProps2.Annotations.Single().ValueIRI, "ex:title")
                               && subObjProps2.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && subObjProps2.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLSubObjectPropertyOf subObjProps3
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLSubObjectPropertyOf subObjProps3
                             && subObjProps3.SubObjectPropertyExpression is OWLObjectInverseOf objInvOfA2
                             && objInvOfA2.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA2"))
-							&& subObjProps3.SuperObjectPropertyExpression is OWLObjectProperty objPropB2
+                            && subObjProps3.SuperObjectPropertyExpression is OWLObjectProperty objPropB2
                             && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                             && subObjProps3.Annotations.Count == 2
                              && subObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2742,10 +2742,10 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(subObjProps3.Annotations[1].ValueIRI, "ex:comment2")
                               && subObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && subObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLSubObjectPropertyOf subObjProps4
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLSubObjectPropertyOf subObjProps4
                             && subObjProps4.SubObjectPropertyExpression is OWLObjectProperty objPropA3
                             && objPropA3.GetIRI().Equals(new RDFResource("ex:objPropA3"))
-							&& subObjProps4.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfB3
+                            && subObjProps4.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfB3
                             && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
                             && subObjProps4.Annotations.Count == 2
                              && subObjProps4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2756,10 +2756,10 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(subObjProps4.Annotations[1].ValueIRI, "ex:comment2")
                               && subObjProps4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && subObjProps4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[5] is OWLSubObjectPropertyOf subObjProps5
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[5] is OWLSubObjectPropertyOf subObjProps5
                             && subObjProps5.SubObjectPropertyExpression is OWLObjectInverseOf objInvOfA4
                             && objInvOfA4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropA4"))
-							&& subObjProps5.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfB4
+                            && subObjProps5.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfB4
                             && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
                             && subObjProps5.Annotations.Count == 2
                              && subObjProps5.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -2841,7 +2841,7 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-			ontology.ObjectPropertyAxioms.Add(
+            ontology.ObjectPropertyAxioms.Add(
                 new OWLObjectPropertyDomain(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                     new OWLObjectExactCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE),
@@ -2933,7 +2933,7 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(objPropDom3.Annotations[1].ValueIRI, "ex:comment2")
                               && objPropDom3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && objPropDom3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLObjectPropertyDomain objPropDom4
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLObjectPropertyDomain objPropDom4
                             && objPropDom4.ObjectPropertyExpression is OWLObjectInverseOf invOfFoafKnows2
                             && invOfFoafKnows2.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                             && objPropDom4.ClassExpression is OWLObjectExactCardinality exact2Title
@@ -2956,7 +2956,7 @@ namespace OWLSharp.Test.Ontology
                               && objPropDom4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadObjectPropertyRangeGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -3025,7 +3025,7 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-			ontology.ObjectPropertyAxioms.Add(
+            ontology.ObjectPropertyAxioms.Add(
                 new OWLObjectPropertyRange(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectHasSelf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
@@ -3107,9 +3107,9 @@ namespace OWLSharp.Test.Ontology
                             && objUnOf.ClassExpressions[1] is OWLObjectComplementOf objComplOf
                             && objComplOf.ClassExpression is OWLObjectHasValue objHV
                             && objHV.ObjectPropertyExpression is OWLObjectProperty objHVObjProp
-							&& objHVObjProp.GetIRI().Equals(RDFVocabulary.FOAF.MBOX)
-							&& objHV.IndividualExpression is OWLNamedIndividual objHVIdv
-							&& objHVIdv.GetIRI().Equals(new RDFResource("ex:IdvA"))
+                            && objHVObjProp.GetIRI().Equals(RDFVocabulary.FOAF.MBOX)
+                            && objHV.IndividualExpression is OWLNamedIndividual objHVIdv
+                            && objHVIdv.GetIRI().Equals(new RDFResource("ex:IdvA"))
                              && objPropRng3.Annotations.Count == 2
                              && objPropRng3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                              && string.Equals(objPropRng3.Annotations[0].ValueIRI, "ex:comment1")
@@ -3119,7 +3119,7 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(objPropRng3.Annotations[1].ValueIRI, "ex:comment2")
                               && objPropRng3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && objPropRng3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLObjectPropertyRange objPropRng4
+            Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLObjectPropertyRange objPropRng4
                             && objPropRng4.ObjectPropertyExpression is OWLObjectProperty foafKnows4
                             && foafKnows4.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                             && objPropRng4.ClassExpression is OWLObjectHasSelf objHS
@@ -3910,7 +3910,7 @@ namespace OWLSharp.Test.Ontology
                               && diffIdvs4.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         }
         
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadObjectPropertyAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -3932,35 +3932,35 @@ namespace OWLSharp.Test.Ontology
                     new OWLObjectProperty(RDFVocabulary.FOAF.DEPICTS),
                     new OWLAnonymousIndividual("ANONIDV1"), 
                     new OWLNamedIndividual(new RDFResource("ex:IDV3")))
-				{
-					Annotations = [
-						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-						{
-							Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-						},
-						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-						{
-							Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-						}
-					]
-				});
+                {
+                    Annotations = [
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                        },
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                        }
+                    ]
+                });
             ontology.AssertionAxioms.Add(
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLNamedIndividual(new RDFResource("ex:IDV4")),
-					new OWLAnonymousIndividual("ANONIDV2"))
-					{
-						Annotations = [
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-							},
-							new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-							{
-								Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-							}
-						]
-					});
+                    new OWLAnonymousIndividual("ANONIDV2"))
+                    {
+                        Annotations = [
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                            },
+                            new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                            {
+                                Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                            }
+                        ]
+                    });
             ontology.AssertionAxioms.Add(
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
@@ -3968,15 +3968,15 @@ namespace OWLSharp.Test.Ontology
                     new OWLAnonymousIndividual("ANONIDV3"))
                 {
                     Annotations = [
-						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
-						{
-							Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
-						},
-						new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
-						{
-							Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
-						}
-					]
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("commento", "it-IT")))
+                        },
+                        new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment2"))
+                        {
+                            Annotation = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new OWLLiteral(new RDFPlainLiteral("comment", "en-US")))
+                        }
+                    ]
                 });
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
@@ -3985,24 +3985,24 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont"));
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.IsTrue(ontology2.AssertionAxioms.Count == 4);
-			Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLObjectPropertyAssertion objPropAsn
+            Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLObjectPropertyAssertion objPropAsn
                             && objPropAsn.ObjectPropertyExpression is OWLObjectProperty foafKnows
                             && foafKnows.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-							&& objPropAsn.SourceIndividualExpression is OWLNamedIndividual exIdv1
+                            && objPropAsn.SourceIndividualExpression is OWLNamedIndividual exIdv1
                             && exIdv1.GetIRI().Equals(new RDFResource("ex:IDV1"))
-							&& objPropAsn.TargetIndividualExpression is OWLNamedIndividual exIdv2
+                            && objPropAsn.TargetIndividualExpression is OWLNamedIndividual exIdv2
                             && exIdv2.GetIRI().Equals(new RDFResource("ex:IDV2"))
                              && objPropAsn.Annotations.Count == 1
                              && objPropAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                              && string.Equals(objPropAsn.Annotations.Single().ValueIRI, "ex:title")
                               && objPropAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && objPropAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-			Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLObjectPropertyAssertion objPropAsn2
+            Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLObjectPropertyAssertion objPropAsn2
                             && objPropAsn2.ObjectPropertyExpression is OWLObjectProperty foafKnows2
                             && foafKnows2.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-							&& objPropAsn2.SourceIndividualExpression is OWLNamedIndividual exIdv4
+                            && objPropAsn2.SourceIndividualExpression is OWLNamedIndividual exIdv4
                             && exIdv4.GetIRI().Equals(new RDFResource("ex:IDV4"))
-							&& objPropAsn2.TargetIndividualExpression is OWLAnonymousIndividual anonIdv2
+                            && objPropAsn2.TargetIndividualExpression is OWLAnonymousIndividual anonIdv2
                             && anonIdv2.GetIRI().Equals(new RDFResource("bnode:ANONIDV2"))
                              && objPropAsn2.Annotations.Count == 2
                              && objPropAsn2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -4013,12 +4013,12 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(objPropAsn2.Annotations[1].ValueIRI, "ex:comment2")
                               && objPropAsn2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && objPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLObjectPropertyAssertion objPropAsn3
+            Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLObjectPropertyAssertion objPropAsn3
                             && objPropAsn3.ObjectPropertyExpression is OWLObjectProperty foafKnows3
                             && foafKnows3.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-							&& objPropAsn3.SourceIndividualExpression is OWLAnonymousIndividual fullAnonIdv
+                            && objPropAsn3.SourceIndividualExpression is OWLAnonymousIndividual fullAnonIdv
                             && fullAnonIdv.GetIRI().IsBlank //Full anonymous
-							&& objPropAsn3.TargetIndividualExpression is OWLAnonymousIndividual anonIdv3
+                            && objPropAsn3.TargetIndividualExpression is OWLAnonymousIndividual anonIdv3
                             && anonIdv3.GetIRI().Equals(new RDFResource("bnode:ANONIDV3"))
                              && objPropAsn3.Annotations.Count == 2
                              && objPropAsn3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -4029,12 +4029,12 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(objPropAsn3.Annotations[1].ValueIRI, "ex:comment2")
                               && objPropAsn3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && objPropAsn3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-			Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLObjectPropertyAssertion objPropAsn4
+            Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLObjectPropertyAssertion objPropAsn4
                             && objPropAsn4.ObjectPropertyExpression is OWLObjectProperty foafDepicts
                             && foafDepicts.GetIRI().Equals(RDFVocabulary.FOAF.DEPICTS)
-							&& objPropAsn4.SourceIndividualExpression is OWLAnonymousIndividual anonIdv1
+                            && objPropAsn4.SourceIndividualExpression is OWLAnonymousIndividual anonIdv1
                             && anonIdv1.GetIRI().Equals(new RDFResource("bnode:ANONIDV1"))
-							&& objPropAsn4.TargetIndividualExpression is OWLNamedIndividual exIdv3
+                            && objPropAsn4.TargetIndividualExpression is OWLNamedIndividual exIdv3
                             && exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
                              && objPropAsn4.Annotations.Count == 2
                              && objPropAsn4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -4045,7 +4045,7 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(objPropAsn4.Annotations[1].ValueIRI, "ex:comment2")
                               && objPropAsn4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                               && objPropAsn4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
-		}
+        }
 
         [TestMethod]
         public async Task ShouldReadObjectPropertyAssertionUsingSKOSMemberListFromGraphAsync()
@@ -4380,7 +4380,7 @@ namespace OWLSharp.Test.Ontology
                               && dtPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadDataPropertyDomainGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -4396,7 +4396,7 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-			RDFGraph graph = await ontology.ToRDFGraphAsync();
+            RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
             Assert.IsNotNull(ontology2);
@@ -4414,7 +4414,7 @@ namespace OWLSharp.Test.Ontology
                               && dtPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadDataPropertyRangeGraph()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -4448,7 +4448,7 @@ namespace OWLSharp.Test.Ontology
                               && dtPropRng.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadClassAssertionFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -4467,9 +4467,9 @@ namespace OWLSharp.Test.Ontology
             ontology.AssertionAxioms.Add(
                 new OWLClassAssertion(
                     new OWLObjectUnionOf([
-						new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLAnonymousIndividual("AnonIDV1")),
-						new OWLObjectOneOf([new OWLNamedIndividual(new RDFResource("ex:IDV2")), new OWLNamedIndividual(new RDFResource("ex:IDV3"))])
-					]),
+                        new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLAnonymousIndividual("AnonIDV1")),
+                        new OWLObjectOneOf([new OWLNamedIndividual(new RDFResource("ex:IDV2")), new OWLNamedIndividual(new RDFResource("ex:IDV3"))])
+                    ]),
                     new OWLNamedIndividual(new RDFResource("ex:IDV4")))
                 {
                     Annotations = [
@@ -4479,13 +4479,13 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-			ontology.AssertionAxioms.Add(
+            ontology.AssertionAxioms.Add(
                 new OWLClassAssertion(
                     new OWLDataExactCardinality(
-						new OWLDataProperty(RDFVocabulary.FOAF.AGE), 1,  new OWLDatatypeRestriction(
-							new OWLDatatype(RDFVocabulary.XSD.STRING),
-							[new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-							new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])),
+                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 1,  new OWLDatatypeRestriction(
+                            new OWLDatatype(RDFVocabulary.XSD.STRING),
+                            [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                            new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])),
                     new OWLNamedIndividual(new RDFResource("ex:IDV5")))
                 {
                     Annotations = [
@@ -4513,18 +4513,18 @@ namespace OWLSharp.Test.Ontology
                               && clsAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
             Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLClassAssertion clsAsn1
                             && clsAsn1.ClassExpression is OWLObjectUnionOf objUnOf
-							&& objUnOf.ClassExpressions.Count == 2
-							&& objUnOf.ClassExpressions[0] is OWLObjectHasValue objHV
-							&& objHV.ObjectPropertyExpression is OWLObjectProperty objHVObjProp
-							&& objHVObjProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-							&& objHV.IndividualExpression is OWLAnonymousIndividual anonIDV1
-							&& anonIDV1.GetIRI().Equals(new RDFResource("bnode:AnonIDV1"))
-							&& objUnOf.ClassExpressions[1] is OWLObjectOneOf objOneOf
-							&& objOneOf.IndividualExpressions.Count == 2
-							&& objOneOf.IndividualExpressions[0] is OWLNamedIndividual exIdv2
-							&& exIdv2.GetIRI().Equals(new RDFResource("ex:IDV2"))
-							&& objOneOf.IndividualExpressions[1] is OWLNamedIndividual exIdv3
-							&& exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
+                            && objUnOf.ClassExpressions.Count == 2
+                            && objUnOf.ClassExpressions[0] is OWLObjectHasValue objHV
+                            && objHV.ObjectPropertyExpression is OWLObjectProperty objHVObjProp
+                            && objHVObjProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                            && objHV.IndividualExpression is OWLAnonymousIndividual anonIDV1
+                            && anonIDV1.GetIRI().Equals(new RDFResource("bnode:AnonIDV1"))
+                            && objUnOf.ClassExpressions[1] is OWLObjectOneOf objOneOf
+                            && objOneOf.IndividualExpressions.Count == 2
+                            && objOneOf.IndividualExpressions[0] is OWLNamedIndividual exIdv2
+                            && exIdv2.GetIRI().Equals(new RDFResource("ex:IDV2"))
+                            && objOneOf.IndividualExpressions[1] is OWLNamedIndividual exIdv3
+                            && exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
                             && clsAsn1.IndividualExpression is OWLNamedIndividual exIdv4
                             && exIdv4.GetIRI().Equals(new RDFResource("ex:IDV4"))
                              && clsAsn1.Annotations.Count == 1
@@ -4532,17 +4532,17 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(clsAsn1.Annotations.Single().ValueIRI, "ex:title")
                               && clsAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && clsAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-			Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLClassAssertion clsAsn2
+            Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLClassAssertion clsAsn2
                             && clsAsn2.ClassExpression is OWLDataExactCardinality dtExCard
-							&& dtExCard.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
-							&& dtExCard.Cardinality == "1"
-							&& dtExCard.DataRangeExpression is OWLDatatypeRestriction dtRestr
-							&& dtRestr.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
-							&& dtRestr.FacetRestrictions.Count == 2
-							&& string.Equals(dtRestr.FacetRestrictions[0].FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
-							&& dtRestr.FacetRestrictions[0].Literal.GetLiteral().Equals(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT))
-							&& string.Equals(dtRestr.FacetRestrictions[1].FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
-							&& dtRestr.FacetRestrictions[1].Literal.GetLiteral().Equals(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT))
+                            && dtExCard.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
+                            && dtExCard.Cardinality == "1"
+                            && dtExCard.DataRangeExpression is OWLDatatypeRestriction dtRestr
+                            && dtRestr.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
+                            && dtRestr.FacetRestrictions.Count == 2
+                            && string.Equals(dtRestr.FacetRestrictions[0].FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions[0].Literal.GetLiteral().Equals(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT))
+                            && string.Equals(dtRestr.FacetRestrictions[1].FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
+                            && dtRestr.FacetRestrictions[1].Literal.GetLiteral().Equals(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT))
                             && clsAsn2.IndividualExpression is OWLNamedIndividual exIdv5
                             && exIdv5.GetIRI().Equals(new RDFResource("ex:IDV5"))
                             && clsAsn2.Annotations.Count == 1
@@ -4585,7 +4585,7 @@ namespace OWLSharp.Test.Ontology
                               && subanProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
 
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadAnnotationPropertyDomainFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -4601,7 +4601,7 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-			ontology.AnnotationAxioms.Add(
+            ontology.AnnotationAxioms.Add(
                 new OWLAnnotationPropertyDomain(
                     new OWLAnnotationProperty(RDFVocabulary.DC.TITLE),
                     new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI))
@@ -4628,7 +4628,7 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(anPropDom.Annotations.Single().ValueIRI, "ex:title")
                               && anPropDom.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && anPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-			Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyDomain anPropDom1
+            Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyDomain anPropDom1
                             && anPropDom1.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                             && string.Equals(anPropDom1.IRI,RDFVocabulary.FOAF.PERSON.ToString())
                              && anPropDom1.Annotations.Count == 1
@@ -4636,9 +4636,9 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(anPropDom1.Annotations.Single().ValueIRI, "ex:title")
                               && anPropDom1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && anPropDom1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-		}
+        }
         
-		[TestMethod]
+        [TestMethod]
         public async Task ShouldReadAnnotationPropertyRangeFromGraphAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
@@ -4654,7 +4654,7 @@ namespace OWLSharp.Test.Ontology
                         }
                     ]
                 });
-			ontology.AnnotationAxioms.Add(
+            ontology.AnnotationAxioms.Add(
                 new OWLAnnotationPropertyRange(
                     new OWLAnnotationProperty(RDFVocabulary.DC.TITLE),
                     new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI))
@@ -4681,7 +4681,7 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(anPropRng.Annotations.Single().ValueIRI, "ex:title")
                               && anPropRng.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && anPropRng.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-			Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyRange anPropRng1
+            Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyRange anPropRng1
                             && anPropRng1.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                             && string.Equals(anPropRng1.IRI,RDFVocabulary.FOAF.PERSON.ToString())
                              && anPropRng1.Annotations.Count == 1
@@ -4689,7 +4689,7 @@ namespace OWLSharp.Test.Ontology
                              && string.Equals(anPropRng1.Annotations.Single().ValueIRI, "ex:title")
                               && anPropRng1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && anPropRng1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
-		}
+        }
 
         [TestMethod]
         public async Task ShouldReadClassAnnotationAssertionFromGraphAsync()

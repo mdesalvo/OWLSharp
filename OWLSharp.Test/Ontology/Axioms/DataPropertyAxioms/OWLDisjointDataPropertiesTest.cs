@@ -103,9 +103,9 @@ namespace OWLSharp.Test.Ontology
   <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
   <DisjointDataProperties>
     <Annotation>
-		<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-		<Literal xml:lang=""EN"">Steve</Literal>
-	</Annotation>
+        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
+        <Literal xml:lang=""EN"">Steve</Literal>
+    </Annotation>
     <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
     <DataProperty IRI=""http://xmlns.com/foaf/0.1/title"" />
   </DisjointDataProperties>
@@ -116,10 +116,10 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDisjointDataProperties djDtProps
                             && string.Equals(djDtProps.DataProperties[0].IRI, "http://xmlns.com/foaf/0.1/age")
                             && string.Equals(djDtProps.DataProperties[1].IRI, "http://xmlns.com/foaf/0.1/title"));
-			Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDisjointDataProperties djDtProps1
-							&& string.Equals(djDtProps1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Value, "Steve")
-							&& string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Language, "EN"));
+            Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDisjointDataProperties djDtProps1
+                            && string.Equals(djDtProps1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                            && string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Value, "Steve")
+                            && string.Equals(djDtProps1.Annotations.Single().ValueLiteral.Language, "EN"));
         }
 
         [TestMethod]

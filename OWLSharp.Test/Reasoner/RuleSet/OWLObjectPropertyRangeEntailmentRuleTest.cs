@@ -3,7 +3,7 @@
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
-	http://www.apache.org/licenses/LICENSE-2.0
+    http://www.apache.org/licenses/LICENSE-2.0
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,22 +31,22 @@ namespace OWLSharp.Test.Reasoner
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLObjectPropertyRange(
-						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
                 ],
-				AssertionAxioms = [
-					new OWLObjectPropertyAssertion(
-						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
-					)
-				]
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
+                    )
+                ]
             };
             List<OWLInference> inferences = OWLObjectPropertyRangeEntailmentRule.ExecuteRule(ontology);
 
@@ -57,29 +57,29 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Janine")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldEntailInverseObjectPropertyRangeCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLObjectPropertyRange(
-						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
                 ],
-				AssertionAxioms = [
-					new OWLObjectPropertyAssertion(
-						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
-					)
-				]
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
+                    )
+                ]
             };
             List<OWLInference> inferences = OWLObjectPropertyRangeEntailmentRule.ExecuteRule(ontology);
 
@@ -90,29 +90,29 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldEntailInverseObjectPropertyAssertionRangeCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLObjectPropertyRange(
-						new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
                 ],
-				AssertionAxioms = [
-					new OWLObjectPropertyAssertion(
-						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
-					)
-				]
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
+                    )
+                ]
             };
             List<OWLInference> inferences = OWLObjectPropertyRangeEntailmentRule.ExecuteRule(ontology);
 
@@ -123,29 +123,29 @@ namespace OWLSharp.Test.Reasoner
                             && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly")));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldEntailInverseObjectPropertyAssertionInverseRangeCase()
         {
             OWLOntology ontology = new OWLOntology()
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-					new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
-					new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
+                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLObjectPropertyRange(
-						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-						new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
                 ],
-				AssertionAxioms = [
-					new OWLObjectPropertyAssertion(
-						new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
-						new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
-					)
-				]
+                AssertionAxioms = [
+                    new OWLObjectPropertyAssertion(
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine"))
+                    )
+                ]
             };
             List<OWLInference> inferences = OWLObjectPropertyRangeEntailmentRule.ExecuteRule(ontology);
 

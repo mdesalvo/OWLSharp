@@ -24,7 +24,7 @@ namespace OWLSharp.Test.Ontology
     public class SWRLHelperTest
     {
         #region Tests
-		[TestMethod]
+        [TestMethod]
         public void ShouldDeclareRule()
         {
             OWLOntology ontology = new OWLOntology();

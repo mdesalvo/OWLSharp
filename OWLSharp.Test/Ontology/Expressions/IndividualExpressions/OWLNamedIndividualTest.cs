@@ -109,43 +109,43 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(idv.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/age"));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRINamedIndividualToGraph()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
-			RDFGraph graph = idv.ToRDFGraph();
+            RDFGraph graph = idv.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameNamedIndividualToGraph()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFGraph graph = idv.ToRDFGraph();
+            RDFGraph graph = idv.ToRDFGraph();
 
             Assert.IsNotNull(graph);
             Assert.IsTrue(graph.TriplesCount == 1);
-			Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
+            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount == 1);
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertIRINamedIndividualToResource()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(RDFVocabulary.FOAF.AGE);
-			RDFResource representative = idv.GetIRI();
+            RDFResource representative = idv.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));
         }
 
-		[TestMethod]
+        [TestMethod]
         public void ShouldConvertQualifiedNameNamedIndividualToResource()
         {
             OWLNamedIndividual idv = new OWLNamedIndividual(new XmlQualifiedName("age", RDFVocabulary.FOAF.BASE_URI));
-			RDFResource representative = idv.GetIRI();
+            RDFResource representative = idv.GetIRI();
 
             Assert.IsNotNull(representative);
             Assert.IsTrue(representative.Equals(RDFVocabulary.FOAF.AGE));
