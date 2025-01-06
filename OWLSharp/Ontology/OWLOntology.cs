@@ -2821,8 +2821,16 @@ namespace OWLSharp.Ontology
 
                     try
                     {
-                        RDFAsyncGraph importedGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds);
-                        OWLOntology importedOntology = await FromRDFGraphAsync(importedGraph.WrappedGraph);
+                        #region ImportCache
+                        string ontologyIRIString = ontologyIRI.ToString();
+                        if (!OWLOntologyHelper.ImportCache.ContainsKey(ontologyIRIString))
+                        {
+                            RDFAsyncGraph importGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
+                            OWLOntology importOntology = await FromRDFGraphAsync(importGraph.WrappedGraph);
+                            OWLOntologyHelper.ImportCache.Add(ontologyIRIString, importOntology);
+                        }
+                        OWLOntology importedOntology = OWLOntologyHelper.ImportCache[ontologyIRIString];
+                        #endregion
 
                         //Imports
                         if (shouldCollectImport)

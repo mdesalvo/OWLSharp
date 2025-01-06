@@ -40,6 +40,8 @@ namespace OWLSharp.Test.Extensions.TIME
                 TestOntology = new OWLOntology(new Uri("ex:WorldWarIIOntology"));
                 await TestOntology.InitializeTIMEAsync(30000);
 
+                Assert.IsTrue(OWLOntologyHelper.ImportCache.Count > 0);
+
                 TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
                 TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             }

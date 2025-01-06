@@ -5515,7 +5515,7 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldThrowExceptionOnImportingOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), 10));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5));
         }
         #endregion
 

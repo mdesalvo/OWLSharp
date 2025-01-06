@@ -37,6 +37,8 @@ namespace OWLSharp.Test.Extensions.TIME
             {
                 TestOntology = new OWLOntology(new Uri("ex:ont"));
                 await TestOntology.InitializeTIMEAsync(30000);
+
+                Assert.IsTrue(OWLOntologyHelper.ImportCache.Count > 0);
             }
         }
         #endregion
