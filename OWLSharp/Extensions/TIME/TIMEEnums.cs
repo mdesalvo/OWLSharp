@@ -27,5 +27,33 @@ namespace OWLSharp.Extensions.TIME
             Minute = 5,
             Second = 6
         }
+
+        public enum TIMEReasonerRules
+        {
+            AfterEqualsEntailment = 1,
+            AfterFinishesEntailment = 2,
+            AfterMetByEntailment = 3,
+            AfterTransitiveEntailment = 4,
+            BeforeEqualsEntailment = 5,
+            BeforeMeetsEntailment = 6,
+            BeforeStartsEntailment = 7,
+            BeforeTransitiveEntailment = 8,
+            ContainsEqualsEntailment = 9,
+            ContainsTransitiveEntailment = 10,
+            DuringEqualsEntailment = 11,
+            DuringTransitiveEntailment = 12,
+            EqualsEntailment = 13,
+            EqualsInverseEntailment = 14,
+            EqualsTransitiveEntailment = 15,
+            FinishedByEqualsEntailment = 16,
+            FinishesEqualsEntailment = 17,
+            MeetsEqualsEntailment = 18,
+            MeetsStartsEntailment = 19,
+            MetByEqualsEntailment = 20,
+            OverlappedByEqualsEntailment = 21,
+            OverlapsEqualsEntailment = 22,
+            StartsEqualsEntailment = 23,
+            StartedByEqualsEntailment = 24
+        }
     }
 }

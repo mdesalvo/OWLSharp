@@ -46,7 +46,7 @@ namespace OWLSharp.Reasoner
                 OWLEvents.RaiseInfo($"Launching OWL2/SWRL reasoner on ontology '{ontology.IRI}'...");
                 Rules = Rules.Distinct().ToList();
 
-                //Initialize inference registry                
+                //Initialize inference registry
                 Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>();
                 Rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
                 ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
@@ -197,7 +197,7 @@ namespace OWLSharp.Reasoner
                     //Collect inferences and perform final cleanup
                     inferences.AddRange(inferenceRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLInference>()).Distinct());
                     inferenceRegistry.Clear();
-                });                
+                });
 
                 OWLEvents.RaiseInfo($"Completed OWL2/SWRL reasoner on ontology {ontology.IRI} => {inferences.Count} unique inferences");
             }
