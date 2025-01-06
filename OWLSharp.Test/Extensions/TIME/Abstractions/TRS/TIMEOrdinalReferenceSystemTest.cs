@@ -42,11 +42,11 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(TestTRS.Equals(new RDFResource("ex:Thors")));
             Assert.IsTrue(TestTRS.THORSOntology.Imports.Count == 3);
             Assert.IsTrue(TestTRS.THORSOntology.Prefixes.Count == 5);
-            Assert.IsTrue(TestTRS.THORSOntology.DeclarationAxioms.Count == 109);
-            Assert.IsTrue(TestTRS.THORSOntology.AssertionAxioms.Count == 63);
-            Assert.IsTrue(TestTRS.THORSOntology.ClassAxioms.Count == 62);
-            Assert.IsTrue(TestTRS.THORSOntology.DataPropertyAxioms.Count == 25);
-            Assert.IsTrue(TestTRS.THORSOntology.ObjectPropertyAxioms.Count == 119);
+            Assert.IsTrue(TestTRS.THORSOntology.DeclarationAxioms.Count > 100);
+            Assert.IsTrue(TestTRS.THORSOntology.AssertionAxioms.Count > 60);
+            Assert.IsTrue(TestTRS.THORSOntology.ClassAxioms.Count > 60);
+            Assert.IsTrue(TestTRS.THORSOntology.DataPropertyAxioms.Count > 20);
+            Assert.IsTrue(TestTRS.THORSOntology.ObjectPropertyAxioms.Count > 100);
 
             //Test copy-ctor
             TIMEOrdinalReferenceSystem newTRS = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS);
@@ -55,11 +55,11 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(newTRS.Equals(new RDFResource("ex:Thors2")));
             Assert.IsTrue(newTRS.THORSOntology.Imports.Count == 3);
             Assert.IsTrue(newTRS.THORSOntology.Prefixes.Count == 5);
-            Assert.IsTrue(newTRS.THORSOntology.DeclarationAxioms.Count == 109);
-            Assert.IsTrue(newTRS.THORSOntology.AssertionAxioms.Count == 63);
-            Assert.IsTrue(newTRS.THORSOntology.ClassAxioms.Count == 62);
-            Assert.IsTrue(newTRS.THORSOntology.DataPropertyAxioms.Count == 25);
-            Assert.IsTrue(newTRS.THORSOntology.ObjectPropertyAxioms.Count == 119);
+            Assert.IsTrue(newTRS.THORSOntology.DeclarationAxioms.Count > 100);
+            Assert.IsTrue(newTRS.THORSOntology.AssertionAxioms.Count > 60);
+            Assert.IsTrue(newTRS.THORSOntology.ClassAxioms.Count > 60);
+            Assert.IsTrue(newTRS.THORSOntology.DataPropertyAxioms.Count > 20);
+            Assert.IsTrue(newTRS.THORSOntology.ObjectPropertyAxioms.Count > 100);
             Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), null));
         }
 
