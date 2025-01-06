@@ -30,14 +30,19 @@ namespace OWLSharp.Test.Extensions.TIME
     public class TIMEHelperTest
     {
         #region Initialize
-        private static OWLOntology TestOntology = new OWLOntology(new Uri("ex:WorldWarIIOntology"));
+        internal static OWLOntology TestOntology { get; set; }
 
         [TestInitialize]
-        public async Task InitializeTestOntologyAsync()
+        public async Task InitializeAsync()
         {
-            await TestOntology.InitializeTIMEAsync(30000);
-            TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
-            TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            if (TestOntology == null)
+            {
+                TestOntology = new OWLOntology(new Uri("ex:WorldWarIIOntology"));
+                await TestOntology.InitializeTIMEAsync(30000);
+
+                TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
+                TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
+            }
         }
         #endregion
 

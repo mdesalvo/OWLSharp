@@ -26,11 +26,11 @@ namespace OWLSharp.Test.Extensions.TIME
     [TestClass]
     public class TIMEOrdinalReferenceSystemTest
     {
-        private static TIMEOrdinalReferenceSystem TestTRS;
+        internal static TIMEOrdinalReferenceSystem TestTRS { get; set; }
 
         [TestInitialize]
-        public void InitializeTestTRSAsync()
-            => TestTRS = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
+        public void InitializeAsync()
+            => TestTRS ??= new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
 
         #region Tests
         [TestMethod]
@@ -662,7 +662,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
                     new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
-            thors.DeclareSubEra(new RDFResource("ex:subera"), new RDFResource("ex:era"));
+            thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
             TIMEExtent eraExtent = thors.GetEraExtent(new RDFResource("ex:era"));
             TIMEExtent subEraExtent = thors.GetEraExtent(new RDFResource("ex:subEra"));
