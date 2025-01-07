@@ -29,10 +29,10 @@ namespace OWLSharp.Extensions.SKOS
     {
         #region Initializer
         [ExcludeFromCodeCoverage]
-        public static async Task InitializeSKOSAsync(this OWLOntology ontology, int timeoutMilliseconds=20000)
+        public static async Task InitializeSKOSAsync(this OWLOntology ontology, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
         {
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), timeoutMilliseconds);
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.SKOSXL.DEREFERENCE_URI), timeoutMilliseconds);
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
+            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.SKOSXL.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
         }
         #endregion
 

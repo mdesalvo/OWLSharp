@@ -2811,9 +2811,9 @@ namespace OWLSharp.Ontology
                     }
                 });
 
-        public Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds=20000)
-            => ImportAsync(ontologyIRI, timeoutMilliseconds, true);
-        internal Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds, bool shouldCollectImport)
+        public Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
+            => ImportAsync(ontologyIRI, timeoutMilliseconds, cacheMilliseconds, true);
+        internal Task ImportAsync(Uri ontologyIRI, int timeoutMilliseconds, int cacheMilliseconds, bool shouldCollectImport)
             => Task.Run(async () =>
                 {
                     if (ontologyIRI == null)
@@ -2823,13 +2823,22 @@ namespace OWLSharp.Ontology
                     {
                         #region ImportCache
                         string ontologyIRIString = ontologyIRI.ToString();
+
+                        //Cache-Expire
+                        if (OWLOntologyHelper.ImportCache.ContainsKey(ontologyIRIString)
+                             && OWLOntologyHelper.ImportCache[ontologyIRIString].ExpireTimestamp < DateTime.UtcNow)
+                             OWLOntologyHelper.ImportCache.Remove(ontologyIRIString);
+
+                        //Cache-Miss
                         if (!OWLOntologyHelper.ImportCache.ContainsKey(ontologyIRIString))
                         {
                             RDFAsyncGraph importGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
                             OWLOntology importOntology = await FromRDFGraphAsync(importGraph.WrappedGraph);
-                            OWLOntologyHelper.ImportCache.Add(ontologyIRIString, importOntology);
+                            OWLOntologyHelper.ImportCache.Add(ontologyIRIString, (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds)));
                         }
-                        OWLOntology importedOntology = OWLOntologyHelper.ImportCache[ontologyIRIString];
+
+                        //Cache-Hit
+                        OWLOntology importedOntology = OWLOntologyHelper.ImportCache[ontologyIRIString].Ontology;
                         #endregion
 
                         //Imports
@@ -2862,11 +2871,11 @@ namespace OWLSharp.Ontology
                     }
                 });
 
-        public Task ResolveImportsAsync(int timeoutMilliseconds=20000)
+        public Task ResolveImportsAsync(int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
             => Task.Run(async () =>
                 {
                     foreach (OWLImport import in Imports.ToList())
-                        await ImportAsync(new Uri(import.IRI), timeoutMilliseconds, false);
+                        await ImportAsync(new Uri(import.IRI), timeoutMilliseconds, cacheMilliseconds, false);
                 });
         #endregion
     }

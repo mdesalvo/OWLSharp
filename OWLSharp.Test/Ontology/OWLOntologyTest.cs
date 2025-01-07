@@ -5484,6 +5484,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.KeyAxioms.Count == 0);
             Assert.IsTrue(ontology.Prefixes.Count == 5);
             Assert.IsTrue(ontology.Rules.Count == 0);
+
+            Assert.IsTrue(OWLOntologyHelper.ImportCache.TryGetValue(RDFVocabulary.SKOS.DEREFERENCE_URI, out var cachedSKOSOntology)
+                            && cachedSKOSOntology.ExpireTimestamp > DateTime.UtcNow);
         }
 
         [TestMethod]
@@ -5509,13 +5512,18 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.KeyAxioms.Count == 0);
             Assert.IsTrue(ontology.Prefixes.Count == 5);
             Assert.IsTrue(ontology.Rules.Count == 0);
+
+            Assert.IsTrue(OWLOntologyHelper.ImportCache.TryGetValue(RDFVocabulary.SKOS.DEREFERENCE_URI, out var cachedSKOSOntology)
+                            && cachedSKOSOntology.ExpireTimestamp > DateTime.UtcNow);
+            Assert.IsTrue(OWLOntologyHelper.ImportCache.TryGetValue(RDFVocabulary.FOAF.DEREFERENCE_URI, out var cachedFOAFOntology)
+                            && cachedFOAFOntology.ExpireTimestamp > DateTime.UtcNow);
         }
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnImportingOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5));
+            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
         }
         #endregion
 

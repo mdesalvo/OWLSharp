@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 
 namespace OWLSharp.Ontology
@@ -21,14 +22,14 @@ namespace OWLSharp.Ontology
     public static class OWLOntologyHelper
     {
         #region Properties
-        internal static Dictionary<string, OWLOntology> ImportCache { get; set; }
+        internal static Dictionary<string, (OWLOntology Ontology,DateTime ExpireTimestamp)> ImportCache { get; set; }
         #endregion
 
         #region Ctors
         static OWLOntologyHelper()
         {
             if (ImportCache == null)
-                ImportCache = new Dictionary<string, OWLOntology>();
+                ImportCache = new Dictionary<string, (OWLOntology,DateTime)>();
         }
         #endregion
     }
