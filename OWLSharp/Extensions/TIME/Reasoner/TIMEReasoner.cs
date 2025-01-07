@@ -64,71 +64,71 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEReasonerRules.AfterFinishesEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.AfterFinishesEntailment.ToString()] = await TIMEAfterFinishesEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
-                        /*case TIMEEnums.TIMEReasonerRules.AfterMetByEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.AfterMetByEntailment.ToString()] = TIMEAfterMetByEntailmentRule.ExecuteRule(ontology);
+                        case TIMEEnums.TIMEReasonerRules.AfterMetByEntailment:
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.AfterMetByEntailment.ToString()] = await TIMEAfterMetByEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.AfterTransitiveEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.AfterTransitiveEntailment.ToString()] = TIMEAfterTransitiveEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.AfterTransitiveEntailment.ToString()] = await TIMEAfterTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
-                        case TIMEEnums.TIMEReasonerRules.BeforeEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeEqualsEntailment.ToString()] = TIMEBeforeEqualsEntailmentRule.ExecuteRule(ontology);
+                        /*case TIMEEnums.TIMEReasonerRules.BeforeEqualsEntailment:
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeEqualsEntailment.ToString()] = await TIMEBeforeEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.BeforeMeetsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeMeetsEntailment.ToString()] = TIMEBeforeMeetsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeMeetsEntailment.ToString()] = await TIMEBeforeMeetsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.BeforeStartsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeStartsEntailment.ToString()] = TIMEBeforeStartsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeStartsEntailment.ToString()] = await TIMEBeforeStartsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.BeforeTransitiveEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeTransitiveEntailment.ToString()] = TIMEBeforeTransitiveEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.BeforeTransitiveEntailment.ToString()] = await TIMEBeforeTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.ContainsEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.ContainsEqualsEntailment.ToString()] = TIMEContainsEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.ContainsEqualsEntailment.ToString()] = await TIMEContainsEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.ContainsTransitiveEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.ContainsTransitiveEntailment.ToString()] = TIMEContainsTransitiveEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.ContainsTransitiveEntailment.ToString()] = await TIMEContainsTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.DuringEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.DuringEqualsEntailment.ToString()] = TIMEDuringEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.DuringEqualsEntailment.ToString()] = await TIMEDuringEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.DuringTransitiveEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.DuringTransitiveEntailment.ToString()] = TIMEDuringTransitiveEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.DuringTransitiveEntailment.ToString()] = await TIMEDuringTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.EqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.EqualsEntailment.ToString()] = TIMEEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.EqualsEntailment.ToString()] = await TIMEEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.EqualsInverseEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.EqualsInverseEntailment.ToString()] = TIMEEqualsInverseEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.EqualsInverseEntailment.ToString()] = await TIMEEqualsInverseEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.EqualsTransitiveEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.EqualsTransitiveEntailment.ToString()] = TIMEEqualsTransitiveEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.EqualsTransitiveEntailment.ToString()] = await TIMEEqualsTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.FinishedByEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.FinishedByEqualsEntailment.ToString()] = TIMEFinishedByEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.FinishedByEqualsEntailment.ToString()] = await TIMEFinishedByEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.FinishesEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.FinishesEqualsEntailment.ToString()] = TIMEFinishesEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.FinishesEqualsEntailment.ToString()] = await TIMEFinishesEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.MeetsEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.MeetsEqualsEntailment.ToString()] = TIMEMeetsEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.MeetsEqualsEntailment.ToString()] = await TIMEMeetsEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.MeetsStartsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.MeetsStartsEntailment.ToString()] = TIMEMeetsStartsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.MeetsStartsEntailment.ToString()] = await TIMEMeetsStartsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.MetByEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.MetByEqualsEntailment.ToString()] = TIMEMetByEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.MetByEqualsEntailment.ToString()] = await TIMEMetByEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.OverlappedByEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.OverlappedByEqualsEntailment.ToString()] = TIMEOverlappedByEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.OverlappedByEqualsEntailment.ToString()] = await TIMEOverlappedByEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.OverlapsEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.OverlapsEqualsEntailment.ToString()] = TIMEOverlapsEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.OverlapsEqualsEntailment.ToString()] = await TIMEOverlapsEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.StartsEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.StartsEqualsEntailment.ToString()] = TIMEStartsEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.StartsEqualsEntailment.ToString()] = await TIMEStartsEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.StartedByEqualsEntailment:
-                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.StartedByEqualsEntailment.ToString()] = TIMEStartedByEqualsEntailmentRule.ExecuteRule(ontology);
+                            inferenceRegistry[TIMEEnums.TIMEReasonerRules.StartedByEqualsEntailment.ToString()] = await TIMEStartedByEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;*/
                     }
 
