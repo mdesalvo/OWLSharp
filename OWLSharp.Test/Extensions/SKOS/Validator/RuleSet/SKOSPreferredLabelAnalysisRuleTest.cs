@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Ontology;
@@ -25,7 +26,7 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzePreferredLabel()
+        public async Task ShouldAnalyzePreferredLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -70,7 +71,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            List<OWLIssue> issues = SKOSPreferredLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSPreferredLabelAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 2);
@@ -81,7 +82,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
-        public void ShouldAnalyzePreferredXLabel()
+        public async Task ShouldAnalyzePreferredXLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -166,7 +167,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ]
             };
-            List<OWLIssue> issues = SKOSPreferredLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSPreferredLabelAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 2);

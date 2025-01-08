@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Ontology;
@@ -25,7 +26,7 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeLiteralFormAndViolateRule()
+        public async Task ShouldAnalyzeLiteralFormAndViolateRule()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -56,7 +57,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("labelB", "en"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSXLLiteralFormAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSXLLiteralFormAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 2);

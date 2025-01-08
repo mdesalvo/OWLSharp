@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Ontology;
@@ -25,7 +26,7 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeAlternativeLabelConflictingWithPrefLabel()
+        public async Task ShouldAnalyzeAlternativeLabelConflictingWithPrefLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -72,7 +73,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSAlternativeLabelAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -83,7 +84,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
-        public void ShouldAnalyzeAlternativeLabelConflictingWithHiddenLabel()
+        public async Task ShouldAnalyzeAlternativeLabelConflictingWithHiddenLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -130,7 +131,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSAlternativeLabelAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -141,7 +142,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
-        public void ShouldAnalyzeAlternativeXLabelConflictingWithPrefXLabel()
+        public async Task ShouldAnalyzeAlternativeXLabelConflictingWithPrefXLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -228,7 +229,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ]
             };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSAlternativeLabelAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -239,7 +240,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
-        public void ShouldAnalyzeAlternativeXLabelConflictingWithHiddenXLabel()
+        public async Task ShouldAnalyzeAlternativeXLabelConflictingWithHiddenXLabel()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -326,7 +327,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ]
             };
-            List<OWLIssue> issues = SKOSAlternativeLabelAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSAlternativeLabelAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);

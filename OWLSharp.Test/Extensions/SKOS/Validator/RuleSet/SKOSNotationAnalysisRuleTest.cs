@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Ontology;
@@ -25,7 +26,7 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeNotation()
+        public async Task ShouldAnalyzeNotation()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -78,7 +79,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING))),
                 ]
             };
-            List<OWLIssue> issues = SKOSNotationAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSNotationAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 2);

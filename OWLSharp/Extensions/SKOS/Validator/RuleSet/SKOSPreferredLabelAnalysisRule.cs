@@ -17,6 +17,7 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
@@ -25,8 +26,8 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.PreferredLabelAnalysis.ToString();
         internal static readonly string rulesugg1 = "There should not be SKOS concepts having more than one occurrence of the same language tag in values of skos:prefLabel data annotations.";
         internal static readonly string rulesugg2 = "There should not be SKOS concepts having more than one occurrence of the same language tag in values of skosxl:prefLabel data relations.";
-        
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -72,7 +73,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLLiteralArgument(RDFTypedLiteral.True))
                     }
                 });
-            violations.AddRange(prefRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await prefRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
@@ -134,7 +135,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLLiteralArgument(RDFTypedLiteral.True))
                     }
                 });
-            violations.AddRange(prefXLRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await prefXLRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,

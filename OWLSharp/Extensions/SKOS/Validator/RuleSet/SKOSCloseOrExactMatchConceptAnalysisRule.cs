@@ -17,6 +17,7 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
@@ -28,7 +29,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulesugg2A = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:related)";
         internal static readonly string rulesugg2B = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:relatedMatch)";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -73,7 +74,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 });
-            violations.AddRange(clash1ARule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await clash1ARule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
@@ -123,7 +124,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 });
-            violations.AddRange(clash1BRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await clash1BRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
@@ -173,7 +174,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 });
-            violations.AddRange(clash2ARule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await clash2ARule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
@@ -223,7 +224,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 });
-            violations.AddRange(clash2BRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await clash2BRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,

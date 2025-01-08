@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Ontology;
@@ -25,7 +26,7 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule1A()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule1A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -79,7 +80,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -90,7 +91,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule1B()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule1B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -144,7 +145,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -155,7 +156,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule2A()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule2A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -209,7 +210,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -220,7 +221,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule2B()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule2B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -274,7 +275,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -285,7 +286,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule3A()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule3A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -339,7 +340,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -350,7 +351,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule3B()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule3B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -404,7 +405,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -415,7 +416,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule4A()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule4A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -469,7 +470,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -480,7 +481,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule4B()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule4B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -534,7 +535,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -545,7 +546,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule5A()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule5A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -599,7 +600,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -610,7 +611,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule5B()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule5B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -664,7 +665,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -675,7 +676,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule6A()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule6A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -729,7 +730,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -740,7 +741,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeBroaderConceptAndViolateRule6B()
+        public async Task ShouldAnalyzeBroaderConceptAndViolateRule6B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -794,7 +795,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSBroaderConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);

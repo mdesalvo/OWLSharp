@@ -17,6 +17,7 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
@@ -28,7 +29,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulesugg3 = "There should not be SKOS-XL concepts having the same value for skosxl:altLabel and skosxl:prefLabel data relations.";
         internal static readonly string rulesugg4 = "There should not be SKOS-XL concepts having the same value for skosxl:altLabel and skosxl:hiddenLabel data relations.";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -72,7 +73,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLLiteralArgument(RDFTypedLiteral.True))
                     }
                 });
-            violations.AddRange(altprefRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await altprefRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
@@ -119,7 +120,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLLiteralArgument(RDFTypedLiteral.True))
                     }
                 });
-            violations.AddRange(althiddenRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await althiddenRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
@@ -176,7 +177,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLLiteralArgument(RDFTypedLiteral.True))
                     }
                 });
-            violations.AddRange(altprefXLRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await altprefXLRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
@@ -231,7 +232,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLLiteralArgument(RDFTypedLiteral.True))
                     }
                 });
-            violations.AddRange(althiddenXLRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await althiddenXLRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,

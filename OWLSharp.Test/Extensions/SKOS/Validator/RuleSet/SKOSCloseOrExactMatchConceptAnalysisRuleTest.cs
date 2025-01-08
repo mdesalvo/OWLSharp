@@ -12,6 +12,7 @@
 */
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.SKOS;
 using OWLSharp.Ontology;
@@ -25,7 +26,7 @@ namespace OWLSharp.Test.Extensions.SKOS
     {
         #region Tests
         [TestMethod]
-        public void ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule1A()
+        public async Task ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule1A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -79,7 +80,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -90,7 +91,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
 
         [TestMethod]
-        public void ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule1B()
+        public async Task ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule1B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -144,7 +145,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -155,7 +156,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule2A()
+        public async Task ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule2A()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -209,7 +210,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -220,7 +221,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         }
         
         [TestMethod]
-        public void ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule2B()
+        public async Task ShouldAnalyzeCloseOrExactMatchConceptAndViolateRule2B()
         {
             OWLOntology ontology = new OWLOntology()
             {
@@ -274,7 +275,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRule(ontology);
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);

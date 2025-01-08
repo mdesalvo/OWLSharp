@@ -17,6 +17,7 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
@@ -25,7 +26,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis.ToString();
         internal static readonly string rulesugg = "There should not be SKOS-XL labels having more than one occurrence of skosxl:literalForm relation";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -66,7 +67,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLLiteralArgument(RDFTypedLiteral.True))
                     }
                 });
-            violations.AddRange(literalFormRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await literalFormRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,

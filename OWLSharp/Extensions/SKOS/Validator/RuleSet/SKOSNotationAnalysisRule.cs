@@ -17,6 +17,7 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using RDFSharp.Query;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
@@ -25,7 +26,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.NotationAnalysis.ToString();
         internal static readonly string rulesugg = "There should not be SKOS concepts sharing the same value for skos:Notation data relation under the same schema.";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -83,7 +84,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 });
-            violations.AddRange(notationRule.ApplyToOntologyAsync(ontology).GetAwaiter().GetResult());
+            violations.AddRange(await notationRule.ApplyToOntologyAsync(ontology));
             violations.ForEach(violation => issues.Add(
                 new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
