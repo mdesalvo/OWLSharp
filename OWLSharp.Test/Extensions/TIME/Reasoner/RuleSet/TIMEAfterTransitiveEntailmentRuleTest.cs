@@ -50,6 +50,27 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
+        public async Task ShouldExecuteAfterTransitiveEntailmentForInstants()
+        {
+            OWLOntology ontology = new OWLOntology(TestOntology);
+            ontology.DeclareInstantFeature(new RDFResource("ex:Feature1"), new TIMEInstant(new RDFResource("ex:Instant1")));
+            ontology.DeclareInstantFeature(new RDFResource("ex:Feature2"), new TIMEInstant(new RDFResource("ex:Instant2")));
+            ontology.DeclareInstantFeature(new RDFResource("ex:Feature3"), new TIMEInstant(new RDFResource("ex:Instant3")));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
+                new OWLNamedIndividual(new RDFResource("ex:Instant1")),
+                new OWLNamedIndividual(new RDFResource("ex:Instant2"))));
+            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
+                new OWLNamedIndividual(new RDFResource("ex:Instant2")),
+                new OWLNamedIndividual(new RDFResource("ex:Instant3"))));
+            List<OWLInference> inferences = await TIMEAfterTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
+
+            Assert.IsNotNull(inferences);
+            Assert.IsTrue(inferences.Count == 1);
+        }
+
+        [TestMethod]
         public async Task ShouldExecuteAfterTransitiveEntailmentViaReasoner()
         {
             OWLOntology ontology = new OWLOntology(TestOntology);

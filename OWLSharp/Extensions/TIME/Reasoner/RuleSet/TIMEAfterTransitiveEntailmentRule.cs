@@ -24,7 +24,38 @@ namespace OWLSharp.Extensions.TIME
     {
         internal static async Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology)
         {
-            SWRLRule swrlRule = new SWRLRule(
+            List<OWLInference> inferences = new List<OWLInference>();
+
+            SWRLRule swrlRuleForInstants = new SWRLRule(
+                new RDFPlainLiteral(nameof(TIMEAfterTransitiveEntailmentRule)),
+                new RDFPlainLiteral("AFTER(?I1,?I2) ^ AFTER(?I3,?I1) -> AFTER(?I3,?I2)"),
+                new SWRLAntecedent() 
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I1"))),
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I2"))),
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I3"))),
+                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.AFTER), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I2"))),
+                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.AFTER), new SWRLVariableArgument(new RDFVariable("?I2")), new SWRLVariableArgument(new RDFVariable("?I3")))
+                    },
+                    BuiltIns = new List<SWRLBuiltIn>()
+                    {
+                        SWRLBuiltIn.NotEqual(new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I2"))),
+                        SWRLBuiltIn.NotEqual(new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I3"))),
+                        SWRLBuiltIn.NotEqual(new SWRLVariableArgument(new RDFVariable("?I2")), new SWRLVariableArgument(new RDFVariable("?I3")))
+                    }
+                },
+                new SWRLConsequent()
+                {
+                    Atoms = new List<SWRLAtom>()
+                    {
+                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.AFTER), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I3")))
+                    }
+                });
+            inferences.AddRange(await swrlRuleForInstants.ApplyToOntologyAsync(ontology));
+
+            SWRLRule swrlRuleForIntervals = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEAfterTransitiveEntailmentRule)),
                 new RDFPlainLiteral("AFTER(?I1,?I2) ^ AFTER(?I3,?I1) -> AFTER(?I3,?I2)"),
                 new SWRLAntecedent() 
@@ -51,8 +82,9 @@ namespace OWLSharp.Extensions.TIME
                         new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_AFTER), new SWRLVariableArgument(new RDFVariable("?I3")), new SWRLVariableArgument(new RDFVariable("?I2")))
                     }
                 });
+            inferences.AddRange(await swrlRuleForIntervals.ApplyToOntologyAsync(ontology));
 
-            return await swrlRule.ApplyToOntologyAsync(ontology);
+            return inferences;
         }
     }
 }
