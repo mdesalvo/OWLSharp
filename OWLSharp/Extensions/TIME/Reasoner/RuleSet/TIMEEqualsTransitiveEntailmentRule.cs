@@ -20,13 +20,13 @@ using RDFSharp.Query;
 
 namespace OWLSharp.Extensions.TIME
 {
-    internal static class TIMEBeforeEqualsEntailmentRule
+    internal static class TIMEEqualsTransitiveEntailmentRule
     {
         internal static async Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology)
         {
             SWRLRule swrlRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(TIMEBeforeEqualsEntailmentRule)),
-                new RDFPlainLiteral("BEFORE(?I1,?I2) ^ EQUALS(?I2,?I3) -> BEFORE(?I1,?I3)"),
+                new RDFPlainLiteral(nameof(TIMEEqualsTransitiveEntailmentRule)),
+                new RDFPlainLiteral("EQUALS(?I1,?I2) ^ EQUALS(?I2,?I3) -> EQUALS(?I1,?I3)"),
                 new SWRLAntecedent() 
                 {
                     Atoms = new List<SWRLAtom>()
@@ -34,7 +34,7 @@ namespace OWLSharp.Extensions.TIME
                         new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INTERVAL), new SWRLVariableArgument(new RDFVariable("?I1"))),
                         new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INTERVAL), new SWRLVariableArgument(new RDFVariable("?I2"))),
                         new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INTERVAL), new SWRLVariableArgument(new RDFVariable("?I3"))),
-                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_BEFORE), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I2"))),
+                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I2"))),
                         new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS), new SWRLVariableArgument(new RDFVariable("?I2")), new SWRLVariableArgument(new RDFVariable("?I3")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>()
@@ -48,7 +48,8 @@ namespace OWLSharp.Extensions.TIME
                 {
                     Atoms = new List<SWRLAtom>()
                     {
-                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_BEFORE), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I3")))
+                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I3"))),
+                        new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS), new SWRLVariableArgument(new RDFVariable("?I3")), new SWRLVariableArgument(new RDFVariable("?I1")))
                     }
                 });
 

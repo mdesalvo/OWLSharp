@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.TIME
         {
             SWRLRule swrlRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEContainsTransitiveEntailmentRule)),
-                new RDFPlainLiteral(""),
+                new RDFPlainLiteral("CONTAINS(?I1,?I2) ^ CONTAINS(?I2,?I3) -> CONTAINS(?I1,?I3)"),
                 new SWRLAntecedent() 
                 {
                     Atoms = new List<SWRLAtom>()
