@@ -13,5 +13,5 @@ It also integrates a powerful <b>SWRL engine</b> for modeling, exchanging and ex
 Along with core ontology features, it also includes a set of extensions providing additional capabilities:
 <ul>
   <li>Create and validate schemes describing, documenting and organizing vocabularies of concepts (<b>SKOS</b>)</li>
-  <li>Model and correlate features having a spatio-temporal representation (<b>GeoSPARQL</b>, <b>OWL-TIME</b>)</li>
+  <li>Model and analyze features having a spatio-temporal representation (<b>GeoSPARQL</b>, <b>OWL-TIME</b>)</li>
 </ul>
