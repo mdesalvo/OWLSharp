@@ -25,7 +25,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Test.Extensions.TIME
 {
     [TestClass]
-    public class TIMEStartedByEqualsEntailmentRuleTest : TIMEBaseEntailmentRuleTest
+    public class TIMEStartedByEqualsEntailmentRuleTest : TIMETestOntology
     {
         #region Tests
         [TestMethod]

@@ -55,5 +55,28 @@ namespace OWLSharp.Extensions.TIME
             StartsEqualsEntailment = 23,
             StartedByEqualsEntailment = 24
         }
+
+        public enum TIMEValidatorRules
+        {
+            InstantAfterAnalysis = 1,
+            InstantBeforeAnalysis = 2,
+            IntervalAfterAnalysis = 3,
+            IntervalBeforeAnalysis = 4,
+            IntervalContainsAnalysis = 5,
+            IntervalDisjointAnalysis = 6,
+            IntervalDuringAnalysis = 7,
+            IntervalEqualsAnalysis = 8,
+            IntervalFinishesAnalysis = 9,
+            IntervalFinishedByAnalysis = 10,
+            IntervalHasInsideAnalysis = 11,
+            IntervalInAnalysis = 12,
+            IntervalMeetsAnalysis = 13,
+            IntervalMetByAnalysis = 14,
+            IntervalNotDisjointAnalysis = 15,
+            IntervalOverlapsAnalysis = 16,
+            IntervalOverlappedByAnalysis = 17,
+            IntervalStartsAnalysis = 18,
+            IntervalStartedByAnalysis = 19
+        }
     }
 }
