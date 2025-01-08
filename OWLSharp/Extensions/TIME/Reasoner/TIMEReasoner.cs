@@ -118,7 +118,7 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEReasonerRules.MetByEqualsEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.MetByEqualsEntailment.ToString()] = await TIMEMetByEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
-                        /*case TIMEEnums.TIMEReasonerRules.OverlappedByEqualsEntailment:
+                        case TIMEEnums.TIMEReasonerRules.OverlappedByEqualsEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.OverlappedByEqualsEntailment.ToString()] = await TIMEOverlappedByEqualsEntailmentRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEReasonerRules.OverlapsEqualsEntailment:
@@ -129,7 +129,7 @@ namespace OWLSharp.Extensions.TIME
                             break;
                         case TIMEEnums.TIMEReasonerRules.StartedByEqualsEntailment:
                             inferenceRegistry[TIMEEnums.TIMEReasonerRules.StartedByEqualsEntailment.ToString()] = await TIMEStartedByEqualsEntailmentRule.ExecuteRuleAsync(ontology);
-                            break;*/
+                            break;
                     }
 
                     OWLEvents.RaiseInfo($"Completed OWL-TIME rule {rule} => {inferenceRegistry[rule.ToString()].Count} candidate inferences");
