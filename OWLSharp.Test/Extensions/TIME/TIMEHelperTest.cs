@@ -21,38 +21,18 @@ using RDFSharp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace OWLSharp.Test.Extensions.TIME
 {
     [TestClass]
-    public class TIMEHelperTest
+    public class TIMEHelperTest : TIMETestOntology
     {
-        #region Initialize
-        internal static OWLOntology TestOntology { get; set; }
-
-        [TestInitialize]
-        public async Task InitializeAsync()
-        {
-            if (TestOntology == null)
-            {
-                TestOntology = new OWLOntology(new Uri("ex:WorldWarIIOntology"));
-                await TestOntology.InitializeTIMEAsync(30000);
-
-                Assert.IsTrue(OWLOntologyHelper.ImportCache.Count > 0);
-
-                TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
-                TestOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
-            }
-        }
-        #endregion
-
         #region Tests (Declarer)
         [TestMethod]
         public void ShouldDeclareInstantByDateTime()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
                 new TIMEInstant(new RDFResource("ex:timeInst"), DateTime.Parse("2023-03-22T10:35:34Z")));
 
@@ -76,7 +56,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareInstantByDescriptionFromCoordinate()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
                 new TIMEInstant(new RDFResource("ex:timeInst"), 
                     new TIMEInstantDescription(
@@ -161,7 +141,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareInstantByDescriptionFromDateTime()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
                 new TIMEInstant(new RDFResource("ex:timeInst"), 
                     new TIMEInstantDescription(new RDFResource("ex:timeInstDesc"), DateTime.Parse("2023-03-22T10:35:34Z"))));
@@ -228,7 +208,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareInstantByNumericPosition()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
                 new TIMEInstant(new RDFResource("ex:timeInst"),
                     new TIMEInstantPosition(new RDFResource("ex:timeInstPos"), TIMEPositionReferenceSystem.UnixTime, 1679477734))); //2023-03-22T09:35:34Z
@@ -265,8 +245,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareInstantByNumericPositionWithUncertainty()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEIntervalDuration timeInstantUncertainty = new TIMEIntervalDuration(
                 new RDFResource("ex:timeInstPosUnc"), RDFVocabulary.TIME.UNIT_SECOND, 4.04);
             TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:timeInst"),
@@ -328,8 +307,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareInstantByNominalPosition()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:timeInst"),
                 new TIMEInstantPosition(new RDFResource("ex:timeInstPos"),
                     new RDFResource("https://en.wikipedia.org/wiki/Geologic_time_scale"),
@@ -379,8 +357,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareIntervalByTimeSpan()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
                 XmlConvert.ToTimeSpan("P1Y2M3DT11H5M7S"));
             timeOntology.DeclareIntervalFeature(new RDFResource("ex:feat"), timeInterval);
@@ -405,8 +382,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareIntervalByBeginning()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBegin"), DateTime.Parse("2023-03-22T10:35:34Z")), null);
             timeOntology.DeclareIntervalFeature(new RDFResource("ex:feat"), timeInterval);
@@ -439,8 +415,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareIntervalByEnd()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"), null,
                 new TIMEInstant(new RDFResource("ex:timeIntvEnd"), DateTime.Parse("2023-03-22T10:35:34Z")));
             timeOntology.DeclareIntervalFeature(new RDFResource("ex:feat"), timeInterval);
@@ -473,8 +448,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareIntervalByBeginningEnd()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBegin"), DateTime.Parse("2023-03-22T10:35:34Z")),
                 new TIMEInstant(new RDFResource("ex:timeIntvEnd"), DateTime.Parse("2023-03-25T10:35:34Z")));
@@ -520,8 +494,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareIntervalByDescriptionFromExtent()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
                 new TIMEIntervalDescription(new RDFResource("ex:timeIntvDesc"),
                     new TIMEExtent(1, 2, 3, 4, 5, 6, 7, new TIMEExtentMetadata(new RDFResource("ex:TRS")))));
@@ -585,8 +558,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareIntervalByDescriptionFromTimeSpan()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
                 new TIMEIntervalDescription(new RDFResource("ex:timeIntvDesc"),
                     new TIMEExtent(XmlConvert.ToTimeSpan("P1Y1M1DT1H1M1S"))));
@@ -633,8 +605,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldDeclareIntervalByDuration()
         {
-            OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:timeIntv"),
                 new TIMEIntervalDuration(new RDFResource("ex:timeIntvDur"), RDFVocabulary.TIME.UNIT_DAY, 77));
             timeOntology.DeclareIntervalFeature(new RDFResource("ex:feat"), timeInterval);
@@ -696,7 +667,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [DataRow("http://www.w3.org/2006/time#inXSDgYearMonth", "1939-09", RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH, "1939-09-01T00:00:00Z")]
         public void ShouldGetTemporalInstantFeatureByDateTime(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, string expectedTimeValue)
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
@@ -733,7 +704,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [DataRow("http://www.w3.org/2006/time#inXSDgYearMonth", "1939-09", RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH, "1939-09-01T00:00:00Z")]
         public void ShouldGetTemporalInstantFeatureByDateTimeThroughInferredProperty(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, string expectedTimeValue)
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
@@ -769,7 +740,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalInstantFeatureByDescription()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -862,7 +833,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalInstantFeatureByDescriptionThroughInferredProperty()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -959,7 +930,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalInstantFeatureByGeneralDescription()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:AbbyBirthday")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtent")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:AbbyBirthdayTemporalExtentDescription")));
@@ -1046,7 +1017,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalInstantFeatureByNumericPosition()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
@@ -1093,7 +1064,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalInstantFeatureByNumericPositionThroughInferredProperty()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
@@ -1144,7 +1115,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalInstantFeatureByNominalPosition()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
@@ -1192,7 +1163,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByTimeSpan()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
@@ -1226,7 +1197,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByTimeSpanThroughInferredProperty()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLObjectProperty(new RDFResource("ex:hasTemporalExtent")));
@@ -1264,7 +1235,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByDescription()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -1343,7 +1314,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByDescriptionThroughInferredProperty()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -1426,7 +1397,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByGeneralDescription()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -1505,7 +1476,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByDuration()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDuration")));
@@ -1553,7 +1524,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByDurationThroughInferredProperty()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDuration")));
@@ -1605,7 +1576,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByBeginningInstant()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
@@ -1651,7 +1622,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByBeginningInstantThroughInferredProperty()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
@@ -1701,7 +1672,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByEndInstant()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
@@ -1747,7 +1718,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByEndInstantThroughInferredProperty()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
@@ -1797,7 +1768,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetTemporalIntervalFeatureByBeginningEndInstants()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
@@ -1869,7 +1840,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldGetInstantCoordinateByDateTime(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, 
             double expectedYear, double expectedMonth, double expectedDay, double expectedHour, double expectedMinute, double expectedSecond)
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
@@ -1897,7 +1868,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetInstantCoordinateByDescription()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -1963,7 +1934,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetInstantCoordinateByDescriptionWithNormalization()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -2033,7 +2004,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetInstantCoordinateByNumericPosition()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
@@ -2075,7 +2046,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldThrowExceptionOnGettingInstantCoordinateByNumericPositionBecauseUnregisteredTRS()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
@@ -2109,7 +2080,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldThrowExceptionOnGettingInstantCoordinateByNumericPositionBecauseCalendarTRSDetected()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
@@ -2146,7 +2117,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetInstantCoordinateByNominalPosition()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")));
@@ -2219,7 +2190,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetIntervalExtentByTimeSpan()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareAssertionAxiom(new OWLClassAssertion(
@@ -2248,7 +2219,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetIntervalExtentByDescription()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDescription")));
@@ -2313,7 +2284,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetIntervalExtentByDuration()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDuration")));
@@ -2354,7 +2325,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldThrowExceptionOnGettingIntervalExtentByDurationBecauseUnknownUnitType()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDuration")));
@@ -2388,7 +2359,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetIntervalExtentByBeginningEnd()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
@@ -2437,7 +2408,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldNotGetIntervalExtentBecauseNoValidEncoding()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
@@ -2467,7 +2438,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetBeginningOfInterval()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIIBeginning")));
@@ -2516,7 +2487,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldNotGetBeginningOfIntervalBecauseNoValidEncoding()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIIBeginning")));
@@ -2555,7 +2526,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetBeginningOfIntervalIndirectly()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
@@ -2612,7 +2583,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldNotGetBeginningOfIntervalIndirectlyBecauseNoValidEncoding()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionBeginning")));
@@ -2659,7 +2630,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetBeginningOfIntervalIndirectlyMeeting()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:PrecedingWorldWarIITemporalDimension")));
@@ -2717,7 +2688,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldNotGetBeginningOfIntervalIndirectlyMeetingBecauseNoValidEncoding()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:PrecedingWorldWarIITemporalDimension")));
@@ -2765,7 +2736,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetEndOfInterval()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIIEnd")));
@@ -2814,7 +2785,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldNotGetEndOfIntervalBecauseNoValidEncoding()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIIEnd")));
@@ -2853,7 +2824,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetEndOfIntervalIndirectly()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
@@ -2910,7 +2881,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldNotGetEndOfIntervalIndirectlyBecauseNoValidEncoding()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")));
@@ -2957,7 +2928,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldGetEndOfIntervalIndirectlyMeeting()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:FollowingWorldWarIITemporalDimension")));
@@ -3015,7 +2986,7 @@ namespace OWLSharp.Test.Extensions.TIME
         [TestMethod]
         public void ShouldNotGetEndOfIntervalIndirectlyMeetingBecauseNoValidEncoding()
         {
-            OWLOntology timeOntology = new OWLOntology(TestOntology);
+            OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarII")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")));
             timeOntology.DeclareEntity(new OWLNamedIndividual(new RDFResource("ex:FollowingWorldWarIITemporalDimension")));
