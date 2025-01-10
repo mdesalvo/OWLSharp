@@ -298,7 +298,6 @@ namespace OWLSharp.Extensions.TIME
             while (secondsToConsume >= calendarTRS.Metrics.SecondsInMinute)
             {
                 secondsToConsume -= calendarTRS.Metrics.SecondsInMinute;
-                positionTRSOrigin.Second %= calendarTRS.Metrics.SecondsInMinute;
                 positionTRSOrigin.Minute++;
                 if (positionTRSOrigin.Minute < calendarTRS.Metrics.MinutesInHour)
                     continue;
@@ -337,7 +336,6 @@ namespace OWLSharp.Extensions.TIME
             while (secondsToConsume < 0)
             {
                 secondsToConsume += calendarTRS.Metrics.SecondsInMinute;
-                positionTRSOrigin.Second %= calendarTRS.Metrics.SecondsInMinute;
                 positionTRSOrigin.Minute--;
                 if (positionTRSOrigin.Minute >= 0)
                     continue;
