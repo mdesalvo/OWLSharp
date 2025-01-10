@@ -11,6 +11,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,6 +55,13 @@ namespace OWLSharp.Extensions.TIME
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>();
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
+                //Initialize cache registry
+                Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+                {
+                    { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                    { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+                };
+
                 //Execute validator rules
                 await Rules.ParallelForEachAsync(async (rule) =>
                 {
@@ -62,61 +70,61 @@ namespace OWLSharp.Extensions.TIME
                     switch (rule)
                     {
                         case TIMEEnums.TIMEValidatorRules.InstantAfterAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.InstantAfterAnalysis.ToString()] = await TIMEInstantAfterAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.InstantAfterAnalysis.ToString()] = await TIMEInstantAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.InstantBeforeAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.InstantBeforeAnalysis.ToString()] = await TIMEInstantBeforeAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.InstantBeforeAnalysis.ToString()] = await TIMEInstantBeforeAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis.ToString()] = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis.ToString()] = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalBeforeAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalBeforeAnalysis.ToString()] = await TIMEIntervalBeforeAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalBeforeAnalysis.ToString()] = await TIMEIntervalBeforeAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         /*case TIMEEnums.TIMEValidatorRules.IntervalContainsAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalContainsAnalysis.ToString()] = await TIMEIntervalContainsAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalContainsAnalysis.ToString()] = await TIMEIntervalContainsAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalDisjointAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalDisjointAnalysis.ToString()] = await TIMEIntervalDisjointAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalDisjointAnalysis.ToString()] = await TIMEIntervalDisjointAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalDuringAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalDuringAnalysis.ToString()] = await TIMEIntervalDuringAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalDuringAnalysis.ToString()] = await TIMEIntervalDuringAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalEqualsAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalEqualsAnalysis.ToString()] = await TIMEIntervalEqualsAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalEqualsAnalysis.ToString()] = await TIMEIntervalEqualsAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalFinishesAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalFinishesAnalysis.ToString()] = await TIMEIntervalFinishesAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalFinishesAnalysis.ToString()] = await TIMEIntervalFinishesAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalFinishedByAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalFinishedByAnalysis.ToString()] = await TIMEIntervalFinishedByAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalFinishedByAnalysis.ToString()] = await TIMEIntervalFinishedByAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalHasInsideAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalHasInsideAnalysis.ToString()] = await TIMEIntervalHasInsideAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalHasInsideAnalysis.ToString()] = await TIMEIntervalHasInsideAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalInAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalInAnalysis.ToString()] = await TIMEIntervalInAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalInAnalysis.ToString()] = await TIMEIntervalInAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalMeetsAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalMeetsAnalysis.ToString()] = await TIMEIntervalMeetsAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalMeetsAnalysis.ToString()] = await TIMEIntervalMeetsAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalMetByAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalMetByAnalysis.ToString()] = await TIMEIntervalMetByAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalMetByAnalysis.ToString()] = await TIMEIntervalMetByAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalNotDisjointAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalNotDisjointAnalysis.ToString()] = await TIMEIntervalNotDisjointAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalNotDisjointAnalysis.ToString()] = await TIMEIntervalNotDisjointAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis.ToString()] = await TIMEIntervalOverlapsAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis.ToString()] = await TIMEIntervalOverlapsAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis.ToString()] = await TIMEIntervalOverlappedByAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis.ToString()] = await TIMEIntervalOverlappedByAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis.ToString()] = await TIMEIntervalStartsAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis.ToString()] = await TIMEIntervalStartsAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalStartedByAnalysis:
-                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalStartedByAnalysis.ToString()] = await TIMEIntervalStartedByAnalysisRule.ExecuteRule((ontology);
+                            issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalStartedByAnalysis.ToString()] = await TIMEIntervalStartedByAnalysisRule.ExecuteRule((ontology, cacheRegistry);
                             break;*/
                     }
 

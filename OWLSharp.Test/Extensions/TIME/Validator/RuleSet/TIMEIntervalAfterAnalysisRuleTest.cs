@@ -57,7 +57,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalAfter";
 
             Assert.IsNotNull(issues);
@@ -104,7 +109,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalBefore";
 
             Assert.IsNotNull(issues);
@@ -147,7 +157,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalContains";
 
             Assert.IsNotNull(issues);
@@ -190,7 +205,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalDuring";
 
             Assert.IsNotNull(issues);
@@ -233,7 +253,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalEquals";
 
             Assert.IsNotNull(issues);
@@ -276,7 +301,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalFinishedBy";
 
             Assert.IsNotNull(issues);
@@ -319,7 +349,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalFinishes";
 
             Assert.IsNotNull(issues);
@@ -362,7 +397,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:hasInside";
 
             Assert.IsNotNull(issues);
@@ -405,7 +445,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalIn";
 
             Assert.IsNotNull(issues);
@@ -448,7 +493,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalMeets";
 
             Assert.IsNotNull(issues);
@@ -491,7 +541,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalMetBy";
 
             Assert.IsNotNull(issues);
@@ -534,7 +589,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:notDisjoint";
 
             Assert.IsNotNull(issues);
@@ -577,7 +637,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalOverlappedBy";
 
             Assert.IsNotNull(issues);
@@ -620,7 +685,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalOverlaps";
 
             Assert.IsNotNull(issues);
@@ -663,7 +733,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalStartedBy";
 
             Assert.IsNotNull(issues);
@@ -706,7 +781,12 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+            };
+            List<OWLIssue> issues = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
             string clashingRelation = "time:intervalStarts";
 
             Assert.IsNotNull(issues);

@@ -27,6 +27,11 @@ namespace OWLSharp.Ontology
     [XmlRoot("ClassAtom")]
     public class SWRLClassAtom : SWRLAtom
     {
+        #region Properties
+        [XmlIgnore]
+        internal List<OWLIndividualExpression> IndividualsCache { get; set; }
+        #endregion
+
         #region Ctors
         internal SWRLClassAtom() { }
         public SWRLClassAtom(OWLClassExpression classExpression, SWRLVariableArgument leftArgument)
@@ -43,7 +48,7 @@ namespace OWLSharp.Ontology
             RDFQueryEngine.AddColumn(atomResult, leftArgumentString);
 
             //Calculate individuals of the atom predicate
-            List<OWLIndividualExpression> atomClassIndividuals = ontology.GetIndividualsOf((OWLClassExpression)Predicate);
+            List<OWLIndividualExpression> atomClassIndividuals = IndividualsCache ?? ontology.GetIndividualsOf((OWLClassExpression)Predicate);
 
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();

@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.TIME
         internal static readonly string rulename = TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis.ToString();
         internal static readonly string rulesugg = "There should not be OWL-TIME intervals having a clash in temporal relations (time:intervalAfter VS {0}";
         
-        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -43,10 +43,10 @@ namespace OWLSharp.Extensions.TIME
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.TIME.INTERVAL),
-                            new SWRLVariableArgument(new RDFVariable("?I1"))),
+                            new SWRLVariableArgument(new RDFVariable("?I1"))) { IndividualsCache = cacheRegistry["INTERVALS"] },
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.TIME.INTERVAL),
-                            new SWRLVariableArgument(new RDFVariable("?I2"))),
+                            new SWRLVariableArgument(new RDFVariable("?I2"))) { IndividualsCache = cacheRegistry["INTERVALS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_AFTER),
                             new SWRLVariableArgument(new RDFVariable("?I1")),

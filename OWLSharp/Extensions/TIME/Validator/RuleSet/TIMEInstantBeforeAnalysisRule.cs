@@ -27,7 +27,7 @@ namespace OWLSharp.Extensions.TIME
         internal static readonly string rulesugg1 = "There should not be OWL-TIME instants having a clash in temporal relations (time:before VS time:before)";
         internal static readonly string rulesugg2 = "There should not be OWL-TIME instants having a clash in temporal relations (time:before VS time:after)";
 
-        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -42,10 +42,10 @@ namespace OWLSharp.Extensions.TIME
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.TIME.INSTANT),
-                            new SWRLVariableArgument(new RDFVariable("?I1"))),
+                            new SWRLVariableArgument(new RDFVariable("?I1"))) { IndividualsCache = cacheRegistry["INSTANTS"] },
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.TIME.INSTANT),
-                            new SWRLVariableArgument(new RDFVariable("?I2"))),
+                            new SWRLVariableArgument(new RDFVariable("?I2"))) { IndividualsCache = cacheRegistry["INSTANTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.TIME.BEFORE),
                             new SWRLVariableArgument(new RDFVariable("?I1")),
