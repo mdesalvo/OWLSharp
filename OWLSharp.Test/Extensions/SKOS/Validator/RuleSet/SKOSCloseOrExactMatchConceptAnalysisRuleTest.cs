@@ -80,7 +80,11 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
+            };
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -145,7 +149,11 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
+            };
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -210,7 +218,11 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
+            };
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);
@@ -275,7 +287,11 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
+            };
+            List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 1);

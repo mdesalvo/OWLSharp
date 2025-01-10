@@ -54,6 +54,12 @@ namespace OWLSharp.Extensions.SKOS
                 Dictionary<string, List<OWLIssue>> issueRegistry = new Dictionary<string, List<OWLIssue>>();
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
+                //Initialize cache registry
+                Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+                {
+                    { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
+                };
+
                 //Execute validator rules
                 await Rules.ParallelForEachAsync(async (rule) =>
                 {
@@ -62,31 +68,31 @@ namespace OWLSharp.Extensions.SKOS
                     switch (rule)
                     {
                         case SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis:
-                            issueRegistry[SKOSAlternativeLabelAnalysisRule.rulename] = await SKOSAlternativeLabelAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSAlternativeLabelAnalysisRule.rulename] = await SKOSAlternativeLabelAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.HiddenLabelAnalysis:
-                            issueRegistry[SKOSHiddenLabelAnalysisRule.rulename] = await SKOSHiddenLabelAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSHiddenLabelAnalysisRule.rulename] = await SKOSHiddenLabelAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.PreferredLabelAnalysis:
-                            issueRegistry[SKOSPreferredLabelAnalysisRule.rulename] = await SKOSPreferredLabelAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSPreferredLabelAnalysisRule.rulename] = await SKOSPreferredLabelAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.NotationAnalysis:
-                            issueRegistry[SKOSNotationAnalysisRule.rulename] = await SKOSNotationAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSNotationAnalysisRule.rulename] = await SKOSNotationAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.BroaderConceptAnalysis:
-                            issueRegistry[SKOSBroaderConceptAnalysisRule.rulename] = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSBroaderConceptAnalysisRule.rulename] = await SKOSBroaderConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis:
-                            issueRegistry[SKOSNarrowerConceptAnalysisRule.rulename] = await SKOSNarrowerConceptAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSNarrowerConceptAnalysisRule.rulename] = await SKOSNarrowerConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis:
-                            issueRegistry[SKOSCloseOrExactMatchConceptAnalysisRule.rulename] = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSCloseOrExactMatchConceptAnalysisRule.rulename] = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis:
-                            issueRegistry[SKOSRelatedConceptAnalysisRule.rulename] = await SKOSRelatedConceptAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSRelatedConceptAnalysisRule.rulename] = await SKOSRelatedConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis:
-                            issueRegistry[SKOSXLLiteralFormAnalysisRule.rulename] = await SKOSXLLiteralFormAnalysisRule.ExecuteRuleAsync(ontology);
+                            issueRegistry[SKOSXLLiteralFormAnalysisRule.rulename] = await SKOSXLLiteralFormAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                     }
 

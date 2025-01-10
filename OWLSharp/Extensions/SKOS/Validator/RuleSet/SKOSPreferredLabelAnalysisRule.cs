@@ -27,7 +27,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulesugg1 = "There should not be SKOS concepts having more than one occurrence of the same language tag in values of skos:prefLabel data annotations.";
         internal static readonly string rulesugg2 = "There should not be SKOS concepts having more than one occurrence of the same language tag in values of skosxl:prefLabel data relations.";
 
-        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -43,7 +43,7 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                            new SWRLVariableArgument(new RDFVariable("?C"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLAnnotationPropertyAtom(
                             new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
                             new SWRLVariableArgument(new RDFVariable("?C")),
@@ -94,7 +94,7 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                            new SWRLVariableArgument(new RDFVariable("?C"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.PREF_LABEL),
                             new SWRLVariableArgument(new RDFVariable("?C")),

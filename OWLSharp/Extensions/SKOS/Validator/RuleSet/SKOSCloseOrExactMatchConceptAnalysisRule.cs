@@ -29,7 +29,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulesugg2A = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:related)";
         internal static readonly string rulesugg2B = "There should not be SKOS concepts having a clash in mapping VS associative relations (skos:exactMatch VS skos:relatedMatch)";
 
-        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -44,10 +44,10 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C1"))),
+                            new SWRLVariableArgument(new RDFVariable("?C1"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -94,10 +94,10 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C1"))),
+                            new SWRLVariableArgument(new RDFVariable("?C1"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -144,10 +144,10 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C1"))),
+                            new SWRLVariableArgument(new RDFVariable("?C1"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.EXACT_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -194,10 +194,10 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C1"))),
+                            new SWRLVariableArgument(new RDFVariable("?C1"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.EXACT_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),

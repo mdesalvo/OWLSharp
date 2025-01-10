@@ -29,7 +29,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulesugg3 = "There should not be SKOS-XL concepts having the same value for skosxl:hiddenLabel and skosxl:altLabel data relations.";
         internal static readonly string rulesugg4 = "There should not be SKOS-XL concepts having the same value for skosxl:hiddenLabel and skosxl:prefLabel data relations.";
 
-        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -46,7 +46,7 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                            new SWRLVariableArgument(new RDFVariable("?C"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLAnnotationPropertyAtom(
                             new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
                             new SWRLVariableArgument(new RDFVariable("?C")),
@@ -93,7 +93,7 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                            new SWRLVariableArgument(new RDFVariable("?C"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLAnnotationPropertyAtom(
                             new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL),
                             new SWRLVariableArgument(new RDFVariable("?C")),
@@ -142,7 +142,7 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                            new SWRLVariableArgument(new RDFVariable("?C"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
                             new SWRLVariableArgument(new RDFVariable("?C")),
@@ -197,7 +197,7 @@ namespace OWLSharp.Extensions.SKOS
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C"))),
+                            new SWRLVariableArgument(new RDFVariable("?C"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.HIDDEN_LABEL),
                             new SWRLVariableArgument(new RDFVariable("?C")),

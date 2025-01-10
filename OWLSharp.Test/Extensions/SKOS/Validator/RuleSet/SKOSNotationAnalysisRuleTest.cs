@@ -79,7 +79,11 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING))),
                 ]
             };
-            List<OWLIssue> issues = await SKOSNotationAnalysisRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
+            };
+            List<OWLIssue> issues = await SKOSNotationAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
             Assert.IsTrue(issues.Count == 2);

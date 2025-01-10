@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.NotationAnalysis.ToString();
         internal static readonly string rulesugg = "There should not be SKOS concepts sharing the same value for skos:Notation data relation under the same schema.";
 
-        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();
@@ -43,10 +43,10 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?S"))),
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C1"))),
+                            new SWRLVariableArgument(new RDFVariable("?C1"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2"))) { IndividualsCache = cacheRegistry["CONCEPTS"] },
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
