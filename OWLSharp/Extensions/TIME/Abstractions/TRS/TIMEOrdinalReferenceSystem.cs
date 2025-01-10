@@ -25,20 +25,26 @@ namespace OWLSharp.Extensions.TIME
     public class TIMEOrdinalReferenceSystem : TIMEReferenceSystem
     {
         #region Properties
-        public OWLOntology THORSOntology { get; internal set; }
+        internal static OWLOntology THORSOntology { get; set; }
+        public OWLOntology Ontology { get; internal set; }
         #endregion
 
         #region Ctors
-        public TIMEOrdinalReferenceSystem(RDFResource trsUri) : base(trsUri)
+        public TIMEOrdinalReferenceSystem(RDFResource trsIRI) : base(trsIRI)
         {
-            THORSOntology = new OWLOntology(URI);
+            #region Initialize
+            if (THORSOntology == null)
+            {
+                THORSOntology = new OWLOntology();
+                THORSOntology.InitializeTIMEAsync(30000).GetAwaiter().GetResult();
+            }
+            #endregion
 
-            //Initialize TIME+THORS
-            THORSOntology.InitializeTIMEAsync(30000).GetAwaiter().GetResult();
+            Ontology = new OWLOntology(THORSOntology) { IRI = trsIRI.ToString()};
         }
 
-        public TIMEOrdinalReferenceSystem(RDFResource trsUri, TIMEOrdinalReferenceSystem ordinalTRS) : base(trsUri)
-            => THORSOntology = ordinalTRS?.THORSOntology ?? throw new OWLException("Cannot create ordinal TRS because given \"ordinalTRS\" parameter is null");
+        public TIMEOrdinalReferenceSystem(RDFResource trsIRI, TIMEOrdinalReferenceSystem ordinalTRS) : base(trsIRI)
+            => Ontology = ordinalTRS?.Ontology ?? throw new OWLException("Cannot create ordinal TRS because given \"ordinalTRS\" parameter is null");
         #endregion
 
         #region Methods
@@ -56,43 +62,43 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX (era)
-            THORSOntology.DeclareEntity(new OWLNamedIndividual(era));
-            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+            Ontology.DeclareEntity(new OWLNamedIndividual(era));
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA),
                 new OWLNamedIndividual(era)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.COMPONENT),
                 new OWLNamedIndividual(this),
                 new OWLNamedIndividual(era)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.SYSTEM),
                 new OWLNamedIndividual(era),
                 new OWLNamedIndividual(this))); //inference
 
             //Add knowledge to the A-BOX (begin)
-            THORSOntology.DeclareInstantFeatureInternal(eraBeginning);
-            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+            Ontology.DeclareInstantFeatureInternal(eraBeginning);
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
                 new OWLNamedIndividual(eraBeginning)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.BEGIN),
                 new OWLNamedIndividual(era),
                 new OWLNamedIndividual(eraBeginning)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.NEXT_ERA),
                 new OWLNamedIndividual(eraBeginning),
                 new OWLNamedIndividual(era))); //inference
 
             //Add knowledge to the A-BOX (end)
-            THORSOntology.DeclareInstantFeatureInternal(eraEnd);
-            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+            Ontology.DeclareInstantFeatureInternal(eraEnd);
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
                 new OWLNamedIndividual(eraEnd)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.END),
                 new OWLNamedIndividual(era),
                 new OWLNamedIndividual(eraEnd)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.PREVIOUS_ERA),
                 new OWLNamedIndividual(eraEnd),
                 new OWLNamedIndividual(era))); //inference
@@ -112,15 +118,15 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX
-            THORSOntology.DeclareEntity(new OWLNamedIndividual(subEra));
-            THORSOntology.DeclareEntity(new OWLNamedIndividual(superEra));
-            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+            Ontology.DeclareEntity(new OWLNamedIndividual(subEra));
+            Ontology.DeclareEntity(new OWLNamedIndividual(superEra));
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA),
                 new OWLNamedIndividual(subEra)));
-            THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.TIME.THORS.ERA),
                 new OWLNamedIndividual(superEra)));
-            THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER),
                 new OWLNamedIndividual(superEra),
                 new OWLNamedIndividual(subEra)));
@@ -142,11 +148,11 @@ namespace OWLSharp.Extensions.TIME
             //Add knowledge to the A-BOX
             for (int i=0; i<referencePoints.Length; i++)
             {
-                THORSOntology.DeclareInstantFeatureInternal(referencePoints[i]);
-                THORSOntology.DeclareAssertionAxiom(new OWLClassAssertion(
+                Ontology.DeclareInstantFeatureInternal(referencePoints[i]);
+                Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                     new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
                     new OWLNamedIndividual(referencePoints[i])));
-                THORSOntology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+                Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT),
                     new OWLNamedIndividual(this),
                     new OWLNamedIndividual(referencePoints[i])));
@@ -164,7 +170,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if ordinal TRS has era because given \"era\" parameter is null");
             #endregion
 
-            return THORSOntology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA))
+            return Ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA))
                     .Any(idv => idv.GetIRI().Equals(era));
         }
 
@@ -175,7 +181,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if ordinal TRS has era boundary because given \"eraBoundary\" parameter is null");
             #endregion
 
-            return THORSOntology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
+            return Ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
                     .Any(idv => idv.GetIRI().Equals(eraBoundary));
         }
 
@@ -186,8 +192,8 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if ordinal TRS has reference point because given \"referencePoint\" parameter is null");
             #endregion
 
-            return THORSOntology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
-                    .Any(idv => THORSOntology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT), new OWLNamedIndividual(this), idv)) 
+            return Ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
+                    .Any(idv => Ontology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT), new OWLNamedIndividual(this), idv)) 
                                  && idv.GetIRI().Equals(referencePoint));
         }
 
@@ -204,7 +210,7 @@ namespace OWLSharp.Extensions.TIME
             if (era != null)
             {
                 //Temporary working variables
-                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(THORSOntology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(Ontology);
                 List<OWLObjectPropertyAssertion> thorsMemberObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER));
 
                 //Reason on the given era
@@ -248,7 +254,7 @@ namespace OWLSharp.Extensions.TIME
             if (era != null)
             {
                 //Temporary working variables
-                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(THORSOntology);
+                List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(Ontology);
                 List<OWLObjectPropertyAssertion> thorsMemberObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.MEMBER));
 
                 //Reason on the given era
@@ -297,7 +303,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Temporary working variables
-            List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(THORSOntology);
+            List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(Ontology);
             List<OWLObjectPropertyAssertion> thorsBeginObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.BEGIN));
             List<OWLObjectPropertyAssertion> thorsEndObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, new OWLObjectProperty(RDFVocabulary.TIME.THORS.END));
 
@@ -306,14 +312,14 @@ namespace OWLSharp.Extensions.TIME
             OWLObjectPropertyAssertion thorsBeginEraAsn = thorsBeginObjPropAsns.FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(era)
                                                            && CheckHasEraBoundary(asn.TargetIndividualExpression.GetIRI()));
             if (thorsBeginEraAsn != null)
-                eraBeginBoundaryCoordinate = THORSOntology.GetCoordinateOfInstant(thorsBeginEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
+                eraBeginBoundaryCoordinate = Ontology.GetCoordinateOfInstant(thorsBeginEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
 
             //Get end boundary of era (if correctly declared to the ordinal TRS through THORS semantics)
             TIMECoordinate eraEndBoundaryCoordinate = null;
             OWLObjectPropertyAssertion thorsEndEraAsn = thorsEndObjPropAsns.FirstOrDefault(asn => asn.SourceIndividualExpression.GetIRI().Equals(era)
                                                          && CheckHasEraBoundary(asn.TargetIndividualExpression.GetIRI()));
             if (thorsEndEraAsn != null)
-                eraEndBoundaryCoordinate = THORSOntology.GetCoordinateOfInstant(thorsEndEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
+                eraEndBoundaryCoordinate = Ontology.GetCoordinateOfInstant(thorsEndEraAsn.TargetIndividualExpression.GetIRI(), calendarTRS);
 
             return (eraBeginBoundaryCoordinate, eraEndBoundaryCoordinate);
         }
