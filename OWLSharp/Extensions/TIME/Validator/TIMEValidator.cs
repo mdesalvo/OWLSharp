@@ -67,10 +67,10 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEValidatorRules.InstantBeforeAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.InstantBeforeAnalysis.ToString()] = await TIMEInstantBeforeAnalysisRule.ExecuteRuleAsync(ontology);
                             break;
-                        /*case TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis:
+                        case TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis.ToString()] = await TIMEIntervalAfterAnalysisRule.ExecuteRuleAsync(ontology);
                             break;
-                        case TIMEEnums.TIMEValidatorRules.IntervalBeforeAnalysis:
+                        /*case TIMEEnums.TIMEValidatorRules.IntervalBeforeAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalBeforeAnalysis.ToString()] = await TIMEIntervalBeforeAnalysisRule.ExecuteRuleAsync(ontology);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalContainsAnalysis:
