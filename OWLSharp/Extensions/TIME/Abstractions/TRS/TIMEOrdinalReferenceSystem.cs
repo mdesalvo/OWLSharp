@@ -34,7 +34,7 @@ namespace OWLSharp.Extensions.TIME
             THORSOntology = new OWLOntology(URI);
 
             //Initialize TIME+THORS
-            THORSOntology.InitializeTIMEAsync().GetAwaiter().GetResult();
+            THORSOntology.InitializeTIMEAsync(30000).GetAwaiter().GetResult();
         }
 
         public TIMEOrdinalReferenceSystem(RDFResource trsUri, TIMEOrdinalReferenceSystem ordinalTRS) : base(trsUri)
