@@ -22,7 +22,7 @@ namespace OWLSharp.Extensions.TIME
 {
     internal static class TIMEBeforeTransitiveEntailmentRule
     {
-        internal static async Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
@@ -33,9 +33,9 @@ namespace OWLSharp.Extensions.TIME
                 {
                     Atoms = new List<SWRLAtom>()
                     {
-                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I1"))),
-                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I2"))),
-                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I3"))),
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I1"))) { IndividualsCache = cacheRegistry["INSTANTS"] },
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I2"))) { IndividualsCache = cacheRegistry["INSTANTS"] },
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INSTANT), new SWRLVariableArgument(new RDFVariable("?I3"))) { IndividualsCache = cacheRegistry["INSTANTS"] },
                         new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.BEFORE), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I2"))),
                         new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.BEFORE), new SWRLVariableArgument(new RDFVariable("?I2")), new SWRLVariableArgument(new RDFVariable("?I3")))
                     },

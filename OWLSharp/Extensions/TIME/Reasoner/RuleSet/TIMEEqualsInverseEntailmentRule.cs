@@ -22,7 +22,7 @@ namespace OWLSharp.Extensions.TIME
 {
     internal static class TIMEEqualsInverseEntailmentRule
     {
-        internal static async Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology)
+        internal static async Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             SWRLRule swrlRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEEqualsInverseEntailmentRule)),
@@ -31,8 +31,8 @@ namespace OWLSharp.Extensions.TIME
                 {
                     Atoms = new List<SWRLAtom>()
                     {
-                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INTERVAL), new SWRLVariableArgument(new RDFVariable("?I1"))),
-                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INTERVAL), new SWRLVariableArgument(new RDFVariable("?I2"))),
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INTERVAL), new SWRLVariableArgument(new RDFVariable("?I1"))) { IndividualsCache = cacheRegistry["INTERVALS"] },
+                        new SWRLClassAtom(new OWLClass(RDFVocabulary.TIME.INTERVAL), new SWRLVariableArgument(new RDFVariable("?I2"))) { IndividualsCache = cacheRegistry["INTERVALS"] },
                         new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I2"))),
                         new SWRLObjectPropertyAtom(new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY), new SWRLVariableArgument(new RDFVariable("?I1")), new SWRLVariableArgument(new RDFVariable("?I2")))
                     },

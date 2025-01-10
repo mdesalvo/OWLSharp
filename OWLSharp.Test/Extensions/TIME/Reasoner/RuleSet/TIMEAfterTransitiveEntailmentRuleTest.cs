@@ -43,7 +43,12 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_AFTER),
                 new OWLNamedIndividual(new RDFResource("ex:Interval2")),
                 new OWLNamedIndividual(new RDFResource("ex:Interval3"))));
-            List<OWLInference> inferences = await TIMEAfterTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) },
+            };
+            List<OWLInference> inferences = await TIMEAfterTransitiveEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.Count == 1);
@@ -64,7 +69,12 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
                 new OWLNamedIndividual(new RDFResource("ex:Instant2")),
                 new OWLNamedIndividual(new RDFResource("ex:Instant3"))));
-            List<OWLInference> inferences = await TIMEAfterTransitiveEntailmentRule.ExecuteRuleAsync(ontology);
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            {
+                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) },
+            };
+            List<OWLInference> inferences = await TIMEAfterTransitiveEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.Count == 1);
