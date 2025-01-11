@@ -35,7 +35,7 @@ namespace OWLSharp.Extensions.TIME
             //time:after vs time:after
             SWRLRule clashRule1 = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEInstantAfterAnalysisRule)),
-                new RDFPlainLiteral("BEFORE(?INST1,?INST2) ^ BEFORE(?INST2,?INST1) -> ERROR"),
+                new RDFPlainLiteral("BEFORE(?I1,?I2) ^ BEFORE(?I2,?I1) -> ERROR"),
                 new SWRLAntecedent()
                 {
                     Atoms = new List<SWRLAtom>() 
@@ -85,7 +85,7 @@ namespace OWLSharp.Extensions.TIME
             //time:before vs time:after
             SWRLRule clashRule2 = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEInstantAfterAnalysisRule)),
-                new RDFPlainLiteral("BEFORE(?INST1,?INST2) ^ AFTER(?INST1,?INST2) -> ERROR"),
+                new RDFPlainLiteral("BEFORE(?I1,?I2) ^ AFTER(?I1,?I2) -> ERROR"),
                 new SWRLAntecedent()
                 {
                     Atoms = new List<SWRLAtom>()

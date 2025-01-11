@@ -21,10 +21,10 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.TIME
 {
-    internal class TIMEIntervalAfterAnalysisRule
+    internal class TIMEIntervalContainsAnalysisRule
     {
-        internal static readonly string rulename = TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be OWL-TIME intervals having a clash in temporal relations (time:intervalAfter VS {0}";
+        internal static readonly string rulename = TIMEEnums.TIMEValidatorRules.IntervalContainsAnalysis.ToString();
+        internal static readonly string rulesugg = "There should not be OWL-TIME intervals having a clash in temporal relations (time:intervalContains VS {0}";
         
         internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
@@ -35,7 +35,7 @@ namespace OWLSharp.Extensions.TIME
             async Task ExecuteRuleBodyAsync(string ruleDescription, string ruleSugg, SWRLObjectPropertyAtom clashingAtom, string shortClashingProperty)
             {
                 SWRLRule clashRule = new SWRLRule(
-                new RDFPlainLiteral(nameof(TIMEIntervalAfterAnalysisRule)),
+                new RDFPlainLiteral(nameof(TIMEIntervalContainsAnalysisRule)),
                 new RDFPlainLiteral(ruleDescription),
                 new SWRLAntecedent()
                 {
@@ -48,7 +48,7 @@ namespace OWLSharp.Extensions.TIME
                             new OWLClass(RDFVocabulary.TIME.INTERVAL),
                             new SWRLVariableArgument(new RDFVariable("?I2"))) { IndividualsCache = cacheRegistry["INTERVALS"] },
                         new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_AFTER),
+                            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_CONTAINS),
                             new SWRLVariableArgument(new RDFVariable("?I1")),
                             new SWRLVariableArgument(new RDFVariable("?I2"))),
                         clashingAtom,
@@ -76,23 +76,23 @@ namespace OWLSharp.Extensions.TIME
                         OWLEnums.OWLIssueSeverity.Error,
                         rulename,
                         ruleSugg,
-                        $"TIME intervals '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on temporal relations (time:intervalAfter VS {shortClashingProperty})"
+                        $"TIME intervals '{((OWLObjectPropertyAssertion)violation.Axiom).SourceIndividualExpression.GetIRI()}' and '{((OWLObjectPropertyAssertion)violation.Axiom).TargetIndividualExpression.GetIRI()}' should be adjusted to not clash on temporal relations (time:intervalContains VS {shortClashingProperty})"
                     )));
                 violations.Clear();
             }
             #endregion
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_AFTER(?I2,?I1) -> ERROR", 
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_AFTER(?I1,?I2) -> ERROR", 
                 string.Format(rulesugg, "time:intervalAfter"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_AFTER),
-                    new SWRLVariableArgument(new RDFVariable("?I2")),
-                    new SWRLVariableArgument(new RDFVariable("?I1"))), 
+                    new SWRLVariableArgument(new RDFVariable("?I1")),
+                    new SWRLVariableArgument(new RDFVariable("?I2"))), 
                 "time:intervalAfter");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_BEFORE(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_BEFORE(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalBefore"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_BEFORE),
@@ -101,16 +101,25 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalBefore");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_CONTAINS(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_CONTAINS(?I2,?I1) -> ERROR",
                 string.Format(rulesugg, "time:intervalContains"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_CONTAINS),
-                    new SWRLVariableArgument(new RDFVariable("?I1")),
-                    new SWRLVariableArgument(new RDFVariable("?I2"))),
+                    new SWRLVariableArgument(new RDFVariable("?I2")),
+                    new SWRLVariableArgument(new RDFVariable("?I1"))),
                 "time:intervalContains");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_DURING(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_DISJOINT(?I1,?I2) -> ERROR",
+                string.Format(rulesugg, "time:intervalDisjoint"),
+                new SWRLObjectPropertyAtom(
+                    new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_DISJOINT),
+                    new SWRLVariableArgument(new RDFVariable("?I1")),
+                    new SWRLVariableArgument(new RDFVariable("?I2"))),
+                "time:intervalDisjoint");
+
+            await ExecuteRuleBodyAsync(
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_DURING(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalDuring"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_DURING),
@@ -119,7 +128,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalDuring");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_EQUALS(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_EQUALS(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalEquals"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS),
@@ -128,7 +137,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalEquals");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_FINISHED_BY(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_FINISHED_BY(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalFinishedBy"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY),
@@ -137,7 +146,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalFinishedBy");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_FINISHES(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_FINISHES(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalFinishes"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHES),
@@ -146,16 +155,16 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalFinishes");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ HAS_INSIDE(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ HAS_INSIDE(?I2,?I1) -> ERROR",
                 string.Format(rulesugg, "time:hasInside"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.HAS_INSIDE),
-                    new SWRLVariableArgument(new RDFVariable("?I1")),
-                    new SWRLVariableArgument(new RDFVariable("?I2"))),
+                    new SWRLVariableArgument(new RDFVariable("?I2")),
+                    new SWRLVariableArgument(new RDFVariable("?I1"))),
                 "time:hasInside");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_IN(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_IN(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalIn"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_IN),
@@ -164,7 +173,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalIn");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_MEETS(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_MEETS(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalMeets"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS),
@@ -173,7 +182,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalMeets");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_MET_BY(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_MET_BY(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalMetBy"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MET_BY),
@@ -182,16 +191,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalMetBy");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ NOT_DISJOINT(?I1,?I2) -> ERROR",
-                string.Format(rulesugg, "time:notDisjoint"),
-                new SWRLObjectPropertyAtom(
-                    new OWLObjectProperty(RDFVocabulary.TIME.NOT_DISJOINT),
-                    new SWRLVariableArgument(new RDFVariable("?I1")),
-                    new SWRLVariableArgument(new RDFVariable("?I2"))),
-                "time:notDisjoint");
-
-            await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_OVERLAPPED_BY(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_OVERLAPPED_BY(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalOverlappedBy"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_OVERLAPPED_BY),
@@ -200,7 +200,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalOverlappedBy");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_OVERLAPS(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_OVERLAPS(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalOverlaps"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_OVERLAPS),
@@ -209,7 +209,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalOverlaps");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_STARTED_BY(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_STARTED_BY(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalStartedBy"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY),
@@ -218,7 +218,7 @@ namespace OWLSharp.Extensions.TIME
                 "time:intervalStartedBy");
 
             await ExecuteRuleBodyAsync(
-                "INTERVAL_AFTER(?I1,?I2) ^ INTERVAL_STARTS(?I1,?I2) -> ERROR",
+                "INTERVAL_CONTAINS(?I1,?I2) ^ INTERVAL_STARTS(?I1,?I2) -> ERROR",
                 string.Format(rulesugg, "time:intervalStarts"),
                 new SWRLObjectPropertyAtom(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS),
