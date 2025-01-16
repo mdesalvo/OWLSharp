@@ -395,5 +395,53 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(string.Equals(issues[1].Description, string.Format(TIMEIntervalDuringAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[1].Suggestion, $"TIME intervals 'ex:IntervalB' and 'ex:IntervalA' should be adjusted to not clash on temporal relations ({testingRelation} VS {clashingRelation})"));
         }
+
+        [TestMethod]
+        public async Task ShouldValidateIntervalEquals()
+        {
+            OWLOntology ontology = new OWLOntology(TestOntology);
+            ontology.DeclarationAxioms.AddRange([
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+            ]);
+            ontology.AssertionAxioms.AddRange([
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.TIME.INTERVAL),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_AFTER),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalB"))), //clash
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+            ]);
+
+            TIMEValidator validator = new TIMEValidator();
+            validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalEqualsAnalysis);
+
+            List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
+            string testingRelation = "time:intervalEquals";
+            string clashingRelation = "time:intervalAfter";
+
+            Assert.IsNotNull(issues);
+            Assert.IsTrue(issues.Count == 1);
+            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalEqualsAnalysisRule.rulename));
+            Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalEqualsAnalysisRule.rulesugg, clashingRelation)));
+            Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations ({testingRelation} VS {clashingRelation})"));
+        }
     }
 }
