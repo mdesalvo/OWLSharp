@@ -96,10 +96,10 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEValidatorRules.IntervalFinishesAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalFinishesAnalysis.ToString()] = await TIMEIntervalFinishesAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
-                        /*case TIMEEnums.TIMEValidatorRules.IntervalFinishedByAnalysis:
+                        case TIMEEnums.TIMEValidatorRules.IntervalFinishedByAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalFinishedByAnalysis.ToString()] = await TIMEIntervalFinishedByAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
-                        case TIMEEnums.TIMEValidatorRules.IntervalHasInsideAnalysis:
+                        /*case TIMEEnums.TIMEValidatorRules.IntervalHasInsideAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalHasInsideAnalysis.ToString()] = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalInAnalysis:
