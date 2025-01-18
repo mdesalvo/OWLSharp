@@ -19,10 +19,10 @@ using System;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public static class TIMEConverter
+    internal static class TIMEConverter
     {
         #region Methods
-        public static TIMECoordinate GetCoordinateFromNumericPosition(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
+        internal static TIMECoordinate GetCoordinateFromNumericPosition(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (positionTRS == null)
@@ -88,7 +88,7 @@ namespace OWLSharp.Extensions.TIME
             return coordinate;
         }
 
-        public static TIMECoordinate NormalizeCoordinateToCalendar(TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
+        internal static TIMECoordinate NormalizeCoordinateToCalendar(TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeCoordinate == null)
@@ -171,7 +171,7 @@ namespace OWLSharp.Extensions.TIME
                 normalizedSecond) { Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_SECOND) };
         }
 
-        public static TIMEExtent GetExtentFromNumericDuration(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
+        internal static TIMEExtent GetExtentFromNumericDuration(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeDuration < 0)
@@ -216,7 +216,7 @@ namespace OWLSharp.Extensions.TIME
             return extent;
         }
 
-        public static TIMEExtent NormalizeExtentToCalendar(TIMEExtent timeExtent, TIMECalendarReferenceSystem calendarTRS)
+        internal static TIMEExtent NormalizeExtentToCalendar(TIMEExtent timeExtent, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeExtent == null)
@@ -243,7 +243,7 @@ namespace OWLSharp.Extensions.TIME
             return GetExtentFromNumericDuration(timeExtentSeconds, TIMEUnit.Second, calendarTRS);
         }
 
-        public static TIMEExtent CalculateExtentBetweenCoordinates(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
+        internal static TIMEExtent CalculateExtentBetweenCoordinates(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
         {
             #region Guards
             if (timeCoordinateStart == null)
