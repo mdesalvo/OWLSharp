@@ -71,10 +71,10 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"), 
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
 
             Assert.IsTrue(thors.Ontology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:era"))));
             Assert.IsTrue(thors.Ontology.CheckHasAssertionAxiom(
@@ -150,18 +150,18 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
 
             Assert.IsTrue(thors.Ontology.CheckHasEntity(new OWLNamedIndividual(new RDFResource("ex:era"))));
@@ -286,10 +286,10 @@ namespace OWLSharp.Test.Extensions.TIME
             thors.DeclareReferencePoints([
                 new TIMEInstant(
                     new RDFResource("ex:massExtinctionEventA"),
-                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionA"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 111.9)),
+                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionA"), TIMEPositionReferenceSystem.GeologicTime, 111.9)),
                 new TIMEInstant(
                     new RDFResource("ex:massExtinctionEventB"),
-                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionB"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 65.5))
+                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionB"), TIMEPositionReferenceSystem.GeologicTime, 65.5))
             ]);
 
             Assert.IsTrue(thors.Ontology.CheckHasAssertionAxiom(
@@ -336,18 +336,18 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             
             Assert.IsTrue(thors.CheckHasEra(new RDFResource("ex:era")));
             Assert.IsTrue(thors.CheckHasEra(new RDFResource("ex:subEra")));
@@ -363,18 +363,18 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
 
             Assert.IsTrue(thors.CheckHasEraBoundary(new RDFResource("ex:eraBeginning")));
             Assert.IsTrue(thors.CheckHasEraBoundary(new RDFResource("ex:eraEnd")));
@@ -391,10 +391,10 @@ namespace OWLSharp.Test.Extensions.TIME
             thors.DeclareReferencePoints([
                 new TIMEInstant(
                     new RDFResource("ex:massExtinctionEventA"),
-                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionA"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 111.9)),
+                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionA"), TIMEPositionReferenceSystem.GeologicTime, 111.9)),
                 new TIMEInstant(
                     new RDFResource("ex:massExtinctionEventB"),
-                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionB"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 65.5))
+                    new TIMEInstantPosition(new RDFResource("ex:massExtinctionEventPositionB"), TIMEPositionReferenceSystem.GeologicTime, 65.5))
             ]);
 
             Assert.IsTrue(thors.CheckHasReferencePoint(new RDFResource("ex:massExtinctionEventA")));
@@ -411,26 +411,26 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             thors.DeclareEra(
                 new RDFResource("ex:subsubEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
 
@@ -450,26 +450,26 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             thors.DeclareEra(
                 new RDFResource("ex:subsubEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
             List<RDFResource> subErasOfEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:era"), true);
@@ -500,26 +500,26 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             thors.DeclareEra(
                 new RDFResource("ex:subsubEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
 
@@ -539,26 +539,26 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             thors.DeclareEra(
                 new RDFResource("ex:subsubEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
             List<RDFResource> superErasOfEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:era"), true);
@@ -589,26 +589,26 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             thors.DeclareEra(
                 new RDFResource("ex:subsubEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
             (TIMECoordinate, TIMECoordinate) eraCoordinates = thors.GetEraCoordinates(new RDFResource("ex:era"));
@@ -642,26 +642,26 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:era"),
                 new TIMEInstant(
                     new RDFResource("ex:eraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:eraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 170)));
+                    new TIMEInstantPosition(new RDFResource("ex:eraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 170)));
             thors.DeclareEra(
                 new RDFResource("ex:subEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 180.5)));
+                    new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
             thors.DeclareEra(
                 new RDFResource("ex:subsubEra"),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraBeginning"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 185.5)),
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
                 new TIMEInstant(
                     new RDFResource("ex:subsubEraEnd"),
-                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.ChronometricGeologicTime, 184)));
+                    new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
             TIMEExtent eraExtent = thors.GetEraExtent(new RDFResource("ex:era"));
