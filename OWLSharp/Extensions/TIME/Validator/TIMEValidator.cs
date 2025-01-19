@@ -120,12 +120,12 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis.ToString()] = await TIMEIntervalOverlappedByAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
-                        /*case TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis:
+                        case TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis.ToString()] = await TIMEIntervalStartsAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalStartedByAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalStartedByAnalysis.ToString()] = await TIMEIntervalStartedByAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-                            break;*/
+                            break;
                     }
 
                     OWLEvents.RaiseInfo($"Completed OWL-TIME rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
