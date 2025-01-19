@@ -117,10 +117,10 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis.ToString()] = await TIMEIntervalOverlapsAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
-                        /*case TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis:
+                        case TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis.ToString()] = await TIMEIntervalOverlappedByAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
-                        case TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis:
+                        /*case TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis.ToString()] = await TIMEIntervalStartsAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalStartedByAnalysis:
