@@ -114,10 +114,10 @@ namespace OWLSharp.Extensions.TIME
                         case TIMEEnums.TIMEValidatorRules.IntervalNotDisjointAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalNotDisjointAnalysis.ToString()] = await TIMEIntervalNotDisjointAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
-                        /*case TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis:
+                        case TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis.ToString()] = await TIMEIntervalOverlapsAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
-                        case TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis:
+                        /*case TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis:
                             issueRegistry[TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis.ToString()] = await TIMEIntervalOverlappedByAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis:
@@ -136,7 +136,7 @@ namespace OWLSharp.Extensions.TIME
                 {
                     issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
                     issueRegistry.Clear();
-                });           
+                });
 
                 OWLEvents.RaiseInfo($"Completed OWL-TIME validator on ontology {ontology.IRI} => {issues.Count} issues");
             }
