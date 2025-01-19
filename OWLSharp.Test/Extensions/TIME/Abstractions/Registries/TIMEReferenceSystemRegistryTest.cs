@@ -36,10 +36,9 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldOperateOnRegistry()
         {
             //Test initial configuration (built-in TRS)
-            Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 4);
+            Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 3);
             Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMECalendarReferenceSystem.Gregorian));
             Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.UnixTime));
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GPSTime));
             Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.ChronometricGeologicTime));
 
             //Test different forms of iteration

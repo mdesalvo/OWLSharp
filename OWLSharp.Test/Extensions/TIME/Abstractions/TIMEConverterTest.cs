@@ -27,11 +27,11 @@ namespace OWLSharp.Test.Extensions.TIME
         #region Tests
         [TestMethod]
         public void ShouldThrowExceptionOnGettingCalendarFromPositionBecauseNullPositionTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.GetCoordinateFromNumericPosition(25226354, null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.CoordinateFromPosition(25226354, null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingCalendarFromPositionBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.GetCoordinateFromNumericPosition(25226354, TIMEPositionReferenceSystem.UnixTime, null));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.CoordinateFromPosition(25226354, TIMEPositionReferenceSystem.UnixTime, null));
 
         [DataTestMethod]
         [DataRow(-413733671.4, 1956, 11, 21, 9, 58, 48)]
@@ -55,7 +55,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldGetCalendarFromUnixTRS(double timePosition, int expectedYear, int expectedMonth,
             int expectedDay, int expectedHour, int expectedMinute, int expectedSecond)
         {
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(timePosition, TIMEPositionReferenceSystem.UnixTime, TIMECalendarReferenceSystem.Gregorian);
+            TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, TIMEPositionReferenceSystem.UnixTime, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
             Assert.IsTrue(tc.Year == expectedYear);
@@ -84,7 +84,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:CustomTRS"),
                 TIMEPositionReferenceSystem.UnixTime.Origin,
                 new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale), false);
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
+            TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
             Assert.IsTrue(tc.Year == expectedYear);
@@ -111,7 +111,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:CustomTRS"),
                 new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond),
                 new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale), false);
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
+            TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
             Assert.IsTrue(tc.Year == expectedYear);
@@ -139,7 +139,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:CustomPositionTRS"),
                 TIMEPositionReferenceSystem.UnixTime.Origin,
                 new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale), false);
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(
+            TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(
                 timePosition, 
                 unixModifiedTRS,
                 new TIMECalendarReferenceSystem(
@@ -172,7 +172,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldGetCalendarFromGeologicTRS(double timePosition, double? expectedYear, double? expectedMonth, double? expectedDay,
             double? expectedHour, double? expectedMinute, double? expectedSecond)
         {
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(timePosition, TIMEPositionReferenceSystem.ChronometricGeologicTime, TIMECalendarReferenceSystem.Gregorian);
+            TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, TIMEPositionReferenceSystem.ChronometricGeologicTime, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
             Assert.IsTrue(tc.Year == expectedYear);
@@ -195,7 +195,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:CustomLargeScaleTRS"),
                 new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond),
                 new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale), true);
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(timePosition, geologicModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
+            TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, geologicModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
             Assert.IsTrue(tc.Year == expectedYear);
@@ -207,27 +207,12 @@ namespace OWLSharp.Test.Extensions.TIME
         }
 
         [TestMethod]
-        public void ShouldGetCalendarFromGPS()
-        {
-            TIMECoordinate tc = TIMEConverter.GetCoordinateFromNumericPosition(1367682497, 
-                TIMEPositionReferenceSystem.GPSTime, TIMECalendarReferenceSystem.Gregorian);
-
-            Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == 2023);
-            Assert.IsTrue(tc.Month == 5);
-            Assert.IsTrue(tc.Day == 9);
-            Assert.IsTrue(tc.Hour == 15);
-            Assert.IsTrue(tc.Minute == 48);
-            Assert.IsTrue(tc.Second == 17);
-        }
-
-        [TestMethod]
         public void ShouldThrowExceptionOnNormalizingCoordinateBecauseNullCoordinate()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeCoordinateToCalendar(null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeCoordinate(null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnNormalizingCoordinateBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeCoordinateToCalendar(new TIMECoordinate(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeCoordinate(new TIMECoordinate(), null));
 
         [DataTestMethod]
         [DataRow(1983, 2, 10, 15, 30, 30, 1983, 2, 10, 15, 30, 30)]
@@ -268,7 +253,7 @@ namespace OWLSharp.Test.Extensions.TIME
             double originHour, double originMinute, double originSecond, double expectedYear, double expectedMonth, double expectedDay,
             double expectedHour, double expectedMinute, double expectedSecond)
         {
-            TIMECoordinate tc = TIMEConverter.NormalizeCoordinateToCalendar(
+            TIMECoordinate tc = TIMEConverter.NormalizeCoordinate(
                 new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond), 
                 TIMECalendarReferenceSystem.Gregorian);
 
@@ -300,7 +285,7 @@ namespace OWLSharp.Test.Extensions.TIME
             double originHour, double originMinute, double originSecond, double expectedYear, double expectedMonth, double expectedDay,
             double expectedHour, double expectedMinute, double expectedSecond)
         {
-            TIMECoordinate tc = TIMEConverter.NormalizeCoordinateToCalendar(
+            TIMECoordinate tc = TIMEConverter.NormalizeCoordinate(
                 new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond),
                 new TIMECalendarReferenceSystem(
                     new RDFResource("ex:MyStrangeCalendar"),
@@ -322,15 +307,15 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNegativeDuration()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.GetExtentFromNumericDuration(-25226354, TIMEUnit.Second, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.ExtentFromDuration(-25226354, TIMEUnit.Second, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNullUnitType()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.GetExtentFromNumericDuration(25226354, null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.ExtentFromDuration(25226354, null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.GetExtentFromNumericDuration(25226354, TIMEUnit.MarsSol, null));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.ExtentFromDuration(25226354, TIMEUnit.MarsSol, null));
 
         [DataTestMethod]
         //seconds
@@ -424,7 +409,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldGetExtentFromDuration(double timeDuration, string unitTypeURI, TIMEUnitType unitTypeEnum, double scaleFactor, 
             double? expectedYears, double? expectedMonths, double? expectedWeeks, double? expectedDays, double? expectedHours, double? expectedMinutes, double? expectedSeconds)
         {
-            TIMEExtent te = TIMEConverter.GetExtentFromNumericDuration(timeDuration, new TIMEUnit(new RDFResource(unitTypeURI), unitTypeEnum, scaleFactor), TIMECalendarReferenceSystem.Gregorian);
+            TIMEExtent te = TIMEConverter.ExtentFromDuration(timeDuration, new TIMEUnit(new RDFResource(unitTypeURI), unitTypeEnum, scaleFactor), TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(te);
             Assert.IsTrue(te.Years == expectedYears);
@@ -548,7 +533,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldGetExtentFromDurationWithExactMetricCalendar(double timeDuration, string unitTypeURI, TIMEUnitType unitTypeEnum, double scaleFactor,
             double? expectedYears, double? expectedMonths, double? expectedWeeks, double? expectedDays, double? expectedHours, double? expectedMinutes, double? expectedSeconds)
         {
-            TIMEExtent te = TIMEConverter.GetExtentFromNumericDuration(timeDuration, new TIMEUnit(new RDFResource(unitTypeURI), unitTypeEnum, scaleFactor),
+            TIMEExtent te = TIMEConverter.ExtentFromDuration(timeDuration, new TIMEUnit(new RDFResource(unitTypeURI), unitTypeEnum, scaleFactor),
                 new TIMECalendarReferenceSystem(
                     new RDFResource("https://en.wikipedia.org/wiki/360-day_calendar"),
                     new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
@@ -565,11 +550,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnNormalizingExtentBecauseNullExtent()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeExtentToCalendar(null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeExtent(null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnNormalizingExtentBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeExtentToCalendar(new TIMEExtent(), null));
+            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeExtent(new TIMEExtent(), null));
 
         [DataTestMethod]
         //seconds
@@ -659,7 +644,7 @@ namespace OWLSharp.Test.Extensions.TIME
             double expectedMonths, double expectedWeeks, double expectedDays, double expectedHours, 
             double expectedMinutes, double expectedSeconds)
         {
-            TIMEExtent te = TIMEConverter.NormalizeExtentToCalendar(
+            TIMEExtent te = TIMEConverter.NormalizeExtent(
                 new TIMEExtent(originYears, originMonths, originWeeks, originDays, originHours, originMinutes, originSeconds),
                 TIMECalendarReferenceSystem.Gregorian);
 
@@ -698,7 +683,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMECoordinateMetadata(TIMECalendarReferenceSystem.Gregorian, RDFVocabulary.TIME.UNIT_SECOND));
             TIMECoordinate endCoordinate = new TIMECoordinate(endYear, endMonth, endDay, endHour, endMinute, endSecond,
                 new TIMECoordinateMetadata(TIMECalendarReferenceSystem.Gregorian, RDFVocabulary.TIME.UNIT_SECOND));
-            TIMEExtent te = TIMEConverter.CalculateExtentBetweenCoordinates(startCoordinate, endCoordinate, TIMECalendarReferenceSystem.Gregorian);
+            TIMEExtent te = TIMEConverter.ExtentBetweenCoordinates(startCoordinate, endCoordinate, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(te);
             Assert.IsTrue(te.Years == expectedYears);

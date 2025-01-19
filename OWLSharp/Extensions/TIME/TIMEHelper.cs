@@ -974,12 +974,12 @@ namespace OWLSharp.Extensions.TIME
             //The time instant has been encoded in DateTime
             FillValueOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
             if (timeInstant.DateTime.HasValue)
-                return TIMEConverter.NormalizeCoordinateToCalendar(new TIMECoordinate(timeInstant.DateTime.Value), calendarTRS);
+                return TIMEConverter.NormalizeCoordinate(new TIMECoordinate(timeInstant.DateTime.Value), calendarTRS);
 
             //The time instant has been encoded in a structured 6-component description
             FillDescriptionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
             if (timeInstant.Description != null)
-                return TIMEConverter.NormalizeCoordinateToCalendar(timeInstant.Description.Coordinate, calendarTRS);
+                return TIMEConverter.NormalizeCoordinate(timeInstant.Description.Coordinate, calendarTRS);
 
             //The time instant has been encoded in a nominal value or a numeric coordinate
             FillPositionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
@@ -990,7 +990,7 @@ namespace OWLSharp.Extensions.TIME
                 {
                     TIMECoordinate nominalPositionCoordinate = GetBeginningOfInterval(ontology, timeInstant.Position.NominalValue, calendarTRS);
                     if (nominalPositionCoordinate != null)
-                        return TIMEConverter.NormalizeCoordinateToCalendar(nominalPositionCoordinate, calendarTRS);
+                        return TIMEConverter.NormalizeCoordinate(nominalPositionCoordinate, calendarTRS);
                 }
 
                 //Numeric position (e.g: seconds elapsed from 1st January 1970, which describes UnixTime Epoch)
@@ -1005,8 +1005,8 @@ namespace OWLSharp.Extensions.TIME
                     #endregion
 
                     TIMEPositionReferenceSystem positionTRS = (TIMEPositionReferenceSystem)TIMEReferenceSystemRegistry.Instance.TRS[timeInstant.Position.TRS.ToString()];
-                    return TIMEConverter.NormalizeCoordinateToCalendar(
-                             TIMEConverter.GetCoordinateFromNumericPosition(timeInstant.Position.NumericValue, positionTRS, calendarTRS), calendarTRS);
+                    return TIMEConverter.NormalizeCoordinate(
+                             TIMEConverter.CoordinateFromPosition(timeInstant.Position.NumericValue, positionTRS, calendarTRS), calendarTRS);
                 }
             }
 
@@ -1033,12 +1033,12 @@ namespace OWLSharp.Extensions.TIME
             //The time interval has been encoded in TimeSpan
             FillValueOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
             if (timeInterval.TimeSpan.HasValue)
-                return TIMEConverter.NormalizeExtentToCalendar(new TIMEExtent(timeInterval.TimeSpan.Value), calendarTRS);
+                return TIMEConverter.NormalizeExtent(new TIMEExtent(timeInterval.TimeSpan.Value), calendarTRS);
 
             //The time interval has been encoded in a structured 7-component description
             FillDescriptionOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
             if (timeInterval.Description != null)
-                return TIMEConverter.NormalizeExtentToCalendar(timeInterval.Description.Extent, calendarTRS);
+                return TIMEConverter.NormalizeExtent(timeInterval.Description.Extent, calendarTRS);
 
             //The time interval has been encoded in a numeric duration extent
             FillDurationOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
@@ -1051,8 +1051,8 @@ namespace OWLSharp.Extensions.TIME
                 #endregion
 
                 TIMEUnit durationUnit = TIMEUnitTypeRegistry.Instance.UnitTypes[timeInterval.Duration.UnitType.ToString()];
-                return TIMEConverter.NormalizeExtentToCalendar(
-                        TIMEConverter.GetExtentFromNumericDuration(timeInterval.Duration.Value, durationUnit, calendarTRS), calendarTRS);
+                return TIMEConverter.NormalizeExtent(
+                        TIMEConverter.ExtentFromDuration(timeInterval.Duration.Value, durationUnit, calendarTRS), calendarTRS);
             }
 
             //The time interval has been encoded in Beginning/End time instants
@@ -1063,7 +1063,7 @@ namespace OWLSharp.Extensions.TIME
                 TIMECoordinate timeIntervalBeginning = GetCoordinateOfInstant(ontology, timeInterval.Beginning, calendarTRS);
                 TIMECoordinate timeIntervalEnd = GetCoordinateOfInstant(ontology, timeInterval.End, calendarTRS);
                 if (timeIntervalBeginning != null && timeIntervalEnd != null)
-                    return TIMEConverter.CalculateExtentBetweenCoordinates(timeIntervalBeginning, timeIntervalEnd, calendarTRS);
+                    return TIMEConverter.ExtentBetweenCoordinates(timeIntervalBeginning, timeIntervalEnd, calendarTRS);
             }
 
             //In absence of a valid time interval encoding we simply cannot proceed
