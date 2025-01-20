@@ -79,9 +79,9 @@ namespace OWLSharp.Extensions.TIME
 
                 //Execute the clock emulator on the transformed time position
                 if (scaledTimePositionSeconds > 0)
-                    ClockForwardToCoordinate(scaledTimePositionSeconds, coordinate, calendarTRS);
+                    TickForward(scaledTimePositionSeconds, coordinate, calendarTRS);
                 else if (scaledTimePositionSeconds < 0)
-                    ClockBackwardFromCoordinate(scaledTimePositionSeconds, coordinate, calendarTRS);
+                    TickBackward(scaledTimePositionSeconds, coordinate, calendarTRS);
             }
             #endregion
 
@@ -291,80 +291,80 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Utilities
-        internal static void ClockForwardToCoordinate(double secondsToConsume, TIMECoordinate positionTRSOrigin, TIMECalendarReferenceSystem calendarTRS)
+        internal static void TickForward(double secondsToConsume, TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
         {
-            uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(positionTRSOrigin.Year ?? 0) 
+            uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(timeCoordinate.Year ?? 0) 
                                     ?? calendarTRS.Metrics.Months;
             while (secondsToConsume >= calendarTRS.Metrics.SecondsInMinute)
             {
                 secondsToConsume -= calendarTRS.Metrics.SecondsInMinute;
-                positionTRSOrigin.Minute++;
-                if (positionTRSOrigin.Minute < calendarTRS.Metrics.MinutesInHour)
+                timeCoordinate.Minute++;
+                if (timeCoordinate.Minute < calendarTRS.Metrics.MinutesInHour)
                     continue;
 
                 //Minute overflow => propagate to hour
-                positionTRSOrigin.Minute = 0;
-                positionTRSOrigin.Hour++;
-                if (positionTRSOrigin.Hour < calendarTRS.Metrics.HoursInDay)
+                timeCoordinate.Minute = 0;
+                timeCoordinate.Hour++;
+                if (timeCoordinate.Hour < calendarTRS.Metrics.HoursInDay)
                     continue;
 
                 //Hour overflow => propagate to day
-                positionTRSOrigin.Hour = 0;
-                positionTRSOrigin.Day++;
-                if (positionTRSOrigin.Day <= metricsMonths[Convert.ToInt32(positionTRSOrigin.Month)-1])
+                timeCoordinate.Hour = 0;
+                timeCoordinate.Day++;
+                if (timeCoordinate.Day <= metricsMonths[Convert.ToInt32(timeCoordinate.Month)-1])
                     continue;
 
                 //Day overflow => propagate to month
-                positionTRSOrigin.Day = 1;
-                positionTRSOrigin.Month++;
-                if (positionTRSOrigin.Month <= calendarTRS.Metrics.MonthsInYear)
+                timeCoordinate.Day = 1;
+                timeCoordinate.Month++;
+                if (timeCoordinate.Month <= calendarTRS.Metrics.MonthsInYear)
                     continue;
 
                 //Month overflow => propagate to year, fetch new metrics
-                positionTRSOrigin.Month = 1;
-                positionTRSOrigin.Year++;
-                metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(positionTRSOrigin.Year ?? 0)
+                timeCoordinate.Month = 1;
+                timeCoordinate.Year++;
+                metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(timeCoordinate.Year ?? 0)
                                  ?? calendarTRS.Metrics.Months;
             }
-            positionTRSOrigin.Second = Math.Truncate(positionTRSOrigin.Second.Value + secondsToConsume);
+            timeCoordinate.Second = Math.Truncate(timeCoordinate.Second.Value + secondsToConsume);
         }
 
-        internal static void ClockBackwardFromCoordinate(double secondsToConsume, TIMECoordinate positionTRSOrigin, TIMECalendarReferenceSystem calendarTRS)
+        internal static void TickBackward(double secondsToConsume, TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
         {
-            uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(positionTRSOrigin.Year ?? 0)
+            uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(timeCoordinate.Year ?? 0)
                                     ?? calendarTRS.Metrics.Months;
             while (secondsToConsume < 0)
             {
                 secondsToConsume += calendarTRS.Metrics.SecondsInMinute;
-                positionTRSOrigin.Minute--;
-                if (positionTRSOrigin.Minute >= 0)
+                timeCoordinate.Minute--;
+                if (timeCoordinate.Minute >= 0)
                     continue;
 
                 //Minute underflow => propagate to hour
-                positionTRSOrigin.Minute = calendarTRS.Metrics.MinutesInHour - 1;
-                positionTRSOrigin.Hour--;
-                if (positionTRSOrigin.Hour >= 0)
+                timeCoordinate.Minute = calendarTRS.Metrics.MinutesInHour - 1;
+                timeCoordinate.Hour--;
+                if (timeCoordinate.Hour >= 0)
                     continue;
 
                 //Hour underflow => propagate to day
-                positionTRSOrigin.Hour = calendarTRS.Metrics.HoursInDay - 1;
-                positionTRSOrigin.Day--;
-                if (positionTRSOrigin.Day >= 1)
+                timeCoordinate.Hour = calendarTRS.Metrics.HoursInDay - 1;
+                timeCoordinate.Day--;
+                if (timeCoordinate.Day >= 1)
                     continue;
 
                 //Day underflow => propagate to month
-                positionTRSOrigin.Month--;
-                if (positionTRSOrigin.Month == 0)
+                timeCoordinate.Month--;
+                if (timeCoordinate.Month == 0)
                 {
                     //Month underflow => propagate to year, fetch new metrics
-                    positionTRSOrigin.Month = calendarTRS.Metrics.MonthsInYear;
-                    positionTRSOrigin.Year--;
-                    metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(positionTRSOrigin.Year ?? 0)
+                    timeCoordinate.Month = calendarTRS.Metrics.MonthsInYear;
+                    timeCoordinate.Year--;
+                    metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(timeCoordinate.Year ?? 0)
                                      ?? calendarTRS.Metrics.Months;
                 }
-                positionTRSOrigin.Day = metricsMonths[Convert.ToInt32(positionTRSOrigin.Month)-1];
+                timeCoordinate.Day = metricsMonths[Convert.ToInt32(timeCoordinate.Month)-1];
             }
-            positionTRSOrigin.Second = Math.Truncate(positionTRSOrigin.Second.Value + secondsToConsume);
+            timeCoordinate.Second = Math.Truncate(timeCoordinate.Second.Value + secondsToConsume);
         }
         #endregion
     }
