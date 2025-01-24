@@ -61,8 +61,8 @@ namespace OWLSharp.Ontology
                         //Cache-Miss
                         if (!OntologyCache.ContainsKey(ontologyIRIString))
                         {
-                            RDFAsyncGraph importGraph = await RDFAsyncGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
-                            OWLOntology importOntology = await OWLOntology.FromRDFGraphAsync(importGraph.WrappedGraph);
+                            RDFGraph importGraph = await RDFGraph.FromUriAsync(ontologyIRI, timeoutMilliseconds, true);
+                            OWLOntology importOntology = await OWLOntology.FromRDFGraphAsync(importGraph);
                             //Save the fetched ontology into the cache for the given amount of milliseconds
                             OntologyCache.Add(ontologyIRIString, (importOntology, DateTime.UtcNow.AddMilliseconds(cacheMilliseconds)));
                         }
