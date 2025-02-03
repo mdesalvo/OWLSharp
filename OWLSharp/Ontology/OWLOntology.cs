@@ -223,7 +223,7 @@ namespace OWLSharp.Ontology
                         graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
                     //Rules
-                    foreach (SWRLRule rule in Rules.Where(rl => (includeImports || !rl.IsImport)))
+                    foreach (SWRLRule rule in Rules.Where(rl => includeImports || !rl.IsImport))
                         graph = graph.UnionWith(rule.ToRDFGraph());
 
                     //IRI => Context
