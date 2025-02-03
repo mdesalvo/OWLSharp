@@ -14,9 +14,6 @@
    limitations under the License.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
@@ -52,8 +49,8 @@ namespace OWLSharp.Ontology
                         ontology.DeclareAnnotationAxiom(annAx);
                 }
 
-            //Export ontology to graph (with support for inferences)
-            RDFGraph graph = await ontology.ToRDFGraphAsync();
+            //Export ontology to graph (with support for inferences and imports)
+            RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
 
             //Apply query to graph and return results
             return await selectQuery.ApplyToGraphAsync(graph); 

@@ -180,6 +180,8 @@ namespace OWLSharp.Ontology
             => Prefixes.Add(prefix ?? throw new OWLException("Cannot prefix ontology because given \"prefix\" parameter is null"));
 
         public Task<RDFGraph> ToRDFGraphAsync(bool includeInferences=true)
+            => ToRDFGraphAsync(includeInferences, false);
+        internal Task<RDFGraph> ToRDFGraphAsync(bool includeInferences, bool includeImports)
             => Task.Run(() =>
                 {
                     RDFGraph graph = new RDFGraph();
@@ -203,25 +205,25 @@ namespace OWLSharp.Ontology
                         graph = graph.UnionWith(annotation.ToRDFGraphInternal(ontologyIRI));
 
                     //Axioms
-                    foreach (OWLDeclaration declarationAxiom in DeclarationAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLDeclaration declarationAxiom in DeclarationAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(declarationAxiom.ToRDFGraph());
-                    foreach (OWLClassAxiom classAxiom in ClassAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLClassAxiom classAxiom in ClassAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(classAxiom.ToRDFGraph());
-                    foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLObjectPropertyAxiom objectPropertyAxiom in ObjectPropertyAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(objectPropertyAxiom.ToRDFGraph());
-                    foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLDataPropertyAxiom dataPropertyAxiom in DataPropertyAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(dataPropertyAxiom.ToRDFGraph());
-                    foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLDatatypeDefinition datatypeDefinitionAxiom in DatatypeDefinitionAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(datatypeDefinitionAxiom.ToRDFGraph());
-                    foreach (OWLHasKey keyAxiom in KeyAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLHasKey keyAxiom in KeyAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(keyAxiom.ToRDFGraph());
-                    foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLAssertionAxiom assertionAxiom in AssertionAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(assertionAxiom.ToRDFGraph());
-                    foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms.Where(ax => !ax.IsImport && (includeInferences || !ax.IsInference)))
+                    foreach (OWLAnnotationAxiom annotationAxiom in AnnotationAxioms.Where(ax => (includeImports || !ax.IsImport) && (includeInferences || !ax.IsInference)))
                         graph = graph.UnionWith(annotationAxiom.ToRDFGraph());
 
                     //Rules
-                    foreach (SWRLRule rule in Rules.Where(rl => !rl.IsImport))
+                    foreach (SWRLRule rule in Rules.Where(rl => (includeImports || !rl.IsImport)))
                         graph = graph.UnionWith(rule.ToRDFGraph());
 
                     //IRI => Context
