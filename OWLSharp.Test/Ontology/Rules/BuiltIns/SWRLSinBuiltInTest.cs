@@ -38,7 +38,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#sin", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
-            Assert.IsTrue(builtin.Arguments.Count == 2);
+            Assert.AreEqual(2, builtin.Arguments.Count);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
@@ -68,7 +68,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#sin", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
-            Assert.IsTrue(builtin.Arguments.Count == 2);
+            Assert.AreEqual(2, builtin.Arguments.Count);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#sin", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
-            Assert.IsTrue(builtin.Arguments.Count == 2);
+            Assert.AreEqual(2, builtin.Arguments.Count);
             Assert.IsTrue(builtin.Arguments[0] is SWRLLiteralArgument tlarg 
                             && tlarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
@@ -114,7 +114,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#sin", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
-            Assert.IsTrue(builtin.Arguments.Count == 2);
+            Assert.AreEqual(2, builtin.Arguments.Count);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLLiteralArgument trarg 
@@ -148,8 +148,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 2);
-            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.AreEqual(2, builtinResults.Columns.Count);
+            Assert.AreEqual(1, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "0^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "0.0^^http://www.w3.org/2001/XMLSchema#float"));
 
@@ -160,16 +160,16 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?Z"))); //unexisting
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults2);
-            Assert.IsTrue(builtinResults2.Columns.Count == 2);
-            Assert.IsTrue(builtinResults2.Rows.Count == 11);
+            Assert.AreEqual(2, builtinResults2.Columns.Count);
+            Assert.AreEqual(11, builtinResults2.Rows.Count);
 
             SWRLBuiltIn builtin3 = SWRLBuiltIn.Sin(
                 new SWRLVariableArgument(new RDFVariable("?Z")),  //unexisting
                 new SWRLVariableArgument(new RDFVariable("?Y")));
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults3);
-            Assert.IsTrue(builtinResults3.Columns.Count == 2);
-            Assert.IsTrue(builtinResults3.Rows.Count == 11);
+            Assert.AreEqual(2, builtinResults3.Columns.Count);
+            Assert.AreEqual(11, builtinResults3.Rows.Count);
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<SWRLException>(() =>
@@ -219,8 +219,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 1);
-            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.AreEqual(1, builtinResults.Columns.Count);
+            Assert.AreEqual(1, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "0.0^^http://www.w3.org/2001/XMLSchema#float"));
         }
 
@@ -250,8 +250,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 1);
-            Assert.IsTrue(builtinResults.Rows.Count == 1);
+            Assert.AreEqual(1, builtinResults.Columns.Count);
+            Assert.AreEqual(1, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "0.0^^http://www.w3.org/2001/XMLSchema#float"));
         }
         #endregion

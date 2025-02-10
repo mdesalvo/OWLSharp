@@ -87,8 +87,8 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:related)"));
@@ -156,8 +156,8 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg1B));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:closeMatch VS skos:relatedMatch)"));
@@ -225,8 +225,8 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg2A));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:exactMatch VS skos:related)"));
@@ -294,8 +294,8 @@ namespace OWLSharp.Test.Extensions.SKOS
             List<OWLIssue> issues = await SKOSCloseOrExactMatchConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, SKOSCloseOrExactMatchConceptAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, SKOSCloseOrExactMatchConceptAnalysisRule.rulesugg2B));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on mapping/associative relations (skos:exactMatch VS skos:relatedMatch)"));

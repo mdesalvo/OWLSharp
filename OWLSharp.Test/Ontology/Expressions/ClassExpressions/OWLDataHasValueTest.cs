@@ -89,11 +89,11 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = dataHasValue.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 4);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.DC.DESCRIPTION, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.HAS_VALUE, null, new RDFPlainLiteral("hello", "en")].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.AreEqual(4, graph.TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.DC.DESCRIPTION, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.HAS_VALUE, null, new RDFPlainLiteral("hello", "en")].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.DESCRIPTION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount);
         }
         #endregion
     }

@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:intvDesc"),
                 new TIMEExtent(0, 0, 0, 0, 5, 2, 0));
 
-            Assert.IsTrue(timeIntervalDescriptionA.CompareTo(timeIntervalDescriptionB) == 1);
+            Assert.AreEqual(1, timeIntervalDescriptionA.CompareTo(timeIntervalDescriptionB));
         }
 
         [TestMethod]

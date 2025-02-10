@@ -66,8 +66,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalBefore";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -114,8 +114,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalAfter";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -162,8 +162,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalContains";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -210,8 +210,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalDisjoint";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -258,8 +258,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalDuring";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -306,8 +306,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalEquals";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -354,8 +354,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalFinishes";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -402,8 +402,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalFinishedBy";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -450,8 +450,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:hasInside";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -498,8 +498,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalIn";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -546,8 +546,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalMeets";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -594,12 +594,12 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalMetBy";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 2);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(2, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
-            Assert.IsTrue(issues[1].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[1].Severity);
             Assert.IsTrue(string.Equals(issues[1].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[1].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[1].Suggestion, $"TIME intervals 'ex:IntervalB' and 'ex:IntervalA' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -646,8 +646,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalOverlappedBy";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -694,8 +694,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalOverlaps";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -742,8 +742,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalStarts";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));
@@ -790,8 +790,8 @@ namespace OWLSharp.Test.Extensions.TIME
             string clashingRelation = "time:intervalStartedBy";
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEIntervalMetByAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, string.Format(TIMEIntervalMetByAnalysisRule.rulesugg, clashingRelation)));
             Assert.IsTrue(string.Equals(issues[0].Suggestion, $"TIME intervals 'ex:IntervalA' and 'ex:IntervalB' should be adjusted to not clash on temporal relations (time:intervalMetBy VS {clashingRelation})"));

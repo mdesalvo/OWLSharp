@@ -107,73 +107,73 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldGetSameIndividualsAsync()
         {
-            Assert.IsTrue((await MarkView.SameIndividualsAsync()).Count == 1);
-            Assert.IsTrue((await JohnView.SameIndividualsAsync()).Count == 0);
-            Assert.IsTrue((await StivView.SameIndividualsAsync()).Count == 0);
+            Assert.AreEqual(1, (await MarkView.SameIndividualsAsync()).Count);
+            Assert.AreEqual(0, (await JohnView.SameIndividualsAsync()).Count);
+            Assert.AreEqual(0, (await StivView.SameIndividualsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDifferentIndividualsAsync()
         {
-            Assert.IsTrue((await MarkView.DifferentIndividualsAsync()).Count == 2);
-            Assert.IsTrue((await JohnView.DifferentIndividualsAsync()).Count == 1);
-            Assert.IsTrue((await StivView.DifferentIndividualsAsync()).Count == 1);
+            Assert.AreEqual(2, (await MarkView.DifferentIndividualsAsync()).Count);
+            Assert.AreEqual(1, (await JohnView.DifferentIndividualsAsync()).Count);
+            Assert.AreEqual(1, (await StivView.DifferentIndividualsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetClassAssertionsAsync()
         {
-            Assert.IsTrue((await MarkView.ClassAssertionsAsync()).Count == 2);
-            Assert.IsTrue((await JohnView.ClassAssertionsAsync()).Count == 1);
-            Assert.IsTrue((await StivView.ClassAssertionsAsync()).Count == 1);
+            Assert.AreEqual(2, (await MarkView.ClassAssertionsAsync()).Count);
+            Assert.AreEqual(1, (await JohnView.ClassAssertionsAsync()).Count);
+            Assert.AreEqual(1, (await StivView.ClassAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDataAssertionsAsync()
         {
-            Assert.IsTrue((await MarkView.DataAssertionsAsync()).Count == 1);
-            Assert.IsTrue((await JohnView.DataAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await StivView.DataAssertionsAsync()).Count == 0);
+            Assert.AreEqual(1, (await MarkView.DataAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await JohnView.DataAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await StivView.DataAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetObjectAssertionsAsync()
         {
-            Assert.IsTrue((await MarkView.ObjectAssertionsAsync()).Count == 1);
-            Assert.IsTrue((await JohnView.ObjectAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await StivView.ObjectAssertionsAsync()).Count == 1);
+            Assert.AreEqual(1, (await MarkView.ObjectAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await JohnView.ObjectAssertionsAsync()).Count);
+            Assert.AreEqual(1, (await StivView.ObjectAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetNegativeDataAssertionsAsync()
         {
-            Assert.IsTrue((await MarkView.NegativeDataAssertionsAsync()).Count == 1);
-            Assert.IsTrue((await JohnView.NegativeDataAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await StivView.NegativeDataAssertionsAsync()).Count == 0);
+            Assert.AreEqual(1, (await MarkView.NegativeDataAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await JohnView.NegativeDataAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await StivView.NegativeDataAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetNegativeObjectAssertionsAsync()
         {
-            Assert.IsTrue((await MarkView.NegativeObjectAssertionsAsync()).Count == 1);
-            Assert.IsTrue((await JohnView.NegativeObjectAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await StivView.NegativeObjectAssertionsAsync()).Count == 0);
+            Assert.AreEqual(1, (await MarkView.NegativeObjectAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await JohnView.NegativeObjectAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await StivView.NegativeObjectAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDataAnnotationsAsync()
         {
-            Assert.IsTrue((await MarkView.DataAnnotationsAsync()).Count == 1);
-            Assert.IsTrue((await JohnView.DataAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await StivView.DataAnnotationsAsync()).Count == 0);
+            Assert.AreEqual(1, (await MarkView.DataAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await JohnView.DataAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await StivView.DataAnnotationsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetObjectAnnotationsAsync()
         {
-            Assert.IsTrue((await MarkView.ObjectAnnotationsAsync()).Count == 1);
-            Assert.IsTrue((await JohnView.ObjectAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await StivView.ObjectAnnotationsAsync()).Count == 0);
+            Assert.AreEqual(1, (await MarkView.ObjectAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await JohnView.ObjectAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await StivView.ObjectAnnotationsAsync()).Count);
         }
     }
 }

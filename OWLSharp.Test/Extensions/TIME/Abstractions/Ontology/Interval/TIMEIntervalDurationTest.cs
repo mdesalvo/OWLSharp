@@ -34,7 +34,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(timeIntervalDuration);
             Assert.IsTrue(timeIntervalDuration.URI.Equals(new Uri("ex:intvDur")));
             Assert.IsTrue(timeIntervalDuration.UnitType.Equals(TIMEUnit.MillionYearsAgo));
-            Assert.IsTrue(timeIntervalDuration.Value == 12.23);
+            Assert.AreEqual(12.23, timeIntervalDuration.Value);
         }
 
         [TestMethod]

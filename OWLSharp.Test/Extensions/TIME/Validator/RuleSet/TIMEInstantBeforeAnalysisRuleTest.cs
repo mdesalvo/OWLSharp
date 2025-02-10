@@ -65,11 +65,11 @@ namespace OWLSharp.Test.Extensions.TIME
             List<OWLIssue> issues = await TIMEInstantBeforeAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 2);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(2, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEInstantBeforeAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, TIMEInstantBeforeAnalysisRule.rulesugg1));
-            Assert.IsTrue(issues[1].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[1].Severity);
             Assert.IsTrue(string.Equals(issues[1].RuleName, TIMEInstantBeforeAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[1].Description, TIMEInstantBeforeAnalysisRule.rulesugg1));
         }
@@ -114,8 +114,8 @@ namespace OWLSharp.Test.Extensions.TIME
             List<OWLIssue> issues = await TIMEInstantBeforeAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
-            Assert.IsTrue(issues[0].Severity == OWLEnums.OWLIssueSeverity.Error);
+            Assert.AreEqual(1, issues.Count);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
             Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEInstantBeforeAnalysisRule.rulename));
             Assert.IsTrue(string.Equals(issues[0].Description, TIMEInstantBeforeAnalysisRule.rulesugg2));
         }

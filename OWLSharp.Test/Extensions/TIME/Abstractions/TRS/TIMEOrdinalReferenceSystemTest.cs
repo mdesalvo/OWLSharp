@@ -40,8 +40,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(TestTRS);
             Assert.IsNotNull(TestTRS.Ontology);
             Assert.IsTrue(TestTRS.Equals(new RDFResource("ex:Thors")));
-            Assert.IsTrue(TestTRS.Ontology.Imports.Count == 3);
-            Assert.IsTrue(TestTRS.Ontology.Prefixes.Count == 5);
+            Assert.AreEqual(3, TestTRS.Ontology.Imports.Count);
+            Assert.AreEqual(5, TestTRS.Ontology.Prefixes.Count);
             Assert.IsTrue(TestTRS.Ontology.DeclarationAxioms.Count > 100);
             Assert.IsTrue(TestTRS.Ontology.AssertionAxioms.Count > 60);
             Assert.IsTrue(TestTRS.Ontology.ClassAxioms.Count > 60);
@@ -53,8 +53,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(newTRS);
             Assert.IsNotNull(newTRS.Ontology);
             Assert.IsTrue(newTRS.Equals(new RDFResource("ex:Thors2")));
-            Assert.IsTrue(newTRS.Ontology.Imports.Count == 3);
-            Assert.IsTrue(newTRS.Ontology.Prefixes.Count == 5);
+            Assert.AreEqual(3, newTRS.Ontology.Imports.Count);
+            Assert.AreEqual(5, newTRS.Ontology.Prefixes.Count);
             Assert.IsTrue(newTRS.Ontology.DeclarationAxioms.Count > 100);
             Assert.IsTrue(newTRS.Ontology.AssertionAxioms.Count > 60);
             Assert.IsTrue(newTRS.Ontology.ClassAxioms.Count > 60);
@@ -479,17 +479,17 @@ namespace OWLSharp.Test.Extensions.TIME
             List<RDFResource> subErasOfSubSubEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:subsubEra"), true);
             List<RDFResource> subErasOfSubSubEraWithoutReasoning = thors.GetSubErasOf(new RDFResource("ex:subsubEra"), false);
 
-            Assert.IsTrue(subErasOfEraWithReasoning.Count == 2);
+            Assert.AreEqual(2, subErasOfEraWithReasoning.Count);
             Assert.IsTrue(subErasOfEraWithReasoning.Any(x => x.Equals(new RDFResource("ex:subEra"))));
             Assert.IsTrue(subErasOfEraWithReasoning.Any(x => x.Equals(new RDFResource("ex:subsubEra"))));
-            Assert.IsTrue(subErasOfEraWithoutReasoning.Count == 1);
+            Assert.AreEqual(1, subErasOfEraWithoutReasoning.Count);
             Assert.IsTrue(subErasOfEraWithoutReasoning.Any(x => x.Equals(new RDFResource("ex:subEra"))));
-            Assert.IsTrue(subErasOfSubEraWithReasoning.Count == 1);
+            Assert.AreEqual(1, subErasOfSubEraWithReasoning.Count);
             Assert.IsTrue(subErasOfSubEraWithReasoning.Any(x => x.Equals(new RDFResource("ex:subsubEra"))));
-            Assert.IsTrue(subErasOfSubEraWithoutReasoning.Count == 1);
+            Assert.AreEqual(1, subErasOfSubEraWithoutReasoning.Count);
             Assert.IsTrue(subErasOfSubEraWithoutReasoning.Any(x => x.Equals(new RDFResource("ex:subsubEra"))));
-            Assert.IsTrue(subErasOfSubSubEraWithReasoning.Count == 0);
-            Assert.IsTrue(subErasOfSubSubEraWithoutReasoning.Count == 0);
+            Assert.AreEqual(0, subErasOfSubSubEraWithReasoning.Count);
+            Assert.AreEqual(0, subErasOfSubSubEraWithoutReasoning.Count);
         }
 
         [TestMethod]
@@ -568,16 +568,16 @@ namespace OWLSharp.Test.Extensions.TIME
             List<RDFResource> superErasOfSubSubEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:subsubEra"), true);
             List<RDFResource> superErasOfSubSubEraWithoutReasoning = thors.GetSuperErasOf(new RDFResource("ex:subsubEra"), false);
 
-            Assert.IsTrue(superErasOfEraWithReasoning.Count == 0);
-            Assert.IsTrue(superErasOfEraWithoutReasoning.Count == 0);
-            Assert.IsTrue(superErasOfSubEraWithReasoning.Count == 1);
+            Assert.AreEqual(0, superErasOfEraWithReasoning.Count);
+            Assert.AreEqual(0, superErasOfEraWithoutReasoning.Count);
+            Assert.AreEqual(1, superErasOfSubEraWithReasoning.Count);
             Assert.IsTrue(superErasOfSubEraWithReasoning.Any(x => x.Equals(new RDFResource("ex:era"))));
-            Assert.IsTrue(superErasOfSubEraWithoutReasoning.Count == 1);
+            Assert.AreEqual(1, superErasOfSubEraWithoutReasoning.Count);
             Assert.IsTrue(superErasOfSubEraWithoutReasoning.Any(x => x.Equals(new RDFResource("ex:era"))));
-            Assert.IsTrue(superErasOfSubSubEraWithReasoning.Count == 2);
+            Assert.AreEqual(2, superErasOfSubSubEraWithReasoning.Count);
             Assert.IsTrue(superErasOfSubSubEraWithReasoning.Any(x => x.Equals(new RDFResource("ex:subEra"))));
             Assert.IsTrue(superErasOfSubSubEraWithReasoning.Any(x => x.Equals(new RDFResource("ex:era"))));
-            Assert.IsTrue(superErasOfSubSubEraWithoutReasoning.Count == 1);
+            Assert.AreEqual(1, superErasOfSubSubEraWithoutReasoning.Count);
             Assert.IsTrue(superErasOfSubSubEraWithoutReasoning.Any(x => x.Equals(new RDFResource("ex:subEra"))));
         }
 
@@ -615,17 +615,14 @@ namespace OWLSharp.Test.Extensions.TIME
             (TIMECoordinate, TIMECoordinate) subEraCoordinates = thors.GetEraCoordinates(new RDFResource("ex:subEra"));
             (TIMECoordinate, TIMECoordinate) subsubEraCoordinates = thors.GetEraCoordinates(new RDFResource("ex:subsubEra"));
 
-            Assert.IsNotNull(eraCoordinates);
             Assert.IsNotNull(eraCoordinates.Item1);
             Assert.IsTrue(eraCoordinates.Item1.Equals(new TIMECoordinate(-185_498_050, 1, 1, 0, 0, 0)));
             Assert.IsNotNull(eraCoordinates.Item2);
             Assert.IsTrue(eraCoordinates.Item2.Equals(new TIMECoordinate(-169_998_050, 1, 1, 0, 0, 0)));
-            Assert.IsNotNull(subEraCoordinates);
             Assert.IsNotNull(subEraCoordinates.Item1);
             Assert.IsTrue(subEraCoordinates.Item1.Equals(new TIMECoordinate(-185_498_050, 1, 1, 0, 0, 0)));
             Assert.IsNotNull(subEraCoordinates.Item2);
             Assert.IsTrue(subEraCoordinates.Item2.Equals(new TIMECoordinate(-180_498_050, 1, 1, 0, 0, 0)));
-            Assert.IsNotNull(subsubEraCoordinates);
             Assert.IsNotNull(subsubEraCoordinates.Item1);
             Assert.IsTrue(subsubEraCoordinates.Item1.Equals(new TIMECoordinate(-185_498_050, 1, 1, 0, 0, 0)));
             Assert.IsNotNull(subsubEraCoordinates.Item2);
@@ -669,11 +666,11 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent subsubEraExtent = thors.GetEraExtent(new RDFResource("ex:subsubEra"));
 
             Assert.IsNotNull(eraExtent);
-            Assert.IsTrue(eraExtent.Days == 5_657_500_000);
+            Assert.AreEqual(5_657_500_000, eraExtent.Days);
             Assert.IsNotNull(subEraExtent);
-            Assert.IsTrue(subEraExtent.Days == 1_825_000_000);
+            Assert.AreEqual(1_825_000_000, subEraExtent.Days);
             Assert.IsNotNull(subsubEraExtent);
-            Assert.IsTrue(subsubEraExtent.Days == 547_500_000);
+            Assert.AreEqual(547_500_000, subsubEraExtent.Days);
             Assert.ThrowsException<OWLException>(() => thors.GetEraExtent(new RDFResource("ex:unexistingEra")));
             Assert.ThrowsException<OWLException>(() => thors.GetEraExtent(null));
         }

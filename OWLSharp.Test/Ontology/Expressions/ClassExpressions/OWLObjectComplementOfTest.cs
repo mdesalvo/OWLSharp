@@ -85,9 +85,9 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = objectComplementOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 3);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
+            Assert.AreEqual(3, graph.TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.FOAF.AGENT, null].TriplesCount);
         }
         #endregion
     }

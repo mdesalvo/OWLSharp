@@ -115,7 +115,7 @@ namespace OWLSharp.Test.Ontology
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationPropertyDomain annPropDom
                             && string.Equals(annPropDom.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString())
                             && string.Equals(annPropDom.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
@@ -211,7 +211,7 @@ namespace OWLSharp.Test.Ontology
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationPropertyDomain annPropDom
                             && string.Equals(annPropDom.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString())
                             && string.Equals(annPropDom.AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:Person"));
@@ -227,8 +227,8 @@ namespace OWLSharp.Test.Ontology
                     new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
                     RDFVocabulary.FOAF.PERSON)
                 {
-                    Annotations = new List<OWLAnnotation>()
-                    {
+                    Annotations =
+                    [
                         new OWLAnnotation(
                             new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION),
                             new RDFResource("ex:AnnValue"))
@@ -237,7 +237,7 @@ namespace OWLSharp.Test.Ontology
                                 new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR),
                                 new OWLLiteral(new RDFPlainLiteral("contributor", "en-us--rtl")))
                         }
-                    }
+                    ]
                 });
             ontology.AnnotationAxioms.Add(
                 new OWLAnnotationPropertyDomain(
@@ -280,7 +280,7 @@ namespace OWLSharp.Test.Ontology
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.AnnotationAxioms.Count == 2);
+            Assert.AreEqual(2, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationPropertyDomain annPropDom
                             && string.Equals(annPropDom.AnnotationProperty.IRI.ToString(), "http://xmlns.com/foaf/0.1/Agent")
                             && string.Equals(annPropDom.IRI, "http://xmlns.com/foaf/0.1/Person")
@@ -303,9 +303,9 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = annotationPropertyDomain.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 2);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.AreEqual(2, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
         }
 
         [TestMethod]
@@ -322,16 +322,16 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = annotationPropertyDomain.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 8);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.AreEqual(8, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDFS.DOMAIN, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
             //Annotations
-            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.DOMAIN, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.DOMAIN, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
         }
         #endregion
     }

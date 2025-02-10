@@ -41,7 +41,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected object property axioms causing reserved owl:topObjectProperty property to not be the root object property of the ontology")));
@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected data property axioms causing reserved owl:topDataProperty property to not be the root data property of the ontology")));
@@ -91,7 +91,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected object property axioms causing reserved owl:bottomObjectProperty property to not be the bottom object property of the ontology")));
@@ -116,7 +116,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected data property axioms causing reserved owl:bottomDataProperty property to not be the bottom data property of the ontology")));

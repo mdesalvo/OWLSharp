@@ -112,7 +112,7 @@ namespace OWLSharp.Test.Ontology
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.ClassAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.ClassAxioms.Count);
             Assert.IsTrue(ontology.ClassAxioms.Single() is OWLEquivalentClasses djclsAsn
                             && string.Equals(((OWLClass)djclsAsn.ClassExpressions[0]).IRI, "http://xmlns.com/foaf/0.1/Agent")
                             && string.Equals(((OWLClass)djclsAsn.ClassExpressions[1]).IRI, "http://xmlns.com/foaf/0.1/Organization"));
@@ -130,10 +130,10 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = equivalentClasses.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 3);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
+            Assert.AreEqual(3, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount);
         }
 
         [TestMethod]
@@ -146,13 +146,13 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = equivalentClasses.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 6);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.AreEqual(6, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
         }
 
         [TestMethod]
@@ -168,17 +168,17 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = equivalentClasses.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 9);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
+            Assert.AreEqual(9, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount);
             //Annotations
-            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.EQUIVALENT_CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.EQUIVALENT_CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
         }
 
         [TestMethod]
@@ -196,22 +196,22 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = equivalentClasses.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 22);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 1);
+            Assert.AreEqual(22, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.AGENT, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.ORGANIZATION, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
             //Annotations
-            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 3);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.EQUIVALENT_CLASS, null].TriplesCount == 3);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.PERSON, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 3);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(3, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.AGENT, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount);
+            Assert.AreEqual(3, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.OWL.EQUIVALENT_CLASS, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.ORGANIZATION, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
+            Assert.AreEqual(3, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
         }
         #endregion
     }

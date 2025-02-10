@@ -85,7 +85,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));
@@ -146,7 +146,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));

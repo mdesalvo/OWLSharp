@@ -36,7 +36,7 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldOperateOnRegistry()
         {
             //Test initial configuration
-            Assert.IsTrue(TIMEUnitTypeRegistry.UnitTypeCount == 13);
+            Assert.AreEqual(13, TIMEUnitTypeRegistry.UnitTypeCount);
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.Millennium));
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.Century));
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(TIMEUnit.Decade));
@@ -63,7 +63,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsFalse(TIMEUnitTypeRegistry.ContainsUnitType(timeUnit));
             TIMEUnitTypeRegistry.AddUnitType(timeUnit);
             TIMEUnitTypeRegistry.AddUnitType(timeUnit); //Duplicates are avoided
-            Assert.IsTrue(TIMEUnitTypeRegistry.UnitTypeCount == 14);
+            Assert.AreEqual(14, TIMEUnitTypeRegistry.UnitTypeCount);
             Assert.IsTrue(TIMEUnitTypeRegistry.ContainsUnitType(timeUnit));
         }
         #endregion

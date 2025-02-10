@@ -73,8 +73,8 @@ namespace OWLSharp.Test.Reasoner
                      new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Stiv")))),
             ];
 
-            Assert.IsTrue(inferences.Distinct().Count() == 2);
-            Assert.IsTrue(inferences[0].GetHashCode() == inferences[1].GetHashCode());
+            Assert.AreEqual(2, inferences.Distinct().Count());
+            Assert.AreEqual(inferences[1].GetHashCode(), inferences[0].GetHashCode());
         }
         #endregion
     }

@@ -31,8 +31,8 @@ namespace OWLSharp.Test.Extensions.TIME
 
             Assert.IsNotNull(timeUnit);
             Assert.IsTrue(timeUnit.Equals(new RDFResource("ex:unit")));
-            Assert.IsTrue(timeUnit.UnitType == TIMEEnums.TIMEUnitType.Day);
-            Assert.IsTrue(timeUnit.ScaleFactor == 0.25);
+            Assert.AreEqual(TIMEEnums.TIMEUnitType.Day, timeUnit.UnitType);
+            Assert.AreEqual(0.25, timeUnit.ScaleFactor);
         }
         #endregion
     }

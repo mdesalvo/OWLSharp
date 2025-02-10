@@ -40,9 +40,9 @@ namespace OWLSharp.Test.Ontology
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
 
-            Assert.IsTrue(await ontView.AnnotationsCountAsync() == 1);
-            Assert.IsTrue(await ontView.ImportsCountAsync() == 1);
-            Assert.IsTrue(await ontView.PrefixesCountAsync() == 5);
+            Assert.AreEqual(1, await ontView.AnnotationsCountAsync());
+            Assert.AreEqual(1, await ontView.ImportsCountAsync());
+            Assert.AreEqual(5, await ontView.PrefixesCountAsync());
         }
 
         [TestMethod]
@@ -61,13 +61,13 @@ namespace OWLSharp.Test.Ontology
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
 
-            Assert.IsTrue(await ontView.AnnotationPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.DataPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.ObjectPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.ClassCountAsync() == 1);
-            Assert.IsTrue(await ontView.DatatypeCountAsync() == 1);
-            Assert.IsTrue(await ontView.NamedIndividualCountAsync() == 1);
-            Assert.IsTrue(await ontView.DeclarationCountAsync() == 6);
+            Assert.AreEqual(1, await ontView.AnnotationPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.DataPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.ObjectPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.ClassCountAsync());
+            Assert.AreEqual(1, await ontView.DatatypeCountAsync());
+            Assert.AreEqual(1, await ontView.NamedIndividualCountAsync());
+            Assert.AreEqual(6, await ontView.DeclarationCountAsync());
         }
 
         [TestMethod]
@@ -98,10 +98,10 @@ namespace OWLSharp.Test.Ontology
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
 
-            Assert.IsTrue(await ontView.AnnotationAssertionCountAsync() == 1);
-            Assert.IsTrue(await ontView.AnnotationPropertyDomainCountAsync() == 1);
-            Assert.IsTrue(await ontView.AnnotationPropertyRangeCountAsync() == 1);
-            Assert.IsTrue(await ontView.SubAnnotationPropertyOfCountAsync() == 1);
+            Assert.AreEqual(1, await ontView.AnnotationAssertionCountAsync());
+            Assert.AreEqual(1, await ontView.AnnotationPropertyDomainCountAsync());
+            Assert.AreEqual(1, await ontView.AnnotationPropertyRangeCountAsync());
+            Assert.AreEqual(1, await ontView.SubAnnotationPropertyOfCountAsync());
         }
 
         [TestMethod]
@@ -165,13 +165,13 @@ namespace OWLSharp.Test.Ontology
             };    
             OWLOntologyView ontView = new OWLOntologyView(ont);
 
-            Assert.IsTrue(await ontView.ClassAssertionCountAsync() == 4);
-            Assert.IsTrue(await ontView.DataPropertyAssertionCountAsync() == 1);
-            Assert.IsTrue(await ontView.DifferentIndividualsCountAsync() == 2);
-            Assert.IsTrue(await ontView.NegativeDataPropertyAssertionCountAsync() == 1);
-            Assert.IsTrue(await ontView.NegativeObjectPropertyAssertionCountAsync() == 1);
-            Assert.IsTrue(await ontView.ObjectPropertyAssertionCountAsync() == 2);
-            Assert.IsTrue(await ontView.SameIndividualCountAsync() == 1);
+            Assert.AreEqual(4, await ontView.ClassAssertionCountAsync());
+            Assert.AreEqual(1, await ontView.DataPropertyAssertionCountAsync());
+            Assert.AreEqual(2, await ontView.DifferentIndividualsCountAsync());
+            Assert.AreEqual(1, await ontView.NegativeDataPropertyAssertionCountAsync());
+            Assert.AreEqual(1, await ontView.NegativeObjectPropertyAssertionCountAsync());
+            Assert.AreEqual(2, await ontView.ObjectPropertyAssertionCountAsync());
+            Assert.AreEqual(1, await ontView.SameIndividualCountAsync());
         }
 
         [TestMethod]
@@ -209,10 +209,10 @@ namespace OWLSharp.Test.Ontology
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
 
-            Assert.IsTrue(await ontView.DisjointClassesCountAsync() == 1);
-            Assert.IsTrue(await ontView.DisjointUnionCountAsync() == 1);
-            Assert.IsTrue(await ontView.EquivalentClassesCountAsync() == 1);
-            Assert.IsTrue(await ontView.SubClassOfCountAsync() == 3);
+            Assert.AreEqual(1, await ontView.DisjointClassesCountAsync());
+            Assert.AreEqual(1, await ontView.DisjointUnionCountAsync());
+            Assert.AreEqual(1, await ontView.EquivalentClassesCountAsync());
+            Assert.AreEqual(3, await ontView.SubClassOfCountAsync());
         }
     
         [TestMethod]
@@ -258,12 +258,12 @@ namespace OWLSharp.Test.Ontology
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
 
-            Assert.IsTrue(await ontView.DataPropertyDomainCountAsync() == 1);
-            Assert.IsTrue(await ontView.DataPropertyRangeCountAsync() == 1);
-            Assert.IsTrue(await ontView.DisjointDataPropertiesCountAsync() == 1);
-            Assert.IsTrue(await ontView.EquivalentDataPropertiesCountAsync() == 1);
-            Assert.IsTrue(await ontView.FunctionalDataPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.SubDataPropertyOfCountAsync() == 3);
+            Assert.AreEqual(1, await ontView.DataPropertyDomainCountAsync());
+            Assert.AreEqual(1, await ontView.DataPropertyRangeCountAsync());
+            Assert.AreEqual(1, await ontView.DisjointDataPropertiesCountAsync());
+            Assert.AreEqual(1, await ontView.EquivalentDataPropertiesCountAsync());
+            Assert.AreEqual(1, await ontView.FunctionalDataPropertyCountAsync());
+            Assert.AreEqual(3, await ontView.SubDataPropertyOfCountAsync());
         }
     
         [TestMethod]
@@ -314,19 +314,19 @@ namespace OWLSharp.Test.Ontology
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
 
-            Assert.IsTrue(await ontView.AsymmetricObjectPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.DisjointObjectPropertiesCountAsync() == 1);
-            Assert.IsTrue(await ontView.EquivalentObjectPropertiesCountAsync() == 1);
-            Assert.IsTrue(await ontView.FunctionalObjectPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.InverseFunctionalObjectPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.InverseObjectPropertiesCountAsync() == 1);
-            Assert.IsTrue(await ontView.IrreflexiveObjectPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.ObjectPropertyDomainCountAsync() == 1);
-            Assert.IsTrue(await ontView.ObjectPropertyRangeCountAsync() == 1);
-            Assert.IsTrue(await ontView.ReflexiveObjectPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.SubObjectPropertyOfCountAsync() == 2);
-            Assert.IsTrue(await ontView.SymmetricObjectPropertyCountAsync() == 1);
-            Assert.IsTrue(await ontView.TransitiveObjectPropertyCountAsync() == 1);
+            Assert.AreEqual(1, await ontView.AsymmetricObjectPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.DisjointObjectPropertiesCountAsync());
+            Assert.AreEqual(1, await ontView.EquivalentObjectPropertiesCountAsync());
+            Assert.AreEqual(1, await ontView.FunctionalObjectPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.InverseFunctionalObjectPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.InverseObjectPropertiesCountAsync());
+            Assert.AreEqual(1, await ontView.IrreflexiveObjectPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.ObjectPropertyDomainCountAsync());
+            Assert.AreEqual(1, await ontView.ObjectPropertyRangeCountAsync());
+            Assert.AreEqual(1, await ontView.ReflexiveObjectPropertyCountAsync());
+            Assert.AreEqual(2, await ontView.SubObjectPropertyOfCountAsync());
+            Assert.AreEqual(1, await ontView.SymmetricObjectPropertyCountAsync());
+            Assert.AreEqual(1, await ontView.TransitiveObjectPropertyCountAsync());
         }
     }
 }

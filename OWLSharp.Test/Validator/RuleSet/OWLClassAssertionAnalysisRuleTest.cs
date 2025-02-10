@@ -55,7 +55,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = OWLClassAssertionAnalysisRule.ExecuteRule(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLClassAssertionAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLClassAssertionAnalysisRule.rulesugg)));

@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(dataIntersectionOf);
             Assert.IsNotNull(dataIntersectionOf.DataRangeExpressions);
-            Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Count == 2);
+            Assert.AreEqual(2, dataIntersectionOf.DataRangeExpressions.Count);
             Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
                             && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
             Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
@@ -84,7 +84,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(dataIntersectionOf);
             Assert.IsNotNull(dataIntersectionOf.DataRangeExpressions);
-            Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Count == 2);
+            Assert.AreEqual(2, dataIntersectionOf.DataRangeExpressions.Count);
             Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
                             && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
             Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
@@ -99,14 +99,14 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = dataIntersectionOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 10);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.XSD.ANY_URI, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 2);
+            Assert.AreEqual(10, graph.TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.XSD.STRING, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, RDFVocabulary.XSD.ANY_URI, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
         }
         #endregion
     }

@@ -31,13 +31,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoordinate = new TIMECoordinate(2010, 5, 22, 22, 45, 30);
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == 2010);
-            Assert.IsTrue(timeCoordinate.Month == 5);
-            Assert.IsTrue(timeCoordinate.Day == 22);
-            Assert.IsTrue(timeCoordinate.Hour == 22);
-            Assert.IsTrue(timeCoordinate.Minute == 45);
-            Assert.IsTrue(timeCoordinate.Second == 30);
-            Assert.IsTrue(timeCoordinate.ToString() == "2010_5_22_22_45_30");
+            Assert.AreEqual(2010, timeCoordinate.Year);
+            Assert.AreEqual(5, timeCoordinate.Month);
+            Assert.AreEqual(22, timeCoordinate.Day);
+            Assert.AreEqual(22, timeCoordinate.Hour);
+            Assert.AreEqual(45, timeCoordinate.Minute);
+            Assert.AreEqual(30, timeCoordinate.Second);
+            Assert.AreEqual("2010_5_22_22_45_30", timeCoordinate.ToString());
             Assert.IsNotNull(timeCoordinate.Metadata);
             Assert.IsNull(timeCoordinate.Metadata.TRS);
             Assert.IsNull(timeCoordinate.Metadata.UnitType);
@@ -58,13 +58,13 @@ namespace OWLSharp.Test.Extensions.TIME
                     142));
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == 2010);
-            Assert.IsTrue(timeCoordinate.Month == 5);
-            Assert.IsTrue(timeCoordinate.Day == 22);
-            Assert.IsTrue(timeCoordinate.Hour == 22);
-            Assert.IsTrue(timeCoordinate.Minute == 45);
-            Assert.IsTrue(timeCoordinate.Second == 30);
-            Assert.IsTrue(timeCoordinate.ToString() == "2010_5_22_22_45_30");
+            Assert.AreEqual(2010, timeCoordinate.Year);
+            Assert.AreEqual(5, timeCoordinate.Month);
+            Assert.AreEqual(22, timeCoordinate.Day);
+            Assert.AreEqual(22, timeCoordinate.Hour);
+            Assert.AreEqual(45, timeCoordinate.Minute);
+            Assert.AreEqual(30, timeCoordinate.Second);
+            Assert.AreEqual("2010_5_22_22_45_30", timeCoordinate.ToString());
             Assert.IsNotNull(timeCoordinate.Metadata);
             Assert.IsNotNull(timeCoordinate.Metadata.TRS);
             Assert.IsTrue(timeCoordinate.Metadata.TRS.Equals(TIMECalendarReferenceSystem.Gregorian));
@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(timeCoordinate.Metadata.DayOfWeek);
             Assert.IsTrue(timeCoordinate.Metadata.DayOfWeek.Equals(RDFVocabulary.TIME.SATURDAY));
             Assert.IsNotNull(timeCoordinate.Metadata.DayOfYear);
-            Assert.IsTrue(timeCoordinate.Metadata.DayOfYear == 142);
+            Assert.AreEqual(142u, timeCoordinate.Metadata.DayOfYear);
         }
 
         [TestMethod]
@@ -84,13 +84,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoordinate = new TIMECoordinate(2010, 5, 22, null, null, null);
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == 2010);
-            Assert.IsTrue(timeCoordinate.Month == 5);
-            Assert.IsTrue(timeCoordinate.Day == 22);
+            Assert.AreEqual(2010, timeCoordinate.Year);
+            Assert.AreEqual(5, timeCoordinate.Month);
+            Assert.AreEqual(22, timeCoordinate.Day);
             Assert.IsNull(timeCoordinate.Hour);
             Assert.IsNull(timeCoordinate.Minute);
             Assert.IsNull(timeCoordinate.Second);
-            Assert.IsTrue(timeCoordinate.ToString() == "2010_5_22_0_0_0");
+            Assert.AreEqual("2010_5_22_0_0_0", timeCoordinate.ToString());
             Assert.IsNotNull(timeCoordinate.Metadata);
             Assert.IsNull(timeCoordinate.Metadata.TRS);
             Assert.IsNull(timeCoordinate.Metadata.UnitType);
@@ -125,12 +125,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoodinate = new TIMECoordinate(DateTime.Parse("2010-05-22T22:45:30Z"));
 
             Assert.IsNotNull(timeCoodinate);
-            Assert.IsTrue(timeCoodinate.Year == 2010);
-            Assert.IsTrue(timeCoodinate.Month == 5);
-            Assert.IsTrue(timeCoodinate.Day == 22);
-            Assert.IsTrue(timeCoodinate.Hour == 22);
-            Assert.IsTrue(timeCoodinate.Minute == 45);
-            Assert.IsTrue(timeCoodinate.Second == 30);
+            Assert.AreEqual(2010, timeCoodinate.Year);
+            Assert.AreEqual(5, timeCoodinate.Month);
+            Assert.AreEqual(22, timeCoodinate.Day);
+            Assert.AreEqual(22, timeCoodinate.Hour);
+            Assert.AreEqual(45, timeCoodinate.Minute);
+            Assert.AreEqual(30, timeCoodinate.Second);
         }
 
         [DataTestMethod]
@@ -153,7 +153,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate leftCoordinate = new TIMECoordinate(DateTime.Parse(leftDateTime));
             TIMECoordinate rightCoordinate = rightDateTime == null ? null : new TIMECoordinate(DateTime.Parse(rightDateTime));
 
-            Assert.IsTrue(leftCoordinate.CompareTo(rightCoordinate) == expectedComparison);
+            Assert.AreEqual(expectedComparison, leftCoordinate.CompareTo(rightCoordinate));
         }
 
         [DataTestMethod]
@@ -189,7 +189,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate leftCoordinate = new TIMECoordinate(year1, month1, day1, hour1, minute1, second1);
             TIMECoordinate rightCoordinate = new TIMECoordinate(year2, month2, day2, hour2, minute2, second2);
 
-            Assert.IsTrue(leftCoordinate.CompareTo(rightCoordinate) == expectedComparison);
+            Assert.AreEqual(expectedComparison, leftCoordinate.CompareTo(rightCoordinate));
         }
         #endregion
     }

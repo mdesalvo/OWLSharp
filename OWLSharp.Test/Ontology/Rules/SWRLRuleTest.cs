@@ -39,7 +39,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(rule);
             Assert.IsNotNull(rule.Annotations);
-            Assert.IsTrue(rule.Annotations.Count == 2);
+            Assert.AreEqual(2, rule.Annotations.Count);
             Assert.IsNotNull(rule.Antecedent);
             Assert.IsNotNull(rule.Consequent);
         }
@@ -157,12 +157,12 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(rule);
             Assert.IsNotNull(rule.Annotations);
-            Assert.IsTrue(rule.Annotations.Count == 2);
+            Assert.AreEqual(2, rule.Annotations.Count);
             Assert.IsNotNull(rule.Antecedent);
-            Assert.IsTrue(rule.Antecedent.Atoms.Count == 2);
-            Assert.IsTrue(rule.Antecedent.BuiltIns.Count == 1);
+            Assert.AreEqual(2, rule.Antecedent.Atoms.Count);
+            Assert.AreEqual(1, rule.Antecedent.BuiltIns.Count);
             Assert.IsNotNull(rule.Consequent);
-            Assert.IsTrue(rule.Consequent.Atoms.Count == 1);
+            Assert.AreEqual(1, rule.Consequent.Atoms.Count);
             Assert.IsTrue(string.Equals("Person(?P) ^ name(?P,?N) ^ swrlb:containsIgnoreCase(?N,\"mark\") -> Agent(?P)", rule.ToString()));
         }
 
@@ -220,7 +220,7 @@ namespace OWLSharp.Test.Ontology
             List<OWLInference> inferences = await ontology.Rules[0].ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
                             && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                             && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
@@ -232,7 +232,7 @@ namespace OWLSharp.Test.Ontology
             List<OWLInference> inferences = await new SWRLRule() { Consequent = new SWRLConsequent() }.ApplyToOntologyAsync(new OWLOntology());
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 0);
+            Assert.AreEqual(0, inferences.Count);
         }
 
         [TestMethod]
@@ -241,7 +241,7 @@ namespace OWLSharp.Test.Ontology
             List<OWLInference> inferences = await new SWRLRule() { Antecedent = new SWRLAntecedent() }.ApplyToOntologyAsync(new OWLOntology());
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 0);
+            Assert.AreEqual(0, inferences.Count);
         }
 
         [TestMethod]
@@ -282,19 +282,19 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = rule.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 62);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.IMP, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.BODY, null, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.HEAD, null, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.CLASS_ATOM, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DATAVALUED_PROPERTY_ATOM, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENT1, null, null].TriplesCount == 3);
-            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENT2, null, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.BUILTIN_ATOM, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.ARGUMENTS, null, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.SWRL.BUILTIN_PROP, null, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount == 5);
+            Assert.AreEqual(62, graph.TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.IMP, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.SWRL.BODY, null, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.SWRL.HEAD, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.CLASS_ATOM, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DATAVALUED_PROPERTY_ATOM, null].TriplesCount);
+            Assert.AreEqual(3, graph[null, RDFVocabulary.SWRL.ARGUMENT1, null, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.SWRL.ARGUMENT2, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.BUILTIN_ATOM, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.SWRL.ARGUMENTS, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.SWRL.BUILTIN_PROP, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE, null].TriplesCount);
+            Assert.AreEqual(5, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount);
         }
         #endregion
     }

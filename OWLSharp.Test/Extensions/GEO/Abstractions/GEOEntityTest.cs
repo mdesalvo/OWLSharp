@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Extensions.GEO
             Assert.IsNotNull(geom);
             Assert.IsTrue(geom.URI.Equals(new Uri("ex:MilanGM")));
             Assert.IsNotNull(geom.WGS84Geometry);
-            Assert.IsTrue(geom.WGS84Geometry.SRID == 4326);
+            Assert.AreEqual(4326, geom.WGS84Geometry.SRID);
             Assert.IsTrue(string.Equals(geom.ToWKT(), "POINT (9.18854 45.464664)"));
             Assert.IsTrue(string.Equals(geom.ToGML(), "<gml:Point xmlns:gml=\"http://www.opengis.net/gml\"><gml:coord><gml:X>9.18854</gml:X><gml:Y>45.464664</gml:Y></gml:coord></gml:Point>"));
 
@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Extensions.GEO
             Assert.IsNotNull(geom);
             Assert.IsTrue(geom.URI.Equals(new Uri("ex:MilanGM")));
             Assert.IsNotNull(geom.WGS84Geometry);
-            Assert.IsTrue(geom.WGS84Geometry.SRID == 4326);
+            Assert.AreEqual(4326, geom.WGS84Geometry.SRID);
             Assert.IsTrue(string.Equals(geom.ToWKT(), "LINESTRING (9.18854 45.464664, 9.19854 45.474664)"));
             Assert.IsTrue(string.Equals(geom.ToGML(), "<gml:LineString xmlns:gml=\"http://www.opengis.net/gml\"><gml:coordinates>9.18854,45.464664 9.19854,45.474664</gml:coordinates></gml:LineString>"));
 
@@ -71,7 +71,7 @@ namespace OWLSharp.Test.Extensions.GEO
             Assert.IsNotNull(geom);
             Assert.IsTrue(geom.URI.Equals(new Uri("ex:MilanGM")));
             Assert.IsNotNull(geom.WGS84Geometry);
-            Assert.IsTrue(geom.WGS84Geometry.SRID == 4326);
+            Assert.AreEqual(4326, geom.WGS84Geometry.SRID);
             Assert.IsTrue(string.Equals(geom.ToWKT(), "POLYGON ((9.18854 45.464664, 9.19854 45.474664, 9.20854 45.484664, 9.18854 45.464664))"));
             Assert.IsTrue(string.Equals(geom.ToGML(), "<gml:Polygon xmlns:gml=\"http://www.opengis.net/gml\"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>9.18854,45.464664 9.19854,45.474664 9.20854,45.484664 9.18854,45.464664</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon>"));
 

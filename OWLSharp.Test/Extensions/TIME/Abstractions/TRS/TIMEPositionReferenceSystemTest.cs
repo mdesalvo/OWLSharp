@@ -35,15 +35,15 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(MillenniumTimeTRS);
             Assert.IsTrue(MillenniumTimeTRS.Equals(new RDFResource("ex:MillenniumTime")));
             Assert.IsNotNull(MillenniumTimeTRS.Origin);
-            Assert.IsTrue(MillenniumTimeTRS.Origin.Year == 2000);
-            Assert.IsTrue(MillenniumTimeTRS.Origin.Month == 1);
-            Assert.IsTrue(MillenniumTimeTRS.Origin.Day == 1);
-            Assert.IsTrue(MillenniumTimeTRS.Origin.Hour == 0);
-            Assert.IsTrue(MillenniumTimeTRS.Origin.Minute == 0);
-            Assert.IsTrue(MillenniumTimeTRS.Origin.Second == 0);
+            Assert.AreEqual(2000, MillenniumTimeTRS.Origin.Year);
+            Assert.AreEqual(1, MillenniumTimeTRS.Origin.Month);
+            Assert.AreEqual(1, MillenniumTimeTRS.Origin.Day);
+            Assert.AreEqual(0, MillenniumTimeTRS.Origin.Hour);
+            Assert.AreEqual(0, MillenniumTimeTRS.Origin.Minute);
+            Assert.AreEqual(0, MillenniumTimeTRS.Origin.Second);
             Assert.IsNotNull(MillenniumTimeTRS.Unit);
-            Assert.IsTrue(MillenniumTimeTRS.Unit.UnitType == TIMEEnums.TIMEUnitType.Day);
-            Assert.IsTrue(MillenniumTimeTRS.Unit.ScaleFactor == 1);
+            Assert.AreEqual(TIMEEnums.TIMEUnitType.Day, MillenniumTimeTRS.Unit.UnitType);
+            Assert.AreEqual(1, MillenniumTimeTRS.Unit.ScaleFactor);
             Assert.IsFalse(MillenniumTimeTRS.HasLargeScaleSemantic);
         }
 

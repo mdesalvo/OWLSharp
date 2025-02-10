@@ -128,89 +128,89 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldGetSubObjectPropertiesAsync()
         {
-            Assert.IsTrue((await KnowsView.SubObjectPropertiesAsync()).Count == 3);
-            Assert.IsTrue((await FriendOfView.SubObjectPropertiesAsync()).Count == 2);
-            Assert.IsTrue((await BestFriendOfView.SubObjectPropertiesAsync()).Count == 0);
+            Assert.AreEqual(3, (await KnowsView.SubObjectPropertiesAsync()).Count);
+            Assert.AreEqual(2, (await FriendOfView.SubObjectPropertiesAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.SubObjectPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetSuperObjectPropertiesAsync()
         {
-            Assert.IsTrue((await KnowsView.SuperObjectPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.SuperObjectPropertiesAsync()).Count == 1);
-            Assert.IsTrue((await BestFriendOfView.SuperObjectPropertiesAsync()).Count == 2);
+            Assert.AreEqual(0, (await KnowsView.SuperObjectPropertiesAsync()).Count);
+            Assert.AreEqual(1, (await FriendOfView.SuperObjectPropertiesAsync()).Count);
+            Assert.AreEqual(2, (await BestFriendOfView.SuperObjectPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetEquivalentObjectPropertiesAsync()
         {
-            Assert.IsTrue((await KnowsView.EquivalentObjectPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.EquivalentObjectPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await BestFriendOfView.EquivalentObjectPropertiesAsync()).Count == 1);
+            Assert.AreEqual(0, (await KnowsView.EquivalentObjectPropertiesAsync()).Count);
+            Assert.AreEqual(0, (await FriendOfView.EquivalentObjectPropertiesAsync()).Count);
+            Assert.AreEqual(1, (await BestFriendOfView.EquivalentObjectPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDisjointObjectPropertiesAsync()
         {
-            Assert.IsTrue((await KnowsView.DisjointObjectPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.DisjointObjectPropertiesAsync()).Count == 1);
-            Assert.IsTrue((await BestFriendOfView.DisjointObjectPropertiesAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.DisjointObjectPropertiesAsync()).Count);
+            Assert.AreEqual(1, (await FriendOfView.DisjointObjectPropertiesAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.DisjointObjectPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetInverseObjectPropertiesAsync()
         {
-            Assert.IsTrue((await KnowsView.InverseObjectPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.InverseObjectPropertiesAsync()).Count == 1);
-            Assert.IsTrue((await BestFriendOfView.InverseObjectPropertiesAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.InverseObjectPropertiesAsync()).Count);
+            Assert.AreEqual(1, (await FriendOfView.InverseObjectPropertiesAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.InverseObjectPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetObjectAssertionsAsync()
         {
-            Assert.IsTrue((await KnowsView.ObjectAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.ObjectAssertionsAsync()).Count == 2);
-            Assert.IsTrue((await BestFriendOfView.ObjectAssertionsAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.ObjectAssertionsAsync()).Count);
+            Assert.AreEqual(2, (await FriendOfView.ObjectAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.ObjectAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetNegativeObjectAssertionsAsync()
         {
-            Assert.IsTrue((await KnowsView.NegativeObjectAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.NegativeObjectAssertionsAsync()).Count == 1);
-            Assert.IsTrue((await BestFriendOfView.NegativeObjectAssertionsAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.NegativeObjectAssertionsAsync()).Count);
+            Assert.AreEqual(1, (await FriendOfView.NegativeObjectAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.NegativeObjectAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDomainsAsync()
         {
-            Assert.IsTrue((await KnowsView.DomainsAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.DomainsAsync()).Count == 1);
-            Assert.IsTrue((await BestFriendOfView.DomainsAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.DomainsAsync()).Count);
+            Assert.AreEqual(1, (await FriendOfView.DomainsAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.DomainsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetRangesAsync()
         {
-            Assert.IsTrue((await KnowsView.RangesAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.RangesAsync()).Count == 1);
-            Assert.IsTrue((await BestFriendOfView.RangesAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.RangesAsync()).Count);
+            Assert.AreEqual(1, (await FriendOfView.RangesAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.RangesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDataAnnotationsAsync()
         {
-            Assert.IsTrue((await KnowsView.DataAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.DataAnnotationsAsync()).Count == 2);
-            Assert.IsTrue((await BestFriendOfView.DataAnnotationsAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.DataAnnotationsAsync()).Count);
+            Assert.AreEqual(2, (await FriendOfView.DataAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.DataAnnotationsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetObjectAnnotationsAsync()
         {
-            Assert.IsTrue((await KnowsView.ObjectAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await FriendOfView.ObjectAnnotationsAsync()).Count == 1);
-            Assert.IsTrue((await BestFriendOfView.ObjectAnnotationsAsync()).Count == 0);
+            Assert.AreEqual(0, (await KnowsView.ObjectAnnotationsAsync()).Count);
+            Assert.AreEqual(1, (await FriendOfView.ObjectAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await BestFriendOfView.ObjectAnnotationsAsync()).Count);
         }
 
         [TestMethod]

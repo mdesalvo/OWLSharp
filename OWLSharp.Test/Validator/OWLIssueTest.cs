@@ -30,7 +30,7 @@ namespace OWLSharp.Test.Validator
                 " try solve this way... ");
 
             Assert.IsNotNull(issue);
-            Assert.IsTrue(issue.Severity == OWLEnums.OWLIssueSeverity.Warning);
+            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Warning, issue.Severity);
             Assert.IsTrue(string.Equals(issue.RuleName, "rulename"));
             Assert.IsTrue(string.Equals(issue.Description, "this is a warning"));
             Assert.IsTrue(string.Equals(issue.Suggestion, "try solve this way..."));

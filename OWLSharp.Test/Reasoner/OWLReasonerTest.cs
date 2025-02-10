@@ -33,10 +33,10 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner();
 
             Assert.IsNotNull(reasoner);
-            Assert.IsTrue(reasoner.Rules.Count == 0);
+            Assert.AreEqual(0, reasoner.Rules.Count);
 
             reasoner.AddRule(OWLEnums.OWLReasonerRules.ClassAssertionEntailment);
-            Assert.IsTrue(reasoner.Rules.Count == 1);
+            Assert.AreEqual(1, reasoner.Rules.Count);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace OWLSharp.Test.Reasoner
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLClassAssertionEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
@@ -105,7 +105,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDataPropertyDomainEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
@@ -135,7 +135,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 6);
+            Assert.AreEqual(6, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDifferentIndividualsEntailmentRule.rulename)));
         }
@@ -170,7 +170,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DisjointClassesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 5);
+            Assert.AreEqual(5, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDisjointClassesEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointClasses inf
@@ -208,7 +208,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDisjointDataPropertiesEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointDataProperties inf
@@ -238,7 +238,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLDisjointObjectPropertiesEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointObjectProperties inf
@@ -268,7 +268,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentClassesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 4);
+            Assert.AreEqual(4, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLEquivalentClassesEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf
@@ -314,7 +314,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 6);
+            Assert.AreEqual(6, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLEquivalentDataPropertiesEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentDataProperties inf
@@ -369,7 +369,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 6);
+            Assert.AreEqual(6, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLEquivalentObjectPropertiesEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentObjectProperties inf
@@ -426,7 +426,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLFunctionalObjectPropertyEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
@@ -486,7 +486,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasKeyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLHasKeyEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
@@ -518,7 +518,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasSelfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLHasSelfEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
@@ -553,7 +553,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasValueEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLHasValueEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf
@@ -594,7 +594,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLInverseFunctionalObjectPropertyEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
@@ -632,7 +632,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.InverseObjectPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLInverseObjectPropertiesEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
@@ -687,7 +687,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectPropertyChainEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
@@ -727,7 +727,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectPropertyDomainEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
@@ -762,7 +762,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLObjectPropertyRangeEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
@@ -798,7 +798,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLReflexiveObjectPropertyEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
@@ -836,7 +836,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SameIndividualEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSameIndividualEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(inf => inf.Axiom is OWLSameIndividual));
@@ -873,7 +873,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SubClassOfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 3);
+            Assert.AreEqual(3, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSubClassOfEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf
@@ -920,7 +920,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 6);
+            Assert.AreEqual(6, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSubDataPropertyOfEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf
@@ -980,7 +980,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SubObjectPropertyOfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 5);
+            Assert.AreEqual(5, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSubObjectPropertyOfEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubObjectPropertyOf inf
@@ -1030,7 +1030,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLSymmetricObjectPropertyEntailmentRule.rulename)));
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf
@@ -1081,7 +1081,7 @@ namespace OWLSharp.Test.Reasoner
             OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
-            Assert.IsTrue(inferences.Count == 6);
+            Assert.AreEqual(6, inferences.Count);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
             Assert.IsTrue(inferences.TrueForAll(inf => string.Equals(inf.RuleName, OWLTransitiveObjectPropertyEntailmentRule.rulename)));
         }
@@ -1126,7 +1126,7 @@ namespace OWLSharp.Test.Reasoner
             List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
                             && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                             && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
@@ -1190,7 +1190,7 @@ namespace OWLSharp.Test.Reasoner
             List<OWLInference> inferences = await new OWLReasoner().ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
                             && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                             && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));

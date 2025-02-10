@@ -30,10 +30,10 @@ namespace OWLSharp.Test.Validator
             OWLValidator validator = new OWLValidator();
 
             Assert.IsNotNull(validator);
-            Assert.IsTrue(validator.Rules.Count == 0);
+            Assert.AreEqual(0, validator.Rules.Count);
 
             validator.AddRule(OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis);
-            Assert.IsTrue(validator.Rules.Count == 1);
+            Assert.AreEqual(1, validator.Rules.Count);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
@@ -108,7 +108,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysisRule.rulesugg2)));
@@ -134,7 +134,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDeprecationAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated class with IRI: 'http://xmlns.com/foaf/0.1/Person'")));
@@ -155,7 +155,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTermsDisjointnessAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected clash on terms disjointness for class with IRI: 'http://xmlns.com/foaf/0.1/Person'")));
@@ -181,7 +181,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLThingNothingAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected class axioms causing reserved owl:Thing class to not be the root entity of the ontology")));
@@ -207,7 +207,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Warning));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected object property axioms causing reserved owl:topObjectProperty property to not be the root object property of the ontology")));
@@ -240,7 +240,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDifferentIndividualsAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDifferentIndividualsAnalysisRule.rulesugg)));
@@ -275,7 +275,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLNegativeDataAssertionsAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLNegativeDataAssertionsAnalysisRule.rulesugg)));
@@ -311,7 +311,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLNegativeObjectAssertionsAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLNegativeObjectAssertionsAnalysisRule.rulesugg)));
@@ -349,7 +349,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointUnionAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointUnionAnalysisRule.rulesugg)));
@@ -376,7 +376,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointClassesAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointClassesAnalysisRule.rulesugg)));
@@ -405,7 +405,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
@@ -432,7 +432,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentClassesAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentClassesAnalysisRule.rulesugg)));
@@ -460,7 +460,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 2);
+            Assert.AreEqual(2, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubClassOfAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubClassOfAnalysisRule.rulesugg1)));
@@ -517,7 +517,7 @@ namespace OWLSharp.Test.Validator
 
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg)));
@@ -568,7 +568,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointObjectPropertiesAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointObjectPropertiesAnalysisRule.rulesugg)));
@@ -596,7 +596,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentDataPropertiesAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentDataPropertiesAnalysisRule.rulesugg)));
@@ -624,7 +624,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLEquivalentObjectPropertiesAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLEquivalentObjectPropertiesAnalysisRule.rulesugg)));
@@ -652,7 +652,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 2);
+            Assert.AreEqual(2, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubDataPropertyOfAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubDataPropertyOfAnalysisRule.rulesugg)));
@@ -680,7 +680,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 2);
+            Assert.AreEqual(2, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
@@ -749,7 +749,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));
@@ -788,7 +788,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLClassAssertionAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLClassAssertionAnalysisRule.rulesugg)));
@@ -836,7 +836,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLFunctionalDataPropertyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLFunctionalDataPropertyAnalysisRule.rulesugg)));
@@ -888,7 +888,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLFunctionalObjectPropertyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLFunctionalObjectPropertyAnalysisRule.rulesugg)));
@@ -940,7 +940,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLInverseFunctionalObjectPropertyAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLInverseFunctionalObjectPropertyAnalysisRule.rulesugg)));
@@ -998,7 +998,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDataPropertyDomainAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDataPropertyDomainAnalysisRule.rulesugg)));
@@ -1048,7 +1048,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDataPropertyRangeAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDataPropertyRangeAnalysisRule.rulesugg)));
@@ -1107,7 +1107,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyDomainAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyDomainAnalysisRule.rulesugg)));
@@ -1166,7 +1166,7 @@ namespace OWLSharp.Test.Validator
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
-            Assert.IsTrue(issues.Count == 1);
+            Assert.AreEqual(1, issues.Count);
             Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyRangeAnalysisRule.rulename)));
             Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyRangeAnalysisRule.rulesugg)));

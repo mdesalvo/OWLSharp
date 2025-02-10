@@ -98,7 +98,7 @@ namespace OWLSharp.Test.Ontology
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.DataPropertyAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.DataPropertyAxioms.Count);
             Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLFunctionalDataProperty funcDtProp
                             && string.Equals(funcDtProp.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
             Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLFunctionalDataProperty funcDtProp1
@@ -115,9 +115,9 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = functionalDataProperty.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 2);
-            Assert.IsTrue(graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.AreEqual(2, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount);
         }
 
         [TestMethod]
@@ -133,16 +133,16 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = functionalDataProperty.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 8);
-            Assert.IsTrue(graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount == 1);
+            Assert.AreEqual(8, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.RDFS.LABEL, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY, null].TriplesCount);
             //Annotations
-            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.RDFS.LABEL, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.RDFS.LABEL, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.FUNCTIONAL_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
         }
         #endregion
     }

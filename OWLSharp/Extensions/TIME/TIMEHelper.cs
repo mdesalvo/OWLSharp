@@ -402,7 +402,7 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInterval timeInterval = new TIMEInterval(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time interval
-                    FillValueOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
+                    FillValueOfInterval(ontology, timeInterval, dtPropAsns);
                     FillDescriptionOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
                     FillDurationOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
                     FillBeginningOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
@@ -717,7 +717,7 @@ namespace OWLSharp.Extensions.TIME
             }
             timeInstant.Position = positionsOfTimeInstant.FirstOrDefault();
         }
-        internal static void FillValueOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillValueOfInterval(OWLOntology ontology, TIMEInterval timeInterval, List<OWLDataPropertyAssertion> dtPropAsns)
         {
             //time:hasXSDDuration
             OWLLiteral hasXSDDurationLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.HAS_XSD_DURATION))
@@ -1031,7 +1031,7 @@ namespace OWLSharp.Extensions.TIME
             TIMEInterval timeInterval = new TIMEInterval(timeIntervalURI);
 
             //The time interval has been encoded in TimeSpan
-            FillValueOfInterval(ontology, timeInterval, dtPropAsns, objPropAsns);
+            FillValueOfInterval(ontology, timeInterval, dtPropAsns);
             if (timeInterval.TimeSpan.HasValue)
                 return TIMEConverter.NormalizeExtent(new TIMEExtent(timeInterval.TimeSpan.Value), calendarTRS);
 

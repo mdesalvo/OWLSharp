@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.UnitType.Equals(RDFVocabulary.TIME.UNIT_SECOND));
             Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.MonthOfYear.Equals(RDFVocabulary.TIME.GREG.MAY));
             Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.DayOfWeek.Equals(RDFVocabulary.TIME.SATURDAY));
-            Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.DayOfYear == 142);
+            Assert.AreEqual(142u, timeInstant.Description.Coordinate.Metadata.DayOfYear);
             Assert.IsNull(timeInstant.Position);
         }
 
@@ -97,7 +97,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(timeInstant.Position);
             Assert.IsTrue(timeInstant.Position.URI.Equals(new Uri("ex:instPos")));
             Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
-            Assert.IsTrue(timeInstant.Position.NumericValue == 141.25);
+            Assert.AreEqual(141.25, timeInstant.Position.NumericValue);
         }
 
         [TestMethod]

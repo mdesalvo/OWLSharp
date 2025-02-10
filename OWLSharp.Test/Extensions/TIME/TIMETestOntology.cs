@@ -22,7 +22,6 @@ using System;
 
 namespace OWLSharp.Test.Extensions.TIME
 {
-    [TestClass]
     public class TIMETestOntology
     {
         #region Properties

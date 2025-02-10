@@ -43,27 +43,27 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLClassAssertion> classAssertion = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
-            Assert.IsTrue(classAssertion.Count == 1);
+            Assert.AreEqual(1, classAssertion.Count);
 
             List<OWLDataPropertyAssertion> dataPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-            Assert.IsTrue(dataPropertyAssertion.Count == 1);
+            Assert.AreEqual(1, dataPropertyAssertion.Count);
 
             List<OWLDifferentIndividuals> differentIndividuals = ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>();
-            Assert.IsTrue(differentIndividuals.Count == 1);
+            Assert.AreEqual(1, differentIndividuals.Count);
 
             List<OWLNegativeDataPropertyAssertion> negativeDataPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>();
-            Assert.IsTrue(negativeDataPropertyAssertion.Count == 1);
+            Assert.AreEqual(1, negativeDataPropertyAssertion.Count);
 
             List<OWLNegativeObjectPropertyAssertion> negativeObjectPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>();
-            Assert.IsTrue(negativeObjectPropertyAssertion.Count == 1);
+            Assert.AreEqual(1, negativeObjectPropertyAssertion.Count);
 
             List<OWLObjectPropertyAssertion> objectPropertyAssertion = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-            Assert.IsTrue(objectPropertyAssertion.Count == 1);
+            Assert.AreEqual(1, objectPropertyAssertion.Count);
 
             List<OWLSameIndividual> sameIndividual = ontology.GetAssertionAxiomsOfType<OWLSameIndividual>();
-            Assert.IsTrue(sameIndividual.Count == 1);
+            Assert.AreEqual(1, sameIndividual.Count);
 
-            Assert.IsTrue((null as OWLOntology).GetAssertionAxiomsOfType<OWLClassAssertion>().Count == 0);
+            Assert.AreEqual(0, (null as OWLOntology).GetAssertionAxiomsOfType<OWLClassAssertion>().Count);
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLNamedIndividual(new RDFResource("ex:Mark"))));
 
-            Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.AssertionAxioms.Count);
             Assert.IsTrue(ontology.CheckHasAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLNamedIndividual(new RDFResource("ex:Mark")))));
@@ -83,7 +83,7 @@ namespace OWLSharp.Test.Ontology
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLNamedIndividual(new RDFResource("ex:Mark")))); //will be discarded, since duplicates are not allowed
-            Assert.IsTrue(ontology.AssertionAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.AssertionAxioms.Count);
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> sameIndividualsOfIdv1 = ontology.GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")));
-            Assert.IsTrue(sameIndividualsOfIdv1.Count == 4);
+            Assert.AreEqual(4, sameIndividualsOfIdv1.Count);
             Assert.IsTrue(ontology.CheckIsSameIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2"))));
             Assert.IsTrue(ontology.CheckIsSameIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
             Assert.IsTrue(ontology.CheckIsSameIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv4"))));
@@ -114,20 +114,20 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckIsSameIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv5")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
 
             List<OWLIndividualExpression> sameIndividualsOfIdv2 = ontology.GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv2")));
-            Assert.IsTrue(sameIndividualsOfIdv2.Count == 4);
+            Assert.AreEqual(4, sameIndividualsOfIdv2.Count);
 
             List<OWLIndividualExpression> sameIndividualsOfIdv3 = ontology.GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv3")));
-            Assert.IsTrue(sameIndividualsOfIdv3.Count == 4);
+            Assert.AreEqual(4, sameIndividualsOfIdv3.Count);
 
             List<OWLIndividualExpression> sameIndividualsOfIdv4 = ontology.GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv4")));
-            Assert.IsTrue(sameIndividualsOfIdv4.Count == 4);
+            Assert.AreEqual(4, sameIndividualsOfIdv4.Count);
 
-            Assert.IsTrue(ontology.GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv6"))).Count == 0);
-            Assert.IsTrue(ontology.GetSameIndividuals(null).Count == 0);
+            Assert.AreEqual(0, ontology.GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv6"))).Count);
+            Assert.AreEqual(0, ontology.GetSameIndividuals(null).Count);
             Assert.IsFalse(ontology.CheckIsSameIndividual(null, new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
             Assert.IsFalse(ontology.CheckIsSameIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1")), null));
             Assert.IsFalse((null as OWLOntology).CheckIsSameIndividual(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2"))));
-            Assert.IsTrue((null as OWLOntology).GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 0);
+            Assert.AreEqual(0, (null as OWLOntology).GetSameIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count);
         }
 
         [TestMethod]
@@ -143,7 +143,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> differentIndividualsOfIdv1 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")));
-            Assert.IsTrue(differentIndividualsOfIdv1.Count == 3);
+            Assert.AreEqual(3, differentIndividualsOfIdv1.Count);
             Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2"))));
             Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
             Assert.IsTrue(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv3"))));
@@ -154,17 +154,17 @@ namespace OWLSharp.Test.Ontology
             Assert.IsFalse(ontology.CheckAreDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv5")), new OWLNamedIndividual(new RDFResource("ex:Idv1"))));
 
             List<OWLIndividualExpression> differentIndividualsOfIdv2 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv2")));
-            Assert.IsTrue(differentIndividualsOfIdv2.Count == 3);
+            Assert.AreEqual(3, differentIndividualsOfIdv2.Count);
 
             List<OWLIndividualExpression> differentIndividualsOfIdv3 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv3")));
-            Assert.IsTrue(differentIndividualsOfIdv3.Count == 2);
+            Assert.AreEqual(2, differentIndividualsOfIdv3.Count);
 
             List<OWLIndividualExpression> differentIndividualsOfIdv4 = ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv4")));
-            Assert.IsTrue(differentIndividualsOfIdv4.Count == 1);
+            Assert.AreEqual(1, differentIndividualsOfIdv4.Count);
 
-            Assert.IsTrue(ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv6"))).Count == 0);
-            Assert.IsTrue(ontology.GetDifferentIndividuals(null).Count == 0);
-            Assert.IsTrue((null as OWLOntology).GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count == 0);
+            Assert.AreEqual(0, ontology.GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv6"))).Count);
+            Assert.AreEqual(0, ontology.GetDifferentIndividuals(null).Count);
+            Assert.AreEqual(0, (null as OWLOntology).GetDifferentIndividuals(new OWLNamedIndividual(new RDFResource("ex:Idv1"))).Count);
         }
 
         [TestMethod]
@@ -186,28 +186,28 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> cats = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Cat")));
-            Assert.IsTrue(cats.Count == 1);
+            Assert.AreEqual(1, cats.Count);
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(ontology.CheckIsIndividualOf(new OWLClass(new RDFResource("ex:Cat")), new OWLNamedIndividual(new RDFResource("ex:Felix"))));
 
             List<OWLIndividualExpression> domesticFelines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DomesticFeline")));
-            Assert.IsTrue(domesticFelines.Count == 1);
+            Assert.AreEqual(1, domesticFelines.Count);
             Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
 
             List<OWLIndividualExpression> parrots = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Parrot")));
-            Assert.IsTrue(parrots.Count == 2);
+            Assert.AreEqual(2, parrots.Count);
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
             Assert.IsTrue(ontology.CheckIsIndividualOf(new OWLClass(new RDFResource("ex:Parrot")), new OWLNamedIndividual(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> animals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Animal")));
-            Assert.IsTrue(animals.Count == 3);
+            Assert.AreEqual(3, animals.Count);
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> livingEntities = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:LivingEntity")));
-            Assert.IsTrue(livingEntities.Count == 3);
+            Assert.AreEqual(3, livingEntities.Count);
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
@@ -233,32 +233,32 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> cats = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Cat")));
-            Assert.IsTrue(cats.Count == 1);
+            Assert.AreEqual(1, cats.Count);
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
 
             List<OWLIndividualExpression> domesticFelines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DomesticFeline")));
-            Assert.IsTrue(domesticFelines.Count == 1);
+            Assert.AreEqual(1, domesticFelines.Count);
             Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
 
             List<OWLIndividualExpression> parrots = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Parrot")));
-            Assert.IsTrue(parrots.Count == 2);
+            Assert.AreEqual(2, parrots.Count);
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> animals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Animal")));
-            Assert.IsTrue(animals.Count == 3);
+            Assert.AreEqual(3, animals.Count);
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> livingEntities = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:LivingEntity")));
-            Assert.IsTrue(livingEntities.Count == 3);
+            Assert.AreEqual(3, livingEntities.Count);
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> myAnimals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:MyAnimals")));
-            Assert.IsTrue(myAnimals.Count == 3);
+            Assert.AreEqual(3, myAnimals.Count);
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
@@ -287,42 +287,42 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> cats = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Cat")));
-            Assert.IsTrue(cats.Count == 2);
+            Assert.AreEqual(2, cats.Count);
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
 
             List<OWLIndividualExpression> domesticFelines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DomesticFeline")));
-            Assert.IsTrue(domesticFelines.Count == 2);
+            Assert.AreEqual(2, domesticFelines.Count);
             Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
 
             List<OWLIndividualExpression> parrots = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Parrot")));
-            Assert.IsTrue(parrots.Count == 2);
+            Assert.AreEqual(2, parrots.Count);
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> animals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Animal")));
-            Assert.IsTrue(animals.Count == 4);
+            Assert.AreEqual(4, animals.Count);
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> livingEntities = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:LivingEntity")));
-            Assert.IsTrue(livingEntities.Count == 4);
+            Assert.AreEqual(4, livingEntities.Count);
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> myAnimals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:MyAnimals")));
-            Assert.IsTrue(myAnimals.Count == 3);
+            Assert.AreEqual(3, myAnimals.Count);
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> parrotsOrCats = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:ParrotOrCat")));
-            Assert.IsTrue(parrotsOrCats.Count == 4);
+            Assert.AreEqual(4, parrotsOrCats.Count);
             Assert.IsTrue(parrotsOrCats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
             Assert.IsTrue(parrotsOrCats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(parrotsOrCats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
@@ -352,42 +352,42 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> cats = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Cat")));
-            Assert.IsTrue(cats.Count == 2);
+            Assert.AreEqual(2, cats.Count);
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
 
             List<OWLIndividualExpression> domesticFelines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DomesticFeline")));
-            Assert.IsTrue(domesticFelines.Count == 2);
+            Assert.AreEqual(2, domesticFelines.Count);
             Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
 
             List<OWLIndividualExpression> parrots = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Parrot")));
-            Assert.IsTrue(parrots.Count == 2);
+            Assert.AreEqual(2, parrots.Count);
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> animals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Animal")));
-            Assert.IsTrue(animals.Count == 4);
+            Assert.AreEqual(4, animals.Count);
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> livingEntities = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:LivingEntity")));
-            Assert.IsTrue(livingEntities.Count == 4);
+            Assert.AreEqual(4, livingEntities.Count);
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PFelix"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> myAnimals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:MyAnimals")));
-            Assert.IsTrue(myAnimals.Count == 3);
+            Assert.AreEqual(3, myAnimals.Count);
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> parrotsAndMyAnimals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:ParrotAndMyAnymal")));
-            Assert.IsTrue(parrotsAndMyAnimals.Count == 2);
+            Assert.AreEqual(2, parrotsAndMyAnimals.Count);
             Assert.IsTrue(parrotsAndMyAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(parrotsAndMyAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
         }
@@ -415,38 +415,38 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> cats = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Cat")));
-            Assert.IsTrue(cats.Count == 1);
+            Assert.AreEqual(1, cats.Count);
             Assert.IsTrue(cats.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             
             List<OWLIndividualExpression> domesticFelines = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DomesticFeline")));
-            Assert.IsTrue(domesticFelines.Count == 1);
+            Assert.AreEqual(1, domesticFelines.Count);
             Assert.IsTrue(domesticFelines.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             
             List<OWLIndividualExpression> parrots = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Parrot")));
-            Assert.IsTrue(parrots.Count == 2);
+            Assert.AreEqual(2, parrots.Count);
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(parrots.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> animals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Animal")));
-            Assert.IsTrue(animals.Count == 3);
+            Assert.AreEqual(3, animals.Count);
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(animals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> livingEntities = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:LivingEntity")));
-            Assert.IsTrue(livingEntities.Count == 3);
+            Assert.AreEqual(3, livingEntities.Count);
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(livingEntities.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> myAnimals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:MyAnimals")));
-            Assert.IsTrue(myAnimals.Count == 3);
+            Assert.AreEqual(3, myAnimals.Count);
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Paco"))));
             Assert.IsTrue(myAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:PaquitoTheParrot"))));
 
             List<OWLIndividualExpression> notMyAnimals = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:NotMyAnymal")));
-            Assert.IsTrue(notMyAnimals.Count == 1);
+            Assert.AreEqual(1, notMyAnimals.Count);
             Assert.IsTrue(notMyAnimals.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Fuffy"))));
         }
 
@@ -469,7 +469,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:OwnersOfFelix")));
-            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.AreEqual(1, ownersOfFelix.Count);
             Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -492,7 +492,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:OwnersOfFelix")));
-            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.AreEqual(1, ownersOfFelix.Count);
             Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -515,7 +515,7 @@ namespace OWLSharp.Test.Ontology
             };
             string ont = OWLSerializer.SerializeObject<OWLOntology>(ontology);
             List<OWLIndividualExpression> inverseOwnersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:InverseOwnersOfFelix")));
-            Assert.IsTrue(inverseOwnersOfFelix.Count == 1);
+            Assert.AreEqual(1, inverseOwnersOfFelix.Count);
             Assert.IsTrue(inverseOwnersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
         }
 
@@ -538,7 +538,7 @@ namespace OWLSharp.Test.Ontology
             };
             string ont = OWLSerializer.SerializeObject<OWLOntology>(ontology);
             List<OWLIndividualExpression> doubleinverseOwnersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:DoubleInverseOwnersOfFelix")));
-            Assert.IsTrue(doubleinverseOwnersOfFelix.Count == 1);
+            Assert.AreEqual(1, doubleinverseOwnersOfFelix.Count);
             Assert.IsTrue(doubleinverseOwnersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Felix"))));
         }
 
@@ -565,7 +565,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SelfFriends")));
-            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.AreEqual(1, ownersOfFelix.Count);
             Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -592,7 +592,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SelfFriends")));
-            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.AreEqual(1, ownersOfFelix.Count);
             Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -619,7 +619,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SelfFriends")));
-            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.AreEqual(1, ownersOfFelix.Count);
             Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -646,7 +646,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:SelfFriends")));
-            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.AreEqual(1, ownersOfFelix.Count);
             Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -677,7 +677,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> havingAtLeast2Friends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasAtLeast2Friends")));
-            Assert.IsTrue(havingAtLeast2Friends.Count == 1);
+            Assert.AreEqual(1, havingAtLeast2Friends.Count);
             Assert.IsTrue(havingAtLeast2Friends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -708,7 +708,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> havingAtLeast2Friends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasAtLeast2Friends")));
-            Assert.IsTrue(havingAtLeast2Friends.Count == 1);
+            Assert.AreEqual(1, havingAtLeast2Friends.Count);
             Assert.IsTrue(havingAtLeast2Friends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -739,7 +739,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> havingAtLeast2Friends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasAtLeast2Friends")));
-            Assert.IsTrue(havingAtLeast2Friends.Count == 1);
+            Assert.AreEqual(1, havingAtLeast2Friends.Count);
             Assert.IsTrue(havingAtLeast2Friends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 
@@ -777,7 +777,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> havingSomeHumanFriends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasSomeHumanFriends")));
-            Assert.IsTrue(havingSomeHumanFriends.Count == 2);
+            Assert.AreEqual(2, havingSomeHumanFriends.Count);
             Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
             Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:John"))));
         }
@@ -816,7 +816,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> havingSomeHumanFriends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasSomeHumanFriends")));
-            Assert.IsTrue(havingSomeHumanFriends.Count == 2);
+            Assert.AreEqual(2, havingSomeHumanFriends.Count);
             Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
             Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:John"))));
         }
@@ -855,7 +855,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> havingSomeHumanFriends = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:HasSomeHumanFriends")));
-            Assert.IsTrue(havingSomeHumanFriends.Count == 2);
+            Assert.AreEqual(2, havingSomeHumanFriends.Count);
             Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
             Assert.IsTrue(havingSomeHumanFriends.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:John"))));
         }
@@ -879,7 +879,7 @@ namespace OWLSharp.Test.Ontology
             };
 
             List<OWLIndividualExpression> ownersOfFelix = ontology.GetIndividualsOf(new OWLClass(new RDFResource("ex:Having25Years")));
-            Assert.IsTrue(ownersOfFelix.Count == 1);
+            Assert.AreEqual(1, ownersOfFelix.Count);
             Assert.IsTrue(ownersOfFelix.Any(iex => iex.GetIRI().Equals(new RDFResource("ex:Mark"))));
         }
 

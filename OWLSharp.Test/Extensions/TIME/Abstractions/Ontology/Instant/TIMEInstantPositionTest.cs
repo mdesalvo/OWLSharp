@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
             Assert.IsNotNull(timeInstantPosition);
             Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
-            Assert.IsTrue(timeInstantPosition.NumericValue == 121977842);
+            Assert.AreEqual(121977842, timeInstantPosition.NumericValue);
             Assert.IsFalse(timeInstantPosition.IsNominal);
             Assert.IsNull(timeInstantPosition.PositionalUncertainty);
         }
@@ -42,17 +42,19 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldCreateNumericInstantPositionWithUncertainty()
         {
             TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
-                new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.UnixTime, 121977842);
-            timeInstantPosition.PositionalUncertainty = new TIMEIntervalDuration(
-                new RDFResource("ex:posUnc"), TIMEUnit.Second, 4.04);
+                new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.UnixTime, 121977842)
+            {
+                PositionalUncertainty = new TIMEIntervalDuration(
+                new RDFResource("ex:posUnc"), TIMEUnit.Second, 4.04)
+            };
 
             Assert.IsNotNull(timeInstantPosition);
             Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
-            Assert.IsTrue(timeInstantPosition.NumericValue == 121977842);
+            Assert.AreEqual(121977842, timeInstantPosition.NumericValue);
             Assert.IsFalse(timeInstantPosition.IsNominal);
             Assert.IsNotNull(timeInstantPosition.PositionalUncertainty);
             Assert.IsTrue(timeInstantPosition.PositionalUncertainty.UnitType.Equals(TIMEUnit.Second));
-            Assert.IsTrue(timeInstantPosition.PositionalUncertainty.Value == 4.04);
+            Assert.AreEqual(4.04, timeInstantPosition.PositionalUncertainty.Value);
         }
 
         [TestMethod]

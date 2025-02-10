@@ -685,7 +685,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -726,7 +726,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -807,7 +807,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -904,7 +904,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -993,7 +993,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:AbbyBirthday"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -1048,7 +1048,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -1058,7 +1058,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInstant.Description);
             Assert.IsNotNull(timeInstant.Position);
             Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.UnixTime));
-            Assert.IsTrue(timeInstant.Position.NumericValue == -957315600);
+            Assert.AreEqual(-957315600, timeInstant.Position.NumericValue);
         }
 
         [TestMethod]
@@ -1099,7 +1099,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -1109,7 +1109,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInstant.Description);
             Assert.IsNotNull(timeInstant.Position);
             Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.UnixTime));
-            Assert.IsTrue(timeInstant.Position.NumericValue == -957315600);
+            Assert.AreEqual(-957315600, timeInstant.Position.NumericValue);
         }
 
         [TestMethod]
@@ -1147,7 +1147,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInstant);
 
             TIMEInstant timeInstant = (TIMEInstant)timeEntities.Single();
@@ -1181,7 +1181,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1219,7 +1219,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1289,7 +1289,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1372,7 +1372,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1451,7 +1451,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1506,7 +1506,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1516,7 +1516,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInterval.Description);
             Assert.IsNotNull(timeInterval.Duration);
             Assert.IsTrue(timeInterval.Duration.UnitType.Equals(RDFVocabulary.TIME.UNIT_YEAR));
-            Assert.IsTrue(timeInterval.Duration.Value == 6);
+            Assert.AreEqual(6, timeInterval.Duration.Value);
             Assert.IsNull(timeInterval.Beginning);
             Assert.IsNull(timeInterval.End);
         }
@@ -1558,7 +1558,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1568,7 +1568,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeInterval.Description);
             Assert.IsNotNull(timeInterval.Duration);
             Assert.IsTrue(timeInterval.Duration.UnitType.Equals(RDFVocabulary.TIME.UNIT_YEAR));
-            Assert.IsTrue(timeInterval.Duration.Value == 6);
+            Assert.AreEqual(6, timeInterval.Duration.Value);
             Assert.IsNull(timeInterval.Beginning);
             Assert.IsNull(timeInterval.End);
         }
@@ -1602,7 +1602,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1652,7 +1652,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1698,7 +1698,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1748,7 +1748,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1806,7 +1806,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
             Assert.IsNotNull(timeEntities);
-            Assert.IsTrue(timeEntities.Count == 1);
+            Assert.AreEqual(1, timeEntities.Count);
             Assert.IsTrue(timeEntities.Single() is TIMEInterval);
 
             TIMEInterval timeInterval = (TIMEInterval)timeEntities.Single();
@@ -1857,12 +1857,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == expectedYear);
-            Assert.IsTrue(timeCoordinate.Month == expectedMonth);
-            Assert.IsTrue(timeCoordinate.Day == expectedDay);
-            Assert.IsTrue(timeCoordinate.Hour == expectedHour);
-            Assert.IsTrue(timeCoordinate.Minute == expectedMinute);
-            Assert.IsTrue(timeCoordinate.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, timeCoordinate.Year);
+            Assert.AreEqual(expectedMonth, timeCoordinate.Month);
+            Assert.AreEqual(expectedDay, timeCoordinate.Day);
+            Assert.AreEqual(expectedHour, timeCoordinate.Hour);
+            Assert.AreEqual(expectedMinute, timeCoordinate.Minute);
+            Assert.AreEqual(expectedSecond, timeCoordinate.Second);
         }
 
         [TestMethod]
@@ -1923,12 +1923,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == 1939);
-            Assert.IsTrue(timeCoordinate.Month == 9);
-            Assert.IsTrue(timeCoordinate.Day == 1);
-            Assert.IsTrue(timeCoordinate.Hour == 8);
-            Assert.IsTrue(timeCoordinate.Minute == 1);
-            Assert.IsTrue(timeCoordinate.Second == 1);
+            Assert.AreEqual(1939, timeCoordinate.Year);
+            Assert.AreEqual(9, timeCoordinate.Month);
+            Assert.AreEqual(1, timeCoordinate.Day);
+            Assert.AreEqual(8, timeCoordinate.Hour);
+            Assert.AreEqual(1, timeCoordinate.Minute);
+            Assert.AreEqual(1, timeCoordinate.Second);
         }
 
         [TestMethod]
@@ -1993,12 +1993,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"), myCalendarTRS);
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == 1941);
-            Assert.IsTrue(timeCoordinate.Month == 1);
-            Assert.IsTrue(timeCoordinate.Day == 1);
-            Assert.IsTrue(timeCoordinate.Hour == 8);
-            Assert.IsTrue(timeCoordinate.Minute == 1);
-            Assert.IsTrue(timeCoordinate.Second == 1);
+            Assert.AreEqual(1941, timeCoordinate.Year);
+            Assert.AreEqual(1, timeCoordinate.Month);
+            Assert.AreEqual(1, timeCoordinate.Day);
+            Assert.AreEqual(8, timeCoordinate.Hour);
+            Assert.AreEqual(1, timeCoordinate.Minute);
+            Assert.AreEqual(1, timeCoordinate.Second);
         }
 
         [TestMethod]
@@ -2035,12 +2035,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == 1939);
-            Assert.IsTrue(timeCoordinate.Month == 8);
-            Assert.IsTrue(timeCoordinate.Day == 31);
-            Assert.IsTrue(timeCoordinate.Hour == 23);
-            Assert.IsTrue(timeCoordinate.Minute == 00);
-            Assert.IsTrue(timeCoordinate.Second == 00);
+            Assert.AreEqual(1939, timeCoordinate.Year);
+            Assert.AreEqual(8, timeCoordinate.Month);
+            Assert.AreEqual(31, timeCoordinate.Day);
+            Assert.AreEqual(23, timeCoordinate.Hour);
+            Assert.AreEqual(00, timeCoordinate.Minute);
+            Assert.AreEqual(00, timeCoordinate.Second);
         }
 
         [TestMethod]
@@ -2175,12 +2175,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeCoordinate);
-            Assert.IsTrue(timeCoordinate.Year == 1939);
-            Assert.IsTrue(timeCoordinate.Month == 9);
-            Assert.IsTrue(timeCoordinate.Day == 1);
-            Assert.IsTrue(timeCoordinate.Hour == 0);
-            Assert.IsTrue(timeCoordinate.Minute == 0);
-            Assert.IsTrue(timeCoordinate.Second == 0);
+            Assert.AreEqual(1939, timeCoordinate.Year);
+            Assert.AreEqual(9, timeCoordinate.Month);
+            Assert.AreEqual(1, timeCoordinate.Day);
+            Assert.AreEqual(0, timeCoordinate.Hour);
+            Assert.AreEqual(0, timeCoordinate.Minute);
+            Assert.AreEqual(0, timeCoordinate.Second);
         }
 
         [TestMethod]
@@ -2207,13 +2207,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
-            Assert.IsTrue(timeExtent.Years == 0);
-            Assert.IsTrue(timeExtent.Months == 0);
-            Assert.IsTrue(timeExtent.Weeks == 0);
-            Assert.IsTrue(timeExtent.Days == 2190);
-            Assert.IsTrue(timeExtent.Hours == 1);
-            Assert.IsTrue(timeExtent.Minutes == 1);
-            Assert.IsTrue(timeExtent.Seconds == 1);
+            Assert.AreEqual(0, timeExtent.Years);
+            Assert.AreEqual(0, timeExtent.Months);
+            Assert.AreEqual(0, timeExtent.Weeks);
+            Assert.AreEqual(2190, timeExtent.Days);
+            Assert.AreEqual(1, timeExtent.Hours);
+            Assert.AreEqual(1, timeExtent.Minutes);
+            Assert.AreEqual(1, timeExtent.Seconds);
         }
 
         [TestMethod]
@@ -2272,13 +2272,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
-            Assert.IsTrue(timeExtent.Years == 0);
-            Assert.IsTrue(timeExtent.Months == 0);
-            Assert.IsTrue(timeExtent.Weeks == 0);
-            Assert.IsTrue(timeExtent.Days == 2299);
-            Assert.IsTrue(timeExtent.Hours == 9);
-            Assert.IsTrue(timeExtent.Minutes == 8);
-            Assert.IsTrue(timeExtent.Seconds == 1);
+            Assert.AreEqual(0, timeExtent.Years);
+            Assert.AreEqual(0, timeExtent.Months);
+            Assert.AreEqual(0, timeExtent.Weeks);
+            Assert.AreEqual(2299, timeExtent.Days);
+            Assert.AreEqual(9, timeExtent.Hours);
+            Assert.AreEqual(8, timeExtent.Minutes);
+            Assert.AreEqual(1, timeExtent.Seconds);
         }
 
         [TestMethod]
@@ -2313,13 +2313,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
-            Assert.IsTrue(timeExtent.Years == 0);
-            Assert.IsTrue(timeExtent.Months == 0);
-            Assert.IsTrue(timeExtent.Weeks == 0);
-            Assert.IsTrue(timeExtent.Days == 2190);
-            Assert.IsTrue(timeExtent.Hours == 0);
-            Assert.IsTrue(timeExtent.Minutes == 0);
-            Assert.IsTrue(timeExtent.Seconds == 0);
+            Assert.AreEqual(0, timeExtent.Years);
+            Assert.AreEqual(0, timeExtent.Months);
+            Assert.AreEqual(0, timeExtent.Weeks);
+            Assert.AreEqual(2190, timeExtent.Days);
+            Assert.AreEqual(0, timeExtent.Hours);
+            Assert.AreEqual(0, timeExtent.Minutes);
+            Assert.AreEqual(0, timeExtent.Seconds);
         }
 
         [TestMethod]
@@ -2396,13 +2396,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent timeExtent = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(timeExtent);
-            Assert.IsTrue(timeExtent.Years == 0);
-            Assert.IsTrue(timeExtent.Months == 0);
-            Assert.IsTrue(timeExtent.Weeks == 0);
-            Assert.IsTrue(timeExtent.Days == 2191);
-            Assert.IsTrue(timeExtent.Hours == 0);
-            Assert.IsTrue(timeExtent.Minutes == 0);
-            Assert.IsTrue(timeExtent.Seconds == 0);
+            Assert.AreEqual(0, timeExtent.Years);
+            Assert.AreEqual(0, timeExtent.Months);
+            Assert.AreEqual(0, timeExtent.Weeks);
+            Assert.AreEqual(2191, timeExtent.Days);
+            Assert.AreEqual(0, timeExtent.Hours);
+            Assert.AreEqual(0, timeExtent.Minutes);
+            Assert.AreEqual(0, timeExtent.Seconds);
         }
 
         [TestMethod]
@@ -2476,12 +2476,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == 1939);
-            Assert.IsTrue(tc.Month == 9);
-            Assert.IsTrue(tc.Day == 1);
-            Assert.IsTrue(tc.Hour == 8);
-            Assert.IsTrue(tc.Minute == 1);
-            Assert.IsTrue(tc.Second == 1);
+            Assert.AreEqual(1939, tc.Year);
+            Assert.AreEqual(9, tc.Month);
+            Assert.AreEqual(1, tc.Day);
+            Assert.AreEqual(8, tc.Hour);
+            Assert.AreEqual(1, tc.Minute);
+            Assert.AreEqual(1, tc.Second);
         }
 
         [TestMethod]
@@ -2572,12 +2572,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == 1939);
-            Assert.IsTrue(tc.Month == 9);
-            Assert.IsTrue(tc.Day == 1);
-            Assert.IsTrue(tc.Hour == 8);
-            Assert.IsTrue(tc.Minute == 1);
-            Assert.IsTrue(tc.Second == 1);
+            Assert.AreEqual(1939, tc.Year);
+            Assert.AreEqual(9, tc.Month);
+            Assert.AreEqual(1, tc.Day);
+            Assert.AreEqual(8, tc.Hour);
+            Assert.AreEqual(1, tc.Minute);
+            Assert.AreEqual(1, tc.Second);
         }
 
         [TestMethod]
@@ -2677,12 +2677,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = timeOntology.GetBeginningOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == 1939);
-            Assert.IsTrue(tc.Month == 9);
-            Assert.IsTrue(tc.Day == 1);
-            Assert.IsTrue(tc.Hour == 8);
-            Assert.IsTrue(tc.Minute == 1);
-            Assert.IsTrue(tc.Second == 1);
+            Assert.AreEqual(1939, tc.Year);
+            Assert.AreEqual(9, tc.Month);
+            Assert.AreEqual(1, tc.Day);
+            Assert.AreEqual(8, tc.Hour);
+            Assert.AreEqual(1, tc.Minute);
+            Assert.AreEqual(1, tc.Second);
         }
 
         [TestMethod]
@@ -2774,12 +2774,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = timeOntology.GetEndOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == 1945);
-            Assert.IsTrue(tc.Month == 9);
-            Assert.IsTrue(tc.Day == 2);
-            Assert.IsTrue(tc.Hour == 8);
-            Assert.IsTrue(tc.Minute == 0);
-            Assert.IsTrue(tc.Second == 0);
+            Assert.AreEqual(1945, tc.Year);
+            Assert.AreEqual(9, tc.Month);
+            Assert.AreEqual(2, tc.Day);
+            Assert.AreEqual(8, tc.Hour);
+            Assert.AreEqual(0, tc.Minute);
+            Assert.AreEqual(0, tc.Second);
         }
 
         [TestMethod]
@@ -2870,12 +2870,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = timeOntology.GetEndOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == 1945);
-            Assert.IsTrue(tc.Month == 9);
-            Assert.IsTrue(tc.Day == 2);
-            Assert.IsTrue(tc.Hour == 8);
-            Assert.IsTrue(tc.Minute == 0);
-            Assert.IsTrue(tc.Second == 0);
+            Assert.AreEqual(1945, tc.Year);
+            Assert.AreEqual(9, tc.Month);
+            Assert.AreEqual(2, tc.Day);
+            Assert.AreEqual(8, tc.Hour);
+            Assert.AreEqual(0, tc.Minute);
+            Assert.AreEqual(0, tc.Second);
         }
 
         [TestMethod]
@@ -2975,12 +2975,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = timeOntology.GetEndOfInterval(new RDFResource("ex:WorldWarIITemporalDimension"));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == 1945);
-            Assert.IsTrue(tc.Month == 9);
-            Assert.IsTrue(tc.Day == 2);
-            Assert.IsTrue(tc.Hour == 8);
-            Assert.IsTrue(tc.Minute == 0);
-            Assert.IsTrue(tc.Second == 0);
+            Assert.AreEqual(1945, tc.Year);
+            Assert.AreEqual(9, tc.Month);
+            Assert.AreEqual(2, tc.Day);
+            Assert.AreEqual(8, tc.Hour);
+            Assert.AreEqual(0, tc.Minute);
+            Assert.AreEqual(0, tc.Second);
         }
 
         [TestMethod]

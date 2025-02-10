@@ -37,7 +37,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(length6to10Facet.Datatype);
             Assert.IsTrue(string.Equals(length6to10Facet.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
             Assert.IsNotNull(length6to10Facet.FacetRestrictions);
-            Assert.IsTrue(length6to10Facet.FacetRestrictions.Count == 2);
+            Assert.AreEqual(2, length6to10Facet.FacetRestrictions.Count);
             Assert.IsTrue(length6to10Facet.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString()) 
                                                                         && string.Equals(fr.Literal.Value, "6")
                                                                         && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
@@ -127,7 +127,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(length6to10Facet.Datatype);
             Assert.IsTrue(string.Equals(length6to10Facet.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
             Assert.IsNotNull(length6to10Facet.FacetRestrictions);
-            Assert.IsTrue(length6to10Facet.FacetRestrictions.Count == 2);
+            Assert.AreEqual(2, length6to10Facet.FacetRestrictions.Count);
             Assert.IsTrue(length6to10Facet.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString()) 
                                                                         && string.Equals(fr.Literal.Value, "6")
                                                                         && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
@@ -146,14 +146,14 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = length6to10Facet.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 12);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ON_DATATYPE, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.XSD.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount == 1);
+            Assert.AreEqual(12, graph.TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ON_DATATYPE, RDFVocabulary.XSD.STRING, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.WITH_RESTRICTIONS, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.FIRST, null, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.XSD.MIN_LENGTH, null, new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.XSD.MAX_LENGTH, null, new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)].TriplesCount);
         }
 
         [TestMethod]
@@ -164,9 +164,9 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = equivToStringFacet.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 3);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.XSD.STRING, null].TriplesCount == 1);
+            Assert.AreEqual(3, graph.TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.EQUIVALENT_CLASS, RDFVocabulary.XSD.STRING, null].TriplesCount);
         }
         #endregion
     }    

@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Reasoner
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Stiv")));
@@ -96,7 +96,7 @@ namespace OWLSharp.Test.Reasoner
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mark")));
@@ -135,7 +135,7 @@ namespace OWLSharp.Test.Reasoner
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Stiv")));
@@ -174,7 +174,7 @@ namespace OWLSharp.Test.Reasoner
 
             Assert.IsNotNull(inferences);
             Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
             Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                             && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/John")
                             && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mark")));

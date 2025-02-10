@@ -29,10 +29,10 @@ namespace OWLSharp.Test.Extensions.TIME
             
             Assert.IsNotNull(reasoner);
             Assert.IsNotNull(reasoner.Rules);
-            Assert.IsTrue(reasoner.Rules.Count == 0);
+            Assert.AreEqual(0, reasoner.Rules.Count);
 
             reasoner.AddRule(TIMEEnums.TIMEReasonerRules.EqualsEntailment);
-            Assert.IsTrue(reasoner.Rules.Count == 1);
+            Assert.AreEqual(1, reasoner.Rules.Count);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace OWLSharp.Test.Ontology
                     [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
                      new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])));
 
-            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
             Assert.IsTrue(ontology.CheckHasDatatypeDefinition(new OWLDatatypeDefinition(
                 new OWLDatatype(new RDFResource("ex:length6to10")),
                 new OWLDatatypeRestriction(
@@ -50,7 +50,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
                     [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
                      new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))); //will be discarded, since duplicates are not allowed
-            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
         }
         #endregion
     }

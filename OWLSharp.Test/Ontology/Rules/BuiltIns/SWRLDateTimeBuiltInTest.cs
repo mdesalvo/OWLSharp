@@ -43,7 +43,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#dateTime", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
-            Assert.IsTrue(builtin.Arguments.Count == 8);
+            Assert.AreEqual(8, builtin.Arguments.Count);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
@@ -91,7 +91,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(builtin.IRI);
             Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#dateTime", builtin.IRI));
             Assert.IsNotNull(builtin.Arguments);
-            Assert.IsTrue(builtin.Arguments.Count == 8);
+            Assert.AreEqual(8, builtin.Arguments.Count);
             Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                             && vlarg.GetVariable().Equals(new RDFVariable("?X")));
             Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
@@ -173,8 +173,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 8);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(8, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
@@ -205,8 +205,8 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?T"))); 
             DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults2);
-            Assert.IsTrue(builtinResults2.Columns.Count == 8);
-            Assert.IsTrue(builtinResults2.Rows.Count == 3);
+            Assert.AreEqual(8, builtinResults2.Columns.Count);
+            Assert.AreEqual(3, builtinResults2.Rows.Count);
 
             SWRLBuiltIn builtin3 = SWRLBuiltIn.DateTime(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -219,8 +219,8 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?T")));
             DataTable builtinResults3 = builtin3.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults3);
-            Assert.IsTrue(builtinResults3.Columns.Count == 8);
-            Assert.IsTrue(builtinResults3.Rows.Count == 3);
+            Assert.AreEqual(8, builtinResults3.Columns.Count);
+            Assert.AreEqual(3, builtinResults3.Rows.Count);
 
             SWRLBuiltIn builtin4 = SWRLBuiltIn.DateTime(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -233,8 +233,8 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?T")));
             DataTable builtinResults4 = builtin4.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults4);
-            Assert.IsTrue(builtinResults4.Columns.Count == 8);
-            Assert.IsTrue(builtinResults4.Rows.Count == 3);
+            Assert.AreEqual(8, builtinResults4.Columns.Count);
+            Assert.AreEqual(3, builtinResults4.Rows.Count);
 
             SWRLBuiltIn builtin5 = SWRLBuiltIn.DateTime(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -247,8 +247,8 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?T")));
             DataTable builtinResults5 = builtin5.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults5);
-            Assert.IsTrue(builtinResults5.Columns.Count == 8);
-            Assert.IsTrue(builtinResults5.Rows.Count == 3);
+            Assert.AreEqual(8, builtinResults5.Columns.Count);
+            Assert.AreEqual(3, builtinResults5.Rows.Count);
 
             SWRLBuiltIn builtin6 = SWRLBuiltIn.DateTime(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -261,8 +261,8 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?T")));
             DataTable builtinResults6 = builtin6.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults6);
-            Assert.IsTrue(builtinResults6.Columns.Count == 8);
-            Assert.IsTrue(builtinResults6.Rows.Count == 3);
+            Assert.AreEqual(8, builtinResults6.Columns.Count);
+            Assert.AreEqual(3, builtinResults6.Rows.Count);
 
             SWRLBuiltIn builtin7 = SWRLBuiltIn.DateTime(
                 new SWRLVariableArgument(new RDFVariable("?X")),
@@ -275,8 +275,8 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?F")));  //unexisting
             DataTable builtinResults7 = builtin7.EvaluateOnAntecedent(antecedentResults);
             Assert.IsNotNull(builtinResults7);
-            Assert.IsTrue(builtinResults7.Columns.Count == 8);
-            Assert.IsTrue(builtinResults7.Rows.Count == 3);
+            Assert.AreEqual(8, builtinResults7.Columns.Count);
+            Assert.AreEqual(3, builtinResults7.Rows.Count);
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<SWRLException>(() =>
@@ -349,8 +349,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 7);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(7, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
@@ -416,8 +416,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 7);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(7, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
@@ -483,8 +483,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 7);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(7, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "22^^http://www.w3.org/2001/XMLSchema#int"));
@@ -558,8 +558,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 7);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(7, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "5^^http://www.w3.org/2001/XMLSchema#int"));
@@ -625,8 +625,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 7);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(7, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "05^^http://www.w3.org/2001/XMLSchema#int"));
@@ -692,8 +692,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 7);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(7, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "05^^http://www.w3.org/2001/XMLSchema#int"));
@@ -766,8 +766,8 @@ namespace OWLSharp.Test.Ontology
             DataTable builtinResults = builtin.EvaluateOnAntecedent(antecedentResults);
 
             Assert.IsNotNull(builtinResults);
-            Assert.IsTrue(builtinResults.Columns.Count == 7);
-            Assert.IsTrue(builtinResults.Rows.Count == 2);
+            Assert.AreEqual(7, builtinResults.Columns.Count);
+            Assert.AreEqual(2, builtinResults.Rows.Count);
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?X"].ToString(), "2010-05-22T10:30:30Z^^http://www.w3.org/2001/XMLSchema#dateTime"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Y"].ToString(), "2010^^http://www.w3.org/2001/XMLSchema#int"));
             Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Z"].ToString(), "05^^http://www.w3.org/2001/XMLSchema#int"));

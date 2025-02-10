@@ -32,7 +32,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(dataOneOf);
             Assert.IsNotNull(dataOneOf.Literals);
-            Assert.IsTrue(dataOneOf.Literals.Count == 1);
+            Assert.AreEqual(1, dataOneOf.Literals.Count);
             Assert.IsTrue(string.Equals(dataOneOf.Literals.Single().Value, "hello"));
             Assert.IsTrue(string.Equals(dataOneOf.Literals.Single().Language, "EN"));
         }
@@ -83,7 +83,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(dataOneOf);
             Assert.IsNotNull(dataOneOf.Literals);
-            Assert.IsTrue(dataOneOf.Literals.Count == 2);
+            Assert.AreEqual(2, dataOneOf.Literals.Count);
             Assert.IsTrue(dataOneOf.Literals.Any(lit => string.Equals(lit.Value, "hello") 
                                                          && string.Equals(lit.Language, "EN")));
             Assert.IsTrue(dataOneOf.Literals.Any(lit => string.Equals(lit.Value, "ciao")
@@ -99,13 +99,13 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = dataOneOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 8);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount == 2);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, new RDFPlainLiteral("hello", "en")].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.FIRST, null, new RDFPlainLiteral("ciao", "it")].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount == 2);
+            Assert.AreEqual(8, graph.TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, null, new RDFPlainLiteral("hello", "en")].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, null, new RDFPlainLiteral("ciao", "it")].TriplesCount);
+            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
         }
         #endregion
     }

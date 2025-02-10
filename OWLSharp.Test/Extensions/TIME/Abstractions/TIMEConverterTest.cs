@@ -58,12 +58,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, TIMEPositionReferenceSystem.UnixTime, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
         
         [DataTestMethod]
@@ -87,12 +87,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
 
         [DataTestMethod]
@@ -114,12 +114,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
 
         [DataTestMethod]
@@ -152,12 +152,12 @@ namespace OWLSharp.Test.Extensions.TIME
                         })));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
 
         [DataTestMethod]
@@ -175,12 +175,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, TIMEPositionReferenceSystem.GeologicTime, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
 
         [DataTestMethod]
@@ -198,12 +198,12 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, geologicModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
 
         [TestMethod]
@@ -258,12 +258,12 @@ namespace OWLSharp.Test.Extensions.TIME
                 TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
 
         [DataTestMethod]
@@ -297,12 +297,12 @@ namespace OWLSharp.Test.Extensions.TIME
                         })));
 
             Assert.IsNotNull(tc);
-            Assert.IsTrue(tc.Year == expectedYear);
-            Assert.IsTrue(tc.Month == expectedMonth);
-            Assert.IsTrue(tc.Day == expectedDay);
-            Assert.IsTrue(tc.Hour == expectedHour);
-            Assert.IsTrue(tc.Minute == expectedMinute);
-            Assert.IsTrue(tc.Second == expectedSecond);
+            Assert.AreEqual(expectedYear, tc.Year);
+            Assert.AreEqual(expectedMonth, tc.Month);
+            Assert.AreEqual(expectedDay, tc.Day);
+            Assert.AreEqual(expectedHour, tc.Hour);
+            Assert.AreEqual(expectedMinute, tc.Minute);
+            Assert.AreEqual(expectedSecond, tc.Second);
         }
 
         [TestMethod]
@@ -412,13 +412,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent te = TIMEConverter.ExtentFromDuration(timeDuration, new TIMEUnit(new RDFResource(unitTypeURI), unitTypeEnum, scaleFactor), TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(te);
-            Assert.IsTrue(te.Years == expectedYears);
-            Assert.IsTrue(te.Months == expectedMonths);
-            Assert.IsTrue(te.Weeks == expectedWeeks);
-            Assert.IsTrue(te.Days == expectedDays);
-            Assert.IsTrue(te.Hours == expectedHours);
-            Assert.IsTrue(te.Minutes == expectedMinutes);
-            Assert.IsTrue(te.Seconds == expectedSeconds);
+            Assert.AreEqual(expectedYears, te.Years);
+            Assert.AreEqual(expectedMonths, te.Months);
+            Assert.AreEqual(expectedWeeks, te.Weeks);
+            Assert.AreEqual(expectedDays, te.Days);
+            Assert.AreEqual(expectedHours, te.Hours);
+            Assert.AreEqual(expectedMinutes, te.Minutes);
+            Assert.AreEqual(expectedSeconds, te.Seconds);
         }
 
         [DataTestMethod]
@@ -539,13 +539,13 @@ namespace OWLSharp.Test.Extensions.TIME
                     new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
             Assert.IsNotNull(te);
-            Assert.IsTrue(te.Years == expectedYears);
-            Assert.IsTrue(te.Months == expectedMonths);
-            Assert.IsTrue(te.Weeks == expectedWeeks);
-            Assert.IsTrue(te.Days == expectedDays);
-            Assert.IsTrue(te.Hours == expectedHours);
-            Assert.IsTrue(te.Minutes == expectedMinutes);
-            Assert.IsTrue(te.Seconds == expectedSeconds);
+            Assert.AreEqual(expectedYears, te.Years);
+            Assert.AreEqual(expectedMonths, te.Months);
+            Assert.AreEqual(expectedWeeks, te.Weeks);
+            Assert.AreEqual(expectedDays, te.Days);
+            Assert.AreEqual(expectedHours, te.Hours);
+            Assert.AreEqual(expectedMinutes, te.Minutes);
+            Assert.AreEqual(expectedSeconds, te.Seconds);
         }
 
         [TestMethod]
@@ -649,13 +649,13 @@ namespace OWLSharp.Test.Extensions.TIME
                 TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(te);
-            Assert.IsTrue(te.Years == expectedYears);
-            Assert.IsTrue(te.Months == expectedMonths);
-            Assert.IsTrue(te.Weeks == expectedWeeks);
-            Assert.IsTrue(te.Days == expectedDays);
-            Assert.IsTrue(te.Hours == expectedHours);
-            Assert.IsTrue(te.Minutes == expectedMinutes);
-            Assert.IsTrue(te.Seconds == expectedSeconds);
+            Assert.AreEqual(expectedYears, te.Years);
+            Assert.AreEqual(expectedMonths, te.Months);
+            Assert.AreEqual(expectedWeeks, te.Weeks);
+            Assert.AreEqual(expectedDays, te.Days);
+            Assert.AreEqual(expectedHours, te.Hours);
+            Assert.AreEqual(expectedMinutes, te.Minutes);
+            Assert.AreEqual(expectedSeconds, te.Seconds);
         }
 
         [DataTestMethod]
@@ -686,13 +686,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent te = TIMEConverter.ExtentBetweenCoordinates(startCoordinate, endCoordinate, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(te);
-            Assert.IsTrue(te.Years == expectedYears);
-            Assert.IsTrue(te.Months == expectedMonths);
-            Assert.IsTrue(te.Weeks == expectedWeeks);
-            Assert.IsTrue(te.Days == expectedDays);
-            Assert.IsTrue(te.Hours == expectedHours);
-            Assert.IsTrue(te.Minutes == expectedMinutes);
-            Assert.IsTrue(te.Seconds == expectedSeconds);
+            Assert.AreEqual(expectedYears, te.Years);
+            Assert.AreEqual(expectedMonths, te.Months);
+            Assert.AreEqual(expectedWeeks, te.Weeks);
+            Assert.AreEqual(expectedDays, te.Days);
+            Assert.AreEqual(expectedHours, te.Hours);
+            Assert.AreEqual(expectedMinutes, te.Minutes);
+            Assert.AreEqual(expectedSeconds, te.Seconds);
         }
         #endregion
     }

@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Ontology
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
 
-            Assert.IsTrue(ontology.KeyAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.KeyAxioms.Count);
             Assert.IsTrue(ontology.CheckHasKey(new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
@@ -44,7 +44,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])); //will be discarded, since duplicates are not allowed
-            Assert.IsTrue(ontology.KeyAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.KeyAxioms.Count);
         }
         #endregion
     }

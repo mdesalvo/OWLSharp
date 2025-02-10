@@ -33,22 +33,22 @@ namespace OWLSharp.Test.Ontology
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
             await ontology.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI));
 
-            Assert.IsTrue(ontology.Imports.Count == 1);
+            Assert.AreEqual(1, ontology.Imports.Count);
             Assert.IsTrue(string.Equals(ontology.Imports.Single().IRI, "http://www.w3.org/2004/02/skos/core"));
-            Assert.IsTrue(ontology.AnnotationAxioms.Count == 51);
+            Assert.AreEqual(51, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.ClassAxioms.Count == 4);
+            Assert.AreEqual(4, ontology.ClassAxioms.Count);
             Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.DeclarationAxioms.Count == 32);
+            Assert.AreEqual(32, ontology.DeclarationAxioms.Count);
             Assert.IsTrue(ontology.DeclarationAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 41);
+            Assert.AreEqual(41, ontology.ObjectPropertyAxioms.Count);
             Assert.IsTrue(ontology.ObjectPropertyAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
-            Assert.IsTrue(ontology.DataPropertyAxioms.Count == 0);
-            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
-            Assert.IsTrue(ontology.KeyAxioms.Count == 0);
-            Assert.IsTrue(ontology.Prefixes.Count == 5);
-            Assert.IsTrue(ontology.Rules.Count == 0);
+            Assert.AreEqual(0, ontology.AssertionAxioms.Count);
+            Assert.AreEqual(0, ontology.DataPropertyAxioms.Count);
+            Assert.AreEqual(0, ontology.DatatypeDefinitionAxioms.Count);
+            Assert.AreEqual(0, ontology.KeyAxioms.Count);
+            Assert.AreEqual(5, ontology.Prefixes.Count);
+            Assert.AreEqual(0, ontology.Rules.Count);
 
             Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.SKOS.DEREFERENCE_URI, out var cachedSKOSOntology)
                            && cachedSKOSOntology.ExpireTimestamp > DateTime.UtcNow);
@@ -62,21 +62,21 @@ namespace OWLSharp.Test.Ontology
             ontology.Imports.Add(new OWLImport(new RDFResource(RDFVocabulary.FOAF.DEREFERENCE_URI)));
             await ontology.ResolveImportsAsync();
 
-            Assert.IsTrue(ontology.Imports.Count == 2);
-            Assert.IsTrue(ontology.AnnotationAxioms.Count == 151);
+            Assert.AreEqual(2, ontology.Imports.Count);
+            Assert.AreEqual(151, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.ClassAxioms.Count == 21);
+            Assert.AreEqual(21, ontology.ClassAxioms.Count);
             Assert.IsTrue(ontology.ClassAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.DeclarationAxioms.Count == 140);
+            Assert.AreEqual(140, ontology.DeclarationAxioms.Count);
             Assert.IsTrue(ontology.DeclarationAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Count == 106);
+            Assert.AreEqual(106, ontology.ObjectPropertyAxioms.Count);
             Assert.IsTrue(ontology.ObjectPropertyAxioms.TrueForAll(ax => ax.IsImport));
-            Assert.IsTrue(ontology.AssertionAxioms.Count == 0);
-            Assert.IsTrue(ontology.DataPropertyAxioms.Count == 29);
-            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Count == 0);
-            Assert.IsTrue(ontology.KeyAxioms.Count == 0);
-            Assert.IsTrue(ontology.Prefixes.Count == 5);
-            Assert.IsTrue(ontology.Rules.Count == 0);
+            Assert.AreEqual(0, ontology.AssertionAxioms.Count);
+            Assert.AreEqual(29, ontology.DataPropertyAxioms.Count);
+            Assert.AreEqual(0, ontology.DatatypeDefinitionAxioms.Count);
+            Assert.AreEqual(0, ontology.KeyAxioms.Count);
+            Assert.AreEqual(5, ontology.Prefixes.Count);
+            Assert.AreEqual(0, ontology.Rules.Count);
 
             Assert.IsTrue(OWLImportHelper.OntologyCache.TryGetValue(RDFVocabulary.SKOS.DEREFERENCE_URI, out var cachedSKOSOntology)
                            && cachedSKOSOntology.ExpireTimestamp > DateTime.UtcNow);

@@ -30,14 +30,14 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent timeExtent = new TIMEExtent(1, 2, 3, 4, 5, 6, 7);
 
             Assert.IsNotNull(timeExtent);
-            Assert.IsTrue(timeExtent.Years == 1);
-            Assert.IsTrue(timeExtent.Months == 2);
-            Assert.IsTrue(timeExtent.Weeks == 3);
-            Assert.IsTrue(timeExtent.Days == 4);
-            Assert.IsTrue(timeExtent.Hours == 5);
-            Assert.IsTrue(timeExtent.Minutes == 6);
-            Assert.IsTrue(timeExtent.Seconds == 7);
-            Assert.IsTrue(timeExtent.ToString() == "1_2_3_4_5_6_7");
+            Assert.AreEqual(1, timeExtent.Years);
+            Assert.AreEqual(2, timeExtent.Months);
+            Assert.AreEqual(3, timeExtent.Weeks);
+            Assert.AreEqual(4, timeExtent.Days);
+            Assert.AreEqual(5, timeExtent.Hours);
+            Assert.AreEqual(6, timeExtent.Minutes);
+            Assert.AreEqual(7, timeExtent.Seconds);
+            Assert.AreEqual("1_2_3_4_5_6_7", timeExtent.ToString());
             Assert.IsNotNull(timeExtent.Metadata);
             Assert.IsNull(timeExtent.Metadata.TRS);
         }
@@ -48,14 +48,14 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent timeExtent = new TIMEExtent(1, 2, 3, null, null, null, null);
 
             Assert.IsNotNull(timeExtent);
-            Assert.IsTrue(timeExtent.Years == 1);
-            Assert.IsTrue(timeExtent.Months == 2);
-            Assert.IsTrue(timeExtent.Weeks == 3);
+            Assert.AreEqual(1, timeExtent.Years);
+            Assert.AreEqual(2, timeExtent.Months);
+            Assert.AreEqual(3, timeExtent.Weeks);
             Assert.IsNull(timeExtent.Days);
             Assert.IsNull(timeExtent.Hours);
             Assert.IsNull(timeExtent.Minutes);
             Assert.IsNull(timeExtent.Seconds);
-            Assert.IsTrue(timeExtent.ToString() == "1_2_3_0_0_0_0");
+            Assert.AreEqual("1_2_3_0_0_0_0", timeExtent.ToString());
             Assert.IsNotNull(timeExtent.Metadata);
             Assert.IsNull(timeExtent.Metadata.TRS);
         }
@@ -97,10 +97,10 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNull(timeExtent.Years);
             Assert.IsNull(timeExtent.Months);
             Assert.IsNull(timeExtent.Weeks);
-            Assert.IsTrue(timeExtent.Days == 428);
-            Assert.IsTrue(timeExtent.Hours == 4);
-            Assert.IsTrue(timeExtent.Minutes == 5);
-            Assert.IsTrue(timeExtent.Seconds == 6);
+            Assert.AreEqual(428, timeExtent.Days);
+            Assert.AreEqual(4, timeExtent.Hours);
+            Assert.AreEqual(5, timeExtent.Minutes);
+            Assert.AreEqual(6, timeExtent.Seconds);
             Assert.IsNotNull(timeExtent.Metadata);
             Assert.IsNotNull(timeExtent.Metadata.TRS);
             Assert.IsTrue(timeExtent.Metadata.TRS.Equals(TIMECalendarReferenceSystem.Gregorian));
@@ -116,7 +116,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent leftExtent = new TIMEExtent(XmlConvert.ToTimeSpan(leftTimeSpan));
             TIMEExtent rightExtent = rightTimeSpan == null ? null : new TIMEExtent(XmlConvert.ToTimeSpan(rightTimeSpan));
 
-            Assert.IsTrue(leftExtent.CompareTo(rightExtent) == expectedComparison);
+            Assert.AreEqual(expectedComparison, leftExtent.CompareTo(rightExtent));
         }
 
         [DataTestMethod]
@@ -156,7 +156,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEExtent leftExtent = new TIMEExtent(years1, months1, weeks1, days1, hours1, minutes1, seconds1);
             TIMEExtent rightExtent = new TIMEExtent(years2, months2, weeks2, days2, hours2, minutes2, seconds2);
 
-            Assert.IsTrue(leftExtent.CompareTo(rightExtent) == expectedComparison);
+            Assert.AreEqual(expectedComparison, leftExtent.CompareTo(rightExtent));
         }
         #endregion
     }

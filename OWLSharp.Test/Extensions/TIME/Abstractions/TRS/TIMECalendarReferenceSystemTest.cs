@@ -35,11 +35,11 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(ModifiedGregorianTRS.Equals(new RDFResource("ex:ModifiedGregorian")));
             Assert.IsNotNull(ModifiedGregorianTRS.Metrics);
             Assert.IsTrue(ModifiedGregorianTRS.Metrics.HasExactMetric);
-            Assert.IsTrue(ModifiedGregorianTRS.Metrics.SecondsInMinute == 60);
-            Assert.IsTrue(ModifiedGregorianTRS.Metrics.MinutesInHour == 60);
-            Assert.IsTrue(ModifiedGregorianTRS.Metrics.HoursInDay == 24);
-            Assert.IsTrue(ModifiedGregorianTRS.Metrics.MonthsInYear == 12);
-            Assert.IsTrue(ModifiedGregorianTRS.Metrics.DaysInYear == 360);
+            Assert.AreEqual(60u, ModifiedGregorianTRS.Metrics.SecondsInMinute);
+            Assert.AreEqual(60u, ModifiedGregorianTRS.Metrics.MinutesInHour);
+            Assert.AreEqual(24u, ModifiedGregorianTRS.Metrics.HoursInDay);
+            Assert.AreEqual(12u, ModifiedGregorianTRS.Metrics.MonthsInYear);
+            Assert.AreEqual(360u, ModifiedGregorianTRS.Metrics.DaysInYear);
         }
 
         [TestMethod]

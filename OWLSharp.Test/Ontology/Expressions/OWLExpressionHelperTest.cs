@@ -31,8 +31,8 @@ namespace OWLSharp.Test.Ontology
             OWLDataOneOf dataOneOf = new OWLDataOneOf([new OWLLiteral(new RDFPlainLiteral("hello","en"))]);
             OWLNamedIndividual namedIdv = new OWLNamedIndividual(new RDFResource("ex:Mark"));
 
-            List<OWLExpression>    expressions = new List<OWLExpression>()
-            {
+            List<OWLExpression>    expressions =
+            [
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 namedIdv,
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
@@ -40,11 +40,11 @@ namespace OWLSharp.Test.Ontology
                 dataOneOf,
                 dataOneOf,
                 namedIdv
-            };
+            ];
 
-            Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(expressions).Count == 4);
-            Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(new List<OWLExpression>()).Count == 0);
-            Assert.IsTrue(OWLExpressionHelper.RemoveDuplicates(null as List<OWLExpression>).Count == 0);
+            Assert.AreEqual(4, OWLExpressionHelper.RemoveDuplicates(expressions).Count);
+            Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates(new List<OWLExpression>()).Count);
+            Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates(null as List<OWLExpression>).Count);
         }
         #endregion
     }

@@ -163,7 +163,7 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = lit.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 0);
+            Assert.AreEqual(0, graph.TriplesCount);
         }
 
         [TestMethod]

@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<OWLInference> inferences = await TIMEBeforeTransitiveEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
         }
 
         [TestMethod]
@@ -77,7 +77,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<OWLInference> inferences = await TIMEBeforeTransitiveEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
         }
 
         [TestMethod]
@@ -100,7 +100,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 1);
+            Assert.AreEqual(1, inferences.Count);
         }
         #endregion
     }

@@ -90,7 +90,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsNotNull(timeInterval.Duration);
             Assert.IsTrue(timeInterval.Duration.URI.Equals(new Uri("ex:intvDur")));
             Assert.IsTrue(timeInterval.Duration.UnitType.Equals(TIMEUnit.Century));
-            Assert.IsTrue(timeInterval.Duration.Value == 8);
+            Assert.AreEqual(8, timeInterval.Duration.Value);
         }
 
         [TestMethod]

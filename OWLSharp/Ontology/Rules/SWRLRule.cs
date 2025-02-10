@@ -51,10 +51,6 @@ namespace OWLSharp.Ontology
                 throw new SWRLException("Cannot create SWRL rule because given \"ruleName\" parameter is null");
             if (ruleDescription == null)
                 throw new SWRLException("Cannot create SWRL rule because given \"ruleDescription\" parameter is null");
-            if (antecedent == null)
-                throw new SWRLException("Cannot create SWRL rule because given \"antecedent\" parameter is null");
-            if (consequent == null)
-                throw new SWRLException("Cannot create SWRL rule because given \"consequent\" parameter is null");
             #endregion
 
             Annotations.Add(
@@ -65,8 +61,8 @@ namespace OWLSharp.Ontology
                 new OWLAnnotation(
                     new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                     new OWLLiteral(ruleDescription)));
-            Antecedent = antecedent;
-            Consequent = consequent;
+            Antecedent = antecedent ?? throw new SWRLException("Cannot create SWRL rule because given \"antecedent\" parameter is null");
+            Consequent = consequent ?? throw new SWRLException("Cannot create SWRL rule because given \"consequent\" parameter is null");
         }
         #endregion
 

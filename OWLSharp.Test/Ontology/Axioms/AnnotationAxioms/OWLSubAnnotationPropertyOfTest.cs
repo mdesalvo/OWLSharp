@@ -112,7 +112,7 @@ namespace OWLSharp.Test.Ontology
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.AnnotationAxioms.Count == 1);
+            Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLSubAnnotationPropertyOf annPropDom
                             && string.Equals(annPropDom.SubAnnotationProperty.IRI, RDFVocabulary.DC.DCTERMS.TITLE.ToString())
                             && string.Equals(annPropDom.SuperAnnotationProperty.IRI, RDFVocabulary.DC.TITLE.ToString()));
@@ -128,8 +128,8 @@ namespace OWLSharp.Test.Ontology
                     new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE),
                     new OWLAnnotationProperty(RDFVocabulary.DC.TITLE))
                 {
-                    Annotations = new List<OWLAnnotation>()
-                    {
+                    Annotations =
+                    [
                         new OWLAnnotation(
                             new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION),
                             new RDFResource("ex:AnnValue"))
@@ -138,7 +138,7 @@ namespace OWLSharp.Test.Ontology
                                 new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR),
                                 new OWLLiteral(new RDFPlainLiteral("contributor", "en-us--rtl")))
                         }
-                    }
+                    ]
                 });
             ontology.AnnotationAxioms.Add(
                 new OWLSubAnnotationPropertyOf(
@@ -181,7 +181,7 @@ namespace OWLSharp.Test.Ontology
 </Ontology>");
 
             Assert.IsNotNull(ontology);
-            Assert.IsTrue(ontology.AnnotationAxioms.Count == 2);
+            Assert.AreEqual(2, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLSubAnnotationPropertyOf subannOf
                             && string.Equals(subannOf.SubAnnotationProperty.IRI.ToString(), "http://purl.org/dc/terms/title")
                             && string.Equals(subannOf.SuperAnnotationProperty.IRI.ToLower(), "http://purl.org/dc/elements/1.1/title")
@@ -204,10 +204,10 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = subAnnotationPropertyOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 3);
-            Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.AreEqual(3, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.DC.TITLE, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
         }
 
         [TestMethod]
@@ -224,16 +224,16 @@ namespace OWLSharp.Test.Ontology
             RDFGraph graph = subAnnotationPropertyOf.ToRDFGraph();
 
             Assert.IsNotNull(graph);
-            Assert.IsTrue(graph.TriplesCount == 8);
-            Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
-            Assert.IsTrue(graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount == 1);
+            Assert.AreEqual(8, graph.TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDFS.SUB_PROPERTY_OF, RDFVocabulary.DC.TITLE, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.DCTERMS.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
             //Annotations
-            Assert.IsTrue(graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.DC.DCTERMS.TITLE, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.DC.TITLE, null].TriplesCount == 1);
-            Assert.IsTrue(graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount == 1);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.DC.DCTERMS.TITLE, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDFS.SUB_PROPERTY_OF, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.DC.TITLE, null].TriplesCount);
+            Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
         }
         #endregion
     }

@@ -116,81 +116,81 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldGetSubDataPropertiesAsync()
         {
-            Assert.IsTrue((await HasDataView.SubDataPropertiesAsync()).Count == 4);
-            Assert.IsTrue((await HasPersonalDataView.SubDataPropertiesAsync()).Count == 3);
-            Assert.IsTrue((await HasAgeView.SubDataPropertiesAsync()).Count == 0);
+            Assert.AreEqual(4, (await HasDataView.SubDataPropertiesAsync()).Count);
+            Assert.AreEqual(3, (await HasPersonalDataView.SubDataPropertiesAsync()).Count);
+            Assert.AreEqual(0, (await HasAgeView.SubDataPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetSuperDataPropertiesAsync()
         {
-            Assert.IsTrue((await HasDataView.SuperDataPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.SuperDataPropertiesAsync()).Count == 1);
-            Assert.IsTrue((await HasAgeView.SuperDataPropertiesAsync()).Count == 2);
+            Assert.AreEqual(0, (await HasDataView.SuperDataPropertiesAsync()).Count);
+            Assert.AreEqual(1, (await HasPersonalDataView.SuperDataPropertiesAsync()).Count);
+            Assert.AreEqual(2, (await HasAgeView.SuperDataPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetEquivalentDataPropertiesAsync()
         {
-            Assert.IsTrue((await HasDataView.EquivalentDataPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.EquivalentDataPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.EquivalentDataPropertiesAsync()).Count == 1);
+            Assert.AreEqual(0, (await HasDataView.EquivalentDataPropertiesAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.EquivalentDataPropertiesAsync()).Count);
+            Assert.AreEqual(1, (await HasAgeView.EquivalentDataPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDisjointDataPropertiesAsync()
         {
-            Assert.IsTrue((await HasDataView.DisjointDataPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.DisjointDataPropertiesAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.DisjointDataPropertiesAsync()).Count == 1);
+            Assert.AreEqual(0, (await HasDataView.DisjointDataPropertiesAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.DisjointDataPropertiesAsync()).Count);
+            Assert.AreEqual(1, (await HasAgeView.DisjointDataPropertiesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDataAssertionsAsync()
         {
-            Assert.IsTrue((await HasDataView.DataAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.DataAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.DataAssertionsAsync()).Count == 2);
+            Assert.AreEqual(0, (await HasDataView.DataAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.DataAssertionsAsync()).Count);
+            Assert.AreEqual(2, (await HasAgeView.DataAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetNegativeDataAssertionsAsync()
         {
-            Assert.IsTrue((await HasDataView.NegativeDataAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.NegativeDataAssertionsAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.NegativeDataAssertionsAsync()).Count == 1);
+            Assert.AreEqual(0, (await HasDataView.NegativeDataAssertionsAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.NegativeDataAssertionsAsync()).Count);
+            Assert.AreEqual(1, (await HasAgeView.NegativeDataAssertionsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDomainsAsync()
         {
-            Assert.IsTrue((await HasDataView.DomainsAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.DomainsAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.DomainsAsync()).Count == 1);
+            Assert.AreEqual(0, (await HasDataView.DomainsAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.DomainsAsync()).Count);
+            Assert.AreEqual(1, (await HasAgeView.DomainsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetRangesAsync()
         {
-            Assert.IsTrue((await HasDataView.RangesAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.RangesAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.RangesAsync()).Count == 1);
+            Assert.AreEqual(0, (await HasDataView.RangesAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.RangesAsync()).Count);
+            Assert.AreEqual(1, (await HasAgeView.RangesAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetDataAnnotationsAsync()
         {
-            Assert.IsTrue((await HasDataView.DataAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.DataAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.DataAnnotationsAsync()).Count == 2);
+            Assert.AreEqual(0, (await HasDataView.DataAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.DataAnnotationsAsync()).Count);
+            Assert.AreEqual(2, (await HasAgeView.DataAnnotationsAsync()).Count);
         }
 
         [TestMethod]
         public async Task ShouldGetObjectAnnotationsAsync()
         {
-            Assert.IsTrue((await HasDataView.ObjectAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await HasPersonalDataView.ObjectAnnotationsAsync()).Count == 0);
-            Assert.IsTrue((await HasAgeView.ObjectAnnotationsAsync()).Count == 1);
+            Assert.AreEqual(0, (await HasDataView.ObjectAnnotationsAsync()).Count);
+            Assert.AreEqual(0, (await HasPersonalDataView.ObjectAnnotationsAsync()).Count);
+            Assert.AreEqual(1, (await HasAgeView.ObjectAnnotationsAsync()).Count);
         }
 
         [TestMethod]

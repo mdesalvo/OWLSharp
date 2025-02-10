@@ -50,7 +50,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<OWLInference> inferences = await TIMEEqualsInverseEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace OWLSharp.Test.Extensions.TIME
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.Count == 2);
+            Assert.AreEqual(2, inferences.Count);
         }
         #endregion
     }

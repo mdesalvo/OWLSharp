@@ -34,7 +34,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLAntecedent(),
                 new SWRLConsequent()));
 
-            Assert.IsTrue(ontology.Rules.Count == 1);
+            Assert.AreEqual(1, ontology.Rules.Count);
             Assert.IsTrue(ontology.CheckHasRule(new SWRLRule(
                 new RDFPlainLiteral("SWRL1"),
                 new RDFPlainLiteral("This is a test SWRL rule"),
@@ -47,7 +47,7 @@ namespace OWLSharp.Test.Ontology
                 new RDFPlainLiteral("This is a test SWRL rule"),
                 new SWRLAntecedent(),
                 new SWRLConsequent())); //will be discarded, since duplicates are not allowed
-            Assert.IsTrue(ontology.Rules.Count == 1);
+            Assert.AreEqual(1, ontology.Rules.Count);
         }
         #endregion
     }
