@@ -1136,6 +1136,7 @@ namespace OWLSharp.Test.Reasoner
         public async Task ShouldEntailOntologyRulesHavingCustomRegisteredBuiltInsAsync()
         {
             bool Evaluator(DataRow datarow) => string.Equals(datarow["?P"].ToString(), "ex:Mark");
+
             SWRLBuiltIn builtIn = new SWRLBuiltIn(
                 Evaluator,
                 new RDFResource("http://www.w3.org/2003/11/swrl#exampleRegistered"),

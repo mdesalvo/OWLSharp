@@ -26,7 +26,7 @@ namespace OWLSharp.Extensions.SKOS
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis.ToString();
         internal static readonly string rulesugg = "There should not be SKOS-XL labels having more than one occurrence of skosxl:literalForm relation";
 
-        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
+        internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
             List<OWLInference> violations = new List<OWLInference>();

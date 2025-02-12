@@ -387,7 +387,7 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant timeInstant = new TIMEInstant(hasTimeObjPropsAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
+                    FillValueOfInstant(ontology, timeInstant, dtPropAsns);
                     FillDescriptionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
                     FillPositionOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
 
@@ -415,7 +415,7 @@ namespace OWLSharp.Extensions.TIME
 
             return temporalExtentOfFeature;
         }
-        internal static void FillValueOfInstant(OWLOntology ontology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns)
+        internal static void FillValueOfInstant(OWLOntology ontology, TIMEInstant timeInstant, List<OWLDataPropertyAssertion> dtPropAsns)
         {
             //time:inXSDDateTimeStamp
             OWLLiteral inXSDDateTimeStampLiteral = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP))
@@ -910,7 +910,7 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant beginningTimeInstant = new TIMEInstant(hasBeginningObjPropAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(ontology, beginningTimeInstant, dtPropAsns, objPropAsns);
+                    FillValueOfInstant(ontology, beginningTimeInstant, dtPropAsns);
                     FillDescriptionOfInstant(ontology, beginningTimeInstant, dtPropAsns, objPropAsns);
                     FillPositionOfInstant(ontology, beginningTimeInstant, dtPropAsns, objPropAsns);
 
@@ -944,7 +944,7 @@ namespace OWLSharp.Extensions.TIME
                     TIMEInstant endTimeInstant = new TIMEInstant(hasEndObjPropAsn.TargetIndividualExpression.GetIRI());
 
                     //Analyze ontology to extract knowledge of the time instant
-                    FillValueOfInstant(ontology, endTimeInstant, dtPropAsns, objPropAsns);
+                    FillValueOfInstant(ontology, endTimeInstant, dtPropAsns);
                     FillDescriptionOfInstant(ontology, endTimeInstant, dtPropAsns, objPropAsns);
                     FillPositionOfInstant(ontology, endTimeInstant, dtPropAsns, objPropAsns);
 
@@ -972,7 +972,7 @@ namespace OWLSharp.Extensions.TIME
             TIMEInstant timeInstant = new TIMEInstant(timeInstantURI);
 
             //The time instant has been encoded in DateTime
-            FillValueOfInstant(ontology, timeInstant, dtPropAsns, objPropAsns);
+            FillValueOfInstant(ontology, timeInstant, dtPropAsns);
             if (timeInstant.DateTime.HasValue)
                 return TIMEConverter.NormalizeCoordinate(new TIMECoordinate(timeInstant.DateTime.Value), calendarTRS);
 

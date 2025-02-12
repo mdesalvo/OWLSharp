@@ -57,11 +57,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("labelB", "en"))),
                 ]
             };
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
-            {
-                { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
-            };
-            List<OWLIssue> issues = await SKOSXLLiteralFormAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
+            List<OWLIssue> issues = await SKOSXLLiteralFormAnalysisRule.ExecuteRuleAsync(ontology);
 
             Assert.IsNotNull(issues);
             Assert.AreEqual(2, issues.Count);

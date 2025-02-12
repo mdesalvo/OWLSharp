@@ -92,7 +92,7 @@ namespace OWLSharp.Extensions.SKOS
                             issueRegistry[SKOSRelatedConceptAnalysisRule.rulename] = await SKOSRelatedConceptAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
                             break;
                         case SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis:
-                            issueRegistry[SKOSXLLiteralFormAnalysisRule.rulename] = await SKOSXLLiteralFormAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
+                            issueRegistry[SKOSXLLiteralFormAnalysisRule.rulename] = await SKOSXLLiteralFormAnalysisRule.ExecuteRuleAsync(ontology);
                             break;
                     }
 

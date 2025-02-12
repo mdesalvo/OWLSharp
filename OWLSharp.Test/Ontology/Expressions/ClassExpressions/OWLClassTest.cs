@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
@@ -86,9 +87,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
             Assert.IsNull(cls.AbbreviatedIRI);
             //Test stabilization of ExpressionIRI
-            Assert.IsTrue(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(cls.ExpressionIRI.ToString().StartsWith("bnode:ex", StringComparison.Ordinal));
             cls.GetIRI();
-            Assert.IsFalse(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsFalse(cls.ExpressionIRI.ToString().StartsWith("bnode:ex", StringComparison.Ordinal));
             Assert.IsTrue(cls.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/Person"));
         }
 
@@ -121,9 +122,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNull(cls.IRI);
             Assert.IsTrue(string.Equals(cls.AbbreviatedIRI, new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI)));
             //Test stabilization of ExpressionIRI
-            Assert.IsTrue(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsTrue(cls.ExpressionIRI.ToString().StartsWith("bnode:ex", StringComparison.Ordinal));
             cls.GetIRI();
-            Assert.IsFalse(cls.ExpressionIRI.ToString().StartsWith("bnode:ex"));
+            Assert.IsFalse(cls.ExpressionIRI.ToString().StartsWith("bnode:ex", StringComparison.Ordinal));
             Assert.IsTrue(cls.ExpressionIRI.ToString().Equals("http://xmlns.com/foaf/0.1/Person"));
         }
 
