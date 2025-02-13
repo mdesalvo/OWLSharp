@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSimpleSymmetricObjectPropertiesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSymmetricObjectPropertyWithInverseObjectAssertionCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -105,7 +105,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSymmetricObjectPropertyWithInverseObjectPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -144,7 +144,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSymmetricObjectPropertyWithInverseObjectPropertyAndInverseObjectAssertionCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),

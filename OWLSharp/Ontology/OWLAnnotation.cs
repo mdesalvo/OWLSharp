@@ -69,10 +69,9 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM));
             graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_SOURCE, (RDFResource)axiomTriple.Subject));
             graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_PROPERTY, (RDFResource)axiomTriple.Predicate));
-            if (axiomTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL)
-                graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFLiteral)axiomTriple.Object));
-            else
-                graph.AddTriple(new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFResource)axiomTriple.Object));
+            graph.AddTriple(axiomTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPL
+                ? new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFLiteral)axiomTriple.Object)
+                : new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFResource)axiomTriple.Object));
 
             //Axiom Annotation
             graph = graph.UnionWith(ToRDFGraphInternal(axiomIRI));

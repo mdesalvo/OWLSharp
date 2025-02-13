@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDataPropertyRangeViolatingDatatype()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDataPropertyRangeViolatingDataIntersectionOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -131,7 +131,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDataPropertyRangeViolatingDataOneOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -182,7 +182,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDataPropertyRangeViolatingDataUnionOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -237,7 +237,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDataPropertyRangeViolatingDataComplementOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -290,7 +290,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDataPropertyRangeViolatingDatatypeRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(

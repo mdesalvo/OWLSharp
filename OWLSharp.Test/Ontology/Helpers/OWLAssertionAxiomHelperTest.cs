@@ -29,7 +29,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetAssertionAxioms()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.AGENT), new OWLNamedIndividual(new RDFResource("ex:Bob"))),
@@ -89,7 +89,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSameIndividuals()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLSameIndividual([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv3")) ]),
@@ -133,7 +133,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDifferentIndividuals()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv3")) ]),
@@ -170,7 +170,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfSimpleClass()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:Cat")), new OWLNamedIndividual(new RDFResource("ex:Felix"))),
@@ -216,7 +216,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfEnumerateClass()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:Cat")), new OWLNamedIndividual(new RDFResource("ex:Felix"))),
@@ -267,7 +267,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfCompositeUnionClass()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:PersianCat")), new OWLNamedIndividual(new RDFResource("ex:PFelix"))),
@@ -332,7 +332,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfCompositeIntersectionClass()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:PersianCat")), new OWLNamedIndividual(new RDFResource("ex:PFelix"))),
@@ -395,7 +395,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfCompositeComplementClass()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:NotMyAnymal")), new OWLNamedIndividual(new RDFResource("ex:Fuffy"))),
@@ -453,7 +453,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasValueRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -476,7 +476,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasValueRestrictionWithInverseAssertion()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -499,7 +499,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasValueRestrictionWithInverseRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -522,7 +522,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasValueRestrictionWithInverseAssertionAndInverseRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -545,7 +545,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasSelfRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -572,7 +572,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasSelfRestrictionWithInverseAssertion()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -599,7 +599,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasSelfRestrictionWithInverseRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -626,7 +626,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectHasSelfRestrictionWithInverseAssertionAndInverseRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -653,7 +653,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectMinCardinalityRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -684,7 +684,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectMinCardinalityRestrictionWithInverseAssertion()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -715,7 +715,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectMinCardinalityRestrictionWithInverseRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -746,7 +746,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectSomeValuesFromRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -785,7 +785,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectSomeValuesFromRestrictionWithInverseAssertion()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -824,7 +824,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfObjectSomeValuesFromRestrictionWithInverseRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -863,7 +863,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetIndividualsOfDataHasValueRestriction()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -886,7 +886,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckIsNegativeIndividualOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:NotMyAnymal")), new OWLNamedIndividual(new RDFResource("ex:Fuffy"))),

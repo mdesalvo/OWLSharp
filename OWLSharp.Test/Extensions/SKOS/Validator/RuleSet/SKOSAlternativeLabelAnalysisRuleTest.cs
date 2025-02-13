@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeAlternativeLabelConflictingWithPrefLabel()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
             };
@@ -90,7 +90,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeAlternativeLabelConflictingWithHiddenLabel()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
@@ -135,7 +135,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
             };
@@ -152,7 +152,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeAlternativeXLabelConflictingWithPrefXLabel()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
@@ -237,7 +237,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ]
             };
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
             };
@@ -254,7 +254,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeAlternativeXLabelConflictingWithHiddenXLabel()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
@@ -339,7 +339,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("This is concept C")))
                 ]
             };
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
             };

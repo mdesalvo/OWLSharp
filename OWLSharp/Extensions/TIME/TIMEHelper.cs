@@ -506,16 +506,18 @@ namespace OWLSharp.Extensions.TIME
                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (monthPM?.GetLiteral() is RDFTypedLiteral monthTL)
                 {
-                    //xsd:gMonth
-                    if (monthTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GMONTH))
+                    switch (monthTL.Datatype.TargetDatatype)
                     {
-                        DateTime monthDT = XmlConvert.ToDateTime(monthTL.Value, XmlDateTimeSerializationMode.Utc);
-                        return Convert.ToDouble(monthDT.Month);
+                        //xsd:gMonth
+                        case RDFModelEnums.RDFDatatypes.XSD_GMONTH:
+                        {
+                            DateTime monthDT = XmlConvert.ToDateTime(monthTL.Value, XmlDateTimeSerializationMode.Utc);
+                            return Convert.ToDouble(monthDT.Month);
+                        }
+                        //time:generalMonth
+                        case RDFModelEnums.RDFDatatypes.TIME_GENERALMONTH:
+                            return Convert.ToDouble(monthTL.Value.Replace("--", string.Empty), CultureInfo.InvariantCulture);
                     }
-
-                    //time:generalMonth
-                    if (monthTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALMONTH))
-                        return Convert.ToDouble(monthTL.Value.Replace("--", string.Empty), CultureInfo.InvariantCulture);
 
                     //numeric literals
                     if (monthTL.HasDecimalDatatype())
@@ -529,16 +531,18 @@ namespace OWLSharp.Extensions.TIME
                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (dayPM?.GetLiteral() is RDFTypedLiteral dayTL)
                 {
-                    //xsd:gDay
-                    if (dayTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.XSD_GDAY))
+                    switch (dayTL.Datatype.TargetDatatype)
                     {
-                        DateTime dayDT = XmlConvert.ToDateTime(dayTL.Value, XmlDateTimeSerializationMode.Utc);
-                        return Convert.ToDouble(dayDT.Day);
+                        //xsd:gDay
+                        case RDFModelEnums.RDFDatatypes.XSD_GDAY:
+                        {
+                            DateTime dayDT = XmlConvert.ToDateTime(dayTL.Value, XmlDateTimeSerializationMode.Utc);
+                            return Convert.ToDouble(dayDT.Day);
+                        }
+                        //time:generalDay
+                        case RDFModelEnums.RDFDatatypes.TIME_GENERALDAY:
+                            return Convert.ToDouble(dayTL.Value.Replace("---", string.Empty), CultureInfo.InvariantCulture);
                     }
-
-                    //time:generalDay
-                    if (dayTL.Datatype.TargetDatatype.Equals(RDFModelEnums.RDFDatatypes.TIME_GENERALDAY))
-                        return Convert.ToDouble(dayTL.Value.Replace("---", string.Empty), CultureInfo.InvariantCulture);
 
                     //numeric literals
                     if (dayTL.HasDecimalDatatype())

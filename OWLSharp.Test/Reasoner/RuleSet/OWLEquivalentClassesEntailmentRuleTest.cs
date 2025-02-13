@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailEquivalentClassesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mankind"))),

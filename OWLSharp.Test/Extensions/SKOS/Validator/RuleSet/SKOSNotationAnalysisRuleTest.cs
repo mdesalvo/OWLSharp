@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeNotation()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
@@ -79,7 +79,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING))),
                 ]
             };
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
             };

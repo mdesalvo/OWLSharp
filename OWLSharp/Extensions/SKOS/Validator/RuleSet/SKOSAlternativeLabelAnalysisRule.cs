@@ -40,9 +40,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule altprefRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skos:altLabel and skos:prefLabel data annotations"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -56,16 +56,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C")),
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(SKOSValidator.ViolationIRI),
@@ -87,9 +87,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule althiddenRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skos:altLabel and skos:hiddenLabel data annotations"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -103,16 +103,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C")),
                             new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
                             new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(SKOSValidator.ViolationIRI),
@@ -136,9 +136,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule altprefXLRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skosxl:altLabel and skosxl:prefLabel data relations"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -160,16 +160,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?PL")),
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(SKOSValidator.ViolationIRI),
@@ -191,9 +191,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule althiddenXLRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSAlternativeLabelAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for collisions of values assumed by a skos:Concept in its skosxl:altLabel and skosxl:hiddenLabel data relations"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -215,16 +215,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?HL")),
                             new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?ALT_LABEL")),
                             new SWRLVariableArgument(new RDFVariable("?HIDDEN_LABEL")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(SKOSValidator.ViolationIRI),

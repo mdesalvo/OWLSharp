@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeThingNothingT1Case()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(
@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeThingNothingN1Case()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(
@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeThingNothingN2Case()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(

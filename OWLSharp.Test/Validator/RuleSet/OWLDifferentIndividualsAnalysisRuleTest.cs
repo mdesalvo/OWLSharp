@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDifferentIndividualsSimpleCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDifferentIndividualsAdvancedCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
@@ -87,7 +87,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDifferentIndividualsSelfCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),

@@ -42,7 +42,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHES),
                 new OWLNamedIndividual(new RDFResource("ex:Interval1")),
                 new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) },

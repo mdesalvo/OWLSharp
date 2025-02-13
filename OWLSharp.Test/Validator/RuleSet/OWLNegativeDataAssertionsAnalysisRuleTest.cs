@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeNegativeDataAssertionsCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),

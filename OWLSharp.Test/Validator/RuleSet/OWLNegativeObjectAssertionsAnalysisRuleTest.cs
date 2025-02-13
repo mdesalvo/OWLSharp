@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeNegativeObjectAssertionsSimpleCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeNegativeObjectAssertionsInverseNegativeCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -96,7 +96,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeNegativeObjectAssertionsNegativeCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -131,7 +131,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeNegativeObjectAssertionsInverseFullCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),

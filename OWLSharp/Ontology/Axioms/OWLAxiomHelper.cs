@@ -33,11 +33,8 @@ namespace OWLSharp.Ontology
                 axioms.ForEach(axiom =>
                 {
                     string axiomID = axiom.GetXML();
-                    if (!lookup.Contains(axiomID))
-                    {
-                        lookup.Add(axiomID);
+                    if (lookup.Add(axiomID))
                         deduplicatedAxioms.Add(axiom);
-                    }
                 });
             }
             return deduplicatedAxioms;

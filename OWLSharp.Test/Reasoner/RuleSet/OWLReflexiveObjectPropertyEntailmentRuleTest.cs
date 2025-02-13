@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSimpleReflexiveObjectPropertiesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailReflexiveObjectPropertyWithInverseObjectAssertionCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailReflexiveObjectPropertyWithInverseObjectPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -140,7 +140,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailReflexiveObjectPropertyWithInverseObjectPropertyAndInverseObjectAssertionCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),

@@ -99,7 +99,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 new SWRLVariableArgument(new RDFVariable("?P")));
 
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),

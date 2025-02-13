@@ -40,7 +40,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeAlternativeLabelAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
@@ -85,7 +85,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.AlternativeLabelAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -99,7 +99,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeHiddenLabelAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
@@ -144,7 +144,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.HiddenLabelAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.HiddenLabelAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -158,7 +158,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzePreferredLabelAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
@@ -201,7 +201,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.PreferredLabelAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.PreferredLabelAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -215,7 +215,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeNotationAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
@@ -266,7 +266,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING))),
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.NotationAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.NotationAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -284,7 +284,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeBroaderConceptAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
@@ -336,7 +336,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.BroaderConceptAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.BroaderConceptAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -350,7 +350,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeNarrowerConceptAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
@@ -402,7 +402,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -416,7 +416,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeCloseOrExactMatchConceptAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
@@ -468,7 +468,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -482,7 +482,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeRelatedConceptAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
@@ -534,7 +534,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [ SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis ] };
+            SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -548,7 +548,7 @@ namespace OWLSharp.Test.Extensions.SKOS
         [TestMethod]
         public async Task ShouldAnalyzeLiteralFormAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
@@ -609,7 +609,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                         new OWLLiteral(new RDFPlainLiteral("labelB", "en"))),
                 ]
             };
-            SKOSValidator validator = new SKOSValidator() { Rules = [SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis] };
+            SKOSValidator validator = new SKOSValidator { Rules = [SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);

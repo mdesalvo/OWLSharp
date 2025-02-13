@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeEquivalentClassesSubClassOfCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLEquivalentClasses([
@@ -52,7 +52,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeEquivalentClassesDisjointClassesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLEquivalentClasses([

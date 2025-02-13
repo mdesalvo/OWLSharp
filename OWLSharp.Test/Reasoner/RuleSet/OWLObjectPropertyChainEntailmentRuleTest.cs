@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSimpleObjectPropertyChainCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -80,7 +80,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSimpleObjectPropertyChainWithAnonymousIndividualsCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -131,7 +131,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailObjectPropertyChainWithInverseStepCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -184,7 +184,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailObjectPropertyChainWithInverseSuperObjectPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -237,7 +237,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailObjectPropertyChainWithInverseSTepCaseAndInverseSuperObjectPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),

@@ -187,7 +187,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<SWRLException>(() =>
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#example",
                     Arguments = [
@@ -198,7 +198,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on bad-formed builtIn
             Assert.ThrowsException<SWRLException>(() => 
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#stringConcat",
                     Arguments = [
@@ -220,7 +220,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Rows.Add("llo^^http://www.w3.org/2001/XMLSchema#string");
             antecedentResults.Rows.Add("llo@EN");
 
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#stringConcat",
                 Arguments = [
@@ -255,7 +255,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Rows.Add("hello@EN");
             antecedentResults.Rows.Add("http://example.org/test");
 
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#stringConcat",
                 Arguments = [

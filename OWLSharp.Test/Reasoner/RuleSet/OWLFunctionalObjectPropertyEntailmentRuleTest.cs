@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailSimpleObjectPropertiesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailInverseOfFunctionalObjectPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -105,7 +105,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailInverseOfObjectPropertyAssertionCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -144,7 +144,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailInverseOfFunctionalPropertyAndInverseOfObjectPropertyAssertionCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),

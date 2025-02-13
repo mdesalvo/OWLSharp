@@ -59,10 +59,9 @@ namespace OWLSharp.Ontology
 
             //Axiom Triple
             RDFTriple axiomTriple;
-            if (!string.IsNullOrEmpty(ValueIRI))
-                axiomTriple = new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI));
-            else
-                axiomTriple = new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral());
+            axiomTriple = !string.IsNullOrEmpty(ValueIRI) 
+                ? new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI)) 
+                : new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral());
             graph.AddTriple(axiomTriple);
 
             //Annotations

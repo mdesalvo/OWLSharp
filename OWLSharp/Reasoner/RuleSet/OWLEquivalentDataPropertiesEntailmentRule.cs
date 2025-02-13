@@ -35,7 +35,7 @@ namespace OWLSharp.Reasoner
                 List<OWLDataProperty> equivalentDataProperties = ontology.GetEquivalentDataProperties(declaredDataProperty);
                 foreach (OWLDataProperty equivalentDataProperty in equivalentDataProperties)
                 {
-                    OWLEquivalentDataProperties inference = new OWLEquivalentDataProperties(new List<OWLDataProperty>() { declaredDataProperty, equivalentDataProperty }) { IsInference=true };
+                    OWLEquivalentDataProperties inference = new OWLEquivalentDataProperties(new List<OWLDataProperty> { declaredDataProperty, equivalentDataProperty }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
                 }   

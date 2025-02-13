@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeFunctionalObjectPropertySimpleCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -77,7 +77,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeFunctionalObjectPropertyInverseAssertionCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -128,7 +128,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeFunctionalObjectPropertyInverseFOPCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -179,7 +179,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeFunctionalObjectPropertyTransitiveCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
@@ -201,7 +201,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeFunctionalObjectPropertySuperTransitiveCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
@@ -231,7 +231,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeFunctionalObjectPropertySimpleCaseAndDontFindIssuesBecauseNoDifferentFrom()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(

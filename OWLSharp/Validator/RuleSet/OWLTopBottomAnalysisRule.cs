@@ -33,26 +33,26 @@ namespace OWLSharp.Validator
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected object property axioms causing reserved owl:topObjectProperty property to not be the root object property of the ontology",
+                    "Detected object property axioms causing reserved owl:topObjectProperty property to not be the root object property of the ontology",
                     rulesuggT1));
-             if (ontology.GetSuperDataPropertiesOf(new OWLDataProperty(RDFVocabulary.OWL.TOP_DATA_PROPERTY)).Count > 0)
+            if (ontology.GetSuperDataPropertiesOf(new OWLDataProperty(RDFVocabulary.OWL.TOP_DATA_PROPERTY)).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected data property axioms causing reserved owl:topDataProperty property to not be the root data property of the ontology",
+                    "Detected data property axioms causing reserved owl:topDataProperty property to not be the root data property of the ontology",
                     rulesuggT2));
 
             if (ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY)).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected object property axioms causing reserved owl:bottomObjectProperty property to not be the bottom object property of the ontology",
+                    "Detected object property axioms causing reserved owl:bottomObjectProperty property to not be the bottom object property of the ontology",
                     rulesuggB1));
             if (ontology.GetSubDataPropertiesOf(new OWLDataProperty(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY)).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected data property axioms causing reserved owl:bottomDataProperty property to not be the bottom data property of the ontology",
+                    "Detected data property axioms causing reserved owl:bottomDataProperty property to not be the bottom data property of the ontology",
                     rulesuggB2));
 
             return issues;

@@ -126,16 +126,22 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.CLASS_PREDICATE, Predicate.GetIRI()));
             graph = graph.UnionWith(Predicate.ToRDFGraph());
 
-            if (LeftArgument is SWRLVariableArgument leftArgVar)
+            switch (LeftArgument)
             {
-                RDFResource leftArgVarIRI = new RDFResource(leftArgVar.IRI);
-                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgVarIRI));
-                graph.AddTriple(new RDFTriple(leftArgVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
-            }
-            else if (LeftArgument is SWRLIndividualArgument leftArgIdv)
-                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgIdv.GetResource()));
-            else if (LeftArgument is SWRLLiteralArgument leftArgLit)
-                graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgLit.GetLiteral()));            
+                case SWRLVariableArgument leftArgVar:
+                {
+                    RDFResource leftArgVarIRI = new RDFResource(leftArgVar.IRI);
+                    graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgVarIRI));
+                    graph.AddTriple(new RDFTriple(leftArgVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
+                    break;
+                }
+                case SWRLIndividualArgument leftArgIdv:
+                    graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgIdv.GetResource()));
+                    break;
+                case SWRLLiteralArgument leftArgLit:
+                    graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgLit.GetLiteral()));
+                    break;
+            }            
 
             return graph;
         }

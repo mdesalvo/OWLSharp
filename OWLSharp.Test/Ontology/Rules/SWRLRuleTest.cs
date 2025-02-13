@@ -86,7 +86,7 @@ namespace OWLSharp.Test.Ontology
             SWRLRule rule = new SWRLRule(
                 new RDFPlainLiteral("SWRL1"),
                 new RDFPlainLiteral("This is a test SWRL rule"),
-                new SWRLAntecedent() { 
+                new SWRLAntecedent { 
                     Atoms = [ 
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.FOAF.PERSON), 
@@ -103,7 +103,7 @@ namespace OWLSharp.Test.Ontology
                             new SWRLLiteralArgument(new RDFPlainLiteral("i")))
                     ]
                 },
-                new SWRLConsequent() {
+                new SWRLConsequent {
                     Atoms = [
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.FOAF.AGENT),
@@ -119,7 +119,7 @@ namespace OWLSharp.Test.Ontology
             SWRLRule rule = new SWRLRule(
                 new RDFPlainLiteral("SWRL1"),
                 new RDFPlainLiteral("This is a test SWRL rule"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
                     Atoms = [
                         new SWRLClassAtom(
@@ -136,7 +136,7 @@ namespace OWLSharp.Test.Ontology
                             new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
                     ]
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
                     Atoms = [
                         new SWRLClassAtom(
@@ -169,7 +169,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldApplySWRLRuleToOntologyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
@@ -190,7 +190,7 @@ namespace OWLSharp.Test.Ontology
                     new SWRLRule(
                         new RDFPlainLiteral("SWRL1"),
                         new RDFPlainLiteral("This is a test SWRL rule"),
-                        new SWRLAntecedent()
+                        new SWRLAntecedent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -207,7 +207,7 @@ namespace OWLSharp.Test.Ontology
                                     new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
                             ]
                         },
-                        new SWRLConsequent()
+                        new SWRLConsequent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -229,7 +229,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldNotApplySWRLRuleToOntologyBecauseNullAntecedentAsync()
         {
-            List<OWLInference> inferences = await new SWRLRule() { Consequent = new SWRLConsequent() }.ApplyToOntologyAsync(new OWLOntology());
+            List<OWLInference> inferences = await new SWRLRule { Consequent = new SWRLConsequent() }.ApplyToOntologyAsync(new OWLOntology());
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(0, inferences.Count);
@@ -238,7 +238,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldNotApplySWRLRuleToOntologyBecauseNullConsequentAsync()
         {
-            List<OWLInference> inferences = await new SWRLRule() { Antecedent = new SWRLAntecedent() }.ApplyToOntologyAsync(new OWLOntology());
+            List<OWLInference> inferences = await new SWRLRule { Antecedent = new SWRLAntecedent() }.ApplyToOntologyAsync(new OWLOntology());
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(0, inferences.Count);
@@ -250,7 +250,7 @@ namespace OWLSharp.Test.Ontology
             SWRLRule rule = new SWRLRule(
                 new RDFPlainLiteral("SWRL1"),
                 new RDFPlainLiteral("This is a test SWRL rule"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
                     Atoms = [
                         new SWRLClassAtom(
@@ -271,7 +271,7 @@ namespace OWLSharp.Test.Ontology
                             new SWRLLiteralArgument(new RDFPlainLiteral("i")))
                     ]
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
                     Atoms = [
                         new SWRLClassAtom(

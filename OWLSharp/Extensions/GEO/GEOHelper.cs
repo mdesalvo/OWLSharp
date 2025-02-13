@@ -177,12 +177,18 @@ namespace OWLSharp.Extensions.GEO
                 foreach ((Geometry wgs84Geom,Geometry lazGeom) in featureGeometries)
                 {
                     RDFResource geometryUri = new RDFResource((string)wgs84Geom.UserData);
-                    if (wgs84Geom is Point wgs84Point)
-                        spatialExtentOfFeature.Add(new GEOPoint(geometryUri, (wgs84Point.Coordinate.X,wgs84Point.Coordinate.Y)));
-                    else if (wgs84Geom is LineString wgs84Line)
-                        spatialExtentOfFeature.Add(new GEOLine(geometryUri, wgs84Line.Coordinates.Select(c => (c.X,c.Y)).ToArray()));
-                    else if (wgs84Geom is Polygon wgs84Area)
-                        spatialExtentOfFeature.Add(new GEOArea(geometryUri, wgs84Area.Coordinates.Select(c => (c.X,c.Y)).ToArray()));
+                    switch (wgs84Geom)
+                    {
+                        case Point wgs84Point:
+                            spatialExtentOfFeature.Add(new GEOPoint(geometryUri, (wgs84Point.Coordinate.X,wgs84Point.Coordinate.Y)));
+                            break;
+                        case LineString wgs84Line:
+                            spatialExtentOfFeature.Add(new GEOLine(geometryUri, wgs84Line.Coordinates.Select(c => (c.X,c.Y)).ToArray()));
+                            break;
+                        case Polygon wgs84Area:
+                            spatialExtentOfFeature.Add(new GEOArea(geometryUri, wgs84Area.Coordinates.Select(c => (c.X,c.Y)).ToArray()));
+                            break;
+                    }
                     //other types of OGC geometries are not supported yet...
                 }
             return spatialExtentOfFeature;
@@ -695,7 +701,6 @@ namespace OWLSharp.Extensions.GEO
                     if (geometryOfFeature.Item2.IsWithinDistance(lazCentroidOfFeature, distanceMeters))
                     {
                         featuresWithinDistance.Add(new RDFResource(featureWithGeometry.Key));
-                        continue;
                     }
             };
 
@@ -734,7 +739,6 @@ namespace OWLSharp.Extensions.GEO
                     if (geometryOfFeature.Item2.IsWithinDistance(lazCentroidOfFeature, distanceMeters))
                     {
                         featuresWithinDistance.Add(new RDFResource(featureWithGeometry.Key));
-                        continue;
                     }
             };
 
@@ -771,7 +775,6 @@ namespace OWLSharp.Extensions.GEO
                         if (geometryOfFeature.Item2.Coordinates.Any(c1 => defaultGeometry.Item2.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection))))
                         {
                             featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }   
                 };
 
@@ -797,7 +800,6 @@ namespace OWLSharp.Extensions.GEO
                         if (geometryOfFeature.Item2.Coordinates.Any(c1 => secondaryGeometries.Any(sg => sg.Item2.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection)))))
                         {
                             featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -835,7 +837,6 @@ namespace OWLSharp.Extensions.GEO
                     if (geometryOfFeature.Item2.Coordinates.Any(c1 => lazGeometry.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection))))
                     {
                         featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
-                        continue;
                     }
             };
 
@@ -872,7 +873,6 @@ namespace OWLSharp.Extensions.GEO
                         if (defaultGeometry.Item2.Crosses(geometryOfFeature.Item2))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -898,7 +898,6 @@ namespace OWLSharp.Extensions.GEO
                         if (secondaryGeometries.Any(sg => sg.Item2.Crosses(geometryOfFeature.Item2)))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -936,7 +935,6 @@ namespace OWLSharp.Extensions.GEO
                     if (lazGeometry.Crosses(geometryOfFeature.Item2))
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
-                        continue;
                     }
             };
 
@@ -971,7 +969,6 @@ namespace OWLSharp.Extensions.GEO
                         if (defaultGeometry.Item2.Touches(geometryOfFeature.Item2))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -997,7 +994,6 @@ namespace OWLSharp.Extensions.GEO
                         if (secondaryGeometries.Any(sg => sg.Item2.Touches(geometryOfFeature.Item2)))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -1035,7 +1031,6 @@ namespace OWLSharp.Extensions.GEO
                     if (lazGeometry.Touches(geometryOfFeature.Item2))
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
-                        continue;
                     }
             };
 
@@ -1070,7 +1065,6 @@ namespace OWLSharp.Extensions.GEO
                         if (defaultGeometry.Item2.Overlaps(geometryOfFeature.Item2))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -1096,7 +1090,6 @@ namespace OWLSharp.Extensions.GEO
                         if (secondaryGeometries.Any(sg => sg.Item2.Overlaps(geometryOfFeature.Item2)))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -1134,7 +1127,6 @@ namespace OWLSharp.Extensions.GEO
                     if (lazGeometry.Overlaps(geometryOfFeature.Item2))
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
-                        continue;
                     }
             };
 
@@ -1169,7 +1161,6 @@ namespace OWLSharp.Extensions.GEO
                         if (defaultGeometry.Item2.Contains(geometryOfFeature.Item2))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -1195,7 +1186,6 @@ namespace OWLSharp.Extensions.GEO
                         if (secondaryGeometries.Any(sg => sg.Item2.Contains(geometryOfFeature.Item2)))
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
-                            continue;
                         }
                 };
 
@@ -1233,7 +1223,6 @@ namespace OWLSharp.Extensions.GEO
                     if (lazGeometry.Contains(geometryOfFeature.Item2))
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
-                        continue;
                     }
             };
 
@@ -1271,11 +1260,11 @@ namespace OWLSharp.Extensions.GEO
         {
             //Execute SWRL rule to retrieve WKT serialization of the given feature's default geometry
             List<OWLInference> inferences = new List<OWLInference>();
-            SWRLRule defaultGeometryAsWKT = new SWRLRule()
+            SWRLRule defaultGeometryAsWKT = new SWRLRule
             {
-                Antecedent = new SWRLAntecedent()
+                Antecedent = new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
@@ -1292,16 +1281,16 @@ namespace OWLSharp.Extensions.GEO
                             new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                             new SWRLVariableArgument(new RDFVariable("?WKT")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
                             new SWRLIndividualArgument(featureUri))
                     }
                 },
-                Consequent = new SWRLConsequent()
+                Consequent = new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asWKT")),
@@ -1315,11 +1304,11 @@ namespace OWLSharp.Extensions.GEO
             //Execute SWRL rule to retrieve GML serialization of the given feature's default geometry
             if (inferences.Count == 0)
             {
-                SWRLRule defaultGeometryAsGML = new SWRLRule()
+                SWRLRule defaultGeometryAsGML = new SWRLRule
                 {
-                    Antecedent = new SWRLAntecedent()
+                    Antecedent = new SWRLAntecedent
                     {
-                        Atoms = new List<SWRLAtom>()
+                        Atoms = new List<SWRLAtom>
                         {
                             new SWRLClassAtom(
                                 new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
@@ -1336,16 +1325,16 @@ namespace OWLSharp.Extensions.GEO
                                 new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                                 new SWRLVariableArgument(new RDFVariable("?GML")))
                         },
-                        BuiltIns = new List<SWRLBuiltIn>()
+                        BuiltIns = new List<SWRLBuiltIn>
                         {
                             SWRLBuiltIn.Equal(
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
                                 new SWRLIndividualArgument(featureUri))
                         }
                     },
-                    Consequent = new SWRLConsequent()
+                    Consequent = new SWRLConsequent
                     {
-                        Atoms = new List<SWRLAtom>()
+                        Atoms = new List<SWRLAtom>
                         {
                             new SWRLDataPropertyAtom(
                                 new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asGML")),
@@ -1404,11 +1393,11 @@ namespace OWLSharp.Extensions.GEO
 
             //Execute SWRL rule to retrieve WKT serialization of the given feature's default geometry
             List<OWLInference> inferences = new List<OWLInference>();
-            SWRLRule secondaryGeometriesAsWKT = new SWRLRule()
+            SWRLRule secondaryGeometriesAsWKT = new SWRLRule
             {
-                Antecedent = new SWRLAntecedent()
+                Antecedent = new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
@@ -1425,16 +1414,16 @@ namespace OWLSharp.Extensions.GEO
                             new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                             new SWRLVariableArgument(new RDFVariable("?WKT")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
                             new SWRLIndividualArgument(featureUri))
                     }
                 },
-                Consequent = new SWRLConsequent()
+                Consequent = new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asWKT")),
@@ -1448,11 +1437,11 @@ namespace OWLSharp.Extensions.GEO
             //Execute SWRL rule to retrieve GML serialization of the given feature's default geometry
             if (inferences.Count == 0)
             {
-                SWRLRule defaultGeomAsGML = new SWRLRule()
+                SWRLRule defaultGeomAsGML = new SWRLRule
                 {
-                    Antecedent = new SWRLAntecedent()
+                    Antecedent = new SWRLAntecedent
                     {
-                        Atoms = new List<SWRLAtom>()
+                        Atoms = new List<SWRLAtom>
                         {
                             new SWRLClassAtom(
                                 new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
@@ -1469,16 +1458,16 @@ namespace OWLSharp.Extensions.GEO
                                 new SWRLVariableArgument(new RDFVariable("?GEOMETRY")),
                                 new SWRLVariableArgument(new RDFVariable("?GML")))
                         },
-                        BuiltIns = new List<SWRLBuiltIn>()
+                        BuiltIns = new List<SWRLBuiltIn>
                         {
                             SWRLBuiltIn.Equal(
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
                                 new SWRLIndividualArgument(featureUri))
                         }
                     },
-                    Consequent = new SWRLConsequent()
+                    Consequent = new SWRLConsequent
                     {
-                        Atoms = new List<SWRLAtom>()
+                        Atoms = new List<SWRLAtom>
                         {
                             new SWRLDataPropertyAtom(
                                 new OWLDataProperty(new RDFResource("urn:swrl:geosparql:asGML")),

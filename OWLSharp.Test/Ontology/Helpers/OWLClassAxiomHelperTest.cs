@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetClassAxioms()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.AGENT)),
@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubClassesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
@@ -114,7 +114,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubClassesOfWithEquivalentClassesDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
@@ -147,7 +147,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubClassesOfWithEquivalentObjectUnionOfDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
@@ -180,7 +180,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubClassesOfWithDisjointUnionOfDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
@@ -213,7 +213,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperClassesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
@@ -251,7 +251,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperClassesOfWithEquivalentClassesDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
@@ -284,7 +284,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperClassesOfWithDisjointUnionOfDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
@@ -318,7 +318,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetEquivalentClasses()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls3")) ]),
@@ -362,7 +362,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDisjointClasses()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLDisjointClasses([ new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls3")) ]),
@@ -404,7 +404,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDisjointClassesWithEquivalentClassesDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLEquivalentClasses([ new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2"))]),
@@ -429,7 +429,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDisjointClassesWithSubClassOfDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),

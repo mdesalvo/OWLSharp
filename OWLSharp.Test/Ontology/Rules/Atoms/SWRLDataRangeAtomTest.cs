@@ -98,7 +98,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)) ]),
                 new SWRLVariableArgument(new RDFVariable("?P")));
 
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),

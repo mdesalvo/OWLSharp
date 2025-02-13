@@ -147,7 +147,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(annotation);
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
-                            && string.Equals(annProp.AbbreviatedIRI.ToString(), $"http://www.w3.org/2000/01/rdf-schema#:comment")
+                            && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
                             && annProp.IRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
         }

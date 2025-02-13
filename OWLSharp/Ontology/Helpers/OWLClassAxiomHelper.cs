@@ -51,9 +51,7 @@ namespace OWLSharp.Ontology
                 List<OWLClassExpression> foundSubClassExprs = new List<OWLClassExpression>();
 
                 #region VisitContext
-                if (!visitContext.Contains(classExprIRI.PatternMemberID))
-                    visitContext.Add(classExprIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(classExprIRI.PatternMemberID))
                     return foundSubClassExprs;
                 #endregion
 
@@ -111,9 +109,7 @@ namespace OWLSharp.Ontology
                 List<OWLClassExpression> foundSuperClassExprs = new List<OWLClassExpression>();
 
                 #region VisitContext
-                if (!visitContext.Contains(classExprIRI.PatternMemberID))
-                    visitContext.Add(classExprIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(classExprIRI.PatternMemberID))
                     return foundSuperClassExprs;
                 #endregion
 
@@ -166,9 +162,7 @@ namespace OWLSharp.Ontology
                 List<OWLClassExpression> foundEquivClassExprs = new List<OWLClassExpression>();
 
                 #region VisitContext
-                if (!visitContext.Contains(classExprIRI.PatternMemberID))
-                    visitContext.Add(classExprIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(classExprIRI.PatternMemberID))
                     return foundEquivClassExprs;
                 #endregion
 
@@ -203,9 +197,7 @@ namespace OWLSharp.Ontology
                 List<OWLClassExpression> foundDisjClassExprs = new List<OWLClassExpression>();
 
                 #region VisitContext
-                if (!visitContext.Contains(classExprIRI.PatternMemberID))
-                    visitContext.Add(classExprIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(classExprIRI.PatternMemberID))
                     return foundDisjClassExprs;
                 #endregion
 

@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldCountAnnotationsAndImportsAndPrefixesAsync()
         {
-            OWLOntology ont = new OWLOntology() 
+            OWLOntology ont = new OWLOntology
             {
                 Imports = [
                     new OWLImport(new RDFResource("ex:org"))
@@ -48,7 +48,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldCountEntitiesAndDeclarationsAsync()
         {
-            OWLOntology ont = new OWLOntology() 
+            OWLOntology ont = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT)),
@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldCountAnnotationAxiomsAsync()
         {
-            OWLOntology ont = new OWLOntology() 
+            OWLOntology ont = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -107,7 +107,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldCountAssertionAxiomsAsync()
         {
-            OWLOntology ont = new OWLOntology() 
+            OWLOntology ont = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),
@@ -177,7 +177,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldCountClassAxiomsAsync()
         {
-            OWLOntology ont = new OWLOntology() 
+            OWLOntology ont = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("ex:LivingEntity"))),
@@ -218,7 +218,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldCountDataPropertyAxioms()
         {
-            OWLOntology ont = new OWLOntology() 
+            OWLOntology ont = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),
@@ -269,7 +269,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldCountObjectPropertyAxioms()
         {
-            OWLOntology ont = new OWLOntology() 
+            OWLOntology ont = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("ex:Human"))),

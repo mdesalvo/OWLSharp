@@ -42,7 +42,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailClassAssertionAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Felix")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [ OWLEnums.OWLReasonerRules.ClassAssertionEntailment, OWLEnums.OWLReasonerRules.ClassAssertionEntailment ] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [ OWLEnums.OWLReasonerRules.ClassAssertionEntailment, OWLEnums.OWLReasonerRules.ClassAssertionEntailment ] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(inferences);
@@ -82,7 +82,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailDataPropertyDomainAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Reasoner
                     )
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DataPropertyDomainEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -116,7 +116,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailDifferentIndividualsAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -132,7 +132,7 @@ namespace OWLSharp.Test.Reasoner
                     ])
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DifferentIndividualsEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(6, inferences.Count);
@@ -143,7 +143,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailDisjointClassesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
@@ -167,7 +167,7 @@ namespace OWLSharp.Test.Reasoner
                     ])
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DisjointClassesEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DisjointClassesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(5, inferences.Count);
@@ -193,7 +193,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailDisjointDataPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))),
@@ -205,7 +205,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))])
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -219,7 +219,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailDisjointObjectPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -235,7 +235,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/avoids"))])
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -249,7 +249,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailEquivalentClassesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mankind"))),
@@ -265,7 +265,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/EarthMan"))])
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentClassesEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.EquivalentClassesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(4, inferences.Count);
@@ -288,7 +288,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailEquivalentDataPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/isOld"))),
@@ -311,7 +311,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.EquivalentDataPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(6, inferences.Count);
@@ -342,7 +342,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailEquivalentObjectPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/helps"))),
@@ -366,7 +366,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Olly")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.EquivalentObjectPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(6, inferences.Count);
@@ -397,7 +397,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailFunctionalObjectPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -423,7 +423,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.FunctionalObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -437,7 +437,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailHasKeyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
@@ -483,7 +483,7 @@ namespace OWLSharp.Test.Reasoner
                     )
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasKeyEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.HasKeyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -497,7 +497,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailHasSelfAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassSelf"))),
@@ -515,7 +515,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasSelfEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.HasSelfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -530,7 +530,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailHasValueAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
@@ -550,7 +550,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.HasValueEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.HasValueEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -565,7 +565,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailInverseFunctionalObjectPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -591,7 +591,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -605,7 +605,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailInverseObjectPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -629,7 +629,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.InverseObjectPropertiesEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.InverseObjectPropertiesEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(2, inferences.Count);
@@ -648,7 +648,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailObjectPropertyChainAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -684,7 +684,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Fritz"))),
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(2, inferences.Count);
@@ -703,7 +703,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailObjectPropertyDomainAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -724,7 +724,7 @@ namespace OWLSharp.Test.Reasoner
                     )
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyDomainEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -738,7 +738,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailObjectPropertyRangeAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -759,7 +759,7 @@ namespace OWLSharp.Test.Reasoner
                     )
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ObjectPropertyRangeEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(1, inferences.Count);
@@ -773,7 +773,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailReflexiveObjectPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -795,7 +795,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(2, inferences.Count);
@@ -814,7 +814,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailSameIndividualAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -833,7 +833,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SameIndividualEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SameIndividualEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(2, inferences.Count);
@@ -849,7 +849,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailSubClassOfAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
@@ -870,7 +870,7 @@ namespace OWLSharp.Test.Reasoner
                     ])
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SubClassOfEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SubClassOfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(3, inferences.Count);
@@ -890,7 +890,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailSubDataPropertyOfAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasCharacteristic"))),
@@ -917,7 +917,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SubDataPropertyOfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(6, inferences.Count);
@@ -949,7 +949,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailSubObjectPropertyOfAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -977,7 +977,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Olly")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SubObjectPropertyOfEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SubObjectPropertyOfEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(5, inferences.Count);
@@ -1005,7 +1005,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailSymmetricObjectPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -1027,7 +1027,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(2, inferences.Count);
@@ -1046,7 +1046,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailTransitiveObjectPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -1078,7 +1078,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() { Rules = [OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment] };
+            OWLReasoner reasoner = new OWLReasoner { Rules = [OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment] };
             List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
 
             Assert.AreEqual(6, inferences.Count);
@@ -1089,7 +1089,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public async Task ShouldEntailOntologyRulesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
@@ -1105,7 +1105,7 @@ namespace OWLSharp.Test.Reasoner
                     new SWRLRule(
                         new RDFPlainLiteral("SWRL1"),
                         new RDFPlainLiteral("This is a test SWRL rule"),
-                        new SWRLAntecedent()
+                        new SWRLAntecedent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -1113,7 +1113,7 @@ namespace OWLSharp.Test.Reasoner
                                     new SWRLVariableArgument(new RDFVariable("?P")))
                             ]
                         },
-                        new SWRLConsequent()
+                        new SWRLConsequent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -1149,7 +1149,7 @@ namespace OWLSharp.Test.Reasoner
                 new SWRLVariableArgument(new RDFVariable("?P")));
             SWRLBuiltInRegister.AddBuiltIn(builtIn);
 
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
@@ -1169,7 +1169,7 @@ namespace OWLSharp.Test.Reasoner
                     new SWRLRule(
                         new RDFPlainLiteral("SWRL1"),
                         new RDFPlainLiteral("This is a test SWRL rule"),
-                        new SWRLAntecedent()
+                        new SWRLAntecedent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -1178,7 +1178,7 @@ namespace OWLSharp.Test.Reasoner
                             ],
                             BuiltIns = [ builtInExec ]
                         },
-                        new SWRLConsequent()
+                        new SWRLConsequent
                         {
                             Atoms = [
                                 new SWRLClassAtom(

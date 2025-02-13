@@ -51,9 +51,7 @@ namespace OWLSharp.Ontology
                 List<OWLDataProperty> foundSubDataProperties = new List<OWLDataProperty>();
 
                 #region VisitContext
-                if (!visitContext.Contains(dataPropertyIRI.PatternMemberID))
-                    visitContext.Add(dataPropertyIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(dataPropertyIRI.PatternMemberID))
                     return foundSubDataProperties;
                 #endregion
 
@@ -103,9 +101,7 @@ namespace OWLSharp.Ontology
                 List<OWLDataProperty> foundSuperDataProperties = new List<OWLDataProperty>();
 
                 #region VisitContext
-                if (!visitContext.Contains(dtPropIRI.PatternMemberID))
-                    visitContext.Add(dtPropIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(dtPropIRI.PatternMemberID))
                     return foundSuperDataProperties;
                 #endregion
 
@@ -154,9 +150,7 @@ namespace OWLSharp.Ontology
                 List<OWLDataProperty> foundEquivalentDataProperties = new List<OWLDataProperty>();
 
                 #region VisitContext
-                if (!visitContext.Contains(dtPropIRI.PatternMemberID))
-                    visitContext.Add(dtPropIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(dtPropIRI.PatternMemberID))
                     return foundEquivalentDataProperties;
                 #endregion
 

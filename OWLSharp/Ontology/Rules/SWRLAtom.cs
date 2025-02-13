@@ -99,23 +99,35 @@ namespace OWLSharp.Ontology
             sb.Append(Predicate.ToSWRLString());
             sb.Append("(");
 
-            //Left Argument
-            if (LeftArgument is SWRLIndividualArgument leftArgumentIndividual)
-                sb.Append($"{RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
-            else if (LeftArgument is SWRLLiteralArgument leftArgumentLiteral)
-                sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
-            else if (LeftArgument is SWRLVariableArgument leftArgumentVariable)
-                sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
+            switch (LeftArgument)
+            {
+                //Left Argument
+                case SWRLIndividualArgument leftArgumentIndividual:
+                    sb.Append($"{RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
+                    break;
+                case SWRLLiteralArgument leftArgumentLiteral:
+                    sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
+                    break;
+                case SWRLVariableArgument leftArgumentVariable:
+                    sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
+                    break;
+            }
             
             //Right Argument
             if (RightArgument != null)
             {
-                if (RightArgument is SWRLIndividualArgument rightArgumentIndividual)
-                    sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentIndividual.GetResource().URI)}");
-                else if (RightArgument is SWRLLiteralArgument rightArgumentLiteral)
-                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
-                else if (RightArgument is SWRLVariableArgument rightArgumentVariable)
-                    sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
+                switch (RightArgument)
+                {
+                    case SWRLIndividualArgument rightArgumentIndividual:
+                        sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentIndividual.GetResource().URI)}");
+                        break;
+                    case SWRLLiteralArgument rightArgumentLiteral:
+                        sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
+                        break;
+                    case SWRLVariableArgument rightArgumentVariable:
+                        sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
+                        break;
+                }
             }
 
             sb.Append(")");

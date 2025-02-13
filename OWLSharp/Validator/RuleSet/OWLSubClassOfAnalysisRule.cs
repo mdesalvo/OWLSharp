@@ -63,85 +63,92 @@ namespace OWLSharp.Validator
                     foreach (OWLIndividualExpression individual in individualsCache[subClassIRI])
                     {
                         RDFResource individualIRI = individual.GetIRI();
-                        if (subClassOf.SuperClassExpression is OWLObjectExactCardinality objExactCardinality)
+                        switch (subClassOf.SuperClassExpression)
                         {
-                            #region Qualified
-                            string qClassIRI = objExactCardinality.ClassExpression?.GetIRI().ToString();
-                            bool isQualified = !string.IsNullOrEmpty(qClassIRI);
-                            if (isQualified)
+                            case OWLObjectExactCardinality objExactCardinality:
                             {
-                                //Materialize individuals of the qualified class                                
-                                if (!individualsCache.ContainsKey(qClassIRI))
-                                    individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objExactCardinality.ClassExpression, false));
-                            }
-                            #endregion
+                                #region Qualified
+                                string qClassIRI = objExactCardinality.ClassExpression?.GetIRI().ToString();
+                                bool isQualified = !string.IsNullOrEmpty(qClassIRI);
+                                if (isQualified)
+                                {
+                                    //Materialize individuals of the qualified class                                
+                                    if (!individualsCache.ContainsKey(qClassIRI))
+                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objExactCardinality.ClassExpression, false));
+                                }
+                                #endregion
 
-                            int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
-                                                                    && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinality.ObjectPropertyExpression.GetIRI())
-                                                                    && (!isQualified || individualsCache[qClassIRI].Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
-                            if (asnsCount > int.Parse(objExactCardinality.Cardinality))
-                                issues.Add(new OWLIssue(
-                                    OWLEnums.OWLIssueSeverity.Error, 
-                                    rulename, 
-                                    $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
-                                    rulesugg2));
-                        }
-                        else if (subClassOf.SuperClassExpression is OWLObjectMaxCardinality objMaxCardinality)
-                        {
-                            #region Qualified
-                            string qClassIRI = objMaxCardinality.ClassExpression?.GetIRI().ToString();
-                            bool isQualified = !string.IsNullOrEmpty(qClassIRI);
-                            if (isQualified)
+                                int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
+                                                                      && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinality.ObjectPropertyExpression.GetIRI())
+                                                                      && (!isQualified || individualsCache[qClassIRI].Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
+                                if (asnsCount > int.Parse(objExactCardinality.Cardinality))
+                                    issues.Add(new OWLIssue(
+                                        OWLEnums.OWLIssueSeverity.Error, 
+                                        rulename, 
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        rulesugg2));
+                                break;
+                            }
+                            case OWLObjectMaxCardinality objMaxCardinality:
                             {
-                                //Materialize individuals of the qualified class                                
-                                if (!individualsCache.ContainsKey(qClassIRI))
-                                    individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objMaxCardinality.ClassExpression, false));
+                                #region Qualified
+                                string qClassIRI = objMaxCardinality.ClassExpression?.GetIRI().ToString();
+                                bool isQualified = !string.IsNullOrEmpty(qClassIRI);
+                                if (isQualified)
+                                {
+                                    //Materialize individuals of the qualified class                                
+                                    if (!individualsCache.ContainsKey(qClassIRI))
+                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objMaxCardinality.ClassExpression, false));
+                                }
+                                #endregion
+
+                                int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
+                                                                      && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinality.ObjectPropertyExpression.GetIRI())
+                                                                      && (!isQualified || individualsCache[qClassIRI].Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
+                                if (asnsCount > int.Parse(objMaxCardinality.Cardinality))
+                                    issues.Add(new OWLIssue(
+                                        OWLEnums.OWLIssueSeverity.Error, 
+                                        rulename, 
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        rulesugg2));
+                                break;
                             }
-                            #endregion
+                            case OWLDataExactCardinality dtExactCardinality:
+                            {
+                                #region Qualified
+                                string qDataRangeIRI = dtExactCardinality.DataRangeExpression?.GetIRI().ToString();
+                                bool isQualified = !string.IsNullOrEmpty(qDataRangeIRI);
+                                #endregion
 
-                            int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
-                                                                    && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinality.ObjectPropertyExpression.GetIRI())
-                                                                    && (!isQualified || individualsCache[qClassIRI].Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
-                            if (asnsCount > int.Parse(objMaxCardinality.Cardinality))
-                                issues.Add(new OWLIssue(
-                                    OWLEnums.OWLIssueSeverity.Error, 
-                                    rulename, 
-                                    $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
-                                    rulesugg2));
-                        }
-                        else if (subClassOf.SuperClassExpression is OWLDataExactCardinality dtExactCardinality)
-                        {
-                            #region Qualified
-                            string qDataRangeIRI = dtExactCardinality.DataRangeExpression?.GetIRI().ToString();
-                            bool isQualified = !string.IsNullOrEmpty(qDataRangeIRI);
-                            #endregion
+                                int asnsCount = dpAsns.Count(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
+                                                                      && dpAsn.DataProperty.GetIRI().Equals(dtExactCardinality.DataProperty.GetIRI())
+                                                                      && (!isQualified || ontology.CheckIsLiteralOf(dtExactCardinality.DataRangeExpression, dpAsn.Literal)));
+                                if (asnsCount > int.Parse(dtExactCardinality.Cardinality))
+                                    issues.Add(new OWLIssue(
+                                        OWLEnums.OWLIssueSeverity.Error, 
+                                        rulename, 
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        rulesugg3));
+                                break;
+                            }
+                            case OWLDataMaxCardinality dtMaxCardinality:
+                            {
+                                #region Qualified
+                                string qDataRangeIRI = dtMaxCardinality.DataRangeExpression?.GetIRI().ToString();
+                                bool isQualified = !string.IsNullOrEmpty(qDataRangeIRI);
+                                #endregion
 
-                            int asnsCount = dpAsns.Count(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
-                                                                    && dpAsn.DataProperty.GetIRI().Equals(dtExactCardinality.DataProperty.GetIRI())
-                                                                    && (!isQualified || ontology.CheckIsLiteralOf(dtExactCardinality.DataRangeExpression, dpAsn.Literal)));
-                            if (asnsCount > int.Parse(dtExactCardinality.Cardinality))
-                                issues.Add(new OWLIssue(
-                                    OWLEnums.OWLIssueSeverity.Error, 
-                                    rulename, 
-                                    $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
-                                    rulesugg3));
-                        }
-                        else if (subClassOf.SuperClassExpression is OWLDataMaxCardinality dtMaxCardinality)
-                        {
-                            #region Qualified
-                            string qDataRangeIRI = dtMaxCardinality.DataRangeExpression?.GetIRI().ToString();
-                            bool isQualified = !string.IsNullOrEmpty(qDataRangeIRI);
-                            #endregion
-
-                            int asnsCount = dpAsns.Count(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
-                                                                    && dpAsn.DataProperty.GetIRI().Equals(dtMaxCardinality.DataProperty.GetIRI())
-                                                                    && (!isQualified || ontology.CheckIsLiteralOf(dtMaxCardinality.DataRangeExpression, dpAsn.Literal)));
-                            if (asnsCount > int.Parse(dtMaxCardinality.Cardinality))
-                                issues.Add(new OWLIssue(
-                                    OWLEnums.OWLIssueSeverity.Error, 
-                                    rulename, 
-                                    $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
-                                    rulesugg3));
+                                int asnsCount = dpAsns.Count(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
+                                                                      && dpAsn.DataProperty.GetIRI().Equals(dtMaxCardinality.DataProperty.GetIRI())
+                                                                      && (!isQualified || ontology.CheckIsLiteralOf(dtMaxCardinality.DataRangeExpression, dpAsn.Literal)));
+                                if (asnsCount > int.Parse(dtMaxCardinality.Cardinality))
+                                    issues.Add(new OWLIssue(
+                                        OWLEnums.OWLIssueSeverity.Error, 
+                                        rulename, 
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        rulesugg3));
+                                break;
+                            }
                         }
                     }
                 }

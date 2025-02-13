@@ -37,9 +37,9 @@ namespace OWLSharp.Extensions.TIME
         #region Ctors
         static TIMEReferenceSystemRegistry()
         {
-            Instance = new TIMEReferenceSystemRegistry()
+            Instance = new TIMEReferenceSystemRegistry
             { 
-                TRS = new Dictionary<string, TIMEReferenceSystem>()
+                TRS = new Dictionary<string, TIMEReferenceSystem>
                 {
                     //Calendar TRS
                     { TIMECalendarReferenceSystem.Gregorian.ToString(), TIMECalendarReferenceSystem.Gregorian },

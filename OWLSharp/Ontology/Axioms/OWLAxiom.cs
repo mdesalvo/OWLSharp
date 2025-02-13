@@ -120,7 +120,7 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLAssertionAxiom() : base() { }
         #endregion
-    };
+    }
 
     public class OWLAnnotationAxiom : OWLAxiom
     {

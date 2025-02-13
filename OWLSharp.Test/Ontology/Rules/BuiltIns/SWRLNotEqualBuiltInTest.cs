@@ -175,7 +175,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<SWRLException>(() =>
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#example",
                     Arguments = [
@@ -186,7 +186,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on bad-formed builtIn
             Assert.ThrowsException<SWRLException>(() => 
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
                     Arguments = [
@@ -203,7 +203,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Rows.Add("http://example.org/test");
             antecedentResults.Rows.Add("http://example.org/test2");
 
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
                 Arguments = [
@@ -227,7 +227,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Columns.Add("?Y");
             antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
             
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
                 Arguments = [
@@ -251,7 +251,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Columns.Add("?X");
             antecedentResults.Rows.Add("http://example.org/test1");
 
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
                 Arguments = [
@@ -275,7 +275,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Columns.Add("?X");
             antecedentResults.Rows.Add("-2^^http://www.w3.org/2001/XMLSchema#int");
             
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
                 Arguments = [

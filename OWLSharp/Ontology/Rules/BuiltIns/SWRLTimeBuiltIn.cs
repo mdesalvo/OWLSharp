@@ -36,82 +36,107 @@ namespace OWLSharp.Ontology
 
             #region LeftArgument
             RDFPatternMember leftPatternMember = null;
-            if (builtInArguments[0] is SWRLVariableArgument leftArgVar)
+            switch (builtInArguments[0])
             {
-                #region Guards
-                string leftArgVarName = leftArgVar.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(leftArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument leftArgVar:
+                {
+                    #region Guards
+                    string leftArgVarName = leftArgVar.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(leftArgVarName))
+                        return true;
+                    #endregion
 
-                leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[leftArgVarName].ToString());
+                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[leftArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument leftArgLit:
+                    leftPatternMember = leftArgLit.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[0] is SWRLLiteralArgument leftArgLit)
-                leftPatternMember = leftArgLit.GetLiteral();
             #endregion
 
             #region RightArgument (HOUR)
             RDFPatternMember rightPatternMemberHOUR = null;
-            if (builtInArguments[1] is SWRLVariableArgument rightArgVarHOUR)
+            switch (builtInArguments[1])
             {
-                #region Guards
-                string rightArgVarName = rightArgVarHOUR.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument rightArgVarHOUR:
+                {
+                    #region Guards
+                    string rightArgVarName = rightArgVarHOUR.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                        return true;
+                    #endregion
 
-                rightPatternMemberHOUR = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberHOUR = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument rightArgLitHOUR:
+                    rightPatternMemberHOUR = rightArgLitHOUR.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[1] is SWRLLiteralArgument rightArgLitHOUR)
-                rightPatternMemberHOUR = rightArgLitHOUR.GetLiteral();
             #endregion
 
             #region RightArgument (MINUTE)
             RDFPatternMember rightPatternMemberMINUTE = null;
-            if (builtInArguments[2] is SWRLVariableArgument rightArgVarMINUTE)
+            switch (builtInArguments[2])
             {
-                #region Guards
-                string rightArgVarName = rightArgVarMINUTE.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument rightArgVarMINUTE:
+                {
+                    #region Guards
+                    string rightArgVarName = rightArgVarMINUTE.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                        return true;
+                    #endregion
 
-                rightPatternMemberMINUTE = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberMINUTE = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument rightArgLitMINUTE:
+                    rightPatternMemberMINUTE = rightArgLitMINUTE.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[2] is SWRLLiteralArgument rightArgLitMINUTE)
-                rightPatternMemberMINUTE = rightArgLitMINUTE.GetLiteral();
             #endregion
 
             #region RightArgument (SECOND)
             RDFPatternMember rightPatternMemberSECOND = null;
-            if (builtInArguments[3] is SWRLVariableArgument rightArgVarSECOND)
+            switch (builtInArguments[3])
             {
-                #region Guards
-                string rightArgVarName = rightArgVarSECOND.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument rightArgVarSECOND:
+                {
+                    #region Guards
+                    string rightArgVarName = rightArgVarSECOND.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                        return true;
+                    #endregion
 
-                rightPatternMemberSECOND = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberSECOND = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument rightArgLitSECOND:
+                    rightPatternMemberSECOND = rightArgLitSECOND.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[3] is SWRLLiteralArgument rightArgLitSECOND)
-                rightPatternMemberSECOND = rightArgLitSECOND.GetLiteral();
             #endregion
 
             #region RightArgument (TZ)
             RDFPatternMember rightPatternMemberTZ = null;
-            if (builtInArguments[4] is SWRLVariableArgument rightArgVarTZ)
+            switch (builtInArguments[4])
             {
-                #region Guards
-                string rightArgVarName = rightArgVarTZ.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument rightArgVarTZ:
+                {
+                    #region Guards
+                    string rightArgVarName = rightArgVarTZ.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                        return true;
+                    #endregion
 
-                rightPatternMemberTZ = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberTZ = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument rightArgLitTZ:
+                    rightPatternMemberTZ = rightArgLitTZ.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[4] is SWRLLiteralArgument rightArgLitTZ)
-                rightPatternMemberTZ = rightArgLitTZ.GetLiteral();
             #endregion
 
             //This is a datetime builtIn, so ensure to have information compatible with "date/datetime" semantic

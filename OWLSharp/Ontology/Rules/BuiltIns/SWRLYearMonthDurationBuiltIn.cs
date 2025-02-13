@@ -37,50 +37,65 @@ namespace OWLSharp.Ontology
 
             #region LeftArgument
             RDFPatternMember leftPatternMember = null;
-            if (builtInArguments[0] is SWRLVariableArgument leftArgVar)
+            switch (builtInArguments[0])
             {
-                #region Guards
-                string leftArgVarName = leftArgVar.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(leftArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument leftArgVar:
+                {
+                    #region Guards
+                    string leftArgVarName = leftArgVar.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(leftArgVarName))
+                        return true;
+                    #endregion
 
-                leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[leftArgVarName].ToString());
+                    leftPatternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[leftArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument leftArgLit:
+                    leftPatternMember = leftArgLit.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[0] is SWRLLiteralArgument leftArgLit)
-                leftPatternMember = leftArgLit.GetLiteral();
             #endregion
 
             #region RightArgument (YEAR)
             RDFPatternMember rightPatternMemberYEAR = null;
-            if (builtInArguments[1] is SWRLVariableArgument rightArgVarYEAR)
+            switch (builtInArguments[1])
             {
-                #region Guards
-                string rightArgVarName = rightArgVarYEAR.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument rightArgVarYEAR:
+                {
+                    #region Guards
+                    string rightArgVarName = rightArgVarYEAR.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                        return true;
+                    #endregion
 
-                rightPatternMemberYEAR = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberYEAR = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument rightArgLitYEAR:
+                    rightPatternMemberYEAR = rightArgLitYEAR.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[1] is SWRLLiteralArgument rightArgLitYEAR)
-                rightPatternMemberYEAR = rightArgLitYEAR.GetLiteral();
             #endregion
 
             #region RightArgument (MONTH)
             RDFPatternMember rightPatternMemberMONTH = null;
-            if (builtInArguments[2] is SWRLVariableArgument rightArgVarMONTH)
+            switch (builtInArguments[2])
             {
-                #region Guards
-                string rightArgVarName = rightArgVarMONTH.GetVariable().ToString();
-                if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
-                    return true;
-                #endregion
+                case SWRLVariableArgument rightArgVarMONTH:
+                {
+                    #region Guards
+                    string rightArgVarName = rightArgVarMONTH.GetVariable().ToString();
+                    if (!antecedentResultsRow.Table.Columns.Contains(rightArgVarName))
+                        return true;
+                    #endregion
 
-                rightPatternMemberMONTH = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    rightPatternMemberMONTH = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[rightArgVarName].ToString());
+                    break;
+                }
+                case SWRLLiteralArgument rightArgLitMONTH:
+                    rightPatternMemberMONTH = rightArgLitMONTH.GetLiteral();
+                    break;
             }
-            else if (builtInArguments[2] is SWRLLiteralArgument rightArgLitMONTH)
-                rightPatternMemberMONTH = rightArgLitMONTH.GetLiteral();
             #endregion
 
             //This is a datetime builtIn, so ensure to have information compatible with "date/datetime" semantic

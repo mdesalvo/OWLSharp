@@ -29,7 +29,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCreateBuiltIn()
         {
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://example.org/testBuiltIn",
                 Arguments = [
@@ -112,7 +112,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldThrowExceptionOnEvaluatingBuiltInOnAntecedentBecauseUnknownIRI()
         {
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://example.org/testBuiltIn",
                 Arguments = [
@@ -151,7 +151,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldExportBuiltinToRDFGraph()
         {
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://example.org/testBuiltIn",
                 Arguments = [

@@ -37,9 +37,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule prefRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSPreferredLabelAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for duplicate language tags detected for values assumed by a skos:Concept in its skos:prefLabel data annotations"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -53,7 +53,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C")),
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL_2")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL_1")),
@@ -63,9 +63,9 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL_2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(SKOSValidator.ViolationIRI),
@@ -88,9 +88,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule prefXLRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSPreferredLabelAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for duplicate language tags detected for values assumed by a skos:Concept in its skosxl:prefLabel data relations"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -112,7 +112,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?PL2")),
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL_2")))
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?PL1")),
@@ -125,9 +125,9 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?PREF_LABEL_2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(SKOSValidator.ViolationIRI),

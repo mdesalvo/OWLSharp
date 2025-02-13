@@ -33,7 +33,7 @@ namespace OWLSharp.Reasoner
                 List<OWLClassExpression> disjointClasses = ontology.GetDisjointClasses(declaredClass);
                 foreach (OWLClassExpression disjointClass in disjointClasses)
                 {
-                    OWLDisjointClasses inference = new OWLDisjointClasses(new List<OWLClassExpression>() { declaredClass, disjointClass }) { IsInference=true };
+                    OWLDisjointClasses inference = new OWLDisjointClasses(new List<OWLClassExpression> { declaredClass, disjointClass }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
                 }    

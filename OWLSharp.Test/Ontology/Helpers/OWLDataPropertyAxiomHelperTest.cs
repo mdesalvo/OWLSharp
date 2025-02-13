@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDataPropertyAxioms()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(new OWLDataProperty(RDFVocabulary.DC.DCTERMS.TITLE), new OWLDataProperty(RDFVocabulary.DC.TITLE)),
@@ -84,7 +84,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubDataPropertiesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
@@ -122,7 +122,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubDataPropertiesOfWithEquivalentDataPropertiesDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
@@ -155,7 +155,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperDataPropertiesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
@@ -193,7 +193,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperDataPropertiesOfWithEquivalentDataPropertiesDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp1"))),
@@ -226,7 +226,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetEquivalentDataProperties()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLEquivalentDataProperties([ new OWLDataProperty(new RDFResource("ex:Dtp1")), new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp3")) ]),
@@ -270,7 +270,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDisjointDataProperties()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLDisjointDataProperties([ new OWLDataProperty(new RDFResource("ex:Dtp1")), new OWLDataProperty(new RDFResource("ex:Dtp2")), new OWLDataProperty(new RDFResource("ex:Dtp3")) ]),
@@ -312,7 +312,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasFunctionalDataProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:FuncDtp"))),

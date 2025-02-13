@@ -37,16 +37,24 @@ namespace OWLSharp.Ontology
             if (reasoner != null)
                 foreach (OWLInference inference in await reasoner.ApplyToOntologyAsync(ontology))
                 {
-                    if (inference.Axiom is OWLAssertionAxiom asnAx)
-                        ontology.DeclareAssertionAxiom(asnAx);
-                    else if (inference.Axiom is OWLClassAxiom clsAx)
-                        ontology.DeclareClassAxiom(clsAx);
-                    else if (inference.Axiom is OWLDataPropertyAxiom dpAx)
-                        ontology.DeclareDataPropertyAxiom(dpAx);
-                    else if (inference.Axiom is OWLObjectPropertyAxiom opAx)
-                        ontology.DeclareObjectPropertyAxiom(opAx);
-                    else if (inference.Axiom is OWLAnnotationAxiom annAx)
-                        ontology.DeclareAnnotationAxiom(annAx);
+                    switch (inference.Axiom)
+                    {
+                        case OWLAssertionAxiom asnAx:
+                            ontology.DeclareAssertionAxiom(asnAx);
+                            break;
+                        case OWLClassAxiom clsAx:
+                            ontology.DeclareClassAxiom(clsAx);
+                            break;
+                        case OWLDataPropertyAxiom dpAx:
+                            ontology.DeclareDataPropertyAxiom(dpAx);
+                            break;
+                        case OWLObjectPropertyAxiom opAx:
+                            ontology.DeclareObjectPropertyAxiom(opAx);
+                            break;
+                        case OWLAnnotationAxiom annAx:
+                            ontology.DeclareAnnotationAxiom(annAx);
+                            break;
+                    }
                 }
 
             //Export ontology to graph (with support for inferences and imports)

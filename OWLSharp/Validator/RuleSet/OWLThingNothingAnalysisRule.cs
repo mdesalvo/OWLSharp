@@ -32,20 +32,20 @@ namespace OWLSharp.Validator
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected class axioms causing reserved owl:Thing class to not be the root entity of the ontology",
+                    "Detected class axioms causing reserved owl:Thing class to not be the root entity of the ontology",
                     rulesuggT1));
 
             if (ontology.GetSubClassesOf(new OWLClass(RDFVocabulary.OWL.NOTHING)).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Warning,
                     rulename,
-                    $"Detected class axioms causing reserved owl:Nothing class to not be the bottom entity of the ontology",
+                    "Detected class axioms causing reserved owl:Nothing class to not be the bottom entity of the ontology",
                     rulesuggN1));
             if (ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.OWL.NOTHING)).Count > 0)
                 issues.Add(new OWLIssue(
                     OWLEnums.OWLIssueSeverity.Error,
                     rulename,
-                    $"Violated owl:Nothing class having individuals",
+                    "Violated owl:Nothing class having individuals",
                     rulesuggN2));
 
             return issues;

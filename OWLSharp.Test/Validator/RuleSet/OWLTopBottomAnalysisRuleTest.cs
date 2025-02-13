@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeTopBottomT1Case()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(
@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeTopBottomT2Case()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(
@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeTopBottomB1Case()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeTopBottomB2Case()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(

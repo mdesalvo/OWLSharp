@@ -28,7 +28,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetObjectPropertyAxioms()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(new OWLObjectPropertyChain([ new OWLObjectProperty(new RDFResource("ex:hasFather")), new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]), new OWLObjectProperty(new RDFResource("ex:hasUncle"))),
@@ -112,7 +112,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubObjectPropertiesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))),
@@ -150,7 +150,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubObjectPropertiesOfWithEquivalentObjectPropertiesDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))),
@@ -183,7 +183,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperObjectPropertiesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))),
@@ -221,7 +221,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperObjectPropertiesOfWithEquivalentObjectPropertiesDiscovery()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))),
@@ -254,7 +254,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetEquivalentObjectProperties()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLEquivalentObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp3")) ]),
@@ -298,7 +298,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDisjointObjectProperties()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLDisjointObjectProperties([ new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp3")) ]),
@@ -340,7 +340,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasFunctionalObjectProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:FuncObp"))),
@@ -358,7 +358,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasInverseFunctionalObjectProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:InvFuncObp"))),
@@ -376,7 +376,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasSymmetricObjectProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:SymObp"))),
@@ -394,7 +394,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasAsymmetricObjectProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("ex:AsymObp"))),
@@ -412,7 +412,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasReflexiveObjectProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLReflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:ReflObp"))),
@@ -430,7 +430,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasIrreflexiveObjectProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:IrreflObp"))),
@@ -448,7 +448,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldCheckHasTransitiveObjectProperty()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:TransObp"))),

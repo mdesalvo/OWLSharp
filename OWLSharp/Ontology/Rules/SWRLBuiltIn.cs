@@ -68,10 +68,10 @@ namespace OWLSharp.Ontology
         //Official BuiltIns
 
         public static SWRLBuiltIn Abs(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#abs",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:abs builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:abs builtIn because: right argument is null")
@@ -79,19 +79,19 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Add(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#add",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:add builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:add builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:add builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn BooleanNot(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#booleanNot",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:booleanNot builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:booleanNot builtIn because: right argument is null")
@@ -99,10 +99,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Ceiling(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#ceiling",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:ceiling builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:ceiling builtIn because: right argument is null")
@@ -110,10 +110,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Contains(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#contains",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:contains builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:contains builtIn because: right argument is null")
@@ -121,10 +121,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn ContainsIgnoreCase(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#containsIgnoreCase",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:containsIgnoreCase builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:containsIgnoreCase builtIn because: right argument is null")
@@ -132,10 +132,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Cos(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#cos",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:cos builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:cos builtIn because: right argument is null")
@@ -143,46 +143,46 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Date(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#date",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:date builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:date builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:date builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn DateTime(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#dateTime",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:dateTime builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:dateTime builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:dateTime builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn DayTimeDuration(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#dayTimeDuration",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:dayTimeDuration builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:dayTimeDuration builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:dayTimeDuration builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Divide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#divide",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:divide builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:divide builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:divide builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn EndsWith(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#endsWith",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:endsWith builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:endsWith builtIn because: right argument is null")
@@ -190,10 +190,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Equal(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#equal",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:equal builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:equal builtIn because: right argument is null")
@@ -201,10 +201,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Floor(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#floor",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:floor builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:floor builtIn because: right argument is null")
@@ -212,141 +212,141 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn GreaterThan(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#greaterThan",
-                    Arguments = new List<SWRLArgument>()
-                        {
+                    Arguments = new List<SWRLArgument>
+                    {
                             leftArg ?? throw new SWRLException("Cannot create swrlb:greaterThan builtIn because: left argument is null"),
                             rightArg ?? throw new SWRLException("Cannot create swrlb:greaterThan builtIn because: right argument is null")
                         }
                 };
 
         public static SWRLBuiltIn GreaterThanOrEqual(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#greaterThanOrEqual",
-                    Arguments = new List<SWRLArgument>()
-                        {
+                    Arguments = new List<SWRLArgument>
+                    {
                             leftArg ?? throw new SWRLException("Cannot create swrlb:greaterThanOrEqual builtIn because: left argument is null"),
                             rightArg ?? throw new SWRLException("Cannot create swrlb:greaterThanOrEqual builtIn because: right argument is null")
                         }
                 };
 
         public static SWRLBuiltIn IntegerDivide(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#integerDivide",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:integerDivide builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:integerDivide builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:integerDivide builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn LessThan(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#lessThan",
-                    Arguments = new List<SWRLArgument>()
-                        {
+                    Arguments = new List<SWRLArgument>
+                    {
                             leftArg ?? throw new SWRLException("Cannot create swrlb:lessThan builtIn because: left argument is null"),
                             rightArg ?? throw new SWRLException("Cannot create swrlb:lessThan builtIn because: right argument is null")
                         }
                 };
 
         public static SWRLBuiltIn LessThanOrEqual(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#lessThanOrEqual",
-                    Arguments = new List<SWRLArgument>()
-                        {
+                    Arguments = new List<SWRLArgument>
+                    {
                             leftArg ?? throw new SWRLException("Cannot create swrlb:lessThanOrEqual builtIn because: left argument is null"),
                             rightArg ?? throw new SWRLException("Cannot create swrlb:lessThanOrEqual builtIn because: right argument is null")
                         }
                 };
 
         public static SWRLBuiltIn LowerCase(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#lowerCase",
-                    Arguments = new List<SWRLArgument>()
-                        {
+                    Arguments = new List<SWRLArgument>
+                    {
                             leftArg ?? throw new SWRLException("Cannot create swrlb:lowerCase builtIn because: left argument is null"),
                             rightArg ?? throw new SWRLException("Cannot create swrlb:lowerCase builtIn because: right argument is null")
                         }
                 };
 
         public static SWRLBuiltIn Matches(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#matches",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:matches builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:matches builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:matches builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Mod(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#mod",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:mod builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:mod builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:mod builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Multiply(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#multiply",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:multiply builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:multiply builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:multiply builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn NormalizeSpace(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#normalizeSpace",
-                    Arguments = new List<SWRLArgument>()
-                        {
+                    Arguments = new List<SWRLArgument>
+                    {
                             leftArg ?? throw new SWRLException("Cannot create swrlb:normalizeSpace builtIn because: left argument is null"),
                             rightArg ?? throw new SWRLException("Cannot create swrlb:normalizeSpace builtIn because: right argument is null")
                         }
                 };
 
         public static SWRLBuiltIn NotEqual(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#notEqual",
-                    Arguments = new List<SWRLArgument>()
-                        {
+                    Arguments = new List<SWRLArgument>
+                    {
                             leftArg ?? throw new SWRLException("Cannot create swrlb:notEqual builtIn because: left argument is null"),
                             rightArg ?? throw new SWRLException("Cannot create swrlb:notEqual builtIn because: right argument is null")
                         }
                 };
 
         public static SWRLBuiltIn Pow(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#pow",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:pow builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:pow builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:pow builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Replace(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#replace",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:replace builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:replace builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:replace builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Round(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#round",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:round builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:round builtIn because: right argument is null")
@@ -354,10 +354,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn RoundHalfToEven(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#roundHalfToEven",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:roundHalfToEven builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:roundHalfToEven builtIn because: right argument is null")
@@ -365,10 +365,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Sin(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#sin",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:sin builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:sin builtIn because: right argument is null")
@@ -376,10 +376,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn StartsWith(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#startsWith",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:startsWith builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:startsWith builtIn because: right argument is null")
@@ -387,19 +387,19 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn StringConcat(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#stringConcat",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:stringConcat builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:stringConcat builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:stringConcat builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn StringEqualIgnoreCase(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:stringEqualIgnoreCase builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:stringEqualIgnoreCase builtIn because: right argument is null")
@@ -407,10 +407,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn StringLength(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#stringLength",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:stringLength builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:stringLength builtIn because: right argument is null")
@@ -418,46 +418,46 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Substring(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#substring",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:substring builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:substring builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:substring builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn SubstringAfter(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            => new SWRLBuiltIn()
+            => new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#substringAfter",
                 Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:substringAfter builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:substringAfter builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:substringAfter builtIn because: right arguments are null")).ToList()
             };
 
         public static SWRLBuiltIn SubstringBefore(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#substringBefore",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:substringBefore builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:substringBefore builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:substringBefore builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Subtract(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#subtract",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:subtract builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:subtract builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:subtract builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn Tan(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#tan",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:tan builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:tan builtIn because: right argument is null")
@@ -465,19 +465,19 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn Time(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#time",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:time builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:time builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:time builtIn because: right arguments are null")).ToList()
                 };
 
         public static SWRLBuiltIn UnaryMinus(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#unaryMinus",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:unaryMinus builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:unaryMinus builtIn because: right argument is null")
@@ -485,10 +485,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn UnaryPlus(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#unaryPlus",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:unaryPlus builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:unaryPlus builtIn because: right argument is null")
@@ -496,10 +496,10 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn UpperCase(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#upperCase",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create swrlb:upperCase builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create swrlb:upperCase builtIn because: right argument is null")
@@ -507,21 +507,21 @@ namespace OWLSharp.Ontology
                 };
 
         public static SWRLBuiltIn YearMonthDuration(SWRLArgument leftArg, params SWRLArgument[] rightArgs)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "http://www.w3.org/2003/11/swrlb#yearMonthDuration",
                     Arguments = Enumerable.Concat(
-                        new List<SWRLArgument>() { leftArg ?? throw new SWRLException("Cannot create swrlb:yearMonthDuration builtIn because: left argument is null") },
+                        new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:yearMonthDuration builtIn because: left argument is null") },
                         rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:yearMonthDuration builtIn because: right arguments are null")).ToList()
                 };
         
         //Extension BuiltIns
 
         public static SWRLBuiltIn EXTLangMatches(SWRLArgument leftArg, SWRLArgument rightArg)
-            =>  new SWRLBuiltIn()
-                {
+            =>  new SWRLBuiltIn
+            {
                     IRI = "https://github.com/mdesalvo/OWLSharp#langMatches",
-                    Arguments = new List<SWRLArgument>()
+                    Arguments = new List<SWRLArgument>
                     {
                         leftArg ?? throw new SWRLException("Cannot create owlsharp:langMatches builtIn because: left argument is null"),
                         rightArg ?? throw new SWRLException("Cannot create owlsharp:langMatches builtIn because: right argument is null")
@@ -555,12 +555,18 @@ namespace OWLSharp.Ontology
                 if (i>0)
                     sb.Append(',');
 
-                if (Arguments[i] is SWRLIndividualArgument leftArgumentIndividual)
-                    sb.Append($"{RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
-                else if (Arguments[i] is SWRLLiteralArgument leftArgumentLiteral)
-                    sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
-                else if (Arguments[i] is SWRLVariableArgument leftArgumentVariable)
-                    sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
+                switch (Arguments[i])
+                {
+                    case SWRLIndividualArgument leftArgumentIndividual:
+                        sb.Append($"{RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
+                        break;
+                    case SWRLLiteralArgument leftArgumentLiteral:
+                        sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
+                        break;
+                    case SWRLVariableArgument leftArgumentVariable:
+                        sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
+                        break;
+                }
             }
 
             sb.Append(")");
@@ -743,15 +749,17 @@ namespace OWLSharp.Ontology
                         filteredTable.Rows.Add(newRow);
                     }
                 }
-                catch (Exception ex) 
-                { 
-                    /* This exception is for unsupported (or not yet implemented) builtIns */
-                    if (ex is NotImplementedException nex)
-                        throw new SWRLException($"Cannot evaluate SWRL builtIn because: {nex.Message}", nex);
-                    /* This exception is for builtIns violating required n-arity of arguments */
-                    if (ex is ArgumentException aex)
-                        throw new SWRLException($"Cannot evaluate SWRL builtIn with IRI {IRI} because: {aex.Message}", aex);
-
+                catch (Exception ex)
+                {
+                    switch (ex)
+                    {
+                        /* This exception is for unsupported (or not yet implemented) builtIns */
+                        case NotImplementedException nex:
+                            throw new SWRLException($"Cannot evaluate SWRL builtIn because: {nex.Message}", nex);
+                        /* This exception is for builtIns violating required n-arity of arguments */
+                        case ArgumentException aex:
+                            throw new SWRLException($"Cannot evaluate SWRL builtIn with IRI {IRI} because: {aex.Message}", aex);
+                    }
                     /* NO-OP for every other recoverable situations */
                 }
 
@@ -770,16 +778,22 @@ namespace OWLSharp.Ontology
 
             RDFCollection builtinArguments = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource, true);
             foreach (SWRLArgument argument in Arguments)
-                if (argument is SWRLVariableArgument argVar)
+                switch (argument)
                 {
-                    RDFResource argVarIRI = new RDFResource(argVar.IRI);
-                    builtinArguments.AddItemInternal(argVarIRI);
-                    graph.AddTriple(new RDFTriple(argVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
-                }   
-                else if (argument is SWRLIndividualArgument argIdv)
-                    builtinArguments.AddItemInternal(argIdv.GetResource());
-                else if (argument is SWRLLiteralArgument argLit)
-                    builtinArguments.AddItemInternal(argLit.GetLiteral());
+                    case SWRLVariableArgument argVar:
+                    {
+                        RDFResource argVarIRI = new RDFResource(argVar.IRI);
+                        builtinArguments.AddItemInternal(argVarIRI);
+                        graph.AddTriple(new RDFTriple(argVarIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE));
+                        break;
+                    }
+                    case SWRLIndividualArgument argIdv:
+                        builtinArguments.AddItemInternal(argIdv.GetResource());
+                        break;
+                    case SWRLLiteralArgument argLit:
+                        builtinArguments.AddItemInternal(argLit.GetLiteral());
+                        break;
+                }
             graph = graph.UnionWith(SWRLRule.ReifySWRLCollection(builtinArguments, false));
             graph.AddTriple(new RDFTriple(builtinBN, RDFVocabulary.SWRL.ARGUMENTS, builtinArguments.ReificationSubject));
 

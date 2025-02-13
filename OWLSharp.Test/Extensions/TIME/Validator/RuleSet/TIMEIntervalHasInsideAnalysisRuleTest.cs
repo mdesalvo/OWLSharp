@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -105,7 +105,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -153,7 +153,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -201,7 +201,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -249,7 +249,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -297,7 +297,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -345,7 +345,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -393,7 +393,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -441,7 +441,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -489,7 +489,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -537,7 +537,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
@@ -585,7 +585,7 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
             ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
                 { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                 { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }

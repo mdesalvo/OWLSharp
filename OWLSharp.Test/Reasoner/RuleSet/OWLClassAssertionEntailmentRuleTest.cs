@@ -27,7 +27,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailClassAssertionOnSimpleSubClassOfCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailClassAssertionOnSimpleEquivalentClassesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/MewAnimal"))),
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailClassAssertionOnSubClassOfHavingEquivalentClassCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/MewAnimal"))),
@@ -138,7 +138,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailClassAssertionOnEquivalentClassHavingSubClassOfCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/MewAnimal"))),
@@ -175,7 +175,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailClassAssertionOnComplexTBOXCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(

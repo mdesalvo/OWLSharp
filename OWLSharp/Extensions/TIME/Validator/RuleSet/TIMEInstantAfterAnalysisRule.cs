@@ -36,9 +36,9 @@ namespace OWLSharp.Extensions.TIME
             SWRLRule clashRule1 = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEInstantAfterAnalysisRule)),
                 new RDFPlainLiteral("AFTER(?I1,?I2) ^ AFTER(?I2,?I1) -> ERROR"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.TIME.INSTANT),
@@ -55,16 +55,16 @@ namespace OWLSharp.Extensions.TIME
                             new SWRLVariableArgument(new RDFVariable("?I2")),
                             new SWRLVariableArgument(new RDFVariable("?I1"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?I1")),
                             new SWRLVariableArgument(new RDFVariable("?I2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(TIMEValidator.ViolationIRI),
@@ -86,9 +86,9 @@ namespace OWLSharp.Extensions.TIME
             SWRLRule clashRule2 = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEInstantAfterAnalysisRule)),
                 new RDFPlainLiteral("AFTER(?I1,?I2) ^ BEFORE(?I1,?I2) -> ERROR"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.TIME.INSTANT),
@@ -105,16 +105,16 @@ namespace OWLSharp.Extensions.TIME
                             new SWRLVariableArgument(new RDFVariable("?I1")),
                             new SWRLVariableArgument(new RDFVariable("?I2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?I1")),
                             new SWRLVariableArgument(new RDFVariable("?I2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(TIMEValidator.ViolationIRI),

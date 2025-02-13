@@ -46,9 +46,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash1ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS hierarchical relations (skos:related VS skos:broader)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -65,16 +65,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -96,9 +96,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash1BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS hierarchical relations (skos:relatedMatch VS skos:broader)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -115,16 +115,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -146,9 +146,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash2ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS hierarchical relations (skos:related VS skos:narrower)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -165,16 +165,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -196,9 +196,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash2BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:relatedMatch VS skos:narrower)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -215,16 +215,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -246,9 +246,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash3ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:related VS skos:broadMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -265,16 +265,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -296,9 +296,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash3BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:relatedMatch VS skos:broadMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -315,16 +315,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -346,9 +346,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash4ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:related VS skos:narrowMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -365,16 +365,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -396,9 +396,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash4BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:relatedMatch VS skos:narrowMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -415,16 +415,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -446,9 +446,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash5ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:related VS skos:closeMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -465,16 +465,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -496,9 +496,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash5BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their hierarchical/mapping relations (skos:broaderTransitive VS skos:exactMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -515,16 +515,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -546,9 +546,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash6ARule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:related VS skos:exactMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -565,16 +565,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),
@@ -596,9 +596,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule clash6BRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSRelatedConceptAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skos:Concept instances clashing on their associative VS mapping relations (skos:relatedMatch VS skos:exactMatch)"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT),
@@ -615,16 +615,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
                             new SWRLVariableArgument(new RDFVariable("?C2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),

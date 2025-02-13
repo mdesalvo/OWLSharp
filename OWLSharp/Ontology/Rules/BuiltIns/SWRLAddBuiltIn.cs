@@ -40,10 +40,15 @@ namespace OWLSharp.Ontology
             {
                 //Parse current argument
                 patternMember = null;
-                if (builtInArguments[i] is SWRLVariableArgument argVar && antecedentResultsRow.Table.Columns.Contains(argVar.GetVariable().ToString()))
-                    patternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[argVar.GetVariable().ToString()].ToString());
-                else if (builtInArguments[i] is SWRLLiteralArgument argLit)
-                    patternMember = argLit.GetLiteral();
+                switch (builtInArguments[i])
+                {
+                    case SWRLVariableArgument argVar when antecedentResultsRow.Table.Columns.Contains(argVar.GetVariable().ToString()):
+                        patternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[argVar.GetVariable().ToString()].ToString());
+                        break;
+                    case SWRLLiteralArgument argLit:
+                        patternMember = argLit.GetLiteral();
+                        break;
+                }
 
                 //Collect current argument
                 if (patternMember is RDFTypedLiteral typedLiteral

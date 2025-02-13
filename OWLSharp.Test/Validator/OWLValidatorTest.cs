@@ -39,7 +39,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeAsymmetricObjectPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [ OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis, OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis ] };
+            OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis, OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -78,7 +78,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeIrreflexiveObjectPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf"))),
@@ -104,7 +104,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [ OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis ] };
+            OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -117,7 +117,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDeprecatedTermsAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -130,7 +130,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Organization")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [ OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis ] };
+            OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -144,14 +144,14 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDisjointTermsAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
                     new OWLDeclaration(new OWLDatatype(new RDFResource("http://xmlns.com/foaf/0.1/Person")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [ OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis ] };
+            OWLValidator validator = new OWLValidator { Rules = [ OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis ] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -165,7 +165,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeThingNothingAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(
@@ -177,7 +177,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.ThingNothingAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ThingNothingAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -191,7 +191,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeTopBottomAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(
@@ -203,7 +203,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.TopBottomAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.TopBottomAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -217,7 +217,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDifferentIndividualsAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
@@ -236,7 +236,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))]),
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -249,7 +249,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeNegativeDataAssertionsAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
@@ -271,7 +271,7 @@ namespace OWLSharp.Test.Validator
                         new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -284,7 +284,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeNegativeObjectAssertionsAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -307,7 +307,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -320,7 +320,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDisjointUnionAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -345,7 +345,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DisjointUnionAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointUnionAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -358,7 +358,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDisjointClassesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLDisjointClasses([
@@ -372,7 +372,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DisjointClassesAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointClassesAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -385,7 +385,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeObjectPropertyChainAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
@@ -401,7 +401,7 @@ namespace OWLSharp.Test.Validator
                     new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -414,7 +414,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeEquivalentClassesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLEquivalentClasses([
@@ -428,7 +428,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -441,7 +441,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeSubClassOfSubClassAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ClassAxioms = [
                     new OWLSubClassOf(
@@ -456,7 +456,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.SubClassOfAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.SubClassOfAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -469,7 +469,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDisjointDataPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -512,7 +512,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
 
@@ -526,7 +526,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDisjointObjectPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -564,7 +564,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Lenny")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -577,7 +577,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeEquivalentDataPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLEquivalentDataProperties([
@@ -592,7 +592,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -605,7 +605,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeEquivalentObjectPropertiesAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLEquivalentObjectProperties([
@@ -620,7 +620,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -633,7 +633,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeSubDataPropertyOfAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(
@@ -648,7 +648,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.SubDataPropertyOfAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -661,7 +661,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeSubObjectPropertyOfAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(
@@ -676,7 +676,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.SubObjectPropertyOfAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.SubObjectPropertyOfAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -689,7 +689,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeHasKeyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad"))),
@@ -745,7 +745,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")) ]) //Will cause the validation error, since they conflict on computed key
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.HasKeyAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.HasKeyAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -758,7 +758,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeClassAssertionsAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -784,7 +784,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.ClassAssertionAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ClassAssertionAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -797,7 +797,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeFunctionalDataPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -832,7 +832,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -845,7 +845,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeFunctionalObjectPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -884,7 +884,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.FunctionalObjectPropertyAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -897,7 +897,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeInverseFunctionalObjectPropertyAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLObjectPropertyAssertion(
@@ -936,7 +936,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.InverseFunctionalObjectPropertyAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.InverseFunctionalObjectPropertyAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -949,7 +949,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDataPropertyDomainAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -994,7 +994,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -1007,7 +1007,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeDataPropertyRangeAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
@@ -1044,7 +1044,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -1057,7 +1057,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeObjectPropertyDomainAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1103,7 +1103,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyDomainAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);
@@ -1116,7 +1116,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public async Task ShouldAnalyzeObjectPropertyRangeAsync()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1162,7 +1162,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
                 ]
             };
-            OWLValidator validator = new OWLValidator() { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis] };
+            OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis] };
             List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
             Assert.IsNotNull(issues);

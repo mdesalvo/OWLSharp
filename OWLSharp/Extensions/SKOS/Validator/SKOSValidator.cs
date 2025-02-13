@@ -55,7 +55,7 @@ namespace OWLSharp.Extensions.SKOS
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
                 //Initialize cache registry
-                Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+                Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
                 {
                     { "CONCEPTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT)) }
                 };

@@ -34,9 +34,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule literalFormRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSXLLiteralFormAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for skosxl:Label instances having more than one occurrence of skosxl:literalForm relation"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL),
@@ -50,16 +50,16 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?L")),
                             new SWRLVariableArgument(new RDFVariable("?LF2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?LF1")),
                             new SWRLVariableArgument(new RDFVariable("?LF2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(SKOSValidator.ViolationIRI),

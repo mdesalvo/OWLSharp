@@ -32,7 +32,7 @@ namespace OWLSharp.Reasoner
                 List<OWLClassExpression> equivalentClasses = ontology.GetEquivalentClasses(declaredClass);
                 foreach (OWLClassExpression equivalentClass in equivalentClasses)
                 {
-                    OWLEquivalentClasses inference = new OWLEquivalentClasses(new List<OWLClassExpression>() { declaredClass, equivalentClass }) { IsInference=true };
+                    OWLEquivalentClasses inference = new OWLEquivalentClasses(new List<OWLClassExpression> { declaredClass, equivalentClass }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
                 }   

@@ -37,9 +37,9 @@ namespace OWLSharp.Extensions.TIME
                 SWRLRule clashRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEIntervalAfterAnalysisRule)),
                 new RDFPlainLiteral(ruleDescription),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.TIME.INTERVAL),
@@ -53,16 +53,16 @@ namespace OWLSharp.Extensions.TIME
                             new SWRLVariableArgument(new RDFVariable("?I2"))),
                         clashingAtom,
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?I1")),
                             new SWRLVariableArgument(new RDFVariable("?I2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(TIMEValidator.ViolationIRI),

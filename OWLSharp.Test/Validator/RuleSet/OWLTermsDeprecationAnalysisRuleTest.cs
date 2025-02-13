@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDeprecatedTermsClassCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -52,7 +52,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDeprecatedTermsDatatypeCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -78,7 +78,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDeprecatedTermsDataPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -104,7 +104,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDeprecatedTermsObjectPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -130,7 +130,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeDeprecatedTermsAnnotationPropertyCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(

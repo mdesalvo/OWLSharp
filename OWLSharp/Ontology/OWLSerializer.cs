@@ -70,7 +70,7 @@ namespace OWLSharp.Ontology
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
             {
                 using (XmlWriter writer = XmlWriter.Create(stringWriter, 
-                    new XmlWriterSettings()
+                    new XmlWriterSettings
                     {
                         Encoding = stringWriter.Encoding,
                         Indent = true,
@@ -89,7 +89,7 @@ namespace OWLSharp.Ontology
             using (StringReader stringReader = new StringReader(ontology))
             {
                 using (XmlReader reader = XmlReader.Create(stringReader,
-                    new XmlReaderSettings()
+                    new XmlReaderSettings
                     {
                         DtdProcessing = DtdProcessing.Parse,
                         IgnoreComments = true,
@@ -124,7 +124,7 @@ namespace OWLSharp.Ontology
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
             {
                 using (XmlWriter writer = XmlWriter.Create(stringWriter, 
-                    new XmlWriterSettings()
+                    new XmlWriterSettings
                     {
                         Encoding = stringWriter.Encoding,
                         Indent = false,
@@ -144,7 +144,7 @@ namespace OWLSharp.Ontology
             using (StringReader stringReader = new StringReader(objectToDeserialize))
             {
                 using (XmlReader reader = XmlReader.Create(stringReader,
-                    new XmlReaderSettings()
+                    new XmlReaderSettings
                     {
                         DtdProcessing = DtdProcessing.Parse,
                         IgnoreComments = true,

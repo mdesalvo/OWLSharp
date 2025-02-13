@@ -37,9 +37,9 @@ namespace OWLSharp.Extensions.TIME
         #region Ctors
         static TIMEUnitTypeRegistry()
         {
-            Instance = new TIMEUnitTypeRegistry()
+            Instance = new TIMEUnitTypeRegistry
             { 
-                UnitTypes = new Dictionary<string, TIMEUnit>()
+                UnitTypes = new Dictionary<string, TIMEUnit>
                 {
                     //Built-Ins
                     { TIMEUnit.Millennium.ToString(), TIMEUnit.Millennium },

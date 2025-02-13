@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeSubObjectPropertyOfSubObjectPropertyOfCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(
@@ -53,7 +53,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeSubObjectPropertyOfEquivalentObjectPropertiesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(
@@ -80,7 +80,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeSubObjectPropertyOfDisjointObjectPropertiesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(

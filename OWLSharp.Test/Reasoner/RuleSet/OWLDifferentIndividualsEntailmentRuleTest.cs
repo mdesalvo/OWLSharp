@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Reasoner
         [TestMethod]
         public void ShouldEntailDifferentIndividualsCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),

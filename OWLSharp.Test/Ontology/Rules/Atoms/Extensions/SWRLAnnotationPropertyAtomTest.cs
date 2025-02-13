@@ -162,7 +162,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 new SWRLVariableArgument(new RDFVariable("?Q")));
 
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.FOAF.AGE)),
@@ -192,7 +192,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 new SWRLLiteralArgument(new RDFPlainLiteral("hello","en-US--RTL")));
 
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.FOAF.AGE)),

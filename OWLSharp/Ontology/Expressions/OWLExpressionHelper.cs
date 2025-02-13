@@ -30,11 +30,8 @@ namespace OWLSharp.Ontology
                 expressions.ForEach(expression =>
                 {
                     long expressionID = expression.GetIRI().PatternMemberID;
-                    if (!lookup.Contains(expressionID))
-                    {
-                        lookup.Add(expressionID);
+                    if (lookup.Add(expressionID))
                         deduplicatedExpressions.Add(expression);
-                    }
                 });
             }
             return deduplicatedExpressions;

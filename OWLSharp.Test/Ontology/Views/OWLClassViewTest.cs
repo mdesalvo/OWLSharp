@@ -32,7 +32,7 @@ namespace OWLSharp.Test.Ontology
         [TestInitialize]
         public void Initialize()
         {
-            Ontology = new OWLOntology() 
+            Ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(new RDFResource("ex:LivingEntity"))),

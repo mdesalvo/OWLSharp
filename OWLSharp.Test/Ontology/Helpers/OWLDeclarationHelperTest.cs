@@ -30,7 +30,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetDeclarationAxioms()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),

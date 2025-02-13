@@ -51,9 +51,7 @@ namespace OWLSharp.Ontology
                 List<OWLObjectPropertyExpression> foundSubObjPropExprs = new List<OWLObjectPropertyExpression>();
 
                 #region VisitContext
-                if (!visitContext.Contains(objPropExprIRI.PatternMemberID))
-                    visitContext.Add(objPropExprIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(objPropExprIRI.PatternMemberID))
                     return foundSubObjPropExprs;
                 #endregion
 
@@ -104,9 +102,7 @@ namespace OWLSharp.Ontology
                 List<OWLObjectPropertyExpression> foundSuperObjPropExprs = new List<OWLObjectPropertyExpression>();
 
                 #region VisitContext
-                if (!visitContext.Contains(objPropExprIRI.PatternMemberID))
-                    visitContext.Add(objPropExprIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(objPropExprIRI.PatternMemberID))
                     return foundSuperObjPropExprs;
                 #endregion
 
@@ -155,9 +151,7 @@ namespace OWLSharp.Ontology
                 List<OWLObjectPropertyExpression> foundEquivObjPropExprs = new List<OWLObjectPropertyExpression>();
 
                 #region VisitContext
-                if (!visitContext.Contains(objPropExprIRI.PatternMemberID))
-                    visitContext.Add(objPropExprIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(objPropExprIRI.PatternMemberID))
                     return foundEquivObjPropExprs;
                 #endregion
 

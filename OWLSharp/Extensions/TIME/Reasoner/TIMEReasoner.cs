@@ -53,7 +53,7 @@ namespace OWLSharp.Extensions.TIME
                 Rules.ForEach(timeRule => inferenceRegistry.Add(timeRule.ToString(), null));
 
                 //Initialize cache registry
-                Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>()
+                Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
                 {
                     { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
                     { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }

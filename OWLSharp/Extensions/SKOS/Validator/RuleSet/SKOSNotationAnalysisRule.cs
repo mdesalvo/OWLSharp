@@ -34,9 +34,9 @@ namespace OWLSharp.Extensions.SKOS
             SWRLRule notationRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(SKOSNotationAnalysisRule)),
                 new RDFPlainLiteral("This rule checks for collisions of values assumed by different skos:Concept instances in their skos:Notation data relations within the same skos:ConceptScheme"),
-                new SWRLAntecedent()
+                new SWRLAntecedent
                 {
-                    Atoms = new List<SWRLAtom>() 
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
                             new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME),
@@ -64,7 +64,7 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?C2")),
                             new SWRLVariableArgument(new RDFVariable("?N2"))),
                     },
-                    BuiltIns = new List<SWRLBuiltIn>()
+                    BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.NotEqual(
                             new SWRLVariableArgument(new RDFVariable("?C1")),
@@ -74,9 +74,9 @@ namespace OWLSharp.Extensions.SKOS
                             new SWRLVariableArgument(new RDFVariable("?N2")))
                     }
                 },
-                new SWRLConsequent()
+                new SWRLConsequent
                 {
-                    Atoms = new List<SWRLAtom>()
+                    Atoms = new List<SWRLAtom>
                     {
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(SKOSValidator.ViolationIRI),

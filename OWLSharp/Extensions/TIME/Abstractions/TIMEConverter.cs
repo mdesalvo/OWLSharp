@@ -182,7 +182,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot convert duration to extent because given \"calendarTRS\" parameter is null");
             #endregion
 
-            TIMEExtent extent = new TIMEExtent() { Metadata = new TIMEExtentMetadata(calendarTRS) };
+            TIMEExtent extent = new TIMEExtent { Metadata = new TIMEExtentMetadata(calendarTRS) };
 
             //Scale the given time duration of the factor specified by its unit type
             double scaledTimeDuration = timeDuration * unitType.ScaleFactor;
@@ -262,7 +262,7 @@ namespace OWLSharp.Extensions.TIME
             if (normalizedStart.CompareTo(normalizedEnd) > -1)
             {
                 TIMECoordinate swapCoordinate = new TIMECoordinate(normalizedStart.Year, normalizedStart.Month, normalizedStart.Day,
-                    normalizedStart.Hour, normalizedStart.Minute, normalizedStart.Second, new TIMECoordinateMetadata() { 
+                    normalizedStart.Hour, normalizedStart.Minute, normalizedStart.Second, new TIMECoordinateMetadata { 
                         TRS = normalizedStart.Metadata.TRS, UnitType = normalizedStart.Metadata.UnitType });
                 normalizedStart = normalizedEnd;
                 normalizedEnd = swapCoordinate;

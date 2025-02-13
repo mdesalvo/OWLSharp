@@ -169,7 +169,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<SWRLException>(() =>
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#example",
                     Arguments = [
@@ -180,7 +180,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on bad-formed builtIn
             Assert.ThrowsException<SWRLException>(() => 
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "https://github.com/mdesalvo/OWLSharp#langMatches",
                     Arguments = [

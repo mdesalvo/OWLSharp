@@ -39,7 +39,7 @@ namespace OWLSharp.Ontology
             #endregion
 
             if (!CheckHasEntity(ontology, entityIRI))
-                ontology?.DeclarationAxioms.Add(new OWLDeclaration() { Expression = entityIRI });
+                ontology?.DeclarationAxioms.Add(new OWLDeclaration { Expression = entityIRI });
         }
         #endregion
     }

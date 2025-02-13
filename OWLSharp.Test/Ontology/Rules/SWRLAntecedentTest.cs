@@ -39,7 +39,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetStringRepresentationOfSWRLAntecedent()
         {
-            SWRLAntecedent antecedent = new SWRLAntecedent() { 
+            SWRLAntecedent antecedent = new SWRLAntecedent { 
                 Atoms = [ 
                     new SWRLClassAtom(
                         new OWLClass(RDFVocabulary.FOAF.PERSON), 
@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetXMLRepresentationOfSWRLAntecedent()
         {
-            SWRLAntecedent antecedent = new SWRLAntecedent() { 
+            SWRLAntecedent antecedent = new SWRLAntecedent { 
                 Atoms = [ 
                     new SWRLClassAtom(
                         new OWLClass(RDFVocabulary.FOAF.PERSON), 
@@ -100,7 +100,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldEvaluateSWRLAntecedent()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
@@ -116,7 +116,7 @@ namespace OWLSharp.Test.Ontology
                     new SWRLRule(
                         new RDFPlainLiteral("SWRL1"),
                         new RDFPlainLiteral("This is a test SWRL rule"),
-                        new SWRLAntecedent()
+                        new SWRLAntecedent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -124,7 +124,7 @@ namespace OWLSharp.Test.Ontology
                                     new SWRLVariableArgument(new RDFVariable("?P")))
                             ]
                         },
-                        new SWRLConsequent()
+                        new SWRLConsequent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -145,7 +145,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldExportAntecedentToRDFGraph()
         {
-            SWRLAntecedent antecedent = new SWRLAntecedent()
+            SWRLAntecedent antecedent = new SWRLAntecedent
             {
                 Atoms = [
                     new SWRLClassAtom(

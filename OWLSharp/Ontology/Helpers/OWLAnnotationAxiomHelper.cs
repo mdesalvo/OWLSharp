@@ -51,9 +51,7 @@ namespace OWLSharp.Ontology
                 List<OWLAnnotationProperty> foundSubAnnotationProperties = new List<OWLAnnotationProperty>();
 
                 #region VisitContext
-                if (!visitContext.Contains(annPropIRI.PatternMemberID))
-                    visitContext.Add(annPropIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(annPropIRI.PatternMemberID))
                     return foundSubAnnotationProperties;
                 #endregion
 
@@ -90,9 +88,7 @@ namespace OWLSharp.Ontology
                 List<OWLAnnotationProperty> foundSuperAnnotationProperties = new List<OWLAnnotationProperty>();
 
                 #region VisitContext
-                if (!visitContext.Contains(annPropIRI.PatternMemberID))
-                    visitContext.Add(annPropIRI.PatternMemberID);
-                else
+                if (!visitContext.Add(annPropIRI.PatternMemberID))
                     return foundSuperAnnotationProperties;
                 #endregion
 

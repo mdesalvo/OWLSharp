@@ -241,7 +241,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLRule(
                     new RDFPlainLiteral("SWRL1"),
                     new RDFPlainLiteral("This is a test SWRL rule"),
-                    new SWRLAntecedent()
+                    new SWRLAntecedent
                     {
                         Atoms = [
                             new SWRLClassAtom(
@@ -249,7 +249,7 @@ namespace OWLSharp.Test.Ontology
                                 new SWRLVariableArgument(new RDFVariable("?P")))
                         ]
                     },
-                    new SWRLConsequent()
+                    new SWRLConsequent
                     {
                         Atoms = [
                             new SWRLClassAtom(
@@ -853,7 +853,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLRule(
                     new RDFPlainLiteral("SWRL1"),
                     new RDFPlainLiteral("This is a test SWRL rule"),
-                    new SWRLAntecedent()
+                    new SWRLAntecedent
                     {
                         Atoms = [
                             new SWRLClassAtom(
@@ -861,7 +861,7 @@ namespace OWLSharp.Test.Ontology
                                 new SWRLVariableArgument(new RDFVariable("?P")))
                         ]
                     },
-                    new SWRLConsequent()
+                    new SWRLConsequent
                     {
                         Atoms = [
                             new SWRLClassAtom(
@@ -869,7 +869,7 @@ namespace OWLSharp.Test.Ontology
                                 new SWRLVariableArgument(new RDFVariable("?P")))
                         ]
                     }));
-            ontology.Rules.Add(new SWRLRule() { IsImport=true });
+            ontology.Rules.Add(new SWRLRule { IsImport=true });
 
             string serializedXML = OWLSerializer.SerializeOntology(ontology);
 
@@ -1025,7 +1025,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLRule(
                     new RDFPlainLiteral("SWRL1"),
                     new RDFPlainLiteral("This is a test SWRL rule"),
-                    new SWRLAntecedent()
+                    new SWRLAntecedent
                     {
                         Atoms = [
                             new SWRLClassAtom(
@@ -1033,7 +1033,7 @@ namespace OWLSharp.Test.Ontology
                                 new SWRLVariableArgument(new RDFVariable("?P")))
                         ]
                     },
-                    new SWRLConsequent()
+                    new SWRLConsequent
                     {
                         Atoms = [
                             new SWRLClassAtom(

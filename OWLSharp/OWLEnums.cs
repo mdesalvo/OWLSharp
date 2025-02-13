@@ -21,7 +21,7 @@ namespace OWLSharp
         public enum OWLFormats
         {
             OWL2XML = 1
-        };
+        }
 
         public enum OWLReasonerRules
         {

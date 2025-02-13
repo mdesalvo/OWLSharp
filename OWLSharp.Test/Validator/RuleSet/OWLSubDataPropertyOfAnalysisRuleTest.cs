@@ -26,7 +26,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeSubDataPropertyOfSubDataPropertyOfCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(
@@ -53,7 +53,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeSubDataPropertyOfEquivalentDataPropertiesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(
@@ -80,7 +80,7 @@ namespace OWLSharp.Test.Validator
         [TestMethod]
         public void ShouldAnalyzeSubDataPropertyOfDisjointDataPropertiesCase()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(

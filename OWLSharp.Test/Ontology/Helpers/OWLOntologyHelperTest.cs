@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Ontology
                     new SWRLRule(
                         new RDFPlainLiteral("Example"),
                         new RDFPlainLiteral("Example"),
-                        new SWRLAntecedent()
+                        new SWRLAntecedent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -77,7 +77,7 @@ namespace OWLSharp.Test.Ontology
                                     new SWRLIndividualArgument(new RDFResource("ex:idv3")))
                             ]
                         },
-                        new SWRLConsequent()
+                        new SWRLConsequent
                         {
                             Atoms = [
                                 new SWRLDataPropertyAtom(
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology
                         })
                 ]
             };
-            OWLReasoner reasoner = new OWLReasoner() 
+            OWLReasoner reasoner = new OWLReasoner
             {
                 Rules = [ 
                     OWLEnums.OWLReasonerRules.SubClassOfEntailment,
@@ -140,7 +140,7 @@ namespace OWLSharp.Test.Ontology
                     new SWRLRule(
                         new RDFPlainLiteral("Example"),
                         new RDFPlainLiteral("Example"),
-                        new SWRLAntecedent()
+                        new SWRLAntecedent
                         {
                             Atoms = [
                                 new SWRLClassAtom(
@@ -153,7 +153,7 @@ namespace OWLSharp.Test.Ontology
                                     new SWRLIndividualArgument(new RDFResource("ex:idv3")))
                             ]
                         },
-                        new SWRLConsequent()
+                        new SWRLConsequent
                         {
                             Atoms = [
                                 new SWRLDataPropertyAtom(

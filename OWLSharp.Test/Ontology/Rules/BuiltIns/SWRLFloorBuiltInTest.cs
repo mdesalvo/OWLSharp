@@ -174,7 +174,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on unknown builtIn
             Assert.ThrowsException<SWRLException>(() =>
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#example",
                     Arguments = [
@@ -185,7 +185,7 @@ namespace OWLSharp.Test.Ontology
 
             //Test exception on bad-formed builtIn
             Assert.ThrowsException<SWRLException>(() => 
-                new SWRLBuiltIn()
+                new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#floor",
                     Arguments = [
@@ -208,7 +208,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Rows.Add("hello@EN");
             antecedentResults.Rows.Add("http://example.org/tests");
 
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#floor",
                 Arguments = [
@@ -240,7 +240,7 @@ namespace OWLSharp.Test.Ontology
             antecedentResults.Rows.Add("hello");
             antecedentResults.Rows.Add("hello@EN");
 
-            SWRLBuiltIn builtin = new SWRLBuiltIn()
+            SWRLBuiltIn builtin = new SWRLBuiltIn
             {
                 IRI = "http://www.w3.org/2003/11/swrlb#floor",
                 Arguments = [

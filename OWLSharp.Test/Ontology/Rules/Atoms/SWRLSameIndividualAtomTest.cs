@@ -151,7 +151,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 new SWRLVariableArgument(new RDFVariable("?Q")));
 
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -181,7 +181,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 new SWRLIndividualArgument(new RDFResource("ex:Mark")));
 
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),

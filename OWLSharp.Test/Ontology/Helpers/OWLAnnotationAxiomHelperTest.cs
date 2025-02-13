@@ -29,7 +29,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetAnnotationAxioms()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:Subj"), new RDFResource("ex:Obj")),
@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSubAnnotationPropertiesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))),
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldGetSuperAnnotationPropertiesOf()
         {
-            OWLOntology ontology = new OWLOntology()
+            OWLOntology ontology = new OWLOntology
             {
                 AnnotationAxioms = [
                     new OWLSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))),

@@ -79,9 +79,7 @@ namespace OWLSharp.Reasoner
             List<OWLIndividualExpression> transitiveRelatedIdvExprs = new List<OWLIndividualExpression>();
 
             #region VisitContext
-            if (!visitContext.Contains(trnObjPropAsnGroupKeyIRI.PatternMemberID))
-                visitContext.Add(trnObjPropAsnGroupKeyIRI.PatternMemberID);
-            else
+            if (!visitContext.Add(trnObjPropAsnGroupKeyIRI.PatternMemberID))
                 return transitiveRelatedIdvExprs;
             #endregion
 

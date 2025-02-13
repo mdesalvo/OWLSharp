@@ -39,12 +39,18 @@ namespace OWLSharp.Ontology
             {
                 //Parse current argument
                 patternMember = null;
-                if (builtInArguments[i] is SWRLVariableArgument argVar && antecedentResultsRow.Table.Columns.Contains(argVar.GetVariable().ToString()))
-                    patternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[argVar.GetVariable().ToString()].ToString());
-                else if (builtInArguments[i] is SWRLLiteralArgument argLit)
-                    patternMember = argLit.GetLiteral();
-                else if (builtInArguments[i] is SWRLIndividualArgument argIdv)
-                    patternMember = argIdv.GetResource();
+                switch (builtInArguments[i])
+                {
+                    case SWRLVariableArgument argVar when antecedentResultsRow.Table.Columns.Contains(argVar.GetVariable().ToString()):
+                        patternMember = RDFQueryUtilities.ParseRDFPatternMember(antecedentResultsRow[argVar.GetVariable().ToString()].ToString());
+                        break;
+                    case SWRLLiteralArgument argLit:
+                        patternMember = argLit.GetLiteral();
+                        break;
+                    case SWRLIndividualArgument argIdv:
+                        patternMember = argIdv.GetResource();
+                        break;
+                }
 
                 //This is a string builtIn, so ensure to have information compatible with "string" semantic
                 if (patternMember is RDFResource 
