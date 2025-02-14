@@ -569,7 +569,7 @@ namespace OWLSharp.Extensions.TIME
             double? GetSecondOfInstantDescription(RDFResource dateTimeDescriptionURI)
             {
                 OWLLiteral secondPM = OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dtPropAsns, new OWLDataProperty(RDFVocabulary.TIME.SECOND))
-                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;;
+                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (secondPM?.GetLiteral() is RDFTypedLiteral secondTL && secondTL.HasDecimalDatatype())
                     return Convert.ToDouble(secondTL.Value, CultureInfo.InvariantCulture);
                 return null;

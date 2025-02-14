@@ -59,8 +59,7 @@ namespace OWLSharp.Ontology
             graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
 
             //Axiom Triple
-            RDFTriple axiomTriple;
-            axiomTriple = !string.IsNullOrEmpty(ValueIRI) 
+            RDFTriple axiomTriple = !string.IsNullOrEmpty(ValueIRI) 
                 ? new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI)) 
                 : new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral());
             graph.AddTriple(axiomTriple);

@@ -67,7 +67,7 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(OWLExpression), Order=1)]
         public OWLExpression Predicate { get; set; }
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public bool ShouldSerializePredicate() => !Predicate.GetType().Equals(typeof(OWLExpression));
+        public bool ShouldSerializePredicate() => Predicate.GetType() != typeof(OWLExpression);
 
         [XmlElement(typeof(SWRLIndividualArgument), ElementName="NamedIndividual", Order=2)]
         [XmlElement(typeof(SWRLLiteralArgument), ElementName="Literal", Order=2)]

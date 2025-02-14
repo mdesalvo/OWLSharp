@@ -71,7 +71,8 @@ namespace OWLSharp.Ontology
                 //In case of type error just discard the current row
                 else
                     return false;
-            };
+            }
+
             return string.Equals(leftValue, rightValue);
             #endregion
         }

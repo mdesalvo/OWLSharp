@@ -44,7 +44,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.AreEqual(4, OWLExpressionHelper.RemoveDuplicates(expressions).Count);
             Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates(new List<OWLExpression>()).Count);
-            Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates(null as List<OWLExpression>).Count);
+            Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates<OWLExpression>(null).Count);
         }
         #endregion
     }

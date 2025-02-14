@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasClassAxiom(new OWLSubClassOf(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLClass(RDFVocabulary.FOAF.AGENT))));
-            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareClassAxiom(null as OWLClassAxiom));
+            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareClassAxiom<OWLClassAxiom>(null));
 
             ontology.DeclareClassAxiom(new OWLSubClassOf(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),

@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Ontology
             Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLDataProperty>().Count);
             Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>().Count);
             Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>().Count);
-            Assert.ThrowsExactly<OWLException>(() => new OWLOntology().DeclareEntity(null as OWLClass));
+            Assert.ThrowsExactly<OWLException>(() => new OWLOntology().DeclareEntity<OWLClass>(null));
         }
         #endregion
     }

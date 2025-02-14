@@ -84,7 +84,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.AreEqual(5, OWLAxiomHelper.RemoveDuplicates(axioms).Count);
             Assert.AreEqual(0, OWLAxiomHelper.RemoveDuplicates(new List<OWLAxiom>()).Count);
-            Assert.AreEqual(0, OWLAxiomHelper.RemoveDuplicates(null as List<OWLAxiom>).Count);
+            Assert.AreEqual(0, OWLAxiomHelper.RemoveDuplicates<OWLAxiom>(null).Count);
         }
         #endregion
     }

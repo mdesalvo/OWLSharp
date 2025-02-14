@@ -587,15 +587,11 @@ namespace OWLSharp.Ontology
         internal static List<OWLObjectPropertyAssertion> CalibrateObjectAssertions(OWLOntology ontology)
         {
             List<OWLObjectPropertyAssertion> objPropAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-
-            OWLIndividualExpression swapIdvExpr;
-            for (int i = 0; i < objPropAsns.Count; i++)
-                if (objPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+            foreach (OWLObjectPropertyAssertion objPropAsn in objPropAsns)
+                if (objPropAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                 {
-                    swapIdvExpr = objPropAsns[i].SourceIndividualExpression;
-                    objPropAsns[i].SourceIndividualExpression = objPropAsns[i].TargetIndividualExpression;
-                    objPropAsns[i].TargetIndividualExpression = swapIdvExpr;
-                    objPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+                    (objPropAsn.SourceIndividualExpression, objPropAsn.TargetIndividualExpression) = (objPropAsn.TargetIndividualExpression, objPropAsn.SourceIndividualExpression);
+                    objPropAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                 }
             return OWLAxiomHelper.RemoveDuplicates(objPropAsns);
         }
@@ -603,15 +599,11 @@ namespace OWLSharp.Ontology
         internal static List<OWLNegativeObjectPropertyAssertion> CalibrateNegativeObjectAssertions(OWLOntology ontology)
         {
             List<OWLNegativeObjectPropertyAssertion> negObjPropAsns = ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>();
-
-            OWLIndividualExpression swapIdvExpr;
-            for (int i = 0; i < negObjPropAsns.Count; i++)
-                if (negObjPropAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+            foreach (OWLNegativeObjectPropertyAssertion negObjPropAsn in negObjPropAsns)
+                if (negObjPropAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                 {
-                    swapIdvExpr = negObjPropAsns[i].SourceIndividualExpression;
-                    negObjPropAsns[i].SourceIndividualExpression = negObjPropAsns[i].TargetIndividualExpression;
-                    negObjPropAsns[i].TargetIndividualExpression = swapIdvExpr;
-                    negObjPropAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+                    (negObjPropAsn.SourceIndividualExpression, negObjPropAsn.TargetIndividualExpression) = (negObjPropAsn.TargetIndividualExpression, negObjPropAsn.SourceIndividualExpression);
+                    negObjPropAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                 }
             return OWLAxiomHelper.RemoveDuplicates(negObjPropAsns);
         }

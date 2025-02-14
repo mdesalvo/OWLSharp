@@ -1393,8 +1393,7 @@ namespace OWLSharp.Ontology
                                 RDFResource clsIRI = cls.GetIRI();
                                 foreach (RDFTriple clsAnnPropTriple in annPropGraph[clsIRI, null, null, null])
                                 {
-                                    OWLAnnotationAssertion annAsn;
-                                    annAsn = clsAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
+                                    var annAsn = clsAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
                                         ? new OWLAnnotationAssertion(annProp, clsIRI, (RDFResource)clsAnnPropTriple.Object) 
                                         : new OWLAnnotationAssertion(annProp, clsIRI, new OWLLiteral((RDFLiteral)clsAnnPropTriple.Object));
 
@@ -1410,8 +1409,7 @@ namespace OWLSharp.Ontology
                                 RDFResource dtIRI = dt.GetIRI();
                                 foreach (RDFTriple dtAnnPropTriple in annPropGraph[dtIRI, null, null, null])
                                 {
-                                    OWLAnnotationAssertion annAsn;
-                                    annAsn = dtAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
+                                    var annAsn = dtAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
                                         ? new OWLAnnotationAssertion(annProp, dtIRI, (RDFResource)dtAnnPropTriple.Object) 
                                         : new OWLAnnotationAssertion(annProp, dtIRI, new OWLLiteral((RDFLiteral)dtAnnPropTriple.Object));
 
@@ -1427,8 +1425,7 @@ namespace OWLSharp.Ontology
                                 RDFResource opIRI = op.GetIRI();
                                 foreach (RDFTriple opAnnPropTriple in annPropGraph[opIRI, null, null, null])
                                 {
-                                    OWLAnnotationAssertion annAsn;
-                                    annAsn = opAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
+                                    var annAsn = opAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
                                         ? new OWLAnnotationAssertion(annProp, opIRI, (RDFResource)opAnnPropTriple.Object) 
                                         : new OWLAnnotationAssertion(annProp, opIRI, new OWLLiteral((RDFLiteral)opAnnPropTriple.Object));
 
@@ -1444,8 +1441,7 @@ namespace OWLSharp.Ontology
                                 RDFResource dpIRI = dp.GetIRI();
                                 foreach (RDFTriple dpAnnPropTriple in annPropGraph[dpIRI, null, null, null])
                                 {
-                                    OWLAnnotationAssertion annAsn;
-                                    annAsn = dpAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
+                                    var annAsn = dpAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
                                         ? new OWLAnnotationAssertion(annProp, dpIRI, (RDFResource)dpAnnPropTriple.Object) 
                                         : new OWLAnnotationAssertion(annProp, dpIRI, new OWLLiteral((RDFLiteral)dpAnnPropTriple.Object));
 
@@ -1461,8 +1457,7 @@ namespace OWLSharp.Ontology
                                 RDFResource apIRI = ap.GetIRI();
                                 foreach (RDFTriple apAnnPropTriple in annPropGraph[apIRI, null, null, null])
                                 {
-                                    OWLAnnotationAssertion annAsn;
-                                    annAsn = apAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
+                                    var annAsn = apAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
                                         ? new OWLAnnotationAssertion(annProp, apIRI, (RDFResource)apAnnPropTriple.Object) 
                                         : new OWLAnnotationAssertion(annProp, apIRI, new OWLLiteral((RDFLiteral)apAnnPropTriple.Object));
 
@@ -1478,8 +1473,7 @@ namespace OWLSharp.Ontology
                                 RDFResource idvIRI = idv.GetIRI();
                                 foreach (RDFTriple idvAnnPropTriple in annPropGraph[idvIRI, null, null, null])
                                 {
-                                    OWLAnnotationAssertion annAsn;
-                                    annAsn = idvAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
+                                    var annAsn = idvAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
                                         ? new OWLAnnotationAssertion(annProp, idvIRI, (RDFResource)idvAnnPropTriple.Object) 
                                         : new OWLAnnotationAssertion(annProp, idvIRI, new OWLLiteral((RDFLiteral)idvAnnPropTriple.Object));
 

@@ -702,7 +702,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         featuresWithinDistance.Add(new RDFResource(featureWithGeometry.Key));
                     }
-            };
+            }
 
             return RDFQueryUtilities.RemoveDuplicates(featuresWithinDistance);
         }
@@ -740,7 +740,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         featuresWithinDistance.Add(new RDFResource(featureWithGeometry.Key));
                     }
-            };
+            }
 
             return RDFQueryUtilities.RemoveDuplicates(featuresWithinDistance);
         }
@@ -776,7 +776,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
                         }   
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresDirection);
             }
@@ -801,7 +801,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresDirection);
             }
@@ -838,7 +838,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
                     }
-            };
+            }
 
             return RDFQueryUtilities.RemoveDuplicates(featuresDirection);
         }
@@ -874,7 +874,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -899,7 +899,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -936,7 +936,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
                     }
-            };
+            }
 
             return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
         }
@@ -970,7 +970,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -995,7 +995,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -1032,7 +1032,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
                     }
-            };
+            }
 
             return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
         }
@@ -1066,7 +1066,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -1091,7 +1091,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -1128,7 +1128,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
                     }
-            };
+            }
 
             return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
         }
@@ -1162,7 +1162,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -1187,7 +1187,7 @@ namespace OWLSharp.Extensions.GEO
                         {
                             featuresInteraction.Add(new RDFResource(featureWithGeometry.Key));
                         }
-                };
+                }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresInteraction);
             }
@@ -1224,7 +1224,7 @@ namespace OWLSharp.Extensions.GEO
                     {
                         featuresDirectionOf.Add(new RDFResource(featureWithGeometry.Key));
                     }
-            };
+            }
 
             return RDFQueryUtilities.RemoveDuplicates(featuresDirectionOf);
         }
