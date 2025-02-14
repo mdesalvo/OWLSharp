@@ -3287,9 +3287,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1"));
             Assert.AreEqual(2, ontology2.DataPropertyAxioms.Count);
             Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLEquivalentDataProperties equivDtProps
-                            && equivDtProps.DataProperties[0] is OWLDataProperty dtPropA1
+                            && equivDtProps.DataProperties[0] is { } dtPropA1
                             && dtPropA1.GetIRI().Equals(new RDFResource("ex:dtPropA1"))
-                            && equivDtProps.DataProperties[1] is OWLDataProperty dtPropB1
+                            && equivDtProps.DataProperties[1] is { } dtPropB1
                             && dtPropB1.GetIRI().Equals(new RDFResource("ex:dtPropB1"))
                              && equivDtProps.Annotations.Count == 1
                              && equivDtProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
@@ -3297,9 +3297,9 @@ namespace OWLSharp.Test.Ontology
                               && equivDtProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                               && equivDtProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
             Assert.IsTrue(ontology2.DataPropertyAxioms[1] is OWLEquivalentDataProperties equivDtProps1
-                            && equivDtProps1.DataProperties[0] is OWLDataProperty dtPropA2
+                            && equivDtProps1.DataProperties[0] is { } dtPropA2
                             && dtPropA2.GetIRI().Equals(new RDFResource("ex:dtPropA2"))
-                            && equivDtProps1.DataProperties[1] is OWLDataProperty dtPropB2
+                            && equivDtProps1.DataProperties[1] is { } dtPropB2
                             && dtPropB2.GetIRI().Equals(new RDFResource("ex:dtPropB2"))
                             && equivDtProps1.Annotations.Count == 2
                              && equivDtProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
@@ -3627,8 +3627,8 @@ namespace OWLSharp.Test.Ontology
                             && ontology2.KeyAxioms[0].ObjectPropertyExpressions[0] is OWLObjectProperty op1 && op1.GetIRI().Equals(new RDFResource("ex:op1"))
                             && ontology2.KeyAxioms[0].ObjectPropertyExpressions[1] is OWLObjectProperty op2 && op2.GetIRI().Equals(new RDFResource("ex:op2"))
                             && ontology2.KeyAxioms[0].DataProperties.Count == 2
-                            && ontology2.KeyAxioms[0].DataProperties[0] is OWLDataProperty dp1 && dp1.GetIRI().Equals(new RDFResource("ex:dp1"))
-                            && ontology2.KeyAxioms[0].DataProperties[1] is OWLDataProperty dp2 && dp2.GetIRI().Equals(new RDFResource("ex:dp2"))
+                            && ontology2.KeyAxioms[0].DataProperties[0] is { } dp1 && dp1.GetIRI().Equals(new RDFResource("ex:dp1"))
+                            && ontology2.KeyAxioms[0].DataProperties[1] is { } dp2 && dp2.GetIRI().Equals(new RDFResource("ex:dp2"))
                              && ontology2.KeyAxioms[0].Annotations.Count == 1
                              && ontology2.KeyAxioms[0].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                              && string.Equals(ontology2.KeyAxioms[0].Annotations.Single().ValueIRI, "ex:title")
@@ -5521,7 +5521,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsNotNull(ontology2.Rules[0].Antecedent);
             Assert.AreEqual(0, ontology2.Rules[0].Antecedent.Atoms.Count);
             Assert.AreEqual(2, ontology2.Rules[0].Antecedent.BuiltIns.Count);
-            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[0] is SWRLBuiltIn builtinAtom
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[0] is { } builtinAtom
                             && string.Equals(builtinAtom.IRI, "http://www.w3.org/2003/11/swrlb#stringConcat")
                             && builtinAtom.Arguments.Count == 3
                                 && builtinAtom.Arguments[0] is SWRLLiteralArgument arg0
@@ -5530,7 +5530,7 @@ namespace OWLSharp.Test.Ontology
                                     && arg1.GetVariable().Equals(new RDFVariable("?P"))
                                 && builtinAtom.Arguments[2] is SWRLIndividualArgument arg2
                                     && arg2.GetResource().Equals(new RDFResource("http://example.org/IDV")));
-            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[1] is SWRLBuiltIn builtinAtom2
+            Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[1] is { } builtinAtom2
                             && string.Equals(builtinAtom2.IRI, "http://www.w3.org/2003/11/swrlb#custombuiltin")
                             && builtinAtom2.Arguments.Count == 1
                                 && builtinAtom2.Arguments[0] is SWRLVariableArgument arg3

@@ -165,7 +165,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
-            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Single() is OWLDatatypeDefinition dtDef
+            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Single() is { } dtDef
                             && string.Equals(dtDef.Datatype.IRI, "ex:length6to10")
                             && dtDef.DataRangeExpression is OWLDatatypeRestriction dtRestr
                             && string.Equals(dtRestr.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString())
@@ -176,7 +176,7 @@ namespace OWLSharp.Test.Ontology
                             && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MAX_LENGTH.ToString())
                                                                      && string.Equals(fr.Literal.Value, "10")
                                                                      && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
-            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Single() is OWLDatatypeDefinition dtDef1
+            Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Single() is { } dtDef1
                             && string.Equals(dtDef1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(dtDef1.Annotations.Single().ValueLiteral.Value, "Steve")
                             && string.Equals(dtDef1.Annotations.Single().ValueLiteral.Language, "EN"));

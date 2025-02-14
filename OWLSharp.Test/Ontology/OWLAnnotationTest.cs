@@ -34,7 +34,7 @@ namespace OWLSharp.Test.Ontology
                 new RDFResource("http://example.org/seeThis"));
             
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Ontology
                 new RDFResource("http://example.org/seeThis"));
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
@@ -132,7 +132,7 @@ namespace OWLSharp.Test.Ontology
                 """);
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
@@ -150,7 +150,7 @@ namespace OWLSharp.Test.Ontology
                 """);
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
                             && annProp.IRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueIRI, "http://example.org/seeThis"));
@@ -197,7 +197,7 @@ namespace OWLSharp.Test.Ontology
                 new XmlQualifiedName("seeThis","http://example.org/"));
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
@@ -271,7 +271,7 @@ namespace OWLSharp.Test.Ontology
               """);
 
           Assert.IsNotNull(annotation);
-          Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+          Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                           && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                           && annProp.AbbreviatedIRI is null);
           Assert.IsTrue(Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
@@ -289,7 +289,7 @@ namespace OWLSharp.Test.Ontology
               """);
 
           Assert.IsNotNull(annotation);
-          Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+          Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                           && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
                           && annProp.IRI is null);
           Assert.IsTrue(Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
@@ -336,7 +336,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLAnonymousIndividual("AnonIdv"));
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueAnonymousIndividual.NodeID, "AnonIdv"));
@@ -410,7 +410,7 @@ namespace OWLSharp.Test.Ontology
               """);
 
           Assert.IsNotNull(annotation);
-          Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+          Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                           && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                           && annProp.AbbreviatedIRI is null);
           Assert.IsTrue(string.Equals(annotation.ValueAnonymousIndividual.NodeID, "AnonIdv"));
@@ -428,7 +428,7 @@ namespace OWLSharp.Test.Ontology
               """);
 
           Assert.IsNotNull(annotation);
-          Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+          Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                           && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
                           && annProp.IRI is null);
           Assert.IsTrue(string.Equals(annotation.ValueAnonymousIndividual.NodeID, "AnonIdv"));
@@ -475,7 +475,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLLiteral(new RDFPlainLiteral("Lit!")));
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueLiteral.Value, "Lit!"));
@@ -549,7 +549,7 @@ namespace OWLSharp.Test.Ontology
                 """);
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueLiteral.Value, "Lit!"));
@@ -567,7 +567,7 @@ namespace OWLSharp.Test.Ontology
                 """);
 
             Assert.IsNotNull(annotation);
-            Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
+            Assert.IsTrue(annotation.AnnotationProperty is { } annProp 
                             && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
                             && annProp.IRI is null);
             Assert.IsTrue(string.Equals(annotation.ValueLiteral.Value, "Lit!"));

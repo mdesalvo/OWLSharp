@@ -39,7 +39,7 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
             Assert.IsTrue(hasKey.ObjectPropertyExpressions.Single() is OWLObjectProperty objProp 
                             && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
-            Assert.IsTrue(hasKey.DataProperties.Single() is OWLDataProperty dtProp
+            Assert.IsTrue(hasKey.DataProperties.Single() is { } dtProp
                             && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
         }
 
@@ -69,7 +69,7 @@ namespace OWLSharp.Test.Ontology
                             && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
             Assert.IsTrue(hasKey.ObjectPropertyExpressions[1] is OWLObjectProperty objProp1
                             && string.Equals(objProp1.IRI, "http://xmlns.com/foaf/0.1/focus"));
-            Assert.IsTrue(hasKey.DataProperties.Single() is OWLDataProperty dtProp
+            Assert.IsTrue(hasKey.DataProperties.Single() is { } dtProp
                             && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
         }
 
