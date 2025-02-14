@@ -37,7 +37,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDatatypeDefinition() : base() { }
+        internal OWLDatatypeDefinition()
+        { }
         public OWLDatatypeDefinition(OWLDatatype datatypeIRI, OWLDataRangeExpression dataRangeExpression) : this()
         {
             Datatype = datatypeIRI ?? throw new OWLException("Cannot create OWLDatatypeDefinition because given \"datatypeIRI\" parameter is null");

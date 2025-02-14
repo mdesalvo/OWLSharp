@@ -32,7 +32,7 @@ namespace OWLSharp.Test.Reasoner
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassSelf"))),
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propHas"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny")))
                 ],
                 ClassAxioms = [
                     new OWLSubClassOf(
@@ -64,7 +64,7 @@ namespace OWLSharp.Test.Reasoner
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassSelf"))),
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propHas"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny")))
                 ],
                 ClassAxioms = [
                     new OWLSubClassOf(

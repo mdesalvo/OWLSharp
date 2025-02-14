@@ -51,7 +51,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLClassAssertion() : base() { }
+        internal OWLClassAssertion()
+        { }
         internal OWLClassAssertion(OWLClassExpression classExpression) : this() 
             => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"classExpression\" parameter is null");
         public OWLClassAssertion(OWLClassExpression classExpression, OWLNamedIndividual namedIndividual) : this(classExpression)

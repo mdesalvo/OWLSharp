@@ -37,7 +37,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDataPropertyRange() : base() { }
+        internal OWLDataPropertyRange()
+        { }
         public OWLDataPropertyRange(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression) : this()
         {
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyRange because given \"dataProperty\" parameter is null");

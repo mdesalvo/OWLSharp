@@ -36,7 +36,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLNegativeDataPropertyAssertion() : base() { }
+        internal OWLNegativeDataPropertyAssertion()
+        { }
         internal OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this() 
         { 
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"dataProperty\" parameter is null");

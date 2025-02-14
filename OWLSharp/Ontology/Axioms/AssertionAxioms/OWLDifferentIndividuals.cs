@@ -32,7 +32,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDifferentIndividuals() : base() { }
+        internal OWLDifferentIndividuals()
+        { }
         public OWLDifferentIndividuals(List<OWLIndividualExpression> individualExpressions) : this()
         {
             #region Guards

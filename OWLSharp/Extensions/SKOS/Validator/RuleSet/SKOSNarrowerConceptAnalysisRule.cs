@@ -63,7 +63,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -113,7 +113,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.BROADER_TRANSITIVE),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -163,7 +163,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -213,7 +213,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -263,7 +263,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROW_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -313,7 +313,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.NARROW_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -363,7 +363,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -413,7 +413,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -463,7 +463,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.EXACT_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -513,7 +513,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.EXACT_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -563,7 +563,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -613,7 +613,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {

@@ -102,14 +102,14 @@ namespace OWLSharp.Test.Ontology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")))
                 ],
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
                         new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)))
-                ],
+                ]
             };
             DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 

@@ -53,7 +53,7 @@ namespace OWLSharp.Extensions.TIME
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
                             new SWRLVariableArgument(new RDFVariable("?I2")),
-                            new SWRLVariableArgument(new RDFVariable("?I1"))),
+                            new SWRLVariableArgument(new RDFVariable("?I1")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -103,7 +103,7 @@ namespace OWLSharp.Extensions.TIME
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.TIME.BEFORE),
                             new SWRLVariableArgument(new RDFVariable("?I1")),
-                            new SWRLVariableArgument(new RDFVariable("?I2"))),
+                            new SWRLVariableArgument(new RDFVariable("?I2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {

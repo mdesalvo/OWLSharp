@@ -62,7 +62,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLDataPropertyAtom(
                             new OWLDataProperty(RDFVocabulary.SKOS.NOTATION),
                             new SWRLVariableArgument(new RDFVariable("?C2")),
-                            new SWRLVariableArgument(new RDFVariable("?N2"))),
+                            new SWRLVariableArgument(new RDFVariable("?N2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {

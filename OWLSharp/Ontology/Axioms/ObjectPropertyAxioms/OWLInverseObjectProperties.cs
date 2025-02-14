@@ -35,7 +35,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLInverseObjectProperties() : base() { }
+        internal OWLInverseObjectProperties()
+        { }
         public OWLInverseObjectProperties(OWLObjectPropertyExpression leftObjectPropertyExpression, OWLObjectPropertyExpression rightObjectPropertyExpression) : this()
         {
             LeftObjectPropertyExpression = leftObjectPropertyExpression ?? throw new OWLException("Cannot create OWLInverseObjectProperties because given \"leftObjectPropertyExpression\" parameter is null");

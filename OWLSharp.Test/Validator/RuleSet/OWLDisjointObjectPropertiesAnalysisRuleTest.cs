@@ -48,12 +48,12 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.FOAF.AGENT),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLNamedIndividual(new RDFResource("ex:John"))), //conflicts with foaf:knows
+                        new OWLNamedIndividual(new RDFResource("ex:John"))) //conflicts with foaf:knows
                 ],
                 ObjectPropertyAxioms = [
                     new OWLDisjointObjectProperties([
                         new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
-                        new OWLObjectProperty(RDFVocabulary.FOAF.AGENT) ]),
+                        new OWLObjectProperty(RDFVocabulary.FOAF.AGENT) ])
                 ],
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
@@ -98,12 +98,12 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.FOAF.AGENT),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLNamedIndividual(new RDFResource("ex:John"))), //conflicts with foaf:knows
+                        new OWLNamedIndividual(new RDFResource("ex:John"))) //conflicts with foaf:knows
                 ],
                 ObjectPropertyAxioms = [
                     new OWLDisjointObjectProperties([
                         new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
-                        new OWLObjectProperty(RDFVocabulary.FOAF.AGENT) ]),
+                        new OWLObjectProperty(RDFVocabulary.FOAF.AGENT) ])
                 ],
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),

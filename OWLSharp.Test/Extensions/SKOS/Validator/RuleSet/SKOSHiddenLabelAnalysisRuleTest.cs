@@ -37,7 +37,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -99,7 +99,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(

@@ -43,7 +43,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasName"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.OWL.DEPRECATED),
                         new RDFResource("ex:hasAge"),
-                        new OWLLiteral(RDFTypedLiteral.True)),
+                        new OWLLiteral(RDFTypedLiteral.True))
                 ],
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(

@@ -48,7 +48,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLEquivalentClasses() : base() { }
+        internal OWLEquivalentClasses()
+        { }
         public OWLEquivalentClasses(List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards

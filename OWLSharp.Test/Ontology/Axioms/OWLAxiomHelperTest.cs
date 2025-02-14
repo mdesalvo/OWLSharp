@@ -59,12 +59,12 @@ namespace OWLSharp.Test.Ontology
                 new OWLEquivalentClasses(
                     [ new OWLClass(RDFVocabulary.FOAF.AGENT),
                       new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
-                      new OWLClass(RDFVocabulary.FOAF.PERSON),
+                      new OWLClass(RDFVocabulary.FOAF.PERSON)
                     ]),
                 new OWLEquivalentClasses(
                     [ new OWLClass(RDFVocabulary.FOAF.AGENT),
                       new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
-                      new OWLClass(RDFVocabulary.FOAF.PERSON),
+                      new OWLClass(RDFVocabulary.FOAF.PERSON)
                     ]),
                 new OWLDatatypeDefinition(
                     new OWLDatatype(new RDFResource("ex:length6to10")),
@@ -79,7 +79,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLAnnotationAssertion(
                     new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                     new RDFResource("ex:Subj"),
-                    new RDFResource("ex:Obj")),
+                    new RDFResource("ex:Obj"))
             ];
 
             Assert.AreEqual(5, OWLAxiomHelper.RemoveDuplicates(axioms).Count);

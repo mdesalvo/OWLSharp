@@ -101,8 +101,7 @@ namespace OWLSharp.Ontology
         {
             if (DatatypeIRI != null)
                 return new RDFTypedLiteral(Value, RDFDatatypeRegister.GetDatatype(DatatypeIRI));
-            else
-                return new RDFPlainLiteral(Value, Language);
+            return new RDFPlainLiteral(Value, Language);
         }
         #endregion
     }

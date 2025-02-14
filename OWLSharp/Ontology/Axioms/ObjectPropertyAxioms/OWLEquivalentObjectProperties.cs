@@ -32,7 +32,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLEquivalentObjectProperties() : base() { }
+        internal OWLEquivalentObjectProperties()
+        { }
         public OWLEquivalentObjectProperties(List<OWLObjectPropertyExpression> objectPropertyExpressions) : this()
         {
             #region Guards

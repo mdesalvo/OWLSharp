@@ -51,7 +51,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLObjectPropertyRange() : base() { }
+        internal OWLObjectPropertyRange()
+        { }
         internal OWLObjectPropertyRange(OWLClassExpression classExpression) : this()
             => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLObjectPropertyRange because given \"classExpression\" parameter is null");
         public OWLObjectPropertyRange(OWLObjectProperty objectProperty, OWLClassExpression classExpression) : this(classExpression)

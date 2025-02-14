@@ -113,7 +113,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"subEra\" parameter is null");
             if (superEra == null)
                 throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"superEra\" parameter is null");
-            if (CheckIsSubEraOf(superEra, subEra, true))
+            if (CheckIsSubEraOf(superEra, subEra))
                 throw new OWLException("Cannot declare sub-era to ordinal TRS because given \"superEra\" parameter is already defined as sub-era of the given \"subEra\" parameter!");
             #endregion
 

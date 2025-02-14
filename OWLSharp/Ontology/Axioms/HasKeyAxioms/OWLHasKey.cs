@@ -56,7 +56,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLHasKey() : base() { }
+        internal OWLHasKey()
+        { }
         public OWLHasKey(OWLClassExpression classExpression, List<OWLObjectPropertyExpression> objectPropertyExpressions, List<OWLDataProperty> dataProperties) : this()
         {
             #region Guards

@@ -51,7 +51,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDisjointUnion() : base() { }
+        internal OWLDisjointUnion()
+        { }
         public OWLDisjointUnion(OWLClass classIRI, List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards

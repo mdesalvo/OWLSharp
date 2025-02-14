@@ -55,7 +55,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
@@ -72,7 +72,7 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
                 ]
             };
             List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
@@ -94,7 +94,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
@@ -111,7 +111,7 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
                 ]
             };
             List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
@@ -132,7 +132,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))))
@@ -149,7 +149,7 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
                 ]
             };
             List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
@@ -170,7 +170,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ],
                 ObjectPropertyAxioms = [ 
                     new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))))
@@ -187,7 +187,7 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
                 ]
             };
             List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);

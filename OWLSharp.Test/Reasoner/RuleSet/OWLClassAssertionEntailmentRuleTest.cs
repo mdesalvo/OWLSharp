@@ -78,7 +78,7 @@ namespace OWLSharp.Test.Reasoner
                         new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/DomesticFeline"))]),
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/DomesticFeline")),
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Cat"))]),
+                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Cat"))])
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(

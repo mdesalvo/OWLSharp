@@ -31,7 +31,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLSubAnnotationPropertyOf() : base() { }
+        internal OWLSubAnnotationPropertyOf()
+        { }
         public OWLSubAnnotationPropertyOf(OWLAnnotationProperty subAnnotationProperty, OWLAnnotationProperty superAnnotationProperty) : this()
         {
             SubAnnotationProperty = subAnnotationProperty ?? throw new OWLException("Cannot create OWLSubAnnotationPropertyOf because given \"subAnnotationProperty\" parameter is null");

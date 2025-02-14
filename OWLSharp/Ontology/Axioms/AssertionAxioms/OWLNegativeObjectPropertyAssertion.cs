@@ -40,7 +40,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLNegativeObjectPropertyAssertion() : base() { }
+        internal OWLNegativeObjectPropertyAssertion()
+        { }
         public OWLNegativeObjectPropertyAssertion(OWLObjectPropertyExpression objectPropertyExpression, OWLIndividualExpression sourceIndividualExpression, OWLIndividualExpression targetIndividualExpression) : this()
         {
             ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLNegativeObjectPropertyAssertion because given \"objectPropertyExpression\" parameter is null");

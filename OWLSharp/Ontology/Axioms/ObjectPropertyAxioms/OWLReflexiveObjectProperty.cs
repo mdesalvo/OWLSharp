@@ -30,7 +30,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLReflexiveObjectProperty() : base() { }
+        internal OWLReflexiveObjectProperty()
+        { }
         public OWLReflexiveObjectProperty(OWLObjectProperty objectProperty) : this()
             => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLReflexiveObjectProperty because given \"objectProperty\" parameter is null");
         public OWLReflexiveObjectProperty(OWLObjectInverseOf objectInverseOf) : this()

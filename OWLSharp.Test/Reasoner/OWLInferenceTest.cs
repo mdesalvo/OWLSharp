@@ -70,7 +70,7 @@ namespace OWLSharp.Test.Reasoner
                      new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark")))),
                 new OWLInference(
                      "rulenameC",
-                     new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Stiv")))),
+                     new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Stiv"))))
             ];
 
             Assert.AreEqual(2, inferences.Distinct().Count());

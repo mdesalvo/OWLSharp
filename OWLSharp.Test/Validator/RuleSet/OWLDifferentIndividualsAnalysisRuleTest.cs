@@ -31,7 +31,7 @@ namespace OWLSharp.Test.Validator
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")))
                 ],
                 AssertionAxioms = [
                     new OWLDifferentIndividuals([
@@ -42,7 +42,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))]),
                     new OWLSameIndividual([
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))]),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))])
                 ]
             };
             List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
@@ -62,7 +62,7 @@ namespace OWLSharp.Test.Validator
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")))
                 ],
                 AssertionAxioms = [
                     new OWLDifferentIndividuals([
@@ -72,7 +72,7 @@ namespace OWLSharp.Test.Validator
                     new OWLSameIndividual([
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
                         new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))]),
+                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))])
                 ]
             };
             List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
@@ -91,7 +91,7 @@ namespace OWLSharp.Test.Validator
             {
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
                 ],
                 AssertionAxioms = [
                     new OWLDifferentIndividuals([

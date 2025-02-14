@@ -28,7 +28,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLFunctionalDataProperty() : base() { }
+        internal OWLFunctionalDataProperty()
+        { }
         public OWLFunctionalDataProperty(OWLDataProperty dataProperty) : this()
             => DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLFunctionalDataProperty because given \"dataProperty\" parameter is null");
         #endregion

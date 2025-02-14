@@ -166,14 +166,14 @@ namespace OWLSharp.Test.Ontology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")))
                 ],
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
                         new OWLLiteral(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)))
-                ],
+                ]
             };
             DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
@@ -196,14 +196,14 @@ namespace OWLSharp.Test.Ontology
             {
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")))
                 ],
                 AssertionAxioms = [
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
                         new OWLLiteral(new RDFPlainLiteral("hello","en-US--RTL")))
-                ],
+                ]
             };
             DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 

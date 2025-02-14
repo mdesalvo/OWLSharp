@@ -94,7 +94,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                     new OWLClassAssertion(
                         new OWLClass(RDFVocabulary.FOAF.PERSON), 
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")))
                 ],
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),

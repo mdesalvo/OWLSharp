@@ -38,7 +38,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.SKOS.NOTATION),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
-                        new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING))),
+                        new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING)))
                 ]
             };
             Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>

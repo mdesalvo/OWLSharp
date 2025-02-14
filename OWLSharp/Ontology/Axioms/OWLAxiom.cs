@@ -80,12 +80,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
-        public virtual string GetXML()
-        {
-            if (AxiomXML == null)
-                AxiomXML = OWLSerializer.SerializeObject(this);
-            return AxiomXML;
-        }
+        public string GetXML()
+            => AxiomXML ?? (AxiomXML = OWLSerializer.SerializeObject(this));
 
         public virtual RDFGraph ToRDFGraph()
             => new RDFGraph();
@@ -97,35 +93,39 @@ namespace OWLSharp.Ontology
     public class OWLClassAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLClassAxiom() : base() { }
+        internal OWLClassAxiom() { }
         #endregion    
     }
 
     public class OWLObjectPropertyAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLObjectPropertyAxiom() : base() { }
+        internal OWLObjectPropertyAxiom()
+        { }
         #endregion
     }
 
     public class OWLDataPropertyAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLDataPropertyAxiom() : base() { }
+        internal OWLDataPropertyAxiom()
+        { }
         #endregion
     }
 
     public class OWLAssertionAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLAssertionAxiom() : base() { }
+        internal OWLAssertionAxiom()
+        { }
         #endregion
     }
 
     public class OWLAnnotationAxiom : OWLAxiom
     {
         #region Ctors
-        internal OWLAnnotationAxiom() : base() { }
+        internal OWLAnnotationAxiom()
+        { }
         #endregion
     }
 }

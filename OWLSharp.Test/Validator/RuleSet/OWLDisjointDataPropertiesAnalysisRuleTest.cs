@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDisjointDataProperties([
                         new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
                         new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
-                        new OWLDataProperty(new RDFResource("ex:age")) ]),
+                        new OWLDataProperty(new RDFResource("ex:age")) ])
                 ],
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
                 ]
             };
             List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);

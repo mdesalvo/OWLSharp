@@ -32,7 +32,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -55,7 +55,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.NOT_DISJOINT),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
@@ -80,7 +80,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -103,7 +103,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.NOT_DISJOINT),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
@@ -128,7 +128,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -151,7 +151,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.NOT_DISJOINT),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {

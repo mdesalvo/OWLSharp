@@ -59,7 +59,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.OWL.DEPRECATED),
                         new RDFResource("ex:friendOf"),
-                        new OWLLiteral(RDFTypedLiteral.True)),
+                        new OWLLiteral(RDFTypedLiteral.True))
                 ],
                 ObjectPropertyAxioms = [
                     new OWLSubObjectPropertyOf(

@@ -33,7 +33,7 @@ namespace OWLSharp.Test.Reasoner
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marek"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marek")))
                 ],
                 AssertionAxioms = [
                     new OWLSameIndividual([
@@ -58,7 +58,7 @@ namespace OWLSharp.Test.Reasoner
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ],
                 AssertionAxioms = [
                     new OWLSameIndividual([
@@ -91,7 +91,7 @@ namespace OWLSharp.Test.Reasoner
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ],
                 AssertionAxioms = [
                     new OWLSameIndividual([
@@ -124,7 +124,7 @@ namespace OWLSharp.Test.Reasoner
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
                 ],
                 AssertionAxioms = [
                     new OWLSameIndividual([

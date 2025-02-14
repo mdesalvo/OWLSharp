@@ -48,7 +48,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDisjointClasses() : base() { }
+        internal OWLDisjointClasses()
+        { }
         public OWLDisjointClasses(List<OWLClassExpression> classExpressions) : this()
         {
             #region Guards

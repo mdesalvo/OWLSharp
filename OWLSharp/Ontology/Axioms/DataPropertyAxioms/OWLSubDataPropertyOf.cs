@@ -31,7 +31,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLSubDataPropertyOf() : base() { }
+        internal OWLSubDataPropertyOf()
+        { }
         public OWLSubDataPropertyOf(OWLDataProperty subDataProperty, OWLDataProperty superDataProperty) : this()
         {
             SubDataProperty = subDataProperty ?? throw new OWLException("Cannot create OWLSubDataPropertyOf because given \"subDataProperty\" parameter is null");

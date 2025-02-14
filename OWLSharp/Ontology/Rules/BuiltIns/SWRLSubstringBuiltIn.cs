@@ -146,9 +146,9 @@ namespace OWLSharp.Ontology
                         return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX));
 
                     //startIndex+length
-                    else if (rightPatternMemberLEN is RDFTypedLiteral leftTypedLiteralLEN
-                              && leftTypedLiteralLEN.HasDecimalDatatype()
-                              && int.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberLEN))
+                    if (rightPatternMemberLEN is RDFTypedLiteral leftTypedLiteralLEN
+                        && leftTypedLiteralLEN.HasDecimalDatatype()
+                        && int.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberLEN))
                         return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX, leftNumberLEN));
                 }                    
             }

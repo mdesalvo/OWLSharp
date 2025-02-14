@@ -237,8 +237,10 @@ namespace OWLSharp.Extensions.TIME
             //Obtain an equivalent calendar TRS with forced inexact metrics: this is needed to suppress
             //eventual representation of Years, Months and Weeks (which all cumulate into Days)
             TIMECalendarReferenceSystem inexactCalendarTRS = new TIMECalendarReferenceSystem(calendarTRS,
-                new TIMECalendarReferenceSystemMetrics(calendarTRS.Metrics.SecondsInMinute, calendarTRS.Metrics.MinutesInHour, calendarTRS.Metrics.HoursInDay, calendarTRS.Metrics.Months));
-            inexactCalendarTRS.Metrics.HasExactMetric = false;
+                new TIMECalendarReferenceSystemMetrics(calendarTRS.Metrics.SecondsInMinute, calendarTRS.Metrics.MinutesInHour, calendarTRS.Metrics.HoursInDay, calendarTRS.Metrics.Months))
+                {
+                    Metrics = { HasExactMetric = false }
+                };
 
             return ExtentFromDuration(timeExtentSeconds, TIMEUnit.Second, calendarTRS);
         }

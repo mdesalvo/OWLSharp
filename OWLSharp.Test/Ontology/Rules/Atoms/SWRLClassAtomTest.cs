@@ -104,7 +104,7 @@ namespace OWLSharp.Test.Ontology
                 DeclarationAxioms = [
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")))
                 ],
                 ClassAxioms = [
                     new OWLSubClassOf(
@@ -115,7 +115,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLClassAssertion(
                         new OWLClass(RDFVocabulary.FOAF.PERSON),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")))
-                ],
+                ]
             };
             DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 

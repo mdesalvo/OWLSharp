@@ -67,7 +67,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLSubClassOf() : base() { }
+        internal OWLSubClassOf()
+        { }
         public OWLSubClassOf(OWLClassExpression subClassExpression, OWLClassExpression superClassExpression) : this()
         {
             SubClassExpression = subClassExpression ?? throw new OWLException("Cannot create OWLSubClassOf because given \"subClassExpression\" parameter is null");

@@ -30,7 +30,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLTransitiveObjectProperty() : base() { }
+        internal OWLTransitiveObjectProperty()
+        { }
         public OWLTransitiveObjectProperty(OWLObjectProperty objectProperty) : this()
            => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLTransitiveObjectProperty because given \"objectProperty\" parameter is null");
         public OWLTransitiveObjectProperty(OWLObjectInverseOf objectInverseOf) : this()

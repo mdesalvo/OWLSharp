@@ -175,7 +175,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                     new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT)),
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(

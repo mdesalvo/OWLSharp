@@ -38,7 +38,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLSubObjectPropertyOf() : base() { }
+        internal OWLSubObjectPropertyOf()
+        { }
         public OWLSubObjectPropertyOf(OWLObjectProperty subObjectProperty, OWLObjectProperty superObjectProperty) : this()
         {
             SubObjectPropertyExpression = subObjectProperty ?? throw new OWLException("Cannot create OWLSubObjectPropertyOf because given \"subObjectProperty\" parameter is null");
@@ -87,7 +88,6 @@ namespace OWLSharp.Ontology
 
                 //Axiom Triple
                 axiomTriple = new RDFTriple(subObjPropExpressionIRI, RDFVocabulary.RDFS.SUB_PROPERTY_OF, superObjPropExpressionIRI);
-                graph.AddTriple(axiomTriple);
             }
 
             //ObjectPropertyChain
@@ -104,8 +104,8 @@ namespace OWLSharp.Ontology
 
                 //Axiom Triple
                 axiomTriple = new RDFTriple(superObjPropExpressionIRI, RDFVocabulary.OWL.PROPERTY_CHAIN_AXIOM, chainObjectPropertyExpressions.ReificationSubject);
-                graph.AddTriple(axiomTriple);
-            }            
+            }
+            graph.AddTriple(axiomTriple);
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)

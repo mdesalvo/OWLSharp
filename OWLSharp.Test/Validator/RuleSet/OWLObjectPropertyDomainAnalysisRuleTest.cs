@@ -54,7 +54,7 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("ex:op1")),
                         new OWLNamedIndividual(new RDFResource("ex:Helen")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
                 ],
                 ObjectPropertyAxioms = [
                     new OWLObjectPropertyDomain(
@@ -112,7 +112,7 @@ namespace OWLSharp.Test.Validator
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(new RDFResource("ex:op1")),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLNamedIndividual(new RDFResource("ex:Helen"))),
+                        new OWLNamedIndividual(new RDFResource("ex:Helen")))
                 ],
                 ObjectPropertyAxioms = [
                     new OWLObjectPropertyDomain(

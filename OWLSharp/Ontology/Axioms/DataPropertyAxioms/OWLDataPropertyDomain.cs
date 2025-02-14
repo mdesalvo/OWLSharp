@@ -49,7 +49,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDataPropertyDomain() : base() { }
+        internal OWLDataPropertyDomain()
+        { }
         public OWLDataPropertyDomain(OWLDataProperty dataProperty, OWLClassExpression classExpression) : this()
         {
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyDomain because given \"dataProperty\" parameter is null");

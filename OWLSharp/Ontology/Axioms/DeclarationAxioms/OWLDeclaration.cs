@@ -35,7 +35,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDeclaration() : base() { }
+        internal OWLDeclaration()
+        { }
         public OWLDeclaration(OWLClass classIRI) : this()
             => Expression = classIRI ?? throw new OWLException("Cannot create OWLDeclaration because given \"classIRI\" parameter is null");
         public OWLDeclaration(OWLDatatype datatypeIRI) : this()

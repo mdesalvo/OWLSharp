@@ -35,7 +35,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
                         new RDFResource("ex:ConceptB"),
-                        new OWLLiteral(new RDFPlainLiteral("Questo e' il concetto B", "it-IT"))),
+                        new OWLLiteral(new RDFPlainLiteral("Questo e' il concetto B", "it-IT")))
                 ],
                 AssertionAxioms = [
                      new OWLClassAssertion(

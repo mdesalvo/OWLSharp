@@ -43,7 +43,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasName"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FelixTheCat"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:SnoopyTheDog"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:NotACat"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:NotACat")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -57,7 +57,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.OWL.DEPRECATED),
                         new RDFResource("ex:Cat"),
-                        new OWLLiteral(RDFTypedLiteral.True)),
+                        new OWLLiteral(RDFTypedLiteral.True))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(new RDFResource("ex:hasName")),
                         new OWLNamedIndividual(new RDFResource("ex:SnoopyTheDog")),
-                        new OWLLiteral(new RDFPlainLiteral("Snoopy", "en-US"))),
+                        new OWLLiteral(new RDFPlainLiteral("Snoopy", "en-US")))
                 ],
                 ClassAxioms = [
                     new OWLSubClassOf(
@@ -93,7 +93,7 @@ namespace OWLSharp.Test.Ontology
                         new OWLClass(new RDFResource("ex:Dog"))]),
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:DomesticFeline")),
-                        new OWLClass(new RDFResource("ex:Cat"))]),
+                        new OWLClass(new RDFResource("ex:Cat"))])
                 ],
                 KeyAxioms = [
                     new OWLHasKey(

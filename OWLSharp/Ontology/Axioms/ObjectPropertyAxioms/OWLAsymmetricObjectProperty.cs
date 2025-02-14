@@ -30,7 +30,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLAsymmetricObjectProperty() : base() { }
+        internal OWLAsymmetricObjectProperty()
+        { }
         public OWLAsymmetricObjectProperty(OWLObjectProperty objectProperty) : this()
             => ObjectPropertyExpression = objectProperty ?? throw new OWLException("Cannot create OWLAsymmetricObjectProperty because given \"objectProperty\" parameter is null");
         public OWLAsymmetricObjectProperty(OWLObjectInverseOf objectInverseOf) : this()

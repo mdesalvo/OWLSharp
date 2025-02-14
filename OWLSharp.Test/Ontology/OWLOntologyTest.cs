@@ -2471,7 +2471,7 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLDisjointObjectProperties([
                     new OWLObjectProperty(new RDFResource("ex:objPropA3")),
-                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3"))),])
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB3")))])
                          {
                              Annotations = [
                                 new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT), new RDFResource("ex:comment1"))
@@ -4071,7 +4071,7 @@ namespace OWLSharp.Test.Ontology
                 new RDFTriple(new RDFResource("ex:OCB"), RDFVocabulary.SKOS.MEMBER_LIST, new RDFResource("bnode:OCB1")),
                 new RDFTriple(new RDFResource("bnode:OCB1"), RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST),
                 new RDFTriple(new RDFResource("bnode:OCB1"), RDFVocabulary.RDF.FIRST, new RDFResource("ex:C3")),
-                new RDFTriple(new RDFResource("bnode:OCB1"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL),
+                new RDFTriple(new RDFResource("bnode:OCB1"), RDFVocabulary.RDF.REST, RDFVocabulary.RDF.NIL)
             ]);
             OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 

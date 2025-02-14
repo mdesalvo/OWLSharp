@@ -179,7 +179,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -253,7 +253,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT)),
                     new OWLDeclaration(new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -336,7 +336,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -366,7 +366,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:brebemiGM")),
-                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             double? milanLength = await GEOHelper.GetLengthOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
@@ -417,7 +417,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -447,7 +447,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:brebemiGM")),
-                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             double? milanArea = await GEOHelper.GetAreaOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
@@ -500,7 +500,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -530,7 +530,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:brebemiGM")),
-                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             RDFTypedLiteral milanCentroid = await GEOHelper.GetCentroidOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
@@ -587,7 +587,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -617,7 +617,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:brebemiGM")),
-                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             RDFTypedLiteral milanBoundary = await GEOHelper.GetBoundaryOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
@@ -674,7 +674,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -704,7 +704,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:brebemiGM")),
-                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             RDFTypedLiteral milanBuffer = await GEOHelper.GetBufferAroundFeatureAsync(geoOntology, new RDFResource("ex:milanFT"), 5000);
@@ -761,7 +761,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -791,7 +791,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:brebemiGM")),
-                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             RDFTypedLiteral milanBuffer = await GEOHelper.GetConvexHullOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
@@ -847,7 +847,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:milanGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:brebemiGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -877,7 +877,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:brebemiGM")),
-                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             RDFTypedLiteral milanBuffer = await GEOHelper.GetEnvelopeOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
@@ -935,7 +935,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -979,7 +979,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanProximityFeatures = await GEOHelper.GetFeaturesNearBy(geoOntology, new RDFResource("ex:milanFT"), 460000);
@@ -1045,7 +1045,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:romeGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> proximityFeatures = await GEOHelper.GetFeaturesNearBy(geoOntology, new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT), 100000);
@@ -1084,7 +1084,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1128,7 +1128,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionNorthFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.North);
@@ -1169,7 +1169,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1213,7 +1213,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionNorthEastFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.NorthEast);
@@ -1254,7 +1254,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1298,7 +1298,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionNorthWestFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.NorthWest);
@@ -1339,7 +1339,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1383,7 +1383,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionEastFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.East);
@@ -1424,7 +1424,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1468,7 +1468,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionSouthEastFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.SouthEast);
@@ -1509,7 +1509,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1553,7 +1553,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionWestFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.West);
@@ -1594,7 +1594,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1638,7 +1638,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionSouthWestFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.SouthWest);
@@ -1679,7 +1679,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1723,7 +1723,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> milanDirectionSouthFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, new RDFResource("ex:milanFT"), GEOEnums.GeoDirections.South);
@@ -1767,7 +1767,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                  AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1811,8 +1811,8 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
-                ]
+                        new OWLLiteral(tivoliTL))
+                 ]
             };
             List<RDFResource> milanDirectionNorthFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.North);
             List<RDFResource> romeDirectionNorthFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, romeTL, GEOEnums.GeoDirections.North);
@@ -1852,7 +1852,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1896,7 +1896,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
+                        new OWLLiteral(tivoliTL))
                 ]
             };
             List<RDFResource> milanDirectionNorthEastFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.NorthEast);
@@ -1937,7 +1937,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -1981,7 +1981,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
+                        new OWLLiteral(tivoliTL))
                 ]
             };
             List<RDFResource> milanDirectionNorthWestFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.NorthWest);
@@ -2022,7 +2022,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2066,7 +2066,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
+                        new OWLLiteral(tivoliTL))
                 ]
             };
             List<RDFResource> milanDirectionEastFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.East);
@@ -2107,7 +2107,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2151,7 +2151,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
+                        new OWLLiteral(tivoliTL))
                 ]
             };
             List<RDFResource> milanDirectionSouthEastFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.SouthEast);
@@ -2192,7 +2192,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2236,7 +2236,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
+                        new OWLLiteral(tivoliTL))
                 ]
             };
             List<RDFResource> milanDirectionWestFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.West);
@@ -2277,7 +2277,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2321,7 +2321,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
+                        new OWLLiteral(tivoliTL))
                 ]
             };
             List<RDFResource> milanDirectionSouthWestFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.SouthWest);
@@ -2362,7 +2362,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:romeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:tivoliGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2406,7 +2406,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:tivoliGM")),
-                        new OWLLiteral(tivoliTL)),
+                        new OWLLiteral(tivoliTL))
                 ]
             };
             List<RDFResource> milanDirectionSouthFeatures = await GEOHelper.GetFeaturesDirectionAsync(geoOntology, milanTL, GEOEnums.GeoDirections.South);
@@ -2448,7 +2448,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:NogaraPortoMaggioreFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:NogaraPortoMaggioreGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2506,7 +2506,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> crossedByPoRiver = await GEOHelper.GetFeaturesCrossedByAsync(geoOntology, new RDFResource("ex:PoFT"));
@@ -2543,7 +2543,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:NogaraPortoMaggioreFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:NogaraPortoMaggioreGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2587,7 +2587,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> crossedByPoRiver = await GEOHelper.GetFeaturesCrossedByAsync(geoOntology, new RDFTypedLiteral("LINESTRING(11.001141059265075 45.06554633935097, 11.058819281921325 45.036440377586516, 11.127483832702575 45.05972633195962, 11.262066352233825 45.05002500301712, 11.421368110046325 44.960695556664774, 11.605389106140075 44.89068838827955, 11.814129340515075 44.97624111890936, 12.069561469421325 44.98012685115769)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
@@ -2625,7 +2625,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoLevrangeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoLevrangeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2683,7 +2683,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> touchedByIseoFT = await GEOHelper.GetFeaturesTouchedByAsync(geoOntology, new RDFResource("ex:IseoFT"));
@@ -2720,7 +2720,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoLevrangeFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoLevrangeGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2764,7 +2764,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:VeronaVillafrancaGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POLYGON((11.270306098327575 45.4078781070719, 10.992901313171325 45.432939821462234, 10.866558539733825 45.338418378714074, 11.270306098327575 45.4078781070719))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> touchedByIseoFT = await GEOHelper.GetFeaturesTouchedByAsync(geoOntology, new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
@@ -2802,7 +2802,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LeccoValseccaFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LeccoValseccaGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2860,7 +2860,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:IseoGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesOverlappedByAsync(geoOntology, new RDFResource("ex:BallabioCivateFT"));
@@ -2896,7 +2896,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LeccoValseccaFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LeccoValseccaGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -2940,7 +2940,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:IseoGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesOverlappedByAsync(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.346078615493791 45.828624093492635, 9.455255251235979 45.77932096932273, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
@@ -2977,7 +2977,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -3035,7 +3035,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:IseoGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesWithinAsync(geoOntology, new RDFResource("ex:BallabioCivateFT"));
@@ -3072,7 +3072,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaFT"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:FornaciVillaGM"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoFT"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IseoGM")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -3116,7 +3116,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:IseoGM")),
-                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT))),
+                        new OWLLiteral(new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)))
                 ]
             };
             List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesWithinAsync(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.346078615493791 45.828624093492635, 9.455255251235979 45.77932096932273, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));

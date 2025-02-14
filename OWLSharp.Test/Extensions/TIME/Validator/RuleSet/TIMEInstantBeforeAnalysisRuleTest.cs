@@ -32,7 +32,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -55,7 +55,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
                     new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
             Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {
@@ -81,7 +81,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -104,7 +104,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.BEFORE),
                     new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
             Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
             {

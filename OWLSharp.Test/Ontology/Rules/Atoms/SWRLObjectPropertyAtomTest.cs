@@ -174,7 +174,7 @@ namespace OWLSharp.Test.Ontology
                         new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
                         new OWLNamedIndividual(new RDFResource("ex:John")))
-                ],
+                ]
             };
             DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
@@ -205,7 +205,7 @@ namespace OWLSharp.Test.Ontology
                         new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
                         new OWLNamedIndividual(new RDFResource("ex:John")))
-                ],
+                ]
             };
             DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 
@@ -235,7 +235,7 @@ namespace OWLSharp.Test.Ontology
                         new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                         new OWLNamedIndividual(new RDFResource("ex:Mark")),
                         new OWLNamedIndividual(new RDFResource("ex:John")))
-                ],
+                ]
             };
             DataTable antecedentResult = atom.EvaluateOnAntecedent(ontology);
 

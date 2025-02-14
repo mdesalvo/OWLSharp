@@ -51,7 +51,7 @@ namespace OWLSharp.Extensions.TIME
                             new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_OVERLAPS),
                             new SWRLVariableArgument(new RDFVariable("?I1")),
                             new SWRLVariableArgument(new RDFVariable("?I2"))),
-                        clashingAtom,
+                        clashingAtom
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {

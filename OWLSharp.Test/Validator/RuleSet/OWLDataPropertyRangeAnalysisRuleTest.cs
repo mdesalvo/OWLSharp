@@ -48,7 +48,7 @@ namespace OWLSharp.Test.Validator
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(new RDFResource("ex:dp1")),
                         new OWLNamedIndividual(new RDFResource("ex:Helen")),
-                        new OWLLiteral(new RDFTypedLiteral("43", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                        new OWLLiteral(new RDFTypedLiteral("43", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
                 ],
                 DataPropertyAxioms = [
                     new OWLDataPropertyRange(

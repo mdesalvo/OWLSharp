@@ -49,7 +49,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -108,7 +108,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.HIDDEN_LABEL)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -165,7 +165,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL)),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AnnotationAxioms = [
                     new OWLAnnotationAssertion(
@@ -187,7 +187,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLAnnotationAssertion(
                         new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL),
                         new RDFResource("ex:ConceptB"),
-                        new OWLLiteral(new RDFPlainLiteral("Questo e' il concetto B", "it-IT"))),
+                        new OWLLiteral(new RDFPlainLiteral("Questo e' il concetto B", "it-IT")))
                 ],
                 AssertionAxioms = [
                      new OWLClassAssertion(
@@ -225,7 +225,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -263,7 +263,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.SKOS.NOTATION),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptC")),
-                        new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING))),
+                        new OWLLiteral(new RDFTypedLiteral("C2N", RDFModelEnums.RDFDatatypes.XSD_STRING)))
                 ]
             };
             SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.NotationAnalysis ] };
@@ -295,7 +295,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -333,7 +333,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.SKOS.BROADER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
             SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.BroaderConceptAnalysis ] };
@@ -361,7 +361,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -399,7 +399,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.SKOS.NARROWER),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
             SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis ] };
@@ -427,7 +427,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -465,7 +465,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.SKOS.CLOSE_MATCH),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
             SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.CloseOrExactMatchConceptAnalysis ] };
@@ -493,7 +493,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptScheme"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -531,7 +531,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLObjectPropertyAssertion(
                         new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
                         new OWLNamedIndividual(new RDFResource("ex:ConceptA")),
-                        new OWLNamedIndividual(new RDFResource("ex:ConceptC"))),
+                        new OWLNamedIndividual(new RDFResource("ex:ConceptC")))
                 ]
             };
             SKOSValidator validator = new SKOSValidator { Rules = [ SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis ] };
@@ -561,7 +561,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptB"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelA"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelB"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:LabelB")))
                 ],
                 AssertionAxioms = [
                     new OWLClassAssertion(
@@ -606,7 +606,7 @@ namespace OWLSharp.Test.Extensions.SKOS
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.SKOS.SKOSXL.LITERAL_FORM),
                         new OWLNamedIndividual(new RDFResource("ex:LabelB")),
-                        new OWLLiteral(new RDFPlainLiteral("labelB", "en"))),
+                        new OWLLiteral(new RDFPlainLiteral("labelB", "en")))
                 ]
             };
             SKOSValidator validator = new SKOSValidator { Rules = [SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis] };

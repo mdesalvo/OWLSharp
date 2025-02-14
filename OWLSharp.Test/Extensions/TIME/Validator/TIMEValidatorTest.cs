@@ -47,7 +47,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -70,7 +70,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
                     new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -97,7 +97,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -120,7 +120,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.BEFORE),
                     new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:InstantC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -147,7 +147,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -170,7 +170,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_AFTER),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -199,7 +199,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -222,7 +222,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_BEFORE),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -251,7 +251,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -274,7 +274,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_CONTAINS),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -303,7 +303,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -326,7 +326,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_DISJOINT),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -351,7 +351,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -374,7 +374,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_DURING),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -403,7 +403,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -426,7 +426,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_EQUALS),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -451,7 +451,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -474,7 +474,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHES),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -499,7 +499,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -522,7 +522,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -547,7 +547,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -570,7 +570,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.HAS_INSIDE),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -595,7 +595,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -618,7 +618,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_IN),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -643,7 +643,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -666,7 +666,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -691,7 +691,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -714,7 +714,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MET_BY),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -739,7 +739,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -762,7 +762,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.NOT_DISJOINT),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -787,7 +787,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -810,7 +810,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_OVERLAPS),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -835,7 +835,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -858,7 +858,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_OVERLAPPED_BY),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -883,7 +883,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -906,7 +906,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();
@@ -931,7 +931,7 @@ namespace OWLSharp.Test.Extensions.TIME
             ontology.DeclarationAxioms.AddRange([
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalA"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
             ontology.AssertionAxioms.AddRange([
                 new OWLClassAssertion(
@@ -954,7 +954,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY),
                     new OWLNamedIndividual(new RDFResource("ex:IntervalA")),
-                    new OWLNamedIndividual(new RDFResource("ex:IntervalC"))),
+                    new OWLNamedIndividual(new RDFResource("ex:IntervalC")))
             ]);
 
             TIMEValidator validator = new TIMEValidator();

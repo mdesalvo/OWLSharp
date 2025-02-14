@@ -56,7 +56,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.RDFS.DOMAIN)),
                     new OWLDeclaration(new OWLClass(RDFVocabulary.RDFS.RESOURCE)),
                     new OWLDeclaration(new OWLDatatype(RDFVocabulary.RDFS.LITERAL)),
-                    new OWLDeclaration(new OWLNamedIndividual(RDFVocabulary.RDF.NIL)),
+                    new OWLDeclaration(new OWLNamedIndividual(RDFVocabulary.RDF.NIL))
                 ]
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
@@ -204,7 +204,7 @@ namespace OWLSharp.Test.Ontology
                         [ new OWLClass(new RDFResource("ex:Cat")), new OWLClass(new RDFResource("ex:Dog")) ]),
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:DomesticFeline")),
-                        new OWLClass(new RDFResource("ex:Cat"))]),
+                        new OWLClass(new RDFResource("ex:Cat"))])
                 ]
             };
             OWLOntologyView ontView = new OWLOntologyView(ont);
@@ -229,7 +229,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:hasName"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                     new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
                 ],
                 DataPropertyAxioms = [
                     new OWLSubDataPropertyOf(

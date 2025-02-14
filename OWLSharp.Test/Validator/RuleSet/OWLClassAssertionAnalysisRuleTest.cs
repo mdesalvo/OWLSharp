@@ -43,7 +43,7 @@ namespace OWLSharp.Test.Validator
                         new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
                     new OWLClassAssertion(
                         new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls2"))),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                        new OWLNamedIndividual(new RDFResource("ex:Stiv")))
                 ],
                 DeclarationAxioms = [ 
                     new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),

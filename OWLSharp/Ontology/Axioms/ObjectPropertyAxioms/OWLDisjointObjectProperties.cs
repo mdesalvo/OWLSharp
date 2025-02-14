@@ -32,7 +32,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDisjointObjectProperties() : base() { }
+        internal OWLDisjointObjectProperties()
+        { }
         public OWLDisjointObjectProperties(List<OWLObjectPropertyExpression> objectPropertyExpressions) : this()
         {
             #region Guards

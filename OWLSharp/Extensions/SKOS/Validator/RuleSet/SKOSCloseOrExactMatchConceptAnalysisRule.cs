@@ -55,7 +55,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -105,7 +105,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -155,7 +155,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {
@@ -205,7 +205,7 @@ namespace OWLSharp.Extensions.SKOS
                         new SWRLObjectPropertyAtom(
                             new OWLObjectProperty(RDFVocabulary.SKOS.RELATED_MATCH),
                             new SWRLVariableArgument(new RDFVariable("?C1")),
-                            new SWRLVariableArgument(new RDFVariable("?C2"))),
+                            new SWRLVariableArgument(new RDFVariable("?C2")))
                     },
                     BuiltIns = new List<SWRLBuiltIn>
                     {

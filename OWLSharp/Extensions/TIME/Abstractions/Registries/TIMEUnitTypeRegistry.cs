@@ -55,7 +55,7 @@ namespace OWLSharp.Extensions.TIME
                     //Derived
                     { TIMEUnit.BillionYearsAgo.ToString(), TIMEUnit.BillionYearsAgo },
                     { TIMEUnit.MillionYearsAgo.ToString(), TIMEUnit.MillionYearsAgo },
-                    { TIMEUnit.MarsSol.ToString(), TIMEUnit.MarsSol },
+                    { TIMEUnit.MarsSol.ToString(), TIMEUnit.MarsSol }
                 }
             };
         }

@@ -40,7 +40,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLObjectPropertyAssertion() : base() { }
+        internal OWLObjectPropertyAssertion()
+        { }
         public OWLObjectPropertyAssertion(OWLObjectPropertyExpression objectPropertyExpression, OWLIndividualExpression sourceIndividualExpression, OWLIndividualExpression targetIndividualExpression) : this()
         {
             ObjectPropertyExpression = objectPropertyExpression ?? throw new OWLException("Cannot create OWLObjectPropertyAssertion because given \"objectPropertyExpression\" parameter is null");

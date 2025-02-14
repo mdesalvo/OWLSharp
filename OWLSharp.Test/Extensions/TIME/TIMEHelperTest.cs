@@ -251,8 +251,13 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:timeInst"),
                 new TIMEInstantPosition(new RDFResource("ex:timeInstPos"),
                     TIMEPositionReferenceSystem.UnixTime,
-                    1679477734)); //2023-03-22T09:35:34Z
-            timeInstant.Position.PositionalUncertainty = timeInstantUncertainty; 
+                    1679477734))
+            {
+                Position =
+                {
+                    PositionalUncertainty = timeInstantUncertainty
+                }
+            }; //2023-03-22T09:35:34Z
             timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), timeInstant);
 
             Assert.IsNotNull(timeOntology);

@@ -30,7 +30,8 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLDisjointDataProperties() : base() { }
+        internal OWLDisjointDataProperties()
+        { }
         public OWLDisjointDataProperties(List<OWLDataProperty> dataProperties) : this()
         {
             #region Guards

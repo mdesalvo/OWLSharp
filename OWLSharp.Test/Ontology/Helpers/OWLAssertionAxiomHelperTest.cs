@@ -94,7 +94,7 @@ namespace OWLSharp.Test.Ontology
                 AssertionAxioms = [
                     new OWLSameIndividual([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv3")) ]),
                     new OWLSameIndividual([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv4")) ]),
-                    new OWLSameIndividual([ new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv5")) ]),
+                    new OWLSameIndividual([ new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv5")) ])
                 ]
             };
 
@@ -138,7 +138,7 @@ namespace OWLSharp.Test.Ontology
                 AssertionAxioms = [
                     new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv3")) ]),
                     new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv1")), new OWLNamedIndividual(new RDFResource("ex:Idv4")) ]),
-                    new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv5")) ]),
+                    new OWLDifferentIndividuals([ new OWLNamedIndividual(new RDFResource("ex:Idv2")), new OWLNamedIndividual(new RDFResource("ex:Idv5")) ])
                 ]
             };
 
@@ -464,7 +464,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:OwnersOfFelix")),
-                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasCat")),new OWLNamedIndividual(new RDFResource("ex:Felix"))) ]),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasCat")),new OWLNamedIndividual(new RDFResource("ex:Felix"))) ])
                 ]
             };
 
@@ -487,7 +487,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:OwnersOfFelix")),
-                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasCat")),new OWLNamedIndividual(new RDFResource("ex:Felix"))) ]),
+                        new OWLObjectHasValue(new OWLObjectProperty(new RDFResource("ex:hasCat")),new OWLNamedIndividual(new RDFResource("ex:Felix"))) ])
                 ]
             };
 
@@ -510,7 +510,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:InverseOwnersOfFelix")),
-                        new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ]),
+                        new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ])
                 ]
             };
             string ont = OWLSerializer.SerializeObject<OWLOntology>(ontology);
@@ -533,7 +533,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:DoubleInverseOwnersOfFelix")),
-                        new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ]),
+                        new OWLObjectHasValue(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasCat"))),new OWLNamedIndividual(new RDFResource("ex:Mark"))) ])
                 ]
             };
             string ont = OWLSerializer.SerializeObject<OWLOntology>(ontology);
@@ -560,7 +560,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:SelfFriends")),
-                        new OWLObjectHasSelf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))) ]),
+                        new OWLObjectHasSelf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))) ])
                 ]
             };
 
@@ -587,7 +587,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:SelfFriends")),
-                        new OWLObjectHasSelf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))) ]),
+                        new OWLObjectHasSelf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))) ])
                 ]
             };
 
@@ -614,7 +614,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:SelfFriends")),
-                        new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend")))) ]),
+                        new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend")))) ])
                 ]
             };
 
@@ -641,7 +641,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:SelfFriends")),
-                        new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend")))) ]),
+                        new OWLObjectHasSelf(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend")))) ])
                 ]
             };
 
@@ -672,7 +672,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:HasAtLeast2Friends")),
-                        new OWLObjectMinCardinality(new OWLObjectProperty(new RDFResource("ex:hasFriend")), 2) ]),
+                        new OWLObjectMinCardinality(new OWLObjectProperty(new RDFResource("ex:hasFriend")), 2) ])
                 ]
             };
 
@@ -703,7 +703,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:HasAtLeast2Friends")),
-                        new OWLObjectMinCardinality(new OWLObjectProperty(new RDFResource("ex:hasFriend")), 2) ]),
+                        new OWLObjectMinCardinality(new OWLObjectProperty(new RDFResource("ex:hasFriend")), 2) ])
                 ]
             };
 
@@ -734,7 +734,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:HasAtLeast2Friends")),
-                        new OWLObjectMinCardinality(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))), 2) ]),
+                        new OWLObjectMinCardinality(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))), 2) ])
                 ]
             };
 
@@ -772,7 +772,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Man")), new OWLClass(new RDFResource("ex:Human"))),
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:HasSomeHumanFriends")),
-                        new OWLObjectSomeValuesFrom(new OWLObjectProperty(new RDFResource("ex:hasFriend")), new OWLClass(new RDFResource("ex:Human"))) ]),
+                        new OWLObjectSomeValuesFrom(new OWLObjectProperty(new RDFResource("ex:hasFriend")), new OWLClass(new RDFResource("ex:Human"))) ])
                 ]
             };
 
@@ -811,7 +811,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Man")), new OWLClass(new RDFResource("ex:Human"))),
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:HasSomeHumanFriends")),
-                        new OWLObjectSomeValuesFrom(new OWLObjectProperty(new RDFResource("ex:hasFriend")), new OWLClass(new RDFResource("ex:Human"))) ]),
+                        new OWLObjectSomeValuesFrom(new OWLObjectProperty(new RDFResource("ex:hasFriend")), new OWLClass(new RDFResource("ex:Human"))) ])
                 ]
             };
 
@@ -850,7 +850,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Man")), new OWLClass(new RDFResource("ex:Human"))),
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:HasSomeHumanFriends")),
-                        new OWLObjectSomeValuesFrom(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))), new OWLClass(new RDFResource("ex:Human"))) ]),
+                        new OWLObjectSomeValuesFrom(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:hasFriend"))), new OWLClass(new RDFResource("ex:Human"))) ])
                 ]
             };
 
@@ -874,7 +874,7 @@ namespace OWLSharp.Test.Ontology
                 ClassAxioms = [
                     new OWLEquivalentClasses([
                         new OWLClass(new RDFResource("ex:Having25Years")),
-                        new OWLDataHasValue(new OWLDataProperty(new RDFResource("ex:hasAge")),new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))) ]),
+                        new OWLDataHasValue(new OWLDataProperty(new RDFResource("ex:hasAge")),new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))) ])
                 ]
             };
 
@@ -890,7 +890,7 @@ namespace OWLSharp.Test.Ontology
             {
                 AssertionAxioms = [
                     new OWLClassAssertion(new OWLClass(new RDFResource("ex:NotMyAnymal")), new OWLNamedIndividual(new RDFResource("ex:Fuffy"))),
-                    new OWLClassAssertion(new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cat"))), new OWLNamedIndividual(new RDFResource("ex:Snoopy"))),
+                    new OWLClassAssertion(new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cat"))), new OWLNamedIndividual(new RDFResource("ex:Snoopy")))
                 ],
                 ClassAxioms = [
                     new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cat")), new OWLClass(new RDFResource("ex:Animal"))),
