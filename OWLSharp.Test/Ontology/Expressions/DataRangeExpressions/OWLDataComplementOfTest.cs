@@ -58,16 +58,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataComplementOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataComplementOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataComplementOf>"));
+"""<DataComplementOf><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /></DataComplementOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataComplementOf()
         {
             OWLDataComplementOf dataComplementOf = OWLSerializer.DeserializeObject<OWLDataComplementOf>(
-@"<DataComplementOf>
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataComplementOf>");
+                """
+                <DataComplementOf>
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                </DataComplementOf>
+                """);
 
             Assert.IsNotNull(dataComplementOf);
             Assert.IsNotNull(dataComplementOf.DataRangeExpression);

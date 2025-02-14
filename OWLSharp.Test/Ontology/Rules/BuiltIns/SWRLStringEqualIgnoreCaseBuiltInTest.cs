@@ -62,7 +62,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeStringEqualIgnoreCaseBuiltIn()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
@@ -79,7 +79,7 @@ namespace OWLSharp.Test.Ontology
             //Test string handling for empty builtIns
 
             SWRLBuiltIn emptyBuiltin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase"></BuiltInAtom>""");
 
             Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
             Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
@@ -89,7 +89,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeStringEqualIgnoreCaseBuiltInWithLeftNumber()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase"><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">5</Literal><Variable IRI="urn:swrl:var#Y" /></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
@@ -108,7 +108,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeStringEqualIgnoreCaseBuiltInWithRightNumber()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase""><Variable IRI=""urn:swrl:var#X"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#stringEqualIgnoreCase"><Variable IRI="urn:swrl:var#X" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">5</Literal></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);

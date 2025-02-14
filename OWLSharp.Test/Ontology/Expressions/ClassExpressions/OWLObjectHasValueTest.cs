@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectHasValue);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectHasValue><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><NamedIndividual IRI=""ex:Bob"" /></ObjectHasValue>"));
+"""<ObjectHasValue><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><NamedIndividual IRI="ex:Bob" /></ObjectHasValue>"""));
         }
 
         [TestMethod]
@@ -86,17 +86,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectHasValue);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectHasValue><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><AnonymousIndividual nodeID=""AnonIdv"" /></ObjectHasValue>"));
+"""<ObjectHasValue><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><AnonymousIndividual nodeID="AnonIdv" /></ObjectHasValue>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectHasValue()
         {
             OWLObjectHasValue objectHasValue = OWLSerializer.DeserializeObject<OWLObjectHasValue>(
-@"<ObjectHasValue>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <NamedIndividual IRI=""ex:Bob"" />
-</ObjectHasValue>");
+                """
+                <ObjectHasValue>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  <NamedIndividual IRI="ex:Bob" />
+                </ObjectHasValue>
+                """);
 
             Assert.IsNotNull(objectHasValue);
             Assert.IsNotNull(objectHasValue.ObjectPropertyExpression);
@@ -111,10 +113,12 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeObjectHasValueWithAnonymousIndividual()
         {
             OWLObjectHasValue objectHasValue = OWLSerializer.DeserializeObject<OWLObjectHasValue>(
-@"<ObjectHasValue>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <AnonymousIndividual nodeID=""AnonIdv"" />
-</ObjectHasValue>");
+                """
+                <ObjectHasValue>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  <AnonymousIndividual nodeID="AnonIdv" />
+                </ObjectHasValue>
+                """);
 
             Assert.IsNotNull(objectHasValue);
             Assert.IsNotNull(objectHasValue.ObjectPropertyExpression);

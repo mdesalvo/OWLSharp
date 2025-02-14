@@ -48,14 +48,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(import);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Import>http://xmlns.com/foaf/0.1/</Import>"));
+"<Import>http://xmlns.com/foaf/0.1/</Import>"));
         }
 
         [TestMethod] 
         public void ShouldDeserializeImport()
         {
             OWLImport import = OWLSerializer.DeserializeObject<OWLImport>(
-@"<Import>http://xmlns.com/foaf/0.1/</Import>");
+"<Import>http://xmlns.com/foaf/0.1/</Import>");
 
             Assert.IsNotNull(import);
             Assert.IsTrue(string.Equals(import.IRI, RDFVocabulary.FOAF.BASE_URI));

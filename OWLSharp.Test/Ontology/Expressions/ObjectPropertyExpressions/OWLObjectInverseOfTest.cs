@@ -54,16 +54,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectInverseOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf>"));
+"""<ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectInverseOf()
         {
             OWLObjectInverseOf objectInverseOf = OWLSerializer.DeserializeObject<OWLObjectInverseOf>(
-@"<ObjectInverseOf>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectInverseOf>");
+                """
+                <ObjectInverseOf>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                </ObjectInverseOf>
+                """);
 
             Assert.IsNotNull(objectInverseOf);
             Assert.IsNotNull(objectInverseOf.ObjectProperty);

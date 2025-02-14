@@ -49,10 +49,10 @@ namespace OWLSharp.Test.Ontology
             Assert.AreEqual(3, classDeclarations.Count);
             List<OWLClass> declaredClasses = ontology.GetDeclaredEntitiesOfType<OWLClass>();
             Assert.AreEqual(3, declaredClasses.Count);
-            Assert.IsTrue(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
-            Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.DOCUMENT)));
+            Assert.IsTrue(ontology.CheckHasEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)));
+            Assert.IsFalse(ontology.CheckHasEntity(new OWLClass(RDFVocabulary.FOAF.DOCUMENT)));
             Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(null));
-            Assert.IsFalse((null as OWLOntology).CheckHasEntity<OWLClass>(new OWLClass(RDFVocabulary.FOAF.AGENT)));
+            Assert.IsFalse((null as OWLOntology).CheckHasEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)));
 
             List<OWLDeclaration> datatypeDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDatatype>();
             Assert.AreEqual(2, datatypeDeclarations.Count);

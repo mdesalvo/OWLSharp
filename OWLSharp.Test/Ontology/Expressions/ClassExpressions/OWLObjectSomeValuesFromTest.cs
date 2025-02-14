@@ -70,17 +70,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectSomeValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectSomeValuesFrom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectSomeValuesFrom>"));
+"""<ObjectSomeValuesFrom><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /></ObjectSomeValuesFrom>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectSomeValuesFrom()
         {
             OWLObjectSomeValuesFrom objectSomeValuesFrom = OWLSerializer.DeserializeObject<OWLObjectSomeValuesFrom>(
-@"<ObjectSomeValuesFrom>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectSomeValuesFrom>");
+                """
+                <ObjectSomeValuesFrom>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                </ObjectSomeValuesFrom>
+                """);
 
             Assert.IsNotNull(objectSomeValuesFrom);
             Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);

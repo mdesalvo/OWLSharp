@@ -109,7 +109,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?Q")));
 
             Assert.IsTrue(string.Equals(
-@"<ObjectPropertyAtom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></ObjectPropertyAtom>", OWLSerializer.SerializeObject(atom)));
+"""<ObjectPropertyAtom><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></ObjectPropertyAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
@@ -121,14 +121,14 @@ namespace OWLSharp.Test.Ontology
                 new SWRLIndividualArgument(new RDFResource("ex:Mark")));
 
             Assert.IsTrue(string.Equals(
-@"<ObjectPropertyAtom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Variable IRI=""urn:swrl:var#P"" /><NamedIndividual IRI=""ex:Mark"" /></ObjectPropertyAtom>", OWLSerializer.SerializeObject(atom)));
+"""<ObjectPropertyAtom><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Variable IRI="urn:swrl:var#P" /><NamedIndividual IRI="ex:Mark" /></ObjectPropertyAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
         public void ShouldGetSWRLObjectPropertyAtomFromXMLRepresentation()
         {
             SWRLObjectPropertyAtom atom = OWLSerializer.DeserializeObject<SWRLObjectPropertyAtom>(
-@"<ObjectPropertyAtom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></ObjectPropertyAtom>");
+"""<ObjectPropertyAtom><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></ObjectPropertyAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNotNull(atom.Predicate);
@@ -143,7 +143,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldGetSWRLObjectPropertyAtomFromXMLRepresentationWithIndividualRightArgument()
         {
             SWRLObjectPropertyAtom atom = OWLSerializer.DeserializeObject<SWRLObjectPropertyAtom>(
-@"<ObjectPropertyAtom><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Variable IRI=""urn:swrl:var#P"" /><NamedIndividual IRI=""ex:Mark"" /></ObjectPropertyAtom>");
+"""<ObjectPropertyAtom><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Variable IRI="urn:swrl:var#P" /><NamedIndividual IRI="ex:Mark" /></ObjectPropertyAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNotNull(atom.Predicate);

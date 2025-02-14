@@ -65,7 +65,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(inverseFunctionalObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<InverseFunctionalObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></InverseFunctionalObjectProperty>"));
+"""<InverseFunctionalObjectProperty><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></InverseFunctionalObjectProperty>"""));
         }
 
         [TestMethod]
@@ -76,7 +76,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(inverseFunctionalObjectProperty);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></InverseFunctionalObjectProperty>"));
+"""<InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf></InverseFunctionalObjectProperty>"""));
         }
 
         [TestMethod]
@@ -86,10 +86,10 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLInverseFunctionalObjectProperty(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><InverseFunctionalObjectProperty><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></InverseFunctionalObjectProperty></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><InverseFunctionalObjectProperty><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></InverseFunctionalObjectProperty></Ontology>"""));
         }
 
         [TestMethod]
@@ -99,19 +99,21 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLInverseFunctionalObjectProperty(
                     new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></InverseFunctionalObjectProperty></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf></InverseFunctionalObjectProperty></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeInverseFunctionalObjectProperty()
         {
             OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = OWLSerializer.DeserializeObject<OWLInverseFunctionalObjectProperty>(
-@"<InverseFunctionalObjectProperty>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</InverseFunctionalObjectProperty>");
+                """
+                <InverseFunctionalObjectProperty>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                </InverseFunctionalObjectProperty>
+                """);
 
             Assert.IsNotNull(inverseFunctionalObjectProperty);
             Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
@@ -123,11 +125,13 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeInverseFunctionalObjectInverseOf()
         {
             OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = OWLSerializer.DeserializeObject<OWLInverseFunctionalObjectProperty>(
-@"<InverseFunctionalObjectProperty>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </ObjectInverseOf>
-</InverseFunctionalObjectProperty>");
+                """
+                <InverseFunctionalObjectProperty>
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </ObjectInverseOf>
+                </InverseFunctionalObjectProperty>
+                """);
 
             Assert.IsNotNull(inverseFunctionalObjectProperty);
             Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
@@ -139,21 +143,23 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeInverseFunctionalObjectPropertyViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <InverseFunctionalObjectProperty>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-      <Literal xml:lang=""EN"">Steve</Literal>
-    </Annotation>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </InverseFunctionalObjectProperty>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <InverseFunctionalObjectProperty>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                      <Literal xml:lang="EN">Steve</Literal>
+                    </Annotation>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </InverseFunctionalObjectProperty>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
@@ -171,23 +177,25 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeInverseFunctionalObjectInverseOfViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <InverseFunctionalObjectProperty>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-      <Literal xml:lang=""EN"">Steve</Literal>
-    </Annotation>
-    <ObjectInverseOf>
-      <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    </ObjectInverseOf>
-  </InverseFunctionalObjectProperty>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <InverseFunctionalObjectProperty>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                      <Literal xml:lang="EN">Steve</Literal>
+                    </Annotation>
+                    <ObjectInverseOf>
+                      <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    </ObjectInverseOf>
+                  </InverseFunctionalObjectProperty>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);

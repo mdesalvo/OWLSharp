@@ -75,14 +75,14 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?P")));
 
             Assert.IsTrue(string.Equals(
-@"<ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom>", OWLSerializer.SerializeObject(atom)));
+"""<ClassAtom><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><Variable IRI="urn:swrl:var#P" /></ClassAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
         public void ShouldGetSWRLClassAtomFromXMLRepresentation()
         {
             SWRLClassAtom atom = OWLSerializer.DeserializeObject<SWRLClassAtom>(
-@"<ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom>");
+"""<ClassAtom><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><Variable IRI="urn:swrl:var#P" /></ClassAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNotNull(atom.Predicate);

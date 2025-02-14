@@ -62,7 +62,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(InverseObjectProperties);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<InverseObjectProperties><ObjectProperty IRI=""ex:hasWife"" /><ObjectProperty IRI=""ex:isWifeOf"" /></InverseObjectProperties>"));
+"""<InverseObjectProperties><ObjectProperty IRI="ex:hasWife" /><ObjectProperty IRI="ex:isWifeOf" /></InverseObjectProperties>"""));
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(InverseObjectProperties);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<InverseObjectProperties><ObjectInverseOf><ObjectProperty IRI=""ex:isWifeOf"" /></ObjectInverseOf><ObjectProperty IRI=""ex:isWifeOf"" /></InverseObjectProperties>"));
+"""<InverseObjectProperties><ObjectInverseOf><ObjectProperty IRI="ex:isWifeOf" /></ObjectInverseOf><ObjectProperty IRI="ex:isWifeOf" /></InverseObjectProperties>"""));
         }
 
         [TestMethod]
@@ -85,20 +85,22 @@ namespace OWLSharp.Test.Ontology
                 new OWLInverseObjectProperties(
                     new OWLObjectProperty(new RDFResource("ex:hasWife")),
                     new OWLObjectProperty(new RDFResource("ex:isWifeOf"))));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><InverseObjectProperties><ObjectProperty IRI=""ex:hasWife"" /><ObjectProperty IRI=""ex:isWifeOf"" /></InverseObjectProperties></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><InverseObjectProperties><ObjectProperty IRI="ex:hasWife" /><ObjectProperty IRI="ex:isWifeOf" /></InverseObjectProperties></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeInverseObjectProperties()
         {
             OWLInverseObjectProperties inverseObjectProperties = OWLSerializer.DeserializeObject<OWLInverseObjectProperties>(
-@"<InverseObjectProperties>
-  <ObjectProperty IRI=""ex:hasWife"" />
-  <ObjectProperty IRI=""ex:isWifeOf"" />
-</InverseObjectProperties>");
+                """
+                <InverseObjectProperties>
+                  <ObjectProperty IRI="ex:hasWife" />
+                  <ObjectProperty IRI="ex:isWifeOf" />
+                </InverseObjectProperties>
+                """);
 
             Assert.IsNotNull(inverseObjectProperties);
             Assert.IsNotNull(inverseObjectProperties.LeftObjectPropertyExpression);
@@ -113,12 +115,14 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeInverseObjectPropertiesWithFirstInverse()
         {
             OWLInverseObjectProperties inverseObjectProperties = OWLSerializer.DeserializeObject<OWLInverseObjectProperties>(
-@"<InverseObjectProperties>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""ex:isWifeOf"" />
-  </ObjectInverseOf>
-  <ObjectProperty IRI=""ex:isWifeOf"" />
-</InverseObjectProperties>");
+                """
+                <InverseObjectProperties>
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="ex:isWifeOf" />
+                  </ObjectInverseOf>
+                  <ObjectProperty IRI="ex:isWifeOf" />
+                </InverseObjectProperties>
+                """);
 
             Assert.IsNotNull(inverseObjectProperties);
             Assert.IsNotNull(inverseObjectProperties.LeftObjectPropertyExpression);
@@ -133,18 +137,20 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeInverseObjectPropertiesViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <InverseObjectProperties>
-    <ObjectProperty IRI=""ex:hasWife"" />
-    <ObjectProperty IRI=""ex:isWifeOf"" />
-  </InverseObjectProperties>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <InverseObjectProperties>
+                    <ObjectProperty IRI="ex:hasWife" />
+                    <ObjectProperty IRI="ex:isWifeOf" />
+                  </InverseObjectProperties>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);

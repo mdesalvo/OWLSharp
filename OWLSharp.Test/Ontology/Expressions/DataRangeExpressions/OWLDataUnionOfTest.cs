@@ -74,17 +74,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataUnionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataUnionOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" /></DataUnionOf>"));
+"""<DataUnionOf><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /><Datatype IRI="http://www.w3.org/2001/XMLSchema#anyURI" /></DataUnionOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataUnionOf()
         {
             OWLDataUnionOf dataUnionOf = OWLSerializer.DeserializeObject<OWLDataUnionOf>(
-@"<DataUnionOf>
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" />
-</DataUnionOf>");
+                """
+                <DataUnionOf>
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#anyURI" />
+                </DataUnionOf>
+                """);
 
             Assert.IsNotNull(dataUnionOf);
             Assert.IsNotNull(dataUnionOf.DataRangeExpressions);

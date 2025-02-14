@@ -49,7 +49,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
             //Test addition of TRS
             TIMEPositionReferenceSystem millenniumTRS = new TIMEPositionReferenceSystem(
-                new RDFResource("ex:MillenniumTRS"), new TIMECoordinate(2000, 1, 1, 0, 0, 0), TIMEUnit.Day, false);
+                new RDFResource("ex:MillenniumTRS"), new TIMECoordinate(2000, 1, 1, 0, 0, 0), TIMEUnit.Day);
             Assert.IsFalse(TIMEReferenceSystemRegistry.ContainsTRS(millenniumTRS));            
             TIMEReferenceSystemRegistry.AddTRS(millenniumTRS);
             TIMEReferenceSystemRegistry.AddTRS(millenniumTRS); //Duplicates are avoided

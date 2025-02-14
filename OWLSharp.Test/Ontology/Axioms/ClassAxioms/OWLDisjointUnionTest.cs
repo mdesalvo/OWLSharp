@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(disjointUnion);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DisjointUnion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointUnion>"));
+"""<DisjointUnion><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Class IRI="http://xmlns.com/foaf/0.1/Organization" /></DisjointUnion>"""));
         }
 
         [TestMethod]
@@ -84,17 +84,17 @@ namespace OWLSharp.Test.Ontology
                 new OWLDisjointUnion(
                     new OWLClass(RDFVocabulary.FOAF.AGENT),
                     [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DisjointUnion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointUnion></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><DisjointUnion><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Class IRI="http://xmlns.com/foaf/0.1/Organization" /></DisjointUnion></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDisjointUnion()
         {
             OWLDisjointUnion disjointUnion = OWLSerializer.DeserializeObject<OWLDisjointUnion>(
-@"<DisjointUnion><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Organization"" /></DisjointUnion>");
+"""<DisjointUnion><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Class IRI="http://xmlns.com/foaf/0.1/Organization" /></DisjointUnion>""");
 
             Assert.IsNotNull(disjointUnion);
             Assert.IsNotNull(disjointUnion.ClassIRI);
@@ -108,23 +108,25 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeDisjointUnionViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<Ontology xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
-    <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#""/>
-    <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#""/>
-    <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#""/>
-    <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#""/>
-    <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace""/>
-    <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-    <DisjointUnion>
-        <Annotation>
-            <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-            <Literal xml:lang=""EN"">Steve</Literal>
-        </Annotation>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Agent""/>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Person""/>
-        <Class abbreviatedIRI=""foaf:Organization""/>
-    </DisjointUnion>
-</Ontology>");
+                """
+                <Ontology xmlns:foaf="http://xmlns.com/foaf/0.1/">
+                    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#"/>
+                    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#"/>
+                    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+                    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#"/>
+                    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace"/>
+                    <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                    <DisjointUnion>
+                        <Annotation>
+                            <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                            <Literal xml:lang="EN">Steve</Literal>
+                        </Annotation>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Agent"/>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Person"/>
+                        <Class abbreviatedIRI="foaf:Organization"/>
+                    </DisjointUnion>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ClassAxioms.Count);

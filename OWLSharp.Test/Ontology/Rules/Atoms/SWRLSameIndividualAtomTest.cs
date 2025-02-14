@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?Q")));
 
             Assert.IsTrue(string.Equals(
-@"<SameIndividualAtom><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></SameIndividualAtom>", OWLSerializer.SerializeObject(atom)));
+"""<SameIndividualAtom><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></SameIndividualAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
@@ -113,14 +113,14 @@ namespace OWLSharp.Test.Ontology
                 new SWRLIndividualArgument(new RDFResource("ex:Mark")));
 
             Assert.IsTrue(string.Equals(
-@"<SameIndividualAtom><Variable IRI=""urn:swrl:var#P"" /><NamedIndividual IRI=""ex:Mark"" /></SameIndividualAtom>", OWLSerializer.SerializeObject(atom)));
+"""<SameIndividualAtom><Variable IRI="urn:swrl:var#P" /><NamedIndividual IRI="ex:Mark" /></SameIndividualAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
         public void ShouldGetSWRLSameIndividualAtomFromXMLRepresentation()
         {
             SWRLSameIndividualAtom atom = OWLSerializer.DeserializeObject<SWRLSameIndividualAtom>(
-@"<SameIndividualAtom><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></SameIndividualAtom>");
+"""<SameIndividualAtom><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></SameIndividualAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNull(atom.Predicate);
@@ -134,7 +134,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldGetSWRLSameIndividualAtomFromXMLRepresentationWithIndividualRightArgument()
         {
             SWRLSameIndividualAtom atom = OWLSerializer.DeserializeObject<SWRLSameIndividualAtom>(
-@"<SameIndividualAtom><Variable IRI=""urn:swrl:var#P"" /><NamedIndividual IRI=""ex:Mark"" /></SameIndividualAtom>");
+"""<SameIndividualAtom><Variable IRI="urn:swrl:var#P" /><NamedIndividual IRI="ex:Mark" /></SameIndividualAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNull(atom.Predicate);

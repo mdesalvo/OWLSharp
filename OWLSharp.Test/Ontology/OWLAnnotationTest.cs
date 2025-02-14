@@ -81,7 +81,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>http://example.org/seeThis</IRI></Annotation>"));
+"""<Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><IRI>http://example.org/seeThis</IRI></Annotation>"""));
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><IRI>http://example.org/seeThis</IRI></Annotation>"));          
+"""<Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"><AnnotationProperty abbreviatedIRI="rdfs:comment" /><IRI>http://example.org/seeThis</IRI></Annotation>"""));          
         }
 
         [TestMethod]
@@ -117,17 +117,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal xml:lang=""EN-US"">annotation!</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>http://example.org/seeThat</IRI></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><IRI>http://example.org/seeThis</IRI></Annotation>"));          
+"""<Annotation><Annotation><Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" /><Literal xml:lang="EN-US">annotation!</Literal></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><IRI>http://example.org/seeThat</IRI></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><IRI>http://example.org/seeThis</IRI></Annotation>"""));          
         }
 
         [TestMethod]
         public void ShouldDeserializeIRIAnnotation()
         {
             OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <IRI>http://example.org/seeThis</IRI>
-</Annotation>");
+                """
+                <Annotation>
+                  <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  <IRI>http://example.org/seeThis</IRI>
+                </Annotation>
+                """);
 
             Assert.IsNotNull(annotation);
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
@@ -140,10 +142,12 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeIRIAnnotationWithAbbreviatedProperty()
         {
             OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
-  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
-  <IRI>http://example.org/seeThis</IRI>
-</Annotation>");
+                """
+                <Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+                  <AnnotationProperty abbreviatedIRI="rdfs:comment" />
+                  <IRI>http://example.org/seeThis</IRI>
+                </Annotation>
+                """);
 
             Assert.IsNotNull(annotation);
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
@@ -156,18 +160,20 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeIRIAnnotationWithNestedAnnotations()
         {
             OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal xml:lang=""EN-US"">annotation!</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <IRI>http://example.org/seeThat</IRI>
-  </Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <IRI>http://example.org/seeThis</IRI>
-</Annotation>");
+                """
+                <Annotation>
+                  <Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal xml:lang="EN-US">annotation!</Literal>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                    <IRI>http://example.org/seeThat</IRI>
+                  </Annotation>
+                  <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  <IRI>http://example.org/seeThis</IRI>
+                </Annotation>
+                """);
 
           Assert.IsNotNull(annotation);
           Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
@@ -194,7 +200,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
                             && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                             && annProp.AbbreviatedIRI is null);
-            Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
+            Assert.IsTrue(Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
         }
 
         [TestMethod]
@@ -214,7 +220,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI></Annotation>"));          
+"""<Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><AbbreviatedIRI xmlns:q1="http://example.org/">q1:seeThis</AbbreviatedIRI></Annotation>"""));          
         }
 
         [TestMethod]
@@ -228,7 +234,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI></Annotation>"));          
+"""<Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"><AnnotationProperty abbreviatedIRI="rdfs:comment" /><AbbreviatedIRI xmlns:q1="http://example.org/">q1:seeThis</AbbreviatedIRI></Annotation>"""));          
         }
 
         [TestMethod]
@@ -250,57 +256,63 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#positiveInteger"">25</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThat</AbbreviatedIRI></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AbbreviatedIRI xmlns:q2=""http://example.org/"">q2:seeThis</AbbreviatedIRI></Annotation>"));          
+"""<Annotation><Annotation><Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#positiveInteger">25</Literal></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><AbbreviatedIRI xmlns:q1="http://example.org/">q1:seeThat</AbbreviatedIRI></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><AbbreviatedIRI xmlns:q2="http://example.org/">q2:seeThis</AbbreviatedIRI></Annotation>"""));          
         }
 
         [TestMethod]
         public void ShouldDeserializeAbbreviatedIRIAnnotation()
         {
           OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI>
-</Annotation>");
+              """
+              <Annotation>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                <AbbreviatedIRI xmlns:q1="http://example.org/">q1:seeThis</AbbreviatedIRI>
+              </Annotation>
+              """);
 
           Assert.IsNotNull(annotation);
           Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
                           && string.Equals(annProp.IRI, $"{RDFVocabulary.RDFS.COMMENT}")
                           && annProp.AbbreviatedIRI is null);
-          Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
+          Assert.IsTrue(Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
         }
 
         [TestMethod]
         public void ShouldDeserializeAbbreviatedIRIAnnotationWithAbbreviatedProperty()
         {
           OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
-  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
-  <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThis</AbbreviatedIRI>
-</Annotation>");
+              """
+              <Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+                <AnnotationProperty abbreviatedIRI="rdfs:comment" />
+                <AbbreviatedIRI xmlns:q1="http://example.org/">q1:seeThis</AbbreviatedIRI>
+              </Annotation>
+              """);
 
           Assert.IsNotNull(annotation);
           Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
                           && string.Equals(annProp.AbbreviatedIRI.ToString(), "http://www.w3.org/2000/01/rdf-schema#:comment")
                           && annProp.IRI is null);
-          Assert.IsTrue(string.Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
+          Assert.IsTrue(Equals(annotation.ValueAbbreviatedIRI, new XmlQualifiedName("seeThis","http://example.org/")));
         }
 
         [TestMethod]
         public void ShouldDeserializeAbbreviatedIRIAnnotationWithNestedAnnotations()
         {
           OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#positiveInteger"">25</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <AbbreviatedIRI xmlns:q1=""http://example.org/"">q1:seeThat</AbbreviatedIRI>
-  </Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <AbbreviatedIRI xmlns:q2=""http://example.org/"">q2:seeThis</AbbreviatedIRI>
-</Annotation>");
+              """
+              <Annotation>
+                <Annotation>
+                  <Annotation>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                    <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#positiveInteger">25</Literal>
+                  </Annotation>
+                  <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  <AbbreviatedIRI xmlns:q1="http://example.org/">q1:seeThat</AbbreviatedIRI>
+                </Annotation>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                <AbbreviatedIRI xmlns:q2="http://example.org/">q2:seeThis</AbbreviatedIRI>
+              </Annotation>
+              """);
 
           Assert.IsNotNull(annotation);
           Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
@@ -347,7 +359,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AnonymousIndividual nodeID=""AnonIdv"" /></Annotation>"));          
+"""<Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><AnonymousIndividual nodeID="AnonIdv" /></Annotation>"""));          
         }
 
         [TestMethod]
@@ -361,7 +373,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><AnonymousIndividual nodeID=""AnonIdv"" /></Annotation>"));          
+"""<Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"><AnnotationProperty abbreviatedIRI="rdfs:comment" /><AnonymousIndividual nodeID="AnonIdv" /></Annotation>"""));          
         }
 
         [TestMethod]
@@ -383,17 +395,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal xml:lang=""EN-US"">annotation!</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AnonymousIndividual nodeID=""AnonIdv2"" /></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><AnonymousIndividual nodeID=""AnonIdv"" /></Annotation>"));          
+"""<Annotation><Annotation><Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" /><Literal xml:lang="EN-US">annotation!</Literal></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><AnonymousIndividual nodeID="AnonIdv2" /></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><AnonymousIndividual nodeID="AnonIdv" /></Annotation>"""));          
         }
 
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividualAnnotation()
         {
           OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <AnonymousIndividual nodeID=""AnonIdv"" />
-</Annotation>");
+              """
+              <Annotation>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                <AnonymousIndividual nodeID="AnonIdv" />
+              </Annotation>
+              """);
 
           Assert.IsNotNull(annotation);
           Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
@@ -406,10 +420,12 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeAnonymousIndividualAnnotationWithAbbreviatedProperty()
         {
           OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
-  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
-  <AnonymousIndividual nodeID=""AnonIdv"" />
-</Annotation>");
+              """
+              <Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+                <AnnotationProperty abbreviatedIRI="rdfs:comment" />
+                <AnonymousIndividual nodeID="AnonIdv" />
+              </Annotation>
+              """);
 
           Assert.IsNotNull(annotation);
           Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
@@ -422,25 +438,27 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeAnonymousIndividualAnnotationWithNestedAnnotations()
         {
           OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal xml:lang=""EN-US--ltr"">annotation!</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <AnonymousIndividual nodeID=""AnonIdv2"" />
-  </Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <AnonymousIndividual nodeID=""AnonIdv"" />
-</Annotation>");
+              """
+              <Annotation>
+                <Annotation>
+                  <Annotation>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                    <Literal xml:lang="EN-US--ltr">annotation!</Literal>
+                  </Annotation>
+                  <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  <AnonymousIndividual nodeID="AnonIdv2" />
+                </Annotation>
+                <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                <AnonymousIndividual nodeID="AnonIdv" />
+              </Annotation>
+              """);
 
           Assert.IsNotNull(annotation);
           Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
-          Assert.IsTrue(string.Equals(annotation.ValueAnonymousIndividual.NodeID.ToString(), "AnonIdv"));
+          Assert.IsTrue(string.Equals(annotation.ValueAnonymousIndividual.NodeID, "AnonIdv"));
           Assert.IsNotNull(annotation.Annotation);
           Assert.IsTrue(string.Equals(annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));
-          Assert.IsTrue(string.Equals(annotation.Annotation.ValueAnonymousIndividual.NodeID.ToString(), "AnonIdv2"));
+          Assert.IsTrue(string.Equals(annotation.Annotation.ValueAnonymousIndividual.NodeID, "AnonIdv2"));
           Assert.IsNotNull(annotation.Annotation.Annotation);
           Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#label"));
           Assert.IsTrue(string.Equals(annotation.Annotation.Annotation.ValueLiteral.Value, "annotation!"));
@@ -480,7 +498,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>Lit!</Literal></Annotation>"));          
+"""<Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><Literal>Lit!</Literal></Annotation>"""));          
         }
 
         [TestMethod]
@@ -494,7 +512,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation, xmlSerializerNamespaces);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#""><AnnotationProperty abbreviatedIRI=""rdfs:comment"" /><Literal>Lit!</Literal></Annotation>"));
+"""<Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"><AnnotationProperty abbreviatedIRI="rdfs:comment" /><Literal>Lit!</Literal></Annotation>"""));
         }
 
         [TestMethod]
@@ -516,17 +534,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Annotation><Annotation><Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" /><Literal xml:lang=""EN-US"">annotation!</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>Lit!2</Literal></Annotation><AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" /><Literal>Lit!</Literal></Annotation>"));          
+"""<Annotation><Annotation><Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" /><Literal xml:lang="EN-US">annotation!</Literal></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><Literal>Lit!2</Literal></Annotation><AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" /><Literal>Lit!</Literal></Annotation>"""));          
         }
 
         [TestMethod]
         public void ShouldDeserializeLiteralAnnotation()
         {
             OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <Literal>Lit!</Literal>
-</Annotation>");
+                """
+                <Annotation>
+                  <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  <Literal>Lit!</Literal>
+                </Annotation>
+                """);
 
             Assert.IsNotNull(annotation);
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
@@ -539,10 +559,12 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeLiteralAnnotationWithAbbreviatedProperty()
         {
             OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"">
-  <AnnotationProperty abbreviatedIRI=""rdfs:comment"" />
-  <Literal>Lit!</Literal>
-</Annotation>");
+                """
+                <Annotation xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+                  <AnnotationProperty abbreviatedIRI="rdfs:comment" />
+                  <Literal>Lit!</Literal>
+                </Annotation>
+                """);
 
             Assert.IsNotNull(annotation);
             Assert.IsTrue(annotation.AnnotationProperty is OWLAnnotationProperty annProp 
@@ -555,18 +577,20 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeLiteralAnnotationWithNestedAnnotations()
         {
             OWLAnnotation annotation = OWLSerializer.DeserializeObject<OWLAnnotation>(
-@"<Annotation>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal xml:lang=""en"">annotation!</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <Literal>Lit!2</Literal>
-  </Annotation>
-  <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  <Literal>Lit!</Literal>
-</Annotation>");
+                """
+                <Annotation>
+                  <Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal xml:lang="en">annotation!</Literal>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                    <Literal>Lit!2</Literal>
+                  </Annotation>
+                  <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  <Literal>Lit!</Literal>
+                </Annotation>
+                """);
 
             Assert.IsNotNull(annotation);
             Assert.IsTrue(string.Equals(annotation.AnnotationProperty.IRI, "http://www.w3.org/2000/01/rdf-schema#comment"));

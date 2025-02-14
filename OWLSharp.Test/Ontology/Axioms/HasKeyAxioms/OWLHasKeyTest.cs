@@ -53,14 +53,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(hasKey);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<HasKey><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/focus"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></HasKey>"));
+"""<HasKey><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/focus" /><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /></HasKey>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeHasKey()
         {
             OWLHasKey hasKey = OWLSerializer.DeserializeObject<OWLHasKey>(
-@"<HasKey><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/focus"" /><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></HasKey>");
+"""<HasKey><Class IRI="http://xmlns.com/foaf/0.1/Agent" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/focus" /><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /></HasKey>""");
 
             Assert.IsNotNull(hasKey);
             Assert.IsTrue(hasKey.ClassExpression is OWLClass cls

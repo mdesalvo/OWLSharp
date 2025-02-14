@@ -59,7 +59,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(equivalentObjectProperties);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<EquivalentObjectProperties><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" /></EquivalentObjectProperties>"));
+"""<EquivalentObjectProperties><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/member" /></EquivalentObjectProperties>"""));
         }
 
         [TestMethod]
@@ -69,20 +69,22 @@ namespace OWLSharp.Test.Ontology
             ontology.ObjectPropertyAxioms.Add(
                 new OWLEquivalentObjectProperties(
                 [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), new OWLObjectProperty(RDFVocabulary.FOAF.MEMBER) ]));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><EquivalentObjectProperties><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" /></EquivalentObjectProperties></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><EquivalentObjectProperties><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><ObjectProperty IRI="http://xmlns.com/foaf/0.1/member" /></EquivalentObjectProperties></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeEquivalentObjectProperties()
         {
             OWLEquivalentObjectProperties equivalentObjectProperties = OWLSerializer.DeserializeObject<OWLEquivalentObjectProperties>(
-@"<EquivalentObjectProperties>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" />
-</EquivalentObjectProperties>");
+                """
+                <EquivalentObjectProperties>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/member" />
+                </EquivalentObjectProperties>
+                """);
 
             Assert.IsNotNull(equivalentObjectProperties);
             Assert.IsNotNull(equivalentObjectProperties.ObjectPropertyExpressions);
@@ -94,22 +96,24 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeEquivalentObjectPropertiesViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <EquivalentObjectProperties>
-    <Annotation>
-        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-        <Literal xml:lang=""EN"">Steve</Literal>
-    </Annotation>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" />
-  </EquivalentObjectProperties>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <EquivalentObjectProperties>
+                    <Annotation>
+                        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                        <Literal xml:lang="EN">Steve</Literal>
+                    </Annotation>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/member" />
+                  </EquivalentObjectProperties>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);

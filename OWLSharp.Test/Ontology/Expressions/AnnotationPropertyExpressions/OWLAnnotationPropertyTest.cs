@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(annotation);
             Assert.IsNull(annotation.IRI);
-            Assert.IsTrue(string.Equals(annotation.AbbreviatedIRI, new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI)));
+            Assert.IsTrue(Equals(annotation.AbbreviatedIRI, new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI)));
         }
 
         [TestMethod]
@@ -65,14 +65,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />"));
+"""<AnnotationProperty IRI="http://purl.org/dc/elements/1.1/creator" />"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeIRIAnnotationProperty()
         {
             OWLAnnotationProperty annotation = OWLSerializer.DeserializeObject<OWLAnnotationProperty>(
-@"<AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />");
+"""<AnnotationProperty IRI="http://purl.org/dc/elements/1.1/creator" />""");
 
             Assert.IsNotNull(annotation);
             Assert.IsTrue(string.Equals(annotation.IRI, RDFVocabulary.DC.CREATOR.ToString()));
@@ -91,18 +91,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotation);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />"));
+"""<AnnotationProperty xmlns:q1="http://purl.org/dc/elements/1.1/" abbreviatedIRI="q1:creator" />"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeQualifiedNameAnnotationProperty()
         {
             OWLAnnotationProperty annotation = OWLSerializer.DeserializeObject<OWLAnnotationProperty>(
-@"<AnnotationProperty xmlns:q1=""http://purl.org/dc/elements/1.1/"" abbreviatedIRI=""q1:creator"" />");
+"""<AnnotationProperty xmlns:q1="http://purl.org/dc/elements/1.1/" abbreviatedIRI="q1:creator" />""");
 
             Assert.IsNotNull(annotation);
             Assert.IsNull(annotation.IRI);
-            Assert.IsTrue(string.Equals(annotation.AbbreviatedIRI, new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI)));
+            Assert.IsTrue(Equals(annotation.AbbreviatedIRI, new XmlQualifiedName("creator", RDFVocabulary.DC.BASE_URI)));
             //Test stabilization of ExpressionIRI
             Assert.IsTrue(annotation.ExpressionIRI.ToString().StartsWith("bnode:ex", StringComparison.Ordinal));
             annotation.GetIRI();

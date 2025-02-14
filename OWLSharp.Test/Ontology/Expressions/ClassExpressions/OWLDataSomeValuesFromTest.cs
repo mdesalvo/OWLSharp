@@ -69,17 +69,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataSomeValuesFrom);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataSomeValuesFrom><DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataSomeValuesFrom>"));
+"""<DataSomeValuesFrom><DataProperty IRI="http://purl.org/dc/elements/1.1/creator" /><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /></DataSomeValuesFrom>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataSomeValuesFrom()
         {
             OWLDataSomeValuesFrom dataSomeValuesFrom = OWLSerializer.DeserializeObject<OWLDataSomeValuesFrom>(
-@"<DataSomeValuesFrom>
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataSomeValuesFrom>");
+                """
+                <DataSomeValuesFrom>
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/creator" />
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                </DataSomeValuesFrom>
+                """);
 
             Assert.IsNotNull(dataSomeValuesFrom);
             Assert.IsNotNull(dataSomeValuesFrom.DataProperty);

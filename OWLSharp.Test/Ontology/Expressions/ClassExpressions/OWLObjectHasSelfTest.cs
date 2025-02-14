@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectHasSelf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectHasSelf>"));
+"""<ObjectHasSelf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectHasSelf>"""));
         }
 
         [TestMethod]
@@ -85,16 +85,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectHasSelf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectHasSelf><ObjectInverseOf><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectInverseOf></ObjectHasSelf>"));
+"""<ObjectHasSelf><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf></ObjectHasSelf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectHasSelf()
         {
             OWLObjectHasSelf objectHasSelf = OWLSerializer.DeserializeObject<OWLObjectHasSelf>(
-@"<ObjectHasSelf>
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectHasSelf>");
+                """
+                <ObjectHasSelf>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                </ObjectHasSelf>
+                """);
 
             Assert.IsNotNull(objectHasSelf);
             Assert.IsNotNull(objectHasSelf.ObjectPropertyExpression);
@@ -106,11 +108,13 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeObjectHasSelfWithObjectInverseOf()
         {
             OWLObjectHasSelf objectHasSelf = OWLSerializer.DeserializeObject<OWLObjectHasSelf>(
-@"<ObjectHasSelf>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </ObjectInverseOf>
-</ObjectHasSelf>");
+                """
+                <ObjectHasSelf>
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </ObjectInverseOf>
+                </ObjectHasSelf>
+                """);
 
             Assert.IsNotNull(objectHasSelf);
             Assert.IsNotNull(objectHasSelf.ObjectPropertyExpression);

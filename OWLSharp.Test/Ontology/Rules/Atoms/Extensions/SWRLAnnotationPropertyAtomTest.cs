@@ -109,7 +109,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?Q")));
 
             Assert.IsTrue(string.Equals(
-@"<AnnotationPropertyAtom><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></AnnotationPropertyAtom>", OWLSerializer.SerializeObject(atom)));
+"""<AnnotationPropertyAtom><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/age" /><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></AnnotationPropertyAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
@@ -121,14 +121,14 @@ namespace OWLSharp.Test.Ontology
                 new SWRLLiteralArgument(new RDFPlainLiteral("hello","en-US--RTL")));
 
             Assert.IsTrue(string.Equals(
-@"<AnnotationPropertyAtom><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><Variable IRI=""urn:swrl:var#P"" /><Literal xml:lang=""EN-US--RTL"">hello</Literal></AnnotationPropertyAtom>", OWLSerializer.SerializeObject(atom)));
+"""<AnnotationPropertyAtom><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/age" /><Variable IRI="urn:swrl:var#P" /><Literal xml:lang="EN-US--RTL">hello</Literal></AnnotationPropertyAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
         public void ShouldGetSWRLAnnotationPropertyAtomFromXMLRepresentation()
         {
             SWRLAnnotationPropertyAtom atom = OWLSerializer.DeserializeObject<SWRLAnnotationPropertyAtom>(
-@"<AnnotationPropertyAtom><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></AnnotationPropertyAtom>");
+"""<AnnotationPropertyAtom><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/age" /><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></AnnotationPropertyAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNotNull(atom.Predicate);
@@ -143,7 +143,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldGetSWRLAnnotationPropertyAtomFromXMLRepresentationWithLiteralRightArgument()
         {
             SWRLAnnotationPropertyAtom atom = OWLSerializer.DeserializeObject<SWRLAnnotationPropertyAtom>(
-@"<AnnotationPropertyAtom><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><Variable IRI=""urn:swrl:var#P"" /><Literal xml:lang=""EN-US--RTL"">hello</Literal></AnnotationPropertyAtom>");
+"""<AnnotationPropertyAtom><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/age" /><Variable IRI="urn:swrl:var#P" /><Literal xml:lang="EN-US--RTL">hello</Literal></AnnotationPropertyAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNotNull(atom.Predicate);

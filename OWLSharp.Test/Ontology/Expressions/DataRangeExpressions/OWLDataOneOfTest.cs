@@ -69,17 +69,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataOneOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataOneOf><Literal xml:lang=""EN"">hello</Literal><Literal xml:lang=""IT"">ciao</Literal></DataOneOf>"));
+"""<DataOneOf><Literal xml:lang="EN">hello</Literal><Literal xml:lang="IT">ciao</Literal></DataOneOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataOneOf()
         {
             OWLDataOneOf dataOneOf = OWLSerializer.DeserializeObject<OWLDataOneOf>(
-@"<DataOneOf>
-  <Literal xml:lang=""EN"">hello</Literal>
-  <Literal xml:lang=""IT"">ciao</Literal>
-</DataOneOf>");
+                """
+                <DataOneOf>
+                  <Literal xml:lang="EN">hello</Literal>
+                  <Literal xml:lang="IT">ciao</Literal>
+                </DataOneOf>
+                """);
 
             Assert.IsNotNull(dataOneOf);
             Assert.IsNotNull(dataOneOf.Literals);

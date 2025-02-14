@@ -71,7 +71,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeReplaceBuiltIn()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#replace""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Variable IRI=""urn:swrl:var#Z"" /><Variable IRI=""urn:swrl:var#Q"" /></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#replace"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /><Variable IRI="urn:swrl:var#Z" /><Variable IRI="urn:swrl:var#Q" /></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
@@ -92,7 +92,7 @@ namespace OWLSharp.Test.Ontology
             //Test string handling for empty builtIns
 
             SWRLBuiltIn emptyBuiltin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#replace""></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#replace"></BuiltInAtom>""");
 
             Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
             Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#replace\" />", OWLSerializer.SerializeObject(emptyBuiltin)));

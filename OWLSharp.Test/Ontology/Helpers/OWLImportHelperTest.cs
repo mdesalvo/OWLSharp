@@ -87,8 +87,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public async Task ShouldThrowExceptionOnImportingNullOntologyAsync()
         {
-            OWLOntology ontology = null;
-            await Assert.ThrowsExactlyAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
+            await Assert.ThrowsExactlyAsync<OWLException>(async () => await (null as OWLOntology).ImportAsync(new Uri("ex:ont"), 5, 5));
         }
 
         [TestMethod]

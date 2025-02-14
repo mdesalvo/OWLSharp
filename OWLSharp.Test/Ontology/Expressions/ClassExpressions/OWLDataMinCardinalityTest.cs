@@ -78,16 +78,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataMinCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /></DataMinCardinality>"));
+"""<DataMinCardinality cardinality="1"><DataProperty IRI="http://purl.org/dc/elements/1.1/description" /></DataMinCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataMinCardinality()
         {
             OWLDataMinCardinality dataMinCardinality = OWLSerializer.DeserializeObject<OWLDataMinCardinality>(
-@"<DataMinCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-</DataMinCardinality>");
+                """
+                <DataMinCardinality cardinality="1">
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                </DataMinCardinality>
+                """);
 
             Assert.IsNotNull(dataMinCardinality);
             Assert.IsTrue(string.Equals(dataMinCardinality.Cardinality, "1"));
@@ -112,17 +114,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataMinCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataMinCardinality>"));
+"""<DataMinCardinality cardinality="1"><DataProperty IRI="http://purl.org/dc/elements/1.1/description" /><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /></DataMinCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataMinQualifiedCardinality()
         {
             OWLDataMinCardinality dataMinCardinality = OWLSerializer.DeserializeObject<OWLDataMinCardinality>(
-@"<DataMinCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataMinCardinality>");
+                """
+                <DataMinCardinality cardinality="1">
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                </DataMinCardinality>
+                """);
 
             Assert.IsNotNull(dataMinCardinality);
             Assert.IsTrue(string.Equals(dataMinCardinality.Cardinality, "1"));

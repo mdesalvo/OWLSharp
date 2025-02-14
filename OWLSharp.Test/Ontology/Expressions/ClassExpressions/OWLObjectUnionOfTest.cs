@@ -72,17 +72,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectUnionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectUnionOf><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectUnionOf>"));
+"""<ObjectUnionOf><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Class IRI="http://xmlns.com/foaf/0.1/Agent" /></ObjectUnionOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectUnionOf()
         {
             OWLObjectUnionOf objectUnionOf = OWLSerializer.DeserializeObject<OWLObjectUnionOf>(
-@"<ObjectUnionOf>
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-</ObjectUnionOf>");
+                """
+                <ObjectUnionOf>
+                  <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                </ObjectUnionOf>
+                """);
 
             Assert.IsNotNull(objectUnionOf);
             Assert.IsNotNull(objectUnionOf.ClassExpressions);

@@ -222,7 +222,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(subObjectPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<SubObjectPropertyOf><ObjectProperty IRI=""ex:objPropA"" /><ObjectProperty IRI=""ex:objPropB"" /></SubObjectPropertyOf>"));
+"""<SubObjectPropertyOf><ObjectProperty IRI="ex:objPropA" /><ObjectProperty IRI="ex:objPropB" /></SubObjectPropertyOf>"""));
         }
 
         [TestMethod]
@@ -234,7 +234,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(subObjectPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<SubObjectPropertyOf><ObjectInverseOf><ObjectProperty IRI=""ex:objPropA"" /></ObjectInverseOf><ObjectProperty IRI=""ex:objPropB"" /></SubObjectPropertyOf>"));
+"""<SubObjectPropertyOf><ObjectInverseOf><ObjectProperty IRI="ex:objPropA" /></ObjectInverseOf><ObjectProperty IRI="ex:objPropB" /></SubObjectPropertyOf>"""));
         }
 
         [TestMethod]
@@ -246,7 +246,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(subObjectPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<SubObjectPropertyOf><ObjectProperty IRI=""ex:objPropA"" /><ObjectInverseOf><ObjectProperty IRI=""ex:objPropB"" /></ObjectInverseOf></SubObjectPropertyOf>"));
+"""<SubObjectPropertyOf><ObjectProperty IRI="ex:objPropA" /><ObjectInverseOf><ObjectProperty IRI="ex:objPropB" /></ObjectInverseOf></SubObjectPropertyOf>"""));
         }
 
         [TestMethod]
@@ -258,7 +258,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(subObjectPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<SubObjectPropertyOf><ObjectInverseOf><ObjectProperty IRI=""ex:objPropA"" /></ObjectInverseOf><ObjectInverseOf><ObjectProperty IRI=""ex:objPropB"" /></ObjectInverseOf></SubObjectPropertyOf>"));
+"""<SubObjectPropertyOf><ObjectInverseOf><ObjectProperty IRI="ex:objPropA" /></ObjectInverseOf><ObjectInverseOf><ObjectProperty IRI="ex:objPropB" /></ObjectInverseOf></SubObjectPropertyOf>"""));
         }
 
         [TestMethod]
@@ -272,7 +272,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(subObjectPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<SubObjectPropertyOf><ObjectPropertyChain><ObjectProperty IRI=""ex:hasFather"" /><ObjectProperty IRI=""ex:hasBrother"" /></ObjectPropertyChain><ObjectProperty IRI=""ex:hasUncle"" /></SubObjectPropertyOf>"));
+"""<SubObjectPropertyOf><ObjectPropertyChain><ObjectProperty IRI="ex:hasFather" /><ObjectProperty IRI="ex:hasBrother" /></ObjectPropertyChain><ObjectProperty IRI="ex:hasUncle" /></SubObjectPropertyOf>"""));
         }
 
         [TestMethod]
@@ -286,7 +286,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(subObjectPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<SubObjectPropertyOf><ObjectPropertyChain><ObjectProperty IRI=""ex:hasFather"" /><ObjectProperty IRI=""ex:hasBrother"" /></ObjectPropertyChain><ObjectInverseOf><ObjectProperty IRI=""ex:isUncleOf"" /></ObjectInverseOf></SubObjectPropertyOf>"));
+"""<SubObjectPropertyOf><ObjectPropertyChain><ObjectProperty IRI="ex:hasFather" /><ObjectProperty IRI="ex:hasBrother" /></ObjectPropertyChain><ObjectInverseOf><ObjectProperty IRI="ex:isUncleOf" /></ObjectInverseOf></SubObjectPropertyOf>"""));
         }
 
         [TestMethod]
@@ -297,20 +297,22 @@ namespace OWLSharp.Test.Ontology
                 new OWLSubObjectPropertyOf(
                     new OWLObjectProperty(new RDFResource("ex:objPropA")),
                     new OWLObjectProperty(new RDFResource("ex:objPropB"))));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><SubObjectPropertyOf><ObjectProperty IRI=""ex:objPropA"" /><ObjectProperty IRI=""ex:objPropB"" /></SubObjectPropertyOf></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><SubObjectPropertyOf><ObjectProperty IRI="ex:objPropA" /><ObjectProperty IRI="ex:objPropB" /></SubObjectPropertyOf></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeSubObjectPropertyOf()
         {
             OWLSubObjectPropertyOf subObjectPropertyOf = OWLSerializer.DeserializeObject<OWLSubObjectPropertyOf>(
-@"<SubObjectPropertyOf>
-  <ObjectProperty IRI=""ex:objPropA"" />
-  <ObjectProperty IRI=""ex:objPropB"" />
-</SubObjectPropertyOf>");
+                """
+                <SubObjectPropertyOf>
+                  <ObjectProperty IRI="ex:objPropA" />
+                  <ObjectProperty IRI="ex:objPropB" />
+                </SubObjectPropertyOf>
+                """);
 
             Assert.IsNotNull(subObjectPropertyOf);
             Assert.IsNull(subObjectPropertyOf.SubObjectPropertyChain);
@@ -326,12 +328,14 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubObjectPropertyOfWithSubAsInverse()
         {
             OWLSubObjectPropertyOf subObjectPropertyOf = OWLSerializer.DeserializeObject<OWLSubObjectPropertyOf>(
-@"<SubObjectPropertyOf>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""ex:objPropA"" />
-  </ObjectInverseOf>
-  <ObjectProperty IRI=""ex:objPropB"" />
-</SubObjectPropertyOf>");
+                """
+                <SubObjectPropertyOf>
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="ex:objPropA" />
+                  </ObjectInverseOf>
+                  <ObjectProperty IRI="ex:objPropB" />
+                </SubObjectPropertyOf>
+                """);
 
             Assert.IsNotNull(subObjectPropertyOf);
             Assert.IsNull(subObjectPropertyOf.SubObjectPropertyChain);
@@ -347,12 +351,14 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubObjectPropertyOfWithSuperAsInverse()
         {
             OWLSubObjectPropertyOf subObjectPropertyOf = OWLSerializer.DeserializeObject<OWLSubObjectPropertyOf>(
-@"<SubObjectPropertyOf>
-  <ObjectProperty IRI=""ex:objPropA"" />
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""ex:objPropB"" />
-  </ObjectInverseOf>
-</SubObjectPropertyOf>");
+                """
+                <SubObjectPropertyOf>
+                  <ObjectProperty IRI="ex:objPropA" />
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="ex:objPropB" />
+                  </ObjectInverseOf>
+                </SubObjectPropertyOf>
+                """);
 
             Assert.IsNotNull(subObjectPropertyOf);
             Assert.IsNull(subObjectPropertyOf.SubObjectPropertyChain);
@@ -368,14 +374,16 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubObjectPropertyOfWithInverse()
         {
             OWLSubObjectPropertyOf subObjectPropertyOf = OWLSerializer.DeserializeObject<OWLSubObjectPropertyOf>(
-@"<SubObjectPropertyOf>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""ex:objPropA"" />
-  </ObjectInverseOf>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""ex:objPropB"" />
-  </ObjectInverseOf>
-</SubObjectPropertyOf>");
+                """
+                <SubObjectPropertyOf>
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="ex:objPropA" />
+                  </ObjectInverseOf>
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="ex:objPropB" />
+                  </ObjectInverseOf>
+                </SubObjectPropertyOf>
+                """);
 
             Assert.IsNotNull(subObjectPropertyOf);
             Assert.IsNull(subObjectPropertyOf.SubObjectPropertyChain);
@@ -391,13 +399,15 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubObjectPropertyOfWithChain()
         {
             OWLSubObjectPropertyOf subObjectPropertyOf = OWLSerializer.DeserializeObject<OWLSubObjectPropertyOf>(
-@"<SubObjectPropertyOf>
-  <ObjectPropertyChain>
-    <ObjectProperty IRI=""ex:hasFather"" />
-    <ObjectProperty IRI=""ex:hasBrother"" />
-  </ObjectPropertyChain>
-  <ObjectProperty IRI=""ex:hasUncle"" />
-</SubObjectPropertyOf>");
+                """
+                <SubObjectPropertyOf>
+                  <ObjectPropertyChain>
+                    <ObjectProperty IRI="ex:hasFather" />
+                    <ObjectProperty IRI="ex:hasBrother" />
+                  </ObjectPropertyChain>
+                  <ObjectProperty IRI="ex:hasUncle" />
+                </SubObjectPropertyOf>
+                """);
 
             Assert.IsNotNull(subObjectPropertyOf);
             Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
@@ -416,15 +426,17 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubObjectPropertyOfWithChainAndInverse()
         {
             OWLSubObjectPropertyOf subObjectPropertyOf = OWLSerializer.DeserializeObject<OWLSubObjectPropertyOf>(
-@"<SubObjectPropertyOf>
-  <ObjectPropertyChain>
-    <ObjectProperty IRI=""ex:hasFather"" />
-    <ObjectProperty IRI=""ex:hasBrother"" />
-  </ObjectPropertyChain>
-  <ObjectInverseOf>
-    <ObjectProperty IRI=""ex:hasUncle"" />
-  </ObjectInverseOf>
-</SubObjectPropertyOf>");
+                """
+                <SubObjectPropertyOf>
+                  <ObjectPropertyChain>
+                    <ObjectProperty IRI="ex:hasFather" />
+                    <ObjectProperty IRI="ex:hasBrother" />
+                  </ObjectPropertyChain>
+                  <ObjectInverseOf>
+                    <ObjectProperty IRI="ex:hasUncle" />
+                  </ObjectInverseOf>
+                </SubObjectPropertyOf>
+                """);
 
             Assert.IsNotNull(subObjectPropertyOf);
             Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
@@ -443,22 +455,24 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubObjectPropertyOfViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <SubObjectPropertyOf>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-      <Literal xml:lang=""EN"">Steve</Literal>
-    </Annotation>
-    <ObjectProperty IRI=""ex:objPropA"" />
-    <ObjectProperty IRI=""ex:objPropB"" />
-  </SubObjectPropertyOf>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <SubObjectPropertyOf>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                      <Literal xml:lang="EN">Steve</Literal>
+                    </Annotation>
+                    <ObjectProperty IRI="ex:objPropA" />
+                    <ObjectProperty IRI="ex:objPropB" />
+                  </SubObjectPropertyOf>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
@@ -479,25 +493,27 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubObjectPropertyOfWithChainViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <SubObjectPropertyOf>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-      <Literal xml:lang=""EN"">Steve</Literal>
-    </Annotation>
-    <ObjectPropertyChain>
-      <ObjectProperty IRI=""ex:hasFather"" />
-      <ObjectProperty IRI=""ex:hasBrother"" />
-    </ObjectPropertyChain>
-    <ObjectProperty IRI=""ex:hasUncle"" />
-  </SubObjectPropertyOf>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <SubObjectPropertyOf>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                      <Literal xml:lang="EN">Steve</Literal>
+                    </Annotation>
+                    <ObjectPropertyChain>
+                      <ObjectProperty IRI="ex:hasFather" />
+                      <ObjectProperty IRI="ex:hasBrother" />
+                    </ObjectPropertyChain>
+                    <ObjectProperty IRI="ex:hasUncle" />
+                  </SubObjectPropertyOf>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);

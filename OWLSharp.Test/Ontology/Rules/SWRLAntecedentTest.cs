@@ -82,14 +82,14 @@ namespace OWLSharp.Test.Ontology
             };
 
             Assert.IsTrue(string.Equals(
-@"<Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataRangeAtom><Datatype IRI=""http://www.w3.org/2001/XMLSchema#integer"" /><Variable IRI=""urn:swrl:var#X"" /></DataRangeAtom><BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#divide""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">3.141592</Literal></BuiltInAtom><BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#tan""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom></Body>", OWLSerializer.SerializeObject(antecedent)));
+"""<Body><ClassAtom><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Variable IRI="urn:swrl:var#P" /></ClassAtom><DataRangeAtom><Datatype IRI="http://www.w3.org/2001/XMLSchema#integer" /><Variable IRI="urn:swrl:var#X" /></DataRangeAtom><BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#divide"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">3.141592</Literal></BuiltInAtom><BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#tan"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /></BuiltInAtom></Body>""", OWLSerializer.SerializeObject(antecedent)));
         }
 
         [TestMethod]
         public void ShouldGetSWRLAntecedentFromXMLRepresentation()
         {
             SWRLAntecedent antecedent = OWLSerializer.DeserializeObject<SWRLAntecedent>(
-@"<Body><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataRangeAtom><Datatype IRI=""http://www.w3.org/2001/XMLSchema#integer"" /><Variable IRI=""urn:swrl:var#X"" /></DataRangeAtom><BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#divide""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#double"">3.141592</Literal></BuiltInAtom><BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#tan""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom></Body>");
+"""<Body><ClassAtom><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Variable IRI="urn:swrl:var#P" /></ClassAtom><DataRangeAtom><Datatype IRI="http://www.w3.org/2001/XMLSchema#integer" /><Variable IRI="urn:swrl:var#X" /></DataRangeAtom><BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#divide"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">3.141592</Literal></BuiltInAtom><BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#tan"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /></BuiltInAtom></Body>""");
 
             Assert.IsNotNull(antecedent);
             Assert.AreEqual(2, antecedent.Atoms.Count);

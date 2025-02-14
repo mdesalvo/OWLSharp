@@ -78,16 +78,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataMaxCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /></DataMaxCardinality>"));
+"""<DataMaxCardinality cardinality="1"><DataProperty IRI="http://purl.org/dc/elements/1.1/description" /></DataMaxCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataMaxCardinality()
         {
             OWLDataMaxCardinality dataMaxCardinality = OWLSerializer.DeserializeObject<OWLDataMaxCardinality>(
-@"<DataMaxCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-</DataMaxCardinality>");
+                """
+                <DataMaxCardinality cardinality="1">
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                </DataMaxCardinality>
+                """);
 
             Assert.IsNotNull(dataMaxCardinality);
             Assert.IsTrue(string.Equals(dataMaxCardinality.Cardinality, "1"));
@@ -112,17 +114,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataMaxCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataMaxCardinality>"));
+"""<DataMaxCardinality cardinality="1"><DataProperty IRI="http://purl.org/dc/elements/1.1/description" /><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /></DataMaxCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataMaxQualifiedCardinality()
         {
             OWLDataMaxCardinality dataMaxCardinality = OWLSerializer.DeserializeObject<OWLDataMaxCardinality>(
-@"<DataMaxCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataMaxCardinality>");
+                """
+                <DataMaxCardinality cardinality="1">
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                </DataMaxCardinality>
+                """);
 
             Assert.IsNotNull(dataMaxCardinality);
             Assert.IsTrue(string.Equals(dataMaxCardinality.Cardinality, "1"));

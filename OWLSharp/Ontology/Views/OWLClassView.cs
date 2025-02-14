@@ -63,8 +63,7 @@ namespace OWLSharp.Ontology
 
         public Task<List<IOWLEntity>> KeysAsync()
             => Task.Run(() => Ontology.KeyAxioms.Where(kax => string.Equals(kax.ClassExpression.GetIRI().ToString(), ClassIRI))
-                                                .SelectMany(kax => kax.DataProperties.Cast<IOWLEntity>()
-                                                                    .Union(kax.ObjectPropertyExpressions.Cast<IOWLEntity>()))
+                                                .SelectMany(kax => kax.DataProperties.Union(kax.ObjectPropertyExpressions.Cast<IOWLEntity>()))
                                                 .ToList());
 
         public Task<List<OWLAnnotationAssertion>> ObjectAnnotationsAsync()

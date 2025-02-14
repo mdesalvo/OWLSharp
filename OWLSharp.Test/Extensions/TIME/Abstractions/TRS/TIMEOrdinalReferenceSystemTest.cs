@@ -434,9 +434,9 @@ namespace OWLSharp.Test.Extensions.TIME
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
 
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:era"), true));
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"), true));
-            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:era"), true));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:era")));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra")));
+            Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:era")));
             Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:era"), false));
             Assert.IsTrue(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"), false));
             Assert.IsFalse(thors.CheckIsSubEraOf(new RDFResource("ex:subsubEra"), new RDFResource("ex:era"), false));
@@ -472,11 +472,11 @@ namespace OWLSharp.Test.Extensions.TIME
                     new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
-            List<RDFResource> subErasOfEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:era"), true);
+            List<RDFResource> subErasOfEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:era"));
             List<RDFResource> subErasOfEraWithoutReasoning = thors.GetSubErasOf(new RDFResource("ex:era"), false);
-            List<RDFResource> subErasOfSubEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:subEra"), true);
+            List<RDFResource> subErasOfSubEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:subEra"));
             List<RDFResource> subErasOfSubEraWithoutReasoning = thors.GetSubErasOf(new RDFResource("ex:subEra"), false);
-            List<RDFResource> subErasOfSubSubEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:subsubEra"), true);
+            List<RDFResource> subErasOfSubSubEraWithReasoning = thors.GetSubErasOf(new RDFResource("ex:subsubEra"));
             List<RDFResource> subErasOfSubSubEraWithoutReasoning = thors.GetSubErasOf(new RDFResource("ex:subsubEra"), false);
 
             Assert.AreEqual(2, subErasOfEraWithReasoning.Count);
@@ -523,9 +523,9 @@ namespace OWLSharp.Test.Extensions.TIME
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
 
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subEra"), true));
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"), true));
-            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subsubEra"), true));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subEra")));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra")));
+            Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subsubEra")));
             Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subEra"), false));
             Assert.IsTrue(thors.CheckIsSuperEraOf(new RDFResource("ex:subEra"), new RDFResource("ex:subsubEra"), false));
             Assert.IsFalse(thors.CheckIsSuperEraOf(new RDFResource("ex:era"), new RDFResource("ex:subsubEra"), false));
@@ -561,11 +561,11 @@ namespace OWLSharp.Test.Extensions.TIME
                     new TIMEInstantPosition(new RDFResource("ex:subsubEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 184)));
             thors.DeclareSubEra(new RDFResource("ex:subEra"), new RDFResource("ex:era"));
             thors.DeclareSubEra(new RDFResource("ex:subsubEra"), new RDFResource("ex:subEra"));
-            List<RDFResource> superErasOfEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:era"), true);
+            List<RDFResource> superErasOfEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:era"));
             List<RDFResource> superErasOfEraWithoutReasoning = thors.GetSuperErasOf(new RDFResource("ex:era"), false);
-            List<RDFResource> superErasOfSubEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:subEra"), true);
+            List<RDFResource> superErasOfSubEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:subEra"));
             List<RDFResource> superErasOfSubEraWithoutReasoning = thors.GetSuperErasOf(new RDFResource("ex:subEra"), false);
-            List<RDFResource> superErasOfSubSubEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:subsubEra"), true);
+            List<RDFResource> superErasOfSubSubEraWithReasoning = thors.GetSuperErasOf(new RDFResource("ex:subsubEra"));
             List<RDFResource> superErasOfSubSubEraWithoutReasoning = thors.GetSuperErasOf(new RDFResource("ex:subsubEra"), false);
 
             Assert.AreEqual(0, superErasOfEraWithReasoning.Count);

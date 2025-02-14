@@ -83,7 +83,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEPositionReferenceSystem unixModifiedTRS = new TIMEPositionReferenceSystem(
                 new RDFResource("ex:CustomTRS"),
                 TIMEPositionReferenceSystem.UnixTime.Origin,
-                new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale), false);
+                new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale));
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
@@ -110,7 +110,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEPositionReferenceSystem unixModifiedTRS = new TIMEPositionReferenceSystem(
                 new RDFResource("ex:CustomTRS"),
                 new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond),
-                new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale), false);
+                new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale));
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(timePosition, unixModifiedTRS, TIMECalendarReferenceSystem.Gregorian);
 
             Assert.IsNotNull(tc);
@@ -138,7 +138,7 @@ namespace OWLSharp.Test.Extensions.TIME
             TIMEPositionReferenceSystem unixModifiedTRS = new TIMEPositionReferenceSystem(
                 new RDFResource("ex:CustomPositionTRS"),
                 TIMEPositionReferenceSystem.UnixTime.Origin,
-                new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale), false);
+                new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale));
             TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(
                 timePosition, 
                 unixModifiedTRS,

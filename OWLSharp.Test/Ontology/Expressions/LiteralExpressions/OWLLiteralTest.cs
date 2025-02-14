@@ -94,7 +94,7 @@ namespace OWLSharp.Test.Ontology
             OWLLiteral lit = new OWLLiteral(new RDFPlainLiteral("hello","en-US--RTL"));
             string serializedXML = OWLSerializer.SerializeObject(lit);
 
-            Assert.IsTrue(string.Equals(serializedXML, @"<Literal xml:lang=""EN-US--RTL"">hello</Literal>"));
+            Assert.IsTrue(string.Equals(serializedXML, """<Literal xml:lang="EN-US--RTL">hello</Literal>"""));
             Assert.IsTrue(string.Equals(lit.ToSWRLString(), "\"hello\"@EN-US--RTL"));
         }
 
@@ -104,15 +104,14 @@ namespace OWLSharp.Test.Ontology
             OWLLiteral lit = new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING));
             string serializedXML = OWLSerializer.SerializeObject(lit);
 
-            Assert.IsTrue(string.Equals(serializedXML, @"<Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal>"));
+            Assert.IsTrue(string.Equals(serializedXML, """<Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">hello</Literal>"""));
             Assert.IsTrue(string.Equals(lit.ToSWRLString(), "\"hello\"^^xsd:string"));
         }
 
         [TestMethod]
         public void ShouldDeserializePlainLiteral()
         {
-            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>(
-@"<Literal>hello</Literal>");
+            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>("<Literal>hello</Literal>");
 
             Assert.IsNotNull(lit);
             Assert.IsTrue(string.Equals(lit.Value, "hello"));
@@ -123,8 +122,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeEmptyLiteral()
         {
-            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>(
-@"<Literal></Literal>");
+            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>("<Literal></Literal>");
 
             Assert.IsNotNull(lit);
             Assert.IsTrue(string.Equals(lit.Value, string.Empty));
@@ -135,8 +133,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeLanguageLiteral()
         {
-            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>(
-@"<Literal xml:lang=""en-US--rtl"">hello</Literal>");
+            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>("""<Literal xml:lang="en-US--rtl">hello</Literal>""");
 
             Assert.IsNotNull(lit);
             Assert.IsTrue(string.Equals(lit.Value, "hello"));
@@ -147,8 +144,7 @@ namespace OWLSharp.Test.Ontology
         [TestMethod]
         public void ShouldDeserializeTypedLiteral()
         {
-            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>(
-@"<Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal>");
+            OWLLiteral lit = OWLSerializer.DeserializeObject<OWLLiteral>("""<Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">hello</Literal>""");
 
             Assert.IsNotNull(lit);
             Assert.IsTrue(string.Equals(lit.Value, "hello"));

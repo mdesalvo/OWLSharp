@@ -17,7 +17,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
-using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
@@ -63,7 +62,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotationPropertyRange);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<AnnotationPropertyRange><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" /><IRI>http://xmlns.com/foaf/0.1/Person</IRI></AnnotationPropertyRange>"));
+"""<AnnotationPropertyRange><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" /><IRI>http://xmlns.com/foaf/0.1/Person</IRI></AnnotationPropertyRange>"""));
         }
 
         [TestMethod]
@@ -74,20 +73,22 @@ namespace OWLSharp.Test.Ontology
                 new OWLAnnotationPropertyRange(
                     new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
                     RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><AnnotationPropertyRange><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" /><IRI>http://xmlns.com/foaf/0.1/Person</IRI></AnnotationPropertyRange></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><AnnotationPropertyRange><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" /><IRI>http://xmlns.com/foaf/0.1/Person</IRI></AnnotationPropertyRange></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeIRIAnnotationPropertyRange()
         {
             OWLAnnotationPropertyRange annotationPropertyRange = OWLSerializer.DeserializeObject<OWLAnnotationPropertyRange>(
-@"<AnnotationPropertyRange>
-  <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-  <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
-</AnnotationPropertyRange>");
+                """
+                <AnnotationPropertyRange>
+                  <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" />
+                  <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
+                </AnnotationPropertyRange>
+                """);
 
             Assert.IsNotNull(annotationPropertyRange);
             Assert.IsNotNull(annotationPropertyRange.AnnotationProperty);
@@ -101,18 +102,20 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeIRIAnnotationPropertyRangeViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <AnnotationPropertyRange>
-    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
-  </AnnotationPropertyRange>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <AnnotationPropertyRange>
+                    <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" />
+                    <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
+                  </AnnotationPropertyRange>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
@@ -157,7 +160,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(annotationPropertyRange);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<AnnotationPropertyRange><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" /><AbbreviatedIRI xmlns:q1=""http://xmlns.com/foaf/0.1/"">q1:Person</AbbreviatedIRI></AnnotationPropertyRange>"));
+"""<AnnotationPropertyRange><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" /><AbbreviatedIRI xmlns:q1="http://xmlns.com/foaf/0.1/">q1:Person</AbbreviatedIRI></AnnotationPropertyRange>"""));
         }
 
         [TestMethod]
@@ -169,20 +172,22 @@ namespace OWLSharp.Test.Ontology
                 new OWLAnnotationPropertyRange(
                     new OWLAnnotationProperty(RDFVocabulary.FOAF.AGENT),
                     new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI)));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" /><AnnotationPropertyRange><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" /><AbbreviatedIRI xmlns:q1=""http://xmlns.com/foaf/0.1/"">q1:Person</AbbreviatedIRI></AnnotationPropertyRange></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" /><AnnotationPropertyRange><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" /><AbbreviatedIRI xmlns:q1="http://xmlns.com/foaf/0.1/">q1:Person</AbbreviatedIRI></AnnotationPropertyRange></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeAbbreviatedIRIAnnotationPropertyRange()
         {
             OWLAnnotationPropertyRange annotationPropertyRange = OWLSerializer.DeserializeObject<OWLAnnotationPropertyRange>(
-@"<AnnotationPropertyRange>
-  <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-  <AbbreviatedIRI xmlns:q1=""http://xmlns.com/foaf/0.1/"">q1:Person</AbbreviatedIRI>
-</AnnotationPropertyRange>");
+                """
+                <AnnotationPropertyRange>
+                  <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" />
+                  <AbbreviatedIRI xmlns:q1="http://xmlns.com/foaf/0.1/">q1:Person</AbbreviatedIRI>
+                </AnnotationPropertyRange>
+                """);
 
             Assert.IsNotNull(annotationPropertyRange);
             Assert.IsNotNull(annotationPropertyRange.AnnotationProperty);
@@ -196,19 +201,21 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeAbbreviatedIRIAnnotationPropertyRangeViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <AnnotationPropertyRange>
-    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <AbbreviatedIRI>foaf:Person</AbbreviatedIRI>
-  </AnnotationPropertyRange>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <AnnotationPropertyRange>
+                    <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" />
+                    <AbbreviatedIRI>foaf:Person</AbbreviatedIRI>
+                  </AnnotationPropertyRange>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
@@ -243,46 +250,48 @@ namespace OWLSharp.Test.Ontology
                 new OWLAnnotationPropertyRange(
                     new OWLAnnotationProperty(RDFVocabulary.FOAF.TITLE),
                     new XmlQualifiedName("Agent", RDFVocabulary.FOAF.BASE_URI)));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" /><AnnotationPropertyRange><Annotation><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN-US--RTL"">contributor</Literal></Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><IRI>ex:AnnValue</IRI></Annotation><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" /><IRI>http://xmlns.com/foaf/0.1/Person</IRI></AnnotationPropertyRange><AnnotationPropertyRange><AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/title"" /><AbbreviatedIRI xmlns:q1=""http://xmlns.com/foaf/0.1/"">q1:Agent</AbbreviatedIRI></AnnotationPropertyRange></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" /><AnnotationPropertyRange><Annotation><Annotation><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" /><Literal xml:lang="EN-US--RTL">contributor</Literal></Annotation><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" /><IRI>ex:AnnValue</IRI></Annotation><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" /><IRI>http://xmlns.com/foaf/0.1/Person</IRI></AnnotationPropertyRange><AnnotationPropertyRange><AnnotationProperty IRI="http://xmlns.com/foaf/0.1/title" /><AbbreviatedIRI xmlns:q1="http://xmlns.com/foaf/0.1/">q1:Agent</AbbreviatedIRI></AnnotationPropertyRange></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeMultipleAndNestedAnnotationAssertionsViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <AnnotationPropertyRange>
-    <Annotation>
-      <Annotation>
-        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-        <Literal xml:lang=""EN-US--RTL"">contributor</Literal>
-      </Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-      <IRI>ex:AnnValue</IRI>
-    </Annotation>
-    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
-  </AnnotationPropertyRange>
-  <AnnotationPropertyRange>
-    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/title"" />
-    <AbbreviatedIRI>foaf:Agent</AbbreviatedIRI>
-  </AnnotationPropertyRange>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <AnnotationPropertyRange>
+                    <Annotation>
+                      <Annotation>
+                        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                        <Literal xml:lang="EN-US--RTL">contributor</Literal>
+                      </Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                      <IRI>ex:AnnValue</IRI>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/Agent" />
+                    <IRI>http://xmlns.com/foaf/0.1/Person</IRI>
+                  </AnnotationPropertyRange>
+                  <AnnotationPropertyRange>
+                    <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/title" />
+                    <AbbreviatedIRI>foaf:Agent</AbbreviatedIRI>
+                  </AnnotationPropertyRange>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(2, ontology.AnnotationAxioms.Count);
             Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationPropertyRange annPropRng
-                            && string.Equals(annPropRng.AnnotationProperty.IRI.ToString(), "http://xmlns.com/foaf/0.1/Agent")
+                            && string.Equals(annPropRng.AnnotationProperty.IRI, "http://xmlns.com/foaf/0.1/Agent")
                             && string.Equals(annPropRng.IRI, "http://xmlns.com/foaf/0.1/Person")
                                 && string.Equals(annPropRng.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/description")
                                 && string.Equals(annPropRng.Annotations.Single().ValueIRI, "ex:AnnValue")

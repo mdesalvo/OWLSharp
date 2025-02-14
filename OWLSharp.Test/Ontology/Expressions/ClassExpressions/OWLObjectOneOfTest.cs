@@ -70,17 +70,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectOneOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectOneOf><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></ObjectOneOf>"));
+"""<ObjectOneOf><NamedIndividual IRI="ex:Bob" /><AnonymousIndividual nodeID="AnonIdv" /></ObjectOneOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectOneOf()
         {
             OWLObjectOneOf objectOneOf = OWLSerializer.DeserializeObject<OWLObjectOneOf>(
-@"<ObjectOneOf>
-  <NamedIndividual IRI=""ex:Bob"" />
-  <AnonymousIndividual nodeID=""AnonIdv"" />
-</ObjectOneOf>");
+                """
+                <ObjectOneOf>
+                  <NamedIndividual IRI="ex:Bob" />
+                  <AnonymousIndividual nodeID="AnonIdv" />
+                </ObjectOneOf>
+                """);
 
             Assert.IsNotNull(objectOneOf);
             Assert.IsNotNull(objectOneOf.IndividualExpressions);

@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeDayTimeDurationBuiltIn()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#dayTimeDuration""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /><Variable IRI=""urn:swrl:var#Z"" /><Variable IRI=""urn:swrl:var#Q"" /><Variable IRI=""urn:swrl:var#U"" /></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#dayTimeDuration"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /><Variable IRI="urn:swrl:var#Z" /><Variable IRI="urn:swrl:var#Q" /><Variable IRI="urn:swrl:var#U" /></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
@@ -96,7 +96,7 @@ namespace OWLSharp.Test.Ontology
             //Test string handling for empty builtIns
 
             SWRLBuiltIn emptyBuiltin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#dayTimeDuration""></BuiltInAtom>");
+"""<BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#dayTimeDuration"></BuiltInAtom>""");
 
             Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
             Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#dayTimeDuration\" />", OWLSerializer.SerializeObject(emptyBuiltin)));

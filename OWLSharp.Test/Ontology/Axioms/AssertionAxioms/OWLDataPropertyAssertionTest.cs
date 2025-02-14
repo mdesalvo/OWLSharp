@@ -74,7 +74,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataPropertyAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><NamedIndividual IRI=""ex:Bob"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>"));
+"""<DataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><NamedIndividual IRI="ex:Bob" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></DataPropertyAssertion>"""));
         }
 
         [TestMethod]
@@ -89,17 +89,17 @@ namespace OWLSharp.Test.Ontology
                     {
                         Annotations = [ new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR), new OWLLiteral(new RDFPlainLiteral("Steve","en"))) ]
                     });
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DataPropertyAssertion><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN"">Steve</Literal></Annotation><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><NamedIndividual IRI=""ex:Bob"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><DataPropertyAssertion><Annotation><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" /><Literal xml:lang="EN">Steve</Literal></Annotation><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><NamedIndividual IRI="ex:Bob" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></DataPropertyAssertion></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeNamedIndividualDataPropertyAssertion()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = OWLSerializer.DeserializeObject<OWLDataPropertyAssertion>(
-@"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><NamedIndividual IRI=""ex:Bob"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>");
+"""<DataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><NamedIndividual IRI="ex:Bob" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></DataPropertyAssertion>""");
         
             Assert.IsNotNull(dataPropertyAssertion);
             Assert.IsNotNull(dataPropertyAssertion.DataProperty);
@@ -115,23 +115,25 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeNamedIndividualDataPropertyAssertionViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-    <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-    <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-    <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-    <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-    <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-    <DataPropertyAssertion>
-        <Annotation>
-            <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-            <Literal xml:lang=""EN"">Steve</Literal>
-        </Annotation>
-        <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-        <NamedIndividual IRI=""ex:Bob"" />
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal>
-    </DataPropertyAssertion>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                    <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                    <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                    <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                    <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                    <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                    <DataPropertyAssertion>
+                        <Annotation>
+                            <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                            <Literal xml:lang="EN">Steve</Literal>
+                        </Annotation>
+                        <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                        <NamedIndividual IRI="ex:Bob" />
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal>
+                    </DataPropertyAssertion>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.AssertionAxioms.Count);
@@ -195,14 +197,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataPropertyAssertion);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><AnonymousIndividual nodeID=""AnonIdv"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>"));
+"""<DataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><AnonymousIndividual nodeID="AnonIdv" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></DataPropertyAssertion>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividualDataPropertyAssertion()
         {
             OWLDataPropertyAssertion dataPropertyAssertion = OWLSerializer.DeserializeObject<OWLDataPropertyAssertion>(
-@"<DataPropertyAssertion><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /><AnonymousIndividual nodeID=""AnonIdv"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">25</Literal></DataPropertyAssertion>");
+"""<DataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><AnonymousIndividual nodeID="AnonIdv" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></DataPropertyAssertion>""");
         
             Assert.IsNotNull(dataPropertyAssertion);
             Assert.IsNotNull(dataPropertyAssertion.DataProperty);

@@ -261,216 +261,220 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeOntology(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <Import>ex:ont2</Import>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-      <Literal>nested annotation</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-    <Literal>annotation</Literal>
-  </Annotation>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </Declaration>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </Declaration>
-  <Declaration>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </Declaration>
-  <Declaration>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </Declaration>
-  <Declaration>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  </Declaration>
-  <Declaration>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Mark"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Steve"" />
-  </Declaration>
-  <DisjointClasses>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </DisjointClasses>
-  <AsymmetricObjectProperty>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </AsymmetricObjectProperty>
-  <DataPropertyDomain>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </DataPropertyDomain>
-  <DatatypeDefinition>
-    <Datatype IRI=""ex:length6to10"" />
-    <DatatypeRestriction>
-      <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal>
-      </FacetRestriction>
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal>
-      </FacetRestriction>
-    </DatatypeRestriction>
-  </DatatypeDefinition>
-  <HasKey>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </HasKey>
-  <ObjectPropertyAssertion>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <NamedIndividual IRI=""ex:Mark"" />
-    <NamedIndividual IRI=""ex:Steve"" />
-  </ObjectPropertyAssertion>
-  <AnnotationAssertion>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <IRI>ex:Mark</IRI>
-    <Literal>This is Mark</Literal>
-  </AnnotationAssertion>
-  <DLSafeRule>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal>SWRL1</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-      <Literal>This is a test SWRL rule</Literal>
-    </Annotation>
-    <Body>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Body>
-    <Head>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>")); 
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <Import>ex:ont2</Import>
+                  <Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                      <Literal>nested annotation</Literal>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                    <Literal>annotation</Literal>
+                  </Annotation>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </Declaration>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </Declaration>
+                  <Declaration>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </Declaration>
+                  <Declaration>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </Declaration>
+                  <Declaration>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  </Declaration>
+                  <Declaration>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Mark" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Steve" />
+                  </Declaration>
+                  <DisjointClasses>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </DisjointClasses>
+                  <AsymmetricObjectProperty>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </AsymmetricObjectProperty>
+                  <DataPropertyDomain>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </DataPropertyDomain>
+                  <DatatypeDefinition>
+                    <Datatype IRI="ex:length6to10" />
+                    <DatatypeRestriction>
+                      <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">6</Literal>
+                      </FacetRestriction>
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">10</Literal>
+                      </FacetRestriction>
+                    </DatatypeRestriction>
+                  </DatatypeDefinition>
+                  <HasKey>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </HasKey>
+                  <ObjectPropertyAssertion>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <NamedIndividual IRI="ex:Mark" />
+                    <NamedIndividual IRI="ex:Steve" />
+                  </ObjectPropertyAssertion>
+                  <AnnotationAssertion>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                    <IRI>ex:Mark</IRI>
+                    <Literal>This is Mark</Literal>
+                  </AnnotationAssertion>
+                  <DLSafeRule>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal>SWRL1</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                      <Literal>This is a test SWRL rule</Literal>
+                    </Annotation>
+                    <Body>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Body>
+                    <Head>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """)); 
         }
 
         [TestMethod]
         public void ShouldDeserializeOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <Import>ex:ont2</Import>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-      <Literal>nested annotation</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-    <Literal>annotation</Literal>
-  </Annotation>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </Declaration>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </Declaration>
-  <Declaration>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </Declaration>
-  <Declaration>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </Declaration>
-  <Declaration>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  </Declaration>
-  <Declaration>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Mark"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Steve"" />
-  </Declaration>
-  <DisjointClasses>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </DisjointClasses>
-  <AsymmetricObjectProperty>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </AsymmetricObjectProperty>
-  <DataPropertyDomain>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </DataPropertyDomain>
-  <DatatypeDefinition>
-    <Datatype IRI=""ex:length6to10"" />
-    <DatatypeRestriction>
-      <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal>
-      </FacetRestriction>
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal>
-      </FacetRestriction>
-    </DatatypeRestriction>
-  </DatatypeDefinition>
-  <HasKey>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </HasKey>
-  <ObjectPropertyAssertion>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <NamedIndividual IRI=""ex:Mark"" />
-    <NamedIndividual IRI=""ex:Steve"" />
-  </ObjectPropertyAssertion>
-  <AnnotationAssertion>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <IRI>ex:Mark</IRI>
-    <Literal>This is Mark</Literal>
-  </AnnotationAssertion>
-  <DLSafeRule>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal>SWRL1</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-      <Literal>This is a test SWRL rule</Literal>
-    </Annotation>
-    <Body>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Body>
-    <Head>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <Import>ex:ont2</Import>
+                  <Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                      <Literal>nested annotation</Literal>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                    <Literal>annotation</Literal>
+                  </Annotation>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </Declaration>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </Declaration>
+                  <Declaration>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </Declaration>
+                  <Declaration>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </Declaration>
+                  <Declaration>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  </Declaration>
+                  <Declaration>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Mark" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Steve" />
+                  </Declaration>
+                  <DisjointClasses>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </DisjointClasses>
+                  <AsymmetricObjectProperty>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </AsymmetricObjectProperty>
+                  <DataPropertyDomain>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </DataPropertyDomain>
+                  <DatatypeDefinition>
+                    <Datatype IRI="ex:length6to10" />
+                    <DatatypeRestriction>
+                      <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">6</Literal>
+                      </FacetRestriction>
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">10</Literal>
+                      </FacetRestriction>
+                    </DatatypeRestriction>
+                  </DatatypeDefinition>
+                  <HasKey>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </HasKey>
+                  <ObjectPropertyAssertion>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <NamedIndividual IRI="ex:Mark" />
+                    <NamedIndividual IRI="ex:Steve" />
+                  </ObjectPropertyAssertion>
+                  <AnnotationAssertion>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                    <IRI>ex:Mark</IRI>
+                    <Literal>This is Mark</Literal>
+                  </AnnotationAssertion>
+                  <DLSafeRule>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal>SWRL1</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                      <Literal>This is a test SWRL rule</Literal>
+                    </Annotation>
+                    <Body>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Body>
+                    <Head>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
@@ -505,19 +509,21 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithPrefixAndImportAndAnnotationToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Import>ex:ont2</Import>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-      <Literal>nested annotation</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://www.w3.org/2002/07/owl#versionInfo"" />
-    <Literal>v1.0</Literal>
-  </Annotation>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Import>ex:ont2</Import>
+                  <Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                      <Literal>nested annotation</Literal>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://www.w3.org/2002/07/owl#versionInfo" />
+                    <Literal>v1.0</Literal>
+                  </Annotation>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -541,13 +547,15 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithDeclarationToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  </Declaration>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  </Declaration>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -560,14 +568,16 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithClassAxiomToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <SubClassOf>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-  </SubClassOf>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <SubClassOf>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                  </SubClassOf>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -582,14 +592,16 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithObjectPropertyAxiomToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <SubObjectPropertyOf>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/member"" />
-  </SubObjectPropertyOf>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <SubObjectPropertyOf>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/member" />
+                  </SubObjectPropertyOf>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -604,14 +616,16 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithDataPropertyAxiomToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <SubDataPropertyOf>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
-  </SubDataPropertyOf>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <SubDataPropertyOf>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/name" />
+                  </SubDataPropertyOf>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -626,25 +640,27 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithDatatypeDefinitionAxiomToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<Ontology>
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <DatatypeDefinition>
-    <Datatype IRI=""ex:length6to10"" />
-    <DatatypeRestriction>
-      <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal>
-      </FacetRestriction>
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal>
-      </FacetRestriction>
-    </DatatypeRestriction>
-  </DatatypeDefinition>
-</Ontology>");
+                """
+                <Ontology>
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <DatatypeDefinition>
+                    <Datatype IRI="ex:length6to10" />
+                    <DatatypeRestriction>
+                      <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">6</Literal>
+                      </FacetRestriction>
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">10</Literal>
+                      </FacetRestriction>
+                    </DatatypeRestriction>
+                  </DatatypeDefinition>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -667,16 +683,18 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithHasKeyAxiomToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <HasKey>
-    <Class abbreviatedIRI=""foaf:Person"" />
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <DataProperty abbreviatedIRI=""foaf:name"" />
-  </HasKey>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <HasKey>
+                    <Class abbreviatedIRI="foaf:Person" />
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <DataProperty abbreviatedIRI="foaf:name" />
+                  </HasKey>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -696,18 +714,20 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithAssertionAxiomToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <ObjectPropertyAssertion>
-    <ObjectInverseOf>
-      <ObjectProperty abbreviatedIRI=""foaf:knows"" />
-    </ObjectInverseOf>
-    <AnonymousIndividual nodeID=""Alice"" />
-    <NamedIndividual IRI=""ex:Bob"" />
-  </ObjectPropertyAssertion>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <ObjectPropertyAssertion>
+                    <ObjectInverseOf>
+                      <ObjectProperty abbreviatedIRI="foaf:knows" />
+                    </ObjectInverseOf>
+                    <AnonymousIndividual nodeID="Alice" />
+                    <NamedIndividual IRI="ex:Bob" />
+                  </ObjectPropertyAssertion>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -722,16 +742,18 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithAnnotationAxiomToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <AnnotationAssertion>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <IRI>http://xmlns.com/foaf/0.1/age</IRI>
-    <Literal xml:lang=""en-US"">States the age of a person</Literal>    
-  </AnnotationAssertion>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <AnnotationAssertion>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                    <IRI>http://xmlns.com/foaf/0.1/age</IRI>
+                    <Literal xml:lang="en-US">States the age of a person</Literal>    
+                  </AnnotationAssertion>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -745,50 +767,52 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldConvertOntologyWithRuleToGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </Declaration>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-  </Declaration>
-  <Declaration>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
-  </Declaration>
-  <DLSafeRule>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal>SWRL1</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-      <Literal>This is a test SWRL rule</Literal>
-    </Annotation>
-    <Body>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-      <DataPropertyAtom>
-        <DataProperty IRI=""http://xmlns.com/foaf/0.1/name"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-        <Variable IRI=""urn:swrl:var#N"" />
-      </DataPropertyAtom>
-      <BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#containsIgnoreCase"">
-        <Variable IRI=""urn:swrl:var#N"" />
-        <Literal>mark</Literal>
-      </BuiltInAtom>
-    </Body>
-    <Head>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </Declaration>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                  </Declaration>
+                  <Declaration>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/name" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal>SWRL1</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                      <Literal>This is a test SWRL rule</Literal>
+                    </Annotation>
+                    <Body>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                      <DataPropertyAtom>
+                        <DataProperty IRI="http://xmlns.com/foaf/0.1/name" />
+                        <Variable IRI="urn:swrl:var#P" />
+                        <Variable IRI="urn:swrl:var#N" />
+                      </DataPropertyAtom>
+                      <BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#containsIgnoreCase">
+                        <Variable IRI="urn:swrl:var#N" />
+                        <Literal>mark</Literal>
+                      </BuiltInAtom>
+                    </Body>
+                    <Head>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
 
             Assert.IsNotNull(graph);
@@ -874,105 +898,107 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeOntology(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <Import>ex:ont2</Import>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-      <Literal>nested annotation</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-    <Literal>annotation</Literal>
-  </Annotation>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </Declaration>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </Declaration>
-  <Declaration>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </Declaration>
-  <Declaration>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </Declaration>
-  <Declaration>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Mark"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Steve"" />
-  </Declaration>
-  <DisjointClasses>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </DisjointClasses>
-  <AsymmetricObjectProperty>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </AsymmetricObjectProperty>
-  <DataPropertyDomain>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </DataPropertyDomain>
-  <DatatypeDefinition>
-    <Datatype IRI=""ex:length6to10"" />
-    <DatatypeRestriction>
-      <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal>
-      </FacetRestriction>
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal>
-      </FacetRestriction>
-    </DatatypeRestriction>
-  </DatatypeDefinition>
-  <HasKey>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </HasKey>
-  <ObjectPropertyAssertion>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <NamedIndividual IRI=""ex:Mark"" />
-    <NamedIndividual IRI=""ex:Steve"" />
-  </ObjectPropertyAssertion>
-  <AnnotationAssertion>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <IRI>ex:Mark</IRI>
-    <Literal>This is Mark</Literal>
-  </AnnotationAssertion>
-  <DLSafeRule>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal>SWRL1</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-      <Literal>This is a test SWRL rule</Literal>
-    </Annotation>
-    <Body>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Body>
-    <Head>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>"));
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <Import>ex:ont2</Import>
+                  <Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                      <Literal>nested annotation</Literal>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                    <Literal>annotation</Literal>
+                  </Annotation>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </Declaration>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </Declaration>
+                  <Declaration>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </Declaration>
+                  <Declaration>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </Declaration>
+                  <Declaration>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Mark" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Steve" />
+                  </Declaration>
+                  <DisjointClasses>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </DisjointClasses>
+                  <AsymmetricObjectProperty>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </AsymmetricObjectProperty>
+                  <DataPropertyDomain>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </DataPropertyDomain>
+                  <DatatypeDefinition>
+                    <Datatype IRI="ex:length6to10" />
+                    <DatatypeRestriction>
+                      <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">6</Literal>
+                      </FacetRestriction>
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">10</Literal>
+                      </FacetRestriction>
+                    </DatatypeRestriction>
+                  </DatatypeDefinition>
+                  <HasKey>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </HasKey>
+                  <ObjectPropertyAssertion>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <NamedIndividual IRI="ex:Mark" />
+                    <NamedIndividual IRI="ex:Steve" />
+                  </ObjectPropertyAssertion>
+                  <AnnotationAssertion>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                    <IRI>ex:Mark</IRI>
+                    <Literal>This is Mark</Literal>
+                  </AnnotationAssertion>
+                  <DLSafeRule>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal>SWRL1</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                      <Literal>This is a test SWRL rule</Literal>
+                    </Annotation>
+                    <Body>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Body>
+                    <Head>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """));
         }
 
         [TestMethod]
@@ -1046,105 +1072,107 @@ namespace OWLSharp.Test.Ontology
             await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream, false);
             using StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray()));
             Assert.IsTrue(string.Equals(await reader.ReadToEndAsync(),
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"" ontologyIRI=""ex:ont"" ontologyVersion=""ex:ont/v1"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <Import>ex:ont2</Import>
-  <Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-      <Literal>nested annotation</Literal>
-    </Annotation>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-    <Literal>annotation</Literal>
-  </Annotation>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </Declaration>
-  <Declaration>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </Declaration>
-  <Declaration>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </Declaration>
-  <Declaration>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </Declaration>
-  <Declaration>
-    <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Mark"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""ex:Steve"" />
-  </Declaration>
-  <DisjointClasses>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Organization"" />
-  </DisjointClasses>
-  <AsymmetricObjectProperty>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  </AsymmetricObjectProperty>
-  <DataPropertyDomain>
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-    <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-  </DataPropertyDomain>
-  <DatatypeDefinition>
-    <Datatype IRI=""ex:length6to10"" />
-    <DatatypeRestriction>
-      <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#minLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">6</Literal>
-      </FacetRestriction>
-      <FacetRestriction facet=""http://www.w3.org/2001/XMLSchema#maxLength"">
-        <Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#int"">10</Literal>
-      </FacetRestriction>
-    </DatatypeRestriction>
-  </DatatypeDefinition>
-  <HasKey>
-    <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" />
-  </HasKey>
-  <ObjectPropertyAssertion>
-    <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-    <NamedIndividual IRI=""ex:Mark"" />
-    <NamedIndividual IRI=""ex:Steve"" />
-  </ObjectPropertyAssertion>
-  <AnnotationAssertion>
-    <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-    <IRI>ex:Mark</IRI>
-    <Literal>This is Mark</Literal>
-  </AnnotationAssertion>
-  <DLSafeRule>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal>SWRL1</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-      <Literal>This is a test SWRL rule</Literal>
-    </Annotation>
-    <Body>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Body>
-    <Head>
-      <ClassAtom>
-        <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>"));
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <Import>ex:ont2</Import>
+                  <Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                      <Literal>nested annotation</Literal>
+                    </Annotation>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                    <Literal>annotation</Literal>
+                  </Annotation>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </Declaration>
+                  <Declaration>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </Declaration>
+                  <Declaration>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </Declaration>
+                  <Declaration>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </Declaration>
+                  <Declaration>
+                    <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Mark" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="ex:Steve" />
+                  </Declaration>
+                  <DisjointClasses>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Organization" />
+                  </DisjointClasses>
+                  <AsymmetricObjectProperty>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  </AsymmetricObjectProperty>
+                  <DataPropertyDomain>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                    <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                  </DataPropertyDomain>
+                  <DatatypeDefinition>
+                    <Datatype IRI="ex:length6to10" />
+                    <DatatypeRestriction>
+                      <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#minLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">6</Literal>
+                      </FacetRestriction>
+                      <FacetRestriction facet="http://www.w3.org/2001/XMLSchema#maxLength">
+                        <Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#int">10</Literal>
+                      </FacetRestriction>
+                    </DatatypeRestriction>
+                  </DatatypeDefinition>
+                  <HasKey>
+                    <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/age" />
+                  </HasKey>
+                  <ObjectPropertyAssertion>
+                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                    <NamedIndividual IRI="ex:Mark" />
+                    <NamedIndividual IRI="ex:Steve" />
+                  </ObjectPropertyAssertion>
+                  <AnnotationAssertion>
+                    <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                    <IRI>ex:Mark</IRI>
+                    <Literal>This is Mark</Literal>
+                  </AnnotationAssertion>
+                  <DLSafeRule>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal>SWRL1</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                      <Literal>This is a test SWRL rule</Literal>
+                    </Annotation>
+                    <Body>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Body>
+                    <Head>
+                      <ClassAtom>
+                        <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """));
         }
 
         [TestMethod]
@@ -5076,42 +5104,44 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithAnnotationsFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/depicts"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/Idv"" />
-  </Declaration>
-  <DLSafeRule>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <Literal xml:lang=""EN-US"">SWRL1</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#label"" />
-      <IRI>http://example.org/Idv</IRI>
-    </Annotation>
-     <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-      <Literal datatypeIRI=""http://www.w3.org/2000/01/rdf-schema#Literal"">This is a test SWRL rule</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://www.w3.org/2000/01/rdf-schema#comment"" />
-      <IRI>http://example.org/Idv</IRI>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/depicts"" />
-      <Literal>Depicts a SWRL rule</Literal>
-    </Annotation>
-    <Annotation>
-      <AnnotationProperty IRI=""http://xmlns.com/foaf/0.1/depicts"" />
-      <IRI>http://example.org/Idv</IRI>
-    </Annotation>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/depicts" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/Idv" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <Literal xml:lang="EN-US">SWRL1</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#label" />
+                      <IRI>http://example.org/Idv</IRI>
+                    </Annotation>
+                     <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                      <Literal datatypeIRI="http://www.w3.org/2000/01/rdf-schema#Literal">This is a test SWRL rule</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://www.w3.org/2000/01/rdf-schema#comment" />
+                      <IRI>http://example.org/Idv</IRI>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/depicts" />
+                      <Literal>Depicts a SWRL rule</Literal>
+                    </Annotation>
+                    <Annotation>
+                      <AnnotationProperty IRI="http://xmlns.com/foaf/0.1/depicts" />
+                      <IRI>http://example.org/Idv</IRI>
+                    </Annotation>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -5138,30 +5168,32 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithClassAtomFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <Class IRI=""http://example.org/CLS1"" />
-  </Declaration>
-  <Declaration>
-    <Class IRI=""http://example.org/CLS2"" />
-  </Declaration>
-  <DLSafeRule>
-    <Body>
-      <ClassAtom>
-        <Class IRI=""http://example.org/CLS1"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </ClassAtom>
-    </Body>
-    <Head>
-      <ClassAtom>
-        <Class IRI=""http://example.org/CLS2"" />
-        <NamedIndividual IRI=""http://example.org/IDV"" />
-      </ClassAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <Class IRI="http://example.org/CLS1" />
+                  </Declaration>
+                  <Declaration>
+                    <Class IRI="http://example.org/CLS2" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Body>
+                      <ClassAtom>
+                        <Class IRI="http://example.org/CLS1" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </ClassAtom>
+                    </Body>
+                    <Head>
+                      <ClassAtom>
+                        <Class IRI="http://example.org/CLS2" />
+                        <NamedIndividual IRI="http://example.org/IDV" />
+                      </ClassAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -5188,30 +5220,32 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithDataRangeAtomFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-  </Declaration>
-  <Declaration>
-    <Datatype IRI=""http://www.w3.org/2000/01/rdf-schema#Literal"" />
-  </Declaration>
-  <DLSafeRule>
-    <Body>
-      <DataRangeAtom>
-        <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-      </DataRangeAtom>
-    </Body>
-    <Head>
-      <DataRangeAtom>
-        <Datatype IRI=""http://www.w3.org/2000/01/rdf-schema#Literal"" />
-        <Literal xml:lang=""en"">hello</Literal>
-      </DataRangeAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                  </Declaration>
+                  <Declaration>
+                    <Datatype IRI="http://www.w3.org/2000/01/rdf-schema#Literal" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Body>
+                      <DataRangeAtom>
+                        <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                        <Variable IRI="urn:swrl:var#P" />
+                      </DataRangeAtom>
+                    </Body>
+                    <Head>
+                      <DataRangeAtom>
+                        <Datatype IRI="http://www.w3.org/2000/01/rdf-schema#Literal" />
+                        <Literal xml:lang="en">hello</Literal>
+                      </DataRangeAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -5238,32 +5272,34 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithDataPropertyAtomFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <DataProperty IRI=""http://example.org/dp"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/IDV"" />
-  </Declaration>
-  <DLSafeRule>
-    <Body>
-      <DataPropertyAtom>
-        <DataProperty IRI=""http://example.org/dp"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-        <Variable IRI=""urn:swrl:var#Q"" />
-      </DataPropertyAtom>
-    </Body>
-    <Head>
-      <DataPropertyAtom>
-        <DataProperty IRI=""http://example.org/dp"" />
-        <NamedIndividual IRI=""http://example.org/IDV"" />
-        <Literal xml:lang=""en"">hello</Literal>
-      </DataPropertyAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <DataProperty IRI="http://example.org/dp" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/IDV" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Body>
+                      <DataPropertyAtom>
+                        <DataProperty IRI="http://example.org/dp" />
+                        <Variable IRI="urn:swrl:var#P" />
+                        <Variable IRI="urn:swrl:var#Q" />
+                      </DataPropertyAtom>
+                    </Body>
+                    <Head>
+                      <DataPropertyAtom>
+                        <DataProperty IRI="http://example.org/dp" />
+                        <NamedIndividual IRI="http://example.org/IDV" />
+                        <Literal xml:lang="en">hello</Literal>
+                      </DataPropertyAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -5292,35 +5328,37 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithObjectPropertyAtomFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <ObjectProperty IRI=""http://example.org/op"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/IDV1"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/IDV2"" />
-  </Declaration>
-  <DLSafeRule>
-    <Body>
-      <ObjectPropertyAtom>
-        <ObjectProperty IRI=""http://example.org/op"" />
-        <Variable IRI=""urn:swrl:var#P"" />
-        <Variable IRI=""urn:swrl:var#Q"" />
-      </ObjectPropertyAtom>
-    </Body>
-    <Head>
-      <ObjectPropertyAtom>
-        <ObjectProperty IRI=""http://example.org/op"" />
-        <NamedIndividual IRI=""http://example.org/IDV2"" />
-        <NamedIndividual IRI=""http://example.org/IDV1"" />
-      </ObjectPropertyAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <ObjectProperty IRI="http://example.org/op" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/IDV1" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/IDV2" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Body>
+                      <ObjectPropertyAtom>
+                        <ObjectProperty IRI="http://example.org/op" />
+                        <Variable IRI="urn:swrl:var#P" />
+                        <Variable IRI="urn:swrl:var#Q" />
+                      </ObjectPropertyAtom>
+                    </Body>
+                    <Head>
+                      <ObjectPropertyAtom>
+                        <ObjectProperty IRI="http://example.org/op" />
+                        <NamedIndividual IRI="http://example.org/IDV2" />
+                        <NamedIndividual IRI="http://example.org/IDV1" />
+                      </ObjectPropertyAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -5349,30 +5387,32 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithSameIndividualAtomFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/IDV1"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/IDV2"" />
-  </Declaration>
-  <DLSafeRule>
-    <Body>
-      <SameIndividualAtom>
-        <Variable IRI=""urn:swrl:var#P"" />
-        <Variable IRI=""urn:swrl:var#Q"" />
-      </SameIndividualAtom>
-    </Body>
-    <Head>
-      <SameIndividualAtom>
-        <NamedIndividual IRI=""http://example.org/IDV2"" />
-        <NamedIndividual IRI=""http://example.org/IDV1"" />
-      </SameIndividualAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/IDV1" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/IDV2" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Body>
+                      <SameIndividualAtom>
+                        <Variable IRI="urn:swrl:var#P" />
+                        <Variable IRI="urn:swrl:var#Q" />
+                      </SameIndividualAtom>
+                    </Body>
+                    <Head>
+                      <SameIndividualAtom>
+                        <NamedIndividual IRI="http://example.org/IDV2" />
+                        <NamedIndividual IRI="http://example.org/IDV1" />
+                      </SameIndividualAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -5401,30 +5441,32 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithDifferentIndividualsAtomFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/IDV1"" />
-  </Declaration>
-  <Declaration>
-    <NamedIndividual IRI=""http://example.org/IDV2"" />
-  </Declaration>
-  <DLSafeRule>
-    <Body>
-      <DifferentIndividualsAtom>
-        <Variable IRI=""urn:swrl:var#P"" />
-        <Variable IRI=""urn:swrl:var#Q"" />
-      </DifferentIndividualsAtom>
-    </Body>
-    <Head>
-      <DifferentIndividualsAtom>
-        <NamedIndividual IRI=""http://example.org/IDV2"" />
-        <NamedIndividual IRI=""http://example.org/IDV1"" />
-      </DifferentIndividualsAtom>
-    </Head>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/IDV1" />
+                  </Declaration>
+                  <Declaration>
+                    <NamedIndividual IRI="http://example.org/IDV2" />
+                  </Declaration>
+                  <DLSafeRule>
+                    <Body>
+                      <DifferentIndividualsAtom>
+                        <Variable IRI="urn:swrl:var#P" />
+                        <Variable IRI="urn:swrl:var#Q" />
+                      </DifferentIndividualsAtom>
+                    </Body>
+                    <Head>
+                      <DifferentIndividualsAtom>
+                        <NamedIndividual IRI="http://example.org/IDV2" />
+                        <NamedIndividual IRI="http://example.org/IDV1" />
+                      </DifferentIndividualsAtom>
+                    </Head>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
@@ -5453,22 +5495,24 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldReadRuleWithBuiltinAtomFromGraphAsync()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" ontologyIRI=""ex:ont"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <DLSafeRule>
-    <Body>
-      <BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#stringConcat"">
-        <Literal xml:lang=""en-US"">hello</Literal>
-        <Variable IRI=""urn:swrl:var#P"" />
-        <NamedIndividual IRI=""http://example.org/IDV"" />
-      </BuiltInAtom>
-      <BuiltInAtom IRI=""http://www.w3.org/2003/11/swrlb#custombuiltin"">
-        <Variable IRI=""urn:swrl:var#P"" />
-      </BuiltInAtom>
-    </Body>
-  </DLSafeRule>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" ontologyIRI="ex:ont">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <DLSafeRule>
+                    <Body>
+                      <BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#stringConcat">
+                        <Literal xml:lang="en-US">hello</Literal>
+                        <Variable IRI="urn:swrl:var#P" />
+                        <NamedIndividual IRI="http://example.org/IDV" />
+                      </BuiltInAtom>
+                      <BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#custombuiltin">
+                        <Variable IRI="urn:swrl:var#P" />
+                      </BuiltInAtom>
+                    </Body>
+                  </DLSafeRule>
+                </Ontology>
+                """);
             RDFGraph graph = await ontology.ToRDFGraphAsync();
             OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 

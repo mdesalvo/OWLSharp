@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeEXTLangMatchesBuiltIn()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""https://github.com/mdesalvo/OWLSharp#langMatches""><Variable IRI=""urn:swrl:var#X"" /><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+"""<BuiltInAtom IRI="https://github.com/mdesalvo/OWLSharp#langMatches"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
@@ -78,7 +78,7 @@ namespace OWLSharp.Test.Ontology
             //Test string handling for empty builtIns
 
             SWRLBuiltIn emptyBuiltin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""https://github.com/mdesalvo/OWLSharp#langMatches""></BuiltInAtom>");
+"""<BuiltInAtom IRI="https://github.com/mdesalvo/OWLSharp#langMatches"></BuiltInAtom>""");
 
             Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
             Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"https://github.com/mdesalvo/OWLSharp#langMatches\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
@@ -88,7 +88,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeEXTLangMatchesBuiltInWithLeftNumber()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""https://github.com/mdesalvo/OWLSharp#langMatches""><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal><Variable IRI=""urn:swrl:var#Y"" /></BuiltInAtom>");
+"""<BuiltInAtom IRI="https://github.com/mdesalvo/OWLSharp#langMatches"><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">5</Literal><Variable IRI="urn:swrl:var#Y" /></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);
@@ -107,7 +107,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeEXTLangMatchesBuiltInWithRightNumber()
         {
             SWRLBuiltIn builtin = OWLSerializer.DeserializeObject<SWRLBuiltIn>(
-@"<BuiltInAtom IRI=""https://github.com/mdesalvo/OWLSharp#langMatches""><Variable IRI=""urn:swrl:var#X"" /><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#integer"">5</Literal></BuiltInAtom>");
+"""<BuiltInAtom IRI="https://github.com/mdesalvo/OWLSharp#langMatches"><Variable IRI="urn:swrl:var#X" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">5</Literal></BuiltInAtom>""");
 
             Assert.IsNotNull(builtin);
             Assert.IsNotNull(builtin.IRI);

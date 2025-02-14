@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Text;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology

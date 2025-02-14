@@ -209,7 +209,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML),
                         new OWLNamedIndividual(new RDFResource("ex:milanGM")),
-                        new OWLLiteral(new RDFTypedLiteral(@"<gml:Point xmlns:gml=""http://www.opengis.net/gml/3.2""><gml:pos>9.19193456 45.46420722</gml:pos></gml:Point>", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML))),
+                        new OWLLiteral(new RDFTypedLiteral("""<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2"><gml:pos>9.19193456 45.46420722</gml:pos></gml:Point>""", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML))),
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_WKT),
                         new OWLNamedIndividual(new RDFResource("ex:romeGM")),
@@ -217,7 +217,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML),
                         new OWLNamedIndividual(new RDFResource("ex:romeGM")),
-                        new OWLLiteral(new RDFTypedLiteral(@"<gml:Point xmlns:gml=""http://www.opengis.net/gml/3.2""><gml:pos>12.49221871 41.89033014</gml:pos></gml:Point>", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML)))
+                        new OWLLiteral(new RDFTypedLiteral("""<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2"><gml:pos>12.49221871 41.89033014</gml:pos></gml:Point>""", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML)))
                 ]
             };
             double? milanRomeDistance = await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology, 
@@ -235,7 +235,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async() => await GEOHelper.GetDistanceBetweenFeaturesAsync(null,
                 new RDFResource("ex:milanFT"), new RDFResource("ex:romeFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
-                null as RDFResource, new RDFResource("ex:romeFT")));
+                null, new RDFResource("ex:romeFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
                 new RDFResource("ex:milanFT"), null as RDFResource));
         }
@@ -273,7 +273,7 @@ namespace OWLSharp.Test.Extensions.GEO
                     new OWLDataPropertyAssertion(
                         new OWLDataProperty(RDFVocabulary.GEOSPARQL.AS_GML),
                         new OWLNamedIndividual(new RDFResource("ex:milanGM")),
-                        new OWLLiteral(new RDFTypedLiteral(@"<gml:Point xmlns:gml=""http://www.opengis.net/gml/3.2""><gml:pos>9.19193456 45.46420722</gml:pos></gml:Point>", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML)))
+                        new OWLLiteral(new RDFTypedLiteral("""<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2"><gml:pos>9.19193456 45.46420722</gml:pos></gml:Point>""", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML)))
                 ]
             };
             double? milanRomeDistance = await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
@@ -289,7 +289,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(null,
                 new RDFResource("ex:milanFT"), new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
-                null as RDFResource, new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
+                null, new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
                 new RDFResource("ex:milanFT"), null as RDFTypedLiteral));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
@@ -300,20 +300,20 @@ namespace OWLSharp.Test.Extensions.GEO
         public async Task ShouldGetDistanceBetweenLiteralsAsync()
         {
             double? milanRomeDistance = await GEOHelper.GetDistanceBetweenFeaturesAsync(
-                new RDFTypedLiteral(@"<gml:Point xmlns:gml=""http://www.opengis.net/gml/3.2""><gml:pos>9.19193456 45.46420722</gml:pos></gml:Point>", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML),
+                new RDFTypedLiteral("""<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2"><gml:pos>9.19193456 45.46420722</gml:pos></gml:Point>""", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML),
                 new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
 
             Assert.IsTrue(milanRomeDistance is >= 450000 and <= 4800000); //milan-rome should be between 450km and 480km
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(
-                null as RDFTypedLiteral, new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
+                null, new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(
                 new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING),
                 new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(
                 new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT), 
-                null as RDFTypedLiteral));
+                null));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(
                 new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT),
                 new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
@@ -383,7 +383,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetLengthOfFeatureAsync(null,
                 new RDFResource("ex:milanFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetLengthOfFeatureAsync(geoOntology,
-                null as RDFResource));
+                null));
         }
 
         [TestMethod]
@@ -397,7 +397,7 @@ namespace OWLSharp.Test.Extensions.GEO
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetLengthOfFeatureAsync(
-                null as RDFTypedLiteral));
+                null));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetLengthOfFeatureAsync(
                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
@@ -464,7 +464,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetAreaOfFeatureAsync(null,
                 new RDFResource("ex:milanFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetAreaOfFeatureAsync(geoOntology,
-                null as RDFResource));
+                null));
         }
 
         [TestMethod]
@@ -478,7 +478,7 @@ namespace OWLSharp.Test.Extensions.GEO
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetAreaOfFeatureAsync(
-                null as RDFTypedLiteral));
+                null));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetAreaOfFeatureAsync(
                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
@@ -549,7 +549,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetCentroidOfFeatureAsync(null,
                 new RDFResource("ex:milanFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetCentroidOfFeatureAsync(geoOntology,
-                null as RDFResource));
+                null));
         }
 
         [TestMethod]
@@ -565,7 +565,7 @@ namespace OWLSharp.Test.Extensions.GEO
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetCentroidOfFeatureAsync(
-                null as RDFTypedLiteral));
+                null));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetCentroidOfFeatureAsync(
                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
@@ -636,7 +636,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBoundaryOfFeatureAsync(null,
                 new RDFResource("ex:milanFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBoundaryOfFeatureAsync(geoOntology,
-                null as RDFResource));
+                null));
         }
 
         [TestMethod]
@@ -652,7 +652,7 @@ namespace OWLSharp.Test.Extensions.GEO
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBoundaryOfFeatureAsync(
-                null as RDFTypedLiteral));
+                null));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBoundaryOfFeatureAsync(
                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
@@ -723,7 +723,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBufferAroundFeatureAsync(null,
                 new RDFResource("ex:milanFT"), 5000));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBufferAroundFeatureAsync(geoOntology,
-                null as RDFResource, 5000));
+                null, 5000));
         }
 
         [TestMethod]
@@ -739,7 +739,7 @@ namespace OWLSharp.Test.Extensions.GEO
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBufferAroundFeatureAsync(
-                null as RDFTypedLiteral, 5000));
+                null, 5000));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetBufferAroundFeatureAsync(
                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING), 5000));
         }
@@ -809,7 +809,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetConvexHullOfFeatureAsync(null,
                 new RDFResource("ex:milanFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetConvexHullOfFeatureAsync(geoOntology,
-                null as RDFResource));
+                null));
         }
 
         [TestMethod]
@@ -825,7 +825,7 @@ namespace OWLSharp.Test.Extensions.GEO
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetConvexHullOfFeatureAsync(
-                null as RDFTypedLiteral));
+                null));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetConvexHullOfFeatureAsync(
                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }
@@ -895,7 +895,7 @@ namespace OWLSharp.Test.Extensions.GEO
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetEnvelopeOfFeatureAsync(null,
                 new RDFResource("ex:milanFT")));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetEnvelopeOfFeatureAsync(geoOntology,
-                null as RDFResource));
+                null));
         }
 
         [TestMethod]
@@ -911,7 +911,7 @@ namespace OWLSharp.Test.Extensions.GEO
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetEnvelopeOfFeatureAsync(
-                null as RDFTypedLiteral));
+                null));
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetEnvelopeOfFeatureAsync(
                new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         }

@@ -68,7 +68,7 @@ namespace OWLSharp.Test.Ontology
                 ] };
 
             Assert.IsTrue(string.Equals(
-@"<Head><ClassAtom><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /><Variable IRI=""urn:swrl:var#P"" /></ClassAtom><DataRangeAtom><Datatype IRI=""http://www.w3.org/2001/XMLSchema#integer"" /><Variable IRI=""urn:swrl:var#X"" /></DataRangeAtom></Head>", OWLSerializer.SerializeObject(consequent)));
+"""<Head><ClassAtom><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Variable IRI="urn:swrl:var#P" /></ClassAtom><DataRangeAtom><Datatype IRI="http://www.w3.org/2001/XMLSchema#integer" /><Variable IRI="urn:swrl:var#X" /></DataRangeAtom></Head>""", OWLSerializer.SerializeObject(consequent)));
         }
 
         [TestMethod]

@@ -61,16 +61,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectComplementOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectComplementOf><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></ObjectComplementOf>"));
+"""<ObjectComplementOf><Class IRI="http://xmlns.com/foaf/0.1/Agent" /></ObjectComplementOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectComplementOf()
         {
             OWLObjectComplementOf objectComplementOf = OWLSerializer.DeserializeObject<OWLObjectComplementOf>(
-@"<ObjectComplementOf>
-  <Class IRI=""http://xmlns.com/foaf/0.1/Agent"" />
-</ObjectComplementOf>");
+                """
+                <ObjectComplementOf>
+                  <Class IRI="http://xmlns.com/foaf/0.1/Agent" />
+                </ObjectComplementOf>
+                """);
 
             Assert.IsNotNull(objectComplementOf);
             Assert.IsNotNull(objectComplementOf.ClassExpression);

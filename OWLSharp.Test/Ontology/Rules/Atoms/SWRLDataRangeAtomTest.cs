@@ -71,14 +71,14 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?P")));
 
             Assert.IsTrue(string.Equals(
-@"<DataRangeAtom><DataOneOf><Literal>hello</Literal><Literal xml:lang=""EN-US"">hello</Literal><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal></DataOneOf><Variable IRI=""urn:swrl:var#P"" /></DataRangeAtom>", OWLSerializer.SerializeObject(atom)));
+"""<DataRangeAtom><DataOneOf><Literal>hello</Literal><Literal xml:lang="EN-US">hello</Literal><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">hello</Literal></DataOneOf><Variable IRI="urn:swrl:var#P" /></DataRangeAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
         public void ShouldGetSWRLDataRangeAtomFromXMLRepresentation()
         {
             SWRLDataRangeAtom atom = OWLSerializer.DeserializeObject<SWRLDataRangeAtom>(
-@"<DataRangeAtom><DataOneOf><Literal>hello</Literal><Literal xml:lang=""EN-US"">hello</Literal><Literal datatypeIRI=""http://www.w3.org/2001/XMLSchema#string"">hello</Literal></DataOneOf><Variable IRI=""urn:swrl:var#P"" /></DataRangeAtom>");
+"""<DataRangeAtom><DataOneOf><Literal>hello</Literal><Literal xml:lang="EN-US">hello</Literal><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#string">hello</Literal></DataOneOf><Variable IRI="urn:swrl:var#P" /></DataRangeAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNotNull(atom.Predicate);

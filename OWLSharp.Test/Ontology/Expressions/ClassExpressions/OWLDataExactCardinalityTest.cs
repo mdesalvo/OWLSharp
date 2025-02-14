@@ -78,16 +78,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataExactCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /></DataExactCardinality>"));
+"""<DataExactCardinality cardinality="1"><DataProperty IRI="http://purl.org/dc/elements/1.1/description" /></DataExactCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataExactCardinality()
         {
             OWLDataExactCardinality dataExactCardinality = OWLSerializer.DeserializeObject<OWLDataExactCardinality>(
-@"<DataExactCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-</DataExactCardinality>");
+                """
+                <DataExactCardinality cardinality="1">
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                </DataExactCardinality>
+                """);
 
             Assert.IsNotNull(dataExactCardinality);
             Assert.IsTrue(string.Equals(dataExactCardinality.Cardinality, "1"));
@@ -112,17 +114,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataExactCardinality cardinality=""1""><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /></DataExactCardinality>"));
+"""<DataExactCardinality cardinality="1"><DataProperty IRI="http://purl.org/dc/elements/1.1/description" /><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /></DataExactCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataExactQualifiedCardinality()
         {
             OWLDataExactCardinality dataExactCardinality = OWLSerializer.DeserializeObject<OWLDataExactCardinality>(
-@"<DataExactCardinality cardinality=""1"">
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-</DataExactCardinality>");
+                """
+                <DataExactCardinality cardinality="1">
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                </DataExactCardinality>
+                """);
 
             Assert.IsNotNull(dataExactCardinality);
             Assert.IsTrue(string.Equals(dataExactCardinality.Cardinality, "1"));

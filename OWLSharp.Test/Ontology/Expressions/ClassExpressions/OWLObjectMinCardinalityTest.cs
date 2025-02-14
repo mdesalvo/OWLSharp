@@ -79,16 +79,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMinCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectMinCardinality>"));
+"""<ObjectMinCardinality cardinality="1"><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectMinCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectMinCardinality()
         {
             OWLObjectMinCardinality objectMinCardinality = OWLSerializer.DeserializeObject<OWLObjectMinCardinality>(
-@"<ObjectMinCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectMinCardinality>");
+                """
+                <ObjectMinCardinality cardinality="1">
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                </ObjectMinCardinality>
+                """);
 
             Assert.IsNotNull(objectMinCardinality);
             Assert.IsTrue(string.Equals(objectMinCardinality.Cardinality, "1"));
@@ -114,17 +116,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectMinCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMinCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectMinCardinality>"));
+"""<ObjectMinCardinality cardinality="1"><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /></ObjectMinCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectMinQualifiedCardinality()
         {
             OWLObjectMinCardinality objectMinCardinality = OWLSerializer.DeserializeObject<OWLObjectMinCardinality>(
-@"<ObjectMinCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectMinCardinality>");
+                """
+                <ObjectMinCardinality cardinality="1">
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                </ObjectMinCardinality>
+                """);
 
             Assert.IsNotNull(objectMinCardinality);
             Assert.IsTrue(string.Equals(objectMinCardinality.Cardinality, "1"));

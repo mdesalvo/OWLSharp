@@ -17,7 +17,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace OWLSharp.Test.Ontology
@@ -61,7 +60,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(subDataPropertyOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<SubDataPropertyOf><DataProperty IRI=""http://purl.org/dc/terms/title"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" /></SubDataPropertyOf>"));
+"""<SubDataPropertyOf><DataProperty IRI="http://purl.org/dc/terms/title" /><DataProperty IRI="http://purl.org/dc/elements/1.1/title" /></SubDataPropertyOf>"""));
         }
 
         [TestMethod]
@@ -72,20 +71,22 @@ namespace OWLSharp.Test.Ontology
                 new OWLSubDataPropertyOf(
                     new OWLDataProperty(RDFVocabulary.DC.DCTERMS.TITLE),
                     new OWLDataProperty(RDFVocabulary.DC.TITLE)));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><SubDataPropertyOf><DataProperty IRI=""http://purl.org/dc/terms/title"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" /></SubDataPropertyOf></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><SubDataPropertyOf><DataProperty IRI="http://purl.org/dc/terms/title" /><DataProperty IRI="http://purl.org/dc/elements/1.1/title" /></SubDataPropertyOf></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeSubDataPropertyOf()
         {
             OWLSubDataPropertyOf subDataPropertyOf = OWLSerializer.DeserializeObject<OWLSubDataPropertyOf>(
-@"<SubDataPropertyOf>
-  <DataProperty IRI=""http://purl.org/dc/terms/title"" />
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" />
-</SubDataPropertyOf>");
+                """
+                <SubDataPropertyOf>
+                  <DataProperty IRI="http://purl.org/dc/terms/title" />
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/title" />
+                </SubDataPropertyOf>
+                """);
 
             Assert.IsNotNull(subDataPropertyOf);
             Assert.IsNotNull(subDataPropertyOf.SubDataProperty);
@@ -98,18 +99,20 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeSubDataPropertyOfViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <SubDataPropertyOf>
-    <DataProperty IRI=""http://purl.org/dc/terms/title"" />
-    <DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" />
-  </SubDataPropertyOf>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <SubDataPropertyOf>
+                    <DataProperty IRI="http://purl.org/dc/terms/title" />
+                    <DataProperty IRI="http://purl.org/dc/elements/1.1/title" />
+                  </SubDataPropertyOf>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.DataPropertyAxioms.Count);
@@ -144,46 +147,48 @@ namespace OWLSharp.Test.Ontology
                 new OWLSubDataPropertyOf(
                     new OWLDataProperty(RDFVocabulary.DC.DCTERMS.CREATOR),
                     new OWLDataProperty(RDFVocabulary.DC.CREATOR)));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" /><SubDataPropertyOf><Annotation><Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" /><Literal xml:lang=""EN-US--RTL"">contributor</Literal></Annotation><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><IRI>ex:AnnValue</IRI></Annotation><DataProperty IRI=""http://purl.org/dc/terms/title"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" /></SubDataPropertyOf><SubDataPropertyOf><DataProperty IRI=""http://purl.org/dc/terms/creator"" /><DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /></SubDataPropertyOf></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" /><SubDataPropertyOf><Annotation><Annotation><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" /><Literal xml:lang="EN-US--RTL">contributor</Literal></Annotation><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" /><IRI>ex:AnnValue</IRI></Annotation><DataProperty IRI="http://purl.org/dc/terms/title" /><DataProperty IRI="http://purl.org/dc/elements/1.1/title" /></SubDataPropertyOf><SubDataPropertyOf><DataProperty IRI="http://purl.org/dc/terms/creator" /><DataProperty IRI="http://purl.org/dc/elements/1.1/creator" /></SubDataPropertyOf></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeMultipleAndNestedDataAssertionsViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Ontology xmlns:owl=""http://www.w3.org/2002/07/owl#"" xmlns:rdfs=""http://www.w3.org/2000/01/rdf-schema#"" xmlns:rdf=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema#"" xmlns:foaf=""http://xmlns.com/foaf/0.1/"">
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <Prefix name=""foaf"" IRI=""http://xmlns.com/foaf/0.1/"" />
-  <SubDataPropertyOf>
-    <Annotation>
-      <Annotation>
-        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-        <Literal xml:lang=""EN-US--RTL"">contributor</Literal>
-      </Annotation>
-      <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-      <IRI>ex:AnnValue</IRI>
-    </Annotation>
-    <DataProperty IRI=""http://purl.org/dc/terms/title"" />
-    <DataProperty IRI=""http://purl.org/dc/elements/1.1/title"" />
-  </SubDataPropertyOf>
-  <SubDataPropertyOf>
-    <DataProperty IRI=""http://purl.org/dc/terms/creator"" />
-    <DataProperty IRI=""http://purl.org/dc/elements/1.1/creator"" />
-  </SubDataPropertyOf>
-</Ontology>");
+                """
+                <?xml version="1.0" encoding="utf-8"?>
+                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/">
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />
+                  <SubDataPropertyOf>
+                    <Annotation>
+                      <Annotation>
+                        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                        <Literal xml:lang="EN-US--RTL">contributor</Literal>
+                      </Annotation>
+                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                      <IRI>ex:AnnValue</IRI>
+                    </Annotation>
+                    <DataProperty IRI="http://purl.org/dc/terms/title" />
+                    <DataProperty IRI="http://purl.org/dc/elements/1.1/title" />
+                  </SubDataPropertyOf>
+                  <SubDataPropertyOf>
+                    <DataProperty IRI="http://purl.org/dc/terms/creator" />
+                    <DataProperty IRI="http://purl.org/dc/elements/1.1/creator" />
+                  </SubDataPropertyOf>
+                </Ontology>
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(2, ontology.DataPropertyAxioms.Count);
             Assert.IsTrue(ontology.DataPropertyAxioms.Any(annAxm => annAxm is OWLSubDataPropertyOf subannOf
-                            && string.Equals(subannOf.SubDataProperty.IRI.ToString(), "http://purl.org/dc/terms/title")
+                            && string.Equals(subannOf.SubDataProperty.IRI, "http://purl.org/dc/terms/title")
                             && string.Equals(subannOf.SuperDataProperty.IRI.ToLower(), "http://purl.org/dc/elements/1.1/title")
                                 && string.Equals(subannOf.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/description")
                                 && string.Equals(subannOf.Annotations.Single().ValueIRI, "ex:AnnValue")
@@ -191,7 +196,7 @@ namespace OWLSharp.Test.Ontology
                                     && string.Equals(subannOf.Annotations.Single().Annotation.ValueLiteral.Value, "contributor")
                                     && string.Equals(subannOf.Annotations.Single().Annotation.ValueLiteral.Language, "EN-US--RTL")));
             Assert.IsTrue(ontology.DataPropertyAxioms.Any(annAxm => annAxm is OWLSubDataPropertyOf subannProp
-                            && string.Equals(subannProp.SubDataProperty.IRI.ToString(), "http://purl.org/dc/terms/creator")
+                            && string.Equals(subannProp.SubDataProperty.IRI, "http://purl.org/dc/terms/creator")
                             && string.Equals(subannProp.SuperDataProperty.IRI, "http://purl.org/dc/elements/1.1/creator")));
         }
 

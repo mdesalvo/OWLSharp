@@ -59,14 +59,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(anonIdv);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<AnonymousIndividual nodeID=""AnonIdv"" />"));
+"""<AnonymousIndividual nodeID="AnonIdv" />"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeAnonymousIndividual()
         {
             OWLAnonymousIndividual anonIdv = OWLSerializer.DeserializeObject<OWLAnonymousIndividual>(
-@"<AnonymousIndividual nodeID=""AnonIdv"" />");
+"""<AnonymousIndividual nodeID="AnonIdv" />""");
 
             Assert.IsNotNull(anonIdv);
             Assert.IsTrue(string.Equals(anonIdv.NodeID, "AnonIdv"));

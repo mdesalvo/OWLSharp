@@ -79,16 +79,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMaxCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectMaxCardinality>"));
+"""<ObjectMaxCardinality cardinality="1"><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectMaxCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectMaxCardinality()
         {
             OWLObjectMaxCardinality objectMaxCardinality = OWLSerializer.DeserializeObject<OWLObjectMaxCardinality>(
-@"<ObjectMaxCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectMaxCardinality>");
+                """
+                <ObjectMaxCardinality cardinality="1">
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                </ObjectMaxCardinality>
+                """);
 
             Assert.IsNotNull(objectMaxCardinality);
             Assert.IsTrue(string.Equals(objectMaxCardinality.Cardinality, "1"));
@@ -114,17 +116,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectMaxCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectMaxCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectMaxCardinality>"));
+"""<ObjectMaxCardinality cardinality="1"><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /></ObjectMaxCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectMaxQualifiedCardinality()
         {
             OWLObjectMaxCardinality objectMaxCardinality = OWLSerializer.DeserializeObject<OWLObjectMaxCardinality>(
-@"<ObjectMaxCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectMaxCardinality>");
+                """
+                <ObjectMaxCardinality cardinality="1">
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                </ObjectMaxCardinality>
+                """);
 
             Assert.IsNotNull(objectMaxCardinality);
             Assert.IsTrue(string.Equals(objectMaxCardinality.Cardinality, "1"));

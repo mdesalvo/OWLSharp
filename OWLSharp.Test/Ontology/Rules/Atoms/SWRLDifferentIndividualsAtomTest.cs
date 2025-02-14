@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Ontology
                 new SWRLVariableArgument(new RDFVariable("?Q")));
 
             Assert.IsTrue(string.Equals(
-@"<DifferentIndividualsAtom><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></DifferentIndividualsAtom>", OWLSerializer.SerializeObject(atom)));
+"""<DifferentIndividualsAtom><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></DifferentIndividualsAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
@@ -113,14 +113,14 @@ namespace OWLSharp.Test.Ontology
                 new SWRLIndividualArgument(new RDFResource("ex:Mark")));
 
             Assert.IsTrue(string.Equals(
-@"<DifferentIndividualsAtom><Variable IRI=""urn:swrl:var#P"" /><NamedIndividual IRI=""ex:Mark"" /></DifferentIndividualsAtom>", OWLSerializer.SerializeObject(atom)));
+"""<DifferentIndividualsAtom><Variable IRI="urn:swrl:var#P" /><NamedIndividual IRI="ex:Mark" /></DifferentIndividualsAtom>""", OWLSerializer.SerializeObject(atom)));
         }
 
         [TestMethod]
         public void ShouldGetSWRLDifferentIndividualsAtomFromXMLRepresentation()
         {
             SWRLDifferentIndividualsAtom atom = OWLSerializer.DeserializeObject<SWRLDifferentIndividualsAtom>(
-@"<DifferentIndividualsAtom><Variable IRI=""urn:swrl:var#P"" /><Variable IRI=""urn:swrl:var#Q"" /></DifferentIndividualsAtom>");
+"""<DifferentIndividualsAtom><Variable IRI="urn:swrl:var#P" /><Variable IRI="urn:swrl:var#Q" /></DifferentIndividualsAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNull(atom.Predicate);
@@ -134,7 +134,7 @@ namespace OWLSharp.Test.Ontology
         public void ShouldGetSWRLDifferentIndividualsAtomFromXMLRepresentationWithIndividualRightArgument()
         {
             SWRLDifferentIndividualsAtom atom = OWLSerializer.DeserializeObject<SWRLDifferentIndividualsAtom>(
-@"<DifferentIndividualsAtom><Variable IRI=""urn:swrl:var#P"" /><NamedIndividual IRI=""ex:Mark"" /></DifferentIndividualsAtom>");
+"""<DifferentIndividualsAtom><Variable IRI="urn:swrl:var#P" /><NamedIndividual IRI="ex:Mark" /></DifferentIndividualsAtom>""");
 
             Assert.IsNotNull(atom);
             Assert.IsNull(atom.Predicate);

@@ -79,16 +79,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectExactCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></ObjectExactCardinality>"));
+"""<ObjectExactCardinality cardinality="1"><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectExactCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectExactCardinality()
         {
             OWLObjectExactCardinality objectExactCardinality = OWLSerializer.DeserializeObject<OWLObjectExactCardinality>(
-@"<ObjectExactCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-</ObjectExactCardinality>");
+                """
+                <ObjectExactCardinality cardinality="1">
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                </ObjectExactCardinality>
+                """);
 
             Assert.IsNotNull(objectExactCardinality);
             Assert.IsTrue(string.Equals(objectExactCardinality.Cardinality, "1"));
@@ -114,17 +116,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(objectExactCardinality);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectExactCardinality cardinality=""1""><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /><Class IRI=""http://xmlns.com/foaf/0.1/Person"" /></ObjectExactCardinality>"));
+"""<ObjectExactCardinality cardinality="1"><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /></ObjectExactCardinality>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectExactQualifiedCardinality()
         {
             OWLObjectExactCardinality objectExactCardinality = OWLSerializer.DeserializeObject<OWLObjectExactCardinality>(
-@"<ObjectExactCardinality cardinality=""1"">
-  <ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />
-  <Class IRI=""http://xmlns.com/foaf/0.1/Person"" />
-</ObjectExactCardinality>");
+                """
+                <ObjectExactCardinality cardinality="1">
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                  <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+                </ObjectExactCardinality>
+                """);
 
             Assert.IsNotNull(objectExactCardinality);
             Assert.IsTrue(string.Equals(objectExactCardinality.Cardinality, "1"));

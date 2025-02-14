@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(dt);
             Assert.IsNull(dt.IRI);
-            Assert.IsTrue(string.Equals(dt.AbbreviatedIRI, new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI)));
+            Assert.IsTrue(Equals(dt.AbbreviatedIRI, new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI)));
         }
 
         [TestMethod]
@@ -74,14 +74,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dt);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />"));
+"""<Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeIRIDatatype()
         {
             OWLDatatype dt = OWLSerializer.DeserializeObject<OWLDatatype>(
-@"<Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />");
+"""<Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />""");
 
             Assert.IsNotNull(dt);
             Assert.IsTrue(string.Equals(dt.IRI, RDFVocabulary.XSD.STRING.ToString()));
@@ -109,18 +109,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dt);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Datatype xmlns:q1=""http://www.w3.org/2001/XMLSchema#"" abbreviatedIRI=""q1:string"" />"));
+"""<Datatype xmlns:q1="http://www.w3.org/2001/XMLSchema#" abbreviatedIRI="q1:string" />"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeQualifiedNameDatatype()
         {
             OWLDatatype dt = OWLSerializer.DeserializeObject<OWLDatatype>(
-@"<Datatype xmlns:q1=""http://www.w3.org/2001/XMLSchema#"" abbreviatedIRI=""q1:string"" />");
+"""<Datatype xmlns:q1="http://www.w3.org/2001/XMLSchema#" abbreviatedIRI="q1:string" />""");
 
             Assert.IsNotNull(dt);
             Assert.IsNull(dt.IRI);
-            Assert.IsTrue(string.Equals(dt.AbbreviatedIRI, new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI)));
+            Assert.IsTrue(Equals(dt.AbbreviatedIRI, new XmlQualifiedName("string", RDFVocabulary.XSD.BASE_URI)));
             //Test stabilization of ExpressionIRI
             Assert.IsTrue(dt.ExpressionIRI.ToString().StartsWith("bnode:ex", StringComparison.Ordinal));
             dt.GetIRI();

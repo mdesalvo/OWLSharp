@@ -70,17 +70,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataIntersectionOf);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataIntersectionOf><Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" /><Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" /></DataIntersectionOf>"));
+"""<DataIntersectionOf><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /><Datatype IRI="http://www.w3.org/2001/XMLSchema#anyURI" /></DataIntersectionOf>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataIntersectionOf()
         {
             OWLDataIntersectionOf dataIntersectionOf = OWLSerializer.DeserializeObject<OWLDataIntersectionOf>(
-@"<DataIntersectionOf>
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#string"" />
-  <Datatype IRI=""http://www.w3.org/2001/XMLSchema#anyURI"" />
-</DataIntersectionOf>");
+                """
+                <DataIntersectionOf>
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#anyURI" />
+                </DataIntersectionOf>
+                """);
 
             Assert.IsNotNull(dataIntersectionOf);
             Assert.IsNotNull(dataIntersectionOf.DataRangeExpressions);

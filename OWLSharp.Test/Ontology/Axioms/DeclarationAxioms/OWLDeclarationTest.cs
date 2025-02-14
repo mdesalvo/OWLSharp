@@ -41,14 +41,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Declaration><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></Declaration>"));
+"""<Declaration><Class IRI="http://xmlns.com/foaf/0.1/Agent" /></Declaration>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeClassDeclaration()
         {
             OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
-@"<Declaration><Class IRI=""http://xmlns.com/foaf/0.1/Agent"" /></Declaration>");
+"""<Declaration><Class IRI="http://xmlns.com/foaf/0.1/Agent" /></Declaration>""");
 
             Assert.IsNotNull(declaration);
             Assert.IsTrue(declaration.Expression is OWLClass cls && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
@@ -74,14 +74,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Declaration><Datatype IRI=""http://www.w3.org/2001/XMLSchema#int"" /></Declaration>"));
+"""<Declaration><Datatype IRI="http://www.w3.org/2001/XMLSchema#int" /></Declaration>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDatatypeDeclaration()
         {
             OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
-@"<Declaration><Datatype IRI=""http://www.w3.org/2001/XMLSchema#int"" /></Declaration>");
+"""<Declaration><Datatype IRI="http://www.w3.org/2001/XMLSchema#int" /></Declaration>""");
 
             Assert.IsNotNull(declaration);
             Assert.IsTrue(declaration.Expression is OWLDatatype dt && string.Equals(dt.IRI, "http://www.w3.org/2001/XMLSchema#int"));
@@ -107,14 +107,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Declaration><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></Declaration>"));
+"""<Declaration><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></Declaration>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeObjectPropertyDeclaration()
         {
             OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
-@"<Declaration><ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" /></Declaration>");
+"""<Declaration><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></Declaration>""");
 
             Assert.IsNotNull(declaration);
             Assert.IsTrue(declaration.Expression is OWLObjectProperty objProp && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
@@ -140,14 +140,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Declaration><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></Declaration>"));
+"""<Declaration><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /></Declaration>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataPropertyDeclaration()
         {
             OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
-@"<Declaration><DataProperty IRI=""http://xmlns.com/foaf/0.1/age"" /></Declaration>");
+"""<Declaration><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /></Declaration>""");
 
             Assert.IsNotNull(declaration);
             Assert.IsTrue(declaration.Expression is OWLDataProperty dtProp && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));
@@ -173,14 +173,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Declaration><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /></Declaration>"));
+"""<Declaration><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/creator" /></Declaration>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeAnnotationPropertyDeclaration()
         {
             OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
-@"<Declaration><AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/creator"" /></Declaration>");
+"""<Declaration><AnnotationProperty IRI="http://purl.org/dc/elements/1.1/creator" /></Declaration>""");
 
             Assert.IsNotNull(declaration);
             Assert.IsTrue(declaration.Expression is OWLAnnotationProperty annProp && string.Equals(annProp.IRI, "http://purl.org/dc/elements/1.1/creator"));
@@ -206,14 +206,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(declaration);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Declaration><NamedIndividual IRI=""ex:Mark"" /></Declaration>"));
+"""<Declaration><NamedIndividual IRI="ex:Mark" /></Declaration>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeNamedIndividualDeclaration()
         {
             OWLDeclaration declaration = OWLSerializer.DeserializeObject<OWLDeclaration>(
-@"<Declaration><NamedIndividual IRI=""ex:Mark"" /></Declaration>");
+"""<Declaration><NamedIndividual IRI="ex:Mark" /></Declaration>""");
 
             Assert.IsNotNull(declaration);
             Assert.IsTrue(declaration.Expression is OWLNamedIndividual nIdv && string.Equals(nIdv.IRI, "ex:Mark"));

@@ -61,17 +61,19 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(dataHasValue);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DataHasValue><DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" /><Literal xml:lang=""EN"">hello</Literal></DataHasValue>"));
+"""<DataHasValue><DataProperty IRI="http://purl.org/dc/elements/1.1/description" /><Literal xml:lang="EN">hello</Literal></DataHasValue>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeDataHasValue()
         {
             OWLDataHasValue dataHasValue = OWLSerializer.DeserializeObject<OWLDataHasValue>(
-@"<DataHasValue>
-  <DataProperty IRI=""http://purl.org/dc/elements/1.1/description"" />
-  <Literal xml:lang=""EN"">hello</Literal>
-</DataHasValue>");
+                """
+                <DataHasValue>
+                  <DataProperty IRI="http://purl.org/dc/elements/1.1/description" />
+                  <Literal xml:lang="EN">hello</Literal>
+                </DataHasValue>
+                """);
 
             Assert.IsNotNull(dataHasValue);
             Assert.IsNotNull(dataHasValue.DataProperty);

@@ -51,7 +51,7 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(op);
             Assert.IsNull(op.IRI);
-            Assert.IsTrue(string.Equals(op.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
+            Assert.IsTrue(Equals(op.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
         }
 
         [TestMethod]
@@ -65,14 +65,14 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(op);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />"));
+"""<ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeIRIObjectProperty()
         {
             OWLObjectProperty op = OWLSerializer.DeserializeObject<OWLObjectProperty>(
-@"<ObjectProperty IRI=""http://xmlns.com/foaf/0.1/knows"" />");
+"""<ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />""");
 
             Assert.IsNotNull(op);
             Assert.IsTrue(string.Equals(op.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
@@ -91,18 +91,18 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(op);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<ObjectProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:knows"" />"));
+"""<ObjectProperty xmlns:q1="http://xmlns.com/foaf/0.1/" abbreviatedIRI="q1:knows" />"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeQualifiedNameObjectProperty()
         {
             OWLObjectProperty op = OWLSerializer.DeserializeObject<OWLObjectProperty>(
-@"<ObjectProperty xmlns:q1=""http://xmlns.com/foaf/0.1/"" abbreviatedIRI=""q1:knows"" />");
+"""<ObjectProperty xmlns:q1="http://xmlns.com/foaf/0.1/" abbreviatedIRI="q1:knows" />""");
 
             Assert.IsNotNull(op);
             Assert.IsNull(op.IRI);
-            Assert.IsTrue(string.Equals(op.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
+            Assert.IsTrue(Equals(op.AbbreviatedIRI, new XmlQualifiedName("knows", RDFVocabulary.FOAF.BASE_URI)));
             //Test stabilization of ExpressionIRI
             Assert.IsTrue(op.ExpressionIRI.ToString().StartsWith("bnode:ex", StringComparison.Ordinal));
             op.GetIRI();

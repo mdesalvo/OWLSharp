@@ -66,7 +66,7 @@ namespace OWLSharp.Test.Ontology
             string serializedXML = OWLSerializer.SerializeObject(differentIndividuals);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></DifferentIndividuals>"));
+"""<DifferentIndividuals><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /><NamedIndividual IRI="ex:Carl" /></DifferentIndividuals>"""));
         }
 
         [TestMethod]
@@ -78,17 +78,17 @@ namespace OWLSharp.Test.Ontology
                 [ new OWLNamedIndividual(new RDFResource("ex:Alice")),
                   new OWLNamedIndividual(new RDFResource("ex:Bob")),
                   new OWLAnonymousIndividual("AnonIdv") ]));
-            string serializedXML = OWLSerializer.SerializeObject<OWLOntology>(ontology);
+            string serializedXML = OWLSerializer.SerializeObject(ontology);
 
             Assert.IsTrue(string.Equals(serializedXML,
-@"<Ontology><Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" /><Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" /><Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" /><Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" /><Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" /><DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><AnonymousIndividual nodeID=""AnonIdv"" /></DifferentIndividuals></Ontology>"));
+"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><DifferentIndividuals><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /><AnonymousIndividual nodeID="AnonIdv" /></DifferentIndividuals></Ontology>"""));
         }
 
         [TestMethod]
         public void ShouldDeserializeNamedIndividuals()
         {
             OWLDifferentIndividuals differentIndividuals = OWLSerializer.DeserializeObject<OWLDifferentIndividuals>(
-@"<DifferentIndividuals><NamedIndividual IRI=""ex:Alice"" /><NamedIndividual IRI=""ex:Bob"" /><NamedIndividual IRI=""ex:Carl"" /></DifferentIndividuals>");
+"""<DifferentIndividuals><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /><NamedIndividual IRI="ex:Carl" /></DifferentIndividuals>""");
         
             Assert.IsNotNull(differentIndividuals);
             Assert.IsNotNull(differentIndividuals.IndividualExpressions);
@@ -105,24 +105,26 @@ namespace OWLSharp.Test.Ontology
         public void ShouldDeserializeNamedIndividualsViaOntology()
         {
             OWLOntology ontology = OWLSerializer.DeserializeOntology(
-@"<?xml version=""1.0"" encoding=""UTF-8""?>
-<Ontology>
-  <Prefix name=""owl"" IRI=""http://www.w3.org/2002/07/owl#"" />
-  <Prefix name=""rdfs"" IRI=""http://www.w3.org/2000/01/rdf-schema#"" />
-  <Prefix name=""rdf"" IRI=""http://www.w3.org/1999/02/22-rdf-syntax-ns#"" />
-  <Prefix name=""xsd"" IRI=""http://www.w3.org/2001/XMLSchema#"" />
-  <Prefix name=""xml"" IRI=""http://www.w3.org/XML/1998/namespace"" />
-  <DifferentIndividuals>
-    <Annotation>
-        <AnnotationProperty IRI=""http://purl.org/dc/elements/1.1/contributor"" />
-        <Literal xml:lang=""EN"">Steve</Literal>
-    </Annotation>
-    <NamedIndividual IRI=""ex:Alice"" />
-    <NamedIndividual IRI=""ex:Bob"" />
-    <AnonymousIndividual nodeID=""AnonIdv"" />
-  </DifferentIndividuals>
-</Ontology>
-");
+                """
+                <?xml version="1.0" encoding="UTF-8"?>
+                <Ontology>
+                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+                  <DifferentIndividuals>
+                    <Annotation>
+                        <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                        <Literal xml:lang="EN">Steve</Literal>
+                    </Annotation>
+                    <NamedIndividual IRI="ex:Alice" />
+                    <NamedIndividual IRI="ex:Bob" />
+                    <AnonymousIndividual nodeID="AnonIdv" />
+                  </DifferentIndividuals>
+                </Ontology>
+
+                """);
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.AssertionAxioms.Count);

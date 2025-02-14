@@ -16,7 +16,6 @@
 
 using RDFSharp.Model;
 using System.Text;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace OWLSharp.Ontology
