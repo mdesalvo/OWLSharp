@@ -25,7 +25,7 @@ namespace OWLSharp.Ontology
 {
     internal static class SWRLYearMonthDurationBuiltIn
     {
-        internal static RDFDatatype XSD_DURATION = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DURATION);
+        internal static readonly RDFDatatype XSD_DURATION = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DURATION);
 
         #region Methods
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)

@@ -24,7 +24,7 @@ namespace OWLSharp.Ontology
 {
     internal static class SWRLDateTimeBuiltIn
     {
-        internal static RDFDatatype XSD_DATETIME = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DATETIME);
+        internal static readonly RDFDatatype XSD_DATETIME = RDFDatatypeRegister.GetDatatype(RDFModelEnums.RDFDatatypes.XSD_DATETIME);
 
         #region Methods
         internal static bool EvaluateOnAntecedent(DataRow antecedentResultsRow, List<SWRLArgument> builtInArguments)

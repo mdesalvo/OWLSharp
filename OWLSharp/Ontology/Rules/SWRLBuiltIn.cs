@@ -580,13 +580,13 @@ namespace OWLSharp.Ontology
             DataTable filteredTable = antecedentResults.Clone();
 
             //Iterate the rows of the antecedent results table
-            bool keepRow;
             IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
             while (rowsEnum.MoveNext())
                 try
                 {
                     DataRow currentRow = (DataRow)rowsEnum.Current;
-                    
+
+                    bool keepRow;
                     switch (IRI)
                     {
                         //Official BuiltIns => handle them directly

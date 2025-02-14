@@ -35,10 +35,10 @@ namespace OWLSharp.Extensions.GEO
         // LON => X (West/East, -180 ->180)
         // LAT => Y (North/South, -90->90)
 
-        internal static WKTReader WKTReader = new WKTReader();
-        internal static WKTWriter WKTWriter = new WKTWriter();
-        internal static GMLReader GMLReader = new GMLReader();
-        internal static GMLWriter GMLWriter = new GMLWriter();
+        internal static readonly WKTReader WKTReader = new WKTReader();
+        internal static readonly WKTWriter WKTWriter = new WKTWriter();
+        internal static readonly GMLReader GMLReader = new GMLReader();
+        internal static readonly GMLWriter GMLWriter = new GMLWriter();
 
         #region Initializer
         [ExcludeFromCodeCoverage]

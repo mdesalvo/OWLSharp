@@ -28,7 +28,6 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            OWLIndividualExpression swapIdvExpr;
             List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             foreach (OWLFunctionalObjectProperty fop in ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>())
@@ -40,9 +39,7 @@ namespace OWLSharp.Validator
                     //In case the functional object property works under inverse logic, we must swap source/target of the object assertion
                     if (fop.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                     {   
-                        swapIdvExpr = fopAsn.SourceIndividualExpression;
-                        fopAsn.SourceIndividualExpression = fopAsn.TargetIndividualExpression;
-                        fopAsn.TargetIndividualExpression = swapIdvExpr;
+                        (fopAsn.SourceIndividualExpression, fopAsn.TargetIndividualExpression) = (fopAsn.TargetIndividualExpression, fopAsn.SourceIndividualExpression);
                         fopAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                     }
                 }

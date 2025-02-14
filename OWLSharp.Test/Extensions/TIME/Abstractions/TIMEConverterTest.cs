@@ -145,11 +145,9 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMECalendarReferenceSystem(
                     new RDFResource("https://en.wikipedia.org/wiki/360-day_calendar"),
                     new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])
-                        .SetLeapYearRule(year => {
-                            return (year >= 1985 && (year % 2 == 0))
-                                ? [31, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
-                                : [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30];
-                        })));
+                        .SetLeapYearRule(year => (year >= 1985 && (year % 2 == 0))
+                            ? [31, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+                            : [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
             Assert.IsNotNull(tc);
             Assert.AreEqual(expectedYear, tc.Year);
@@ -290,11 +288,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new TIMECalendarReferenceSystem(
                     new RDFResource("ex:MyStrangeCalendar"),
                     new TIMECalendarReferenceSystemMetrics(10, 10, 10, [10, 10, 10, 10, 10, 10])
-                        .SetLeapYearRule(year => {
-                            return year % 2 == 0
-                                ? [10, 10, 10, 10, 10, 11]
-                                : [10, 10, 10, 10, 10, 10];
-                        })));
+                        .SetLeapYearRule(year => year % 2 == 0 ? [10, 10, 10, 10, 10, 11] : [10, 10, 10, 10, 10, 10])));
 
             Assert.IsNotNull(tc);
             Assert.AreEqual(expectedYear, tc.Year);

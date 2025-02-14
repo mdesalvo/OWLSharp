@@ -35,11 +35,10 @@ namespace OWLSharp.Ontology
 
             #region Arguments
             int? leftValue = null, rightValue = null;
-            RDFPatternMember patternMember;
             for (int i=0; i<builtInArguments.Count; i++)
             {
                 //Parse current argument
-                patternMember = null;
+                RDFPatternMember patternMember = null;
                 switch (builtInArguments[i])
                 {
                     case SWRLVariableArgument argVar when antecedentResultsRow.Table.Columns.Contains(argVar.GetVariable().ToString()):

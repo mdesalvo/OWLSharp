@@ -62,17 +62,17 @@ namespace OWLSharp.Reasoner
                         .ApplyToGraph(lazyOPAsnsGraph.Value);
 
                 //Populate result with corresponding inference assertions
-                OWLIndividualExpression infSrcIdvExpr = null;
-                OWLIndividualExpression infTgtIdvExpr = null;
                 foreach (RDFTriple materializedChainTriple in materializedChainTriples.ToRDFGraph())
                 {
                     //Rebuild source individual (preserve support for anonymous individuals)
+                    OWLIndividualExpression infSrcIdvExpr;
                     if (((RDFResource)materializedChainTriple.Subject).IsBlank) 
                         infSrcIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Subject.ToString().Replace("bnode:", string.Empty));
                     else
                         infSrcIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject);
 
                     //Rebuild target individual (preserve support for anonymous individuals)
+                    OWLIndividualExpression infTgtIdvExpr;
                     if (((RDFResource)materializedChainTriple.Object).IsBlank) 
                         infTgtIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Object.ToString().Replace("bnode:", string.Empty));
                     else

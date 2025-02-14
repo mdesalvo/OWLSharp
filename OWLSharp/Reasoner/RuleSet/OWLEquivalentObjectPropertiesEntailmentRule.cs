@@ -26,7 +26,6 @@ namespace OWLSharp.Reasoner
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-            OWLIndividualExpression swapIdvExpr;
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
             foreach (OWLObjectProperty declaredObjectProperty in ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>()
@@ -51,14 +50,13 @@ namespace OWLSharp.Reasoner
 
                 //EquivalentObjectProperties(P1,P2) ^ ObjectPropertyAssertion(P1,I1,I2) -> ObjectPropertyAssertion(P2,I1,I2)
                 List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty);
-                for (int i = 0; i < declaredObjectPropertyAsns.Count; i++)
-                    if (declaredObjectPropertyAsns[i].ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
+                foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in declaredObjectPropertyAsns)
+                    if (declaredObjectPropertyAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
                     {   
-                        swapIdvExpr = declaredObjectPropertyAsns[i].SourceIndividualExpression;
-                        declaredObjectPropertyAsns[i].SourceIndividualExpression = declaredObjectPropertyAsns[i].TargetIndividualExpression;
-                        declaredObjectPropertyAsns[i].TargetIndividualExpression = swapIdvExpr;
-                        declaredObjectPropertyAsns[i].ObjectPropertyExpression = objInvOf.ObjectProperty;
+                        (declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) = (declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression);
+                        declaredObjectPropertyAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                     }
+
                 foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in OWLAxiomHelper.RemoveDuplicates(declaredObjectPropertyAsns))
                     foreach (OWLObjectPropertyExpression equivObjectPropertyExpr in equivObjectPropertyExprs)
                     {

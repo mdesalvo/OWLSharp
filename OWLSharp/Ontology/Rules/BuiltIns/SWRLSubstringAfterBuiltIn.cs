@@ -121,13 +121,13 @@ namespace OWLSharp.Ontology
                 string rightPMSEPValue = rightPatternMemberSEP is RDFLiteral rightPMLitSEP ? rightPMLitSEP.Value : rightPatternMemberSEP.ToString();
 
                 //Short-Circuit
-                if (rightPMSTRValue == null || rightPMSTRValue.Length == 0)
+                if (string.IsNullOrEmpty(rightPMSTRValue))
                     return string.Equals(leftPMValue, rightPMSTRValue);
                 if (rightPMSEPValue.Length == 0)
                     return string.Equals(leftPMValue, string.Empty);
                 
                 //Split
-                int sepIndex = rightPMSTRValue.IndexOf(rightPMSEPValue);
+                int sepIndex = rightPMSTRValue.IndexOf(rightPMSEPValue, StringComparison.Ordinal);
                 return sepIndex == -1 ? string.Equals(leftPMValue, string.Empty, StringComparison.Ordinal)
                                       : string.Equals(leftPMValue, rightPMSTRValue.Substring(sepIndex+rightPMSEPValue.Length), StringComparison.Ordinal);              
             }
