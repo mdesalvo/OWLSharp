@@ -217,10 +217,9 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLDifferentIndividuals diffIdvsInf
-                            && diffIdvsInf.IsInference
-                            && diffIdvsInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:Mark"))
-                            && diffIdvsInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:John")));
+            Assert.IsTrue(inferences[0].Axiom is OWLDifferentIndividuals { IsInference: true } diffIdvsInf
+                          && diffIdvsInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:Mark"))
+                          && diffIdvsInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:John")));
         }
 
         [TestMethod]
@@ -238,10 +237,9 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLDifferentIndividuals diffIdvsInf
-                            && diffIdvsInf.IsInference
-                            && diffIdvsInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:John"))
-                            && diffIdvsInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:Mark")));
+            Assert.IsTrue(inferences[0].Axiom is OWLDifferentIndividuals { IsInference: true } diffIdvsInf
+                          && diffIdvsInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:John"))
+                          && diffIdvsInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:Mark")));
         }
 
         [TestMethod]

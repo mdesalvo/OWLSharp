@@ -366,7 +366,7 @@ namespace OWLSharp.Extensions.TIME
             OWLObjectProperty hasTimeOP = new OWLObjectProperty(RDFVocabulary.TIME.HAS_TIME);
             OWLClass timeInstantCLS = new OWLClass(RDFVocabulary.TIME.INSTANT);
             OWLClass timeIntervalCLS = new OWLClass(RDFVocabulary.TIME.INTERVAL);
-            List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
+            List<OWLDataPropertyAssertion> dtPropAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLObjectPropertyAssertion> hasTimeObjPropAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(objPropAsns, hasTimeOP);
 
@@ -969,7 +969,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
+            List<OWLDataPropertyAssertion> dtPropAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             //Declare the time instant
@@ -1028,7 +1028,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
+            List<OWLDataPropertyAssertion> dtPropAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             //Declare the time interval
@@ -1084,7 +1084,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
+            List<OWLDataPropertyAssertion> dtPropAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             return GetBeginningOfIntervalInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());
@@ -1158,7 +1158,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> dtPropAsns = OWLAssertionAxiomHelper.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
+            List<OWLDataPropertyAssertion> dtPropAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLObjectPropertyAssertion> objPropAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             return GetEndOfIntervalInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());

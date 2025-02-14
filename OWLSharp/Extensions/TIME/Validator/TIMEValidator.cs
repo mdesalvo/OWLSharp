@@ -27,12 +27,7 @@ namespace OWLSharp.Extensions.TIME
         #region Properties
         internal static readonly RDFResource ViolationIRI = new RDFResource("urn:owlsharp:swrl:hasViolations");
 
-        public List<TIMEEnums.TIMEValidatorRules> Rules { get; internal set; }
-        #endregion
-
-        #region Ctors
-        public TIMEValidator()
-            => Rules = new List<TIMEEnums.TIMEValidatorRules>();
+        public List<TIMEEnums.TIMEValidatorRules> Rules { get; internal set; } = new List<TIMEEnums.TIMEValidatorRules>();
         #endregion
 
         #region Methods

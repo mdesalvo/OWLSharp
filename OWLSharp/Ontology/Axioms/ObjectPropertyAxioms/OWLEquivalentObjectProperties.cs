@@ -55,11 +55,11 @@ namespace OWLSharp.Ontology
             RDFGraph graph = new RDFGraph();
 
             List<RDFResource> objPropIRIs = new List<RDFResource>();
-            for (int i = 0; i < ObjectPropertyExpressions.Count; i++)
+            foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
             {
-                RDFResource objPropIRI = ObjectPropertyExpressions[i].GetIRI(); 
+                RDFResource objPropIRI = objectPropertyExpression.GetIRI(); 
                 objPropIRIs.Add(objPropIRI);
-                graph = graph.UnionWith(ObjectPropertyExpressions[i].ToRDFGraph(objPropIRI));
+                graph = graph.UnionWith(objectPropertyExpression.ToRDFGraph(objPropIRI));
             }
 
             //Axiom Triple(s)

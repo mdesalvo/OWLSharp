@@ -66,7 +66,7 @@ namespace OWLSharp.Validator
                 //InverseFunctionalObjectProperty(IFOP) ^ TransitiveObjectProperty(IFOP) -> ERROR
                 //InverseFunctionalObjectProperty(IFOP) ^ SubObjectPropertyOf(IFOP, SOP) ^ TransitiveObjectProperty(SOP) -> ERROR
                 if (ontology.CheckHasTransitiveObjectProperty(ifop.ObjectPropertyExpression)
-                     || ontology.GetSuperObjectPropertiesOf(ifop.ObjectPropertyExpression).Any(opex => ontology.CheckHasTransitiveObjectProperty(opex)))
+                     || ontology.GetSuperObjectPropertiesOf(ifop.ObjectPropertyExpression).Any(ontology.CheckHasTransitiveObjectProperty))
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Error, 
                         rulename, 

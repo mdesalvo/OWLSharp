@@ -157,9 +157,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLIrreflexiveObjectProperty irreflObjProp
-                            && irreflObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
-                            && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLIrreflexiveObjectProperty
+                          {
+                              ObjectPropertyExpression: OWLObjectProperty objProp
+                          } && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLIrreflexiveObjectProperty irreflObjProp1
                             && string.Equals(irreflObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(irreflObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
@@ -190,9 +191,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLIrreflexiveObjectProperty irreflObjProp
-                            && irreflObjProp.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
-                            && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLIrreflexiveObjectProperty
+                          {
+                              ObjectPropertyExpression: OWLObjectInverseOf objInvOf
+                          } && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLIrreflexiveObjectProperty irreflObjProp1
                             && string.Equals(irreflObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(irreflObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")

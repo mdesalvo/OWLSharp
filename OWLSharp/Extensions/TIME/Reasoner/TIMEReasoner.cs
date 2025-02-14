@@ -24,12 +24,7 @@ namespace OWLSharp.Extensions.TIME
     public class TIMEReasoner
     {
         #region Properties
-        public List<TIMEEnums.TIMEReasonerRules> Rules { get; internal set; }
-        #endregion
-
-        #region Ctors
-        public TIMEReasoner()
-            => Rules = new List<TIMEEnums.TIMEReasonerRules>();
+        public List<TIMEEnums.TIMEReasonerRules> Rules { get; internal set; } = new List<TIMEEnums.TIMEReasonerRules>();
         #endregion
 
         #region Methods

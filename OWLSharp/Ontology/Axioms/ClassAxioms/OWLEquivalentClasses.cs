@@ -71,11 +71,11 @@ namespace OWLSharp.Ontology
             RDFGraph graph = new RDFGraph();
 
             List<RDFResource> clsExpressionIRIs = new List<RDFResource>();
-            for (int i = 0; i < ClassExpressions.Count; i++)
+            foreach (OWLClassExpression classExpression in ClassExpressions)
             {
-                RDFResource clsExpressionIRI = ClassExpressions[i].GetIRI();
+                RDFResource clsExpressionIRI = classExpression.GetIRI();
                 clsExpressionIRIs.Add(clsExpressionIRI);
-                graph = graph.UnionWith(ClassExpressions[i].ToRDFGraph(clsExpressionIRI));
+                graph = graph.UnionWith(classExpression.ToRDFGraph(clsExpressionIRI));
             }
 
             //Axiom Triple(s)

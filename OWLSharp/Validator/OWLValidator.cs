@@ -21,12 +21,7 @@ namespace OWLSharp.Validator
     public class OWLValidator
     {
         #region Properties
-        public List<OWLEnums.OWLValidatorRules> Rules { get; internal set; }
-        #endregion
-
-        #region Ctors
-        public OWLValidator()
-            => Rules = new List<OWLEnums.OWLValidatorRules>();
+        public List<OWLEnums.OWLValidatorRules> Rules { get; internal set; } = new List<OWLEnums.OWLValidatorRules>();
         #endregion
 
         #region Methods

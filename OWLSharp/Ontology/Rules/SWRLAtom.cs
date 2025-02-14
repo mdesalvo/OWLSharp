@@ -103,7 +103,7 @@ namespace OWLSharp.Ontology
             {
                 //Left Argument
                 case SWRLIndividualArgument leftArgumentIndividual:
-                    sb.Append($"{RDFModelUtilities.GetShortUri(leftArgumentIndividual.GetResource().URI)}");
+                    sb.Append($"{leftArgumentIndividual.GetResource().URI.GetShortUri()}");
                     break;
                 case SWRLLiteralArgument leftArgumentLiteral:
                     sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");
@@ -119,7 +119,7 @@ namespace OWLSharp.Ontology
                 switch (RightArgument)
                 {
                     case SWRLIndividualArgument rightArgumentIndividual:
-                        sb.Append($",{RDFModelUtilities.GetShortUri(rightArgumentIndividual.GetResource().URI)}");
+                        sb.Append($",{rightArgumentIndividual.GetResource().URI.GetShortUri()}");
                         break;
                     case SWRLLiteralArgument rightArgumentLiteral:
                         sb.Append($",{RDFQueryPrinter.PrintPatternMember(rightArgumentLiteral.GetLiteral(), RDFNamespaceRegister.Instance.Register)}");

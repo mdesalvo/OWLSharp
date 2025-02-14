@@ -69,7 +69,7 @@ namespace OWLSharp.Ontology
             => ExpressionIRI;
 
         public virtual string ToSWRLString() 
-            => RDFModelUtilities.GetShortUri(GetIRI().URI);
+            => GetIRI().URI.GetShortUri();
 
         internal virtual RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
             => new RDFGraph();

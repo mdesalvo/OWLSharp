@@ -436,8 +436,8 @@ namespace OWLSharp.Ontology
                     }
     
                     //Indirect
-                    if (OWLClassAxiomHelper.GetSuperClassesOf(ontology, idvExprClassAsn.ClassExpression)
-                                           .Union(OWLClassAxiomHelper.GetEquivalentClasses(ontology, idvExprClassAsn.ClassExpression))
+                    if (ontology.GetSuperClassesOf(idvExprClassAsn.ClassExpression)
+                                           .Union(ontology.GetEquivalentClasses(idvExprClassAsn.ClassExpression))
                                            .Any(cex => cex is OWLObjectComplementOf indirectObjComplOf && indirectObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI)))
                     {
                         answer = true;
@@ -508,7 +508,7 @@ namespace OWLSharp.Ontology
                     RDFTypedLiteral rdfTypedLiteral = (RDFTypedLiteral)rdfLiteral;
 
                     //We must build the RDF datatype corresponding to the OWL datatype restriction
-                    RDFDatatype drExprDatatype = new RDFDatatype(drExprIRI.URI, RDFModelUtilities.GetEnumFromDatatype(dtRestr.Datatype.GetIRI().ToString()), null);
+                    RDFDatatype drExprDatatype = new RDFDatatype(drExprIRI.URI, dtRestr.Datatype.GetIRI().ToString().GetEnumFromDatatype(), null);
                     foreach (OWLFacetRestriction dtRestrFacet in dtRestr.FacetRestrictions ?? Enumerable.Empty<OWLFacetRestriction>())
                     {
                         //Numeric

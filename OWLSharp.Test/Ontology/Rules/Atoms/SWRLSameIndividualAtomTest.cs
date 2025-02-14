@@ -217,10 +217,9 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLSameIndividual sameIdvInf
-                            && sameIdvInf.IsInference
-                            && sameIdvInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:Mark"))
-                            && sameIdvInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:John")));
+            Assert.IsTrue(inferences[0].Axiom is OWLSameIndividual { IsInference: true } sameIdvInf
+                          && sameIdvInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:Mark"))
+                          && sameIdvInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:John")));
         }
 
         [TestMethod]
@@ -238,10 +237,9 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLSameIndividual sameIdvInf
-                            && sameIdvInf.IsInference
-                            && sameIdvInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:John"))
-                            && sameIdvInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:Mark")));
+            Assert.IsTrue(inferences[0].Axiom is OWLSameIndividual { IsInference: true } sameIdvInf
+                          && sameIdvInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:John"))
+                          && sameIdvInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:Mark")));
         }
 
         [TestMethod]

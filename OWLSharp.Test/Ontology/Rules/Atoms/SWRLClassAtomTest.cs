@@ -140,10 +140,9 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
-                            && clsAsnInf.IsInference
-                            && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
-                            && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
+            Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion { IsInference: true } clsAsnInf
+                          && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
+                          && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
         }
 
         [TestMethod]

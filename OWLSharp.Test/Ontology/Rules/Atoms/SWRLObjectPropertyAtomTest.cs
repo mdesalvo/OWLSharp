@@ -263,11 +263,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLObjectPropertyAssertion opAsnInf
-                            && opAsnInf.IsInference
-                            && opAsnInf.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-                            && opAsnInf.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
-                            && opAsnInf.TargetIndividualExpression.GetIRI().Equals(new RDFResource("ex:John")));
+            Assert.IsTrue(inferences[0].Axiom is OWLObjectPropertyAssertion { IsInference: true } opAsnInf
+                          && opAsnInf.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                          && opAsnInf.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
+                          && opAsnInf.TargetIndividualExpression.GetIRI().Equals(new RDFResource("ex:John")));
         }
 
         [TestMethod]
@@ -286,11 +285,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLObjectPropertyAssertion opAsnInf
-                            && opAsnInf.IsInference
-                            && opAsnInf.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
-                            && opAsnInf.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
-                            && opAsnInf.TargetIndividualExpression.GetIRI().Equals(new RDFResource("ex:John")));
+            Assert.IsTrue(inferences[0].Axiom is OWLObjectPropertyAssertion { IsInference: true } opAsnInf
+                          && opAsnInf.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
+                          && opAsnInf.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
+                          && opAsnInf.TargetIndividualExpression.GetIRI().Equals(new RDFResource("ex:John")));
         }
 
         [TestMethod]

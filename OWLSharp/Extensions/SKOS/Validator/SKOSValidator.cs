@@ -26,12 +26,7 @@ namespace OWLSharp.Extensions.SKOS
         #region Properties
         internal static readonly RDFResource ViolationIRI = new RDFResource("urn:owlsharp:swrl:hasViolations");
 
-        public List<SKOSEnums.SKOSValidatorRules> Rules { get; internal set; }
-        #endregion
-
-        #region Ctors
-        public SKOSValidator()
-            => Rules = new List<SKOSEnums.SKOSValidatorRules>();
+        public List<SKOSEnums.SKOSValidatorRules> Rules { get; internal set; } = new List<SKOSEnums.SKOSValidatorRules>();
         #endregion
 
         #region Methods

@@ -34,18 +34,10 @@ namespace OWLSharp.Ontology
         [XmlElement(typeof(SWRLDifferentIndividualsAtom), ElementName="DifferentIndividualsAtom")]
         [XmlElement(typeof(SWRLObjectPropertyAtom), ElementName="ObjectPropertyAtom")]
         [XmlElement(typeof(SWRLSameIndividualAtom), ElementName="SameIndividualAtom")]
-        public List<SWRLAtom> Atoms { get; set; }
+        public List<SWRLAtom> Atoms { get; set; } = new List<SWRLAtom>();
 
         [XmlElement(ElementName="BuiltInAtom")]
-        public List<SWRLBuiltIn> BuiltIns { get; set; }
-        #endregion
-
-        #region Ctors
-        public SWRLAntecedent()
-        {
-            Atoms = new List<SWRLAtom>();
-            BuiltIns = new List<SWRLBuiltIn>();
-        }
+        public List<SWRLBuiltIn> BuiltIns { get; set; } = new List<SWRLBuiltIn>();
         #endregion
 
         #region Interfaces

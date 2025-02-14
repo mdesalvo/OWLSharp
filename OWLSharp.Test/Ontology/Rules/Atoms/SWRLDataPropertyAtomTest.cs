@@ -230,11 +230,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLDataPropertyAssertion dpAsnInf
-                            && dpAsnInf.IsInference
-                            && dpAsnInf.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
-                            && dpAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
-                            && dpAsnInf.Literal.GetLiteral().Equals(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
+            Assert.IsTrue(inferences[0].Axiom is OWLDataPropertyAssertion { IsInference: true } dpAsnInf
+                          && dpAsnInf.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
+                          && dpAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
+                          && dpAsnInf.Literal.GetLiteral().Equals(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
         }
 
         [TestMethod]
@@ -253,11 +252,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLDataPropertyAssertion dpAsnInf
-                            && dpAsnInf.IsInference
-                            && dpAsnInf.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
-                            && dpAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
-                            && dpAsnInf.Literal.GetLiteral().Equals(new RDFPlainLiteral("hello", "en-US--RTL")));
+            Assert.IsTrue(inferences[0].Axiom is OWLDataPropertyAssertion { IsInference: true } dpAsnInf
+                          && dpAsnInf.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
+                          && dpAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
+                          && dpAsnInf.Literal.GetLiteral().Equals(new RDFPlainLiteral("hello", "en-US--RTL")));
         }
 
         [TestMethod]

@@ -1235,7 +1235,7 @@ namespace OWLSharp.Extensions.GEO
         {
             Dictionary<string,List<(Geometry,Geometry)>> featuresWithGeometry = new Dictionary<string,List<(Geometry,Geometry)>>();
 
-            foreach(OWLIndividualExpression featureIdv in OWLAssertionAxiomHelper.GetIndividualsOf(ontology, new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)))
+            foreach(OWLIndividualExpression featureIdv in ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE)))
             {
                 RDFResource featureIRI = featureIdv.GetIRI();
                 string featureIRIString = featureIRI.ToString();

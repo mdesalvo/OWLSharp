@@ -157,9 +157,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty funcObjProp
-                            && funcObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
-                            && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty
+                          {
+                              ObjectPropertyExpression: OWLObjectProperty objProp
+                          } && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty funcObjProp1
                             && string.Equals(funcObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(funcObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
@@ -190,9 +191,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty funcObjProp
-                            && funcObjProp.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
-                            && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty
+                          {
+                              ObjectPropertyExpression: OWLObjectInverseOf objInvOf
+                          } && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty funcObjProp1
                             && string.Equals(funcObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(funcObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")

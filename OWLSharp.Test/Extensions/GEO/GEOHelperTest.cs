@@ -223,7 +223,7 @@ namespace OWLSharp.Test.Extensions.GEO
             double? milanRomeDistance = await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology, 
                 new RDFResource("ex:milanFT"), new RDFResource("ex:romeFT"));
 
-            Assert.IsTrue(milanRomeDistance >= 450000 && milanRomeDistance <= 4800000); //milan-rome should be between 450km and 480km
+            Assert.IsTrue(milanRomeDistance is >= 450000 and <= 4800000); //milan-rome should be between 450km and 480km
             
             //Unexisting features
             Assert.IsNull(await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
@@ -279,7 +279,7 @@ namespace OWLSharp.Test.Extensions.GEO
             double? milanRomeDistance = await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
                 new RDFResource("ex:milanFT"), new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
 
-            Assert.IsTrue(milanRomeDistance >= 450000 && milanRomeDistance <= 4800000); //milan-rome should be between 450km and 480km
+            Assert.IsTrue(milanRomeDistance is >= 450000 and <= 4800000); //milan-rome should be between 450km and 480km
 
             //Unexisting features
             Assert.IsNull(await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
@@ -303,7 +303,7 @@ namespace OWLSharp.Test.Extensions.GEO
                 new RDFTypedLiteral(@"<gml:Point xmlns:gml=""http://www.opengis.net/gml/3.2""><gml:pos>9.19193456 45.46420722</gml:pos></gml:Point>", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML),
                 new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
 
-            Assert.IsTrue(milanRomeDistance >= 450000 && milanRomeDistance <= 4800000); //milan-rome should be between 450km and 480km
+            Assert.IsTrue(milanRomeDistance is >= 450000 and <= 4800000); //milan-rome should be between 450km and 480km
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(
@@ -372,8 +372,8 @@ namespace OWLSharp.Test.Extensions.GEO
             double? milanLength = await GEOHelper.GetLengthOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
             double? brebemiLength = await GEOHelper.GetLengthOfFeatureAsync(geoOntology, new RDFResource("ex:brebemiFT"));
 
-            Assert.IsTrue(milanLength >= 3000 && milanLength <= 3300); //Perimeter of milan is about 3KM
-            Assert.IsTrue(brebemiLength >= 95000 && brebemiLength <= 100000); //BreBeMi is about 95-100KM
+            Assert.IsTrue(milanLength is >= 3000 and <= 3300); //Perimeter of milan is about 3KM
+            Assert.IsTrue(brebemiLength is >= 95000 and <= 100000); //BreBeMi is about 95-100KM
 
             //Unexisting features
             Assert.IsNull(await GEOHelper.GetLengthOfFeatureAsync(geoOntology,
@@ -392,8 +392,8 @@ namespace OWLSharp.Test.Extensions.GEO
             double? milanLength = await GEOHelper.GetLengthOfFeatureAsync(new RDFTypedLiteral("POLYGON((9.18217536 45.46819347, 9.19054385 45.46819347, 9.19054385 45.46003666, 9.18217536 45.46003666, 9.18217536 45.46819347))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
             double ? brebemiLength = await GEOHelper.GetLengthOfFeatureAsync(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
 
-            Assert.IsTrue(milanLength >= 3000 && milanLength <= 3300); //Perimeter of milan is about 3KM
-            Assert.IsTrue(brebemiLength >= 95000 && brebemiLength <= 100000); //BreBeMi is about 95-100KM
+            Assert.IsTrue(milanLength is >= 3000 and <= 3300); //Perimeter of milan is about 3KM
+            Assert.IsTrue(brebemiLength is >= 95000 and <= 100000); //BreBeMi is about 95-100KM
 
             //Input guards
             await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetLengthOfFeatureAsync(
@@ -453,7 +453,7 @@ namespace OWLSharp.Test.Extensions.GEO
             double? milanArea = await GEOHelper.GetAreaOfFeatureAsync(geoOntology, new RDFResource("ex:milanFT"));
             double? brebemiArea = await GEOHelper.GetAreaOfFeatureAsync(geoOntology, new RDFResource("ex:brebemiFT"));
 
-            Assert.IsTrue(milanArea >= 590000 && milanArea <= 600000);
+            Assert.IsTrue(milanArea is >= 590000 and <= 600000);
             Assert.AreEqual(0, brebemiArea);  //lines have no area
 
             //Unexisting features
@@ -473,7 +473,7 @@ namespace OWLSharp.Test.Extensions.GEO
             double? milanArea = await GEOHelper.GetAreaOfFeatureAsync(new RDFTypedLiteral("POLYGON((9.18217536 45.46819347, 9.19054385 45.46819347, 9.19054385 45.46003666, 9.18217536 45.46003666, 9.18217536 45.46819347))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
             double? brebemiArea = await GEOHelper.GetAreaOfFeatureAsync(new RDFTypedLiteral("LINESTRING(9.16778508 45.46481222, 9.6118352 45.68014585, 10.21423284 45.54758259)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
 
-            Assert.IsTrue(milanArea >= 590000 && milanArea <= 600000);
+            Assert.IsTrue(milanArea is >= 590000 and <= 600000);
             Assert.AreEqual(0, brebemiArea);  //lines have no area
 
             //Input guards

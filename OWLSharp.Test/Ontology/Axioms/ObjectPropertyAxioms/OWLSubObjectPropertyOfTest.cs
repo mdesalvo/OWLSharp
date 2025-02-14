@@ -462,11 +462,13 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf subObjPropOf
-                            && subObjPropOf.SubObjectPropertyExpression is OWLObjectProperty subObjProp
-                            && string.Equals(subObjProp.IRI, "ex:objPropA")
-                            && subObjPropOf.SuperObjectPropertyExpression is OWLObjectProperty superObjProp
-                            && string.Equals(superObjProp.IRI, "ex:objPropB"));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf
+                          {
+                              SubObjectPropertyExpression: OWLObjectProperty subObjProp
+                          } subObjPropOf
+                          && string.Equals(subObjProp.IRI, "ex:objPropA")
+                          && subObjPropOf.SuperObjectPropertyExpression is OWLObjectProperty superObjProp
+                          && string.Equals(superObjProp.IRI, "ex:objPropB"));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf subObjPropOf1
                             && string.Equals(subObjPropOf1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(subObjPropOf1.Annotations.Single().ValueLiteral.Value, "Steve")

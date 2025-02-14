@@ -230,11 +230,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLAnnotationAssertion annAsnInf
-                            && annAsnInf.IsInference
-                            && annAsnInf.AnnotationProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
-                            && string.Equals(annAsnInf.SubjectIRI, "ex:Mark")
-                            && annAsnInf.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
+            Assert.IsTrue(inferences[0].Axiom is OWLAnnotationAssertion { IsInference: true } annAsnInf
+                          && annAsnInf.AnnotationProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
+                          && string.Equals(annAsnInf.SubjectIRI, "ex:Mark")
+                          && annAsnInf.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("34", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER)));
         }
 
         [TestMethod]
@@ -253,11 +252,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(inferences);
             Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences[0].Axiom is OWLAnnotationAssertion annAsnInf
-                            && annAsnInf.IsInference
-                            && annAsnInf.AnnotationProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
-                            && string.Equals(annAsnInf.SubjectIRI, "ex:Mark")
-                            && annAsnInf.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("hello", "en-US--RTL")));
+            Assert.IsTrue(inferences[0].Axiom is OWLAnnotationAssertion { IsInference: true } annAsnInf
+                          && annAsnInf.AnnotationProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
+                          && string.Equals(annAsnInf.SubjectIRI, "ex:Mark")
+                          && annAsnInf.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("hello", "en-US--RTL")));
         }
 
         [TestMethod]

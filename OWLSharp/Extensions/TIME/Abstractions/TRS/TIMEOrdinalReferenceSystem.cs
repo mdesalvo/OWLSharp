@@ -146,16 +146,16 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             //Add knowledge to the A-BOX
-            for (int i=0; i<referencePoints.Length; i++)
+            foreach (TIMEInstant referencePoint in referencePoints)
             {
-                Ontology.DeclareInstantFeatureInternal(referencePoints[i]);
+                Ontology.DeclareInstantFeatureInternal(referencePoint);
                 Ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                     new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY),
-                    new OWLNamedIndividual(referencePoints[i])));
+                    new OWLNamedIndividual(referencePoint)));
                 Ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
                     new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT),
                     new OWLNamedIndividual(this),
-                    new OWLNamedIndividual(referencePoints[i])));
+                    new OWLNamedIndividual(referencePoint)));
             }
 
             return this;

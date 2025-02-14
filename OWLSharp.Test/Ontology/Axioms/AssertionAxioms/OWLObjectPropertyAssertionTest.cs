@@ -139,13 +139,15 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.AssertionAxioms.Count);
-            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion opAsn
-                            && opAsn.ObjectPropertyExpression is OWLObjectProperty objProp 
-                            && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows")
-                            && opAsn.SourceIndividualExpression is OWLNamedIndividual srcIdv
-                            && string.Equals(srcIdv.IRI, "ex:Alice")
-                            && opAsn.TargetIndividualExpression is OWLNamedIndividual dstIdv
-                            && string.Equals(dstIdv.IRI, "ex:Bob"));
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion
+                          {
+                              ObjectPropertyExpression: OWLObjectProperty objProp
+                          } opAsn
+                          && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows")
+                          && opAsn.SourceIndividualExpression is OWLNamedIndividual srcIdv
+                          && string.Equals(srcIdv.IRI, "ex:Alice")
+                          && opAsn.TargetIndividualExpression is OWLNamedIndividual dstIdv
+                          && string.Equals(dstIdv.IRI, "ex:Bob"));
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion dpAsn1
                             && string.Equals(dpAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
@@ -227,13 +229,15 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.AssertionAxioms.Count);
-            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion opAsn
-                            && opAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf 
-                            && string.Equals(objInvOf.ObjectProperty.IRI, "http://xmlns.com/foaf/0.1/knows")
-                            && opAsn.SourceIndividualExpression is OWLNamedIndividual srcIdv
-                            && string.Equals(srcIdv.IRI, "ex:Alice")
-                            && opAsn.TargetIndividualExpression is OWLNamedIndividual dstIdv
-                            && string.Equals(dstIdv.IRI, "ex:Bob"));
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion
+                          {
+                              ObjectPropertyExpression: OWLObjectInverseOf objInvOf
+                          } opAsn
+                          && string.Equals(objInvOf.ObjectProperty.IRI, "http://xmlns.com/foaf/0.1/knows")
+                          && opAsn.SourceIndividualExpression is OWLNamedIndividual srcIdv
+                          && string.Equals(srcIdv.IRI, "ex:Alice")
+                          && opAsn.TargetIndividualExpression is OWLNamedIndividual dstIdv
+                          && string.Equals(dstIdv.IRI, "ex:Bob"));
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion dpAsn1
                             && string.Equals(dpAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(dpAsn1.Annotations.Single().ValueLiteral.Value, "Steve")
@@ -315,13 +319,15 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.AssertionAxioms.Count);
-            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion opAsn
-                            && opAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf 
-                            && string.Equals(objInvOf.ObjectProperty.IRI, "http://xmlns.com/foaf/0.1/knows")
-                            && opAsn.SourceIndividualExpression is OWLAnonymousIndividual srcIdv
-                            && string.Equals(srcIdv.NodeID, "Alice")
-                            && opAsn.TargetIndividualExpression is OWLNamedIndividual dstIdv
-                            && string.Equals(dstIdv.IRI, "ex:Bob"));
+            Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion
+                          {
+                              ObjectPropertyExpression: OWLObjectInverseOf objInvOf
+                          } opAsn
+                          && string.Equals(objInvOf.ObjectProperty.IRI, "http://xmlns.com/foaf/0.1/knows")
+                          && opAsn.SourceIndividualExpression is OWLAnonymousIndividual srcIdv
+                          && string.Equals(srcIdv.NodeID, "Alice")
+                          && opAsn.TargetIndividualExpression is OWLNamedIndividual dstIdv
+                          && string.Equals(dstIdv.IRI, "ex:Bob"));
             Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLObjectPropertyAssertion opAsn1
                             && string.Equals(opAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(opAsn1.Annotations.Single().ValueLiteral.Value, "Steve")

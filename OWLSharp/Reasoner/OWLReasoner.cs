@@ -22,12 +22,7 @@ namespace OWLSharp.Reasoner
     public class OWLReasoner
     {
         #region Properties
-        public List<OWLEnums.OWLReasonerRules> Rules { get; internal set; }
-        #endregion
-
-        #region Ctors
-        public OWLReasoner()
-            => Rules = new List<OWLEnums.OWLReasonerRules>();
+        public List<OWLEnums.OWLReasonerRules> Rules { get; internal set; } = new List<OWLEnums.OWLReasonerRules>();
         #endregion
 
         #region Methods

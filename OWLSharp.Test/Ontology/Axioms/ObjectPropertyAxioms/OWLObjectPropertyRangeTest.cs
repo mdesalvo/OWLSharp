@@ -158,10 +158,12 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLObjectPropertyRange objPropDom
-                            && objPropDom.ObjectPropertyExpression is OWLObjectProperty objProp
-                            && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString())
-                            && string.Equals(((OWLClass)objPropDom.ClassExpression).IRI, RDFVocabulary.FOAF.PERSON.ToString()));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLObjectPropertyRange
+                          {
+                              ObjectPropertyExpression: OWLObjectProperty objProp
+                          } objPropDom
+                          && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString())
+                          && string.Equals(((OWLClass)objPropDom.ClassExpression).IRI, RDFVocabulary.FOAF.PERSON.ToString()));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLObjectPropertyRange objPropDom1
                             && string.Equals(objPropDom1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(objPropDom1.Annotations.Single().ValueLiteral.Value, "Steve")

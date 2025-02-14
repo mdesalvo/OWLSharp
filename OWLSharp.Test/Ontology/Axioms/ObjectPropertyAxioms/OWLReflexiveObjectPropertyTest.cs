@@ -157,9 +157,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty reflObjProp
-                            && reflObjProp.ObjectPropertyExpression is OWLObjectProperty objProp
-                            && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty
+                          {
+                              ObjectPropertyExpression: OWLObjectProperty objProp
+                          } && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty reflObjProp1
                             && string.Equals(reflObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(reflObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
@@ -190,9 +191,10 @@ namespace OWLSharp.Test.Ontology
 
             Assert.IsNotNull(ontology);
             Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty reflObjProp
-                            && reflObjProp.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
-                            && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty
+                          {
+                              ObjectPropertyExpression: OWLObjectInverseOf objInvOf
+                          } && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
             Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLReflexiveObjectProperty reflObjProp1
                             && string.Equals(reflObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                             && string.Equals(reflObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
