@@ -1581,7 +1581,7 @@ namespace OWLSharp.Ontology
                         annotations = new List<OWLAnnotation>();
 
                         foreach (RDFTriple annPropTriple in typeGraph[null, null, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null]
-                                                            .Where(ap => !ap.Equals(RDFVocabulary.OWL.VERSION_IRI)))
+                                                            .Where(ap => !ap.Predicate.Equals(RDFVocabulary.OWL.VERSION_IRI)))
                         {
                             RDFResource annPropIRI = (RDFResource)annPropTriple.Subject;
                             if (!annotationProperties.Any(ap => ap.Equals(annPropIRI)))
