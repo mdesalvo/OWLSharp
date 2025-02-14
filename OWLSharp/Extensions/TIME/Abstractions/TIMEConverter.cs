@@ -52,7 +52,7 @@ namespace OWLSharp.Extensions.TIME
                     positionTRS.Unit.UnitType == TIMEEnums.TIMEUnitType.Year   ? scaledTimePosition :
                     0;
 
-                //Set year component and reset the others (unsenseful at large scale level)
+                //Set year component and reset the others (unuseful at large scale level)
                 coordinate.Year = Math.Truncate(positionTRS.Origin.Year.Value + timePositionYears);
                 coordinate.Month = null;
                 coordinate.Day = null;

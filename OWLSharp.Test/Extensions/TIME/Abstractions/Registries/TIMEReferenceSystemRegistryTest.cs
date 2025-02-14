@@ -29,7 +29,6 @@ namespace OWLSharp.Test.Extensions.TIME
         public void ShouldAccessInstance()
         {
             Assert.IsNotNull(TIMEReferenceSystemRegistry.Instance);
-            Assert.IsTrue(TIMEReferenceSystemRegistry.Instance is IEnumerable<TIMEReferenceSystem>);
         }
 
         [TestMethod]

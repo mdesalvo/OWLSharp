@@ -34,7 +34,7 @@ namespace OWLSharp.Validator
                 foreach (var dpAsnMap in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, fdp.DataProperty)
                                                                 .GroupBy(dpax => dpax.IndividualExpression.GetIRI().ToString())
                                                                 .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.Literal))
-                                                                .Where(dict => OWLExpressionHelper.RemoveDuplicates(dict.Value.ToList()).Count() > 1))
+                                                                .Where(dict => OWLExpressionHelper.RemoveDuplicates(dict.Value.ToList()).Count > 1))
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Error, 
                         rulename, 
