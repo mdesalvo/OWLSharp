@@ -477,8 +477,8 @@ public class OWLOntologyTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont"));
-        Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1"));
+        Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
+        Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology.Prefixes);
         Assert.AreEqual(6, ontology.Prefixes.Count);
         Assert.IsNotNull(ontology.Imports);
