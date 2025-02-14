@@ -242,7 +242,7 @@ namespace OWLSharp.Extensions.TIME
                     Metrics = { HasExactMetric = false }
                 };
 
-            return ExtentFromDuration(timeExtentSeconds, TIMEUnit.Second, calendarTRS);
+            return ExtentFromDuration(timeExtentSeconds, TIMEUnit.Second, inexactCalendarTRS);
         }
 
         public static TIMEExtent ExtentBetweenCoordinates(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
