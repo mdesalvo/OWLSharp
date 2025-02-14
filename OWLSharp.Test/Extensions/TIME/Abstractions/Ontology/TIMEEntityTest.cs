@@ -19,20 +19,19 @@ using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System;
 
-namespace OWLSharp.Test.Extensions.TIME
-{
-    [TestClass]
-    public class TIMEEntityTest
-    {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateEntity()
-        {
-            TIMEEntity timeEntity = new TIMEEntity(new RDFResource("ex:timeEntity"));
+namespace OWLSharp.Test.Extensions.TIME;
 
-            Assert.IsNotNull(timeEntity);
-            Assert.IsTrue(timeEntity.URI.Equals(new Uri("ex:timeEntity")));
-        }
-        #endregion
+[TestClass]
+public class TIMEEntityTest
+{
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateEntity()
+    {
+        TIMEEntity timeEntity = new TIMEEntity(new RDFResource("ex:timeEntity"));
+
+        Assert.IsNotNull(timeEntity);
+        Assert.IsTrue(timeEntity.URI.Equals(new Uri("ex:timeEntity")));
     }
+    #endregion
 }

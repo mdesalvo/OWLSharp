@@ -18,48 +18,47 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLImportTest
 {
-    [TestClass]
-    public class OWLImportTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateImport()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateImport()
-        {
-            OWLImport import = new OWLImport(new RDFResource(RDFVocabulary.FOAF.BASE_URI));
+        OWLImport import = new OWLImport(new RDFResource(RDFVocabulary.FOAF.BASE_URI));
 
-            Assert.IsNotNull(import);
-            Assert.IsTrue(string.Equals(import.IRI, RDFVocabulary.FOAF.BASE_URI));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingImportBecauseNullUri()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLImport(null));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingImportBecauseBlankUri()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLImport(new RDFResource()));
-
-        [TestMethod]
-        public void ShouldSerializeImport()
-        {
-            OWLImport import = new OWLImport(new RDFResource(RDFVocabulary.FOAF.BASE_URI));
-            string serializedXML = OWLSerializer.SerializeObject(import);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"<Import>http://xmlns.com/foaf/0.1/</Import>"));
-        }
-
-        [TestMethod] 
-        public void ShouldDeserializeImport()
-        {
-            OWLImport import = OWLSerializer.DeserializeObject<OWLImport>(
-"<Import>http://xmlns.com/foaf/0.1/</Import>");
-
-            Assert.IsNotNull(import);
-            Assert.IsTrue(string.Equals(import.IRI, RDFVocabulary.FOAF.BASE_URI));
-        }
-        #endregion
+        Assert.IsNotNull(import);
+        Assert.IsTrue(string.Equals(import.IRI, RDFVocabulary.FOAF.BASE_URI));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingImportBecauseNullUri()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLImport(null));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingImportBecauseBlankUri()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLImport(new RDFResource()));
+
+    [TestMethod]
+    public void ShouldSerializeImport()
+    {
+        OWLImport import = new OWLImport(new RDFResource(RDFVocabulary.FOAF.BASE_URI));
+        string serializedXML = OWLSerializer.SerializeObject(import);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            "<Import>http://xmlns.com/foaf/0.1/</Import>"));
+    }
+
+    [TestMethod] 
+    public void ShouldDeserializeImport()
+    {
+        OWLImport import = OWLSerializer.DeserializeObject<OWLImport>(
+            "<Import>http://xmlns.com/foaf/0.1/</Import>");
+
+        Assert.IsNotNull(import);
+        Assert.IsTrue(string.Equals(import.IRI, RDFVocabulary.FOAF.BASE_URI));
+    }
+    #endregion
 }

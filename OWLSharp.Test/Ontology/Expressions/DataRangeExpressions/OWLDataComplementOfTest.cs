@@ -18,77 +18,76 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLDataComplementOfTest
 {
-    [TestClass]
-    public class OWLDataComplementOfTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateDataComplementOf()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateDataComplementOf()
-        {
-            OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
+        OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
 
-            Assert.IsNotNull(dataComplementOf);
-            Assert.IsNotNull(dataComplementOf.DataRangeExpression);
-            Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype 
-                            && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseNullDataRangeExpression()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataComplementOf(null));
-
-        [TestMethod]
-        public void ShouldGetStringRepresentationOfDataComplementOf()
-        {
-            OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(
-                new OWLDataUnionOf([
-                    new OWLDatatype(RDFVocabulary.XSD.INTEGER),
-                    new OWLDatatype(RDFVocabulary.XSD.DOUBLE)]));
-            string swrlString = dataComplementOf.ToSWRLString();
-
-            Assert.IsTrue(string.Equals(swrlString, "(not(integer or double))"));
-        }
-
-        [TestMethod]
-        public void ShouldSerializeDataComplementOf()
-        {
-            OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
-            string serializedXML = OWLSerializer.SerializeObject(dataComplementOf);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<DataComplementOf><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /></DataComplementOf>"""));
-        }
-
-        [TestMethod]
-        public void ShouldDeserializeDataComplementOf()
-        {
-            OWLDataComplementOf dataComplementOf = OWLSerializer.DeserializeObject<OWLDataComplementOf>(
-                """
-                <DataComplementOf>
-                  <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
-                </DataComplementOf>
-                """);
-
-            Assert.IsNotNull(dataComplementOf);
-            Assert.IsNotNull(dataComplementOf.DataRangeExpression);
-            Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype 
-                            && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldConvertDataComplementOfToGraph()
-        {
-            OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
-            RDFGraph graph = dataComplementOf.ToRDFGraph();
-
-            Assert.IsNotNull(graph);
-            Assert.AreEqual(3, graph.TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.XSD.STRING, null].TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
-        }
-        #endregion
+        Assert.IsNotNull(dataComplementOf);
+        Assert.IsNotNull(dataComplementOf.DataRangeExpression);
+        Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype 
+                      && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseNullDataRangeExpression()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataComplementOf(null));
+
+    [TestMethod]
+    public void ShouldGetStringRepresentationOfDataComplementOf()
+    {
+        OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(
+            new OWLDataUnionOf([
+                new OWLDatatype(RDFVocabulary.XSD.INTEGER),
+                new OWLDatatype(RDFVocabulary.XSD.DOUBLE)]));
+        string swrlString = dataComplementOf.ToSWRLString();
+
+        Assert.IsTrue(string.Equals(swrlString, "(not(integer or double))"));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeDataComplementOf()
+    {
+        OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
+        string serializedXML = OWLSerializer.SerializeObject(dataComplementOf);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<DataComplementOf><Datatype IRI="http://www.w3.org/2001/XMLSchema#string" /></DataComplementOf>"""));
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeDataComplementOf()
+    {
+        OWLDataComplementOf dataComplementOf = OWLSerializer.DeserializeObject<OWLDataComplementOf>(
+            """
+            <DataComplementOf>
+              <Datatype IRI="http://www.w3.org/2001/XMLSchema#string" />
+            </DataComplementOf>
+            """);
+
+        Assert.IsNotNull(dataComplementOf);
+        Assert.IsNotNull(dataComplementOf.DataRangeExpression);
+        Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype 
+                      && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
+    }
+
+    [TestMethod]
+    public void ShouldConvertDataComplementOfToGraph()
+    {
+        OWLDataComplementOf dataComplementOf = new OWLDataComplementOf(new OWLDatatype(RDFVocabulary.XSD.STRING));
+        RDFGraph graph = dataComplementOf.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(3, graph.TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.COMPLEMENT_OF, RDFVocabulary.XSD.STRING, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.XSD.STRING, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.DATATYPE, null].TriplesCount);
+    }
+    #endregion
 }

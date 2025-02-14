@@ -173,8 +173,8 @@ namespace OWLSharp.Extensions.GEO
 
             List<GEOEntity> spatialExtentOfFeature = new List<GEOEntity>();
             Dictionary<string,List<(Geometry,Geometry)>> featuresWithGeometry = await GetFeaturesWithGeometriesAsync(ontology);
-            if (featuresWithGeometry.TryGetValue(featureURI.ToString(), out List<(Geometry,Geometry)> featureGeometries))
-                foreach ((Geometry wgs84Geom,Geometry lazGeom) in featureGeometries)
+            if (featuresWithGeometry.TryGetValue(featureURI.ToString(), out List<(Geometry wgs84,Geometry laz)> featureGeometries))
+                foreach (Geometry wgs84Geom in featureGeometries.Select(fg => fg.wgs84))
                 {
                     RDFResource geometryUri = new RDFResource((string)wgs84Geom.UserData);
                     switch (wgs84Geom)

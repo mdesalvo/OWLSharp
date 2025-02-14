@@ -17,140 +17,139 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
+namespace OWLSharp.Test.Validator;
+
+[TestClass]
+public class OWLHasKeyAnalysisRuleTest
 {
-    [TestClass]
-    public class OWLHasKeyAnalysisRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeObjectHasKeyCase()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeObjectHasKeyCase()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
-                ],
-                KeyAxioms = [
-                    new OWLHasKey(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ],
-                        null 
-                    )
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
-                    ),
-                    new OWLDifferentIndividuals([
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")) ]) //Will cause the validation error, since they conflict on computed key
-                ]
-            };
-            List<OWLIssue> issues = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
+            ],
+            KeyAxioms = [
+                new OWLHasKey(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ],
+                    null 
+                )
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
+                ),
+                new OWLDifferentIndividuals([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")) ]) //Will cause the validation error, since they conflict on computed key
+            ]
+        };
+        List<OWLIssue> issues = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeDataHasKeyCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
-                ],
-                KeyAxioms = [
-                    new OWLHasKey(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        null,
-                        [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ] 
-                    )
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
-                    ),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
-                        new OWLLiteral(new RDFPlainLiteral("GLN1"))
-                    ),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
-                        new OWLLiteral(new RDFPlainLiteral("HNR1"))
-                    ),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
-                        new OWLLiteral(new RDFPlainLiteral("GLN1"))
-                    ),
-                    new OWLDifferentIndividuals([
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")) ]) //Will cause the validation error, since they conflict on computed key
-                ]
-            };
-            List<OWLIssue> issues = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));
-        }
-        #endregion
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeDataHasKeyCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
+            ],
+            KeyAxioms = [
+                new OWLHasKey(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    null,
+                    [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ] 
+                )
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
+                ),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLLiteral(new RDFPlainLiteral("GLN1"))
+                ),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
+                    new OWLLiteral(new RDFPlainLiteral("HNR1"))
+                ),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
+                    new OWLLiteral(new RDFPlainLiteral("GLN1"))
+                ),
+                new OWLDifferentIndividuals([
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")) ]) //Will cause the validation error, since they conflict on computed key
+            ]
+        };
+        List<OWLIssue> issues = OWLHasKeyAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLHasKeyAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLHasKeyAnalysisRule.rulesugg)));
+    }
+    #endregion
 }

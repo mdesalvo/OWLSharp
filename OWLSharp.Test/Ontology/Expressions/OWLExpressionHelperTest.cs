@@ -19,33 +19,32 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLExpressionHelperTest
 {
-    [TestClass]
-    public class OWLExpressionHelperTest
+    #region Tests
+    [TestMethod]
+    public void ShouldRemoveDuplicates()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldRemoveDuplicates()
-        {
-            OWLDataOneOf dataOneOf = new OWLDataOneOf([new OWLLiteral(new RDFPlainLiteral("hello","en"))]);
-            OWLNamedIndividual namedIdv = new OWLNamedIndividual(new RDFResource("ex:Mark"));
+        OWLDataOneOf dataOneOf = new OWLDataOneOf([new OWLLiteral(new RDFPlainLiteral("hello","en"))]);
+        OWLNamedIndividual namedIdv = new OWLNamedIndividual(new RDFResource("ex:Mark"));
 
-            List<OWLExpression>    expressions =
-            [
-                new OWLClass(RDFVocabulary.FOAF.PERSON),
-                namedIdv,
-                new OWLClass(RDFVocabulary.FOAF.AGENT),
-                new OWLClass(RDFVocabulary.FOAF.PERSON),
-                dataOneOf,
-                dataOneOf,
-                namedIdv
-            ];
+        List<OWLExpression>    expressions =
+        [
+            new OWLClass(RDFVocabulary.FOAF.PERSON),
+            namedIdv,
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
+            new OWLClass(RDFVocabulary.FOAF.PERSON),
+            dataOneOf,
+            dataOneOf,
+            namedIdv
+        ];
 
-            Assert.AreEqual(4, OWLExpressionHelper.RemoveDuplicates(expressions).Count);
-            Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates(new List<OWLExpression>()).Count);
-            Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates<OWLExpression>(null).Count);
-        }
-        #endregion
+        Assert.AreEqual(4, OWLExpressionHelper.RemoveDuplicates(expressions).Count);
+        Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates(new List<OWLExpression>()).Count);
+        Assert.AreEqual(0, OWLExpressionHelper.RemoveDuplicates<OWLExpression>(null).Count);
     }
+    #endregion
 }

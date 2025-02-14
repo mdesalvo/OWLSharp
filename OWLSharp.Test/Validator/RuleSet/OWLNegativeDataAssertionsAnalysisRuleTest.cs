@@ -17,45 +17,44 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
-{
-    [TestClass]
-    public class OWLNegativeDataAssertionsAnalysisRuleTest
-    {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeNegativeDataAssertionsCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
-                ],
-                AssertionAxioms = [
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
-                    new OWLNegativeDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
-                ]
-            };
-            List<OWLIssue> issues = OWLNegativeDataAssertionsAnalysisRule.ExecuteRule(ontology);
+namespace OWLSharp.Test.Validator;
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLNegativeDataAssertionsAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLNegativeDataAssertionsAnalysisRule.rulesugg)));
-        }
-        #endregion
+[TestClass]
+public class OWLNegativeDataAssertionsAnalysisRuleTest
+{
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeNegativeDataAssertionsCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
+            ],
+            AssertionAxioms = [
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                    new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLNegativeDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            ]
+        };
+        List<OWLIssue> issues = OWLNegativeDataAssertionsAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLNegativeDataAssertionsAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLNegativeDataAssertionsAnalysisRule.rulesugg)));
     }
+    #endregion
 }

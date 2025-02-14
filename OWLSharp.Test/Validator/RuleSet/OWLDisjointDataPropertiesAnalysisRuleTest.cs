@@ -17,147 +17,146 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
+namespace OWLSharp.Test.Validator;
+
+[TestClass]
+public class OWLDisjointDataPropertiesAnalysisRuleTest
 {
-    [TestClass]
-    public class OWLDisjointDataPropertiesAnalysisRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeDisjointDataProperties()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeDisjointDataProperties()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                AssertionAxioms = [
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-                        new OWLNamedIndividual(new RDFResource("ex:John")),
-                        new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
-                        new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLLiteral(new RDFPlainLiteral("Mark"))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME),
-                        new OWLNamedIndividual(new RDFResource("ex:John")),
-                        new OWLLiteral(new RDFPlainLiteral("John"))),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("ex:age")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))) //conflicts with foaf:age
-                ],
-                DataPropertyAxioms = [
-                    new OWLDisjointDataProperties([
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
-                        new OWLDataProperty(new RDFResource("ex:age")) ])
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME)),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
-                ]
-            };
-            List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
+            AssertionAxioms = [
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLNamedIndividual(new RDFResource("ex:John")),
+                    new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+                    new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLLiteral(new RDFPlainLiteral("Mark"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME),
+                    new OWLNamedIndividual(new RDFResource("ex:John")),
+                    new OWLLiteral(new RDFPlainLiteral("John"))),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("ex:age")),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER))) //conflicts with foaf:age
+            ],
+            DataPropertyAxioms = [
+                new OWLDisjointDataProperties([
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
+                    new OWLDataProperty(new RDFResource("ex:age")) ])
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME)),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeDisjointDataPropertiesSubDataPropertyOfCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DataPropertyAxioms = [
-                    new OWLDisjointDataProperties([
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME) ]),
-                    new OWLSubDataPropertyOf(
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME))
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME))
-                ]
-            };
-            List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg2)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeDisjointDataPropertiesSuperDataPropertyOfCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DataPropertyAxioms = [
-                    new OWLDisjointDataProperties([
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME) ]),
-                    new OWLSubDataPropertyOf(
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE))
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME))
-                ]
-            };
-            List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg2)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeDisjointDataPropertiesEquivalentDataPropertiesCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DataPropertyAxioms = [
-                    new OWLDisjointDataProperties([
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME) ]),
-                    new OWLEquivalentDataProperties([
-                        new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-                        new OWLDataProperty(RDFVocabulary.FOAF.NAME) ])
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
-                    new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME))
-                ]
-            };
-            List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg2)));
-        }
-        #endregion
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeDisjointDataPropertiesSubDataPropertyOfCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DataPropertyAxioms = [
+                new OWLDisjointDataProperties([
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME) ]),
+                new OWLSubDataPropertyOf(
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME))
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg2)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeDisjointDataPropertiesSuperDataPropertyOfCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DataPropertyAxioms = [
+                new OWLDisjointDataProperties([
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME) ]),
+                new OWLSubDataPropertyOf(
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE))
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg2)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeDisjointDataPropertiesEquivalentDataPropertiesCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DataPropertyAxioms = [
+                new OWLDisjointDataProperties([
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME) ]),
+                new OWLEquivalentDataProperties([
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME) ])
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointDataPropertiesAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointDataPropertiesAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointDataPropertiesAnalysisRule.rulesugg2)));
+    }
+    #endregion
 }

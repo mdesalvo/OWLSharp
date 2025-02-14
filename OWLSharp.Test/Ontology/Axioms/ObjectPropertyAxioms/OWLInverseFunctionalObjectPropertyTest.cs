@@ -19,273 +19,272 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLInverseFunctionalObjectPropertyTest
 {
-    [TestClass]
-    public class OWLInverseFunctionalObjectPropertyTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateInverseFunctionalObjectProperty()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateInverseFunctionalObjectProperty()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
 
-            Assert.IsNotNull(inverseFunctionalObjectProperty);
-            Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
-            Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
-                            && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldCreateInverseFunctionalObjectInverseOf()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-
-            Assert.IsNotNull(inverseFunctionalObjectProperty);
-            Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
-            Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
-                            && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingInverseFunctionalObjectPropertyBecauseNullObjectProperty()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInverseFunctionalObjectProperty(null as OWLObjectProperty));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingInverseFunctionalObjectPropertyBecauseNullObjectInverseOf()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInverseFunctionalObjectProperty(null as OWLObjectInverseOf));
-
-        [TestMethod]
-        public void ShouldSerializeInverseFunctionalObjectProperty()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            string serializedXML = OWLSerializer.SerializeObject(inverseFunctionalObjectProperty);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<InverseFunctionalObjectProperty><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></InverseFunctionalObjectProperty>"""));
-        }
-
-        [TestMethod]
-        public void ShouldSerializeInverseFunctionalObjectInverseOf()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLSerializer.SerializeObject(inverseFunctionalObjectProperty);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf></InverseFunctionalObjectProperty>"""));
-        }
-
-        [TestMethod]
-        public void ShouldSerializeInverseFunctionalObjectPropertyViaOntology()
-        {
-            OWLOntology ontology = new OWLOntology();
-            ontology.ObjectPropertyAxioms.Add(
-                new OWLInverseFunctionalObjectProperty(
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            string serializedXML = OWLSerializer.SerializeObject(ontology);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><InverseFunctionalObjectProperty><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></InverseFunctionalObjectProperty></Ontology>"""));
-        }
-
-        [TestMethod]
-        public void ShouldSerializeInverseFunctionalObjectInverseOfViaOntology()
-        {
-            OWLOntology ontology = new OWLOntology();
-            ontology.ObjectPropertyAxioms.Add(
-                new OWLInverseFunctionalObjectProperty(
-                    new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))));
-            string serializedXML = OWLSerializer.SerializeObject(ontology);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf></InverseFunctionalObjectProperty></Ontology>"""));
-        }
-
-        [TestMethod]
-        public void ShouldDeserializeInverseFunctionalObjectProperty()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = OWLSerializer.DeserializeObject<OWLInverseFunctionalObjectProperty>(
-                """
-                <InverseFunctionalObjectProperty>
-                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
-                </InverseFunctionalObjectProperty>
-                """);
-
-            Assert.IsNotNull(inverseFunctionalObjectProperty);
-            Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
-            Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
-                            && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldDeserializeInverseFunctionalObjectInverseOf()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = OWLSerializer.DeserializeObject<OWLInverseFunctionalObjectProperty>(
-                """
-                <InverseFunctionalObjectProperty>
-                  <ObjectInverseOf>
-                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
-                  </ObjectInverseOf>
-                </InverseFunctionalObjectProperty>
-                """);
-
-            Assert.IsNotNull(inverseFunctionalObjectProperty);
-            Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
-            Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
-                            && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldDeserializeInverseFunctionalObjectPropertyViaOntology()
-        {
-            OWLOntology ontology = OWLSerializer.DeserializeOntology(
-                """
-                <?xml version="1.0" encoding="utf-8"?>
-                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
-                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
-                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
-                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
-                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
-                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
-                  <InverseFunctionalObjectProperty>
-                    <Annotation>
-                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
-                      <Literal xml:lang="EN">Steve</Literal>
-                    </Annotation>
-                    <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
-                  </InverseFunctionalObjectProperty>
-                </Ontology>
-                """);
-
-            Assert.IsNotNull(ontology);
-            Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty
-                          {
-                              ObjectPropertyExpression: OWLObjectProperty objProp
-                          } && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty invfuncObjProp1
-                            && string.Equals(invfuncObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-                            && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
-                            && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
-        }
-
-        [TestMethod]
-        public void ShouldDeserializeInverseFunctionalObjectInverseOfViaOntology()
-        {
-            OWLOntology ontology = OWLSerializer.DeserializeOntology(
-                """
-                <?xml version="1.0" encoding="utf-8"?>
-                <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
-                  <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
-                  <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
-                  <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
-                  <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
-                  <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
-                  <InverseFunctionalObjectProperty>
-                    <Annotation>
-                      <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
-                      <Literal xml:lang="EN">Steve</Literal>
-                    </Annotation>
-                    <ObjectInverseOf>
-                      <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
-                    </ObjectInverseOf>
-                  </InverseFunctionalObjectProperty>
-                </Ontology>
-                """);
-
-            Assert.IsNotNull(ontology);
-            Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty
-                          {
-                              ObjectPropertyExpression: OWLObjectInverseOf objInvOf
-                          } && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty invfuncObjProp1
-                            && string.Equals(invfuncObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
-                            && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
-                            && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
-        }
-
-        [TestMethod]
-        public void ShouldConvertInverseFunctionalObjectPropertyToGraph()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
-            RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
-
-            Assert.IsNotNull(graph);
-            Assert.AreEqual(2, graph.TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
-        }
-
-        [TestMethod]
-        public void ShouldConvertInverseFunctionalObjectPropertyWithAnnotationToGraph()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
-            {
-                Annotations = [
-                    new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
-                ]
-            };
-            RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
-
-            Assert.IsNotNull(graph);
-            Assert.AreEqual(8, graph.TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
-            //Annotations
-            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
-        }
-
-        [TestMethod]
-        public void ShouldConvertInverseFunctionalObjectInverseOfToGraph()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
-            RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
-
-            Assert.IsNotNull(graph);
-            Assert.AreEqual(3, graph.TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
-        }
-
-        [TestMethod]
-        public void ShouldConvertInverseFunctionalObjectInverseOfWithAnnotationToGraph()
-        {
-            OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
-                new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
-            {
-                Annotations = [
-                    new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
-                ]
-            };
-            RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
-
-            Assert.IsNotNull(graph);
-            Assert.AreEqual(9, graph.TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
-            //Annotations
-            Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, null, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
-        }
-        #endregion
+        Assert.IsNotNull(inverseFunctionalObjectProperty);
+        Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
+        Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
+                      && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
     }
+
+    [TestMethod]
+    public void ShouldCreateInverseFunctionalObjectInverseOf()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+
+        Assert.IsNotNull(inverseFunctionalObjectProperty);
+        Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
+        Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
+                      && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+    }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingInverseFunctionalObjectPropertyBecauseNullObjectProperty()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInverseFunctionalObjectProperty(null as OWLObjectProperty));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingInverseFunctionalObjectPropertyBecauseNullObjectInverseOf()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInverseFunctionalObjectProperty(null as OWLObjectInverseOf));
+
+    [TestMethod]
+    public void ShouldSerializeInverseFunctionalObjectProperty()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+        string serializedXML = OWLSerializer.SerializeObject(inverseFunctionalObjectProperty);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<InverseFunctionalObjectProperty><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></InverseFunctionalObjectProperty>"""));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeInverseFunctionalObjectInverseOf()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+        string serializedXML = OWLSerializer.SerializeObject(inverseFunctionalObjectProperty);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf></InverseFunctionalObjectProperty>"""));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeInverseFunctionalObjectPropertyViaOntology()
+    {
+        OWLOntology ontology = new OWLOntology();
+        ontology.ObjectPropertyAxioms.Add(
+            new OWLInverseFunctionalObjectProperty(
+                new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+        string serializedXML = OWLSerializer.SerializeObject(ontology);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><InverseFunctionalObjectProperty><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></InverseFunctionalObjectProperty></Ontology>"""));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeInverseFunctionalObjectInverseOfViaOntology()
+    {
+        OWLOntology ontology = new OWLOntology();
+        ontology.ObjectPropertyAxioms.Add(
+            new OWLInverseFunctionalObjectProperty(
+                new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))));
+        string serializedXML = OWLSerializer.SerializeObject(ontology);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<Ontology><Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" /><Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" /><Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" /><Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" /><Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" /><InverseFunctionalObjectProperty><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf></InverseFunctionalObjectProperty></Ontology>"""));
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeInverseFunctionalObjectProperty()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = OWLSerializer.DeserializeObject<OWLInverseFunctionalObjectProperty>(
+            """
+            <InverseFunctionalObjectProperty>
+              <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+            </InverseFunctionalObjectProperty>
+            """);
+
+        Assert.IsNotNull(inverseFunctionalObjectProperty);
+        Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
+        Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectProperty objProp
+                      && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeInverseFunctionalObjectInverseOf()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = OWLSerializer.DeserializeObject<OWLInverseFunctionalObjectProperty>(
+            """
+            <InverseFunctionalObjectProperty>
+              <ObjectInverseOf>
+                <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+              </ObjectInverseOf>
+            </InverseFunctionalObjectProperty>
+            """);
+
+        Assert.IsNotNull(inverseFunctionalObjectProperty);
+        Assert.IsNotNull(inverseFunctionalObjectProperty.ObjectPropertyExpression);
+        Assert.IsTrue(inverseFunctionalObjectProperty.ObjectPropertyExpression is OWLObjectInverseOf objInvOf
+                      && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeInverseFunctionalObjectPropertyViaOntology()
+    {
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+              <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+              <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+              <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+              <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+              <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+              <InverseFunctionalObjectProperty>
+                <Annotation>
+                  <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                  <Literal xml:lang="EN">Steve</Literal>
+                </Annotation>
+                <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+              </InverseFunctionalObjectProperty>
+            </Ontology>
+            """);
+
+        Assert.IsNotNull(ontology);
+        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty
+        {
+            ObjectPropertyExpression: OWLObjectProperty objProp
+        } && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+        Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty invfuncObjProp1
+                      && string.Equals(invfuncObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                      && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
+                      && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeInverseFunctionalObjectInverseOfViaOntology()
+    {
+        OWLOntology ontology = OWLSerializer.DeserializeOntology(
+            """
+            <?xml version="1.0" encoding="utf-8"?>
+            <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+              <Prefix name="owl" IRI="http://www.w3.org/2002/07/owl#" />
+              <Prefix name="rdfs" IRI="http://www.w3.org/2000/01/rdf-schema#" />
+              <Prefix name="rdf" IRI="http://www.w3.org/1999/02/22-rdf-syntax-ns#" />
+              <Prefix name="xsd" IRI="http://www.w3.org/2001/XMLSchema#" />
+              <Prefix name="xml" IRI="http://www.w3.org/XML/1998/namespace" />
+              <InverseFunctionalObjectProperty>
+                <Annotation>
+                  <AnnotationProperty IRI="http://purl.org/dc/elements/1.1/contributor" />
+                  <Literal xml:lang="EN">Steve</Literal>
+                </Annotation>
+                <ObjectInverseOf>
+                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+                </ObjectInverseOf>
+              </InverseFunctionalObjectProperty>
+            </Ontology>
+            """);
+
+        Assert.IsNotNull(ontology);
+        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty
+        {
+            ObjectPropertyExpression: OWLObjectInverseOf objInvOf
+        } && string.Equals(objInvOf.ObjectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+        Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseFunctionalObjectProperty invfuncObjProp1
+                      && string.Equals(invfuncObjProp1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
+                      && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Value, "Steve")
+                      && string.Equals(invfuncObjProp1.Annotations.Single().ValueLiteral.Language, "EN"));
+    }
+
+    [TestMethod]
+    public void ShouldConvertInverseFunctionalObjectPropertyToGraph()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS));
+        RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(2, graph.TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldConvertInverseFunctionalObjectPropertyWithAnnotationToGraph()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+        {
+            Annotations = [
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+            ]
+        };
+        RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(8, graph.TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
+        //Annotations
+        Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldConvertInverseFunctionalObjectInverseOfToGraph()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)));
+        RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(3, graph.TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+    }
+
+    [TestMethod]
+    public void ShouldConvertInverseFunctionalObjectInverseOfWithAnnotationToGraph()
+    {
+        OWLInverseFunctionalObjectProperty inverseFunctionalObjectProperty = new OWLInverseFunctionalObjectProperty(
+            new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)))
+        {
+            Annotations = [
+                new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.DC.TITLE), new RDFResource("ex:title"))
+            ]
+        };
+        RDFGraph graph = inverseFunctionalObjectProperty.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(9, graph.TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.INVERSE_OF, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+        //Annotations
+        Assert.AreEqual(1, graph[RDFVocabulary.DC.TITLE, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.ANNOTATION_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.AXIOM, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_SOURCE, null, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_PROPERTY, RDFVocabulary.RDF.TYPE, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ANNOTATED_TARGET, RDFVocabulary.OWL.INVERSE_FUNCTIONAL_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.DC.TITLE, new RDFResource("ex:title"), null].TriplesCount);
+    }
+    #endregion
 }

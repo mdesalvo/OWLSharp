@@ -20,65 +20,64 @@ using RDFSharp.Model;
 using System;
 using System.Xml;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEIntervalDescriptionTest
 {
-    [TestClass]
-    public class TIMEIntervalDescriptionTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateIntervalDescriptionFromTimeSpan()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateIntervalDescriptionFromTimeSpan()
-        {
-            TIMEIntervalDescription timeIntervalDescription = new TIMEIntervalDescription(
-                new RDFResource("ex:intvDesc"), XmlConvert.ToTimeSpan("PT5H7M"));
+        TIMEIntervalDescription timeIntervalDescription = new TIMEIntervalDescription(
+            new RDFResource("ex:intvDesc"), XmlConvert.ToTimeSpan("PT5H7M"));
 
-            Assert.IsNotNull(timeIntervalDescription);
-            Assert.IsTrue(timeIntervalDescription.URI.Equals(new Uri("ex:intvDesc")));
-            Assert.IsTrue(timeIntervalDescription.Extent.Equals(new TIMEExtent(0, 0, 0, 0, 5, 7, 0)));
-        }
-
-        [TestMethod]
-        public void ShouldCreateIntervalDescriptionFromLength()
-        {
-            TIMEIntervalDescription timeIntervalDescription = new TIMEIntervalDescription(
-                new RDFResource("ex:intvDesc"), 
-                new TIMEExtent(0, 0, 0, 0, 5, 7, 0, new TIMEExtentMetadata(TIMECalendarReferenceSystem.Gregorian)));
-
-            Assert.IsNotNull(timeIntervalDescription);
-            Assert.IsTrue(timeIntervalDescription.URI.Equals(new Uri("ex:intvDesc")));
-            Assert.IsTrue(timeIntervalDescription.Extent.Equals(new TIMEExtent(0, 0, 0, 0, 5, 7, 0)));
-            Assert.IsTrue(timeIntervalDescription.Extent.Metadata.TRS.Equals(TIMECalendarReferenceSystem.Gregorian));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIntervalFromDescriptionBecauseNullDescription()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEIntervalDescription(new RDFResource("ex:intvDesc"), null));
-
-        [TestMethod]
-        public void ShouldCompareIntervalDescriptions()
-        {
-            TIMEIntervalDescription timeIntervalDescriptionA = new TIMEIntervalDescription(
-                new RDFResource("ex:intvDesc"),
-                new TIMEExtent(0, 0, 0, 0, 5, 7, 0));
-            TIMEIntervalDescription timeIntervalDescriptionB = new TIMEIntervalDescription(
-                new RDFResource("ex:intvDesc"),
-                new TIMEExtent(0, 0, 0, 0, 5, 2, 0));
-
-            Assert.AreEqual(1, timeIntervalDescriptionA.CompareTo(timeIntervalDescriptionB));
-        }
-
-        [TestMethod]
-        public void ShouldEqualIntervalDescriptions()
-        {
-            TIMEIntervalDescription timeIntervalDescriptionA = new TIMEIntervalDescription(
-                new RDFResource("ex:intvDesc"),
-                new TIMEExtent(0, 0, 0, 0, 5, 7, 0));
-            TIMEIntervalDescription timeIntervalDescriptionB = new TIMEIntervalDescription(
-                new RDFResource("ex:intvDesc"),
-                new TIMEExtent(0, 0, 0, 0, 5, 7, 0));
-
-            Assert.IsTrue(timeIntervalDescriptionA.Equals(timeIntervalDescriptionB));
-        }
-        #endregion
+        Assert.IsNotNull(timeIntervalDescription);
+        Assert.IsTrue(timeIntervalDescription.URI.Equals(new Uri("ex:intvDesc")));
+        Assert.IsTrue(timeIntervalDescription.Extent.Equals(new TIMEExtent(0, 0, 0, 0, 5, 7, 0)));
     }
+
+    [TestMethod]
+    public void ShouldCreateIntervalDescriptionFromLength()
+    {
+        TIMEIntervalDescription timeIntervalDescription = new TIMEIntervalDescription(
+            new RDFResource("ex:intvDesc"), 
+            new TIMEExtent(0, 0, 0, 0, 5, 7, 0, new TIMEExtentMetadata(TIMECalendarReferenceSystem.Gregorian)));
+
+        Assert.IsNotNull(timeIntervalDescription);
+        Assert.IsTrue(timeIntervalDescription.URI.Equals(new Uri("ex:intvDesc")));
+        Assert.IsTrue(timeIntervalDescription.Extent.Equals(new TIMEExtent(0, 0, 0, 0, 5, 7, 0)));
+        Assert.IsTrue(timeIntervalDescription.Extent.Metadata.TRS.Equals(TIMECalendarReferenceSystem.Gregorian));
+    }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingIntervalFromDescriptionBecauseNullDescription()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEIntervalDescription(new RDFResource("ex:intvDesc"), null));
+
+    [TestMethod]
+    public void ShouldCompareIntervalDescriptions()
+    {
+        TIMEIntervalDescription timeIntervalDescriptionA = new TIMEIntervalDescription(
+            new RDFResource("ex:intvDesc"),
+            new TIMEExtent(0, 0, 0, 0, 5, 7, 0));
+        TIMEIntervalDescription timeIntervalDescriptionB = new TIMEIntervalDescription(
+            new RDFResource("ex:intvDesc"),
+            new TIMEExtent(0, 0, 0, 0, 5, 2, 0));
+
+        Assert.AreEqual(1, timeIntervalDescriptionA.CompareTo(timeIntervalDescriptionB));
+    }
+
+    [TestMethod]
+    public void ShouldEqualIntervalDescriptions()
+    {
+        TIMEIntervalDescription timeIntervalDescriptionA = new TIMEIntervalDescription(
+            new RDFResource("ex:intvDesc"),
+            new TIMEExtent(0, 0, 0, 0, 5, 7, 0));
+        TIMEIntervalDescription timeIntervalDescriptionB = new TIMEIntervalDescription(
+            new RDFResource("ex:intvDesc"),
+            new TIMEExtent(0, 0, 0, 0, 5, 7, 0));
+
+        Assert.IsTrue(timeIntervalDescriptionA.Equals(timeIntervalDescriptionB));
+    }
+    #endregion
 }

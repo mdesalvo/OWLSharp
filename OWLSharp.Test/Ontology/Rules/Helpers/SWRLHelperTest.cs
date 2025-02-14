@@ -18,37 +18,36 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class SWRLHelperTest
 {
-    [TestClass]
-    public class SWRLHelperTest
+    #region Tests
+    [TestMethod]
+    public void ShouldDeclareRule()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldDeclareRule()
-        {
-            OWLOntology ontology = new OWLOntology();
-            ontology.DeclareRule(new SWRLRule(
-                new RDFPlainLiteral("SWRL1"),
-                new RDFPlainLiteral("This is a test SWRL rule"),
-                new SWRLAntecedent(),
-                new SWRLConsequent()));
+        OWLOntology ontology = new OWLOntology();
+        ontology.DeclareRule(new SWRLRule(
+            new RDFPlainLiteral("SWRL1"),
+            new RDFPlainLiteral("This is a test SWRL rule"),
+            new SWRLAntecedent(),
+            new SWRLConsequent()));
 
-            Assert.AreEqual(1, ontology.Rules.Count);
-            Assert.IsTrue(ontology.CheckHasRule(new SWRLRule(
-                new RDFPlainLiteral("SWRL1"),
-                new RDFPlainLiteral("This is a test SWRL rule"),
-                new SWRLAntecedent(),
-                new SWRLConsequent())));
-            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareRule(null));
+        Assert.AreEqual(1, ontology.Rules.Count);
+        Assert.IsTrue(ontology.CheckHasRule(new SWRLRule(
+            new RDFPlainLiteral("SWRL1"),
+            new RDFPlainLiteral("This is a test SWRL rule"),
+            new SWRLAntecedent(),
+            new SWRLConsequent())));
+        Assert.ThrowsExactly<OWLException>(() => ontology.DeclareRule(null));
 
-            ontology.DeclareRule(new SWRLRule(
-                new RDFPlainLiteral("SWRL1"),
-                new RDFPlainLiteral("This is a test SWRL rule"),
-                new SWRLAntecedent(),
-                new SWRLConsequent())); //will be discarded, since duplicates are not allowed
-            Assert.AreEqual(1, ontology.Rules.Count);
-        }
-        #endregion
+        ontology.DeclareRule(new SWRLRule(
+            new RDFPlainLiteral("SWRL1"),
+            new RDFPlainLiteral("This is a test SWRL rule"),
+            new SWRLAntecedent(),
+            new SWRLConsequent())); //will be discarded, since duplicates are not allowed
+        Assert.AreEqual(1, ontology.Rules.Count);
     }
+    #endregion
 }

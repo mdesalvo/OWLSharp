@@ -18,34 +18,33 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLHasKeyHelperTest
 {
-    [TestClass]
-    public class OWLHasKeyHelperTest
+    #region Tests
+    [TestMethod]
+    public void ShouldDeclareHasKey()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldDeclareHasKey()
-        {
-            OWLOntology ontology = new OWLOntology();
-            ontology.DeclareHasKey(new OWLHasKey(
-                new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-                [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
+        OWLOntology ontology = new OWLOntology();
+        ontology.DeclareHasKey(new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
 
-            Assert.AreEqual(1, ontology.KeyAxioms.Count);
-            Assert.IsTrue(ontology.CheckHasKey(new OWLHasKey(
-                new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-                [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])));
-            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareHasKey(null));
+        Assert.AreEqual(1, ontology.KeyAxioms.Count);
+        Assert.IsTrue(ontology.CheckHasKey(new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])));
+        Assert.ThrowsExactly<OWLException>(() => ontology.DeclareHasKey(null));
 
-            ontology.DeclareHasKey(new OWLHasKey(
-                new OWLClass(RDFVocabulary.FOAF.AGENT),
-                [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
-                [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])); //will be discarded, since duplicates are not allowed
-            Assert.AreEqual(1, ontology.KeyAxioms.Count);
-        }
-        #endregion
+        ontology.DeclareHasKey(new OWLHasKey(
+            new OWLClass(RDFVocabulary.FOAF.AGENT),
+            [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
+            [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])); //will be discarded, since duplicates are not allowed
+        Assert.AreEqual(1, ontology.KeyAxioms.Count);
     }
+    #endregion
 }

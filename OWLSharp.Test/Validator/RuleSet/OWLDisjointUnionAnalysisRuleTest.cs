@@ -17,48 +17,47 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
-{
-    [TestClass]
-    public class OWLDisjointUnionAnalysisRuleTest
-    {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeDisjointUnionCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.FOAF.PERSON),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLClassAssertion(
-                        new OWLClass(RDFVocabulary.FOAF.PERSON),
-                        new OWLNamedIndividual(new RDFResource("ex:John")))
-                ],
-                ClassAxioms = [
-                    new OWLDisjointUnion(
-                        new OWLClass(RDFVocabulary.FOAF.AGENT),
-                         [ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
-                    new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
-                ]
-            };
-            List<OWLIssue> issues = OWLDisjointUnionAnalysisRule.ExecuteRule(ontology);
+namespace OWLSharp.Test.Validator;
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointUnionAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointUnionAnalysisRule.rulesugg)));
-        }
-        #endregion
+[TestClass]
+public class OWLDisjointUnionAnalysisRuleTest
+{
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeDisjointUnionCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLClassAssertion(
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
+                    new OWLNamedIndividual(new RDFResource("ex:John")))
+            ],
+            ClassAxioms = [
+                new OWLDisjointUnion(
+                    new OWLClass(RDFVocabulary.FOAF.AGENT),
+                    [ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
+                new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
+            ]
+        };
+        List<OWLIssue> issues = OWLDisjointUnionAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLDisjointUnionAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLDisjointUnionAnalysisRule.rulesugg)));
     }
+    #endregion
 }

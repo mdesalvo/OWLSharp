@@ -38,14 +38,19 @@ namespace OWLSharp.Validator
                 foreach (OWLObjectPropertyExpression disjObPropExpr in disjObProps.ObjectPropertyExpressions)
                     disjObPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, disjObPropExpr));
 
-                foreach (var conflictingDisjObPropAsnsGroup in disjObPropAsns.GroupBy(opAsn => new { 
-                                                                    SrcIdv = opAsn.SourceIndividualExpression.GetIRI().ToString(), 
-                                                                    TgtIdv = opAsn.TargetIndividualExpression.GetIRI().ToString() }).Where(g => g.Count() > 1))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'", 
-                        rulesugg));
+                disjObPropAsns.GroupBy(opAsn => new { 
+                                SrcIdv = opAsn.SourceIndividualExpression.GetIRI().ToString(), 
+                                TgtIdv = opAsn.TargetIndividualExpression.GetIRI().ToString() })
+                              .Where(g => g.Count() > 1)
+                              .ToList()
+                              .ForEach(opAsn =>
+                              {
+                                  issues.Add(new OWLIssue(
+                                      OWLEnums.OWLIssueSeverity.Error, 
+                                      rulename, 
+                                      $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'", 
+                                      rulesugg));
+                              });
 
                 //DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP1,OP2) -> ERROR
                 //DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP2,OP1) -> ERROR

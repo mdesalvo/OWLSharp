@@ -19,68 +19,67 @@ using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEInstantPositionTest
 {
-    [TestClass]
-    public class TIMEInstantPositionTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateNumericInstantPosition()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateNumericInstantPosition()
-        {
-            TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
-                new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.UnixTime, 121977842);
+        TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
+            new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.UnixTime, 121977842);
 
-            Assert.IsNotNull(timeInstantPosition);
-            Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
-            Assert.AreEqual(121977842, timeInstantPosition.NumericValue);
-            Assert.IsFalse(timeInstantPosition.IsNominal);
-            Assert.IsNull(timeInstantPosition.PositionalUncertainty);
-        }
-
-        [TestMethod]
-        public void ShouldCreateNumericInstantPositionWithUncertainty()
-        {
-            TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
-                new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.UnixTime, 121977842)
-            {
-                PositionalUncertainty = new TIMEIntervalDuration(
-                new RDFResource("ex:posUnc"), TIMEUnit.Second, 4.04)
-            };
-
-            Assert.IsNotNull(timeInstantPosition);
-            Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
-            Assert.AreEqual(121977842, timeInstantPosition.NumericValue);
-            Assert.IsFalse(timeInstantPosition.IsNominal);
-            Assert.IsNotNull(timeInstantPosition.PositionalUncertainty);
-            Assert.IsTrue(timeInstantPosition.PositionalUncertainty.UnitType.Equals(TIMEUnit.Second));
-            Assert.AreEqual(4.04, timeInstantPosition.PositionalUncertainty.Value);
-        }
-
-        [TestMethod]
-        public void ShouldCreateNominalInstantPosition()
-        {
-            TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
-                new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, new RDFResource("geol:Archean"));
-
-            Assert.IsNotNull(timeInstantPosition);
-            Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
-            Assert.IsTrue(timeInstantPosition.IsNominal);
-            Assert.IsTrue(timeInstantPosition.NominalValue.Equals(new RDFResource("geol:Archean")));
-            Assert.IsNull(timeInstantPosition.PositionalUncertainty);
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingNumericInstantPositionBecauseNullTRS()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), null, 121977842));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingNominalInstantPositionBecauseNullTRS()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), null, new RDFResource("ex:Archean")));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingNominalInstantPositionBecauseNullValue()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, null));
-        #endregion
+        Assert.IsNotNull(timeInstantPosition);
+        Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
+        Assert.AreEqual(121977842, timeInstantPosition.NumericValue);
+        Assert.IsFalse(timeInstantPosition.IsNominal);
+        Assert.IsNull(timeInstantPosition.PositionalUncertainty);
     }
+
+    [TestMethod]
+    public void ShouldCreateNumericInstantPositionWithUncertainty()
+    {
+        TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
+            new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.UnixTime, 121977842)
+        {
+            PositionalUncertainty = new TIMEIntervalDuration(
+                new RDFResource("ex:posUnc"), TIMEUnit.Second, 4.04)
+        };
+
+        Assert.IsNotNull(timeInstantPosition);
+        Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
+        Assert.AreEqual(121977842, timeInstantPosition.NumericValue);
+        Assert.IsFalse(timeInstantPosition.IsNominal);
+        Assert.IsNotNull(timeInstantPosition.PositionalUncertainty);
+        Assert.IsTrue(timeInstantPosition.PositionalUncertainty.UnitType.Equals(TIMEUnit.Second));
+        Assert.AreEqual(4.04, timeInstantPosition.PositionalUncertainty.Value);
+    }
+
+    [TestMethod]
+    public void ShouldCreateNominalInstantPosition()
+    {
+        TIMEInstantPosition timeInstantPosition = new TIMEInstantPosition(
+            new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, new RDFResource("geol:Archean"));
+
+        Assert.IsNotNull(timeInstantPosition);
+        Assert.IsTrue(timeInstantPosition.URI.Equals(new Uri("ex:instPos")));
+        Assert.IsTrue(timeInstantPosition.IsNominal);
+        Assert.IsTrue(timeInstantPosition.NominalValue.Equals(new RDFResource("geol:Archean")));
+        Assert.IsNull(timeInstantPosition.PositionalUncertainty);
+    }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingNumericInstantPositionBecauseNullTRS()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), null, 121977842));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingNominalInstantPositionBecauseNullTRS()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), null, new RDFResource("ex:Archean")));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingNominalInstantPositionBecauseNullValue()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, null));
+    #endregion
 }

@@ -36,14 +36,18 @@ namespace OWLSharp.Validator
             {
                 RDFResource ndpAsnIndividualIRI = ndpAsn.IndividualExpression.GetIRI();
                 RDFLiteral ndpAsnLiteral = ndpAsn.Literal.GetLiteral();
-                foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, ndpAsn.DataProperty)
-                                                                                  .Where(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(ndpAsnIndividualIRI)
-                                                                                                      && dpAsn.Literal.GetLiteral().Equals(ndpAsnLiteral)))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated NegativeDataPropertyAssertion axiom with signature: '{ndpAsn.GetXML()}'", 
-                        rulesugg));
+                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, ndpAsn.DataProperty)
+                                       .Where(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(ndpAsnIndividualIRI)
+                                                         && dpAsn.Literal.GetLiteral().Equals(ndpAsnLiteral))
+                                       .ToList()
+                                       .ForEach(dpAsn =>
+                                       {
+                                           issues.Add(new OWLIssue(
+                                               OWLEnums.OWLIssueSeverity.Error, 
+                                               rulename, 
+                                               $"Violated NegativeDataPropertyAssertion axiom with signature: '{ndpAsn.GetXML()}'", 
+                                               rulesugg));
+                                       });
             }
 
             return issues;

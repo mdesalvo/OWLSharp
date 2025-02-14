@@ -18,97 +18,96 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLObjectSomeValuesFromTest
 {
-    [TestClass]
-    public class OWLObjectSomeValuesFromTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateObjectSomeValuesFrom()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateObjectSomeValuesFrom()
-        {
-            OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
-                new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
-                new OWLClass(RDFVocabulary.FOAF.PERSON));
+        OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
+            new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+            new OWLClass(RDFVocabulary.FOAF.PERSON));
 
-            Assert.IsNotNull(objectSomeValuesFrom);
-            Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);
-            Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty 
-                            && string.Equals(objectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsNotNull(objectSomeValuesFrom.ClassExpression);
-            Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass 
-                            && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingObjectSomeValuesFromBecauseNullObjectProperty()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectSomeValuesFrom(
-                null, new OWLClass(RDFVocabulary.FOAF.PERSON)));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingObjectSomeValuesFromBecauseNullClassExpression()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectSomeValuesFrom(
-                new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())), null));
-
-        [TestMethod]
-        public void ShouldGetSWRLRepresentationOfObjectSomeValuesFrom()
-        {
-            OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
-                new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
-                new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string swrlString = objectSomeValuesFrom.ToSWRLString();
-
-            Assert.IsTrue(string.Equals(swrlString, "(knows some Person)"));
-        }
-
-        [TestMethod]
-        public void ShouldSerializeObjectSomeValuesFrom()
-        {
-            OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
-                new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
-                new OWLClass(RDFVocabulary.FOAF.PERSON));
-            string serializedXML = OWLSerializer.SerializeObject(objectSomeValuesFrom);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<ObjectSomeValuesFrom><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /></ObjectSomeValuesFrom>"""));
-        }
-
-        [TestMethod]
-        public void ShouldDeserializeObjectSomeValuesFrom()
-        {
-            OWLObjectSomeValuesFrom objectSomeValuesFrom = OWLSerializer.DeserializeObject<OWLObjectSomeValuesFrom>(
-                """
-                <ObjectSomeValuesFrom>
-                  <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
-                  <Class IRI="http://xmlns.com/foaf/0.1/Person" />
-                </ObjectSomeValuesFrom>
-                """);
-
-            Assert.IsNotNull(objectSomeValuesFrom);
-            Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);
-            Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty
-                            && string.Equals(objectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-            Assert.IsNotNull(objectSomeValuesFrom.ClassExpression);
-            Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass
-                            && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
-        }
-
-        [TestMethod]
-        public void ShouldConvertObjectSomeValuesFromToGraph()
-        {
-            OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
-                new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
-                new OWLClass(RDFVocabulary.FOAF.PERSON));
-            RDFGraph graph = objectSomeValuesFrom.ToRDFGraph();
-
-            Assert.IsNotNull(graph);
-            Assert.AreEqual(5, graph.TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.SOME_VALUES_FROM, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
-            Assert.AreEqual(1, graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
-        }
-        #endregion
+        Assert.IsNotNull(objectSomeValuesFrom);
+        Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);
+        Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty 
+                      && string.Equals(objectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+        Assert.IsNotNull(objectSomeValuesFrom.ClassExpression);
+        Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass 
+                      && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingObjectSomeValuesFromBecauseNullObjectProperty()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectSomeValuesFrom(
+            null, new OWLClass(RDFVocabulary.FOAF.PERSON)));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingObjectSomeValuesFromBecauseNullClassExpression()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectSomeValuesFrom(
+            new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())), null));
+
+    [TestMethod]
+    public void ShouldGetSWRLRepresentationOfObjectSomeValuesFrom()
+    {
+        OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
+            new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+            new OWLClass(RDFVocabulary.FOAF.PERSON));
+        string swrlString = objectSomeValuesFrom.ToSWRLString();
+
+        Assert.IsTrue(string.Equals(swrlString, "(knows some Person)"));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeObjectSomeValuesFrom()
+    {
+        OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
+            new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+            new OWLClass(RDFVocabulary.FOAF.PERSON));
+        string serializedXML = OWLSerializer.SerializeObject(objectSomeValuesFrom);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<ObjectSomeValuesFrom><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><Class IRI="http://xmlns.com/foaf/0.1/Person" /></ObjectSomeValuesFrom>"""));
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeObjectSomeValuesFrom()
+    {
+        OWLObjectSomeValuesFrom objectSomeValuesFrom = OWLSerializer.DeserializeObject<OWLObjectSomeValuesFrom>(
+            """
+            <ObjectSomeValuesFrom>
+              <ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" />
+              <Class IRI="http://xmlns.com/foaf/0.1/Person" />
+            </ObjectSomeValuesFrom>
+            """);
+
+        Assert.IsNotNull(objectSomeValuesFrom);
+        Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);
+        Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty
+                      && string.Equals(objectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
+        Assert.IsNotNull(objectSomeValuesFrom.ClassExpression);
+        Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass
+                      && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
+    }
+
+    [TestMethod]
+    public void ShouldConvertObjectSomeValuesFromToGraph()
+    {
+        OWLObjectSomeValuesFrom objectSomeValuesFrom = new OWLObjectSomeValuesFrom(
+            new OWLObjectProperty(new RDFResource(RDFVocabulary.FOAF.KNOWS.ToString())),
+            new OWLClass(RDFVocabulary.FOAF.PERSON));
+        RDFGraph graph = objectSomeValuesFrom.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(5, graph.TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ON_PROPERTY, RDFVocabulary.FOAF.KNOWS, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.SOME_VALUES_FROM, RDFVocabulary.FOAF.PERSON, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.KNOWS, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount);
+        Assert.AreEqual(1, graph[RDFVocabulary.FOAF.PERSON, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+    }
+    #endregion
 }

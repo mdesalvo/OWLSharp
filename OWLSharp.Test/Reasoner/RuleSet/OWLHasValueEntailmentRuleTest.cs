@@ -18,115 +18,114 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Test.Reasoner
+namespace OWLSharp.Test.Reasoner;
+
+[TestClass]
+public class OWLHasValueEntailmentRuleTest
 {
-    [TestClass]
-    public class OWLHasValueEntailmentRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldEntailObjectHasValueCase()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldEntailObjectHasValueCase()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
-                ],
-                ClassAxioms = [
-                    new OWLSubClassOf(
-                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
-                        new OWLObjectHasValue(
-                            new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj")),
-                            new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))))
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
-                        new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
-                ]
-            };
-            List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+                    new OWLObjectHasValue(
+                        new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj")),
+                        new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+                    new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+            ]
+        };
+        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf 
-                            && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propObj")
-                            && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
-                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")));
-        }
-
-        [TestMethod]
-        public void ShouldEntailObjectHasValueWithInverseObjectHasValueCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
-                ],
-                ClassAxioms = [
-                    new OWLSubClassOf(
-                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
-                        new OWLObjectHasValue(
-                            new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
-                            new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))))
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
-                        new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
-                ]
-            };
-            List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf 
-                            && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propObj")
-                            && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")
-                            && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")));
-        }
-
-        [TestMethod]
-        public void ShouldEntailDataHasValueCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://frede.gat/stuff#propData"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
-                ],
-                ClassAxioms = [
-                    new OWLSubClassOf(
-                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
-                        new OWLDataHasValue(
-                            new OWLDataProperty(new RDFResource("http://frede.gat/stuff#propData")),
-                            new OWLLiteral(new RDFTypedLiteral("44", RDFModelEnums.RDFDatatypes.XSD_INTEGER))))
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
-                        new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
-                ]
-            };
-            List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf 
-                            && string.Equals(inf.DataProperty.GetIRI().ToString(), "http://frede.gat/stuff#propData")
-                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
-                            && string.Equals(inf.Literal.GetLiteral().ToString(), "44^^http://www.w3.org/2001/XMLSchema#integer")));
-        }
-        #endregion
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.AreEqual(1, inferences.Count);
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf 
+                                          && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propObj")
+                                          && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
+                                          && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")));
     }
+
+    [TestMethod]
+    public void ShouldEntailObjectHasValueWithInverseObjectHasValueCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+                    new OWLObjectHasValue(
+                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://frede.gat/stuff#propObj"))),
+                        new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemAny"))))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+                    new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+            ]
+        };
+        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.AreEqual(1, inferences.Count);
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLObjectPropertyAssertion inf 
+                                          && string.Equals(inf.ObjectPropertyExpression.GetIRI().ToString(), "http://frede.gat/stuff#propObj")
+                                          && string.Equals(inf.SourceIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemAny")
+                                          && string.Equals(inf.TargetIndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")));
+    }
+
+    [TestMethod]
+    public void ShouldEntailDataHasValueCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://frede.gat/stuff#propData"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+                    new OWLDataHasValue(
+                        new OWLDataProperty(new RDFResource("http://frede.gat/stuff#propData")),
+                        new OWLLiteral(new RDFTypedLiteral("44", RDFModelEnums.RDFDatatypes.XSD_INTEGER))))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://frede.gat/stuff#ClassWithValueRestriction")),
+                    new OWLNamedIndividual(new RDFResource("http://frede.gat/stuff#ItemDefinedByClassRestrictions")))
+            ]
+        };
+        List<OWLInference> inferences = OWLHasValueEntailmentRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.AreEqual(1, inferences.Count);
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf 
+                                          && string.Equals(inf.DataProperty.GetIRI().ToString(), "http://frede.gat/stuff#propData")
+                                          && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://frede.gat/stuff#ItemDefinedByClassRestrictions")
+                                          && string.Equals(inf.Literal.GetLiteral().ToString(), "44^^http://www.w3.org/2001/XMLSchema#integer")));
+    }
+    #endregion
 }

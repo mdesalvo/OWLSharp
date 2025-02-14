@@ -31,15 +31,19 @@ namespace OWLSharp.Validator
 
             //FunctionalDataProperty(FDP) ^ DataPropertyAssertion(FDP,IDV,LIT1) ^ DataPropertyAssertion(FDP,IDV,LIT2) -> ERROR
             foreach (OWLFunctionalDataProperty fdp in ontology.GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>())
-                foreach (var dpAsnMap in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, fdp.DataProperty)
-                                                                .GroupBy(dpax => dpax.IndividualExpression.GetIRI().ToString())
-                                                                .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.Literal))
-                                                                .Where(dict => OWLExpressionHelper.RemoveDuplicates(dict.Value.ToList()).Count > 1))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated FunctionalDataProperty axiom with signature: {fdp.GetXML()}", 
-                        rulesugg));
+                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, fdp.DataProperty)
+                                       .GroupBy(dpax => dpax.IndividualExpression.GetIRI().ToString())
+                                       .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.Literal))
+                                       .Where(dict => OWLExpressionHelper.RemoveDuplicates(dict.Value.ToList()).Count > 1)
+                                       .ToList()
+                                       .ForEach(fdpAsn =>
+                                       {
+                                           issues.Add(new OWLIssue(
+                                               OWLEnums.OWLIssueSeverity.Error, 
+                                               rulename, 
+                                               $"Violated FunctionalDataProperty axiom with signature: {fdp.GetXML()}", 
+                                               rulesugg));
+                                       });
 
             return issues;
         }

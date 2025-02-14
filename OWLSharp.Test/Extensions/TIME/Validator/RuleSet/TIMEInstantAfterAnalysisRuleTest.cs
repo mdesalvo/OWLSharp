@@ -19,106 +19,105 @@ using OWLSharp.Ontology;
 using OWLSharp.Validator;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEInstantAfterAnalysisRuleTest : TIMETestOntology
 {
-    [TestClass]
-    public class TIMEInstantAfterAnalysisRuleTest : TIMETestOntology
+    #region Tests
+    [TestMethod]
+    public async Task ShouldAnalyzeInstantAfterAndViolateRule1()
     {
-        #region Tests
-        [TestMethod]
-        public async Task ShouldAnalyzeInstantAfterAndViolateRule1()
+        OWLOntology ontology = new OWLOntology(TestOntology);
+        ontology.DeclarationAxioms.AddRange([
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
+        ]);
+        ontology.AssertionAxioms.AddRange([
+            new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
+            new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
+            new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+            new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA")),
+                new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
+            new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
+                new OWLNamedIndividual(new RDFResource("ex:InstantB")),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA"))), //clash
+            new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA")),
+                new OWLNamedIndividual(new RDFResource("ex:InstantC")))
+        ]);
+        Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
         {
-            OWLOntology ontology = new OWLOntology(TestOntology);
-            ontology.DeclarationAxioms.AddRange([
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
-            ]);
-            ontology.AssertionAxioms.AddRange([
-                new OWLClassAssertion(
-                    new OWLClass(RDFVocabulary.TIME.INSTANT),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
-                new OWLClassAssertion(
-                    new OWLClass(RDFVocabulary.TIME.INSTANT),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLClassAssertion(
-                    new OWLClass(RDFVocabulary.TIME.INSTANT),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
-                new OWLObjectPropertyAssertion(
-                    new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLObjectPropertyAssertion(
-                    new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantB")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA"))), //clash
-                new OWLObjectPropertyAssertion(
-                    new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC")))
-            ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
-            {
-                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
-                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
-            };
-            List<OWLIssue> issues = await TIMEInstantAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
+            { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+            { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+        };
+        List<OWLIssue> issues = await TIMEInstantAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(2, issues.Count);
-            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
-            Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEInstantAfterAnalysisRule.rulename));
-            Assert.IsTrue(string.Equals(issues[0].Description, TIMEInstantAfterAnalysisRule.rulesugg1));
-            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[1].Severity);
-            Assert.IsTrue(string.Equals(issues[1].RuleName, TIMEInstantAfterAnalysisRule.rulename));
-            Assert.IsTrue(string.Equals(issues[1].Description, TIMEInstantAfterAnalysisRule.rulesugg1));
-        }
-
-        [TestMethod]
-        public async Task ShouldAnalyzeInstantAfterAndViolateRule2()
-        {
-            OWLOntology ontology = new OWLOntology(TestOntology);
-            ontology.DeclarationAxioms.AddRange([
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
-            ]);
-            ontology.AssertionAxioms.AddRange([
-                new OWLClassAssertion(
-                    new OWLClass(RDFVocabulary.TIME.INSTANT),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
-                new OWLClassAssertion(
-                    new OWLClass(RDFVocabulary.TIME.INSTANT),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLClassAssertion(
-                    new OWLClass(RDFVocabulary.TIME.INSTANT),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
-                new OWLObjectPropertyAssertion(
-                    new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
-                new OWLObjectPropertyAssertion(
-                    new OWLObjectProperty(RDFVocabulary.TIME.BEFORE),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantB"))), //clash
-                new OWLObjectPropertyAssertion(
-                    new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantA")),
-                    new OWLNamedIndividual(new RDFResource("ex:InstantC")))
-            ]);
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
-            {
-                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
-                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
-            };
-            List<OWLIssue> issues = await TIMEInstantAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
-            Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEInstantAfterAnalysisRule.rulename));
-            Assert.IsTrue(string.Equals(issues[0].Description, TIMEInstantAfterAnalysisRule.rulesugg2));
-        }
-        #endregion
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(2, issues.Count);
+        Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
+        Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEInstantAfterAnalysisRule.rulename));
+        Assert.IsTrue(string.Equals(issues[0].Description, TIMEInstantAfterAnalysisRule.rulesugg1));
+        Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[1].Severity);
+        Assert.IsTrue(string.Equals(issues[1].RuleName, TIMEInstantAfterAnalysisRule.rulename));
+        Assert.IsTrue(string.Equals(issues[1].Description, TIMEInstantAfterAnalysisRule.rulesugg1));
     }
+
+    [TestMethod]
+    public async Task ShouldAnalyzeInstantAfterAndViolateRule2()
+    {
+        OWLOntology ontology = new OWLOntology(TestOntology);
+        ontology.DeclarationAxioms.AddRange([
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
+            new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:InstantC")))
+        ]);
+        ontology.AssertionAxioms.AddRange([
+            new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA"))),
+            new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
+            new OWLClassAssertion(
+                new OWLClass(RDFVocabulary.TIME.INSTANT),
+                new OWLNamedIndividual(new RDFResource("ex:InstantC"))),
+            new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA")),
+                new OWLNamedIndividual(new RDFResource("ex:InstantB"))),
+            new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.BEFORE),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA")),
+                new OWLNamedIndividual(new RDFResource("ex:InstantB"))), //clash
+            new OWLObjectPropertyAssertion(
+                new OWLObjectProperty(RDFVocabulary.TIME.AFTER),
+                new OWLNamedIndividual(new RDFResource("ex:InstantA")),
+                new OWLNamedIndividual(new RDFResource("ex:InstantC")))
+        ]);
+        Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
+        {
+            { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+            { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+        };
+        List<OWLIssue> issues = await TIMEInstantAfterAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.AreEqual(OWLEnums.OWLIssueSeverity.Error, issues[0].Severity);
+        Assert.IsTrue(string.Equals(issues[0].RuleName, TIMEInstantAfterAnalysisRule.rulename));
+        Assert.IsTrue(string.Equals(issues[0].Description, TIMEInstantAfterAnalysisRule.rulesugg2));
+    }
+    #endregion
 }

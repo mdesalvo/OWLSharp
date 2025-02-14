@@ -17,187 +17,186 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
+namespace OWLSharp.Test.Validator;
+
+[TestClass]
+public class OWLAsymmetricObjectPropertyAnalysisRuleTest
 {
-    [TestClass]
-    public class OWLAsymmetricObjectPropertyAnalysisRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeAsymmetricSymmetricObjectPropertiesCase()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeAsymmetricSymmetricObjectPropertiesCase()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
-                    new OWLSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
-                ]
-            };
-            List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
+                new OWLSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
+            ]
+        };
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg1)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeSimpleAsymmetricObjectPropertiesCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
-                ],
-                AssertionAxioms = [
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
-                ]
-            };
-            List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
-        }
-        
-        [TestMethod]
-        public void ShouldAnalyzeAsymmetricObjectPropertiesWithInverseObjectAssertionCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
-                ],
-                AssertionAxioms = [
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
-                ]
-            };
-            List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
-        }
-        
-        [TestMethod]
-        public void ShouldAnalyzeAsymmetricObjectPropertiesWithInverseObjectPropertyCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))))
-                ],
-                AssertionAxioms = [
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
-                ]
-            };
-            List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
-        }
-        
-        [TestMethod]
-        public void ShouldAnalyzeAsymmetricObjectPropertiesWithInverseObjectPropertyAndInverseObjectAssertionCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))))
-                ],
-                AssertionAxioms = [
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
-                ]
-            };
-            List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
-        }
-        #endregion
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg1)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeSimpleAsymmetricObjectPropertiesCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
+            ],
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
+            ]
+        };
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
+    }
+        
+    [TestMethod]
+    public void ShouldAnalyzeAsymmetricObjectPropertiesWithInverseObjectAssertionCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
+            ],
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
+            ]
+        };
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
+    }
+        
+    [TestMethod]
+    public void ShouldAnalyzeAsymmetricObjectPropertiesWithInverseObjectPropertyCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))))
+            ],
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
+            ]
+        };
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
+    }
+        
+    [TestMethod]
+    public void ShouldAnalyzeAsymmetricObjectPropertiesWithInverseObjectPropertyAndInverseObjectAssertionCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLAsymmetricObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))))
+            ],
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks"))),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
+            ]
+        };
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLAsymmetricObjectPropertyAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLAsymmetricObjectPropertyAnalysisRule.rulesugg2)));
+    }
+    #endregion
 }

@@ -19,97 +19,96 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLObjectOneOfTest
 {
-    [TestClass]
-    public class OWLObjectOneOfTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateObjectOneOf()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateObjectOneOf()
-        {
-            OWLObjectOneOf ObjectOneOf = new OWLObjectOneOf([
-                new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
+        OWLObjectOneOf ObjectOneOf = new OWLObjectOneOf([
+            new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
 
-            Assert.IsNotNull(ObjectOneOf);
-            Assert.IsNotNull(ObjectOneOf.IndividualExpressions);
-            Assert.AreEqual(2, ObjectOneOf.IndividualExpressions.Count);
-            Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
-                            && string.Equals(namedIdv.IRI, "ex:Bob")));
-            Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv
-                            && string.Equals(anonIdv.NodeID, "AnonIdv")));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseNullIndividualExpressions()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf(null));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseZeroIndividualExpressions()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf([]));
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseNullIndividualExpressionFound()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf([null]));
-
-        [TestMethod]
-        public void ShouldGetSWRLRepresentationOfObjectOneOf()
-        {
-            OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
-                new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
-            string swrlString = objectOneOf.ToSWRLString();
-
-            Assert.IsTrue(string.Equals(swrlString, "({ex:Bob,bnode:AnonIdv})"));
-        }
-
-        [TestMethod]
-        public void ShouldSerializeObjectOneOf()
-        {
-            OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
-                new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
-            string serializedXML = OWLSerializer.SerializeObject(objectOneOf);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<ObjectOneOf><NamedIndividual IRI="ex:Bob" /><AnonymousIndividual nodeID="AnonIdv" /></ObjectOneOf>"""));
-        }
-
-        [TestMethod]
-        public void ShouldDeserializeObjectOneOf()
-        {
-            OWLObjectOneOf objectOneOf = OWLSerializer.DeserializeObject<OWLObjectOneOf>(
-                """
-                <ObjectOneOf>
-                  <NamedIndividual IRI="ex:Bob" />
-                  <AnonymousIndividual nodeID="AnonIdv" />
-                </ObjectOneOf>
-                """);
-
-            Assert.IsNotNull(objectOneOf);
-            Assert.IsNotNull(objectOneOf.IndividualExpressions);
-            Assert.AreEqual(2, objectOneOf.IndividualExpressions.Count);
-            Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
-                            && string.Equals(namedIdv.IRI, "ex:Bob")));
-            Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv
-                            && string.Equals(anonIdv.NodeID, "AnonIdv")));
-        }
-
-        [TestMethod]
-        public void ShouldConvertObjectOneOfToGraph()
-        {
-            OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
-                new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
-            RDFGraph graph = objectOneOf.ToRDFGraph();
-
-            Assert.IsNotNull(graph);
-            Assert.AreEqual(9, graph.TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount);
-            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:Bob"), null].TriplesCount);
-            Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("bnode:AnonIdv"), null].TriplesCount);
-            Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
-            Assert.AreEqual(1, graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount);
-        }
-        #endregion
+        Assert.IsNotNull(ObjectOneOf);
+        Assert.IsNotNull(ObjectOneOf.IndividualExpressions);
+        Assert.AreEqual(2, ObjectOneOf.IndividualExpressions.Count);
+        Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
+                                                                   && string.Equals(namedIdv.IRI, "ex:Bob")));
+        Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv
+                                                                   && string.Equals(anonIdv.NodeID, "AnonIdv")));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseNullIndividualExpressions()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf(null));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseZeroIndividualExpressions()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf([]));
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseNullIndividualExpressionFound()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf([null]));
+
+    [TestMethod]
+    public void ShouldGetSWRLRepresentationOfObjectOneOf()
+    {
+        OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
+            new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
+        string swrlString = objectOneOf.ToSWRLString();
+
+        Assert.IsTrue(string.Equals(swrlString, "({ex:Bob,bnode:AnonIdv})"));
+    }
+
+    [TestMethod]
+    public void ShouldSerializeObjectOneOf()
+    {
+        OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
+            new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
+        string serializedXML = OWLSerializer.SerializeObject(objectOneOf);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<ObjectOneOf><NamedIndividual IRI="ex:Bob" /><AnonymousIndividual nodeID="AnonIdv" /></ObjectOneOf>"""));
+    }
+
+    [TestMethod]
+    public void ShouldDeserializeObjectOneOf()
+    {
+        OWLObjectOneOf objectOneOf = OWLSerializer.DeserializeObject<OWLObjectOneOf>(
+            """
+            <ObjectOneOf>
+              <NamedIndividual IRI="ex:Bob" />
+              <AnonymousIndividual nodeID="AnonIdv" />
+            </ObjectOneOf>
+            """);
+
+        Assert.IsNotNull(objectOneOf);
+        Assert.IsNotNull(objectOneOf.IndividualExpressions);
+        Assert.AreEqual(2, objectOneOf.IndividualExpressions.Count);
+        Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
+                                                                   && string.Equals(namedIdv.IRI, "ex:Bob")));
+        Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv
+                                                                   && string.Equals(anonIdv.NodeID, "AnonIdv")));
+    }
+
+    [TestMethod]
+    public void ShouldConvertObjectOneOfToGraph()
+    {
+        OWLObjectOneOf objectOneOf = new OWLObjectOneOf([
+            new OWLNamedIndividual(new RDFResource("ex:Bob")), new OWLAnonymousIndividual("AnonIdv")]);
+        RDFGraph graph = objectOneOf.ToRDFGraph();
+
+        Assert.IsNotNull(graph);
+        Assert.AreEqual(9, graph.TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount);
+        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDF.LIST, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("ex:Bob"), null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.FIRST, new RDFResource("bnode:AnonIdv"), null].TriplesCount);
+        Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.REST, null, null].TriplesCount);
+        Assert.AreEqual(1, graph[new RDFResource("ex:Bob"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NAMED_INDIVIDUAL, null].TriplesCount);
+    }
+    #endregion
 }

@@ -17,127 +17,126 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
+namespace OWLSharp.Test.Validator;
+
+[TestClass]
+public class OWLObjectPropertyDomainAnalysisRuleTest
 {
-    [TestClass]
-    public class OWLObjectPropertyDomainAnalysisRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyDomain()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeObjectPropertyDomain()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls1"))), //ex:Mark is explicitly incompatible with domain of ex:op1
-                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:Cls1")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op1")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLNamedIndividual(new RDFResource("ex:John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op2")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op1")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
-                        new OWLNamedIndividual(new RDFResource("ex:Helen"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op2")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
-                        new OWLNamedIndividual(new RDFResource("ex:John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op1")),
-                        new OWLNamedIndividual(new RDFResource("ex:Helen")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")))
-                ],
-                ObjectPropertyAxioms = [
-                    new OWLObjectPropertyDomain(
-                        new OWLObjectProperty(new RDFResource("ex:op1")),
-                        new OWLClass(new RDFResource("ex:Cls1")))
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
-                ]
-            };
-            List<OWLIssue> issues = OWLObjectPropertyDomainAnalysisRule.ExecuteRule(ontology);
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls1"))), //ex:Mark is explicitly incompatible with domain of ex:op1
+                    new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:Cls1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLNamedIndividual(new RDFResource("ex:John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op2")),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+                    new OWLNamedIndividual(new RDFResource("ex:Helen"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op2")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+                    new OWLNamedIndividual(new RDFResource("ex:John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Helen")),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")))
+            ],
+            ObjectPropertyAxioms = [
+                new OWLObjectPropertyDomain(
+                    new OWLObjectProperty(new RDFResource("ex:op1")),
+                    new OWLClass(new RDFResource("ex:Cls1")))
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyDomainAnalysisRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyDomainAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyDomainAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeObjectPropertyDomainInverseOfCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls1"))), //ex:Mark is explicitly incompatible with domain of ex:op1
-                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:Cls1")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op1")),
-                        new OWLNamedIndividual(new RDFResource("ex:John")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op2")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op1")),
-                        new OWLNamedIndividual(new RDFResource("ex:Helen")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op2")),
-                        new OWLNamedIndividual(new RDFResource("ex:Stiv")),
-                        new OWLNamedIndividual(new RDFResource("ex:John"))),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("ex:op1")),
-                        new OWLNamedIndividual(new RDFResource("ex:Mark")),
-                        new OWLNamedIndividual(new RDFResource("ex:Helen")))
-                ],
-                ObjectPropertyAxioms = [
-                    new OWLObjectPropertyDomain(
-                        new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:op1"))),
-                        new OWLClass(new RDFResource("ex:Cls1")))
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
-                ]
-            };
-            List<OWLIssue> issues = OWLObjectPropertyDomainAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyDomainAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyDomainAnalysisRule.rulesugg)));
-        }
-        #endregion
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyDomainAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyDomainAnalysisRule.rulesugg)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyDomainInverseOfCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls1"))), //ex:Mark is explicitly incompatible with domain of ex:op1
+                    new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:Cls1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op1")),
+                    new OWLNamedIndividual(new RDFResource("ex:John")),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op2")),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Helen")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op2")),
+                    new OWLNamedIndividual(new RDFResource("ex:Stiv")),
+                    new OWLNamedIndividual(new RDFResource("ex:John"))),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("ex:op1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Mark")),
+                    new OWLNamedIndividual(new RDFResource("ex:Helen")))
+            ],
+            ObjectPropertyAxioms = [
+                new OWLObjectPropertyDomain(
+                    new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:op1"))),
+                    new OWLClass(new RDFResource("ex:Cls1")))
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyDomainAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyDomainAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyDomainAnalysisRule.rulesugg)));
+    }
+    #endregion
 }

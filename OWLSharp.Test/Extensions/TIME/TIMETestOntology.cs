@@ -20,26 +20,25 @@ using OWLSharp.Ontology;
 using OWLSharp.Extensions.TIME;
 using System;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+public class TIMETestOntology
 {
-    public class TIMETestOntology
+    #region Properties
+    internal static OWLOntology TestOntology { get; set; }
+    #endregion
+
+    #region Ctors
+    [TestInitialize]
+    public async Task InitializeAsync()
     {
-        #region Properties
-        internal static OWLOntology TestOntology { get; set; }
-        #endregion
-
-        #region Ctors
-        [TestInitialize]
-        public async Task InitializeAsync()
+        if (TestOntology == null)
         {
-            if (TestOntology == null)
-            {
-                TestOntology = new OWLOntology(new Uri("ex:ont"));
-                await TestOntology.InitializeTIMEAsync(30000);
+            TestOntology = new OWLOntology(new Uri("ex:ont"));
+            await TestOntology.InitializeTIMEAsync(30000);
 
-                Assert.IsTrue(OWLImportHelper.OntologyCache.Count > 0);
-            }
+            Assert.IsTrue(OWLImportHelper.OntologyCache.Count > 0);
         }
-        #endregion
     }
+    #endregion
 }

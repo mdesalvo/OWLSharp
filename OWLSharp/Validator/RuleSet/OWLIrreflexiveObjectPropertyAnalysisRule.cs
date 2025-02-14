@@ -37,12 +37,16 @@ namespace OWLSharp.Validator
             foreach (OWLIrreflexiveObjectProperty irrefObjProp in irrefObjProps)
             {
                 RDFResource irrefObjPropIRI = irrefObjProp.ObjectPropertyExpression.GetIRI();
-                foreach (OWLReflexiveObjectProperty refObjProp in refObjProps.Where(refObjProp => refObjProp.ObjectPropertyExpression.GetIRI().Equals(irrefObjPropIRI)))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'", 
-                        rulesugg1));
+                refObjProps.Where(refObjProp => refObjProp.ObjectPropertyExpression.GetIRI().Equals(irrefObjPropIRI))
+                    .ToList()
+                    .ForEach(refObjProp =>
+                    {
+                        issues.Add(new OWLIssue(
+                            OWLEnums.OWLIssueSeverity.Error, 
+                            rulename, 
+                            $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'", 
+                            rulesugg1));
+                    });
             }
 
             //IrreflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV1) -> ERROR

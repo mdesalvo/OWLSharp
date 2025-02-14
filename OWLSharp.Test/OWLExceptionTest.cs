@@ -17,53 +17,52 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace OWLSharp.Test
+namespace OWLSharp.Test;
+
+[TestClass]
+public class OWLExceptionTest
 {
-    [TestClass]
-    public class OWLExceptionTest
+    #region Tests
+    [TestMethod]
+    public void ShouldRaiseEmptyException()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldRaiseEmptyException()
+        try
         {
-            try
-            {
-                throw new OWLException();
-            }
-            catch (OWLException mex)
-            {
-                Assert.IsTrue(mex.Message.Contains("OWLSharp.OWLException", StringComparison.OrdinalIgnoreCase));
-            }
+            throw new OWLException();
         }
-
-        [TestMethod]
-        public void ShouldRaiseMessageException()
+        catch (OWLException mex)
         {
-            try
-            {
-                throw new OWLException("This is an exception coming from OWL modeling!");
-            }
-            catch (OWLException mex)
-            {
-                Assert.IsTrue(mex.Message.Equals("This is an exception coming from OWL modeling!", StringComparison.OrdinalIgnoreCase));
-                Assert.IsNull(mex.InnerException);
-            }
+            Assert.IsTrue(mex.Message.Contains("OWLSharp.OWLException", StringComparison.OrdinalIgnoreCase));
         }
-
-        [TestMethod]
-        public void ShouldRaiseMessageWithInnerException()
-        {
-            try
-            {
-                throw new OWLException("This is an exception coming from OWL modeling!", new Exception("This is the inner exception!"));
-            }
-            catch (OWLException mex)
-            {
-                Assert.IsTrue(mex.Message.Equals("This is an exception coming from OWL modeling!", StringComparison.OrdinalIgnoreCase));
-                Assert.IsNotNull(mex.InnerException);
-                Assert.IsTrue(mex.InnerException.Message.Equals("This is the inner exception!"));
-            }
-        }
-        #endregion
     }
+
+    [TestMethod]
+    public void ShouldRaiseMessageException()
+    {
+        try
+        {
+            throw new OWLException("This is an exception coming from OWL modeling!");
+        }
+        catch (OWLException mex)
+        {
+            Assert.IsTrue(mex.Message.Equals("This is an exception coming from OWL modeling!", StringComparison.OrdinalIgnoreCase));
+            Assert.IsNull(mex.InnerException);
+        }
+    }
+
+    [TestMethod]
+    public void ShouldRaiseMessageWithInnerException()
+    {
+        try
+        {
+            throw new OWLException("This is an exception coming from OWL modeling!", new Exception("This is the inner exception!"));
+        }
+        catch (OWLException mex)
+        {
+            Assert.IsTrue(mex.Message.Equals("This is an exception coming from OWL modeling!", StringComparison.OrdinalIgnoreCase));
+            Assert.IsNotNull(mex.InnerException);
+            Assert.IsTrue(mex.InnerException.Message.Equals("This is the inner exception!"));
+        }
+    }
+    #endregion
 }

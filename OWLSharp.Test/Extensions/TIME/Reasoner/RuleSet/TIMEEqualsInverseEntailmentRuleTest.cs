@@ -22,58 +22,57 @@ using OWLSharp.Ontology;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEEqualsInverseEntailmentRuleTest : TIMETestOntology
 {
-    [TestClass]
-    public class TIMEEqualsInverseEntailmentRuleTest : TIMETestOntology
+    #region Tests
+    [TestMethod]
+    public async Task ShouldExecuteEqualsInverseEntailment()
     {
-        #region Tests
-        [TestMethod]
-        public async Task ShouldExecuteEqualsInverseEntailment()
+        OWLOntology ontology = new OWLOntology(TestOntology);
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY),
+            new OWLNamedIndividual(new RDFResource("ex:Interval1")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY),
+            new OWLNamedIndividual(new RDFResource("ex:Interval1")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
+        Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
         {
-            OWLOntology ontology = new OWLOntology(TestOntology);
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY),
-                new OWLNamedIndividual(new RDFResource("ex:Interval1")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY),
-                new OWLNamedIndividual(new RDFResource("ex:Interval1")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
-            {
-                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
-                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
-            };
-            List<OWLInference> inferences = await TIMEEqualsInverseEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
+            { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+            { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+        };
+        List<OWLInference> inferences = await TIMEEqualsInverseEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
-            Assert.IsNotNull(inferences);
-            Assert.AreEqual(2, inferences.Count);
-        }
-
-        [TestMethod]
-        public async Task ShouldExecuteEqualsInverseEntailmentViaReasoner()
-        {
-            OWLOntology ontology = new OWLOntology(TestOntology);
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY),
-                new OWLNamedIndividual(new RDFResource("ex:Interval1")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY),
-                new OWLNamedIndividual(new RDFResource("ex:Interval1")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
-
-            TIMEReasoner reasoner = new TIMEReasoner().AddRule(TIMEEnums.TIMEReasonerRules.EqualsInverseEntailment);
-            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
-
-            Assert.IsNotNull(inferences);
-            Assert.AreEqual(2, inferences.Count);
-        }
-        #endregion
+        Assert.IsNotNull(inferences);
+        Assert.AreEqual(2, inferences.Count);
     }
+
+    [TestMethod]
+    public async Task ShouldExecuteEqualsInverseEntailmentViaReasoner()
+    {
+        OWLOntology ontology = new OWLOntology(TestOntology);
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTED_BY),
+            new OWLNamedIndividual(new RDFResource("ex:Interval1")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_FINISHED_BY),
+            new OWLNamedIndividual(new RDFResource("ex:Interval1")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
+
+        TIMEReasoner reasoner = new TIMEReasoner().AddRule(TIMEEnums.TIMEReasonerRules.EqualsInverseEntailment);
+        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.AreEqual(2, inferences.Count);
+    }
+    #endregion
 }

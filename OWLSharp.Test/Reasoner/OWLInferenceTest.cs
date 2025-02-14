@@ -18,64 +18,63 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Test.Reasoner
+namespace OWLSharp.Test.Reasoner;
+
+[TestClass]
+public class OWLInferenceTest
 {
-    [TestClass]
-    public class OWLInferenceTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateInference()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateInference()
-        {
-            OWLInference inference = new OWLInference(
-                " rulename ",
-                new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark"))));
+        OWLInference inference = new OWLInference(
+            " rulename ",
+            new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark"))));
 
-            Assert.IsNotNull(inference);
-            Assert.IsTrue(string.Equals(inference.RuleName, "rulename"));
-            Assert.IsTrue(string.Equals(inference.ToString(), inference.Axiom.GetXML()));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptiononCreatingInferenceWithNullRuleName()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInference(null, new OWLAxiom()));
-
-        [TestMethod]
-        public void ShouldThrowExceptiononCreatingInferenceWithNullAxiom()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInference("testRule", null));
-
-        [TestMethod]
-        public void ShouldCompareInferences()
-        {
-            OWLInference inferenceA = new OWLInference(
-                "rulenameB",
-                new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark"))));
-            OWLInference inferenceB = new OWLInference(
-                 "rulenameB",
-                 new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark"))));
-
-            Assert.IsTrue(inferenceA.Equals(inferenceB));
-            Assert.IsTrue(inferenceB.Equals(inferenceA));
-        }
-
-        [TestMethod]
-        public void ShouldEliminateDuplicateInferences()
-        {
-            List<OWLInference> inferences = [
-                new OWLInference(
-                    "rulenameB",
-                    new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark")))),
-                new OWLInference(
-                     "rulenameB",
-                     new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark")))),
-                new OWLInference(
-                     "rulenameC",
-                     new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Stiv"))))
-            ];
-
-            Assert.AreEqual(2, inferences.Distinct().Count());
-            Assert.AreEqual(inferences[1].GetHashCode(), inferences[0].GetHashCode());
-        }
-        #endregion
+        Assert.IsNotNull(inference);
+        Assert.IsTrue(string.Equals(inference.RuleName, "rulename"));
+        Assert.IsTrue(string.Equals(inference.ToString(), inference.Axiom.GetXML()));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptiononCreatingInferenceWithNullRuleName()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInference(null, new OWLAxiom()));
+
+    [TestMethod]
+    public void ShouldThrowExceptiononCreatingInferenceWithNullAxiom()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInference("testRule", null));
+
+    [TestMethod]
+    public void ShouldCompareInferences()
+    {
+        OWLInference inferenceA = new OWLInference(
+            "rulenameB",
+            new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark"))));
+        OWLInference inferenceB = new OWLInference(
+            "rulenameB",
+            new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark"))));
+
+        Assert.IsTrue(inferenceA.Equals(inferenceB));
+        Assert.IsTrue(inferenceB.Equals(inferenceA));
+    }
+
+    [TestMethod]
+    public void ShouldEliminateDuplicateInferences()
+    {
+        List<OWLInference> inferences = [
+            new OWLInference(
+                "rulenameB",
+                new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark")))),
+            new OWLInference(
+                "rulenameB",
+                new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Mark")))),
+            new OWLInference(
+                "rulenameC",
+                new OWLClassAssertion(new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLNamedIndividual(new RDFResource("ex:Stiv"))))
+        ];
+
+        Assert.AreEqual(2, inferences.Distinct().Count());
+        Assert.AreEqual(inferences[1].GetHashCode(), inferences[0].GetHashCode());
+    }
+    #endregion
 }

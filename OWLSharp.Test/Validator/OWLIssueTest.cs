@@ -14,39 +14,38 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Validator;
 
-namespace OWLSharp.Test.Validator
+namespace OWLSharp.Test.Validator;
+
+[TestClass]
+public class OWLIssueTest
 {
-    [TestClass]
-    public class OWLIssueTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateIssue()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateIssue()
-        {
-            OWLIssue issue = new OWLIssue(
-                OWLEnums.OWLIssueSeverity.Warning,
-                " rulename ",
-                " this is a warning ",
-                " try solve this way... ");
+        OWLIssue issue = new OWLIssue(
+            OWLEnums.OWLIssueSeverity.Warning,
+            " rulename ",
+            " this is a warning ",
+            " try solve this way... ");
 
-            Assert.IsNotNull(issue);
-            Assert.AreEqual(OWLEnums.OWLIssueSeverity.Warning, issue.Severity);
-            Assert.IsTrue(string.Equals(issue.RuleName, "rulename"));
-            Assert.IsTrue(string.Equals(issue.Description, "this is a warning"));
-            Assert.IsTrue(string.Equals(issue.Suggestion, "try solve this way..."));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptiononCreatingInferenceWithNullRuleName()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, null, "this is a warning", "try solve this way..."));
-
-        [TestMethod]
-        public void ShouldThrowExceptiononCreatingInferenceWithNullDescription()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", null, "try solve this way..."));
-
-        [TestMethod]
-        public void ShouldThrowExceptiononCreatingInferenceWithNullSuggestion()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", "this is a warning", null));
-        #endregion
+        Assert.IsNotNull(issue);
+        Assert.AreEqual(OWLEnums.OWLIssueSeverity.Warning, issue.Severity);
+        Assert.IsTrue(string.Equals(issue.RuleName, "rulename"));
+        Assert.IsTrue(string.Equals(issue.Description, "this is a warning"));
+        Assert.IsTrue(string.Equals(issue.Suggestion, "try solve this way..."));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptiononCreatingInferenceWithNullRuleName()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, null, "this is a warning", "try solve this way..."));
+
+    [TestMethod]
+    public void ShouldThrowExceptiononCreatingInferenceWithNullDescription()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", null, "try solve this way..."));
+
+    [TestMethod]
+    public void ShouldThrowExceptiononCreatingInferenceWithNullSuggestion()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", "this is a warning", null));
+    #endregion
 }

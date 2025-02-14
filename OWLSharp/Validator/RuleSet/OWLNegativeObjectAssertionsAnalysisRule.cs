@@ -36,14 +36,18 @@ namespace OWLSharp.Validator
             {
                 RDFResource ndpAsnSourceIndividualIRI = nopAsn.SourceIndividualExpression.GetIRI();
                 RDFResource ndpAsnTargetIndividualIRI = nopAsn.TargetIndividualExpression.GetIRI();
-                foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, nopAsn.ObjectPropertyExpression)
-                                                                                      .Where(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(ndpAsnSourceIndividualIRI)
-                                                                                                       && opAsn.TargetIndividualExpression.GetIRI().Equals(ndpAsnTargetIndividualIRI)))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated NegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'", 
-                        rulesugg));
+                OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, nopAsn.ObjectPropertyExpression)
+                                       .Where(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(ndpAsnSourceIndividualIRI)
+                                                        && opAsn.TargetIndividualExpression.GetIRI().Equals(ndpAsnTargetIndividualIRI))
+                                       .ToList()
+                                       .ForEach(opAsn =>
+                                       {
+                                           issues.Add(new OWLIssue(
+                                               OWLEnums.OWLIssueSeverity.Error, 
+                                               rulename, 
+                                               $"Violated NegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'", 
+                                               rulesugg));
+                                       });
             }
 
             return issues;

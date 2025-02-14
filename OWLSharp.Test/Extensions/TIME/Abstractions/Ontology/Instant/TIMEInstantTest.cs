@@ -19,90 +19,89 @@ using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEInstantTest
 {
-    [TestClass]
-    public class TIMEInstantTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateInstantFromDateTime()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateInstantFromDateTime()
-        {
-            TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"), DateTime.Parse("2010-05-22T22:45:30Z").ToUniversalTime());
+        TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"), DateTime.Parse("2010-05-22T22:45:30Z").ToUniversalTime());
 
-            Assert.IsNotNull(timeInstant);
-            Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
-            Assert.IsTrue(timeInstant.DateTime.HasValue && timeInstant.DateTime.Equals(DateTime.Parse("2010-05-22T22:45:30Z").ToUniversalTime()));
-            Assert.IsNull(timeInstant.Description);
-            Assert.IsNull(timeInstant.Position);
-        }
-
-        [TestMethod]
-        public void ShouldCreateInstantFromDescription()
-        {
-            TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"), 
-                new TIMEInstantDescription(new RDFResource("ex:instDesc"), DateTime.Parse("2010-05-22T22:45:30Z").ToUniversalTime()));
-
-            Assert.IsNotNull(timeInstant);
-            Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
-            Assert.IsFalse(timeInstant.DateTime.HasValue);
-            Assert.IsNotNull(timeInstant.Description);
-            Assert.IsTrue(timeInstant.Description.URI.Equals(new Uri("ex:instDesc")));
-            Assert.IsTrue(timeInstant.Description.Coordinate.Equals(new TIMECoordinate(2010, 5, 22, 22, 45, 30)));
-            Assert.IsNull(timeInstant.Position);
-        }
-
-        [TestMethod]
-        public void ShouldCreateInstantFromDescriptionWithCoordinate()
-        {
-            TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"),
-                new TIMEInstantDescription(
-                    new RDFResource("ex:instDesc"), 
-                    new TIMECoordinate(2010, 5, 22, 22, 45, 30,
-                        new TIMECoordinateMetadata(
-                            TIMECalendarReferenceSystem.Gregorian,
-                            RDFVocabulary.TIME.UNIT_SECOND,
-                            RDFVocabulary.TIME.GREG.MAY,
-                            RDFVocabulary.TIME.SATURDAY,
-                            142))));
-
-            Assert.IsNotNull(timeInstant);
-            Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
-            Assert.IsFalse(timeInstant.DateTime.HasValue);
-            Assert.IsNotNull(timeInstant.Description);
-            Assert.IsTrue(timeInstant.Description.URI.Equals(new Uri("ex:instDesc")));
-            Assert.IsTrue(timeInstant.Description.Coordinate.Equals(new TIMECoordinate(2010, 5, 22, 22, 45, 30)));
-            Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.TRS.Equals(TIMECalendarReferenceSystem.Gregorian));
-            Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.UnitType.Equals(RDFVocabulary.TIME.UNIT_SECOND));
-            Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.MonthOfYear.Equals(RDFVocabulary.TIME.GREG.MAY));
-            Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.DayOfWeek.Equals(RDFVocabulary.TIME.SATURDAY));
-            Assert.AreEqual(142u, timeInstant.Description.Coordinate.Metadata.DayOfYear);
-            Assert.IsNull(timeInstant.Position);
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingInstantFromDescriptionBecauseNullDescription()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantDescription));
-
-        [TestMethod]
-        public void ShouldCreateInstantFromPosition()
-        {
-            TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"),
-                new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, 141.25));
-
-            Assert.IsNotNull(timeInstant);
-            Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
-            Assert.IsFalse(timeInstant.DateTime.HasValue);
-            Assert.IsNull(timeInstant.Description);
-            Assert.IsNotNull(timeInstant.Position);
-            Assert.IsTrue(timeInstant.Position.URI.Equals(new Uri("ex:instPos")));
-            Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
-            Assert.AreEqual(141.25, timeInstant.Position.NumericValue);
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingInstantFromDescriptionBecauseNullPosition()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantPosition));
-        #endregion
+        Assert.IsNotNull(timeInstant);
+        Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
+        Assert.IsTrue(timeInstant.DateTime.HasValue && timeInstant.DateTime.Equals(DateTime.Parse("2010-05-22T22:45:30Z").ToUniversalTime()));
+        Assert.IsNull(timeInstant.Description);
+        Assert.IsNull(timeInstant.Position);
     }
+
+    [TestMethod]
+    public void ShouldCreateInstantFromDescription()
+    {
+        TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"), 
+            new TIMEInstantDescription(new RDFResource("ex:instDesc"), DateTime.Parse("2010-05-22T22:45:30Z").ToUniversalTime()));
+
+        Assert.IsNotNull(timeInstant);
+        Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
+        Assert.IsFalse(timeInstant.DateTime.HasValue);
+        Assert.IsNotNull(timeInstant.Description);
+        Assert.IsTrue(timeInstant.Description.URI.Equals(new Uri("ex:instDesc")));
+        Assert.IsTrue(timeInstant.Description.Coordinate.Equals(new TIMECoordinate(2010, 5, 22, 22, 45, 30)));
+        Assert.IsNull(timeInstant.Position);
+    }
+
+    [TestMethod]
+    public void ShouldCreateInstantFromDescriptionWithCoordinate()
+    {
+        TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"),
+            new TIMEInstantDescription(
+                new RDFResource("ex:instDesc"), 
+                new TIMECoordinate(2010, 5, 22, 22, 45, 30,
+                    new TIMECoordinateMetadata(
+                        TIMECalendarReferenceSystem.Gregorian,
+                        RDFVocabulary.TIME.UNIT_SECOND,
+                        RDFVocabulary.TIME.GREG.MAY,
+                        RDFVocabulary.TIME.SATURDAY,
+                        142))));
+
+        Assert.IsNotNull(timeInstant);
+        Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
+        Assert.IsFalse(timeInstant.DateTime.HasValue);
+        Assert.IsNotNull(timeInstant.Description);
+        Assert.IsTrue(timeInstant.Description.URI.Equals(new Uri("ex:instDesc")));
+        Assert.IsTrue(timeInstant.Description.Coordinate.Equals(new TIMECoordinate(2010, 5, 22, 22, 45, 30)));
+        Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.TRS.Equals(TIMECalendarReferenceSystem.Gregorian));
+        Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.UnitType.Equals(RDFVocabulary.TIME.UNIT_SECOND));
+        Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.MonthOfYear.Equals(RDFVocabulary.TIME.GREG.MAY));
+        Assert.IsTrue(timeInstant.Description.Coordinate.Metadata.DayOfWeek.Equals(RDFVocabulary.TIME.SATURDAY));
+        Assert.AreEqual(142u, timeInstant.Description.Coordinate.Metadata.DayOfYear);
+        Assert.IsNull(timeInstant.Position);
+    }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingInstantFromDescriptionBecauseNullDescription()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantDescription));
+
+    [TestMethod]
+    public void ShouldCreateInstantFromPosition()
+    {
+        TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"),
+            new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, 141.25));
+
+        Assert.IsNotNull(timeInstant);
+        Assert.IsTrue(timeInstant.URI.Equals(new Uri("ex:inst")));
+        Assert.IsFalse(timeInstant.DateTime.HasValue);
+        Assert.IsNull(timeInstant.Description);
+        Assert.IsNotNull(timeInstant.Position);
+        Assert.IsTrue(timeInstant.Position.URI.Equals(new Uri("ex:instPos")));
+        Assert.IsTrue(timeInstant.Position.TRS.Equals(TIMEPositionReferenceSystem.GeologicTime));
+        Assert.AreEqual(141.25, timeInstant.Position.NumericValue);
+    }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingInstantFromDescriptionBecauseNullPosition()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantPosition));
+    #endregion
 }

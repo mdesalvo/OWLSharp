@@ -38,14 +38,19 @@ namespace OWLSharp.Validator
                 foreach (OWLDataProperty disjDtProp in disjDtProps.DataProperties)
                     disjDtPropAsns.AddRange(OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, disjDtProp));
 
-                foreach (var conflictingDisjDtPropAsnsGroup in disjDtPropAsns.GroupBy(dtAsn => new { 
-                                                                    Idv = dtAsn.IndividualExpression.GetIRI().ToString(), 
-                                                                    Lit = dtAsn.Literal.GetLiteral().ToString() }).Where(g => g.Count() > 1))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'", 
-                        rulesugg));
+                disjDtPropAsns.GroupBy(dtAsn => new { 
+                                    Idv = dtAsn.IndividualExpression.GetIRI().ToString(), 
+                                    Lit = dtAsn.Literal.GetLiteral().ToString() })
+                              .Where(g => g.Count() > 1)
+                              .ToList()
+                              .ForEach((dtAsn =>
+                              {
+                                  issues.Add(new OWLIssue(
+                                      OWLEnums.OWLIssueSeverity.Error, 
+                                      rulename, 
+                                      $"Violated DisjointDataProperties axiom with signature: '{disjDtProps.GetXML()}'", 
+                                      rulesugg));
+                              }));
 
                 //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP1,DP2) -> ERROR
                 //DisjointDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR

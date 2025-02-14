@@ -22,60 +22,59 @@ using OWLSharp.Ontology;
 using OWLSharp.Reasoner;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEMeetsStartsEntailmentRuleTest : TIMETestOntology
 {
-    [TestClass]
-    public class TIMEMeetsStartsEntailmentRuleTest : TIMETestOntology
+    #region Tests
+    [TestMethod]
+    public async Task ShouldExecuteMeetsStartsEntailment()
     {
-        #region Tests
-        [TestMethod]
-        public async Task ShouldExecuteMeetsStartsEntailment()
+        OWLOntology ontology = new OWLOntology(TestOntology);
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature3"), new TIMEInterval(new RDFResource("ex:Interval3")));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS),
+            new OWLNamedIndividual(new RDFResource("ex:Interval1")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval3"))));
+        Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
         {
-            OWLOntology ontology = new OWLOntology(TestOntology);
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature3"), new TIMEInterval(new RDFResource("ex:Interval3")));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS),
-                new OWLNamedIndividual(new RDFResource("ex:Interval1")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval3"))));
-            Dictionary<string, List<OWLIndividualExpression>> cacheRegistry = new Dictionary<string, List<OWLIndividualExpression>>
-            {
-                { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
-                { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
-            };
-            List<OWLInference> inferences = await TIMEMeetsStartsEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
+            { "INSTANTS",  ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INSTANT)) },
+            { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
+        };
+        List<OWLInference> inferences = await TIMEMeetsStartsEntailmentRule.ExecuteRuleAsync(ontology, cacheRegistry);
 
-            Assert.IsNotNull(inferences);
-            Assert.AreEqual(1, inferences.Count);
-        }
-
-        [TestMethod]
-        public async Task ShouldExecuteMeetsStartsEntailmentViaReasoner()
-        {
-            OWLOntology ontology = new OWLOntology(TestOntology);
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
-            ontology.DeclareIntervalFeature(new RDFResource("ex:Feature3"), new TIMEInterval(new RDFResource("ex:Interval3")));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS),
-                new OWLNamedIndividual(new RDFResource("ex:Interval1")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
-            ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
-                new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS),
-                new OWLNamedIndividual(new RDFResource("ex:Interval2")),
-                new OWLNamedIndividual(new RDFResource("ex:Interval3"))));
-
-            TIMEReasoner reasoner = new TIMEReasoner().AddRule(TIMEEnums.TIMEReasonerRules.MeetsStartsEntailment);
-            List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
-
-            Assert.IsNotNull(inferences);
-            Assert.AreEqual(1, inferences.Count);
-        }
-        #endregion
+        Assert.IsNotNull(inferences);
+        Assert.AreEqual(1, inferences.Count);
     }
+
+    [TestMethod]
+    public async Task ShouldExecuteMeetsStartsEntailmentViaReasoner()
+    {
+        OWLOntology ontology = new OWLOntology(TestOntology);
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature1"), new TIMEInterval(new RDFResource("ex:Interval1")));
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature2"), new TIMEInterval(new RDFResource("ex:Interval2")));
+        ontology.DeclareIntervalFeature(new RDFResource("ex:Feature3"), new TIMEInterval(new RDFResource("ex:Interval3")));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_MEETS),
+            new OWLNamedIndividual(new RDFResource("ex:Interval1")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2"))));
+        ontology.DeclareAssertionAxiom(new OWLObjectPropertyAssertion(
+            new OWLObjectProperty(RDFVocabulary.TIME.INTERVAL_STARTS),
+            new OWLNamedIndividual(new RDFResource("ex:Interval2")),
+            new OWLNamedIndividual(new RDFResource("ex:Interval3"))));
+
+        TIMEReasoner reasoner = new TIMEReasoner().AddRule(TIMEEnums.TIMEReasonerRules.MeetsStartsEntailment);
+        List<OWLInference> inferences = await reasoner.ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.AreEqual(1, inferences.Count);
+    }
+    #endregion
 }

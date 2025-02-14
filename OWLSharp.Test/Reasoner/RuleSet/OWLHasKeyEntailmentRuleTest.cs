@@ -18,136 +18,135 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Test.Reasoner
+namespace OWLSharp.Test.Reasoner;
+
+[TestClass]
+public class OWLHasKeyEntailmentRuleTest
 {
-    [TestClass]
-    public class OWLHasKeyEntailmentRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldEntailObjectHasKeyCase()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldEntailObjectHasKeyCase()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
-                ],
-                KeyAxioms = [
-                    new OWLHasKey(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ],
-                        null 
-                    )
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
-                    ),
-                    new OWLObjectPropertyAssertion(
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
-                    )
-                ]
-            };
-            List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
+            ],
+            KeyAxioms = [
+                new OWLHasKey(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ],
+                    null 
+                )
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Rose"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
+                ),
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Abigail"))
+                )
+            ]
+        };
+        List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
-                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")
-                            && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Henry")));
-        }
-
-        [TestMethod]
-        public void ShouldEntailDataHasKeyCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
-                ],
-                KeyAxioms = [
-                    new OWLHasKey(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        null,
-                        [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ] 
-                    )
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
-                    ),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
-                    ),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
-                        new OWLLiteral(new RDFPlainLiteral("GLN1"))
-                    ),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
-                        new OWLLiteral(new RDFPlainLiteral("HNR1"))
-                    ),
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
-                        new OWLLiteral(new RDFPlainLiteral("GLN1"))
-                    )
-                ]
-            };
-            List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.AreEqual(1, inferences.Count);
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
-                            && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
-                            && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")));
-        }
-        #endregion
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.AreEqual(1, inferences.Count);
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
+                                          && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")
+                                          && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Henry")));
     }
+
+    [TestMethod]
+    public void ShouldEntailDataHasKeyCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")))
+            ],
+            KeyAxioms = [
+                new OWLHasKey(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    null,
+                    [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ] 
+                )
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))
+                ),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry"))
+                ),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glen")),
+                    new OWLLiteral(new RDFPlainLiteral("GLN1"))
+                ),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Henry")),
+                    new OWLLiteral(new RDFPlainLiteral("HNR1"))
+                ),
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener")),
+                    new OWLLiteral(new RDFPlainLiteral("GLN1"))
+                )
+            ]
+        };
+        List<OWLInference> inferences = OWLHasKeyEntailmentRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.AreEqual(1, inferences.Count);
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
+                                          && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
+                                          && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")));
+    }
+    #endregion
 }

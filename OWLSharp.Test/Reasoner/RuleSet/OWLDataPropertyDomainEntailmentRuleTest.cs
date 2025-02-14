@@ -18,43 +18,42 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Test.Reasoner
-{
-    [TestClass]
-    public class OWLDataPropertyDomainEntailmentRuleTest
-    {
-        #region Tests
-        [TestMethod]
-        public void ShouldEntailSimpleDataPropertyDomainCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
-                    new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")))
-                ],
-                DataPropertyAxioms = [ 
-                    new OWLDataPropertyDomain(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-                        new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
-                ],
-                AssertionAxioms = [
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
-                        new OWLLiteral(new RDFTypedLiteral("22", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER))
-                    )
-                ]
-            };
-            List<OWLInference> inferences = OWLDataPropertyDomainEntailmentRule.ExecuteRule(ontology);
+namespace OWLSharp.Test.Reasoner;
 
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
-                            && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
-                            && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly")));
-        }
-        #endregion
+[TestClass]
+public class OWLDataPropertyDomainEntailmentRuleTest
+{
+    #region Tests
+    [TestMethod]
+    public void ShouldEntailSimpleDataPropertyDomainCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")))
+            ],
+            DataPropertyAxioms = [ 
+                new OWLDataPropertyDomain(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                    new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
+            ],
+            AssertionAxioms = [
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")),
+                    new OWLLiteral(new RDFTypedLiteral("22", RDFModelEnums.RDFDatatypes.XSD_POSITIVEINTEGER))
+                )
+            ]
+        };
+        List<OWLInference> inferences = OWLDataPropertyDomainEntailmentRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLClassAssertion inf
+                                          && string.Equals(inf.ClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
+                                          && string.Equals(inf.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Kelly")));
     }
+    #endregion
 }

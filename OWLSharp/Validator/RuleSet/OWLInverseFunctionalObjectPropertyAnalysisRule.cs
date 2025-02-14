@@ -47,21 +47,25 @@ namespace OWLSharp.Validator
                 #endregion
 
                 //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV3,IDV2) ^ DifferentIndividuals(IDV1,IDV3) -> ERROR
-                foreach (var ifopAsnMap in ifopAsns.GroupBy(opex => opex.TargetIndividualExpression.GetIRI().ToString())
-                                                   .Select(grp => new 
-                                                   { 
-                                                        IfopAsnSources = grp.Select(g => g.SourceIndividualExpression),
-                                                        FoundDiffFromSources = grp.Select(g => g.SourceIndividualExpression)
-                                                                                        .Any(outerSrcIdv => grp.Select(g => g.SourceIndividualExpression)
-                                                                                                              .Any(innerSrcIdv => !outerSrcIdv.GetIRI().Equals(innerSrcIdv.GetIRI())
-                                                                                                                                   && ontology.CheckAreDifferentIndividuals(outerSrcIdv, innerSrcIdv)))
-                                                   })
-                                                   .Where(grp => grp.FoundDiffFromSources && grp.IfopAsnSources.Count() > 1))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated InverseFunctionalObjectProperty axiom with signature: {ifop.GetXML()}", 
-                        rulesugg));
+                ifopAsns.GroupBy(opex => opex.TargetIndividualExpression.GetIRI().ToString())
+                        .Select(grp => new 
+                        { 
+                            IfopAsnSources = grp.Select(g => g.SourceIndividualExpression),
+                            FoundDiffFromSources = grp.Select(g => g.SourceIndividualExpression)
+                                                      .Any(outerSrcIdv => grp.Select(g => g.SourceIndividualExpression)
+                                                                             .Any(innerSrcIdv => !outerSrcIdv.GetIRI().Equals(innerSrcIdv.GetIRI())
+                                                                                                    && ontology.CheckAreDifferentIndividuals(outerSrcIdv, innerSrcIdv)))
+                        })
+                        .Where(grp => grp.FoundDiffFromSources && grp.IfopAsnSources.Count() > 1)
+                        .ToList()
+                        .ForEach(ifopAsn =>
+                        {
+                            issues.Add(new OWLIssue(
+                                OWLEnums.OWLIssueSeverity.Error, 
+                                rulename, 
+                                $"Violated InverseFunctionalObjectProperty axiom with signature: {ifop.GetXML()}", 
+                                rulesugg));
+                        });
 
                 //InverseFunctionalObjectProperty(IFOP) ^ TransitiveObjectProperty(IFOP) -> ERROR
                 //InverseFunctionalObjectProperty(IFOP) ^ SubObjectPropertyOf(IFOP, SOP) ^ TransitiveObjectProperty(SOP) -> ERROR

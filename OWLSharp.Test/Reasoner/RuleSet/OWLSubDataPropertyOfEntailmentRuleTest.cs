@@ -18,68 +18,67 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Test.Reasoner
-{
-    [TestClass]
-    public class OWLSubDataPropertyOfEntailmentRuleTest
-    {
-        #region Tests
-        [TestMethod]
-        public void ShouldEntailSubDataPropertyOfCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasCharacteristic"))),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTemporalCharacteristic"))),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")))
-                ],
-                DataPropertyAxioms = [ 
-                    new OWLSubDataPropertyOf(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic")),
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasCharacteristic"))),
-                    new OWLSubDataPropertyOf(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))),
-                    new OWLEquivalentDataProperties([
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")),
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))])
-                ],
-                AssertionAxioms = [
-                    new OWLDataPropertyAssertion(
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-                        new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")),
-                        new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
-                ]
-            };
-            List<OWLInference> inferences = OWLSubDataPropertyOfEntailmentRule.ExecuteRule(ontology);
+namespace OWLSharp.Test.Reasoner;
 
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf
-                            && string.Equals(inf.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")
-                            && string.Equals(inf.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf1 
-                            && string.Equals(inf1.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
-                            && string.Equals(inf1.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf2
-                            && string.Equals(inf2.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
-                            && string.Equals(inf2.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf3 
-                            && string.Equals(inf3.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTimeCharacteristic")
-                            && string.Equals(inf3.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
-                            && string.Equals(inf3.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf4 
-                            && string.Equals(inf4.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")
-                            && string.Equals(inf4.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
-                            && string.Equals(inf4.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf5
-                            && string.Equals(inf5.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")
-                            && string.Equals(inf5.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
-                            && string.Equals(inf5.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
-        }
-        #endregion
+[TestClass]
+public class OWLSubDataPropertyOfEntailmentRuleTest
+{
+    #region Tests
+    [TestMethod]
+    public void ShouldEntailSubDataPropertyOfCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasCharacteristic"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTemporalCharacteristic"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")))
+            ],
+            DataPropertyAxioms = [ 
+                new OWLSubDataPropertyOf(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic")),
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasCharacteristic"))),
+                new OWLSubDataPropertyOf(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))),
+                new OWLEquivalentDataProperties([
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")),
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasTimeCharacteristic"))])
+            ],
+            AssertionAxioms = [
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                    new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jessie")),
+                    new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
+            ]
+        };
+        List<OWLInference> inferences = OWLSubDataPropertyOfEntailmentRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf
+                                          && string.Equals(inf.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")
+                                          && string.Equals(inf.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf1 
+                                          && string.Equals(inf1.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
+                                          && string.Equals(inf1.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubDataPropertyOf inf2
+                                          && string.Equals(inf2.SubDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")
+                                          && string.Equals(inf2.SuperDataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf3 
+                                          && string.Equals(inf3.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTimeCharacteristic")
+                                          && string.Equals(inf3.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                                          && string.Equals(inf3.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf4 
+                                          && string.Equals(inf4.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasCharacteristic")
+                                          && string.Equals(inf4.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                                          && string.Equals(inf4.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDataPropertyAssertion inf5
+                                          && string.Equals(inf5.DataProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasTemporalCharacteristic")
+                                          && string.Equals(inf5.IndividualExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Jessie")
+                                          && string.Equals(inf5.Literal.GetLiteral().ToString(), "26^^http://www.w3.org/2001/XMLSchema#integer")));
     }
+    #endregion
 }

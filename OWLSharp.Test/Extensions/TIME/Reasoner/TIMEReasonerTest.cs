@@ -17,22 +17,21 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.TIME;
 
-namespace OWLSharp.Test.Extensions.TIME
-{
-    [TestClass]
-    public class TIMEReasonerTest
-    {
-        [TestMethod]
-        public void ShouldAddRule()
-        {
-            TIMEReasoner reasoner = new TIMEReasoner();
-            
-            Assert.IsNotNull(reasoner);
-            Assert.IsNotNull(reasoner.Rules);
-            Assert.AreEqual(0, reasoner.Rules.Count);
+namespace OWLSharp.Test.Extensions.TIME;
 
-            reasoner.AddRule(TIMEEnums.TIMEReasonerRules.EqualsEntailment);
-            Assert.AreEqual(1, reasoner.Rules.Count);
-        }
+[TestClass]
+public class TIMEReasonerTest
+{
+    [TestMethod]
+    public void ShouldAddRule()
+    {
+        TIMEReasoner reasoner = new TIMEReasoner();
+            
+        Assert.IsNotNull(reasoner);
+        Assert.IsNotNull(reasoner.Rules);
+        Assert.AreEqual(0, reasoner.Rules.Count);
+
+        reasoner.AddRule(TIMEEnums.TIMEReasonerRules.EqualsEntailment);
+        Assert.AreEqual(1, reasoner.Rules.Count);
     }
 }

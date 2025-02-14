@@ -22,164 +22,163 @@ using OWLSharp.Reasoner;
 using RDFSharp.Model;
 using RDFSharp.Query;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLOntologyHelperTest
 {
-    [TestClass]
-    public class OWLOntologyHelperTest
+    #region Tests
+    [TestMethod]
+    public async Task ShouldApplyQueryWithReasonerToOntologyAsync()
     {
-        #region Tests
-        [TestMethod]
-        public async Task ShouldApplyQueryWithReasonerToOntologyAsync()
+        OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
         {
-            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
-            {
-                DeclarationAxioms = [
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:cls1"))),
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:cls2"))),
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:cls3"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv1"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv2"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv3")))
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:cls1")),
-                        new OWLNamedIndividual(new RDFResource("ex:idv1"))),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:cls2")),
-                        new OWLNamedIndividual(new RDFResource("ex:idv2"))),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:cls3")),
-                        new OWLNamedIndividual(new RDFResource("ex:idv3")))
-                ],
-                ClassAxioms = [
-                    new OWLSubClassOf(
-                        new OWLClass(new RDFResource("ex:cls1")),
-                        new OWLClass(new RDFResource("ex:cls2"))),
-                    new OWLSubClassOf(
-                        new OWLClass(new RDFResource("ex:cls2")),
-                        new OWLClass(new RDFResource("ex:cls3")))
-                ],
-                Rules = [
-                    new SWRLRule(
-                        new RDFPlainLiteral("Example"),
-                        new RDFPlainLiteral("Example"),
-                        new SWRLAntecedent
-                        {
-                            Atoms = [
-                                new SWRLClassAtom(
-                                    new OWLClass(new RDFResource("ex:cls3")),
-                                    new SWRLVariableArgument(new RDFVariable("?IDV")))
-                            ],
-                            BuiltIns = [
-                                SWRLBuiltIn.NotEqual(
-                                    new SWRLVariableArgument(new RDFVariable("?IDV")),
-                                    new SWRLIndividualArgument(new RDFResource("ex:idv3")))
-                            ]
-                        },
-                        new SWRLConsequent
-                        {
-                            Atoms = [
-                                new SWRLDataPropertyAtom(
-                                    new OWLDataProperty(new RDFResource("urn:owlsharp:hasInference")),
-                                    new SWRLVariableArgument(new RDFVariable("?IDV")),
-                                    new SWRLLiteralArgument(RDFTypedLiteral.True))
-                            ]
-                        })
-                ]
-            };
-            OWLReasoner reasoner = new OWLReasoner
-            {
-                Rules = [ 
-                    OWLEnums.OWLReasonerRules.SubClassOfEntailment,
-                    OWLEnums.OWLReasonerRules.ClassAssertionEntailment
-                ]
-            };
-            RDFSelectQuery query = new RDFSelectQuery()
-                .AddPatternGroup(new RDFPatternGroup()
-                    .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:cls3"))));
-            RDFSelectQueryResult result = await query.ApplyToOntologyAsync(ontology, reasoner);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual(3, result.SelectResultsCount);
-        }
-
-        [TestMethod]
-        public async Task ShouldApplyQueryWithoutReasonerToOntologyAsync()
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:cls1"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:cls2"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:cls3"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv1"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv2"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv3")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:cls1")),
+                    new OWLNamedIndividual(new RDFResource("ex:idv1"))),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:cls2")),
+                    new OWLNamedIndividual(new RDFResource("ex:idv2"))),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:cls3")),
+                    new OWLNamedIndividual(new RDFResource("ex:idv3")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("ex:cls1")),
+                    new OWLClass(new RDFResource("ex:cls2"))),
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("ex:cls2")),
+                    new OWLClass(new RDFResource("ex:cls3")))
+            ],
+            Rules = [
+                new SWRLRule(
+                    new RDFPlainLiteral("Example"),
+                    new RDFPlainLiteral("Example"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(
+                                new OWLClass(new RDFResource("ex:cls3")),
+                                new SWRLVariableArgument(new RDFVariable("?IDV")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.NotEqual(
+                                new SWRLVariableArgument(new RDFVariable("?IDV")),
+                                new SWRLIndividualArgument(new RDFResource("ex:idv3")))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [
+                            new SWRLDataPropertyAtom(
+                                new OWLDataProperty(new RDFResource("urn:owlsharp:hasInference")),
+                                new SWRLVariableArgument(new RDFVariable("?IDV")),
+                                new SWRLLiteralArgument(RDFTypedLiteral.True))
+                        ]
+                    })
+            ]
+        };
+        OWLReasoner reasoner = new OWLReasoner
         {
-            OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
-            {
-                DeclarationAxioms = [
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:cls1"))),
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:cls2"))),
-                    new OWLDeclaration(new OWLClass(new RDFResource("ex:cls3"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv1"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv2"))),
-                    new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv3")))
-                ],
-                AssertionAxioms = [
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:cls1")),
-                        new OWLNamedIndividual(new RDFResource("ex:idv1"))),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:cls2")),
-                        new OWLNamedIndividual(new RDFResource("ex:idv2"))),
-                    new OWLClassAssertion(
-                        new OWLClass(new RDFResource("ex:cls3")),
-                        new OWLNamedIndividual(new RDFResource("ex:idv3")))
-                ],
-                ClassAxioms = [
-                    new OWLSubClassOf(
-                        new OWLClass(new RDFResource("ex:cls1")),
-                        new OWLClass(new RDFResource("ex:cls2"))),
-                    new OWLSubClassOf(
-                        new OWLClass(new RDFResource("ex:cls2")),
-                        new OWLClass(new RDFResource("ex:cls3")))
-                ],
-                Rules = [
-                    new SWRLRule(
-                        new RDFPlainLiteral("Example"),
-                        new RDFPlainLiteral("Example"),
-                        new SWRLAntecedent
-                        {
-                            Atoms = [
-                                new SWRLClassAtom(
-                                    new OWLClass(new RDFResource("ex:cls3")),
-                                    new SWRLVariableArgument(new RDFVariable("?IDV")))
-                            ],
-                            BuiltIns = [
-                                SWRLBuiltIn.NotEqual(
-                                    new SWRLVariableArgument(new RDFVariable("?IDV")),
-                                    new SWRLIndividualArgument(new RDFResource("ex:idv3")))
-                            ]
-                        },
-                        new SWRLConsequent
-                        {
-                            Atoms = [
-                                new SWRLDataPropertyAtom(
-                                    new OWLDataProperty(new RDFResource("urn:owlsharp:hasInference")),
-                                    new SWRLVariableArgument(new RDFVariable("?IDV")),
-                                    new SWRLLiteralArgument(RDFTypedLiteral.True))
-                            ]
-                        })
-                ]
-            };
-            RDFSelectQuery query = new RDFSelectQuery()
-                .AddPatternGroup(new RDFPatternGroup()
-                    .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:cls3"))));
-            RDFSelectQueryResult result = await query.ApplyToOntologyAsync(ontology);
+            Rules = [ 
+                OWLEnums.OWLReasonerRules.SubClassOfEntailment,
+                OWLEnums.OWLReasonerRules.ClassAssertionEntailment
+            ]
+        };
+        RDFSelectQuery query = new RDFSelectQuery()
+            .AddPatternGroup(new RDFPatternGroup()
+                .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:cls3"))));
+        RDFSelectQueryResult result = await query.ApplyToOntologyAsync(ontology, reasoner);
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.SelectResultsCount);
-        }
-
-        [TestMethod]
-        public async Task ShouldThrowExceptionOnApplyingQueryToOntologyBecauseNullQueryAsync()
-            => await Assert.ThrowsExactlyAsync<OWLException>(() => (null as RDFSelectQuery).ApplyToOntologyAsync(null));
-
-        [TestMethod]
-        public async Task ShouldThrowExceptionOnApplyingQueryToOntologyBecauseNullOntologyAsync()
-            => await Assert.ThrowsExactlyAsync<OWLException>(() => new RDFSelectQuery().ApplyToOntologyAsync(null));
-        #endregion
+        Assert.IsNotNull(result);
+        Assert.AreEqual(3, result.SelectResultsCount);
     }
+
+    [TestMethod]
+    public async Task ShouldApplyQueryWithoutReasonerToOntologyAsync()
+    {
+        OWLOntology ontology = new OWLOntology(new Uri("ex:ont"))
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:cls1"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:cls2"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:cls3"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv1"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv2"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:idv3")))
+            ],
+            AssertionAxioms = [
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:cls1")),
+                    new OWLNamedIndividual(new RDFResource("ex:idv1"))),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:cls2")),
+                    new OWLNamedIndividual(new RDFResource("ex:idv2"))),
+                new OWLClassAssertion(
+                    new OWLClass(new RDFResource("ex:cls3")),
+                    new OWLNamedIndividual(new RDFResource("ex:idv3")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("ex:cls1")),
+                    new OWLClass(new RDFResource("ex:cls2"))),
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("ex:cls2")),
+                    new OWLClass(new RDFResource("ex:cls3")))
+            ],
+            Rules = [
+                new SWRLRule(
+                    new RDFPlainLiteral("Example"),
+                    new RDFPlainLiteral("Example"),
+                    new SWRLAntecedent
+                    {
+                        Atoms = [
+                            new SWRLClassAtom(
+                                new OWLClass(new RDFResource("ex:cls3")),
+                                new SWRLVariableArgument(new RDFVariable("?IDV")))
+                        ],
+                        BuiltIns = [
+                            SWRLBuiltIn.NotEqual(
+                                new SWRLVariableArgument(new RDFVariable("?IDV")),
+                                new SWRLIndividualArgument(new RDFResource("ex:idv3")))
+                        ]
+                    },
+                    new SWRLConsequent
+                    {
+                        Atoms = [
+                            new SWRLDataPropertyAtom(
+                                new OWLDataProperty(new RDFResource("urn:owlsharp:hasInference")),
+                                new SWRLVariableArgument(new RDFVariable("?IDV")),
+                                new SWRLLiteralArgument(RDFTypedLiteral.True))
+                        ]
+                    })
+            ]
+        };
+        RDFSelectQuery query = new RDFSelectQuery()
+            .AddPatternGroup(new RDFPatternGroup()
+                .AddPattern(new RDFPattern(new RDFVariable("?IDV"), RDFVocabulary.RDF.TYPE, new RDFResource("ex:cls3"))));
+        RDFSelectQueryResult result = await query.ApplyToOntologyAsync(ontology);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(1, result.SelectResultsCount);
+    }
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnApplyingQueryToOntologyBecauseNullQueryAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(() => (null as RDFSelectQuery).ApplyToOntologyAsync(null));
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnApplyingQueryToOntologyBecauseNullOntologyAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(() => new RDFSelectQuery().ApplyToOntologyAsync(null));
+    #endregion
 }

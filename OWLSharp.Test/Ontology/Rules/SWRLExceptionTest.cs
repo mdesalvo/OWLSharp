@@ -18,53 +18,52 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using System;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class SWRLExceptionTest
 {
-    [TestClass]
-    public class SWRLExceptionTest
+    #region Tests
+    [TestMethod]
+    public void ShouldRaiseEmptyException()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldRaiseEmptyException()
+        try
         {
-            try
-            {
-                throw new SWRLException();
-            }
-            catch (SWRLException mex)
-            {
-                Assert.IsTrue(mex.Message.Contains("OWLSharp.Ontology.SWRLException", StringComparison.OrdinalIgnoreCase));
-            }
+            throw new SWRLException();
         }
-
-        [TestMethod]
-        public void ShouldRaiseMessageException()
+        catch (SWRLException mex)
         {
-            try
-            {
-                throw new SWRLException("This is an exception coming from SWRL modeling!");
-            }
-            catch (SWRLException mex)
-            {
-                Assert.IsTrue(mex.Message.Equals("This is an exception coming from SWRL modeling!", StringComparison.OrdinalIgnoreCase));
-                Assert.IsNull(mex.InnerException);
-            }
+            Assert.IsTrue(mex.Message.Contains("OWLSharp.Ontology.SWRLException", StringComparison.OrdinalIgnoreCase));
         }
-
-        [TestMethod]
-        public void ShouldRaiseMessageWithInnerException()
-        {
-            try
-            {
-                throw new SWRLException("This is an exception coming from SWRL modeling!", new Exception("This is the inner exception!"));
-            }
-            catch (SWRLException mex)
-            {
-                Assert.IsTrue(mex.Message.Equals("This is an exception coming from SWRL modeling!", StringComparison.OrdinalIgnoreCase));
-                Assert.IsNotNull(mex.InnerException);
-                Assert.IsTrue(mex.InnerException.Message.Equals("This is the inner exception!"));
-            }
-        }
-        #endregion
     }
+
+    [TestMethod]
+    public void ShouldRaiseMessageException()
+    {
+        try
+        {
+            throw new SWRLException("This is an exception coming from SWRL modeling!");
+        }
+        catch (SWRLException mex)
+        {
+            Assert.IsTrue(mex.Message.Equals("This is an exception coming from SWRL modeling!", StringComparison.OrdinalIgnoreCase));
+            Assert.IsNull(mex.InnerException);
+        }
+    }
+
+    [TestMethod]
+    public void ShouldRaiseMessageWithInnerException()
+    {
+        try
+        {
+            throw new SWRLException("This is an exception coming from SWRL modeling!", new Exception("This is the inner exception!"));
+        }
+        catch (SWRLException mex)
+        {
+            Assert.IsTrue(mex.Message.Equals("This is an exception coming from SWRL modeling!", StringComparison.OrdinalIgnoreCase));
+            Assert.IsNotNull(mex.InnerException);
+            Assert.IsTrue(mex.InnerException.Message.Equals("This is the inner exception!"));
+        }
+    }
+    #endregion
 }

@@ -19,43 +19,42 @@ using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEReferenceSystemRegistryTest
 {
-    [TestClass]
-    public class TIMEReferenceSystemRegistryTest
+    #region Tests
+    [TestMethod]
+    public void ShouldAccessInstance()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldAccessInstance()
-        {
-            Assert.IsNotNull(TIMEReferenceSystemRegistry.Instance);
-        }
-
-        [TestMethod]
-        public void ShouldOperateOnRegistry()
-        {
-            //Test initial configuration (built-in TRS)
-            Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 3);
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMECalendarReferenceSystem.Gregorian));
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.UnixTime));
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GeologicTime));
-
-            //Test different forms of iteration
-            IEnumerator<TIMEReferenceSystem> trsEnumerator = TIMEReferenceSystemRegistry.TRSEnumerator;
-            while (trsEnumerator.MoveNext())
-                Assert.IsNotNull(trsEnumerator.Current);
-            foreach (TIMEReferenceSystem trs in TIMEReferenceSystemRegistry.Instance)
-                Assert.IsNotNull(trs);
-
-            //Test addition of TRS
-            TIMEPositionReferenceSystem millenniumTRS = new TIMEPositionReferenceSystem(
-                new RDFResource("ex:MillenniumTRS"), new TIMECoordinate(2000, 1, 1, 0, 0, 0), TIMEUnit.Day);
-            Assert.IsFalse(TIMEReferenceSystemRegistry.ContainsTRS(millenniumTRS));            
-            TIMEReferenceSystemRegistry.AddTRS(millenniumTRS);
-            TIMEReferenceSystemRegistry.AddTRS(millenniumTRS); //Duplicates are avoided
-            Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 4);
-            Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(millenniumTRS));
-        }
-        #endregion
+        Assert.IsNotNull(TIMEReferenceSystemRegistry.Instance);
     }
+
+    [TestMethod]
+    public void ShouldOperateOnRegistry()
+    {
+        //Test initial configuration (built-in TRS)
+        Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 3);
+        Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMECalendarReferenceSystem.Gregorian));
+        Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.UnixTime));
+        Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(TIMEPositionReferenceSystem.GeologicTime));
+
+        //Test different forms of iteration
+        IEnumerator<TIMEReferenceSystem> trsEnumerator = TIMEReferenceSystemRegistry.TRSEnumerator;
+        while (trsEnumerator.MoveNext())
+            Assert.IsNotNull(trsEnumerator.Current);
+        foreach (TIMEReferenceSystem trs in TIMEReferenceSystemRegistry.Instance)
+            Assert.IsNotNull(trs);
+
+        //Test addition of TRS
+        TIMEPositionReferenceSystem millenniumTRS = new TIMEPositionReferenceSystem(
+            new RDFResource("ex:MillenniumTRS"), new TIMECoordinate(2000, 1, 1, 0, 0, 0), TIMEUnit.Day);
+        Assert.IsFalse(TIMEReferenceSystemRegistry.ContainsTRS(millenniumTRS));            
+        TIMEReferenceSystemRegistry.AddTRS(millenniumTRS);
+        TIMEReferenceSystemRegistry.AddTRS(millenniumTRS); //Duplicates are avoided
+        Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 4);
+        Assert.IsTrue(TIMEReferenceSystemRegistry.ContainsTRS(millenniumTRS));
+    }
+    #endregion
 }

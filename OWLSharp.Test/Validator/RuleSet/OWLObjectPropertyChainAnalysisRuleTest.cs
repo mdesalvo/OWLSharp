@@ -17,150 +17,149 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
+namespace OWLSharp.Test.Validator;
+
+[TestClass]
+public class OWLObjectPropertyChainAnalysisRuleTest
 {
-    [TestClass]
-    public class OWLObjectPropertyChainAnalysisRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyChainAsymmetricCase()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeObjectPropertyChainAsymmetricCase()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectPropertyChain([
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
-                ]
-            };
-            List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeObjectPropertyChainFunctionalCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectPropertyChain([
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
-                ]
-            };
-            List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeObjectPropertyChainInverseFunctionalCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectPropertyChain([
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
-                ]
-            };
-            List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeObjectPropertyChainIrreflexiveCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectPropertyChain([
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
-                ]
-            };
-            List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeObjectPropertyChainLoopCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
-                ],
-                ObjectPropertyAxioms = [ 
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectPropertyChain([
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
-                            new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))]),
-                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
-                ]
-            };
-            List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg2)));
-        }
-        #endregion
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyChainFunctionalCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyChainInverseFunctionalCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyChainIrreflexiveCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBroher"))]),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeObjectPropertyChainLoopCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
+            ],
+            ObjectPropertyAxioms = [ 
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectPropertyChain([
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
+                        new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))]),
+                    new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle")))
+            ]
+        };
+        List<OWLIssue> issues = OWLObjectPropertyChainAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLObjectPropertyChainAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLObjectPropertyChainAnalysisRule.rulesugg2)));
+    }
+    #endregion
 }

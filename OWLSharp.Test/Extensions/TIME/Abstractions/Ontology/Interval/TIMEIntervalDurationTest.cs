@@ -19,27 +19,26 @@ using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 using System;
 
-namespace OWLSharp.Test.Extensions.TIME
+namespace OWLSharp.Test.Extensions.TIME;
+
+[TestClass]
+public class TIMEIntervalDurationTest
 {
-    [TestClass]
-    public class TIMEIntervalDurationTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateIntervalDuration()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateIntervalDuration()
-        {
-            TIMEIntervalDuration timeIntervalDuration = new TIMEIntervalDuration(
-                new RDFResource("ex:intvDur"), TIMEUnit.MillionYearsAgo, 12.23);
+        TIMEIntervalDuration timeIntervalDuration = new TIMEIntervalDuration(
+            new RDFResource("ex:intvDur"), TIMEUnit.MillionYearsAgo, 12.23);
 
-            Assert.IsNotNull(timeIntervalDuration);
-            Assert.IsTrue(timeIntervalDuration.URI.Equals(new Uri("ex:intvDur")));
-            Assert.IsTrue(timeIntervalDuration.UnitType.Equals(TIMEUnit.MillionYearsAgo));
-            Assert.AreEqual(12.23, timeIntervalDuration.Value);
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingIntervalDurationBecauseNullUnitType()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEIntervalDuration(new RDFResource("ex:intvDur"), null, 12.23));
-        #endregion
+        Assert.IsNotNull(timeIntervalDuration);
+        Assert.IsTrue(timeIntervalDuration.URI.Equals(new Uri("ex:intvDur")));
+        Assert.IsTrue(timeIntervalDuration.UnitType.Equals(TIMEUnit.MillionYearsAgo));
+        Assert.AreEqual(12.23, timeIntervalDuration.Value);
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingIntervalDurationBecauseNullUnitType()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEIntervalDuration(new RDFResource("ex:intvDur"), null, 12.23));
+    #endregion
 }

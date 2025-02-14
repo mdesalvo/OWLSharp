@@ -18,35 +18,34 @@ using RDFSharp.Model;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OWLSharp.Test.Reasoner
-{
-    [TestClass]
-    public class OWLDisjointDataPropertiesEntailmentRuleTest
-    {
-        #region Tests
-        [TestMethod]
-        public void ShouldEntailDisjointDataPropertiesCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))),
-                    new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")))
-                ],
-                DataPropertyAxioms = [ 
-                    new OWLDisjointDataProperties([
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
-                        new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))])
-                ]
-            };
-            List<OWLInference> inferences = OWLDisjointDataPropertiesEntailmentRule.ExecuteRule(ontology);
+namespace OWLSharp.Test.Reasoner;
 
-            Assert.IsNotNull(inferences);
-            Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-            Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointDataProperties inf
-                            && string.Equals(inf.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasName")
-                            && string.Equals(inf.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")));
-        }
-        #endregion
+[TestClass]
+public class OWLDisjointDataPropertiesEntailmentRuleTest
+{
+    #region Tests
+    [TestMethod]
+    public void ShouldEntailDisjointDataPropertiesCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))),
+                new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")))
+            ],
+            DataPropertyAxioms = [ 
+                new OWLDisjointDataProperties([
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
+                    new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))])
+            ]
+        };
+        List<OWLInference> inferences = OWLDisjointDataPropertiesEntailmentRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointDataProperties inf
+                                          && string.Equals(inf.DataProperties[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasName")
+                                          && string.Equals(inf.DataProperties[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/hasAge")));
     }
+    #endregion
 }

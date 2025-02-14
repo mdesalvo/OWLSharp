@@ -18,46 +18,45 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLPrefixTest
 {
-    [TestClass]
-    public class OWLPrefixTest
+    #region Tests
+    [TestMethod]
+    public void ShouldCreatePrefix()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreatePrefix()
-        {
-            OWLPrefix prefix = new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX));
+        OWLPrefix prefix = new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX));
 
-            Assert.IsNotNull(prefix);
-            Assert.IsTrue(string.Equals(prefix.Name, RDFVocabulary.FOAF.PREFIX));
-            Assert.IsTrue(string.Equals(prefix.IRI, RDFVocabulary.FOAF.BASE_URI));
-        }
-
-        [TestMethod]
-        public void ShouldThrowExceptionOnCreatingImportBecauseNullNamepsace()
-            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLPrefix(null));
-
-        [TestMethod]
-        public void ShouldSerializePrefix()
-        {
-            OWLPrefix prefix = new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX));
-            string serializedXML = OWLSerializer.SerializeObject(prefix);
-
-            Assert.IsTrue(string.Equals(serializedXML,
-"""<Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />"""));
-        }
-
-        [TestMethod] 
-        public void ShouldDeserializePrefix()
-        {
-            OWLPrefix prefix = OWLSerializer.DeserializeObject<OWLPrefix>(
-"""<Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />""");
-
-            Assert.IsNotNull(prefix);
-            Assert.IsTrue(string.Equals(prefix.Name, RDFVocabulary.FOAF.PREFIX));
-            Assert.IsTrue(string.Equals(prefix.IRI, RDFVocabulary.FOAF.BASE_URI));
-        }
-        #endregion
+        Assert.IsNotNull(prefix);
+        Assert.IsTrue(string.Equals(prefix.Name, RDFVocabulary.FOAF.PREFIX));
+        Assert.IsTrue(string.Equals(prefix.IRI, RDFVocabulary.FOAF.BASE_URI));
     }
+
+    [TestMethod]
+    public void ShouldThrowExceptionOnCreatingImportBecauseNullNamepsace()
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLPrefix(null));
+
+    [TestMethod]
+    public void ShouldSerializePrefix()
+    {
+        OWLPrefix prefix = new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX));
+        string serializedXML = OWLSerializer.SerializeObject(prefix);
+
+        Assert.IsTrue(string.Equals(serializedXML,
+            """<Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />"""));
+    }
+
+    [TestMethod] 
+    public void ShouldDeserializePrefix()
+    {
+        OWLPrefix prefix = OWLSerializer.DeserializeObject<OWLPrefix>(
+            """<Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />""");
+
+        Assert.IsNotNull(prefix);
+        Assert.IsTrue(string.Equals(prefix.Name, RDFVocabulary.FOAF.PREFIX));
+        Assert.IsTrue(string.Equals(prefix.IRI, RDFVocabulary.FOAF.BASE_URI));
+    }
+    #endregion
 }

@@ -18,40 +18,39 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Ontology
+namespace OWLSharp.Test.Ontology;
+
+[TestClass]
+public class OWLDatatypeDefinitionHelperTest
 {
-    [TestClass]
-    public class OWLDatatypeDefinitionHelperTest
+    #region Tests
+    [TestMethod]
+    public void ShouldDeclareDatatypeDefinition()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldDeclareDatatypeDefinition()
-        {
-            OWLOntology ontology = new OWLOntology();
-            ontology.DeclareDatatypeDefinition(new OWLDatatypeDefinition(
-                new OWLDatatype(new RDFResource("ex:length6to10")),
-                new OWLDatatypeRestriction(
-                    new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])));
+        OWLOntology ontology = new OWLOntology();
+        ontology.DeclareDatatypeDefinition(new OWLDatatypeDefinition(
+            new OWLDatatype(new RDFResource("ex:length6to10")),
+            new OWLDatatypeRestriction(
+                new OWLDatatype(RDFVocabulary.XSD.STRING),
+                [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                    new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)])));
 
-            Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
-            Assert.IsTrue(ontology.CheckHasDatatypeDefinition(new OWLDatatypeDefinition(
-                new OWLDatatype(new RDFResource("ex:length6to10")),
-                new OWLDatatypeRestriction(
-                    new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))));
-            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareDatatypeDefinition(null));
+        Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
+        Assert.IsTrue(ontology.CheckHasDatatypeDefinition(new OWLDatatypeDefinition(
+            new OWLDatatype(new RDFResource("ex:length6to10")),
+            new OWLDatatypeRestriction(
+                new OWLDatatype(RDFVocabulary.XSD.STRING),
+                [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                    new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))));
+        Assert.ThrowsExactly<OWLException>(() => ontology.DeclareDatatypeDefinition(null));
 
-            ontology.DeclareDatatypeDefinition(new OWLDatatypeDefinition(
-                new OWLDatatype(new RDFResource("ex:length6to10")),
-                new OWLDatatypeRestriction(
-                    new OWLDatatype(RDFVocabulary.XSD.STRING),
-                    [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
-                     new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))); //will be discarded, since duplicates are not allowed
-            Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
-        }
-        #endregion
+        ontology.DeclareDatatypeDefinition(new OWLDatatypeDefinition(
+            new OWLDatatype(new RDFResource("ex:length6to10")),
+            new OWLDatatypeRestriction(
+                new OWLDatatype(RDFVocabulary.XSD.STRING),
+                [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
+                    new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))); //will be discarded, since duplicates are not allowed
+        Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
     }
+    #endregion
 }

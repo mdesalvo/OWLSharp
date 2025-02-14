@@ -17,92 +17,91 @@ using OWLSharp.Validator;
 using RDFSharp.Model;
 using System.Collections.Generic;
 
-namespace OWLSharp.Test.Validator
+namespace OWLSharp.Test.Validator;
+
+[TestClass]
+public class OWLSubObjectPropertyOfAnalysisRuleTest
 {
-    [TestClass]
-    public class OWLSubObjectPropertyOfAnalysisRuleTest
+    #region Tests
+    [TestMethod]
+    public void ShouldAnalyzeSubObjectPropertyOfSubObjectPropertyOfCase()
     {
-        #region Tests
-        [TestMethod]
-        public void ShouldAnalyzeSubObjectPropertyOfSubObjectPropertyOfCase()
+        OWLOntology ontology = new OWLOntology
         {
-            OWLOntology ontology = new OWLOntology
-            {
-                ObjectPropertyAxioms = [
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
-                        new OWLObjectProperty(new RDFResource("ex:knows")) ),
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectProperty(new RDFResource("ex:knows")), 
-                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
-                ]
-            };
-            List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(new RDFResource("ex:knows")) ),
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectProperty(new RDFResource("ex:knows")), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
+            ]
+        };
+        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
 
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(2, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeSubObjectPropertyOfEquivalentObjectPropertiesCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                ObjectPropertyAxioms = [
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
-                        new OWLObjectProperty(new RDFResource("ex:knows")) ),
-                    new OWLEquivalentObjectProperties([
-                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
-                        new OWLObjectProperty(new RDFResource("ex:knows")) ])
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
-                ]
-            };
-            List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
-        }
-
-        [TestMethod]
-        public void ShouldAnalyzeSubObjectPropertyOfDisjointObjectPropertiesCase()
-        {
-            OWLOntology ontology = new OWLOntology
-            {
-                ObjectPropertyAxioms = [
-                    new OWLSubObjectPropertyOf(
-                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
-                        new OWLObjectProperty(new RDFResource("ex:knows")) ),
-                    new OWLDisjointObjectProperties([
-                        new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
-                        new OWLObjectProperty(new RDFResource("ex:knows")) ])
-                ],
-                DeclarationAxioms = [ 
-                    new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
-                    new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
-                ]
-            };
-            List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
-
-            Assert.IsNotNull(issues);
-            Assert.AreEqual(1, issues.Count);
-            Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
-            Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
-        }
-        #endregion
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(2, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
     }
+
+    [TestMethod]
+    public void ShouldAnalyzeSubObjectPropertyOfEquivalentObjectPropertiesCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(new RDFResource("ex:knows")) ),
+                new OWLEquivalentObjectProperties([
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(new RDFResource("ex:knows")) ])
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
+            ]
+        };
+        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
+    }
+
+    [TestMethod]
+    public void ShouldAnalyzeSubObjectPropertyOfDisjointObjectPropertiesCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            ObjectPropertyAxioms = [
+                new OWLSubObjectPropertyOf(
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(new RDFResource("ex:knows")) ),
+                new OWLDisjointObjectProperties([
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(new RDFResource("ex:knows")) ])
+            ],
+            DeclarationAxioms = [ 
+                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
+            ]
+        };
+        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLSubObjectPropertyOfAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLSubObjectPropertyOfAnalysisRule.rulesugg)));
+    }
+    #endregion
 }

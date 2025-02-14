@@ -1032,7 +1032,7 @@ namespace OWLSharp.Ontology
                         foreach (RDFTriple hasKeyTriple in graph[null, RDFVocabulary.OWL.HAS_KEY, null, null])
                         {
                             LoadClassExpression(ont, (RDFResource)hasKeyTriple.Subject, out OWLClassExpression clsExp);
-                            if (!(clsExp is OWLClass classIRI))
+                            if (!(clsExp is OWLClass))
                                 continue;
 
                             List<OWLObjectPropertyExpression> haskeyOPMembers = new List<OWLObjectPropertyExpression>();

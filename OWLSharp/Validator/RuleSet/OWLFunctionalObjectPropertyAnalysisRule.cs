@@ -47,21 +47,25 @@ namespace OWLSharp.Validator
                 #endregion
 
                 //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
-                foreach (var fopAsnMap in fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
-                                                 .Select(grp => new 
-                                                 { 
-                                                      FopAsnTargets = grp.Select(g => g.TargetIndividualExpression),
-                                                      FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
-                                                                                .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
-                                                                                                       .Any(innerTgtIdv => !outerTgtIdv.GetIRI().Equals(innerTgtIdv.GetIRI())
-                                                                                                                             && ontology.CheckAreDifferentIndividuals(outerTgtIdv, innerTgtIdv)))
-                                                 })
-                                                 .Where(grp => grp.FoundDiffFromTargets && grp.FopAsnTargets.Count() > 1))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}", 
-                        rulesugg));
+                fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
+                       .Select(grp => new 
+                       { 
+                            FopAsnTargets = grp.Select(g => g.TargetIndividualExpression),
+                            FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
+                                                      .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
+                                                                             .Any(innerTgtIdv => !outerTgtIdv.GetIRI().Equals(innerTgtIdv.GetIRI())
+                                                                                                   && ontology.CheckAreDifferentIndividuals(outerTgtIdv, innerTgtIdv)))
+                       })
+                       .Where(grp => grp.FoundDiffFromTargets && grp.FopAsnTargets.Count() > 1)
+                       .ToList()
+                       .ForEach(fopAsn =>
+                       {
+                           issues.Add(new OWLIssue(
+                               OWLEnums.OWLIssueSeverity.Error, 
+                               rulename, 
+                               $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}", 
+                               rulesugg));
+                       });
 
                 //FunctionalObjectProperty(FOP) ^ TransitiveObjectProperty(FOP) -> ERROR
                 //FunctionalObjectProperty(FOP) ^ SubObjectPropertyOf(FOP, SOP) ^ TransitiveObjectProperty(SOP) -> ERROR

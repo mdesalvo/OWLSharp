@@ -37,12 +37,16 @@ namespace OWLSharp.Validator
             foreach (OWLAsymmetricObjectProperty asymObjProp in asymObjProps)
             {
                 RDFResource asymObjPropIRI = asymObjProp.ObjectPropertyExpression.GetIRI();
-                foreach (OWLSymmetricObjectProperty symObjProp in symObjProps.Where(symObjProp => symObjProp.ObjectPropertyExpression.GetIRI().Equals(asymObjPropIRI)))
-                    issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'", 
-                        rulesugg1));
+                symObjProps.Where(symObjProp => symObjProp.ObjectPropertyExpression.GetIRI().Equals(asymObjPropIRI))
+                           .ToList()
+                           .ForEach(symObjProp =>
+                           {
+                               issues.Add(new OWLIssue(
+                                   OWLEnums.OWLIssueSeverity.Error, 
+                                   rulename, 
+                                   $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'", 
+                                   rulesugg1));
+                           });
             }
 
             //AsymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV2,IDV1) -> ERROR

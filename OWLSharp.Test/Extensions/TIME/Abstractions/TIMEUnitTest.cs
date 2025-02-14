@@ -18,22 +18,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.TIME;
 using RDFSharp.Model;
 
-namespace OWLSharp.Test.Extensions.TIME
-{
-    [TestClass]
-    public class TIMEUnitTest
-    {
-        #region Tests
-        [TestMethod]
-        public void ShouldCreateUnit()
-        {
-            TIMEUnit timeUnit = new TIMEUnit(new RDFResource("ex:unit"), TIMEEnums.TIMEUnitType.Day, 0.25);
+namespace OWLSharp.Test.Extensions.TIME;
 
-            Assert.IsNotNull(timeUnit);
-            Assert.IsTrue(timeUnit.Equals(new RDFResource("ex:unit")));
-            Assert.AreEqual(TIMEEnums.TIMEUnitType.Day, timeUnit.UnitType);
-            Assert.AreEqual(0.25, timeUnit.ScaleFactor);
-        }
-        #endregion
+[TestClass]
+public class TIMEUnitTest
+{
+    #region Tests
+    [TestMethod]
+    public void ShouldCreateUnit()
+    {
+        TIMEUnit timeUnit = new TIMEUnit(new RDFResource("ex:unit"), TIMEEnums.TIMEUnitType.Day, 0.25);
+
+        Assert.IsNotNull(timeUnit);
+        Assert.IsTrue(timeUnit.Equals(new RDFResource("ex:unit")));
+        Assert.AreEqual(TIMEEnums.TIMEUnitType.Day, timeUnit.UnitType);
+        Assert.AreEqual(0.25, timeUnit.ScaleFactor);
     }
+    #endregion
 }
