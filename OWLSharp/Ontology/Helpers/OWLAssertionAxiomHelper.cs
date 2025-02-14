@@ -464,9 +464,12 @@ namespace OWLSharp.Ontology
                         return true;
 
                     //Plain literals are instances of rdf:langString when having language,
+                    //are instances of rdf:dirLangString when having direction language,
                     //otherwise they are instances of rdf:PlainLiteral 
                     if (drExprIRI.Equals(RDFVocabulary.RDF.LANG_STRING))
                         return rdfLiteral is RDFPlainLiteral rdfPlainLiteral && rdfPlainLiteral.HasLanguage();
+                    if (drExprIRI.Equals(RDFVocabulary.RDF.DIR_LANG_STRING))
+                        return rdfLiteral is RDFPlainLiteral rdfPlainLiteral && rdfPlainLiteral.HasDirection();
                     if (drExprIRI.Equals(RDFVocabulary.RDF.PLAIN_LITERAL))
                         return rdfLiteral is RDFPlainLiteral;
                     if (rdfLiteral is RDFPlainLiteral)

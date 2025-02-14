@@ -20,7 +20,7 @@ namespace OWLSharp.Validator
     internal static class OWLClassAssertionAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.ClassAssertionAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be named individuals belonging at the same time to a class expression and its object complement!";
+        internal const string rulesugg = "There should not be named individuals belonging at the same time to a class expression and its object complement!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

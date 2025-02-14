@@ -63,7 +63,7 @@ public class TIMEIntervalNotDisjointAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalNotDisjointAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalBefore";
+        const string clashingRelation = "time:intervalBefore";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -111,7 +111,7 @@ public class TIMEIntervalNotDisjointAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalNotDisjointAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalAfter";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -159,7 +159,7 @@ public class TIMEIntervalNotDisjointAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalNotDisjointAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalDisjoint";
+        const string clashingRelation = "time:intervalDisjoint";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

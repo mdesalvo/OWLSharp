@@ -31,8 +31,11 @@ namespace OWLSharp.Extensions.SKOS
         [ExcludeFromCodeCoverage]
         public static async Task InitializeSKOSAsync(this OWLOntology ontology, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
         {
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.SKOS.SKOSXL.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
+            if (ontology != null)
+            {
+                await ontology.ImportAsync(new Uri(RDFVocabulary.SKOS.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
+                await ontology.ImportAsync(new Uri(RDFVocabulary.SKOS.SKOSXL.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
+            }
         }
         #endregion
 

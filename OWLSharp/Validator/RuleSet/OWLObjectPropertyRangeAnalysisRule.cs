@@ -19,7 +19,7 @@ namespace OWLSharp.Validator
     internal static class OWLObjectPropertyRangeAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be individuals explicitly incompatible with range class of object properties within ObjectPropertyAssertion axioms!";
+        internal const string rulesugg = "There should not be individuals explicitly incompatible with range class of object properties within ObjectPropertyAssertion axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

@@ -24,7 +24,7 @@ namespace OWLSharp.Extensions.TIME
     internal class TIMEIntervalOverlappedByAnalysisRule
     {
         internal static readonly string rulename = TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be OWL-TIME intervals having a clash in temporal relations (time:intervalOverlappedBy VS {0}";
+        internal const string rulesugg = "There should not be OWL-TIME intervals having a clash in temporal relations (time:intervalOverlappedBy VS {0}";
 
         internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {

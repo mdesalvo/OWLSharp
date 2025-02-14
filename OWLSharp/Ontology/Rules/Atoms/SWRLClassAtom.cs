@@ -69,7 +69,7 @@ namespace OWLSharp.Ontology
         {
             List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
-            string classAtomString = this.ToString();
+            string classAtomString = ToString();
 
             #region Guards
             //The antecedent results table MUST have a column corresponding to the atom's left argument

@@ -21,7 +21,7 @@ namespace OWLSharp.Validator
     internal static class OWLDisjointUnionAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.DisjointUnionAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be class expressions belonging to a DisjointUnion axiom and having a class assertion on the same individual!";
+        internal const string rulesugg = "There should not be class expressions belonging to a DisjointUnion axiom and having a class assertion on the same individual!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

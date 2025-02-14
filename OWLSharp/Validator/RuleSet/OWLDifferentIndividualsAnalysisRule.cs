@@ -21,8 +21,8 @@ namespace OWLSharp.Validator
     internal static class OWLDifferentIndividualsAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.DifferentIndividualsAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be named individuals related at the same time by SameIndividual and DifferentIndividuals axioms!";
-        internal static readonly string rulesugg2 = "There should not be named individuals being DifferentIndividuals of theirselves!";
+        internal const string rulesugg = "There should not be named individuals related at the same time by SameIndividual and DifferentIndividuals axioms!";
+        internal const string rulesugg2 = "There should not be named individuals being DifferentIndividuals of theirselves!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

@@ -94,7 +94,7 @@ namespace OWLSharp.Ontology
             List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
-            string annotationPropertyAtomString = this.ToString();
+            string annotationPropertyAtomString = ToString();
 
             #region Guards
             //The antecedent results table MUST have a column corresponding to the atom's left argument

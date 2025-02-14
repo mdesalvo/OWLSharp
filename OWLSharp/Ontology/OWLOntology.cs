@@ -1988,7 +1988,7 @@ namespace OWLSharp.Ontology
                     void LoadObjectPropertyExpression(OWLOntology ont, RDFResource opIRI, out OWLObjectPropertyExpression opex)
                     {
                         opex = null;
-                        if ((graph[opIRI, RDFVocabulary.OWL.INVERSE_OF, null, null].FirstOrDefault()?.Object) is RDFResource objectProperty)
+                        if (graph[opIRI, RDFVocabulary.OWL.INVERSE_OF, null, null].FirstOrDefault()?.Object is RDFResource objectProperty)
                             opex = new OWLObjectInverseOf(new OWLObjectProperty(objectProperty));
                         else if (typeGraph[opIRI, null, RDFVocabulary.OWL.OBJECT_PROPERTY, null].TriplesCount > 0)
                             opex = new OWLObjectProperty(opIRI);

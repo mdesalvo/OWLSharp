@@ -24,18 +24,18 @@ namespace OWLSharp.Extensions.SKOS
     internal class SKOSNarrowerConceptAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis.ToString();
-        internal static readonly string rulesugg1A = "There should not be SKOS concepts having a clash in hierarchical relations (skos:narrower VS skos:broader)";
-        internal static readonly string rulesugg1B = "There should not be SKOS concepts having a clash in hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)";
-        internal static readonly string rulesugg2A = "There should not be SKOS concepts having a clash in hierarchical VS associative relations (skos:narrower VS skos:related)";
-        internal static readonly string rulesugg2B = "There should not be SKOS concepts having a clash in hierarchical VS associative relations (skos:narrowerTransitive VS skos:related)";
-        internal static readonly string rulesugg3A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:narrowMatch)";
-        internal static readonly string rulesugg3B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:narrowMatch)";
-        internal static readonly string rulesugg4A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:closeMatch)";
-        internal static readonly string rulesugg4B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:closeMatch)";
-        internal static readonly string rulesugg5A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:exactMatch)";
-        internal static readonly string rulesugg5B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:exactMatch)";
-        internal static readonly string rulesugg6A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:relatedMatch)";
-        internal static readonly string rulesugg6B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:relatedMatch)";
+        internal const string rulesugg1A = "There should not be SKOS concepts having a clash in hierarchical relations (skos:narrower VS skos:broader)";
+        internal const string rulesugg1B = "There should not be SKOS concepts having a clash in hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)";
+        internal const string rulesugg2A = "There should not be SKOS concepts having a clash in hierarchical VS associative relations (skos:narrower VS skos:related)";
+        internal const string rulesugg2B = "There should not be SKOS concepts having a clash in hierarchical VS associative relations (skos:narrowerTransitive VS skos:related)";
+        internal const string rulesugg3A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:narrowMatch)";
+        internal const string rulesugg3B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:narrowMatch)";
+        internal const string rulesugg4A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:closeMatch)";
+        internal const string rulesugg4B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:closeMatch)";
+        internal const string rulesugg5A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:exactMatch)";
+        internal const string rulesugg5B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:exactMatch)";
+        internal const string rulesugg6A = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrower VS skos:relatedMatch)";
+        internal const string rulesugg6B = "There should not be SKOS concepts having a clash in hierarchical VS mapping relations (skos:narrowerTransitive VS skos:relatedMatch)";
 
         internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {

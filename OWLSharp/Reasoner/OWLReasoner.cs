@@ -135,7 +135,7 @@ namespace OWLSharp.Reasoner
                 });
 
                 //Execute SWRL reasoner rules
-                await ontology.Rules.ParallelForEachAsync(async (swrlRule) =>
+                await ontology.Rules.ParallelForEachAsync(async swrlRule =>
                 {
                     string swrlRuleString = swrlRule.ToString();
                     OWLEvents.RaiseInfo($"Launching SWRL rule {swrlRuleString}...");

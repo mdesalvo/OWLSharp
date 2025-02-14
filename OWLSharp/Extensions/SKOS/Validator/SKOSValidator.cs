@@ -56,7 +56,7 @@ namespace OWLSharp.Extensions.SKOS
                 };
 
                 //Execute validator rules
-                await Rules.ParallelForEachAsync(async (rule) =>
+                await Rules.ParallelForEachAsync(async rule =>
                 {
                     OWLEvents.RaiseInfo($"Launching SKOS rule {rule}...");
 

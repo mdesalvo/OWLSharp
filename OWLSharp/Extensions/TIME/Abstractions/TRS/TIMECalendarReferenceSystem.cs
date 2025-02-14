@@ -27,7 +27,7 @@ namespace OWLSharp.Extensions.TIME
             new RDFResource("https://en.wikipedia.org/wiki/Gregorian_calendar"),
             new TIMECalendarReferenceSystemMetrics(60, 60, 24, new uint[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 })
                 .SetLeapYearRule(year => {
-                    return (year >= 1582 && ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)))
+                    return year >= 1582 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)
                         ? new uint[] { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
                         : new uint[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; 
                 }));

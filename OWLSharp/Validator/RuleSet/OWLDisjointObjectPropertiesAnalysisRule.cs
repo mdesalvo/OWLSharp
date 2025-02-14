@@ -20,8 +20,8 @@ namespace OWLSharp.Validator
     internal static class OWLDisjointObjectPropertiesAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.DisjointObjectPropertiesAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be disjoint object properties linking the same source and target individual pairs within ObjectPropertyAssertion axioms!";
-        internal static readonly string rulesugg2 = "There should not be object properties belonging at the same time to DisjointObjectProperties and SubObjectPropertyOf/EquivalentObjectProperties axioms!";
+        internal const string rulesugg = "There should not be disjoint object properties linking the same source and target individual pairs within ObjectPropertyAssertion axioms!";
+        internal const string rulesugg2 = "There should not be object properties belonging at the same time to DisjointObjectProperties and SubObjectPropertyOf/EquivalentObjectProperties axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

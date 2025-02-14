@@ -24,7 +24,7 @@ namespace OWLSharp.Extensions.SKOS
     internal class SKOSXLLiteralFormAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.LiteralFormAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be SKOS-XL labels having more than one occurrence of skosxl:literalForm relation";
+        internal const string rulesugg = "There should not be SKOS-XL labels having more than one occurrence of skosxl:literalForm relation";
 
         internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology)
         {

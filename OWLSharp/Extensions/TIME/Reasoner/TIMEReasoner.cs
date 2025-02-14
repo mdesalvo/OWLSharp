@@ -55,7 +55,7 @@ namespace OWLSharp.Extensions.TIME
                 };
 
                 //Execute OWL-TIME reasoner rules
-                await Rules.ParallelForEachAsync(async (rule) =>
+                await Rules.ParallelForEachAsync(async rule =>
                 {
                     OWLEvents.RaiseInfo($"Launching OWL-TIME rule {rule}...");
 

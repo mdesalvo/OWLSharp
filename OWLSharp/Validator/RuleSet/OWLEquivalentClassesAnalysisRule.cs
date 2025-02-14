@@ -20,7 +20,7 @@ namespace OWLSharp.Validator
     internal static class OWLEquivalentClassesAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.EquivalentClassesAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be class expressions belonging at the same time to EquivalentClasses and SubClassOf/DisjointClasses axioms!";
+        internal const string rulesugg = "There should not be class expressions belonging at the same time to EquivalentClasses and SubClassOf/DisjointClasses axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

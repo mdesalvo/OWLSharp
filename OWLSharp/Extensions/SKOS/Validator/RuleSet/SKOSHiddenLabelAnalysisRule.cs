@@ -24,10 +24,10 @@ namespace OWLSharp.Extensions.SKOS
     internal class SKOSHiddenLabelAnalysisRule
     {
         internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.HiddenLabelAnalysis.ToString();
-        internal static readonly string rulesugg1 = "There should not be SKOS concepts having the same value for skos:hiddenLabel and skos:altLabel data annotations.";
-        internal static readonly string rulesugg2 = "There should not be SKOS concepts having the same value for skos:hiddenLabel and skos:prefLabel data annotations.";
-        internal static readonly string rulesugg3 = "There should not be SKOS-XL concepts having the same value for skosxl:hiddenLabel and skosxl:altLabel data relations.";
-        internal static readonly string rulesugg4 = "There should not be SKOS-XL concepts having the same value for skosxl:hiddenLabel and skosxl:prefLabel data relations.";
+        internal const string rulesugg1 = "There should not be SKOS concepts having the same value for skos:hiddenLabel and skos:altLabel data annotations.";
+        internal const string rulesugg2 = "There should not be SKOS concepts having the same value for skos:hiddenLabel and skos:prefLabel data annotations.";
+        internal const string rulesugg3 = "There should not be SKOS-XL concepts having the same value for skosxl:hiddenLabel and skosxl:altLabel data relations.";
+        internal const string rulesugg4 = "There should not be SKOS-XL concepts having the same value for skosxl:hiddenLabel and skosxl:prefLabel data relations.";
 
         internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {

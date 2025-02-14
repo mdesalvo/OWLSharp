@@ -44,9 +44,12 @@ namespace OWLSharp.Extensions.GEO
         [ExcludeFromCodeCoverage]
         public static async Task InitializeGEOAsync(this OWLOntology ontology, int timeoutMilliseconds=20000, int cacheMilliseconds=3600000)
         {
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.SF.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
-            await ontology?.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.GEOF.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
+            if (ontology != null)
+            {
+                await ontology.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
+                await ontology.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.SF.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
+                await ontology.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.GEOF.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);    
+            }
         }
         #endregion
 

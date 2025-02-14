@@ -22,7 +22,7 @@ namespace OWLSharp.Validator
     internal static class OWLHasKeyAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.HasKeyAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be named individuals computing the same HasKey values while being related by DifferentFrom axioms!";
+        internal const string rulesugg = "There should not be named individuals computing the same HasKey values while being related by DifferentFrom axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

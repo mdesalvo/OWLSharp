@@ -20,7 +20,7 @@ namespace OWLSharp.Validator
     internal static class OWLEquivalentObjectPropertiesAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.EquivalentObjectPropertiesAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be object properties belonging at the same time to EquivalentObjectProperties and SubObjectPropertyOf/DisjointObjectProperties axioms!";
+        internal const string rulesugg = "There should not be object properties belonging at the same time to EquivalentObjectProperties and SubObjectPropertyOf/DisjointObjectProperties axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

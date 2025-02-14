@@ -20,7 +20,7 @@ namespace OWLSharp.Validator
     internal static class OWLTermsDisjointnessAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.TermsDisjointnessAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be terms referring at the same time to classes, datatypes, properties or individuals: although 'punning' is supported, it is recommended to pursue terms disjointness for the sake of decidability";
+        internal const string rulesugg = "There should not be terms referring at the same time to classes, datatypes, properties or individuals: although 'punning' is supported, it is recommended to pursue terms disjointness for the sake of decidability";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

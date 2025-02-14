@@ -177,8 +177,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalAfterAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalAfter";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalAfter";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(2, issues.Count);
@@ -229,8 +229,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalBeforeAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalBefore";
-        string clashingRelation = "time:intervalBefore";
+        const string testingRelation = "time:intervalBefore";
+        const string clashingRelation = "time:intervalBefore";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(2, issues.Count);
@@ -281,8 +281,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalContainsAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalContains";
-        string clashingRelation = "time:intervalContains";
+        const string testingRelation = "time:intervalContains";
+        const string clashingRelation = "time:intervalContains";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(2, issues.Count);
@@ -333,8 +333,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalDisjointAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalDisjoint";
-        string clashingRelation = "time:notDisjoint";
+        const string testingRelation = "time:intervalDisjoint";
+        const string clashingRelation = "time:notDisjoint";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -381,8 +381,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalDuringAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalDuring";
-        string clashingRelation = "time:intervalDuring";
+        const string testingRelation = "time:intervalDuring";
+        const string clashingRelation = "time:intervalDuring";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(2, issues.Count);
@@ -433,8 +433,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalEqualsAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalEquals";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalEquals";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -481,8 +481,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalFinishesAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalFinishes";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalFinishes";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -529,8 +529,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalFinishedByAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalFinishedBy";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalFinishedBy";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -577,8 +577,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalHasInsideAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:hasInside";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:hasInside";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -625,8 +625,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalInAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalIn";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalIn";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -673,8 +673,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalMeetsAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalMeets";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalMeets";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -721,8 +721,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalMetByAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalMetBy";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalMetBy";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -769,8 +769,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalNotDisjointAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:notDisjoint";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:notDisjoint";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -817,8 +817,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalOverlapsAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalOverlaps";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalOverlaps";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -865,8 +865,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalOverlappedByAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalOverlappedBy";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalOverlappedBy";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -913,8 +913,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalStarts";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalStarts";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -961,8 +961,8 @@ public class TIMEValidatorTest : TIMETestOntology
         validator.AddRule(TIMEEnums.TIMEValidatorRules.IntervalStartedByAnalysis);
 
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
-        string testingRelation = "time:intervalStartedBy";
-        string clashingRelation = "time:intervalAfter";
+        const string testingRelation = "time:intervalStartedBy";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

@@ -145,7 +145,7 @@ public class TIMEConverterTest
             new TIMECalendarReferenceSystem(
                 new RDFResource("https://en.wikipedia.org/wiki/360-day_calendar"),
                 new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])
-                    .SetLeapYearRule(year => (year >= 1985 && (year % 2 == 0))
+                    .SetLeapYearRule(year => year >= 1985 && year % 2 == 0
                         ? [31, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
                         : [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 

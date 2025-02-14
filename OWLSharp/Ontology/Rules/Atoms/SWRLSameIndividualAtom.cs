@@ -122,7 +122,7 @@ namespace OWLSharp.Ontology
             List<OWLInference> inferences = new List<OWLInference>();
             string leftArgumentString = LeftArgument.ToString();
             string rightArgumentString = RightArgument.ToString();
-            string sameAsAtomString = this.ToString();
+            string sameAsAtomString = ToString();
 
             #region Guards
             //The antecedent results table MUST have a column corresponding to the atom's left argument
@@ -147,7 +147,7 @@ namespace OWLSharp.Ontology
                     continue;
 
                 //The current row MUST have a BOUND value in the column corresponding to the atom's right argument (if variable)
-                if (this.RightArgument is SWRLVariableArgument 
+                if (RightArgument is SWRLVariableArgument 
                         && currentRow.IsNull(rightArgumentString))
                     continue;
                 #endregion

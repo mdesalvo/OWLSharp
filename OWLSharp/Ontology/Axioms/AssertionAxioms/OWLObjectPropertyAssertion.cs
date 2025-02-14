@@ -69,7 +69,6 @@ namespace OWLSharp.Ontology
 
                 //Axiom Triple
                 axiomTriple = new RDFTriple(tidvExpressionIRI, objectInverseOfIRI, sidvExpressionIRI);
-                graph.AddTriple(axiomTriple);
             }
 
             //ObjectProperty
@@ -82,8 +81,8 @@ namespace OWLSharp.Ontology
 
                 //Axiom Triple
                 axiomTriple = new RDFTriple(sidvExpressionIRI, objPropExpressionIRI, tidvExpressionIRI);
-                graph.AddTriple(axiomTriple);
             }
+            graph.AddTriple(axiomTriple);
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)

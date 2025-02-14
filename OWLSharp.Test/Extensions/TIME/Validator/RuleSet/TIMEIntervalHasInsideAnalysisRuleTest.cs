@@ -63,7 +63,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalBefore";
+        const string clashingRelation = "time:intervalBefore";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -111,7 +111,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalAfter";
+        const string clashingRelation = "time:intervalAfter";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -159,7 +159,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalDisjoint";
+        const string clashingRelation = "time:intervalDisjoint";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -207,7 +207,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalDuring";
+        const string clashingRelation = "time:intervalDuring";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -255,7 +255,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalEquals";
+        const string clashingRelation = "time:intervalEquals";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -303,7 +303,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalFinishes";
+        const string clashingRelation = "time:intervalFinishes";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -351,7 +351,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalIn";
+        const string clashingRelation = "time:intervalIn";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -399,7 +399,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalMeets";
+        const string clashingRelation = "time:intervalMeets";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -447,7 +447,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalMetBy";
+        const string clashingRelation = "time:intervalMetBy";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -495,7 +495,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalOverlappedBy";
+        const string clashingRelation = "time:intervalOverlappedBy";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -543,7 +543,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalOverlaps";
+        const string clashingRelation = "time:intervalOverlaps";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -591,7 +591,7 @@ public class TIMEIntervalHasInsideAnalysisRuleTest : TIMETestOntology
             { "INTERVALS", ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.INTERVAL)) }
         };
         List<OWLIssue> issues = await TIMEIntervalHasInsideAnalysisRule.ExecuteRuleAsync(ontology, cacheRegistry);
-        string clashingRelation = "time:intervalStarts";
+        const string clashingRelation = "time:intervalStarts";
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

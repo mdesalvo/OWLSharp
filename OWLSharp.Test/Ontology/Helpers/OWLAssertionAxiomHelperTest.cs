@@ -919,6 +919,10 @@ public class OWLAssertionAxiomHelperTest
         Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.LANG_STRING), new OWLLiteral(new RDFPlainLiteral("hello", "en-US"))));
         Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.LANG_STRING), new OWLLiteral(new RDFPlainLiteral("hello"))));
         Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.LANG_STRING), new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
+        Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.DIR_LANG_STRING), new OWLLiteral(new RDFPlainLiteral("hello", "en-US--LTR"))));
+        Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.DIR_LANG_STRING), new OWLLiteral(new RDFPlainLiteral("hello", "en-US"))));
+        Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.DIR_LANG_STRING), new OWLLiteral(new RDFPlainLiteral("hello"))));
+        Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.DIR_LANG_STRING), new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));
         Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.PLAIN_LITERAL), new OWLLiteral(new RDFPlainLiteral("hello"))));
         Assert.IsTrue(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.PLAIN_LITERAL), new OWLLiteral(new RDFPlainLiteral("hello", "en-US"))));
         Assert.IsFalse(new OWLOntology().CheckIsLiteralOf(new OWLDatatype(RDFVocabulary.RDF.PLAIN_LITERAL), new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING))));

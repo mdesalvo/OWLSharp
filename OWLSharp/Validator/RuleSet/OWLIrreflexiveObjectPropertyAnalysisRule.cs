@@ -21,8 +21,8 @@ namespace OWLSharp.Validator
     internal static class OWLIrreflexiveObjectPropertyAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.IrreflexiveObjectPropertyAnalysis.ToString();
-        internal static readonly string rulesugg1 = "There should not be object properties at the same time irreflexive and reflexive!";
-        internal static readonly string rulesugg2 = "There should not be object assertions having the same source/target individual under an irreflexive object property!";
+        internal const string rulesugg1 = "There should not be object properties at the same time irreflexive and reflexive!";
+        internal const string rulesugg2 = "There should not be object assertions having the same source/target individual under an irreflexive object property!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {

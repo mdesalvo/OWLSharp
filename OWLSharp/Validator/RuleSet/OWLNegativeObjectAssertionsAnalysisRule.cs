@@ -21,7 +21,7 @@ namespace OWLSharp.Validator
     internal static class OWLNegativeObjectAssertionsAnalysisRule
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis.ToString();
-        internal static readonly string rulesugg = "There should not be object assertions conflicting with negative object assertions!";
+        internal const string rulesugg = "There should not be object assertions conflicting with negative object assertions!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
         {
