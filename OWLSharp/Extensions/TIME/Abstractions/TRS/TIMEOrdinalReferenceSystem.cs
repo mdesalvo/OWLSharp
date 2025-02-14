@@ -241,7 +241,7 @@ namespace OWLSharp.Extensions.TIME
             if (enableReasoning)
             {
                 foreach (RDFResource subEra in subEras.ToList())
-                    subEras.AddRange(FindSubErasOf(subEra, thorsMemberObjPropAsns, visitContext, enableReasoning));
+                    subEras.AddRange(FindSubErasOf(subEra, thorsMemberObjPropAsns, visitContext, true));
             }
 
             return subEras;
@@ -285,7 +285,7 @@ namespace OWLSharp.Extensions.TIME
             if (enableReasoning)
             {
                 foreach (RDFResource superEra in superEras.ToList())
-                    superEras.AddRange(FindSuperErasOf(superEra, thorsMemberObjPropAsns, visitContext, enableReasoning));
+                    superEras.AddRange(FindSuperErasOf(superEra, thorsMemberObjPropAsns, visitContext, true));
             }            
 
             return superEras;

@@ -25,15 +25,9 @@ namespace OWLSharp.Ontology
     public static class OWLImportHelper
     {
         #region Properties
-        internal static Dictionary<string, (OWLOntology Ontology,DateTime ExpireTimestamp)> OntologyCache { get; set; }
-        #endregion
 
-        #region Ctors
-        static OWLImportHelper()
-        {
-            if (OntologyCache == null)
-                OntologyCache = new Dictionary<string, (OWLOntology,DateTime)>();
-        }
+        internal static Dictionary<string, (OWLOntology Ontology, DateTime ExpireTimestamp)> OntologyCache { get; set; }
+            = new Dictionary<string, (OWLOntology, DateTime)>();
         #endregion
 
         #region Methods
