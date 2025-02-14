@@ -44,13 +44,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIRIAnnotationPropertyRangeBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationPropertyRange(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationPropertyRange(
                 null,
                 RDFVocabulary.FOAF.PERSON));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIRIAnnotationPropertyRangeBecauseNullIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationPropertyRange(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationPropertyRange(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null as RDFResource));
 
@@ -138,13 +138,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationPropertyRangeBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationPropertyRange(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationPropertyRange(
                 null,
                 new XmlQualifiedName("Person", RDFVocabulary.FOAF.BASE_URI)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationPropertyRangeBecauseNullQualifiedName()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationPropertyRange(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationPropertyRange(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null as XmlQualifiedName));
 

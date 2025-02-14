@@ -38,11 +38,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualBecauseNullUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLNamedIndividual(null as RDFResource));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLNamedIndividual(null as RDFResource));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualBecauseBlankUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLNamedIndividual(new RDFResource()));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLNamedIndividual(new RDFResource()));
 
         [TestMethod]
         public void ShouldCreateQualifiedNameNamedIndividual()
@@ -56,7 +56,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualBecauseNullQualifiedName()
-            => Assert.ThrowsException<OWLException>(() => new OWLNamedIndividual(null as XmlQualifiedName));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLNamedIndividual(null as XmlQualifiedName));
 
         [TestMethod]
         public void ShouldSerializeIRINamedIndividual()

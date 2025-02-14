@@ -39,11 +39,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataHasValueBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataHasValue(null, new OWLLiteral(new RDFPlainLiteral("hello","en"))));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataHasValue(null, new OWLLiteral(new RDFPlainLiteral("hello","en"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataHasValueBecauseNullLiteral()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataHasValue(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), null));
 
         [TestMethod]
         public void ShouldgetSWRLRepresentationOfDataHasValue()

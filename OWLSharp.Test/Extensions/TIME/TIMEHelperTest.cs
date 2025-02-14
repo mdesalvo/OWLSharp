@@ -351,12 +351,12 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringInstantBecauseNullFeature()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt"))
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLOntology(new Uri("ex:timeOnt"))
                 .DeclareInstantFeature(null, new TIMEInstant(new RDFResource("ex:timeInst"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringInstantBecauseNullInstant()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt"))
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLOntology(new Uri("ex:timeOnt"))
                 .DeclareInstantFeature(new RDFResource("ex:feat"), null));
 
         [TestMethod]
@@ -650,19 +650,19 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntervalBecauseNullFeature()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).DeclareIntervalFeature(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLOntology(new Uri("ex:timeOnt")).DeclareIntervalFeature(
                 null, new TIMEInterval(new RDFResource("ex:timeIntr"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringIntervalBecauseNullInterval()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).DeclareIntervalFeature(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLOntology(new Uri("ex:timeOnt")).DeclareIntervalFeature(
                 new RDFResource("ex:feat"), null));
         #endregion
 
         #region Tests (Analyzer)
         [TestMethod]
         public void ShouldThrowExceptionOnGettingTemporalFeatureBecauseNullURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetTemporalFeature(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLOntology(new Uri("ex:timeOnt")).GetTemporalFeature(null));
 
         [DataTestMethod]
         [DataRow("http://www.w3.org/2006/time#inXSDDateTimeStamp", "1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP, "1939-09-01T08:00:00Z")]
@@ -1834,7 +1834,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingInstantCoordinateBecauseNullInstantURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetCoordinateOfInstant(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLOntology(new Uri("ex:timeOnt")).GetCoordinateOfInstant(null));
 
         [DataTestMethod]
         [DataRow("http://www.w3.org/2006/time#inXSDDateTimeStamp", "1939-09-01T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP, 1939, 9, 1, 8, 0, 0)]
@@ -2079,7 +2079,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
                 new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
-            Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
+            Assert.ThrowsExactly<OWLException>(() => _ = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
 
         [TestMethod]
@@ -2116,7 +2116,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new RDFResource("ex:MyCalendarTRS"), 
                 new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18])));
 
-            Assert.ThrowsException<OWLException>(() => timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
+            Assert.ThrowsExactly<OWLException>(() => _ = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
 
         [TestMethod]
@@ -2190,7 +2190,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingIntervalExtentBecauseNullIntervalURI()
-            => Assert.ThrowsException<OWLException>(() => new OWLOntology(new Uri("ex:timeOnt")).GetExtentOfInterval(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLOntology(new Uri("ex:timeOnt")).GetExtentOfInterval(null));
 
         [TestMethod]
         public void ShouldGetIntervalExtentByTimeSpan()
@@ -2358,7 +2358,7 @@ namespace OWLSharp.Test.Extensions.TIME
                 new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionDuration")),
                 new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
-            Assert.ThrowsException<OWLException>(() => timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension")));
+            Assert.ThrowsExactly<OWLException>(() => _ = timeOntology.GetExtentOfInterval(new RDFResource("ex:WorldWarIITemporalDimension")));
         }
 
         [TestMethod]

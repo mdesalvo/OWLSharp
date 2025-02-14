@@ -42,13 +42,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyDomainBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyDomain(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyDomain(
                 null,
                 new OWLClass(RDFVocabulary.FOAF.PERSON)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyDomainBecauseNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyDomain(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyDomain(
                 new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
                 null));
 

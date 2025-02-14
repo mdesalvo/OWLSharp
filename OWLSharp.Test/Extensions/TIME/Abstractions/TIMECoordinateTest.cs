@@ -101,23 +101,23 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingCoordinateBecauseNegativeMonth()
-            => Assert.ThrowsException<OWLException>(() => new TIMECoordinate(2010, -5, 22, 22, 45, 30));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECoordinate(2010, -5, 22, 22, 45, 30));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingCoordinateBecauseNegativeDay()
-            => Assert.ThrowsException<OWLException>(() => new TIMECoordinate(2010, 5, -22, 22, 45, 30));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECoordinate(2010, 5, -22, 22, 45, 30));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingCoordinateBecauseNegativeHour()
-            => Assert.ThrowsException<OWLException>(() => new TIMECoordinate(2010, 5, 22, -22, 45, 30));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECoordinate(2010, 5, 22, -22, 45, 30));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingCoordinateBecauseNegativeMinute()
-            => Assert.ThrowsException<OWLException>(() => new TIMECoordinate(2010, 5, 22, 22, -45, 30));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECoordinate(2010, 5, 22, 22, -45, 30));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingCoordinateBecauseNegativeSecond()
-            => Assert.ThrowsException<OWLException>(() => new TIMECoordinate(2010, 5, 22, 22, 45, -30));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECoordinate(2010, 5, 22, 22, 45, -30));
 
         [TestMethod]
         public void ShouldCreateCoordinateFromDateTime()

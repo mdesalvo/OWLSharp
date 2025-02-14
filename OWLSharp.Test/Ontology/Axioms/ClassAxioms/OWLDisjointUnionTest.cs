@@ -42,25 +42,25 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointUnionBecauseNullClassIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointUnion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointUnion(
                 null,
                 [new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointUnionBecauseNullClassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointUnion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointUnion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointUnionBecauseLessThan2CLassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointUnion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointUnion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLClass(RDFVocabulary.FOAF.PERSON)]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointUnionBecauseFoundNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointUnion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointUnion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLClass(RDFVocabulary.FOAF.PERSON), null]));
 

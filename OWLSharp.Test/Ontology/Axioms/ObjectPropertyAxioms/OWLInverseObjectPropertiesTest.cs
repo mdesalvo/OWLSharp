@@ -43,13 +43,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingInverseObjectPropertiesBecauseNullLeftObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLInverseObjectProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInverseObjectProperties(
                 null,
                 new OWLObjectProperty(new RDFResource("ex:isWifeOf"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingInverseObjectPropertiesBecauseNullRightObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLInverseObjectProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLInverseObjectProperties(
                 new OWLObjectProperty(new RDFResource("ex:hasWife")),
                 null));
 

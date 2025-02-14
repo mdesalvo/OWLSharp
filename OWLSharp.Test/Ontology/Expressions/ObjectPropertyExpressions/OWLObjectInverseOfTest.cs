@@ -36,7 +36,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectInverseOfBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectInverseOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectInverseOf(null));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectInverseOf()

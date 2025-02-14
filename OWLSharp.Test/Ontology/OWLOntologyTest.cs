@@ -180,7 +180,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLLiteral(new RDFPlainLiteral("This is a test ontology"))));
 
             Assert.AreEqual(1, ontology.Annotations.Count);
-            Assert.ThrowsException<OWLException>(() => ontology.Annotate(null));
+            Assert.ThrowsExactly<OWLException>(() => ontology.Annotate(null));
         }
 
         [TestMethod]
@@ -190,7 +190,7 @@ namespace OWLSharp.Test.Ontology
             ontology.Prefix(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
 
             Assert.AreEqual(6, ontology.Prefixes.Count);
-            Assert.ThrowsException<OWLException>(() => ontology.Prefix(null));
+            Assert.ThrowsExactly<OWLException>(() => ontology.Prefix(null));
         }
 
         [TestMethod]
@@ -1386,7 +1386,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnWritingOntologyToFileBecauseNullPathAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
+            => await Assert.ThrowsExactlyAsync<OWLException>(async() => await new OWLOntology().ToFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
         public async Task ShouldWriteOntologyToStreamAsync()
@@ -1472,7 +1472,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnWritingOntologyToStreamBecauseNullStreamAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(async() => await new OWLOntology().ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
+            => await Assert.ThrowsExactlyAsync<OWLException>(async() => await new OWLOntology().ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
         public async Task ShouldReadOntologyFromFileAsync()
@@ -1554,11 +1554,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseNullPathAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
+            => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnReadingOntologyFromFileBecauseUnexistingPathAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, "test/test"));
+            => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromFileAsync(OWLEnums.OWLFormats.OWL2XML, "test/test"));
 
         [TestMethod]
         public async Task ShouldReadOntologyFromStreamAsync()
@@ -1641,11 +1641,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnReadingOntologyFromStreamBecauseNullStreamAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(async() => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
+            => await Assert.ThrowsExactlyAsync<OWLException>(async() => await OWLOntology.FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, null));
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnReadingOntologyFromGraphBecauseNullGraphAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(async () => await OWLOntology.FromRDFGraphAsync(null));
+            => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromRDFGraphAsync(null));
 
         [TestMethod]
         public async Task ShouldReadOntologyHeaderFromGraphAsync()
@@ -1678,7 +1678,7 @@ namespace OWLSharp.Test.Ontology
         {
             RDFGraph graph = new RDFGraph();
             graph.AddTriple(new RDFTriple(new RDFResource("ex:ont"), RDFVocabulary.OWL.VERSION_IRI, new RDFResource("ex:ont/v1")));
-            await Assert.ThrowsExceptionAsync<OWLException>(async() => await OWLOntology.FromRDFGraphAsync(graph));
+            await Assert.ThrowsExactlyAsync<OWLException>(async() => await OWLOntology.FromRDFGraphAsync(graph));
         }
 
         [TestMethod]

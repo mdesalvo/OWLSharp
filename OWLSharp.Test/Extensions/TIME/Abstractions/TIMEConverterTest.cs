@@ -27,11 +27,11 @@ namespace OWLSharp.Test.Extensions.TIME
         #region Tests
         [TestMethod]
         public void ShouldThrowExceptionOnGettingCalendarFromPositionBecauseNullPositionTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.CoordinateFromPosition(25226354, null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.CoordinateFromPosition(25226354, null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingCalendarFromPositionBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.CoordinateFromPosition(25226354, TIMEPositionReferenceSystem.UnixTime, null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.CoordinateFromPosition(25226354, TIMEPositionReferenceSystem.UnixTime, null));
 
         [DataTestMethod]
         [DataRow(-413733671.4, 1956, 11, 21, 9, 58, 48)]
@@ -208,11 +208,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnNormalizingCoordinateBecauseNullCoordinate()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeCoordinate(null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeCoordinate(null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnNormalizingCoordinateBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeCoordinate(new TIMECoordinate(), null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeCoordinate(new TIMECoordinate(), null));
 
         [DataTestMethod]
         [DataRow(1983, 2, 10, 15, 30, 30, 1983, 2, 10, 15, 30, 30)]
@@ -307,15 +307,15 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNegativeDuration()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.ExtentFromDuration(-25226354, TIMEUnit.Second, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.ExtentFromDuration(-25226354, TIMEUnit.Second, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNullUnitType()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.ExtentFromDuration(25226354, null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.ExtentFromDuration(25226354, null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.ExtentFromDuration(25226354, TIMEUnit.MarsSol, null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.ExtentFromDuration(25226354, TIMEUnit.MarsSol, null));
 
         [DataTestMethod]
         //seconds
@@ -550,11 +550,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnNormalizingExtentBecauseNullExtent()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeExtent(null, TIMECalendarReferenceSystem.Gregorian));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeExtent(null, TIMECalendarReferenceSystem.Gregorian));
 
         [TestMethod]
         public void ShouldThrowExceptionOnNormalizingExtentBecauseNullCalendarTRS()
-            => Assert.ThrowsException<OWLException>(() => TIMEConverter.NormalizeExtent(new TIMEExtent(), null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeExtent(new TIMEExtent(), null));
 
         [DataTestMethod]
         //seconds

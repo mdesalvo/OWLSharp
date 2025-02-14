@@ -39,16 +39,16 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointDataPropertiesBecauseNullDataProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointDataProperties(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointDataProperties(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointDataPropertiesBecauseLessThan2DataProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointDataProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointDataProperties(
                  [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointDataPropertiesBecauseFoundNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointDataProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointDataProperties(
                  [ new OWLDataProperty(RDFVocabulary.FOAF.AGE), null ]));
 
         [TestMethod]

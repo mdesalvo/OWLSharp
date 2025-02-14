@@ -73,7 +73,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasDataPropertyAxiom(new OWLSubDataPropertyOf(
                 new OWLDataProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLDataProperty(RDFVocabulary.FOAF.TITLE))));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareDataPropertyAxiom(null as OWLDataPropertyAxiom));
+            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareDataPropertyAxiom(null as OWLDataPropertyAxiom));
 
             ontology.DeclareDataPropertyAxiom(new OWLSubDataPropertyOf(
                 new OWLDataProperty(RDFVocabulary.FOAF.SHA1),

@@ -41,19 +41,19 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingClassAssertionBecauseNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLClassAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLClassAssertion(
                 null,
                 new OWLNamedIndividual(new RDFResource("ex:Bob"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingClassAssertionBecauseNullNamedIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLClassAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 null as OWLNamedIndividual));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingClassAssertionBecauseNullAnonymousIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLClassAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 null as OWLAnonymousIndividual));
 

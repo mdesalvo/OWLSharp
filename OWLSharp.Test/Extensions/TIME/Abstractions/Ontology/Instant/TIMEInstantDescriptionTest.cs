@@ -61,7 +61,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingInstantFromDescriptionBecauseNullDescription()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInstantDescription(new RDFResource("ex:instDesc"), null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantDescription(new RDFResource("ex:instDesc"), null));
 
         [TestMethod]
         public void ShouldCompareInstantDescriptions()

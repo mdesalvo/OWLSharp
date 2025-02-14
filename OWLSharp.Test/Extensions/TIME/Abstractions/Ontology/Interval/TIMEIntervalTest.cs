@@ -75,7 +75,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIntervalFromDescriptionBecauseNullDescription()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInterval(new RDFResource("ex:intv"), null as TIMEIntervalDescription));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInterval(new RDFResource("ex:intv"), null as TIMEIntervalDescription));
 
         [TestMethod]
         public void ShouldCreateIntervalFromDuration()
@@ -95,7 +95,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIntervalFromDurationBecauseNullDuration()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInterval(new RDFResource("ex:intv"), null as TIMEIntervalDuration));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInterval(new RDFResource("ex:intv"), null as TIMEIntervalDuration));
         #endregion
     }
 }

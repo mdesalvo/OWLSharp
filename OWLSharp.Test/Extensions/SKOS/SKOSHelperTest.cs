@@ -37,7 +37,7 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.AreEqual(2, ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count);
             Assert.AreEqual(1, ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>().Count);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareConceptScheme(null, [new RDFResource("ex:ConceptScheme")]));
+            Assert.ThrowsExactly<OWLException>(() => _ = ontology.DeclareConceptScheme(null, [new RDFResource("ex:ConceptScheme")]));
         }
 
         [TestMethod]
@@ -52,8 +52,8 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.AreEqual(1, ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count);
             Assert.AreEqual(2, ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareConcept(null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareConcept(new RDFResource("ex:Concept"), [
+            Assert.ThrowsExactly<OWLException>(() => _ = ontology.DeclareConcept(null));
+            Assert.ThrowsExactly<OWLException>(() => _ = ontology.DeclareConcept(new RDFResource("ex:Concept"), [
                 new RDFPlainLiteral("This is a concept"), new RDFPlainLiteral("This is the same concept")]));
         }
 
@@ -83,10 +83,10 @@ namespace OWLSharp.Test.Extensions.SKOS
             Assert.AreEqual(3, ontology.GetAssertionAxiomsOfType<OWLClassAssertion>().Count);
             Assert.AreEqual(2, ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count);
 
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(null, [new RDFResource("ex:ConceptA")]));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(new RDFResource("ex:Collection"), null));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(new RDFResource("ex:Collection"), []));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareCollection(new RDFResource("ex:Collection"),
+            Assert.ThrowsExactly<OWLException>(() => _ = ontology.DeclareCollection(null, [new RDFResource("ex:ConceptA")]));
+            Assert.ThrowsExactly<OWLException>(() => _ = ontology.DeclareCollection(new RDFResource("ex:Collection"), null));
+            Assert.ThrowsExactly<OWLException>(() => _ = ontology.DeclareCollection(new RDFResource("ex:Collection"), []));
+            Assert.ThrowsExactly<OWLException>(() => _ = ontology.DeclareCollection(new RDFResource("ex:Collection"),
                 [new RDFResource("ex:ConceptA"), new RDFResource("ex:ConceptB")],
                 [new RDFPlainLiteral("This is a collection", "en-US"), new RDFPlainLiteral("This is the same collection", "en-US")]));
         }

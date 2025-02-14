@@ -39,7 +39,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIntervalDurationBecauseNullUnitType()
-            => Assert.ThrowsException<OWLException>(() => new TIMEIntervalDuration(new RDFResource("ex:intvDur"), null, 12.23));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEIntervalDuration(new RDFResource("ex:intvDur"), null, 12.23));
         #endregion
     }
 }

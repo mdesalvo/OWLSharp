@@ -60,7 +60,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(newTRS.Ontology.ClassAxioms.Count > 60);
             Assert.IsTrue(newTRS.Ontology.DataPropertyAxioms.Count > 20);
             Assert.IsTrue(newTRS.Ontology.ObjectPropertyAxioms.Count > 100);
-            Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), null));
+            Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), null));
         }
 
         [TestMethod]
@@ -129,17 +129,17 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEraBecauseNullEra()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                                                             .DeclareEra(null, new TIMEInstant(new RDFResource("ex:begin")), new TIMEInstant(new RDFResource("ex:end"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEraBecauseNullBegin()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                                                             .DeclareEra(new RDFResource("ex:era"), null, new TIMEInstant(new RDFResource("ex:end"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringEraBecauseNullEnd()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                                                             .DeclareEra(new RDFResource("ex:era"), new TIMEInstant(new RDFResource("ex:begin")), null));
 
         [TestMethod]
@@ -266,17 +266,17 @@ namespace OWLSharp.Test.Extensions.TIME
                     new OWLNamedIndividual(new RDFResource("ex:era")),
                     new OWLNamedIndividual(new RDFResource("ex:subEra")))));
 
-            Assert.ThrowsException<OWLException>(() => thors.DeclareSubEra(new RDFResource("ex:era"), new RDFResource("ex:subEra")));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.DeclareSubEra(new RDFResource("ex:era"), new RDFResource("ex:subEra")));
         }
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringSubEraBecauseNullEra()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                                                             .DeclareSubEra(null, new RDFResource("ex:subEra")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringSubEraBecauseNullSubEra()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                                                             .DeclareSubEra(new RDFResource("ex:era"), null));
 
         [TestMethod]
@@ -314,17 +314,17 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringReferencePointsBecauseNullReferencePoints()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                 .DeclareReferencePoints(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringReferencePointsBecauseContainingNullReferencePoints()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                 .DeclareReferencePoints([new TIMEInstant(new RDFResource("ex:massExtinctionEvent")), null]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnDeclaringReferencePointsBecauseLessThan2ReferencePoints()
-            => Assert.ThrowsException<OWLException>(() => new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
                 .DeclareReferencePoints([new TIMEInstant(new RDFResource("ex:massExtinctionEvent"))]));
 
 
@@ -352,7 +352,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(thors.CheckHasEra(new RDFResource("ex:era")));
             Assert.IsTrue(thors.CheckHasEra(new RDFResource("ex:subEra")));
             Assert.IsFalse(thors.CheckHasEra(new RDFResource("ex:erazz")));
-            Assert.ThrowsException<OWLException>(() => thors.CheckHasEra(null));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.CheckHasEra(null));
         }
 
         [TestMethod]
@@ -381,7 +381,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(thors.CheckHasEraBoundary(new RDFResource("ex:subEraBeginning")));
             Assert.IsTrue(thors.CheckHasEraBoundary(new RDFResource("ex:subEraEnd")));
             Assert.IsFalse(thors.CheckHasEraBoundary(new RDFResource("ex:erazz")));
-            Assert.ThrowsException<OWLException>(() => thors.CheckHasEraBoundary(null));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.CheckHasEraBoundary(null));
         }
 
         [TestMethod]
@@ -400,7 +400,7 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(thors.CheckHasReferencePoint(new RDFResource("ex:massExtinctionEventA")));
             Assert.IsTrue(thors.CheckHasReferencePoint(new RDFResource("ex:massExtinctionEventB")));
             Assert.IsFalse(thors.CheckHasReferencePoint(new RDFResource("ex:massExtinctionEventzz")));
-            Assert.ThrowsException<OWLException>(() => thors.CheckHasReferencePoint(null));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.CheckHasReferencePoint(null));
         }
 
         [TestMethod]
@@ -627,8 +627,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.IsTrue(subsubEraCoordinates.Item1.Equals(new TIMECoordinate(-185_498_050, 1, 1, 0, 0, 0)));
             Assert.IsNotNull(subsubEraCoordinates.Item2);
             Assert.IsTrue(subsubEraCoordinates.Item2.Equals(new TIMECoordinate(-183_998_050, 1, 1, 0, 0, 0)));
-            Assert.ThrowsException<OWLException>(() => thors.GetEraCoordinates(new RDFResource("ex:unexistingEra")));
-            Assert.ThrowsException<OWLException>(() => thors.GetEraCoordinates(null));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.GetEraCoordinates(new RDFResource("ex:unexistingEra")));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.GetEraCoordinates(null));
         }
 
         [TestMethod]
@@ -671,8 +671,8 @@ namespace OWLSharp.Test.Extensions.TIME
             Assert.AreEqual(1_825_000_000, subEraExtent.Days);
             Assert.IsNotNull(subsubEraExtent);
             Assert.AreEqual(547_500_000, subsubEraExtent.Days);
-            Assert.ThrowsException<OWLException>(() => thors.GetEraExtent(new RDFResource("ex:unexistingEra")));
-            Assert.ThrowsException<OWLException>(() => thors.GetEraExtent(null));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.GetEraExtent(new RDFResource("ex:unexistingEra")));
+            Assert.ThrowsExactly<OWLException>(() => _ = thors.GetEraExtent(null));
         }
         #endregion
     }

@@ -54,11 +54,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectHasValueBecauseNullObjectPropertyExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectHasValue(null, new OWLNamedIndividual(new RDFResource("ex:Bob"))));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectHasValue(null, new OWLNamedIndividual(new RDFResource("ex:Bob"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectHasValueBecauseNullIndividualExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectHasValue(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), null));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectHasValue()

@@ -39,15 +39,15 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataOneOfBecauseNullLiterals()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataOneOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataOneOf(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataOneOfBecauseZeroLiterals()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataOneOf([]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataOneOf([]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataOneOfBecauseNullLiteralFound()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataOneOf([null]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataOneOf([null]));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfDataOneOf()

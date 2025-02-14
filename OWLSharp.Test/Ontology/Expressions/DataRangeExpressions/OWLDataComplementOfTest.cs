@@ -37,7 +37,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataAllValuesFromBecauseNullDataRangeExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataComplementOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataComplementOf(null));
 
         [TestMethod]
         public void ShouldGetStringRepresentationOfDataComplementOf()

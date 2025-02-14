@@ -35,11 +35,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingImportBecauseNullUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLImport(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLImport(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingImportBecauseBlankUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLImport(new RDFResource()));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLImport(new RDFResource()));
 
         [TestMethod]
         public void ShouldSerializeImport()

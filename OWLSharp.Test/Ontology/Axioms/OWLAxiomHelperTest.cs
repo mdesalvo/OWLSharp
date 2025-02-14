@@ -39,7 +39,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLLiteral(new RDFPlainLiteral("Since the axiom is null, this annotation will be discarded"))));
 
             Assert.AreEqual(1, axiom.Annotations.Count);
-            Assert.ThrowsException<OWLException>(() => axiom.Annotate(null));
+            Assert.ThrowsExactly<OWLException>(() => axiom.Annotate(null));
         }
 
         [TestMethod]

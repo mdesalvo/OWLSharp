@@ -40,7 +40,7 @@ namespace OWLSharp.Test.Ontology
                 new RDFPlainLiteral("This is a test SWRL rule"),
                 new SWRLAntecedent(),
                 new SWRLConsequent())));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareRule(null));
+            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareRule(null));
 
             ontology.DeclareRule(new SWRLRule(
                 new RDFPlainLiteral("SWRL1"),

@@ -45,21 +45,21 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualDataPropertyAssertionBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyAssertion(
                 null,
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
                 new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualDataPropertyAssertionBecauseNullNamedIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 null as OWLNamedIndividual,
                 new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualDataPropertyAssertionBecauseNullLiteral()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLNamedIndividual(new RDFResource("ex:Bob")),
                 null));
@@ -166,21 +166,21 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyAssertion(
                 null,
                 new OWLAnonymousIndividual("AnonIdv"),
                 new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullAnonymousIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 null as OWLAnonymousIndividual,
                 new OWLLiteral(new RDFTypedLiteral("25", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualDataPropertyAssertionBecauseNullLiteral()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyAssertion(
                 new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                 new OWLAnonymousIndividual("AnonIdv"),
                 null));

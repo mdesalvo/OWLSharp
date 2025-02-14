@@ -42,15 +42,15 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataUnionOfBecauseNullDataRangeExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataUnionOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataUnionOf(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataUnionOfBecauseLessThan2DataRangeExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataUnionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING) ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataUnionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataUnionOfBecauseNullDataRangeExpressionFound()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataUnionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING), null ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataUnionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING), null ]));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfDataUnionOf()

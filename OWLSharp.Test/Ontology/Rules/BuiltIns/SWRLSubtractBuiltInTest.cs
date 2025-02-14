@@ -47,8 +47,8 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument r2larg 
                             && r2larg.GetVariable().Equals(new RDFVariable("?Z")));
             Assert.IsTrue(string.Equals("swrlb:subtract(?X,?Y,?Z)", builtin.ToString()));
-            Assert.ThrowsException<SWRLException>(() => SWRLBuiltIn.Subtract(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
-            Assert.ThrowsException<SWRLException>(() => SWRLBuiltIn.Subtract(new SWRLVariableArgument(new RDFVariable("?X")), null));
+            Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.Subtract(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
+            Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.Subtract(new SWRLVariableArgument(new RDFVariable("?X")), null));
         }
 
         [TestMethod]
@@ -161,8 +161,7 @@ namespace OWLSharp.Test.Ontology
             Assert.AreEqual(0, builtinResults2.Rows.Count);
 
             //Test exception on unknown builtIn
-            Assert.ThrowsException<SWRLException>(() =>
-                new SWRLBuiltIn
+            Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#example",
                     Arguments = [
@@ -172,8 +171,7 @@ namespace OWLSharp.Test.Ontology
                 }.EvaluateOnAntecedent(antecedentResults));
 
             //Test exception on bad-formed builtIn
-            Assert.ThrowsException<SWRLException>(() => 
-                new SWRLBuiltIn
+            Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn
                 {
                     IRI = "http://www.w3.org/2003/11/swrlb#subtract",
                     Arguments = [

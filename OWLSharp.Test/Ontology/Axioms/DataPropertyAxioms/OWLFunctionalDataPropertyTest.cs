@@ -38,7 +38,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingFunctionalDataPropertyBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLFunctionalDataProperty(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLFunctionalDataProperty(null));
 
         [TestMethod]
         public void ShouldSerializeFunctionalDataProperty()

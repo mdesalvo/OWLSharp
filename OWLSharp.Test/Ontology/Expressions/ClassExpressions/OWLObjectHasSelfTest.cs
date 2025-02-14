@@ -48,7 +48,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectHasSelfBecauseNullObjectPropertyExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectHasSelf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectHasSelf(null));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectHasSelf()

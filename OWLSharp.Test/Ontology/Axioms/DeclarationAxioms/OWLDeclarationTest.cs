@@ -56,7 +56,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingClassDeclarationBecauseNullClass()
-            => Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLClass));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDeclaration(null as OWLClass));
 
         [TestMethod]
         public void ShouldCreateDatatypeDeclaration()
@@ -89,7 +89,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDatatypeDeclarationBecauseNullDatatype()
-            => Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLDatatype));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDeclaration(null as OWLDatatype));
 
         [TestMethod]
         public void ShouldCreateObjectPropertyDeclaration()
@@ -122,7 +122,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectPropertyDeclarationBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLObjectProperty));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDeclaration(null as OWLObjectProperty));
 
         [TestMethod]
         public void ShouldCreateDataPropertyDeclaration()
@@ -155,7 +155,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyDeclarationBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLDataProperty));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDeclaration(null as OWLDataProperty));
 
         [TestMethod]
         public void ShouldCreateAnnotationPropertyDeclaration()
@@ -188,7 +188,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationPropertyDeclarationBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLAnnotationProperty));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDeclaration(null as OWLAnnotationProperty));
 
         [TestMethod]
         public void ShouldCreateNamedIndividualDeclaration()
@@ -221,7 +221,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualDeclarationBecauseNullNamedIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLDeclaration(null as OWLNamedIndividual));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDeclaration(null as OWLNamedIndividual));
 
         [TestMethod]
         public void ShouldConvertDeclarationToGraph()

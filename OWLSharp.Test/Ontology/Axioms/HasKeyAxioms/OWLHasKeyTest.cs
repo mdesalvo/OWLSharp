@@ -75,21 +75,21 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingHasKeyBecauseNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLHasKey(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLHasKey(
                 null,
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingHasKeyBecauseFoundNullObjectPropertyExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLHasKey(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [null],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingHasKeyBecauseFoundNullDataPropertyExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLHasKey(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [null]));

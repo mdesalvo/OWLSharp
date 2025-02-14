@@ -37,7 +37,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectComplementOfBecauseNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectComplementOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectComplementOf(null));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectComplementOf()

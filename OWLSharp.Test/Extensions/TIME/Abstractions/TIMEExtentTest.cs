@@ -62,31 +62,31 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingExtentBecauseNegativeYears()
-            => Assert.ThrowsException<OWLException>(() => new TIMEExtent(-1, 1, 1, 1, 1, 1, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEExtent(-1, 1, 1, 1, 1, 1, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingExtentBecauseNegativeMonths()
-            => Assert.ThrowsException<OWLException>(() => new TIMEExtent(1, -1, 1, 1, 1, 1, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEExtent(1, -1, 1, 1, 1, 1, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingExtentBecauseNegativeWeeks()
-            => Assert.ThrowsException<OWLException>(() => new TIMEExtent(1, 1, -1, 1, 1, 1, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEExtent(1, 1, -1, 1, 1, 1, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingExtentBecauseNegativeDays()
-            => Assert.ThrowsException<OWLException>(() => new TIMEExtent(1, 1, 1, -1, 1, 1, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEExtent(1, 1, 1, -1, 1, 1, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingExtentBecauseNegativeHours()
-            => Assert.ThrowsException<OWLException>(() => new TIMEExtent(1, 1, 1, 1, -1, 1, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEExtent(1, 1, 1, 1, -1, 1, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingExtentBecauseNegativeMinutes()
-            => Assert.ThrowsException<OWLException>(() => new TIMEExtent(1, 1, 1, 1, 1, -1, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEExtent(1, 1, 1, 1, 1, -1, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingExtentBecauseNegativeSeconds()
-            => Assert.ThrowsException<OWLException>(() => new TIMEExtent(1, 1, 1, 1, 1, 1, -1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEExtent(1, 1, 1, 1, 1, 1, -1));
 
         [TestMethod]
         public void ShouldCreateExtentFromTimeSpan()

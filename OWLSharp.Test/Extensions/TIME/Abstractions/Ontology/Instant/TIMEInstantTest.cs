@@ -82,7 +82,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingInstantFromDescriptionBecauseNullDescription()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantDescription));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantDescription));
 
         [TestMethod]
         public void ShouldCreateInstantFromPosition()
@@ -102,7 +102,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingInstantFromDescriptionBecauseNullPosition()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantPosition));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstant(new RDFResource("ex:inst"), null as TIMEInstantPosition));
         #endregion
     }
 }

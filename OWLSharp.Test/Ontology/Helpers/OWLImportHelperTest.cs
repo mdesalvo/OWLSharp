@@ -88,21 +88,21 @@ namespace OWLSharp.Test.Ontology
         public async Task ShouldThrowExceptionOnImportingNullOntologyAsync()
         {
             OWLOntology ontology = null;
-            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
+            await Assert.ThrowsExactlyAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
         }
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnImportingNullIRIOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(null, 5, 5));
+            await Assert.ThrowsExactlyAsync<OWLException>(async () => await ontology.ImportAsync(null, 5, 5));
         }
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnImportingTimeoutOntologyAsync()
         {
             OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-            await Assert.ThrowsExceptionAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
+            await Assert.ThrowsExactlyAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
         }
         #endregion
     }

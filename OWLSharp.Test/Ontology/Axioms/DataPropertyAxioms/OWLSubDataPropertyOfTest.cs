@@ -42,13 +42,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubDataPropertyOfBecauseNullSubDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubDataPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubDataPropertyOf(
                 null,
                 new OWLDataProperty(RDFVocabulary.DC.TITLE)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubDataPropertyOfBecauseNullSuperDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubDataPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubDataPropertyOf(
                 new OWLDataProperty(RDFVocabulary.DC.DCTERMS.TITLE),
                 null));
 

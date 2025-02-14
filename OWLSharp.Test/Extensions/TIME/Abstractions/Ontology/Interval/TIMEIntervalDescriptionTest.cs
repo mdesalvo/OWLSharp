@@ -52,7 +52,7 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIntervalFromDescriptionBecauseNullDescription()
-            => Assert.ThrowsException<OWLException>(() => new TIMEIntervalDescription(new RDFResource("ex:intvDesc"), null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEIntervalDescription(new RDFResource("ex:intvDesc"), null));
 
         [TestMethod]
         public void ShouldCompareIntervalDescriptions()

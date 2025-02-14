@@ -38,7 +38,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataExactCardinalityBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataExactCardinality(null, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataExactCardinality(null, 1));
 
         [TestMethod]
         public void ShouldCreateDataExactQualifiedCardinality()
@@ -56,11 +56,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataExactQualifiedCardinalityBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataExactCardinality(null, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataExactCardinality(null, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataExactQualifiedCardinalityBecauseNullDataRange()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataExactCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, null));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfDataExactCardinality()

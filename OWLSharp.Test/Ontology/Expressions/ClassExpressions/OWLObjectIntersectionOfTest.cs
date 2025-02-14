@@ -42,15 +42,15 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectIntersectionOfBecauseNullClassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectIntersectionOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectIntersectionOf(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectIntersectionOfBecauseLessThan2ClassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectIntersectionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON) ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectIntersectionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectIntersectionOfBecauseNullClassExpressionFound()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectIntersectionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON), null ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectIntersectionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON), null ]));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectIntersectionOf()

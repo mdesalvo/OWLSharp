@@ -39,16 +39,16 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointObjectPropertiesBecauseNullObjectProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointObjectProperties(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointObjectProperties(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointObjectPropertiesBecauseLessThan2ObjectProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointObjectProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointObjectProperties(
                  [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointObjectPropertiesBecauseFoundNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointObjectProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointObjectProperties(
                  [ new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), null ]));
 
         [TestMethod]

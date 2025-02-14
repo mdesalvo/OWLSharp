@@ -46,7 +46,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLLiteral(new RDFPlainLiteral("This is a nested annotation"))));
 
             Assert.IsNotNull(annotation.Annotation);
-            Assert.ThrowsException<OWLException>(() => annotation.Annotate(null));
+            Assert.ThrowsExactly<OWLException>(() => annotation.Annotate(null));
         }
 
         //IRI
@@ -66,11 +66,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIRIAnnotationBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(null, new RDFResource("http://example.org/seeThis")));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(null, new RDFResource("http://example.org/seeThis")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIRIAnnotationBecauseNullIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as RDFResource));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as RDFResource));
 
         [TestMethod]
         public void ShouldSerializeIRIAnnotation()
@@ -199,11 +199,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(null, new XmlQualifiedName("seeThis","http://example.org/")));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(null, new XmlQualifiedName("seeThis","http://example.org/")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAbbreviatedIRIAnnotationBecauseNullQualifiedName()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as XmlQualifiedName));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as XmlQualifiedName));
 
         [TestMethod]
         public void ShouldSerializeAbbreviatedIRIAnnotation()
@@ -332,11 +332,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualAnnotationBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(null, new OWLAnonymousIndividual("AnonIdv")));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(null, new OWLAnonymousIndividual("AnonIdv")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualAnnotationBecauseNullAnonymousIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as OWLAnonymousIndividual));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as OWLAnonymousIndividual));
 
         [TestMethod]
         public void ShouldSerializeAnonymousIndividualAnnotation()
@@ -465,11 +465,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingLiteralAnnotationBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(null, new OWLLiteral(new RDFPlainLiteral("Lit!"))));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(null, new OWLLiteral(new RDFPlainLiteral("Lit!"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingLiteralAnnotationBecauseNullLiteral()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as OWLLiteral));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), null as OWLLiteral));
 
         [TestMethod]
         public void ShouldSerializeLiteralAnnotation()

@@ -38,7 +38,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataMaxCardinalityBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataMaxCardinality(null, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataMaxCardinality(null, 1));
 
         [TestMethod]
         public void ShouldCreateDataMaxQualifiedCardinality()
@@ -56,11 +56,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataMaxQualifiedCardinalityBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataMaxCardinality(null, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataMaxCardinality(null, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataMaxQualifiedCardinalityBecauseNullDataRange()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataMaxCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, null));
 
         [TestMethod]
         public void ShouldgetSWRLRepresentationOfDataMaxCardinality()

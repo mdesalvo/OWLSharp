@@ -42,13 +42,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubAnnotationPropertyOfBecauseNullSubAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubAnnotationPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubAnnotationPropertyOf(
                 null,
                 new OWLAnnotationProperty(RDFVocabulary.DC.TITLE)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubAnnotationPropertyOfBecauseNullSuperAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubAnnotationPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubAnnotationPropertyOf(
                 new OWLAnnotationProperty(RDFVocabulary.DC.DCTERMS.TITLE),
                 null));
 

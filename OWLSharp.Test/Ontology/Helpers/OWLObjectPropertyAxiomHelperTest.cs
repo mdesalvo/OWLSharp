@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasObjectPropertyAxiom(new OWLSubObjectPropertyOf(
                 new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),
                 new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE)))));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareObjectPropertyAxiom(null as OWLObjectPropertyAxiom));
+            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareObjectPropertyAxiom(null as OWLObjectPropertyAxiom));
 
             ontology.DeclareObjectPropertyAxiom(new OWLSubObjectPropertyOf(
                 new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),

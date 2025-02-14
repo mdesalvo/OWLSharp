@@ -38,11 +38,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingClassBecauseNullUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLClass(null as RDFResource));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLClass(null as RDFResource));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingClassBecauseBlankUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLClass(new RDFResource()));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLClass(new RDFResource()));
 
         [TestMethod]
         public void ShouldCreateQualifiedNameClass()
@@ -56,7 +56,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingClassBecauseNullQualifiedName()
-            => Assert.ThrowsException<OWLException>(() => new OWLClass(null as XmlQualifiedName));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLClass(null as XmlQualifiedName));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfClass()

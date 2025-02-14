@@ -42,15 +42,15 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectUnionOfBecauseNullClassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectUnionOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectUnionOf(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectUnionOfBecauseLessThan2ClassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectUnionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON) ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectUnionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectUnionOfBecauseNullClassExpressionFound()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectUnionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON), null ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectUnionOf([ new OWLClass(RDFVocabulary.FOAF.PERSON), null ]));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectUnionOf()

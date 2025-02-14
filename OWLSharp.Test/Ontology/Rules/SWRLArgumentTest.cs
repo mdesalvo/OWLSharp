@@ -35,9 +35,9 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals("ex:Mark", arg.ToString()));
             Assert.IsTrue(arg.GetResource().Equals(new RDFResource("ex:Mark")));
             Assert.IsTrue(string.Equals("<NamedIndividual IRI=\"ex:Mark\" />", OWLSerializer.SerializeObject(arg)));
-            Assert.ThrowsException<SWRLException>(() => new SWRLIndividualArgument(null));
-            Assert.ThrowsException<SWRLException>(() => new SWRLIndividualArgument(new RDFResource()));
-            Assert.ThrowsException<SWRLException>(() => new SWRLIndividualArgument(new RDFResource("bnode:jd8d7f")));
+            Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLIndividualArgument(null));
+            Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLIndividualArgument(new RDFResource()));
+            Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLIndividualArgument(new RDFResource("bnode:jd8d7f")));
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(string.Equals("?V", arg.ToString()));
             Assert.IsTrue(arg.GetVariable().Equals(new RDFVariable("?V")));
             Assert.IsTrue(string.Equals("<Variable IRI=\"urn:swrl:var#V\" />", OWLSerializer.SerializeObject(arg)));
-            Assert.ThrowsException<SWRLException>(() => new SWRLVariableArgument(null));
+            Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLVariableArgument(null));
         }
         #endregion
     }

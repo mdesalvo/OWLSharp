@@ -39,16 +39,16 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingEquivalentDataPropertiesBecauseNullDataProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLEquivalentDataProperties(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLEquivalentDataProperties(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingEquivalentDataPropertiesBecauseLessThan2DataProperties()
-            => Assert.ThrowsException<OWLException>(() => new OWLEquivalentDataProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLEquivalentDataProperties(
                  [ new OWLDataProperty(RDFVocabulary.FOAF.AGE) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingEquivalentDataPropertiesBecauseFoundNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLEquivalentDataProperties(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLEquivalentDataProperties(
                  [ new OWLDataProperty(RDFVocabulary.FOAF.AGE), null ]));
 
         [TestMethod]

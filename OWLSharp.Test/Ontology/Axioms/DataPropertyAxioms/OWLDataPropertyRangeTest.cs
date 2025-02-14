@@ -42,13 +42,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyRangeBecauseNullDataProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyRange(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyRange(
                 null,
                 new OWLDatatype(RDFVocabulary.XSD.STRING)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyRangeBecauseNullDataRangeExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataPropertyRange(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataPropertyRange(
                 new OWLDataProperty(RDFVocabulary.RDFS.COMMENT),
                 null));
 

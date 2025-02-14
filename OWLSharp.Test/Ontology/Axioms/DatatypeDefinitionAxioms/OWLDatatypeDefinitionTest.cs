@@ -53,7 +53,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDatatypeDefinitionBecauseNullDatatype()
-            => Assert.ThrowsException<OWLException>(() => new OWLDatatypeDefinition(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDatatypeDefinition(
                 null,
                 new OWLDatatypeRestriction(
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
@@ -62,7 +62,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDatatypeDefinitionBecauseNullDataRangeExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLDatatypeDefinition(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDatatypeDefinition(
                 new OWLDatatype(new RDFResource("ex:length6to10")), null));
 
         [TestMethod]

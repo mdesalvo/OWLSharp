@@ -42,13 +42,13 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubClassOfBecauseNullSubClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubClassOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubClassOf(
                 null,
                 new OWLClass(RDFVocabulary.FOAF.AGENT)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubClassOfBecauseNullSuperClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubClassOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubClassOf(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 null));
 

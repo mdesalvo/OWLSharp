@@ -39,7 +39,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectMinCardinalityBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectMinCardinality(null, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectMinCardinality(null, 1));
 
         [TestMethod]
         public void ShouldCreateObjectMinQualifiedCardinality()
@@ -57,11 +57,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectMinQualifiedCardinalityBecauseNullObjectPropertyExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectMinCardinality(null, 1));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectMinCardinality(null, 1));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectMinQualifiedCardinalityBecauseNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectMinCardinality(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 1, null));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectMinCardinality()

@@ -36,7 +36,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingImportBecauseNullNamepsace()
-            => Assert.ThrowsException<OWLException>(() => new OWLPrefix(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLPrefix(null));
 
         [TestMethod]
         public void ShouldSerializePrefix()

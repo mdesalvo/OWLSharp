@@ -64,14 +64,14 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLObjectPropertyAtomBecauseNullRightArgument()
-            => Assert.ThrowsException<SWRLException>(() => new SWRLObjectPropertyAtom(
+            => Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLObjectPropertyAtom(
                 new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 null as SWRLVariableArgument));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLObjectPropertyAtomWithIndividualRightArgumentBecauseNullRightArgument()
-            => Assert.ThrowsException<SWRLException>(() => new SWRLObjectPropertyAtom(
+            => Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLObjectPropertyAtom(
                 new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                 new SWRLVariableArgument(new RDFVariable("?P")),
                 null as SWRLIndividualArgument));

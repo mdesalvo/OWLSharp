@@ -38,7 +38,7 @@ namespace OWLSharp.Test.Ontology
                 new OWLClass(RDFVocabulary.FOAF.AGENT),
                 [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
                 [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareHasKey(null));
+            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareHasKey(null));
 
             ontology.DeclareHasKey(new OWLHasKey(
                 new OWLClass(RDFVocabulary.FOAF.AGENT),

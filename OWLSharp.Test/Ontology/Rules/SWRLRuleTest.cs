@@ -46,8 +46,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLRuleBecauseNullRuleName()
-            => Assert.ThrowsException<SWRLException>(() => 
-                new SWRLRule(
+            => Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLRule(
                     null,
                     new RDFPlainLiteral("This is a test SWRL rule"),
                     new SWRLAntecedent(),
@@ -55,8 +54,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLRuleBecauseNullRuleDescription()
-            => Assert.ThrowsException<SWRLException>(() =>
-                new SWRLRule(
+            => Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLRule(
                     new RDFPlainLiteral("SWRL1"),
                     null,
                     new SWRLAntecedent(),
@@ -64,8 +62,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLRuleBecauseNullAntecedent()
-           => Assert.ThrowsException<SWRLException>(() =>
-               new SWRLRule(
+           => Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLRule(
                    new RDFPlainLiteral("SWRL1"),
                    new RDFPlainLiteral("This is a test SWRL rule"),
                    null,
@@ -73,8 +70,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSWRLRuleBecauseNullConsequent()
-           => Assert.ThrowsException<SWRLException>(() =>
-               new SWRLRule(
+           => Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLRule(
                    new RDFPlainLiteral("SWRL1"),
                    new RDFPlainLiteral("This is a test SWRL rule"),
                    new SWRLAntecedent(),

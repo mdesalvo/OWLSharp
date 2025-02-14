@@ -51,11 +51,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSymmetricObjectPropertyBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLSymmetricObjectProperty(null as OWLObjectProperty));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSymmetricObjectProperty(null as OWLObjectProperty));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSymmetricObjectPropertyBecauseNullObjectInverseOf()
-            => Assert.ThrowsException<OWLException>(() => new OWLSymmetricObjectProperty(null as OWLObjectInverseOf));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSymmetricObjectProperty(null as OWLObjectInverseOf));
 
         [TestMethod]
         public void ShouldSerializeSymmetricObjectProperty()

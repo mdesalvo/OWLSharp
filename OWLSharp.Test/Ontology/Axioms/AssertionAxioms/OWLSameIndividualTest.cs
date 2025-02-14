@@ -46,15 +46,15 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSameIndividualBecauseNullIndividualExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLSameIndividual(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSameIndividual(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSameIndividualBecauseLessThan2IndividualExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLSameIndividual([new OWLNamedIndividual(new RDFResource("ex:Carl"))]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSameIndividual([new OWLNamedIndividual(new RDFResource("ex:Carl"))]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSameIndividualBecauseFoundNullIndividualExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLSameIndividual([new OWLNamedIndividual(new RDFResource("ex:Carl")), null]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSameIndividual([new OWLNamedIndividual(new RDFResource("ex:Carl")), null]));
 
         [TestMethod]
         public void ShouldSerializeSameIndividual()

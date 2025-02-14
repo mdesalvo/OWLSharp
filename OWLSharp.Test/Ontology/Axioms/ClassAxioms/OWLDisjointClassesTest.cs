@@ -39,16 +39,16 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointClassesBecauseNullClassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointClasses(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointClasses(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointClassesBecauseLessThan2CLassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointClasses(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointClasses(
                  [ new OWLClass(RDFVocabulary.FOAF.AGENT) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDisjointClassesBecauseFoundNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLDisjointClasses(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDisjointClasses(
                  [ new OWLClass(RDFVocabulary.FOAF.AGENT), null ]));
 
         [TestMethod]

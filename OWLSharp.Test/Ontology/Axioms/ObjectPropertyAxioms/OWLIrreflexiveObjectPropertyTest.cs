@@ -51,11 +51,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIrreflexiveObjectPropertyBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLIrreflexiveObjectProperty(null as OWLObjectProperty));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIrreflexiveObjectProperty(null as OWLObjectProperty));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingIrreflexiveObjectPropertyBecauseNullObjectInverseOf()
-            => Assert.ThrowsException<OWLException>(() => new OWLIrreflexiveObjectProperty(null as OWLObjectInverseOf));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIrreflexiveObjectProperty(null as OWLObjectInverseOf));
 
         [TestMethod]
         public void ShouldSerializeIrreflexiveObjectProperty()

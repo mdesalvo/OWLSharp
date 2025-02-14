@@ -45,21 +45,21 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationIRIAssertionBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationAssertion(
                 null,
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationIRIAssertionBecauseNullSubjectIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null,
                 new RDFResource("ex:Obj")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationIRIAssertionBecauseNullValueIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 null as RDFResource));
@@ -157,21 +157,21 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationLiteralAssertionBecauseNullAnnotationProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationAssertion(
                 null,
                 new RDFResource("ex:Subj"),
                 new OWLLiteral(new RDFPlainLiteral("hello", "en"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationLiteralAssertionBecauseNullSubjectIRI()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 null,
                 new OWLLiteral(new RDFPlainLiteral("hello", "en"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnnotationLiteralAssertionBecauseNullValueLiteral()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnnotationAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnnotationAssertion(
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 null as OWLLiteral));

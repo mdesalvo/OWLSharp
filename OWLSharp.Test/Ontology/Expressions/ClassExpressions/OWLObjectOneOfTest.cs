@@ -42,15 +42,15 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseNullIndividualExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectOneOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseZeroIndividualExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectOneOf([]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf([]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectOneOfBecauseNullIndividualExpressionFound()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectOneOf([null]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectOneOf([null]));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfObjectOneOf()

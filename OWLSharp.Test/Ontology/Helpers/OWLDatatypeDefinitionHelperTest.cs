@@ -42,7 +42,7 @@ namespace OWLSharp.Test.Ontology
                     new OWLDatatype(RDFVocabulary.XSD.STRING),
                     [new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
                      new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH)]))));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareDatatypeDefinition(null));
+            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareDatatypeDefinition(null));
 
             ontology.DeclareDatatypeDefinition(new OWLDatatypeDefinition(
                 new OWLDatatype(new RDFResource("ex:length6to10")),

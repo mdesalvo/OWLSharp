@@ -43,19 +43,19 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectPropertyDomainBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectPropertyDomain(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectPropertyDomain(
                 null as OWLObjectProperty,
                 new OWLClass(RDFVocabulary.FOAF.PERSON)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectPropertyDomainBecauseNullObjectInverseOf()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectPropertyDomain(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectPropertyDomain(
                 null as OWLObjectInverseOf,
                 new OWLClass(RDFVocabulary.FOAF.PERSON)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingObjectPropertyDomainBecauseNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectPropertyDomain(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectPropertyDomain(
                 new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                 null));
 

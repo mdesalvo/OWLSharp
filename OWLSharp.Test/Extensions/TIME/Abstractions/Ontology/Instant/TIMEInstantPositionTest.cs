@@ -72,15 +72,15 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNumericInstantPositionBecauseNullTRS()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInstantPosition(new RDFResource("ex:instPos"), null, 121977842));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), null, 121977842));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNominalInstantPositionBecauseNullTRS()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInstantPosition(new RDFResource("ex:instPos"), null, new RDFResource("ex:Archean")));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), null, new RDFResource("ex:Archean")));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNominalInstantPositionBecauseNullValue()
-            => Assert.ThrowsException<OWLException>(() => new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEInstantPosition(new RDFResource("ex:instPos"), TIMEPositionReferenceSystem.GeologicTime, null));
         #endregion
     }
 }

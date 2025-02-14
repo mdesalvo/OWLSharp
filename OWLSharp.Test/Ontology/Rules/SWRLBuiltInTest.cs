@@ -89,7 +89,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingBuiltInWithEvaluatorBecauseNullEvaluator()
-            => Assert.ThrowsException<SWRLException>(() => new SWRLBuiltIn(
+            => Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn(
                 null,
                 new RDFResource("http://example.org/testBuiltIn"),
                 new SWRLVariableArgument(new RDFVariable("?VAR")),
@@ -101,7 +101,7 @@ namespace OWLSharp.Test.Ontology
         {
             bool Evaluator(DataRow datarow) => true;
 
-            Assert.ThrowsException<SWRLException>(() => new SWRLBuiltIn(
+            Assert.ThrowsExactly<SWRLException>(() => _ = new SWRLBuiltIn(
                 Evaluator,
                 null,
                 new SWRLVariableArgument(new RDFVariable("?VAR")),
@@ -124,7 +124,7 @@ namespace OWLSharp.Test.Ontology
             DataTable table = new DataTable();
             table.Columns.Add("?VAR");
             table.Rows.Add("value");
-            Assert.ThrowsException<SWRLException>(() => builtin.EvaluateOnAntecedent(table));
+            Assert.ThrowsExactly<SWRLException>(() => _ = builtin.EvaluateOnAntecedent(table));
         }
 
         [TestMethod]

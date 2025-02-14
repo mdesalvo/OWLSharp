@@ -38,11 +38,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyBecauseNullUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataProperty(null as RDFResource));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataProperty(null as RDFResource));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyBecauseBlankUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataProperty(new RDFResource()));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataProperty(new RDFResource()));
 
         [TestMethod]
         public void ShouldCreateQualifiedNameDataProperty()
@@ -56,7 +56,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataPropertyBecauseNullQualifiedName()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataProperty(null as XmlQualifiedName));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataProperty(null as XmlQualifiedName));
 
         [TestMethod]
         public void ShouldSerializeIRIDataProperty()

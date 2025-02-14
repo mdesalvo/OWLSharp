@@ -78,7 +78,7 @@ namespace OWLSharp.Test.Ontology
             Assert.IsTrue(ontology.CheckHasAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),
                 new OWLNamedIndividual(new RDFResource("ex:Mark")))));
-            Assert.ThrowsException<OWLException>(() => ontology.DeclareAssertionAxiom(null as OWLAssertionAxiom));
+            Assert.ThrowsExactly<OWLException>(() => ontology.DeclareAssertionAxiom(null as OWLAssertionAxiom));
 
             ontology.DeclareAssertionAxiom(new OWLClassAssertion(
                 new OWLClass(RDFVocabulary.FOAF.PERSON),

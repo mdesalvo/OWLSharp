@@ -175,11 +175,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnApplyingQueryToOntologyBecauseNullQueryAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(() => (null as RDFSelectQuery).ApplyToOntologyAsync(null));
+            => await Assert.ThrowsExactlyAsync<OWLException>(() => (null as RDFSelectQuery).ApplyToOntologyAsync(null));
 
         [TestMethod]
         public async Task ShouldThrowExceptionOnApplyingQueryToOntologyBecauseNullOntologyAsync()
-            => await Assert.ThrowsExceptionAsync<OWLException>(() => new RDFSelectQuery().ApplyToOntologyAsync(null));
+            => await Assert.ThrowsExactlyAsync<OWLException>(() => new RDFSelectQuery().ApplyToOntologyAsync(null));
         #endregion
     }
 }

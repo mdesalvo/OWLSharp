@@ -39,16 +39,16 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingEquivalentClassesBecauseNullClassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLEquivalentClasses(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLEquivalentClasses(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingEquivalentClassesBecauseLessThan2CLassExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLEquivalentClasses(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLEquivalentClasses(
                  [ new OWLClass(RDFVocabulary.FOAF.AGENT) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingEquivalentClassesBecauseFoundNullClassExpression()
-            => Assert.ThrowsException<OWLException>(() => new OWLEquivalentClasses(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLEquivalentClasses(
                  [ new OWLClass(RDFVocabulary.FOAF.AGENT), null ]));
 
         [TestMethod]

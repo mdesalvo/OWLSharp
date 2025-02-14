@@ -44,43 +44,36 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseNullMetrics()
-            => Assert.ThrowsException<OWLException>(() =>
-                new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"), null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"), null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics1()
-            => Assert.ThrowsException<OWLException>(() =>
-                new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
                 new TIMECalendarReferenceSystemMetrics(0, 60, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics2()
-            => Assert.ThrowsException<OWLException>(() =>
-                new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
                 new TIMECalendarReferenceSystemMetrics(60, 0, 24, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics3()
-            => Assert.ThrowsException<OWLException>(() =>
-                new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
                 new TIMECalendarReferenceSystemMetrics(60, 60, 0, [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics4()
-           => Assert.ThrowsException<OWLException>(() =>
-               new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
+           => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
                new TIMECalendarReferenceSystemMetrics(60, 60, 24, null)));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics5()
-           => Assert.ThrowsException<OWLException>(() =>
-               new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
+           => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
                new TIMECalendarReferenceSystemMetrics(60, 60, 24, [])));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseInvalidMetrics6()
-           => Assert.ThrowsException<OWLException>(() =>
-               new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
+           => Assert.ThrowsExactly<OWLException>(() => _ = new TIMECalendarReferenceSystem(new RDFResource("ex:ModifiedGregorian"),
                new TIMECalendarReferenceSystemMetrics(60, 60, 24, [30, 30, 0, 31])));
         #endregion
     }

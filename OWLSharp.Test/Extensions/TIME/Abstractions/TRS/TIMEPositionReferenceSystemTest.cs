@@ -49,13 +49,11 @@ namespace OWLSharp.Test.Extensions.TIME
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseNullOrigin()
-            => Assert.ThrowsException<OWLException>(() => 
-                new TIMEPositionReferenceSystem(new RDFResource("ex:ModifiedUnixTime"), null, TIMEUnit.Second, false));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEPositionReferenceSystem(new RDFResource("ex:ModifiedUnixTime"), null, TIMEUnit.Second, false));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatimeCalendarTRSBecauseNullUnit()
-            => Assert.ThrowsException<OWLException>(() =>
-                new TIMEPositionReferenceSystem(new RDFResource("ex:ModifiedUnixTime"), TIMECoordinate.UnixTime, null, false));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEPositionReferenceSystem(new RDFResource("ex:ModifiedUnixTime"), TIMECoordinate.UnixTime, null, false));
         #endregion
     }
 }

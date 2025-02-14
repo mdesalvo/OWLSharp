@@ -139,67 +139,67 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubObjectProperty1()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 null as OWLObjectProperty,
                 new OWLObjectProperty(new RDFResource("ex:objPropB"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubObjectProperty2()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 null as OWLObjectProperty,
                 new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB")))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubObjectProperty3()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 null as OWLObjectInverseOf,
                 new OWLObjectProperty(new RDFResource("ex:objPropB"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubObjectProperty4()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 null as OWLObjectInverseOf,
                 new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB")))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSuperObjectProperty1()
-        => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+        => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
             new OWLObjectProperty(new RDFResource("ex:objPropB")),
             null as OWLObjectProperty));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSuperObjectProperty2()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB"))),
                 null as OWLObjectProperty));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSuperObjectProperty3()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 new OWLObjectProperty(new RDFResource("ex:objPropB")),
                 null as OWLObjectInverseOf));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSuperObjectProperty4()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB"))),
                 null as OWLObjectInverseOf));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubPropertyChain1()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 null as OWLObjectPropertyChain,
                 new OWLObjectProperty(new RDFResource("ex:objPropB"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubPropertyChain2()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 null as OWLObjectPropertyChain,
                 new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:objPropB")))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubPropertyChain3()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 new OWLObjectPropertyChain([
                     new OWLObjectProperty(new RDFResource("ex:hasFather")),
                     new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),
@@ -207,7 +207,7 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingSubObjectPropertyOfBecauseNullSubPropertyChain4()
-            => Assert.ThrowsException<OWLException>(() => new OWLSubObjectPropertyOf(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLSubObjectPropertyOf(
                 new OWLObjectPropertyChain([
                     new OWLObjectProperty(new RDFResource("ex:hasFather")),
                     new OWLObjectProperty(new RDFResource("ex:hasBrother")) ]),

@@ -42,15 +42,15 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataIntersectionOfBecauseNullDataRangeExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataIntersectionOf(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataIntersectionOf(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataIntersectionOfBecauseLessThan2DataRangeExpressions()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataIntersectionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING) ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataIntersectionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING) ]));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingDataIntersectionOfBecauseNullDataRangeExpressionFound()
-            => Assert.ThrowsException<OWLException>(() => new OWLDataIntersectionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING), null ]));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLDataIntersectionOf([ new OWLDatatype(RDFVocabulary.XSD.STRING), null ]));
 
         [TestMethod]
         public void ShouldGetSWRLRepresentationOfDataIntersectionOf()

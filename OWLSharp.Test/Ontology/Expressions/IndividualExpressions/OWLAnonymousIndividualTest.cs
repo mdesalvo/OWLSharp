@@ -46,11 +46,11 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualBecauseNullUri()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnonymousIndividual(null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnonymousIndividual(null));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingAnonymousIndividualBecauseInvalidNCName()
-            => Assert.ThrowsException<OWLException>(() => new OWLAnonymousIndividual("ex:org/AnonIdv"));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLAnonymousIndividual("ex:org/AnonIdv"));
 
         [TestMethod]
         public void ShouldSerializeAnonymousIndividual()

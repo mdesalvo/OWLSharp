@@ -38,15 +38,15 @@ namespace OWLSharp.Test.Validator
 
         [TestMethod]
         public void ShouldThrowExceptiononCreatingInferenceWithNullRuleName()
-            => Assert.ThrowsException<OWLException>(() => new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, null, "this is a warning", "try solve this way..."));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, null, "this is a warning", "try solve this way..."));
 
         [TestMethod]
         public void ShouldThrowExceptiononCreatingInferenceWithNullDescription()
-            => Assert.ThrowsException<OWLException>(() => new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", null, "try solve this way..."));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", null, "try solve this way..."));
 
         [TestMethod]
         public void ShouldThrowExceptiononCreatingInferenceWithNullSuggestion()
-            => Assert.ThrowsException<OWLException>(() => new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", "this is a warning", null));
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLIssue(OWLEnums.OWLIssueSeverity.Warning, "rulename", "this is a warning", null));
         #endregion
     }
 }

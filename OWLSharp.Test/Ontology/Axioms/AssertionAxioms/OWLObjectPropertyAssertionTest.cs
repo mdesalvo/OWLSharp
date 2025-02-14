@@ -47,21 +47,21 @@ namespace OWLSharp.Test.Ontology
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualObjectPropertyAssertionBecauseNullObjectProperty()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectPropertyAssertion(
                 null,
                 new OWLNamedIndividual(new RDFResource("ex:Alice")),
                 new OWLNamedIndividual(new RDFResource("ex:Bob"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualObjectPropertyAssertionBecauseSourceIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.FOAF.AGE),
                 null,
                 new OWLNamedIndividual(new RDFResource("ex:Bob"))));
 
         [TestMethod]
         public void ShouldThrowExceptionOnCreatingNamedIndividualObjectPropertyAssertionBecauseNullTargetIndividual()
-            => Assert.ThrowsException<OWLException>(() => new OWLObjectPropertyAssertion(
+            => Assert.ThrowsExactly<OWLException>(() => _ = new OWLObjectPropertyAssertion(
                 new OWLObjectProperty(RDFVocabulary.FOAF.AGE),
                 new OWLNamedIndividual(new RDFResource("ex:Alice")),
                 null));
