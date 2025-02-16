@@ -14,7 +14,6 @@ limitations under the License.
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OWLSharp.Validator
 {
@@ -79,14 +78,22 @@ namespace OWLSharp.Validator
                                 }
                                 #endregion
 
-                                List<OWLIndividualExpression> qClassIdvs = isQualified ? individualsCache[qClassIRI] : null;
                                 RDFResource objExactCardinalityIRI = objExactCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
                                 foreach (OWLObjectPropertyAssertion opAsn in opAsns)
                                 {
+                                    RDFResource opAsnTargetIndividualIRI = opAsn.TargetIndividualExpression.GetIRI();
+                                    bool opAsnIdvFoundAsQualifiedTarget = false;
+                                    foreach (OWLIndividualExpression idv in individualsCache[qClassIRI])
+                                        if (idv.GetIRI().Equals(opAsnTargetIndividualIRI))
+                                        {
+                                            opAsnIdvFoundAsQualifiedTarget = true;
+                                            break;
+                                        }
+
                                     if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
                                          && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinalityIRI) 
-                                         && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI())))) 
+                                         && (!isQualified || opAsnIdvFoundAsQualifiedTarget)) 
                                         assertionsCount++;
                                 }   
                                 
@@ -111,14 +118,22 @@ namespace OWLSharp.Validator
                                 }
                                 #endregion
 
-                                List<OWLIndividualExpression> qClassIdvs = isQualified ? individualsCache[qClassIRI] : null;
                                 RDFResource objMaxCardinalityIRI = objMaxCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
                                 foreach (OWLObjectPropertyAssertion opAsn in opAsns)
                                 {
+                                    RDFResource opAsnTargetIndividualIRI = opAsn.TargetIndividualExpression.GetIRI();
+                                    bool opAsnIdvFoundAsQualifiedTarget = false;
+                                    foreach (OWLIndividualExpression idv in individualsCache[qClassIRI])
+                                        if (idv.GetIRI().Equals(opAsnTargetIndividualIRI))
+                                        {
+                                            opAsnIdvFoundAsQualifiedTarget = true;
+                                            break;
+                                        }
+
                                     if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
                                          && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinalityIRI) 
-                                         && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI())))) 
+                                         && (!isQualified || opAsnIdvFoundAsQualifiedTarget)) 
                                         assertionsCount++;
                                 }
 
