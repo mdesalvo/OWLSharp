@@ -81,10 +81,16 @@ namespace OWLSharp.Validator
 
                                 List<OWLIndividualExpression> qClassIdvs = isQualified ? individualsCache[qClassIRI] : null;
                                 RDFResource objExactCardinalityIRI = objExactCardinality.ObjectPropertyExpression.GetIRI();
-                                int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
-                                                                      && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinalityIRI)
-                                                                      && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
-                                if (asnsCount > int.Parse(objExactCardinality.Cardinality))
+                                int assertionsCount = 0;
+                                foreach (OWLObjectPropertyAssertion opAsn in opAsns)
+                                {
+                                    if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
+                                         && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinalityIRI) 
+                                         && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI())))) 
+                                        assertionsCount++;
+                                }   
+                                
+                                if (assertionsCount > int.Parse(objExactCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
                                         OWLEnums.OWLIssueSeverity.Error, 
                                         rulename, 
@@ -107,10 +113,16 @@ namespace OWLSharp.Validator
 
                                 List<OWLIndividualExpression> qClassIdvs = isQualified ? individualsCache[qClassIRI] : null;
                                 RDFResource objMaxCardinalityIRI = objMaxCardinality.ObjectPropertyExpression.GetIRI();
-                                int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
-                                                                      && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinalityIRI)
-                                                                      && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
-                                if (asnsCount > int.Parse(objMaxCardinality.Cardinality))
+                                int assertionsCount = 0;
+                                foreach (OWLObjectPropertyAssertion opAsn in opAsns)
+                                {
+                                    if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
+                                         && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinalityIRI) 
+                                         && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI())))) 
+                                        assertionsCount++;
+                                }
+
+                                if (assertionsCount > int.Parse(objMaxCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
                                         OWLEnums.OWLIssueSeverity.Error, 
                                         rulename, 
@@ -126,10 +138,16 @@ namespace OWLSharp.Validator
                                 #endregion
 
                                 RDFResource dtExactCardinalityIRI = dtExactCardinality.DataProperty.GetIRI();
-                                int asnsCount = dpAsns.Count(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
-                                                                      && dpAsn.DataProperty.GetIRI().Equals(dtExactCardinalityIRI)
-                                                                      && (!isQualified || ontology.CheckIsLiteralOf(dtExactCardinality.DataRangeExpression, dpAsn.Literal)));
-                                if (asnsCount > int.Parse(dtExactCardinality.Cardinality))
+                                int assertionsCount = 0;
+                                foreach (OWLDataPropertyAssertion dpAsn in dpAsns)
+                                {
+                                    if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI) 
+                                         && dpAsn.DataProperty.GetIRI().Equals(dtExactCardinalityIRI) 
+                                         && (!isQualified || ontology.CheckIsLiteralOf(dtExactCardinality.DataRangeExpression, dpAsn.Literal))) 
+                                        assertionsCount++;
+                                }
+
+                                if (assertionsCount > int.Parse(dtExactCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
                                         OWLEnums.OWLIssueSeverity.Error, 
                                         rulename, 
@@ -145,10 +163,16 @@ namespace OWLSharp.Validator
                                 #endregion
 
                                 RDFResource dtMaxCardinalityIRI = dtMaxCardinality.DataProperty.GetIRI();
-                                int asnsCount = dpAsns.Count(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
-                                                                      && dpAsn.DataProperty.GetIRI().Equals(dtMaxCardinalityIRI)
-                                                                      && (!isQualified || ontology.CheckIsLiteralOf(dtMaxCardinality.DataRangeExpression, dpAsn.Literal)));
-                                if (asnsCount > int.Parse(dtMaxCardinality.Cardinality))
+                                int assertionsCount = 0;
+                                foreach (OWLDataPropertyAssertion dpAsn in dpAsns)
+                                {
+                                    if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI) 
+                                         && dpAsn.DataProperty.GetIRI().Equals(dtMaxCardinalityIRI) 
+                                         && (!isQualified || ontology.CheckIsLiteralOf(dtMaxCardinality.DataRangeExpression, dpAsn.Literal))) 
+                                        assertionsCount++;
+                                }
+
+                                if (assertionsCount > int.Parse(dtMaxCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
                                         OWLEnums.OWLIssueSeverity.Error, 
                                         rulename, 
