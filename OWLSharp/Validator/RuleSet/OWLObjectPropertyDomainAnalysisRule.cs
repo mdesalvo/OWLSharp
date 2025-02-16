@@ -26,6 +26,7 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyDomain(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV1) -> ERROR
@@ -33,14 +34,13 @@ namespace OWLSharp.Validator
             {
                 bool isObjectInverseOf = opDomain.ObjectPropertyExpression is OWLObjectInverseOf;
                 foreach (OWLObjectPropertyAssertion opDomainAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, opDomain.ObjectPropertyExpression))
-                {
-                    if (ontology.CheckIsNegativeIndividualOf(opDomain.ClassExpression, isObjectInverseOf ? opDomainAsn.TargetIndividualExpression : opDomainAsn.SourceIndividualExpression))
+                    if (ontology.CheckIsNegativeIndividualOf(opDomain.ClassExpression,
+                            isObjectInverseOf ? opDomainAsn.TargetIndividualExpression : opDomainAsn.SourceIndividualExpression, clsAsns))
                         issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error, 
-                            rulename, 
-                            $"Violated ObjectPropertyDomain axiom with signature: {opDomain.GetXML()}", 
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated ObjectPropertyDomain axiom with signature: {opDomain.GetXML()}",
                             rulesugg));
-                }
             }
 
             return issues;

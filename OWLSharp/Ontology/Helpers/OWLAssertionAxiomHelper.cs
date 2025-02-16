@@ -416,6 +416,8 @@ namespace OWLSharp.Ontology
         }
 
         public static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr)
+            => CheckIsNegativeIndividualOf(ontology, clsExpr, idvExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology));
+        internal static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, List<OWLClassAssertion> clsAsnAxioms)
         {
             bool answer = false;
 
@@ -424,12 +426,11 @@ namespace OWLSharp.Ontology
                 RDFResource idvExprIRI = idvExpr.GetIRI();
                 RDFResource clsExprIRI = clsExpr.GetIRI();
 
-                foreach (OWLClassAssertion idvExprClassAsn in GetAssertionAxiomsOfType<OWLClassAssertion>(ontology)
-                                                                .Where(ax => ax.IndividualExpression.GetIRI().Equals(idvExprIRI)))
+                foreach (OWLClassAssertion idvExprClassAsn in clsAsnAxioms.Where(ax => ax.IndividualExpression.GetIRI().Equals(idvExprIRI)))
                 {
                     //Direct
                     if (idvExprClassAsn.ClassExpression is OWLObjectComplementOf directObjComplOf 
-                         && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
+                        && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
                     {
                         answer = true;
                         break;
@@ -437,8 +438,8 @@ namespace OWLSharp.Ontology
     
                     //Indirect
                     if (ontology.GetSuperClassesOf(idvExprClassAsn.ClassExpression)
-                                           .Union(ontology.GetEquivalentClasses(idvExprClassAsn.ClassExpression))
-                                           .Any(cex => cex is OWLObjectComplementOf indirectObjComplOf && indirectObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI)))
+                                .Union(ontology.GetEquivalentClasses(idvExprClassAsn.ClassExpression))
+                                .Any(cex => cex is OWLObjectComplementOf indirectObjComplOf && indirectObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI)))
                     {
                         answer = true;
                         break;
@@ -448,7 +449,7 @@ namespace OWLSharp.Ontology
 
             return answer;
         }
-
+        
         public static bool CheckIsLiteralOf(this OWLOntology ontology, OWLDataRangeExpression drExpr, OWLLiteral literal)
         {
             if (ontology != null && drExpr != null && literal != null)
