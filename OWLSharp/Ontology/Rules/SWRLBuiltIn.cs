@@ -544,12 +544,9 @@ namespace OWLSharp.Ontology
             DataTable filteredTable = antecedentResults.Clone();
 
             //Iterate the rows of the antecedent results table
-            IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
-            while (rowsEnum.MoveNext())
+            foreach (DataRow currentRow in antecedentResults.Rows)
                 try
                 {
-                    DataRow currentRow = (DataRow)rowsEnum.Current;
-
                     bool keepRow;
                     switch (IRI)
                     {
@@ -709,7 +706,7 @@ namespace OWLSharp.Ontology
                     if (keepRow)
                     {
                         DataRow newRow = filteredTable.NewRow();
-                        newRow.ItemArray = ((DataRow)rowsEnum.Current).ItemArray;
+                        newRow.ItemArray = currentRow.ItemArray;
                         filteredTable.Rows.Add(newRow);
                     }
                 }

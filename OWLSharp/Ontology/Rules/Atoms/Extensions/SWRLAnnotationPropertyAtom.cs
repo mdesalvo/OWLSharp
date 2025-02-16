@@ -108,11 +108,8 @@ namespace OWLSharp.Ontology
             #endregion
 
             //Iterate the antecedent results table to materialize the atom's reasoner evidences
-            IEnumerator rowsEnum = antecedentResults.Rows.GetEnumerator();
-            while (rowsEnum.MoveNext())
+            foreach (DataRow currentRow in antecedentResults.Rows)
             {
-                DataRow currentRow = (DataRow)rowsEnum.Current;
-
                 #region Guards
                 //The current row MUST have a BOUND value in the column corresponding to the atom's left argument
                 if (currentRow.IsNull(leftArgumentString))

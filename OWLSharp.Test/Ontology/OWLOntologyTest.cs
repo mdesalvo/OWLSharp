@@ -1739,11 +1739,11 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsNull(ontology.VersionIRI);
         Assert.AreEqual(5, ontology.Prefixes.Count);
-        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX)));
-        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX)));
-        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX)));
-        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX)));
-        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX)));
+        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX, StringComparison.Ordinal)));
+        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, StringComparison.Ordinal)));
+        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX, StringComparison.Ordinal)));
+        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XSD.PREFIX, StringComparison.Ordinal)));
+        Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.XML.PREFIX, StringComparison.Ordinal)));
     }
 
     [TestMethod]
@@ -1886,7 +1886,7 @@ public class OWLOntologyTest
                       && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && asymObjProp.Annotations.Count == 1
                       && asymObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(asymObjProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(asymObjProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && asymObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && asymObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLAsymmetricObjectProperty
@@ -1896,11 +1896,11 @@ public class OWLOntologyTest
                       && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && asymObjProp1.Annotations.Count == 2
                       && asymObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(asymObjProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(asymObjProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && asymObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && asymObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && asymObjProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(asymObjProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(asymObjProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && asymObjProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && asymObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -1949,7 +1949,7 @@ public class OWLOntologyTest
                       && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && symObjProp.Annotations.Count == 1
                       && symObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(symObjProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(symObjProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && symObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && symObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLSymmetricObjectProperty
@@ -1959,11 +1959,11 @@ public class OWLOntologyTest
                       && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && symObjProp1.Annotations.Count == 2
                       && symObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(symObjProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(symObjProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && symObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && symObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && symObjProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(symObjProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(symObjProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && symObjProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && symObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2012,7 +2012,7 @@ public class OWLOntologyTest
                       && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && irrefObjProp.Annotations.Count == 1
                       && irrefObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(irrefObjProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(irrefObjProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && irrefObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && irrefObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLIrreflexiveObjectProperty
@@ -2022,11 +2022,11 @@ public class OWLOntologyTest
                       && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && irrefObjProp1.Annotations.Count == 2
                       && irrefObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(irrefObjProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(irrefObjProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && irrefObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && irrefObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && irrefObjProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(irrefObjProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(irrefObjProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && irrefObjProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && irrefObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2075,7 +2075,7 @@ public class OWLOntologyTest
                       && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && refObjProp.Annotations.Count == 1
                       && refObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(refObjProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(refObjProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && refObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && refObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLReflexiveObjectProperty
@@ -2085,11 +2085,11 @@ public class OWLOntologyTest
                       && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && refObjProp1.Annotations.Count == 2
                       && refObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(refObjProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(refObjProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && refObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && refObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && refObjProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(refObjProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(refObjProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && refObjProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && refObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2138,7 +2138,7 @@ public class OWLOntologyTest
                       && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && transObjProp.Annotations.Count == 1
                       && transObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(transObjProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(transObjProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && transObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && transObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLTransitiveObjectProperty
@@ -2148,11 +2148,11 @@ public class OWLOntologyTest
                       && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && transObjProp1.Annotations.Count == 2
                       && transObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(transObjProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(transObjProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && transObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && transObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && transObjProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(transObjProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(transObjProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && transObjProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && transObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2201,7 +2201,7 @@ public class OWLOntologyTest
                       && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && invfuncObjProp.Annotations.Count == 1
                       && invfuncObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(invfuncObjProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(invfuncObjProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && invfuncObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && invfuncObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLInverseFunctionalObjectProperty
@@ -2211,11 +2211,11 @@ public class OWLOntologyTest
                       && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && invfuncObjProp1.Annotations.Count == 2
                       && invfuncObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(invfuncObjProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(invfuncObjProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && invfuncObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && invfuncObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && invfuncObjProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(invfuncObjProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(invfuncObjProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && invfuncObjProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && invfuncObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2264,7 +2264,7 @@ public class OWLOntologyTest
                       && objProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && funcObjProp.Annotations.Count == 1
                       && funcObjProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(funcObjProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(funcObjProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && funcObjProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && funcObjProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLFunctionalObjectProperty
@@ -2274,11 +2274,11 @@ public class OWLOntologyTest
                       && objInvOf.ObjectProperty.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && funcObjProp1.Annotations.Count == 2
                       && funcObjProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(funcObjProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(funcObjProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && funcObjProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && funcObjProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && funcObjProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(funcObjProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(funcObjProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && funcObjProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && funcObjProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2354,7 +2354,7 @@ public class OWLOntologyTest
                       && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                       && invObjProps0.Annotations.Count == 1
                       && invObjProps0.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(invObjProps0.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(invObjProps0.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && invObjProps0.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && invObjProps0.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLInverseObjectProperties
@@ -2374,11 +2374,11 @@ public class OWLOntologyTest
                       && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                       && invObjProps2.Annotations.Count == 2
                       && invObjProps2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(invObjProps2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(invObjProps2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && invObjProps2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && invObjProps2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && invObjProps2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(invObjProps2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(invObjProps2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && invObjProps2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && invObjProps2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLInverseObjectProperties
@@ -2390,11 +2390,11 @@ public class OWLOntologyTest
                       && objInvOfObjPropB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
                       && invObjProps3.Annotations.Count == 2
                       && invObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(invObjProps3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(invObjProps3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && invObjProps3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && invObjProps3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && invObjProps3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(invObjProps3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(invObjProps3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && invObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && invObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2464,7 +2464,7 @@ public class OWLOntologyTest
                       && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                       && equivObjProps.Annotations.Count == 1
                       && equivObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(equivObjProps.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(equivObjProps.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && equivObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && equivObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLEquivalentObjectProperties equivObjProps1
@@ -2474,11 +2474,11 @@ public class OWLOntologyTest
                       && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                       && equivObjProps1.Annotations.Count == 2
                       && equivObjProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(equivObjProps1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(equivObjProps1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && equivObjProps1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && equivObjProps1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && equivObjProps1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(equivObjProps1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(equivObjProps1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && equivObjProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && equivObjProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLEquivalentObjectProperties equivObjProps2
@@ -2494,11 +2494,11 @@ public class OWLOntologyTest
                       && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
                       && equivObjProps3.Annotations.Count == 2
                       && equivObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(equivObjProps3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(equivObjProps3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && equivObjProps3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && equivObjProps3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && equivObjProps3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(equivObjProps3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(equivObjProps3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && equivObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && equivObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2595,7 +2595,7 @@ public class OWLOntologyTest
                       && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                       && disjObjProps.Annotations.Count == 1
                       && disjObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(disjObjProps.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(disjObjProps.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && disjObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && disjObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLDisjointObjectProperties disjObjProps1
@@ -2605,11 +2605,11 @@ public class OWLOntologyTest
                       && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                       && disjObjProps1.Annotations.Count == 2
                       && disjObjProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjObjProps1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(disjObjProps1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && disjObjProps1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjObjProps1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && disjObjProps1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjObjProps1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(disjObjProps1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && disjObjProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjObjProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLDisjointObjectProperties disjObjProps2
@@ -2619,11 +2619,11 @@ public class OWLOntologyTest
                       && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
                       && disjObjProps2.Annotations.Count == 2
                       && disjObjProps2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjObjProps2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(disjObjProps2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && disjObjProps2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjObjProps2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && disjObjProps2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjObjProps2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(disjObjProps2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && disjObjProps2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjObjProps2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLDisjointObjectProperties disjObjProps3
@@ -2633,11 +2633,11 @@ public class OWLOntologyTest
                       && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
                       && disjObjProps3.Annotations.Count == 2
                       && disjObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjObjProps3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(disjObjProps3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && disjObjProps3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjObjProps3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && disjObjProps3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjObjProps3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(disjObjProps3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && disjObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLDisjointObjectProperties disjObjProps4
@@ -2651,7 +2651,7 @@ public class OWLOntologyTest
                       && objInvOfD5.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropD5"))
                       && disjObjProps4.Annotations.Count == 1
                       && disjObjProps4.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(disjObjProps4.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(disjObjProps4.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && disjObjProps4.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && disjObjProps4.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
     }
@@ -2768,7 +2768,7 @@ public class OWLOntologyTest
                       && objPropD5.GetIRI().Equals(new RDFResource("ex:objPropD5"))
                       && subObjProps.Annotations.Count == 1
                       && subObjProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(subObjProps.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(subObjProps.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && subObjProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && subObjProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLSubObjectPropertyOf subObjProps1
@@ -2782,7 +2782,7 @@ public class OWLOntologyTest
                       && objInvOfD6.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropD6"))
                       && subObjProps1.Annotations.Count == 1
                       && subObjProps1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(subObjProps1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(subObjProps1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && subObjProps1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && subObjProps1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT--ltr")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLSubObjectPropertyOf
@@ -2794,7 +2794,7 @@ public class OWLOntologyTest
                       && objPropB1.GetIRI().Equals(new RDFResource("ex:objPropB1"))
                       && subObjProps2.Annotations.Count == 1
                       && subObjProps2.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(subObjProps2.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(subObjProps2.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && subObjProps2.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && subObjProps2.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLSubObjectPropertyOf
@@ -2806,11 +2806,11 @@ public class OWLOntologyTest
                       && objPropB2.GetIRI().Equals(new RDFResource("ex:objPropB2"))
                       && subObjProps3.Annotations.Count == 2
                       && subObjProps3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subObjProps3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(subObjProps3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && subObjProps3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subObjProps3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && subObjProps3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subObjProps3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(subObjProps3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && subObjProps3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subObjProps3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLSubObjectPropertyOf
@@ -2822,11 +2822,11 @@ public class OWLOntologyTest
                       && objInvOfB3.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB3"))
                       && subObjProps4.Annotations.Count == 2
                       && subObjProps4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subObjProps4.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(subObjProps4.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && subObjProps4.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subObjProps4.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && subObjProps4.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subObjProps4.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(subObjProps4.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && subObjProps4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subObjProps4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[5] is OWLSubObjectPropertyOf
@@ -2838,11 +2838,11 @@ public class OWLOntologyTest
                       && objInvOfB4.ObjectProperty.GetIRI().Equals(new RDFResource("ex:objPropB4"))
                       && subObjProps5.Annotations.Count == 2
                       && subObjProps5.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subObjProps5.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(subObjProps5.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && subObjProps5.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subObjProps5.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && subObjProps5.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subObjProps5.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(subObjProps5.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && subObjProps5.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subObjProps5.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -2946,7 +2946,7 @@ public class OWLOntologyTest
                       && foafPerson.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
                       && objPropDom.Annotations.Count == 1
                       && objPropDom.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(objPropDom.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(objPropDom.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && objPropDom.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && objPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLObjectPropertyDomain { ObjectPropertyExpression: OWLObjectInverseOf invOfFoafKnows } objPropDom1
@@ -2960,11 +2960,11 @@ public class OWLOntologyTest
                       && foafOrganization.GetIRI().Equals(RDFVocabulary.FOAF.ORGANIZATION)
                       && objPropDom1.Annotations.Count == 2
                       && objPropDom1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropDom1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropDom1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropDom1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropDom1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropDom1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLObjectPropertyDomain { ObjectPropertyExpression: OWLObjectProperty foafKnows2 } objPropDom2
@@ -2977,11 +2977,11 @@ public class OWLOntologyTest
                       && anonIdv1.GetIRI().Equals(new RDFResource("bnode:AnonIdv1"))
                       && objPropDom2.Annotations.Count == 2
                       && objPropDom2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropDom2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropDom2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropDom2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropDom2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropDom2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLObjectPropertyDomain { ObjectPropertyExpression: OWLObjectProperty foafKnows3 } objPropDom3
@@ -2993,11 +2993,11 @@ public class OWLOntologyTest
                       && objIntOf.ClassExpressions[1] is OWLObjectComplementOf { ClassExpression: OWLClass foafMBox } && foafMBox.GetIRI().Equals(RDFVocabulary.FOAF.MBOX)
                       && objPropDom3.Annotations.Count == 2
                       && objPropDom3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropDom3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropDom3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropDom3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropDom3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropDom3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLObjectPropertyDomain { ObjectPropertyExpression: OWLObjectInverseOf invOfFoafKnows2 } objPropDom4
@@ -3011,11 +3011,11 @@ public class OWLOntologyTest
                       && foafOrganization2.GetIRI().Equals(RDFVocabulary.FOAF.ORGANIZATION)
                       && objPropDom4.Annotations.Count == 2
                       && objPropDom4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom4.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropDom4.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropDom4.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom4.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropDom4.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropDom4.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropDom4.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropDom4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropDom4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -3118,7 +3118,7 @@ public class OWLOntologyTest
                       && foafPerson.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
                       && objPropRng.Annotations.Count == 1
                       && objPropRng.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(objPropRng.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(objPropRng.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && objPropRng.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && objPropRng.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[1] is OWLObjectPropertyRange { ObjectPropertyExpression: OWLObjectInverseOf invOfFoafKnows } objPropRng1
@@ -3132,11 +3132,11 @@ public class OWLOntologyTest
                       && foafOrganization.GetIRI().Equals(RDFVocabulary.FOAF.ORGANIZATION)
                       && objPropRng1.Annotations.Count == 2
                       && objPropRng1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropRng1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropRng1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropRng1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropRng1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropRng1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[2] is OWLObjectPropertyRange { ObjectPropertyExpression: OWLObjectProperty foafKnows2 } objPropRng2
@@ -3149,11 +3149,11 @@ public class OWLOntologyTest
                       && anonIdv1.GetIRI().Equals(new RDFResource("bnode:AnonIdv1"))
                       && objPropRng2.Annotations.Count == 2
                       && objPropRng2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropRng2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropRng2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropRng2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropRng2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropRng2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[3] is OWLObjectPropertyRange { ObjectPropertyExpression: OWLObjectProperty foafKnows3 } objPropRng3
@@ -3171,11 +3171,11 @@ public class OWLOntologyTest
                       && objHVIdv.GetIRI().Equals(new RDFResource("ex:IdvA"))
                       && objPropRng3.Annotations.Count == 2
                       && objPropRng3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropRng3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropRng3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropRng3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropRng3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropRng3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[4] is OWLObjectPropertyRange { ObjectPropertyExpression: OWLObjectProperty foafKnows4 } objPropRng4
@@ -3183,11 +3183,11 @@ public class OWLOntologyTest
                       && objPropRng4.ClassExpression is OWLObjectHasSelf { ObjectPropertyExpression: OWLObjectProperty objHSProp } && objHSProp.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && objPropRng4.Annotations.Count == 2
                       && objPropRng4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng4.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropRng4.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropRng4.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng4.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropRng4.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropRng4.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropRng4.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropRng4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropRng4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -3233,18 +3233,18 @@ public class OWLOntologyTest
                       && funcDtProp.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && funcDtProp.Annotations.Count == 1
                       && funcDtProp.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(funcDtProp.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(funcDtProp.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && funcDtProp.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && funcDtProp.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.DataPropertyAxioms[1] is OWLFunctionalDataProperty funcDtProp1
                       && funcDtProp1.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.NAME)
                       && funcDtProp1.Annotations.Count == 2
                       && funcDtProp1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(funcDtProp1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(funcDtProp1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && funcDtProp1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && funcDtProp1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && funcDtProp1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(funcDtProp1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(funcDtProp1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && funcDtProp1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && funcDtProp1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -3293,7 +3293,7 @@ public class OWLOntologyTest
                       && dtPropB1.GetIRI().Equals(new RDFResource("ex:dtPropB1"))
                       && equivDtProps.Annotations.Count == 1
                       && equivDtProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(equivDtProps.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(equivDtProps.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && equivDtProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && equivDtProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.DataPropertyAxioms[1] is OWLEquivalentDataProperties equivDtProps1
@@ -3303,11 +3303,11 @@ public class OWLOntologyTest
                       && dtPropB2.GetIRI().Equals(new RDFResource("ex:dtPropB2"))
                       && equivDtProps1.Annotations.Count == 2
                       && equivDtProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(equivDtProps1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(equivDtProps1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && equivDtProps1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && equivDtProps1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && equivDtProps1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(equivDtProps1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(equivDtProps1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && equivDtProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && equivDtProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -3357,7 +3357,7 @@ public class OWLOntologyTest
                       && disjDtProps.DataProperties[1].GetIRI().Equals(new RDFResource("ex:dtPropB1"))
                       && disjDtProps.Annotations.Count == 1
                       && disjDtProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(disjDtProps.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(disjDtProps.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && disjDtProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && disjDtProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.DataPropertyAxioms[1] is OWLDisjointDataProperties disjDtProps1
@@ -3366,11 +3366,11 @@ public class OWLOntologyTest
                       && disjDtProps1.DataProperties[2].GetIRI().Equals(new RDFResource("ex:dtPropC2"))
                       && disjDtProps1.Annotations.Count == 2
                       && disjDtProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjDtProps1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(disjDtProps1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && disjDtProps1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjDtProps1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && disjDtProps1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(disjDtProps1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(disjDtProps1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && disjDtProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && disjDtProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -3419,7 +3419,7 @@ public class OWLOntologyTest
                       && subdtProps.SuperDataProperty.GetIRI().Equals(new RDFResource("ex:dtPropB1"))
                       && subdtProps.Annotations.Count == 1
                       && subdtProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(subdtProps.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(subdtProps.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && subdtProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && subdtProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.DataPropertyAxioms[1] is OWLSubDataPropertyOf subdtProps1
@@ -3427,11 +3427,11 @@ public class OWLOntologyTest
                       && subdtProps1.SuperDataProperty.GetIRI().Equals(new RDFResource("ex:dtPropB2"))
                       && subdtProps1.Annotations.Count == 2
                       && subdtProps1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subdtProps1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(subdtProps1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && subdtProps1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subdtProps1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && subdtProps1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(subdtProps1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(subdtProps1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && subdtProps1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && subdtProps1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -3464,7 +3464,7 @@ public class OWLOntologyTest
                       && subClsOf.SuperClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                       && subClsOf.Annotations.Count == 1
                       && subClsOf.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(subClsOf.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(subClsOf.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && subClsOf.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && subClsOf.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -3497,7 +3497,7 @@ public class OWLOntologyTest
                       && equivCls.ClassExpressions[1].GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                       && equivCls.Annotations.Count == 1
                       && equivCls.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(equivCls.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(equivCls.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && equivCls.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && equivCls.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -3545,7 +3545,7 @@ public class OWLOntologyTest
                       && clsB1.GetIRI().Equals(new RDFResource("ex:clsB1"))
                       && disjCls.Annotations.Count == 1
                       && disjCls.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(disjCls.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(disjCls.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && disjCls.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && disjCls.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.ClassAxioms[1] is OWLDisjointClasses disjCls1
@@ -3557,7 +3557,7 @@ public class OWLOntologyTest
                       && clsC5.GetIRI().Equals(new RDFResource("ex:clsC5"))
                       && disjCls1.Annotations.Count == 1
                       && disjCls1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(disjCls1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(disjCls1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && disjCls1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && disjCls1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
     }
@@ -3593,7 +3593,7 @@ public class OWLOntologyTest
                       && exClsC.GetIRI().Equals(new RDFResource("ex:clsC"))
                       && disjUnion.Annotations.Count == 1
                       && disjUnion.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(disjUnion.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(disjUnion.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && disjUnion.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && disjUnion.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
     }
@@ -3631,7 +3631,7 @@ public class OWLOntologyTest
                                                                               && ontology2.KeyAxioms[0].DataProperties[1] is { } dp2 && dp2.GetIRI().Equals(new RDFResource("ex:dp2"))
                                                                               && ontology2.KeyAxioms[0].Annotations.Count == 1
                                                                               && ontology2.KeyAxioms[0].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                                                                              && string.Equals(ontology2.KeyAxioms[0].Annotations.Single().ValueIRI, "ex:title")
+                                                                              && string.Equals(ontology2.KeyAxioms[0].Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                                                                               && ontology2.KeyAxioms[0].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                                                                               && ontology2.KeyAxioms[0].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
     }
@@ -3684,14 +3684,14 @@ public class OWLOntologyTest
                       && dtRest.FacetRestrictions[1].Literal.GetLiteral().Equals(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT))
                       && ontology2.DatatypeDefinitionAxioms[0].Annotations.Count == 1
                       && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && ontology2.DatatypeDefinitionAxioms[0].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.DatatypeDefinitionAxioms[1].Datatype.GetIRI().Equals(new RDFResource("ex:string"))
                       && ontology2.DatatypeDefinitionAxioms[1].DataRangeExpression is OWLDatatype xsdString && xsdString.GetIRI().Equals(RDFVocabulary.XSD.STRING)
                       && ontology2.DatatypeDefinitionAxioms[1].Annotations.Count == 1
                       && ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && ontology2.DatatypeDefinitionAxioms[1].Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
     }
@@ -3772,7 +3772,7 @@ public class OWLOntologyTest
                       && sameIdvs.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:IDVB"))
                       && sameIdvs.Annotations.Count == 1
                       && sameIdvs.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(sameIdvs.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(sameIdvs.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && sameIdvs.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && sameIdvs.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLSameIndividual sameIdvs1
@@ -3780,11 +3780,11 @@ public class OWLOntologyTest
                       && sameIdvs1.IndividualExpressions[1].GetIRI().Equals(new RDFResource("bnode:AnonIDV1"))
                       && sameIdvs1.Annotations.Count == 2
                       && sameIdvs1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(sameIdvs1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(sameIdvs1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && sameIdvs1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && sameIdvs1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && sameIdvs1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(sameIdvs1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(sameIdvs1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && sameIdvs1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && sameIdvs1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLSameIndividual sameIdvs2
@@ -3792,11 +3792,11 @@ public class OWLOntologyTest
                       && sameIdvs2.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:IDVD"))
                       && sameIdvs2.Annotations.Count == 2
                       && sameIdvs2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(sameIdvs2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(sameIdvs2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && sameIdvs2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && sameIdvs2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && sameIdvs2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(sameIdvs2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(sameIdvs2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && sameIdvs2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && sameIdvs2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLSameIndividual sameIdvs3
@@ -3804,11 +3804,11 @@ public class OWLOntologyTest
                       && sameIdvs3.IndividualExpressions[1].GetIRI().Equals(new RDFResource("bnode:AnonIDV3"))
                       && sameIdvs3.Annotations.Count == 2
                       && sameIdvs3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(sameIdvs3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(sameIdvs3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && sameIdvs3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && sameIdvs3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && sameIdvs3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(sameIdvs3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(sameIdvs3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && sameIdvs3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && sameIdvs3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -3905,7 +3905,7 @@ public class OWLOntologyTest
                       && idvB.GetIRI().Equals(new RDFResource("ex:IDVB"))
                       && diffIdvs.Annotations.Count == 1
                       && diffIdvs.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(diffIdvs.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(diffIdvs.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && diffIdvs.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && diffIdvs.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLDifferentIndividuals diffIdvs1
@@ -3915,11 +3915,11 @@ public class OWLOntologyTest
                       && idvC.GetIRI().Equals(new RDFResource("ex:IDVC"))
                       && diffIdvs1.Annotations.Count == 2
                       && diffIdvs1.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(diffIdvs1.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(diffIdvs1.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && diffIdvs1.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && diffIdvs1.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && diffIdvs1.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(diffIdvs1.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(diffIdvs1.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && diffIdvs1.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && diffIdvs1.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLDifferentIndividuals diffIdvs2
@@ -3929,11 +3929,11 @@ public class OWLOntologyTest
                       && anonIdv2.GetIRI().Equals(new RDFResource("bnode:ANONIDV2"))
                       && diffIdvs2.Annotations.Count == 2
                       && diffIdvs2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(diffIdvs2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(diffIdvs2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && diffIdvs2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && diffIdvs2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && diffIdvs2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(diffIdvs2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(diffIdvs2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && diffIdvs2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && diffIdvs2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLDifferentIndividuals diffIdvs3
@@ -3943,11 +3943,11 @@ public class OWLOntologyTest
                       && anonIdv3.GetIRI().Equals(new RDFResource("bnode:ANONIDV3"))
                       && diffIdvs3.Annotations.Count == 2
                       && diffIdvs3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(diffIdvs3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(diffIdvs3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && diffIdvs3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && diffIdvs3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && diffIdvs3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(diffIdvs3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(diffIdvs3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && diffIdvs3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && diffIdvs3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[4] is OWLDifferentIndividuals diffIdvs4
@@ -3961,7 +3961,7 @@ public class OWLOntologyTest
                       && anonIdv4.GetIRI().Equals(new RDFResource("bnode:ANONIDV4"))
                       && diffIdvs4.Annotations.Count == 1
                       && diffIdvs4.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(diffIdvs4.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(diffIdvs4.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && diffIdvs4.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && diffIdvs4.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("titolo", "it-IT")));
     }
@@ -4049,7 +4049,7 @@ public class OWLOntologyTest
                       && exIdv2.GetIRI().Equals(new RDFResource("ex:IDV2"))
                       && objPropAsn.Annotations.Count == 1
                       && objPropAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(objPropAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(objPropAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && objPropAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && objPropAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLObjectPropertyAssertion { ObjectPropertyExpression: OWLObjectProperty foafKnows2 } objPropAsn2
@@ -4060,11 +4060,11 @@ public class OWLOntologyTest
                       && anonIdv2.GetIRI().Equals(new RDFResource("bnode:ANONIDV2"))
                       && objPropAsn2.Annotations.Count == 2
                       && objPropAsn2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropAsn2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropAsn2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropAsn2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropAsn2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropAsn2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropAsn2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropAsn2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropAsn2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLObjectPropertyAssertion { ObjectPropertyExpression: OWLObjectProperty foafKnows3 } objPropAsn3
@@ -4075,11 +4075,11 @@ public class OWLOntologyTest
                       && anonIdv3.GetIRI().Equals(new RDFResource("bnode:ANONIDV3"))
                       && objPropAsn3.Annotations.Count == 2
                       && objPropAsn3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropAsn3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropAsn3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropAsn3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropAsn3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropAsn3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropAsn3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropAsn3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropAsn3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropAsn3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLObjectPropertyAssertion { ObjectPropertyExpression: OWLObjectProperty foafDepicts } objPropAsn4
@@ -4090,11 +4090,11 @@ public class OWLOntologyTest
                       && exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
                       && objPropAsn4.Annotations.Count == 2
                       && objPropAsn4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropAsn4.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(objPropAsn4.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && objPropAsn4.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropAsn4.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && objPropAsn4.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(objPropAsn4.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(objPropAsn4.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && objPropAsn4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && objPropAsn4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -4251,7 +4251,7 @@ public class OWLOntologyTest
                       && exIdv2.GetIRI().Equals(new RDFResource("ex:IDV2"))
                       && negObjPropAsn.Annotations.Count == 1
                       && negObjPropAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(negObjPropAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(negObjPropAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && negObjPropAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && negObjPropAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLNegativeObjectPropertyAssertion
@@ -4265,11 +4265,11 @@ public class OWLOntologyTest
                       && exIdv3.GetIRI().Equals(new RDFResource("ex:IDV3"))
                       && negObjPropAsn2.Annotations.Count == 2
                       && negObjPropAsn2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(negObjPropAsn2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(negObjPropAsn2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && negObjPropAsn2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && negObjPropAsn2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && negObjPropAsn2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(negObjPropAsn2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(negObjPropAsn2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && negObjPropAsn2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && negObjPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLNegativeObjectPropertyAssertion
@@ -4283,11 +4283,11 @@ public class OWLOntologyTest
                       && anonIdv2.GetIRI().Equals(new RDFResource("bnode:ANONIDV2"))
                       && negObjPropAsn3.Annotations.Count == 2
                       && negObjPropAsn3.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(negObjPropAsn3.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(negObjPropAsn3.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && negObjPropAsn3.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && negObjPropAsn3.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && negObjPropAsn3.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(negObjPropAsn3.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(negObjPropAsn3.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && negObjPropAsn3.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && negObjPropAsn3.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
         Assert.IsTrue(ontology2.AssertionAxioms[3] is OWLNegativeObjectPropertyAssertion
@@ -4301,11 +4301,11 @@ public class OWLOntologyTest
                       && anonIdv3.GetIRI().Equals(new RDFResource("bnode:ANONIDV3"))
                       && negObjPropAsn4.Annotations.Count == 2
                       && negObjPropAsn4.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(negObjPropAsn4.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(negObjPropAsn4.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && negObjPropAsn4.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && negObjPropAsn4.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && negObjPropAsn4.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(negObjPropAsn4.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(negObjPropAsn4.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && negObjPropAsn4.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && negObjPropAsn4.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -4358,7 +4358,7 @@ public class OWLOntologyTest
                       && dtPropAsn.Literal.GetLiteral().Equals(new RDFTypedLiteral("41", RDFModelEnums.RDFDatatypes.XSD_INTEGER))
                       && dtPropAsn.Annotations.Count == 1
                       && dtPropAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(dtPropAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(dtPropAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && dtPropAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && dtPropAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLDataPropertyAssertion dtPropAsn2
@@ -4368,11 +4368,11 @@ public class OWLOntologyTest
                       && dtPropAsn2.Literal.GetLiteral().Equals(new RDFPlainLiteral("anonidv1"))
                       && dtPropAsn2.Annotations.Count == 2
                       && dtPropAsn2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(dtPropAsn2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(dtPropAsn2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && dtPropAsn2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && dtPropAsn2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && dtPropAsn2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(dtPropAsn2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(dtPropAsn2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && dtPropAsn2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && dtPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -4425,7 +4425,7 @@ public class OWLOntologyTest
                       && dtPropAsn.Literal.GetLiteral().Equals(new RDFTypedLiteral("41", RDFModelEnums.RDFDatatypes.XSD_INTEGER))
                       && dtPropAsn.Annotations.Count == 1
                       && dtPropAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(dtPropAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(dtPropAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && dtPropAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && dtPropAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLNegativeDataPropertyAssertion dtPropAsn2
@@ -4435,11 +4435,11 @@ public class OWLOntologyTest
                       && dtPropAsn2.Literal.GetLiteral().Equals(new RDFPlainLiteral("anonidv1"))
                       && dtPropAsn2.Annotations.Count == 2
                       && dtPropAsn2.Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(dtPropAsn2.Annotations[0].ValueIRI, "ex:comment1")
+                      && string.Equals(dtPropAsn2.Annotations[0].ValueIRI, "ex:comment1", StringComparison.Ordinal)
                       && dtPropAsn2.Annotations[0].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && dtPropAsn2.Annotations[0].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("commento", "it-IT"))
                       && dtPropAsn2.Annotations[1].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
-                      && string.Equals(dtPropAsn2.Annotations[1].ValueIRI, "ex:comment2")
+                      && string.Equals(dtPropAsn2.Annotations[1].ValueIRI, "ex:comment2", StringComparison.Ordinal)
                       && dtPropAsn2.Annotations[1].Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && dtPropAsn2.Annotations[1].Annotation.ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("comment", "en-US")));
     }
@@ -4473,7 +4473,7 @@ public class OWLOntologyTest
                       && foafPerson.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
                       && dtPropDom.Annotations.Count == 1
                       && dtPropDom.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(dtPropDom.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(dtPropDom.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && dtPropDom.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && dtPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4507,7 +4507,7 @@ public class OWLOntologyTest
                       && xsdInteger.GetIRI().Equals(RDFVocabulary.XSD.INTEGER)
                       && dtPropRng.Annotations.Count == 1
                       && dtPropRng.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(dtPropRng.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(dtPropRng.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && dtPropRng.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && dtPropRng.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4572,7 +4572,7 @@ public class OWLOntologyTest
                       && exIdv1.GetIRI().Equals(new RDFResource("ex:IDV1"))
                       && clsAsn.Annotations.Count == 1
                       && clsAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(clsAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(clsAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && clsAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && clsAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[1] is OWLClassAssertion { ClassExpression: OWLObjectUnionOf objUnOf } clsAsn1
@@ -4591,7 +4591,7 @@ public class OWLOntologyTest
                       && exIdv4.GetIRI().Equals(new RDFResource("ex:IDV4"))
                       && clsAsn1.Annotations.Count == 1
                       && clsAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(clsAsn1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(clsAsn1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && clsAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && clsAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AssertionAxioms[2] is OWLClassAssertion { ClassExpression: OWLDataExactCardinality dtExCard } clsAsn2
@@ -4608,7 +4608,7 @@ public class OWLOntologyTest
                       && exIdv5.GetIRI().Equals(new RDFResource("ex:IDV5"))
                       && clsAsn2.Annotations.Count == 1
                       && clsAsn2.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(clsAsn2.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(clsAsn2.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && clsAsn2.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && clsAsn2.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4641,7 +4641,7 @@ public class OWLOntologyTest
                       && subanProps.SuperAnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
                       && subanProps.Annotations.Count == 1
                       && subanProps.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(subanProps.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(subanProps.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && subanProps.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && subanProps.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4686,7 +4686,7 @@ public class OWLOntologyTest
                       && string.Equals(anPropDom.IRI, RDFVocabulary.FOAF.PERSON.ToString())
                       && anPropDom.Annotations.Count == 1
                       && anPropDom.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(anPropDom.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(anPropDom.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && anPropDom.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && anPropDom.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyDomain anPropDom1
@@ -4694,7 +4694,7 @@ public class OWLOntologyTest
                       && string.Equals(anPropDom1.IRI,RDFVocabulary.FOAF.PERSON.ToString())
                       && anPropDom1.Annotations.Count == 1
                       && anPropDom1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(anPropDom1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(anPropDom1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && anPropDom1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && anPropDom1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4739,7 +4739,7 @@ public class OWLOntologyTest
                       && string.Equals(anPropRng.IRI, RDFVocabulary.FOAF.PERSON.ToString())
                       && anPropRng.Annotations.Count == 1
                       && anPropRng.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(anPropRng.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(anPropRng.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && anPropRng.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && anPropRng.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationPropertyRange anPropRng1
@@ -4747,7 +4747,7 @@ public class OWLOntologyTest
                       && string.Equals(anPropRng1.IRI,RDFVocabulary.FOAF.PERSON.ToString())
                       && anPropRng1.Annotations.Count == 1
                       && anPropRng1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(anPropRng1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(anPropRng1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && anPropRng1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && anPropRng1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4796,7 +4796,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn.ValueIRI, "ex:Person")
                       && annAsn.Annotations.Count == 1
                       && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationAssertion annAsn1
@@ -4805,7 +4805,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn1.ValueLiteral.GetLiteral().ToString(), "person")
                       && annAsn1.Annotations.Count == 1
                       && annAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4854,7 +4854,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "integer numbers")
                       && annAsn.Annotations.Count == 1
                       && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationAssertion annAsn1
@@ -4863,7 +4863,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn1.ValueIRI, "ex:integer")
                       && annAsn1.Annotations.Count == 1
                       && annAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4912,7 +4912,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "knows anyone")
                       && annAsn.Annotations.Count == 1
                       && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationAssertion annAsn1
@@ -4921,7 +4921,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn1.ValueIRI, "ex:seeAlso")
                       && annAsn1.Annotations.Count == 1
                       && annAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -4970,7 +4970,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "age")
                       && annAsn.Annotations.Count == 1
                       && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationAssertion annAsn1
@@ -4979,7 +4979,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn1.ValueIRI, "ex:seeAlso")
                       && annAsn1.Annotations.Count == 1
                       && annAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -5028,7 +5028,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn.ValueLiteral.GetLiteral().ToString(), "comment")
                       && annAsn.Annotations.Count == 1
                       && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationAssertion annAsn1
@@ -5037,7 +5037,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn1.ValueIRI, "ex:seeAlso")
                       && annAsn1.Annotations.Count == 1
                       && annAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
@@ -5086,7 +5086,7 @@ public class OWLOntologyTest
                       && string.Equals(annAsn.ValueIRI, "ex:Person")
                       && annAsn.Annotations.Count == 1
                       && annAsn.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(ontology2.AnnotationAxioms[1] is OWLAnnotationAssertion annAsn1
@@ -5095,7 +5095,7 @@ public class OWLOntologyTest
                       && annAsn1.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("This is Idv1", RDFModelEnums.RDFDatatypes.XSD_STRING))
                       && annAsn1.Annotations.Count == 1
                       && annAsn1.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
-                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title")
+                      && string.Equals(annAsn1.Annotations.Single().ValueIRI, "ex:title", StringComparison.Ordinal)
                       && annAsn1.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && annAsn1.Annotations.Single().Annotation.ValueLiteral.GetLiteral().Equals(new RDFTypedLiteral("titolo", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
