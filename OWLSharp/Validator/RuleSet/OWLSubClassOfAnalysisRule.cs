@@ -82,14 +82,17 @@ namespace OWLSharp.Validator
                                 int assertionsCount = 0;
                                 foreach (OWLObjectPropertyAssertion opAsn in opAsns)
                                 {
-                                    RDFResource opAsnTargetIndividualIRI = opAsn.TargetIndividualExpression.GetIRI();
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
-                                    foreach (OWLIndividualExpression idv in individualsCache[qClassIRI])
-                                        if (idv.GetIRI().Equals(opAsnTargetIndividualIRI))
-                                        {
-                                            opAsnIdvFoundAsQualifiedTarget = true;
-                                            break;
-                                        }
+                                    if (isQualified)
+                                    {
+                                        RDFResource opAsnTargetIndividualIRI = opAsn.TargetIndividualExpression.GetIRI();
+                                        foreach (OWLIndividualExpression idv in individualsCache[qClassIRI])
+                                            if (idv.GetIRI().Equals(opAsnTargetIndividualIRI))
+                                            {
+                                                opAsnIdvFoundAsQualifiedTarget = true;
+                                                break;
+                                            }
+                                    }
 
                                     if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
                                          && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinalityIRI) 
@@ -121,15 +124,18 @@ namespace OWLSharp.Validator
                                 RDFResource objMaxCardinalityIRI = objMaxCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
                                 foreach (OWLObjectPropertyAssertion opAsn in opAsns)
-                                {
-                                    RDFResource opAsnTargetIndividualIRI = opAsn.TargetIndividualExpression.GetIRI();
+                                {   
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
-                                    foreach (OWLIndividualExpression idv in individualsCache[qClassIRI])
-                                        if (idv.GetIRI().Equals(opAsnTargetIndividualIRI))
-                                        {
-                                            opAsnIdvFoundAsQualifiedTarget = true;
-                                            break;
-                                        }
+                                    if (isQualified)
+                                    {
+                                        RDFResource opAsnTargetIndividualIRI = opAsn.TargetIndividualExpression.GetIRI();
+                                        foreach (OWLIndividualExpression idv in individualsCache[qClassIRI])
+                                            if (idv.GetIRI().Equals(opAsnTargetIndividualIRI))
+                                            {
+                                                opAsnIdvFoundAsQualifiedTarget = true;
+                                                break;
+                                            }
+                                    }
 
                                     if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
                                          && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinalityIRI) 
