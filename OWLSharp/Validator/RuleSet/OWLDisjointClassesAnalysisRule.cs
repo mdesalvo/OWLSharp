@@ -30,7 +30,8 @@ namespace OWLSharp.Validator
 
             //Temporary working variables
             Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
-
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+            
             foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
             {
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
@@ -50,7 +51,7 @@ namespace OWLSharp.Validator
                 //DisjointClasses(CLS1,CLS2) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
                 idvsCache.Clear();
                 foreach (OWLClassExpression disjClass in disjClasses.ClassExpressions)
-                    foreach (OWLIndividualExpression disjClassIdv in ontology.GetIndividualsOf(disjClass))
+                    foreach (OWLIndividualExpression disjClassIdv in ontology.GetIndividualsOf(disjClass, clsAsns))
                     {
                         RDFResource disjClassIdvIRI = disjClassIdv.GetIRI();
                         if (!idvsCache.ContainsKey(disjClassIdvIRI.PatternMemberID))

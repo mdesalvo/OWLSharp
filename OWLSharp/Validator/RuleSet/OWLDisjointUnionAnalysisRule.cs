@@ -29,13 +29,14 @@ namespace OWLSharp.Validator
 
             //Temporary working variables
             Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
-
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
+            
             //DisjointUnion(CLS,(CLS1,CLS2)) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
             foreach (OWLDisjointUnion disjUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
             {
                 //Materialize individuals of each class expression member of the DisjointUnion
                 foreach (OWLClassExpression disjUnionMember in disjUnion.ClassExpressions)
-                    foreach (OWLIndividualExpression disjUnionMemberIdv in ontology.GetIndividualsOf(disjUnionMember))
+                    foreach (OWLIndividualExpression disjUnionMemberIdv in ontology.GetIndividualsOf(disjUnionMember, clsAsns))
                     {
                         RDFResource disjUnionMemberIdvIRI = disjUnionMemberIdv.GetIRI();
                         if (!idvsCache.ContainsKey(disjUnionMemberIdvIRI.PatternMemberID))

@@ -99,8 +99,9 @@ namespace OWLSharp.Ontology
             => ontology != null && clsExpr != null && idvExpr != null && GetIndividualsOf(ontology, clsExpr, enableSameAsEntailment).Any(iex => iex.GetIRI().Equals(idvExpr.GetIRI()));
 
         public static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, bool enableSameAsEntailment=true)
+            => GetIndividualsOf(ontology, clsExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology), enableSameAsEntailment);
+        internal static List<OWLIndividualExpression> GetIndividualsOf(this OWLOntology ontology, OWLClassExpression clsExpr, List<OWLClassAssertion> clsAsns, bool enableSameAsEntailment=true)
         {
-            List<OWLClassAssertion> classAssertions = GetAssertionAxiomsOfType<OWLClassAssertion>(ontology);
             List<OWLObjectPropertyAssertion> objectPropertyAssertions = GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>(ontology);
             List<OWLDataPropertyAssertion> dataPropertyAssertions = GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(ontology);
 
@@ -116,15 +117,15 @@ namespace OWLSharp.Ontology
                 #endregion
 
                 #region Discovery
-                foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(visitingClsExprIRI))
-                                                                        .Select(ax => ax.IndividualExpression));
+                foundVisitingClsExprIndividuals.AddRange(clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(visitingClsExprIRI))
+                                                                .Select(ax => ax.IndividualExpression));
             
                 //ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
                 foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr))
                 {
                     RDFResource subClsExprIRI = subClsExpr.GetIRI();
-                    foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExprIRI))
-                                                                            .Select(ax => ax.IndividualExpression));
+                    foundVisitingClsExprIndividuals.AddRange(clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(subClsExprIRI))
+                                                                    .Select(ax => ax.IndividualExpression));
                 }
 
                 //ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
@@ -187,8 +188,8 @@ namespace OWLSharp.Ontology
                     #region ObjectRestriction
                     if (equivClsExpr.IsObjectRestriction)
                     {
-                        foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
-                                                                                .Select(ax => ax.IndividualExpression));
+                        foundVisitingClsExprIndividuals.AddRange(clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
+                                                                        .Select(ax => ax.IndividualExpression));
 
                         //Object[Exact|Max]Cardinality and ObjectAllValuesFrom can only be answered with their assigned individuals (OWA)
                         if (equivClsExpr is OWLObjectExactCardinality || equivClsExpr is OWLObjectMaxCardinality || equivClsExpr is OWLObjectAllValuesFrom)
@@ -311,8 +312,8 @@ namespace OWLSharp.Ontology
                     #region DataRestriction
                     if (equivClsExpr.IsDataRestriction)
                     {
-                        foundVisitingClsExprIndividuals.AddRange(classAssertions.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
-                                                                                .Select(ax => ax.IndividualExpression));
+                        foundVisitingClsExprIndividuals.AddRange(clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(equivClsExprIRI))
+                                                                        .Select(ax => ax.IndividualExpression));
 
                         //Data[Exact|Max]Cardinality and DataAllValuesFrom can only be answered with their assigned individuals (OWA)
                         if (equivClsExpr is OWLDataExactCardinality || equivClsExpr is OWLDataMaxCardinality || equivClsExpr is OWLDataAllValuesFrom)
@@ -414,7 +415,7 @@ namespace OWLSharp.Ontology
             }                
             return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
         }
-
+        
         public static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr)
             => CheckIsNegativeIndividualOf(ontology, clsExpr, idvExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology));
         internal static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, List<OWLClassAssertion> clsAsnAxioms)

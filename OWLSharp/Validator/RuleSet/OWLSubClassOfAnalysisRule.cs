@@ -32,6 +32,7 @@ namespace OWLSharp.Validator
             //Temporary working variables
             List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
+            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             Dictionary<string, List<OWLIndividualExpression>> individualsCache = new Dictionary<string, List<OWLIndividualExpression>>();
 
             foreach (OWLSubClassOf subClassOf in ontology.GetClassAxiomsOfType<OWLSubClassOf>())
@@ -57,7 +58,7 @@ namespace OWLSharp.Validator
                     //Materialize individuals of the subclass
                     string subClassIRI = subClassOf.SubClassExpression.GetIRI().ToString();
                     if (!individualsCache.ContainsKey(subClassIRI))
-                        individualsCache.Add(subClassIRI, ontology.GetIndividualsOf(subClassOf.SubClassExpression, false));
+                        individualsCache.Add(subClassIRI, ontology.GetIndividualsOf(subClassOf.SubClassExpression, clsAsns, false));
                     
                     //Filter assertions of the current individual, depending on the nature of the superclass
                     foreach (OWLIndividualExpression individual in individualsCache[subClassIRI])
@@ -74,7 +75,7 @@ namespace OWLSharp.Validator
                                 {
                                     //Materialize individuals of the qualified class                                
                                     if (!individualsCache.ContainsKey(qClassIRI))
-                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objExactCardinality.ClassExpression, false));
+                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objExactCardinality.ClassExpression, clsAsns, false));
                                 }
                                 #endregion
 
@@ -99,7 +100,7 @@ namespace OWLSharp.Validator
                                 {
                                     //Materialize individuals of the qualified class                                
                                     if (!individualsCache.ContainsKey(qClassIRI))
-                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objMaxCardinality.ClassExpression, false));
+                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objMaxCardinality.ClassExpression, clsAsns, false));
                                 }
                                 #endregion
 
