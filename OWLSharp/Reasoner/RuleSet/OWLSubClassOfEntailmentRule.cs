@@ -31,15 +31,12 @@ namespace OWLSharp.Reasoner
             //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
                                                        .Select(ax => (OWLClass)ax.Expression))
-            {
-                List<OWLClassExpression> superClasses = ontology.GetSuperClassesOf(declaredClass);
-                foreach (OWLClassExpression superClass in superClasses)
+                foreach (OWLClassExpression superClass in ontology.GetSuperClassesOf(declaredClass))
                 {
                     OWLSubClassOf inference = new OWLSubClassOf(declaredClass, superClass) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }   
-            }
+                }
 
             return inferences;
         }
