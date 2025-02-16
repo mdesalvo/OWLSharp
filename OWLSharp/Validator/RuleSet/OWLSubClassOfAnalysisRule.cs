@@ -79,10 +79,11 @@ namespace OWLSharp.Validator
                                 }
                                 #endregion
 
+                                List<OWLIndividualExpression> qClassIdvs = isQualified ? individualsCache[qClassIRI] : null;
                                 RDFResource objExactCardinalityIRI = objExactCardinality.ObjectPropertyExpression.GetIRI();
                                 int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
                                                                       && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinalityIRI)
-                                                                      && (!isQualified || individualsCache[qClassIRI].Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
+                                                                      && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
                                 if (asnsCount > int.Parse(objExactCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
                                         OWLEnums.OWLIssueSeverity.Error, 
@@ -104,10 +105,11 @@ namespace OWLSharp.Validator
                                 }
                                 #endregion
 
+                                List<OWLIndividualExpression> qClassIdvs = isQualified ? individualsCache[qClassIRI] : null;
                                 RDFResource objMaxCardinalityIRI = objMaxCardinality.ObjectPropertyExpression.GetIRI();
                                 int asnsCount = opAsns.Count(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
                                                                       && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinalityIRI)
-                                                                      && (!isQualified || individualsCache[qClassIRI].Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
+                                                                      && (!isQualified || qClassIdvs.Any(idv => idv.GetIRI().Equals(opAsn.TargetIndividualExpression.GetIRI()))));
                                 if (asnsCount > int.Parse(objMaxCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
                                         OWLEnums.OWLIssueSeverity.Error, 
