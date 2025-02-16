@@ -27,6 +27,27 @@ namespace OWLSharp.Ontology
 {
     internal static class OWLSerializer
     {
+        private static readonly XmlWriterSettings DefaultXmlWriterSettings = new XmlWriterSettings
+        {
+            Encoding = Encoding.UTF8,
+            Indent = true,
+            NewLineHandling = NewLineHandling.None
+        };
+        private static readonly XmlWriterSettings TestXmlWriterSettings = new XmlWriterSettings
+        {
+            Encoding = Encoding.UTF8,
+            Indent = false,
+            NewLineHandling = NewLineHandling.None,
+            OmitXmlDeclaration = true
+        };
+        private static readonly XmlReaderSettings DefaultXmlReaderSettings = new XmlReaderSettings
+        {
+            DtdProcessing = DtdProcessing.Parse,
+            IgnoreComments = true,
+            IgnoreWhitespace = true,
+            IgnoreProcessingInstructions = true
+        };
+        
         internal static string SerializeOntology(OWLOntology ontology)
         {
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
@@ -69,13 +90,7 @@ namespace OWLSharp.Ontology
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
             {
-                using (XmlWriter writer = XmlWriter.Create(stringWriter, 
-                    new XmlWriterSettings
-                    {
-                        Encoding = stringWriter.Encoding,
-                        Indent = true,
-                        NewLineHandling = NewLineHandling.None
-                    }))
+                using (XmlWriter writer = XmlWriter.Create(stringWriter, DefaultXmlWriterSettings))
                 {
                     xmlSerializer.Serialize(writer, exportOntology, xmlSerializerNamespaces);
                     return stringWriter.ToString();
@@ -88,14 +103,7 @@ namespace OWLSharp.Ontology
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(OWLOntology));
             using (StringReader stringReader = new StringReader(ontology))
             {
-                using (XmlReader reader = XmlReader.Create(stringReader,
-                    new XmlReaderSettings
-                    {
-                        DtdProcessing = DtdProcessing.Parse,
-                        IgnoreComments = true,
-                        IgnoreWhitespace = true,
-                        IgnoreProcessingInstructions = true
-                    }))
+                using (XmlReader reader = XmlReader.Create(stringReader, DefaultXmlReaderSettings))
                 {
                     OWLOntology owlOntology = (OWLOntology)xmlSerializer.Deserialize(reader);
 
@@ -123,14 +131,7 @@ namespace OWLSharp.Ontology
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
             {
-                using (XmlWriter writer = XmlWriter.Create(stringWriter, 
-                    new XmlWriterSettings
-                    {
-                        Encoding = stringWriter.Encoding,
-                        Indent = false,
-                        NewLineHandling = NewLineHandling.None,
-                        OmitXmlDeclaration = true
-                    }))
+                using (XmlWriter writer = XmlWriter.Create(stringWriter, TestXmlWriterSettings))
                 {
                     xmlSerializer.Serialize(writer, objectToSerialize, xmlSerializerNamespaces);
                     return stringWriter.ToString();
@@ -143,14 +144,7 @@ namespace OWLSharp.Ontology
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             using (StringReader stringReader = new StringReader(objectToDeserialize))
             {
-                using (XmlReader reader = XmlReader.Create(stringReader,
-                    new XmlReaderSettings
-                    {
-                        DtdProcessing = DtdProcessing.Parse,
-                        IgnoreComments = true,
-                        IgnoreWhitespace = true,
-                        IgnoreProcessingInstructions = true
-                    }))
+                using (XmlReader reader = XmlReader.Create(stringReader, DefaultXmlReaderSettings))
                 {
                     return (T)xmlSerializer.Deserialize(reader);
                 }
