@@ -23,17 +23,14 @@ namespace OWLSharp.Validator
         internal const string rulesugg = "There should not be inverse functional object properties linking the same target individual to more than one source individuals within ObjectPropertyAssertion axioms if these source individuals are explicitly different!";
         internal const string rulesugg2 = "There should not be inverse functional object properties also defined as transitive, or having super properties defined as transitive!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
-
-            //Temporary working variables
-            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
 
             foreach (OWLInverseFunctionalObjectProperty ifop in ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>())
             {
                 #region Recalibration
-                List<OWLObjectPropertyAssertion> ifopAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, ifop.ObjectPropertyExpression);
+                List<OWLObjectPropertyAssertion> ifopAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX((List<OWLObjectPropertyAssertion>)validatorCache["OPASN"], ifop.ObjectPropertyExpression);
                 foreach (OWLObjectPropertyAssertion ifopAsn in ifopAsns)
                 {
                     //In case the functional object property works under inverse logic, we must swap source/target of the object assertion

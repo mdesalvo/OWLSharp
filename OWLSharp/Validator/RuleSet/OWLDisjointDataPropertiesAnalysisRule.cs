@@ -23,7 +23,7 @@ namespace OWLSharp.Validator
         internal const string rulesugg = "There should not be disjoint data properties linking the same individual to the same literal within DataPropertyAssertion axioms!";
         internal const string rulesugg2 = "There should not be data properties belonging at the same time to DisjointDataProperties and SubDataPropertyOf/EquivalentDataProperties axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 

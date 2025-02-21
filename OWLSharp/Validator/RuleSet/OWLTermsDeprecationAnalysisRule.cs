@@ -23,7 +23,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.TermsDeprecationAnalysis.ToString();
         internal const string rulesugg = "There should not be presence of deprecated classes, datatypes and properties: it is recommended to migrate ontology to newer term definitions if available";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -36,7 +36,7 @@ namespace OWLSharp.Validator
             
             foreach (OWLAnnotationAssertion annAsn in ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
                                                               .Where(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
-                                                                                && (asn.ValueLiteral?.GetLiteral().Equals(RDFTypedLiteral.True) ?? false)))
+                                                                             && (asn.ValueLiteral?.GetLiteral().Equals(RDFTypedLiteral.True) ?? false)))
             {
                 if (declaredClasses.Any(cls => string.Equals(cls, annAsn.SubjectIRI)))
                     issues.Add(new OWLIssue(

@@ -21,7 +21,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.DataPropertyDomainAnalysis.ToString();
         internal const string rulesugg = "There should not be individuals explicitly incompatible with domain class of data properties within DataPropertyAssertion axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 

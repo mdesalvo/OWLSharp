@@ -23,12 +23,11 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.NegativeObjectAssertionsAnalysis.ToString();
         internal const string rulesugg = "There should not be object assertions conflicting with negative object assertions!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLNegativeObjectPropertyAssertion> nopAsns = OWLAssertionAxiomHelper.CalibrateNegativeObjectAssertions(ontology);
 
             //NegativeObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ERROR
@@ -36,7 +35,7 @@ namespace OWLSharp.Validator
             {
                 RDFResource ndpAsnSourceIndividualIRI = nopAsn.SourceIndividualExpression.GetIRI();
                 RDFResource ndpAsnTargetIndividualIRI = nopAsn.TargetIndividualExpression.GetIRI();
-                OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, nopAsn.ObjectPropertyExpression)
+                OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX((List<OWLObjectPropertyAssertion>)validatorCache["OPASN"], nopAsn.ObjectPropertyExpression)
                                        .Where(opAsn => opAsn.SourceIndividualExpression.GetIRI().Equals(ndpAsnSourceIndividualIRI)
                                                         && opAsn.TargetIndividualExpression.GetIRI().Equals(ndpAsnTargetIndividualIRI))
                                        .ToList()

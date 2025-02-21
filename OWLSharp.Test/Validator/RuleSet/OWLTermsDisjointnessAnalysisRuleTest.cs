@@ -33,7 +33,11 @@ public class OWLTermsDisjointnessAnalysisRuleTest
                 new OWLDeclaration(new OWLDatatype(new RDFResource("http://xmlns.com/foaf/0.1/Person")))
             ]
         };
-        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -53,7 +57,11 @@ public class OWLTermsDisjointnessAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.XSD.INTEGER))
             ]
         };
-        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -73,7 +81,11 @@ public class OWLTermsDisjointnessAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/age")))
             ]
         };
-        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -93,7 +105,11 @@ public class OWLTermsDisjointnessAnalysisRuleTest
                 new OWLDeclaration(new OWLAnnotationProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")))
             ]
         };
-        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -113,7 +129,11 @@ public class OWLTermsDisjointnessAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/author")))
             ]
         };
-        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTermsDisjointnessAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

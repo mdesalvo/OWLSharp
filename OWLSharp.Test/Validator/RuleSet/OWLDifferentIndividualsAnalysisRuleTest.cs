@@ -45,7 +45,11 @@ public class OWLDifferentIndividualsAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))])
             ]
         };
-        List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -75,7 +79,11 @@ public class OWLDifferentIndividualsAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))])
             ]
         };
-        List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -102,7 +110,11 @@ public class OWLDifferentIndividualsAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))])
             ]
         };
-        List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLDifferentIndividualsAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

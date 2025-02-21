@@ -38,7 +38,11 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
             ]
         };
-        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -63,7 +67,11 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
             ]
         };
-        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -88,7 +96,11 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv")))
             ]
         };
-        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

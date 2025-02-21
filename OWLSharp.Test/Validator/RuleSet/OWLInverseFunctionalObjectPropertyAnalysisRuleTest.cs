@@ -65,7 +65,11 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -116,7 +120,11 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -167,7 +175,11 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -189,7 +201,11 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1")))
             ]
         };
-        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -219,7 +235,11 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op3")))
             ]
         };
-        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -267,7 +287,11 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(0, issues.Count);

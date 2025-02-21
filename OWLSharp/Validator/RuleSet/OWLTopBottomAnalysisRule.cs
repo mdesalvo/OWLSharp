@@ -25,7 +25,7 @@ namespace OWLSharp.Validator
         internal const string rulesuggB1 = "There should not be any direct or indirect SubObjectPropertyOf axioms having reserved owl:bottomObjectProperty property in position of superproperty: this object property should be the bottom object property!";
         internal const string rulesuggB2 = "There should not be any direct or indirect SubDataPropertyOf axioms having reserved owl:bottomDataProperty property in position of superproperty: this data property should be the bottom data property!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 

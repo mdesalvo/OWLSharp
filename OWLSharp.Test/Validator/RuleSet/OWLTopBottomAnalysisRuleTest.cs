@@ -38,7 +38,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -63,7 +67,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -88,7 +96,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -113,7 +125,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology);
+        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        {
+            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+        };
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

@@ -24,12 +24,11 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.HasKeyAnalysis.ToString();
         internal const string rulesugg = "There should not be named individuals computing the same HasKey values while being related by DifferentFrom axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             
@@ -37,7 +36,7 @@ namespace OWLSharp.Validator
             {
                 //HasKey(C,OP) ^ ClassAssertion(C,I1) ^ ObjectPropertyAssertion(OP,I1,IX) ^ ClassAssertion(C,I2) ^  ObjectPropertyAssertion(OP,I2,IX) ^ DifferentIndividuals(I1,I2) -> ERROR
                 //HasKey(C,DP) ^ ClassAssertion(C,I1) ^ DataPropertyAssertion(DP,I1,LIT)  ^ ClassAssertion(C,I2) ^  DataPropertyAssertion(DP,I2,LIT) ^ DifferentIndividuals(I1,I2) -> ERROR
-                issues.AddRange(AnalyzeKeyValues(ontology, hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, clsAsns), opAsns, dpAsns));
+                issues.AddRange(AnalyzeKeyValues(ontology, hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, clsAsns), (List<OWLObjectPropertyAssertion>)validatorCache["OPASN"], dpAsns));
             }
 
             return issues;

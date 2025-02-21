@@ -24,7 +24,7 @@ namespace OWLSharp.Validator
         internal const string rulesuggN1 = "There should not be any direct or indirect SubClassOf axioms having reserved owl:Nothing class in position of superclass: this class should be the bottom entity!";
         internal const string rulesuggN2 = "There should not be any direct or indirect ClassAssertion axioms having reserved owl:Nothing class: this class cannot contain individuals by design!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 

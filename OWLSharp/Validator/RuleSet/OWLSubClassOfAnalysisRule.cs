@@ -24,12 +24,11 @@ namespace OWLSharp.Validator
         internal const string rulesugg2 = "There should not be individuals violating ObjectExactCardinality or ObjectMaxCardinality constraints!";
         internal const string rulesugg3 = "There should not be individuals violating DataExactCardinality or DataMaxCardinality constraints!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             Dictionary<string, List<OWLIndividualExpression>> individualsCache = new Dictionary<string, List<OWLIndividualExpression>>();
@@ -80,7 +79,7 @@ namespace OWLSharp.Validator
 
                                 RDFResource objExactCardinalityIRI = objExactCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
-                                foreach (OWLObjectPropertyAssertion opAsn in opAsns)
+                                foreach (OWLObjectPropertyAssertion opAsn in (List<OWLObjectPropertyAssertion>)validatorCache["OPASN"])
                                 {
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
                                     if (isQualified)
@@ -123,7 +122,7 @@ namespace OWLSharp.Validator
 
                                 RDFResource objMaxCardinalityIRI = objMaxCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
-                                foreach (OWLObjectPropertyAssertion opAsn in opAsns)
+                                foreach (OWLObjectPropertyAssertion opAsn in (List<OWLObjectPropertyAssertion>)validatorCache["OPASN"])
                                 {   
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
                                     if (isQualified)
