@@ -44,7 +44,7 @@ public class OWLSubClassOfAnalysisRuleTest
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
             ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -77,7 +77,7 @@ public class OWLSubClassOfAnalysisRuleTest
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
             ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -108,8 +108,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -153,8 +154,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -199,8 +201,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -244,8 +247,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -290,8 +294,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -334,8 +339,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -383,8 +389,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -427,8 +434,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -476,8 +484,9 @@ public class OWLSubClassOfAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLSubClassOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 

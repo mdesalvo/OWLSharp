@@ -63,8 +63,9 @@ public class OWLFunctionalDataPropertyAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
         List<OWLIssue> issues = OWLFunctionalDataPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 

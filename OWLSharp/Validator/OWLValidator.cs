@@ -47,8 +47,9 @@ namespace OWLSharp.Validator
                 //Initialize validator context
                 OWLValidatorContext validatorContext = new OWLValidatorContext()
                 {
-                    ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
-                    DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
+                    ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+                    DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+                    ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
                 };
                 
                 //Execute validator rules
@@ -167,7 +168,8 @@ namespace OWLSharp.Validator
 
     internal class OWLValidatorContext
     {
-        internal List<OWLObjectPropertyAssertion> ObjectPropertyAssertions { get; set; }
+        internal List<OWLClassAssertion> ClassAssertions { get; set; }
         internal List<OWLDataPropertyAssertion> DataPropertyAssertions { get; set; }
+        internal List<OWLObjectPropertyAssertion> ObjectPropertyAssertions { get; set; }
     }
 }

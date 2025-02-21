@@ -28,14 +28,11 @@ namespace OWLSharp.Validator
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //Temporary working variables
-            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
-            
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
             {
                 //HasKey(C,OP) ^ ClassAssertion(C,I1) ^ ObjectPropertyAssertion(OP,I1,IX) ^ ClassAssertion(C,I2) ^  ObjectPropertyAssertion(OP,I2,IX) ^ DifferentIndividuals(I1,I2) -> ERROR
                 //HasKey(C,DP) ^ ClassAssertion(C,I1) ^ DataPropertyAssertion(DP,I1,LIT)  ^ ClassAssertion(C,I2) ^  DataPropertyAssertion(DP,I2,LIT) ^ DifferentIndividuals(I1,I2) -> ERROR
-                issues.AddRange(AnalyzeKeyValues(ontology, hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, clsAsns), validatorContext.ObjectPropertyAssertions, validatorContext.DataPropertyAssertions));
+                issues.AddRange(AnalyzeKeyValues(ontology, hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, validatorContext.ClassAssertions), validatorContext.ObjectPropertyAssertions, validatorContext.DataPropertyAssertions));
             }
 
             return issues;

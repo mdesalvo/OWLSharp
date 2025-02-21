@@ -25,16 +25,13 @@ namespace OWLSharp.Validator
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //Temporary working variables
-            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
-
             //ObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyDomain(OP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV1) -> ERROR
             foreach (OWLObjectPropertyDomain opDomain in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>())
             {
                 bool isObjectInverseOf = opDomain.ObjectPropertyExpression is OWLObjectInverseOf;
                 foreach (OWLObjectPropertyAssertion opDomainAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, opDomain.ObjectPropertyExpression))
                     if (ontology.CheckIsNegativeIndividualOf(opDomain.ClassExpression,
-                            isObjectInverseOf ? opDomainAsn.TargetIndividualExpression : opDomainAsn.SourceIndividualExpression, clsAsns))
+                            isObjectInverseOf ? opDomainAsn.TargetIndividualExpression : opDomainAsn.SourceIndividualExpression, validatorContext.ClassAssertions))
                         issues.Add(new OWLIssue(
                             OWLEnums.OWLIssueSeverity.Error,
                             rulename,

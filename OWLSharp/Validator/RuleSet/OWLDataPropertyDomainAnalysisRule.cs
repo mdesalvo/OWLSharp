@@ -25,14 +25,11 @@ namespace OWLSharp.Validator
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //Temporary working variables
-            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
-            
             //DataPropertyAssertion(DP,IDV,LIT) ^ DataPropertyDomain(DP,C) ^ ClassAssertion(ObjectComplementOf(C),IDV) -> ERROR
             foreach (OWLDataPropertyDomain dpDomain in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyDomain>())
                 foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, dpDomain.DataProperty))
                 {
-                    if (ontology.CheckIsNegativeIndividualOf(dpDomain.ClassExpression, dpAsn.IndividualExpression, clsAsns))
+                    if (ontology.CheckIsNegativeIndividualOf(dpDomain.ClassExpression, dpAsn.IndividualExpression, validatorContext.ClassAssertions))
                         issues.Add(new OWLIssue(
                             OWLEnums.OWLIssueSeverity.Error, 
                             rulename, 

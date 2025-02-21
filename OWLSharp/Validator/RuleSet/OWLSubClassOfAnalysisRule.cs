@@ -29,8 +29,6 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             Dictionary<string, List<OWLIndividualExpression>> individualsCache = new Dictionary<string, List<OWLIndividualExpression>>();
 
             foreach (OWLSubClassOf subClassOf in ontology.GetClassAxiomsOfType<OWLSubClassOf>())
@@ -56,7 +54,7 @@ namespace OWLSharp.Validator
                     //Materialize individuals of the subclass
                     string subClassIRI = subClassOf.SubClassExpression.GetIRI().ToString();
                     if (!individualsCache.ContainsKey(subClassIRI))
-                        individualsCache.Add(subClassIRI, ontology.GetIndividualsOf(subClassOf.SubClassExpression, clsAsns, false));
+                        individualsCache.Add(subClassIRI, ontology.GetIndividualsOf(subClassOf.SubClassExpression, validatorContext.ClassAssertions, false));
                     
                     //Filter assertions of the current individual, depending on the nature of the superclass
                     foreach (OWLIndividualExpression individual in individualsCache[subClassIRI])
@@ -73,7 +71,7 @@ namespace OWLSharp.Validator
                                 {
                                     //Materialize individuals of the qualified class                                
                                     if (!individualsCache.ContainsKey(qClassIRI))
-                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objExactCardinality.ClassExpression, clsAsns, false));
+                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objExactCardinality.ClassExpression, validatorContext.ClassAssertions, false));
                                 }
                                 #endregion
 
@@ -116,7 +114,7 @@ namespace OWLSharp.Validator
                                 {
                                     //Materialize individuals of the qualified class                                
                                     if (!individualsCache.ContainsKey(qClassIRI))
-                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objMaxCardinality.ClassExpression, clsAsns, false));
+                                        individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objMaxCardinality.ClassExpression, validatorContext.ClassAssertions, false));
                                 }
                                 #endregion
 
@@ -159,7 +157,7 @@ namespace OWLSharp.Validator
 
                                 RDFResource dtExactCardinalityIRI = dtExactCardinality.DataProperty.GetIRI();
                                 int assertionsCount = 0;
-                                foreach (OWLDataPropertyAssertion dpAsn in dpAsns)
+                                foreach (OWLDataPropertyAssertion dpAsn in validatorContext.DataPropertyAssertions)
                                 {
                                     if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI) 
                                          && dpAsn.DataProperty.GetIRI().Equals(dtExactCardinalityIRI) 
@@ -184,7 +182,7 @@ namespace OWLSharp.Validator
 
                                 RDFResource dtMaxCardinalityIRI = dtMaxCardinality.DataProperty.GetIRI();
                                 int assertionsCount = 0;
-                                foreach (OWLDataPropertyAssertion dpAsn in dpAsns)
+                                foreach (OWLDataPropertyAssertion dpAsn in validatorContext.DataPropertyAssertions)
                                 {
                                     if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI) 
                                          && dpAsn.DataProperty.GetIRI().Equals(dtMaxCardinalityIRI) 

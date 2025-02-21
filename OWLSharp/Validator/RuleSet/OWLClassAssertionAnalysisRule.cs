@@ -27,9 +27,9 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //ClassAssertion(CLS,IDV) ^ ClassAssertion(ObjectComplementOf(CLS),IDV) -> ERROR
-            foreach (var classAsnMap in ontology.GetAssertionAxiomsOfType<OWLClassAssertion>()
-                                                .GroupBy(clax => clax.IndividualExpression.GetIRI().ToString())
-                                                .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.ClassExpression)))
+            foreach (var classAsnMap in validatorContext.ClassAssertions
+                                                        .GroupBy(clax => clax.IndividualExpression.GetIRI().ToString())
+                                                        .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.ClassExpression)))
             {
                 if (classAsnMap.Value.Any(outerClassExpr =>
                      classAsnMap.Value.Any(innerClassExpr => !outerClassExpr.GetIRI().Equals(innerClassExpr.GetIRI())
