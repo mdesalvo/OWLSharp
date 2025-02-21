@@ -53,7 +53,8 @@ public class OWLDisjointUnionAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLDisjointUnionAnalysisRule.ExecuteRule(ontology, validatorContext);
 

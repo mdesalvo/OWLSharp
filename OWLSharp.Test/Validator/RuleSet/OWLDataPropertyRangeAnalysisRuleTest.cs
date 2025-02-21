@@ -65,7 +65,8 @@ public class OWLDataPropertyRangeAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -125,7 +126,8 @@ public class OWLDataPropertyRangeAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -180,7 +182,8 @@ public class OWLDataPropertyRangeAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -239,7 +242,8 @@ public class OWLDataPropertyRangeAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -296,7 +300,8 @@ public class OWLDataPropertyRangeAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -360,7 +365,8 @@ public class OWLDataPropertyRangeAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLDataPropertyRangeAnalysisRule.ExecuteRule(ontology, validatorContext);
 

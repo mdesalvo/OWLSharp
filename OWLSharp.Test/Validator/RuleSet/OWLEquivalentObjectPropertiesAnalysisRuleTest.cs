@@ -43,7 +43,8 @@ public class OWLEquivalentObjectPropertiesAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -76,7 +77,8 @@ public class OWLEquivalentObjectPropertiesAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLEquivalentObjectPropertiesAnalysisRule.ExecuteRule(ontology, validatorContext);
 

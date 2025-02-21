@@ -38,7 +38,8 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -81,7 +82,8 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -124,7 +126,8 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -166,7 +169,8 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -208,7 +212,8 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 

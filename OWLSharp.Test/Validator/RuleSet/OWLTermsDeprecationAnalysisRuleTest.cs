@@ -41,7 +41,8 @@ public class OWLTermsDeprecationAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -71,7 +72,8 @@ public class OWLTermsDeprecationAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -101,7 +103,8 @@ public class OWLTermsDeprecationAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -131,7 +134,8 @@ public class OWLTermsDeprecationAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
@@ -161,7 +165,8 @@ public class OWLTermsDeprecationAnalysisRuleTest
         };
         OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
         };
         List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 

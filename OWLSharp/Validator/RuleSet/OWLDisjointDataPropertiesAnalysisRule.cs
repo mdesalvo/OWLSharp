@@ -28,7 +28,6 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLDataPropertyAssertion> disjDtPropAsns = new List<OWLDataPropertyAssertion>();
 
             //DisjointDataProperties(DP1,DP2) ^ DataPropertyAssertion(DP1,IDV,LIT) ^ DataPropertyAssertion(DP2,IDV,LIT) -> ERROR
@@ -36,7 +35,7 @@ namespace OWLSharp.Validator
             {
                 disjDtPropAsns.Clear();
                 foreach (OWLDataProperty disjDtProp in disjDtProps.DataProperties)
-                    disjDtPropAsns.AddRange(OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, disjDtProp));
+                    disjDtPropAsns.AddRange(OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, disjDtProp));
 
                 disjDtPropAsns.GroupBy(dtAsn => new { 
                                     Idv = dtAsn.IndividualExpression.GetIRI().ToString(), 

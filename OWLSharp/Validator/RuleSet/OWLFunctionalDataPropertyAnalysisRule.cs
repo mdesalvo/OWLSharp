@@ -26,12 +26,9 @@ namespace OWLSharp.Validator
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //Temporary working variables
-            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-
             //FunctionalDataProperty(FDP) ^ DataPropertyAssertion(FDP,IDV,LIT1) ^ DataPropertyAssertion(FDP,IDV,LIT2) -> ERROR
             foreach (OWLFunctionalDataProperty fdp in ontology.GetDataPropertyAxiomsOfType<OWLFunctionalDataProperty>())
-                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, fdp.DataProperty)
+                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, fdp.DataProperty)
                                        .GroupBy(dpax => dpax.IndividualExpression.GetIRI().ToString())
                                        .ToDictionary(grp => grp.Key, grp => grp.Select(g => g.Literal))
                                        .Where(dict => OWLExpressionHelper.RemoveDuplicates(dict.Value.ToList()).Count > 1)

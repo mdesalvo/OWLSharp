@@ -28,7 +28,6 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLNegativeDataPropertyAssertion> ndpAsns = ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>();
 
             //NegativeDataPropertyAssertion(OP,IDV,LIT) ^ DataPropertyAssertion(OP,IDV,LIT) -> ERROR
@@ -36,7 +35,7 @@ namespace OWLSharp.Validator
             {
                 RDFResource ndpAsnIndividualIRI = ndpAsn.IndividualExpression.GetIRI();
                 RDFLiteral ndpAsnLiteral = ndpAsn.Literal.GetLiteral();
-                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, ndpAsn.DataProperty)
+                OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, ndpAsn.DataProperty)
                                        .Where(dpAsn => dpAsn.IndividualExpression.GetIRI().Equals(ndpAsnIndividualIRI)
                                                          && dpAsn.Literal.GetLiteral().Equals(ndpAsnLiteral))
                                        .ToList()

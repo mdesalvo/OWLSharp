@@ -25,11 +25,8 @@ namespace OWLSharp.Validator
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
-            //Temporary working variables
-            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-
             foreach (OWLDataPropertyRange dpRange in ontology.GetDataPropertyAxiomsOfType<OWLDataPropertyRange>())
-                foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, dpRange.DataProperty))
+                foreach (OWLDataPropertyAssertion dpAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(validatorContext.DataPropertyAssertions, dpRange.DataProperty))
                 {
                     if (!ontology.CheckIsLiteralOf(dpRange.DataRangeExpression, dpAsn.Literal))
                         issues.Add(new OWLIssue(
