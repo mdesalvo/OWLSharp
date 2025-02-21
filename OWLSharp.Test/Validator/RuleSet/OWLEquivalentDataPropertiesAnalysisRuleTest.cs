@@ -41,11 +41,11 @@ public class OWLEquivalentDataPropertiesAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLEquivalentDataPropertiesAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLEquivalentDataPropertiesAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -74,11 +74,11 @@ public class OWLEquivalentDataPropertiesAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age2")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLEquivalentDataPropertiesAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLEquivalentDataPropertiesAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

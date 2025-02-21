@@ -49,11 +49,11 @@ public class OWLNegativeObjectAssertionsAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -88,11 +88,11 @@ public class OWLNegativeObjectAssertionsAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -127,11 +127,11 @@ public class OWLNegativeObjectAssertionsAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -166,11 +166,11 @@ public class OWLNegativeObjectAssertionsAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLNegativeObjectAssertionsAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

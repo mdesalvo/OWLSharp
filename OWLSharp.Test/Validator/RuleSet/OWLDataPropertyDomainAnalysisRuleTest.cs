@@ -71,11 +71,11 @@ public class OWLDataPropertyDomainAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLDataPropertyDomainAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLDataPropertyDomainAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

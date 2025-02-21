@@ -48,11 +48,11 @@ public class OWLNegativeDataAssertionsAnalysisRuleTest
                     new OWLLiteral(new RDFTypedLiteral("36", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLNegativeDataAssertionsAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLNegativeDataAssertionsAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

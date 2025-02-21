@@ -61,11 +61,11 @@ public class OWLFunctionalDataPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLFunctionalDataPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLFunctionalDataPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

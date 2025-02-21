@@ -24,7 +24,7 @@ namespace OWLSharp.Validator
         internal const string rulesugg2 = "There should not be individuals violating ObjectExactCardinality or ObjectMaxCardinality constraints!";
         internal const string rulesugg3 = "There should not be individuals violating DataExactCardinality or DataMaxCardinality constraints!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -79,7 +79,7 @@ namespace OWLSharp.Validator
 
                                 RDFResource objExactCardinalityIRI = objExactCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
-                                foreach (OWLObjectPropertyAssertion opAsn in (List<OWLObjectPropertyAssertion>)validatorCache["OPASN"])
+                                foreach (OWLObjectPropertyAssertion opAsn in validatorContext.ObjectPropertyAssertions)
                                 {
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
                                     if (isQualified)
@@ -122,7 +122,7 @@ namespace OWLSharp.Validator
 
                                 RDFResource objMaxCardinalityIRI = objMaxCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
-                                foreach (OWLObjectPropertyAssertion opAsn in (List<OWLObjectPropertyAssertion>)validatorCache["OPASN"])
+                                foreach (OWLObjectPropertyAssertion opAsn in validatorContext.ObjectPropertyAssertions)
                                 {   
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
                                     if (isQualified)

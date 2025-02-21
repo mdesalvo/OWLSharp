@@ -38,11 +38,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -67,11 +67,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -96,11 +96,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -125,11 +125,11 @@ public class OWLTopBottomAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

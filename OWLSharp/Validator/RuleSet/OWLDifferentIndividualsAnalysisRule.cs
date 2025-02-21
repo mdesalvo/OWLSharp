@@ -24,7 +24,7 @@ namespace OWLSharp.Validator
         internal const string rulesugg = "There should not be named individuals related at the same time by SameIndividual and DifferentIndividuals axioms!";
         internal const string rulesugg2 = "There should not be named individuals being DifferentIndividuals of theirselves!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 

@@ -21,7 +21,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.ObjectPropertyRangeAnalysis.ToString();
         internal const string rulesugg = "There should not be individuals explicitly incompatible with range class of object properties within ObjectPropertyAssertion axioms!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 
@@ -32,7 +32,7 @@ namespace OWLSharp.Validator
             foreach (OWLObjectPropertyRange opRange in ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>())
             {
                 bool isObjectInverseOf = opRange.ObjectPropertyExpression is OWLObjectInverseOf;
-                foreach (OWLObjectPropertyAssertion opRangeAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX((List<OWLObjectPropertyAssertion>)validatorCache["OPASN"], opRange.ObjectPropertyExpression))
+                foreach (OWLObjectPropertyAssertion opRangeAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, opRange.ObjectPropertyExpression))
                     if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, isObjectInverseOf ? opRangeAsn.SourceIndividualExpression : opRangeAsn.TargetIndividualExpression, clsAsns))
                         issues.Add(new OWLIssue(
                             OWLEnums.OWLIssueSeverity.Error, 

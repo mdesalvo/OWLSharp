@@ -39,11 +39,11 @@ public class OWLTermsDeprecationAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Organization")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -69,11 +69,11 @@ public class OWLTermsDeprecationAnalysisRuleTest
                 new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.DATETIME))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -99,11 +99,11 @@ public class OWLTermsDeprecationAnalysisRuleTest
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/name")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -129,11 +129,11 @@ public class OWLTermsDeprecationAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/depicts")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -159,11 +159,11 @@ public class OWLTermsDeprecationAnalysisRuleTest
                 new OWLDeclaration(new OWLAnnotationProperty(new RDFResource("http://xmlns.com/foaf/0.1/lastCommit")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLTermsDeprecationAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

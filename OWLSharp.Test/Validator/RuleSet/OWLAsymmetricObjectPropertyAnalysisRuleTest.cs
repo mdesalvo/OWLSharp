@@ -36,11 +36,11 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
                 new OWLSymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -79,11 +79,11 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -122,11 +122,11 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -164,11 +164,11 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -206,11 +206,11 @@ public class OWLAsymmetricObjectPropertyAnalysisRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLAsymmetricObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

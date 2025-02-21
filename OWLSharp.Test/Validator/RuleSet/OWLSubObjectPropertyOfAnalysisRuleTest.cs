@@ -41,11 +41,11 @@ public class OWLSubObjectPropertyOfAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(2, issues.Count);
@@ -72,11 +72,11 @@ public class OWLSubObjectPropertyOfAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -103,11 +103,11 @@ public class OWLSubObjectPropertyOfAnalysisRuleTest
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLSubObjectPropertyOfAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

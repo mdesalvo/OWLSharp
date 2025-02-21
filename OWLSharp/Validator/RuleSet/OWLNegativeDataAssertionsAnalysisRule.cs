@@ -23,7 +23,7 @@ namespace OWLSharp.Validator
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.NegativeDataAssertionsAnalysis.ToString();
         internal const string rulesugg = "There should not be data assertions conflicting with negative data assertions!";
 
-        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, Dictionary<string, object> validatorCache)
+        internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
 

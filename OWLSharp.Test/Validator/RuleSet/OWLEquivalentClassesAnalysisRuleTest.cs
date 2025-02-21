@@ -40,11 +40,11 @@ public class OWLEquivalentClassesAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLEquivalentClassesAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLEquivalentClassesAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -70,11 +70,11 @@ public class OWLEquivalentClassesAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.AGENT))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLEquivalentClassesAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLEquivalentClassesAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);

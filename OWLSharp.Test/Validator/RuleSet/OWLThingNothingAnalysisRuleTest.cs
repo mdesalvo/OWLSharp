@@ -38,11 +38,11 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -67,11 +67,11 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
@@ -96,11 +96,11 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv")))
             ]
         };
-        Dictionary<string, object> validatorCache = new Dictionary<string, object>()
+        OWLValidatorContext validatorContext = new OWLValidatorContext()
         {
-            { "OPASN",  OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)}
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
         };
-        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorCache);
+        List<OWLIssue> issues = OWLThingNothingAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
