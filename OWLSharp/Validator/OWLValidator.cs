@@ -14,6 +14,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using OWLSharp.Ontology;
 
 namespace OWLSharp.Validator
@@ -51,11 +52,12 @@ namespace OWLSharp.Validator
                     DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
                     ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
                 };
-                
+
                 //Execute validator rules
-                Parallel.ForEach(Rules, rule =>
+                await Rules.ParallelForEachAsync(rule => Task.Run(() =>
                 {
-                    OWLEvents.RaiseInfo($"Launching OWL2 rule {rule}...");
+                    string ruleString = rule.ToString();
+                    OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
 
                     switch (rule)
                     {
@@ -148,15 +150,12 @@ namespace OWLSharp.Validator
                             break;
                     }
 
-                    OWLEvents.RaiseInfo($"Completed OWL2 rule {rule} => {issueRegistry[rule.ToString()].Count} issues");
-                });
+                    OWLEvents.RaiseInfo($"Completed OWL2 rule {ruleString} => {issueRegistry[ruleString].Count} issues");
+                }));
 
                 //Process issues registry
-                await Task.Run(() => 
-                {
-                    issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
-                    issueRegistry.Clear();
-                });           
+                issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
+                issueRegistry.Clear();
 
                 OWLEvents.RaiseInfo($"Completed OWL2 validator on ontology {ontology.IRI} => {issues.Count} issues");
             }
@@ -166,7 +165,7 @@ namespace OWLSharp.Validator
         #endregion
     }
 
-    internal class OWLValidatorContext
+    internal sealed class OWLValidatorContext
     {
         internal List<OWLClassAssertion> ClassAssertions { get; set; }
         internal List<OWLDataPropertyAssertion> DataPropertyAssertions { get; set; }

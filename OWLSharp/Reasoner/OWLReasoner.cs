@@ -47,12 +47,12 @@ namespace OWLSharp.Reasoner
                 ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
 
                 //Execute OWL2 reasoner rules
-                Parallel.ForEach(Rules, owl2Rule =>
+                await Rules.ParallelForEachAsync(rule => Task.Run(() =>
                 {
-                    string owl2RuleString = owl2Rule.ToString();
-                    OWLEvents.RaiseInfo($"Launching OWL2 rule {owl2RuleString}...");
+                    string ruleString = rule.ToString();
+                    OWLEvents.RaiseInfo($"Launching OWL2 rule {ruleString}...");
 
-                    switch (owl2Rule)
+                    switch (rule)
                     {
                         case OWLEnums.OWLReasonerRules.ClassAssertionEntailment:
                             inferenceRegistry[OWLClassAssertionEntailmentRule.rulename] = OWLClassAssertionEntailmentRule.ExecuteRule(ontology);
@@ -125,14 +125,14 @@ namespace OWLSharp.Reasoner
                             break;
                         case OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment:
                             inferenceRegistry[OWLSymmetricObjectPropertyEntailmentRule.rulename] = OWLSymmetricObjectPropertyEntailmentRule.ExecuteRule(ontology);
-                            break;                            
+                            break;
                         case OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment:
                             inferenceRegistry[OWLTransitiveObjectPropertyEntailmentRule.rulename] = OWLTransitiveObjectPropertyEntailmentRule.ExecuteRule(ontology);
                             break;
                     }
 
-                    OWLEvents.RaiseInfo($"Completed OWL2 rule {owl2RuleString} => {inferenceRegistry[owl2RuleString].Count} candidate inferences");
-                });
+                    OWLEvents.RaiseInfo($"Completed OWL2 rule {ruleString} => {inferenceRegistry[ruleString].Count} candidate inferences");
+                }));
 
                 //Execute SWRL reasoner rules
                 await ontology.Rules.ParallelForEachAsync(async swrlRule =>
