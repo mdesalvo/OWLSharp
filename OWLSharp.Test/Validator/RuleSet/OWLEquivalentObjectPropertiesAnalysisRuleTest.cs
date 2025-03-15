@@ -30,18 +30,18 @@ public class OWLEquivalentObjectPropertiesAnalysisRuleTest
         {
             ObjectPropertyAxioms = [
                 new OWLEquivalentObjectProperties([
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")) ]),
                 new OWLSubObjectPropertyOf(
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -63,20 +63,20 @@ public class OWLEquivalentObjectPropertiesAnalysisRuleTest
         {
             ObjectPropertyAxioms = [
                 new OWLEquivalentObjectProperties([
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")),
                     new OWLObjectProperty(new RDFResource("ex:knows2")) ]),
                 new OWLDisjointObjectProperties([
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")) ])
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows2")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

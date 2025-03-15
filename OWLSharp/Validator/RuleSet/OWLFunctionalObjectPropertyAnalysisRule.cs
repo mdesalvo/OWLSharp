@@ -35,7 +35,7 @@ namespace OWLSharp.Validator
                 {
                     //In case the functional object property works under inverse logic, we must swap source/target of the object assertion
                     if (fop.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                    {   
+                    {
                         (fopAsn.SourceIndividualExpression, fopAsn.TargetIndividualExpression) = (fopAsn.TargetIndividualExpression, fopAsn.SourceIndividualExpression);
                         fopAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                     }
@@ -45,8 +45,8 @@ namespace OWLSharp.Validator
 
                 //FunctionalObjectProperty(FOP) ^ ObjectPropertyAssertion(FOP,IDV1,IDV2) ^ ObjectPropertyAssertion(FOP,IDV1,IDV3) ^ DifferentIndividuals(IDV2,IDV3) -> ERROR
                 fopAsns.GroupBy(opex => opex.SourceIndividualExpression.GetIRI().ToString())
-                       .Select(grp => new 
-                       { 
+                       .Select(grp => new
+                       {
                             FopAsnTargets = grp.Select(g => g.TargetIndividualExpression),
                             FoundDiffFromTargets = grp.Select(g => g.TargetIndividualExpression)
                                                       .Any(outerTgtIdv => grp.Select(g => g.TargetIndividualExpression)
@@ -58,9 +58,9 @@ namespace OWLSharp.Validator
                        .ForEach(fopAsn =>
                        {
                            issues.Add(new OWLIssue(
-                               OWLEnums.OWLIssueSeverity.Error, 
-                               rulename, 
-                               $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}", 
+                               OWLEnums.OWLIssueSeverity.Error,
+                               rulename,
+                               $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}",
                                rulesugg));
                        });
 
@@ -69,9 +69,9 @@ namespace OWLSharp.Validator
                 if (ontology.CheckHasTransitiveObjectProperty(fop.ObjectPropertyExpression)
                      || ontology.GetSuperObjectPropertiesOf(fop.ObjectPropertyExpression).Any(ontology.CheckHasTransitiveObjectProperty))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated FunctionalObjectProperty axiom with signature: {fop.GetXML()}",
                         rulesugg2));
             }
 

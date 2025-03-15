@@ -19,7 +19,7 @@ using OWLSharp.Ontology;
 
 namespace OWLSharp.Validator
 {
-    public class OWLValidator
+    public sealed class OWLValidator
     {
         #region Properties
         public List<OWLEnums.OWLValidatorRules> Rules { get; internal set; } = new List<OWLEnums.OWLValidatorRules>();
@@ -46,7 +46,7 @@ namespace OWLSharp.Validator
                 Rules.ForEach(rule => issueRegistry.Add(rule.ToString(), null));
 
                 //Initialize validator context
-                OWLValidatorContext validatorContext = new OWLValidatorContext()
+                OWLValidatorContext validatorContext = new OWLValidatorContext
                 {
                     ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
                     DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

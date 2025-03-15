@@ -51,7 +51,7 @@ public class OWLObjectMaxCardinalityTest
         Assert.IsNotNull(objectMaxCardinality.ObjectPropertyExpression);
         Assert.IsTrue(objectMaxCardinality.ObjectPropertyExpression is OWLObjectProperty objProp
                       && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-        Assert.IsTrue(objectMaxCardinality.ClassExpression is OWLClass cls 
+        Assert.IsTrue(objectMaxCardinality.ClassExpression is OWLClass cls
                       && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
     }
 

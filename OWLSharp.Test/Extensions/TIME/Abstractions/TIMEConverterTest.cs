@@ -65,7 +65,7 @@ public class TIMEConverterTest
         Assert.AreEqual(expectedMinute, tc.Minute);
         Assert.AreEqual(expectedSecond, tc.Second);
     }
-        
+
     [DataTestMethod]
     [DataRow(-25.2502, TIMEUnitType.Year, 1, 1944, 10, 7, 16, 14, 52)] //6 leap years encountered (1968,1964,1960,1956,1952,1948)
     [DataRow(-61.25, TIMEUnitType.Day, 1, 1969, 10, 31, 18, 0, 0)]
@@ -140,7 +140,7 @@ public class TIMEConverterTest
             TIMEPositionReferenceSystem.UnixTime.Origin,
             new TIMEUnit(new RDFResource("ex:CustomUnit"), unitType, unitScale));
         TIMECoordinate tc = TIMEConverter.CoordinateFromPosition(
-            timePosition, 
+            timePosition,
             unixModifiedTRS,
             new TIMECalendarReferenceSystem(
                 new RDFResource("https://en.wikipedia.org/wiki/360-day_calendar"),
@@ -252,7 +252,7 @@ public class TIMEConverterTest
         double expectedHour, double expectedMinute, double expectedSecond)
     {
         TIMECoordinate tc = TIMEConverter.NormalizeCoordinate(
-            new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond), 
+            new TIMECoordinate(originYear, originMonth, originDay, originHour, originMinute, originSecond),
             TIMECalendarReferenceSystem.Gregorian);
 
         Assert.IsNotNull(tc);
@@ -400,7 +400,7 @@ public class TIMEConverterTest
     [DataRow(0.5, "http://www.w3.org/2006/time#year", TIMEUnitType.Year, 1, 0d, 0d, 0d, 182d, 12d, 0d, 0d)]
     [DataRow(1, "http://www.w3.org/2006/time#year", TIMEUnitType.Year, 1, 0d, 0d, 0d, 365d, 0d, 0d, 0d)]
     [DataRow(9.272501, "http://www.w3.org/2006/time#year", TIMEUnitType.Year, 1, 0d, 0d, 0d, 3384d, 11d, 6d, 31d)]
-    public void ShouldGetExtentFromDuration(double timeDuration, string unitTypeURI, TIMEUnitType unitTypeEnum, double scaleFactor, 
+    public void ShouldGetExtentFromDuration(double timeDuration, string unitTypeURI, TIMEUnitType unitTypeEnum, double scaleFactor,
         double? expectedYears, double? expectedMonths, double? expectedWeeks, double? expectedDays, double? expectedHours, double? expectedMinutes, double? expectedSeconds)
     {
         TIMEExtent te = TIMEConverter.ExtentFromDuration(timeDuration, new TIMEUnit(new RDFResource(unitTypeURI), unitTypeEnum, scaleFactor), TIMECalendarReferenceSystem.Gregorian);
@@ -633,9 +633,9 @@ public class TIMEConverterTest
     [DataRow(1.2425, 0, 0, 0, 0, 0, 0, 0, 0, 0, 453, 12, 18, 0)]
     //mixed components
     [DataRow(1, 1, 1, 40, 25, 64, 62, 0, 0, 0, 443, 2, 5, 2)]
-    public void ShouldNormalizeExtentToGregorianCalendar(double originYears, double originMonths, double originWeeks, 
-        double originDays, double originHours, double originMinutes, double originSeconds, double expectedYears, 
-        double expectedMonths, double expectedWeeks, double expectedDays, double expectedHours, 
+    public void ShouldNormalizeExtentToGregorianCalendar(double originYears, double originMonths, double originWeeks,
+        double originDays, double originHours, double originMinutes, double originSeconds, double expectedYears,
+        double expectedMonths, double expectedWeeks, double expectedDays, double expectedHours,
         double expectedMinutes, double expectedSeconds)
     {
         TIMEExtent te = TIMEConverter.NormalizeExtent(
@@ -669,11 +669,11 @@ public class TIMEConverterTest
     [DataRow(1983, 2, 10, 15, 30, 30, 1997, 7, 14, 10, 30, 00, 0, 0, 0, 5263, 18, 59, 30)]
     [DataRow(2025, 1, 1, 0, 0, 0, 2024, 12, 31, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0)]
     [DataRow(2025, 1, 31, 0, 0, 0, 2024, 10, 7, 24, 0, 0, 0, 0, 0, 118, 0, 0, 0)]
-    public void ShouldCalculateExtentBetweenCoordinates(double startYear, double startMonth, double startDay, double startHour, double startMinute, double startSecond, 
-        double endYear, double endMonth, double endDay, double endHour, double endMinute, double endSecond, 
+    public void ShouldCalculateExtentBetweenCoordinates(double startYear, double startMonth, double startDay, double startHour, double startMinute, double startSecond,
+        double endYear, double endMonth, double endDay, double endHour, double endMinute, double endSecond,
         double expectedYears, double expectedMonths, double expectedWeeks, double expectedDays, double expectedHours, double expectedMinutes, double expectedSeconds)
     {
-        TIMECoordinate startCoordinate = new TIMECoordinate(startYear, startMonth, startDay, startHour, startMinute, startSecond, 
+        TIMECoordinate startCoordinate = new TIMECoordinate(startYear, startMonth, startDay, startHour, startMinute, startSecond,
             new TIMECoordinateMetadata(TIMECalendarReferenceSystem.Gregorian, RDFVocabulary.TIME.UNIT_SECOND));
         TIMECoordinate endCoordinate = new TIMECoordinate(endYear, endMonth, endDay, endHour, endMinute, endSecond,
             new TIMECoordinateMetadata(TIMECalendarReferenceSystem.Gregorian, RDFVocabulary.TIME.UNIT_SECOND));

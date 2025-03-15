@@ -60,7 +60,7 @@ namespace OWLSharp.Ontology
 
             RDFResource consequentBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, RDFVocabulary.SWRL.HEAD, consequentBN));
-            
+
             RDFCollection consequentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { InternalReificationSubject = consequentBN };
             foreach (SWRLAtom atom in Atoms)
                 graph = graph.UnionWith(atom.ToRDFGraph(consequentElements));

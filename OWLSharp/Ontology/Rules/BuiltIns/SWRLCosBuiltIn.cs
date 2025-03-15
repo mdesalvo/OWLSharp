@@ -82,6 +82,7 @@ namespace OWLSharp.Ontology
                  && rightTypedLiteral.HasDecimalDatatype()
                  && double.TryParse(rightTypedLiteral.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out double rightNumber))
                 return leftNumber == Math.Cos(rightNumber);
+
             return false;
         }
         #endregion

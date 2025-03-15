@@ -52,7 +52,7 @@ namespace OWLSharp.Ontology
     [XmlInclude(typeof(OWLObjectProperty))]
     [XmlInclude(typeof(OWLObjectSomeValuesFrom))]
     [XmlInclude(typeof(OWLObjectUnionOf))]
-    public class OWLExpression 
+    public class OWLExpression
     {
         #region Properties
         [XmlIgnore]
@@ -68,7 +68,7 @@ namespace OWLSharp.Ontology
         public virtual RDFResource GetIRI()
             => ExpressionIRI;
 
-        public virtual string ToSWRLString() 
+        public virtual string ToSWRLString()
             => GetIRI().URI.GetShortUri();
 
         internal virtual RDFGraph ToRDFGraph(RDFResource expressionIRI=null)
@@ -80,7 +80,7 @@ namespace OWLSharp.Ontology
 
     public class OWLAnnotationPropertyExpression : OWLExpression { }
 
-    public class OWLClassExpression : OWLExpression 
+    public class OWLClassExpression : OWLExpression
     {
         #region Properties
         [XmlIgnore]
@@ -113,7 +113,7 @@ namespace OWLSharp.Ontology
         #endregion
     }
 
-    public class OWLDataRangeExpression : OWLExpression 
+    public class OWLDataRangeExpression : OWLExpression
     {
         #region Properties
         [XmlIgnore]

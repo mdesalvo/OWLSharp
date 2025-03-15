@@ -101,8 +101,8 @@ public class OWLClassViewTest
                     [],
                     [new OWLDataProperty(new RDFResource("ex:hasName"))])
             ]
-        };        
-        
+        };
+
         LivingEntityView = new OWLClassView(new OWLClass(new RDFResource("ex:LivingEntity")), Ontology);
         AnimalView = new OWLClassView(new OWLClass(new RDFResource("ex:Animal")), Ontology);
         CatView = new OWLClassView(new OWLClass(new RDFResource("ex:Cat")), Ontology);

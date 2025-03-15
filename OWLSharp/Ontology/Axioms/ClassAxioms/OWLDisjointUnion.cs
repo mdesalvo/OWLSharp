@@ -83,12 +83,12 @@ namespace OWLSharp.Ontology
                 RDFResource classExpressionIRI = classExpression.GetIRI();
                 disjointUnionCollection.AddItem(classExpressionIRI);
                 graph = graph.UnionWith(classExpression.ToRDFGraph(classExpressionIRI));
-            }   
+            }
             graph.AddCollection(disjointUnionCollection);
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(classIRI, RDFVocabulary.OWL.DISJOINT_UNION_OF, disjointUnionCollection.ReificationSubject);
-            graph.AddTriple(axiomTriple);            
+            graph.AddTriple(axiomTriple);
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)

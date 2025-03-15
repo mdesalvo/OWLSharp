@@ -57,7 +57,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -65,7 +65,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -114,7 +114,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -122,7 +122,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -171,7 +171,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLInverseFunctionalObjectProperty(new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:op1")))),
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -179,7 +179,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -203,11 +203,11 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -237,13 +237,13 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                     new OWLObjectProperty(new RDFResource("ex:op2")),
                     new OWLObjectProperty(new RDFResource("ex:op3")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op3")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -289,7 +289,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -297,7 +297,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

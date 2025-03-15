@@ -27,6 +27,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInstant is after bInstant because given \"aTimeInstantURI\" parameter is null");
             if (bTimeInstantURI == null)
                 throw new OWLException("Cannot check if aInstant is after bInstant because given \"bTimeInstantURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -53,6 +54,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if instant is after interval because given \"timeInstantURI\" parameter is null");
             if (timeIntervalURI == null)
                 throw new OWLException("Cannot check if instant is after interval because given \"timeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -79,6 +81,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInstant is before bInstant because given \"aTimeInstantURI\" parameter is null");
             if (bTimeInstantURI == null)
                 throw new OWLException("Cannot check if aInstant is before bInstant because given \"bTimeInstantURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -97,7 +100,7 @@ namespace OWLSharp.Extensions.TIME
             return aTimeInstantCoordinate.CompareTo(bTimeInstantCoordinate) == -1;
         }
 
-        public static bool CheckBeforeInterval(OWLOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI, 
+        public static bool CheckBeforeInterval(OWLOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -105,6 +108,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if instant is before interval because given \"timeInstantURI\" parameter is null");
             if (timeIntervalURI == null)
                 throw new OWLException("Cannot check if instant is before interval because given \"timeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -123,7 +127,7 @@ namespace OWLSharp.Extensions.TIME
             return timeInstantCoordinate.CompareTo(timeIntervalBeginningCoordinate) == -1;
         }
 
-        public static bool CheckInsideInterval(OWLOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI, 
+        public static bool CheckInsideInterval(OWLOntology timeOntology, RDFResource timeInstantURI, RDFResource timeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -131,6 +135,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if instant is inside interval because given \"timeInstantURI\" parameter is null");
             if (timeIntervalURI == null)
                 throw new OWLException("Cannot check if instant is inside interval because given \"timeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion

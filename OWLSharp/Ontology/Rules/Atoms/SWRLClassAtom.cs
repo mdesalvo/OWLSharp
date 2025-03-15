@@ -98,9 +98,9 @@ namespace OWLSharp.Ontology
 
                     //Create the inference
                     OWLClassAssertion inference = new OWLClassAssertion(
-                        (OWLClassExpression)Predicate) 
-                        { 
-                            IndividualExpression = clsAsnIdvExpr, 
+                        (OWLClassExpression)Predicate)
+                        {
+                            IndividualExpression = clsAsnIdvExpr,
                             IsInference = true
                         };
                     inference.GetXML();
@@ -114,7 +114,7 @@ namespace OWLSharp.Ontology
         internal override RDFGraph ToRDFGraph(RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
-            
+
             RDFResource atomBN = new RDFResource();
             atomsList.AddItem(atomBN);
 
@@ -137,7 +137,7 @@ namespace OWLSharp.Ontology
                 case SWRLLiteralArgument leftArgLit:
                     graph.AddTriple(new RDFTriple(atomBN, RDFVocabulary.SWRL.ARGUMENT1, leftArgLit.GetLiteral()));
                     break;
-            }            
+            }
 
             return graph;
         }

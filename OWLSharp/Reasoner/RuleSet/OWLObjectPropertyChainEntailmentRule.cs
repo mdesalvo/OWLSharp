@@ -29,7 +29,7 @@ namespace OWLSharp.Reasoner
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Prepare subgraph for analysis of property chain
-            Lazy<RDFGraph> lazyOPAsnsGraph = new Lazy<RDFGraph>(() => 
+            Lazy<RDFGraph> lazyOPAsnsGraph = new Lazy<RDFGraph>(() =>
             {
                 RDFGraph opAsnsGraph = new RDFGraph();
                 foreach (OWLObjectPropertyAssertion opAsn in ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>())
@@ -49,8 +49,8 @@ namespace OWLSharp.Reasoner
                                                                                                                  : new RDFPropertyPathStep(propertyPathStep.GetIRI()));
 
                 //Execute SPARQL construct query to materialize property chain inferences
-                RDFPattern templatePattern = subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfSuperObjPropExpr 
-                    ? new RDFPattern(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"), objInvOfSuperObjPropExpr.ObjectProperty.GetIRI(), new RDFVariable("?PROPERTY_CHAIN_AXIOM_START")) 
+                RDFPattern templatePattern = subObjectPropertyOf.SuperObjectPropertyExpression is OWLObjectInverseOf objInvOfSuperObjPropExpr
+                    ? new RDFPattern(new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"), objInvOfSuperObjPropExpr.ObjectProperty.GetIRI(), new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"))
                     : new RDFPattern(new RDFVariable("?PROPERTY_CHAIN_AXIOM_START"), subObjectPropertyOf.SuperObjectPropertyExpression.GetIRI(), new RDFVariable("?PROPERTY_CHAIN_AXIOM_END"));
                 RDFConstructQueryResult materializedChainTriples =
                     new RDFConstructQuery()
@@ -66,14 +66,14 @@ namespace OWLSharp.Reasoner
                 {
                     //Rebuild source individual (preserve support for anonymous individuals)
                     OWLIndividualExpression infSrcIdvExpr;
-                    if (((RDFResource)materializedChainTriple.Subject).IsBlank) 
+                    if (((RDFResource)materializedChainTriple.Subject).IsBlank)
                         infSrcIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Subject.ToString().Replace("bnode:", string.Empty));
                     else
                         infSrcIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Subject);
 
                     //Rebuild target individual (preserve support for anonymous individuals)
                     OWLIndividualExpression infTgtIdvExpr;
-                    if (((RDFResource)materializedChainTriple.Object).IsBlank) 
+                    if (((RDFResource)materializedChainTriple.Object).IsBlank)
                         infTgtIdvExpr = new OWLAnonymousIndividual(materializedChainTriple.Object.ToString().Replace("bnode:", string.Empty));
                     else
                         infTgtIdvExpr = new OWLNamedIndividual((RDFResource)materializedChainTriple.Object);

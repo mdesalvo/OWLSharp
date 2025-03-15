@@ -22,7 +22,7 @@ namespace OWLSharp.Extensions.TIME
 {
     internal static class TIMEStartedByEqualsEntailmentRule
     {
-        internal static async Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
+        internal static Task<List<OWLInference>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)
         {
             SWRLRule swrlRule = new SWRLRule(
                 new RDFPlainLiteral(nameof(TIMEStartedByEqualsEntailmentRule)),
@@ -52,7 +52,7 @@ namespace OWLSharp.Extensions.TIME
                     }
                 });
 
-            return await swrlRule.ApplyToOntologyAsync(ontology);
+            return swrlRule.ApplyToOntologyAsync(ontology);
         }
     }
 }

@@ -153,7 +153,7 @@ public class OWLClassAxiomHelperTest
                 new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls2")), new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls3")), new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLSubClassOf(new OWLClass(new RDFResource("ex:Cls4")), new OWLClass(new RDFResource("ex:Cls3"))),
-                new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls1")), 
+                new OWLEquivalentClasses([new OWLClass(new RDFResource("ex:Cls1")),
                     new OWLObjectUnionOf([new OWLClass(new RDFResource("ex:Cls5")), new OWLClass(new RDFResource("ex:Cls6"))]) ])
             ]
         };
@@ -297,7 +297,7 @@ public class OWLClassAxiomHelperTest
 
         List<OWLClassExpression> superClassesOfCls1 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls1")));
         Assert.AreEqual(0, superClassesOfCls1.Count);
-            
+
         List<OWLClassExpression> superClassesOfCls2 = ontology.GetSuperClassesOf(new OWLClass(new RDFResource("ex:Cls2")));
         Assert.AreEqual(1, superClassesOfCls2.Count);
 
@@ -400,7 +400,7 @@ public class OWLClassAxiomHelperTest
         Assert.IsFalse((null as OWLOntology).CheckAreDisjointClasses(new OWLClass(new RDFResource("ex:Cls1")), new OWLClass(new RDFResource("ex:Cls2"))));
         Assert.AreEqual(0, (null as OWLOntology).GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls1"))).Count);
     }
-        
+
     [TestMethod]
     public void ShouldGetDisjointClassesWithEquivalentClassesDiscovery()
     {
@@ -415,7 +415,7 @@ public class OWLClassAxiomHelperTest
 
         List<OWLClassExpression> disjointClassesOfCls1 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls1")));
         Assert.AreEqual(1, disjointClassesOfCls1.Count);
-            
+
         List<OWLClassExpression> disjointClassesOfCls2 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls2")));
         Assert.AreEqual(1, disjointClassesOfCls2.Count);
 
@@ -440,7 +440,7 @@ public class OWLClassAxiomHelperTest
 
         List<OWLClassExpression> disjointClassesOfCls1 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls1")));
         Assert.AreEqual(1, disjointClassesOfCls1.Count);
-            
+
         List<OWLClassExpression> disjointClassesOfCls2 = ontology.GetDisjointClasses(new OWLClass(new RDFResource("ex:Cls2")));
         Assert.AreEqual(1, disjointClassesOfCls2.Count);
 

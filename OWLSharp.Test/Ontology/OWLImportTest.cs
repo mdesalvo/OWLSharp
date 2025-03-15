@@ -51,7 +51,7 @@ public class OWLImportTest
             "<Import>http://xmlns.com/foaf/0.1/</Import>"));
     }
 
-    [TestMethod] 
+    [TestMethod]
     public void ShouldDeserializeImport()
     {
         OWLImport import = OWLSerializer.DeserializeObject<OWLImport>(

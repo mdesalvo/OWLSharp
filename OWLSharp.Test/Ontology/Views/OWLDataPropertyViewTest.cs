@@ -106,8 +106,8 @@ public class OWLDataPropertyViewTest
                     new OWLClass(new RDFResource("ex:Human")),
                     new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
-        };        
-        
+        };
+
         HasDataView = new OWLDataPropertyView(new OWLDataProperty(new RDFResource("ex:hasData")), Ontology);
         HasPersonalDataView = new OWLDataPropertyView(new OWLDataProperty(new RDFResource("ex:hasPersonalData")), Ontology);
         HasAgeView = new OWLDataPropertyView(new OWLDataProperty(new RDFResource("ex:hasAge")), Ontology);

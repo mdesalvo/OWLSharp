@@ -33,12 +33,12 @@ public class OWLThingNothingAnalysisRuleTest
                     new OWLClass(RDFVocabulary.OWL.THING),
                     new OWLClass(RDFVocabulary.FOAF.PERSON))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.OWL.THING)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -69,7 +69,7 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -100,7 +100,7 @@ public class OWLThingNothingAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

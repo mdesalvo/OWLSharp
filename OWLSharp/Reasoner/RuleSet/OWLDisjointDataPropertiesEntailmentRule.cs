@@ -34,9 +34,9 @@ namespace OWLSharp.Reasoner
                     OWLDisjointDataProperties inference = new OWLDisjointDataProperties(new List<OWLDataProperty> { declaredDataProperty, disjointDataProperty }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }   
+                }
             }
-            
+
             return inferences;
         }
     }

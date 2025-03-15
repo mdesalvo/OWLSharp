@@ -140,17 +140,17 @@ namespace OWLSharp.Ontology
             #endregion
 
             //This is a datetime builtIn, so ensure to have information compatible with "date/datetime" semantic
-            bool isDateTimeLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit 
+            bool isDateTimeLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit
                                      && leftPMTLit.HasDatetimeDatatype();
-            bool isNumericRightPMHOUR = rightPatternMemberHOUR is RDFTypedLiteral rightPMTLitHOUR 
+            bool isNumericRightPMHOUR = rightPatternMemberHOUR is RDFTypedLiteral rightPMTLitHOUR
                                          && rightPMTLitHOUR.HasDecimalDatatype();
-            bool isNumericRightPMMINUTE = rightPatternMemberMINUTE is RDFTypedLiteral rightPMTLitMINUTE 
+            bool isNumericRightPMMINUTE = rightPatternMemberMINUTE is RDFTypedLiteral rightPMTLitMINUTE
                                           && rightPMTLitMINUTE.HasDecimalDatatype();
-            bool isNumericRightPMSECOND = rightPatternMemberSECOND is RDFTypedLiteral rightPMTLitSECOND 
+            bool isNumericRightPMSECOND = rightPatternMemberSECOND is RDFTypedLiteral rightPMTLitSECOND
                                         && rightPMTLitSECOND.HasDecimalDatatype();
             bool isStringRightPMTZ = rightPatternMemberTZ is RDFPlainLiteral
                                       || (rightPatternMemberTZ is RDFTypedLiteral rightPMTLitTZ && rightPMTLitTZ.HasStringDatatype());
-            if (isDateTimeLeftPM && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND && isStringRightPMTZ) 
+            if (isDateTimeLeftPM && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND && isStringRightPMTZ)
                 if (XSD_TIME.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
                 {
                     string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;

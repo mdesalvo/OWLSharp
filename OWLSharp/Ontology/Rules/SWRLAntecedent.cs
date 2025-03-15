@@ -74,7 +74,7 @@ namespace OWLSharp.Ontology
 
             RDFResource antecedentBN = new RDFResource();
             graph.AddTriple(new RDFTriple(ruleBN, RDFVocabulary.SWRL.BODY, antecedentBN));
-            
+
             RDFCollection antecedentElements = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource) { InternalReificationSubject = antecedentBN };
             foreach (SWRLAtom atom in Atoms)
                 graph = graph.UnionWith(atom.ToRDFGraph(antecedentElements));

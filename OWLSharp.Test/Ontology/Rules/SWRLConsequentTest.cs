@@ -41,10 +41,10 @@ public class SWRLConsequentTest
     [TestMethod]
     public void ShouldGetStringRepresentationOfSWRLConsequent()
     {
-        SWRLConsequent consequent = new SWRLConsequent { 
-            Atoms = [ 
+        SWRLConsequent consequent = new SWRLConsequent {
+            Atoms = [
                 new SWRLClassAtom(
-                    new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new SWRLVariableArgument(new RDFVariable("?P"))),
                 new SWRLDataRangeAtom(
                     new OWLDatatype(RDFVocabulary.XSD.INTEGER),
@@ -57,10 +57,10 @@ public class SWRLConsequentTest
     [TestMethod]
     public void ShouldGetXMLRepresentationOfSWRLConsequent()
     {
-        SWRLConsequent consequent = new SWRLConsequent { 
-            Atoms = [ 
+        SWRLConsequent consequent = new SWRLConsequent {
+            Atoms = [
                 new SWRLClassAtom(
-                    new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new SWRLVariableArgument(new RDFVariable("?P"))),
                 new SWRLDataRangeAtom(
                     new OWLDatatype(RDFVocabulary.XSD.INTEGER),

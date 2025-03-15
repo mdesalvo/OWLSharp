@@ -33,12 +33,12 @@ public class OWLTopBottomAnalysisRuleTest
                     new OWLObjectProperty(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY),
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -64,12 +64,12 @@ public class OWLTopBottomAnalysisRuleTest
                     new OWLDataProperty(RDFVocabulary.OWL.TOP_DATA_PROPERTY),
                     new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.OWL.TOP_DATA_PROPERTY)),
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -93,14 +93,14 @@ public class OWLTopBottomAnalysisRuleTest
             ObjectPropertyAxioms = [
                 new OWLSubObjectPropertyOf(
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
-                    new OWLObjectProperty(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY))                        
+                    new OWLObjectProperty(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -126,12 +126,12 @@ public class OWLTopBottomAnalysisRuleTest
                     new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY)),
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

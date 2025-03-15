@@ -53,14 +53,14 @@ namespace OWLSharp.Ontology
             => Task.Run(() => Ontology.GetDisjointObjectProperties(ObjectProperty));
 
         public Task<List<OWLObjectPropertyExpression>> InverseObjectPropertiesAsync()
-            => Task.Run(() => 
+            => Task.Run(() =>
                 {
                      List<OWLInverseObjectProperties> inverseObjProps = Ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>();
                     return inverseObjProps.Where(ax => string.Equals(ax.LeftObjectPropertyExpression.GetIRI().ToString(), ObjectPropertyIRI))
                                             .Select(ax => ax.RightObjectPropertyExpression)
                                             .Union(inverseObjProps.Where(ax => string.Equals(ax.RightObjectPropertyExpression.GetIRI().ToString(), ObjectPropertyIRI))
                                                                     .Select(ax => ax.LeftObjectPropertyExpression))
-                                            .ToList(); 
+                                            .ToList();
                 });
 
         public Task<List<OWLClassExpression>> DomainsAsync()

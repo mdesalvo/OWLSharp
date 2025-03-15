@@ -64,7 +64,7 @@ namespace OWLSharp.Ontology
         }
 
         //This kind of atom does not emit inferences
-        internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology) 
+        internal override List<OWLInference> EvaluateOnConsequent(DataTable antecedentResults, OWLOntology ontology)
             => new List<OWLInference>();
 
         internal override RDFGraph ToRDFGraph(RDFCollection atomsList)

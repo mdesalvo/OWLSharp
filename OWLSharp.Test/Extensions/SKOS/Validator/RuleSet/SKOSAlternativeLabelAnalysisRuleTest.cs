@@ -30,7 +30,7 @@ public class SKOSAlternativeLabelAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL)),
                 new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL)),
@@ -92,7 +92,7 @@ public class SKOSAlternativeLabelAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.ALT_LABEL)),
                 new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL)),
@@ -154,7 +154,7 @@ public class SKOSAlternativeLabelAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL)),
@@ -256,7 +256,7 @@ public class SKOSAlternativeLabelAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.ALT_LABEL)),

@@ -25,7 +25,7 @@ namespace OWLSharp.Extensions.TIME
         #region Properties
         public static TIMEReferenceSystemRegistry Instance { get; internal set; }
 
-        public static int TRSCount 
+        public static int TRSCount
             => Instance.TRS.Count;
 
         public static IEnumerator<TIMEReferenceSystem> TRSEnumerator
@@ -38,7 +38,7 @@ namespace OWLSharp.Extensions.TIME
         static TIMEReferenceSystemRegistry()
         {
             Instance = new TIMEReferenceSystemRegistry
-            { 
+            {
                 TRS = new Dictionary<string, TIMEReferenceSystem>
                 {
                     //Calendar TRS

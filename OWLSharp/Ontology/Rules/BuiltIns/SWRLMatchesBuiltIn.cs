@@ -86,7 +86,7 @@ namespace OWLSharp.Ontology
             if (builtInArguments.Count == 3 && builtInArguments[2] is SWRLLiteralArgument rightArg2Lit)
             {
                 RDFLiteral rightArgFlagsLit = rightArg2Lit.GetLiteral();
-                if (rightArgFlagsLit is RDFPlainLiteral 
+                if (rightArgFlagsLit is RDFPlainLiteral
                      || (rightArgFlagsLit is RDFTypedLiteral rightArgFlagsTLit && rightArgFlagsTLit.HasStringDatatype()))
                 {
                     if (rightArgFlagsLit.Value.IndexOf('i') > -1)
@@ -96,19 +96,19 @@ namespace OWLSharp.Ontology
                     if (rightArgFlagsLit.Value.IndexOf('m') > -1)
                         regexOptions |= RegexOptions.Multiline;
                     if (rightArgFlagsLit.Value.IndexOf('x') > -1)
-                        regexOptions |= RegexOptions.IgnorePatternWhitespace;    
+                        regexOptions |= RegexOptions.IgnorePatternWhitespace;
                 }
             }
             #endregion
 
             //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource 
-                                   || leftPatternMember is RDFPlainLiteral 
+            bool isStringLeftPM = leftPatternMember is RDFResource
+                                   || leftPatternMember is RDFPlainLiteral
                                    || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPM = rightPatternMember is RDFResource 
-                                    || rightPatternMember is RDFPlainLiteral 
+            bool isStringRightPM = rightPatternMember is RDFResource
+                                    || rightPatternMember is RDFPlainLiteral
                                     || (rightPatternMember is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPM) 
+            if (isStringLeftPM && isStringRightPM)
             {
                 string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
                 string rightPMValue = rightPatternMember is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMember.ToString();

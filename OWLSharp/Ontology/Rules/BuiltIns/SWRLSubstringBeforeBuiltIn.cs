@@ -105,16 +105,16 @@ namespace OWLSharp.Ontology
             #endregion
 
             //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource 
-                                   || leftPatternMember is RDFPlainLiteral 
+            bool isStringLeftPM = leftPatternMember is RDFResource
+                                   || leftPatternMember is RDFPlainLiteral
                                    || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPMSTR = rightPatternMemberSTR is RDFResource 
-                                        || rightPatternMemberSTR is RDFPlainLiteral 
+            bool isStringRightPMSTR = rightPatternMemberSTR is RDFResource
+                                        || rightPatternMemberSTR is RDFPlainLiteral
                                         || (rightPatternMemberSTR is RDFTypedLiteral rightPMTLitSTR && rightPMTLitSTR.HasStringDatatype());
-            bool isStringRightPMSEP = rightPatternMemberSEP is RDFResource 
-                                        || rightPatternMemberSEP is RDFPlainLiteral 
+            bool isStringRightPMSEP = rightPatternMemberSEP is RDFResource
+                                        || rightPatternMemberSEP is RDFPlainLiteral
                                         || (rightPatternMemberSEP is RDFTypedLiteral rightPMTLitSEP && rightPMTLitSEP.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPMSTR && isStringRightPMSEP) 
+            if (isStringLeftPM && isStringRightPMSTR && isStringRightPMSEP)
             {
                 string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
                 string rightPMSTRValue = rightPatternMemberSTR is RDFLiteral rightPMLitSTR ? rightPMLitSTR.Value : rightPatternMemberSTR.ToString();
@@ -125,11 +125,11 @@ namespace OWLSharp.Ontology
                     return string.Equals(leftPMValue, rightPMSTRValue);
                 if (rightPMSEPValue.Length == 0)
                     return string.Equals(leftPMValue, string.Empty);
-                
+
                 //Split
                 int sepIndex = rightPMSTRValue.IndexOf(rightPMSEPValue, StringComparison.Ordinal);
                 return sepIndex == -1 ? string.Equals(leftPMValue, rightPMSTRValue, StringComparison.Ordinal)
-                                      : string.Equals(leftPMValue, rightPMSTRValue.Substring(0, sepIndex), StringComparison.Ordinal);              
+                                      : string.Equals(leftPMValue, rightPMSTRValue.Substring(0, sepIndex), StringComparison.Ordinal);
             }
             return false;
         }

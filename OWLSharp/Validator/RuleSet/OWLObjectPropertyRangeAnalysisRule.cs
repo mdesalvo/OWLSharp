@@ -32,9 +32,9 @@ namespace OWLSharp.Validator
                 foreach (OWLObjectPropertyAssertion opRangeAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, opRange.ObjectPropertyExpression))
                     if (ontology.CheckIsNegativeIndividualOf(opRange.ClassExpression, isObjectInverseOf ? opRangeAsn.SourceIndividualExpression : opRangeAsn.TargetIndividualExpression, validatorContext.ClassAssertions))
                         issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error, 
-                            rulename, 
-                            $"Violated ObjectPropertyRange axiom with signature: {opRange.GetXML()}", 
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated ObjectPropertyRange axiom with signature: {opRange.GetXML()}",
                             rulesugg));
             }
 

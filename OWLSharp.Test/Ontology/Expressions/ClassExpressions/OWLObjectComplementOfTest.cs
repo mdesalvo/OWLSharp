@@ -31,7 +31,7 @@ public class OWLObjectComplementOfTest
 
         Assert.IsNotNull(objectComplementOf);
         Assert.IsNotNull(objectComplementOf.ClassExpression);
-        Assert.IsTrue(objectComplementOf.ClassExpression is OWLClass owlClass 
+        Assert.IsTrue(objectComplementOf.ClassExpression is OWLClass owlClass
                       && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.AGENT.ToString()));
     }
 
@@ -83,7 +83,7 @@ public class OWLObjectComplementOfTest
     [TestMethod]
     public void ShouldConvertObjectComplementOfToGraph()
     {
-        OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT)); 
+        OWLObjectComplementOf objectComplementOf = new OWLObjectComplementOf(new OWLClass(RDFVocabulary.FOAF.AGENT));
         RDFGraph graph = objectComplementOf.ToRDFGraph();
 
         Assert.IsNotNull(graph);

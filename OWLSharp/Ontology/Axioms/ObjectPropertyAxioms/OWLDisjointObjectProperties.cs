@@ -74,7 +74,7 @@ namespace OWLSharp.Ontology
             //AllDisjointProperties
             else
             {
-                RDFResource allDisjointPropertiesIRI = new RDFResource(); 
+                RDFResource allDisjointPropertiesIRI = new RDFResource();
                 RDFCollection disjointObjectPropertiesCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
                 foreach (OWLObjectPropertyExpression objectPropertyExpression in ObjectPropertyExpressions)
                 {

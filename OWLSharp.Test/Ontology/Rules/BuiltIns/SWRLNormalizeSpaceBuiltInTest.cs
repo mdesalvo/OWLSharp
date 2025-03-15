@@ -39,9 +39,9 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#normalizeSpace", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(2, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
         Assert.IsTrue(string.Equals("swrlb:normalizeSpace(?X,?Y)", builtin.ToString()));
         Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.NormalizeSpace(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
@@ -69,9 +69,9 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#normalizeSpace", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(2, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
         Assert.IsTrue(string.Equals("swrlb:normalizeSpace(?X,?Y)", builtin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#normalizeSpace\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
@@ -96,9 +96,9 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#normalizeSpace", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(2, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLLiteralArgument tlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLLiteralArgument tlarg
                       && tlarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
         Assert.IsTrue(string.Equals("swrlb:normalizeSpace(\"5\"^^xsd:integer,?Y)", builtin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#normalizeSpace\"><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
@@ -115,9 +115,9 @@ public class SWRLNormalizeSpaceBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#normalizeSpace", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(2, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLLiteralArgument trarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLLiteralArgument trarg
                       && trarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
         Assert.IsTrue(string.Equals("swrlb:normalizeSpace(?X,\"5\"^^xsd:integer)", builtin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#normalizeSpace\"><Variable IRI=\"urn:swrl:var#X\" /><Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#integer\">5</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));

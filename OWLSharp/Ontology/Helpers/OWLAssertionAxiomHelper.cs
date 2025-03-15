@@ -119,7 +119,7 @@ namespace OWLSharp.Ontology
                 #region Discovery
                 foundVisitingClsExprIndividuals.AddRange(clsAsns.Where(ax => ax.ClassExpression.GetIRI().Equals(visitingClsExprIRI))
                                                                 .Select(ax => ax.IndividualExpression));
-            
+
                 //ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
                 foreach (OWLClassExpression subClsExpr in ontology.GetSubClassesOf(visitingClsExpr))
                 {
@@ -140,7 +140,7 @@ namespace OWLSharp.Ontology
                         continue;
                     }
                     #endregion
-                    
+
                     #region Enumerate
                     if (equivClsExpr.IsEnumerate)
                     {
@@ -251,11 +251,11 @@ namespace OWLSharp.Ontology
                             {
                                 //ObjectSomeValuesFrom is an OWL-DL syntactic shortcut for qualified ObjectMinCardinality(1)
                                 //so we threat them the same way, fetching restricted object property and qualified class
-                                OWLObjectPropertyExpression onPropExpr = 
-                                    (equivClsExpr as OWLObjectMinCardinality)?.ObjectPropertyExpression ?? 
+                                OWLObjectPropertyExpression onPropExpr =
+                                    (equivClsExpr as OWLObjectMinCardinality)?.ObjectPropertyExpression ??
                                     (equivClsExpr as OWLObjectSomeValuesFrom)?.ObjectPropertyExpression;
-                                OWLClassExpression onClassExpr = 
-                                    (equivClsExpr as OWLObjectMinCardinality)?.ClassExpression ?? 
+                                OWLClassExpression onClassExpr =
+                                    (equivClsExpr as OWLObjectMinCardinality)?.ClassExpression ??
                                     (equivClsExpr as OWLObjectSomeValuesFrom)?.ClassExpression;
                                 int objMinCardValue = 1;
                                 if (equivClsExpr is OWLObjectMinCardinality objMNC && !int.TryParse(objMNC.Cardinality, NumberStyles.Integer, CultureInfo.InvariantCulture, out objMinCardValue))
@@ -283,9 +283,9 @@ namespace OWLSharp.Ontology
                                     }
                                     if (shouldSwitchObjPropIdvs)
                                         (inScopeObjPropAsnTargetIdvExpr, inScopeObjPropAsnSourceIdvExpr) = (inScopeObjPropAsnSourceIdvExpr, inScopeObjPropAsnTargetIdvExpr);
-                                    
+
                                     //Initialize individual counter
-                                    RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI(); 
+                                    RDFResource inScopeObjPropAsnSourceIdvExprIRI = inScopeObjPropAsnSourceIdvExpr.GetIRI();
                                     if (!occurrenceRegistry.ContainsKey(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID))
                                         occurrenceRegistry.Add(inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID, (inScopeObjPropAsnSourceIdvExpr, 0));
                                     long occurrencyCounter = occurrenceRegistry[inScopeObjPropAsnSourceIdvExprIRI.PatternMemberID].Item2;
@@ -352,8 +352,8 @@ namespace OWLSharp.Ontology
                                         onProps.Add(dtSVF.DataProperty);
                                         break;
                                 }
-                                OWLDataRangeExpression onDataRangeExpr = 
-                                    (equivClsExpr as OWLDataMinCardinality)?.DataRangeExpression ?? 
+                                OWLDataRangeExpression onDataRangeExpr =
+                                    (equivClsExpr as OWLDataMinCardinality)?.DataRangeExpression ??
                                     (equivClsExpr as OWLDataSomeValuesFrom)?.DataRangeExpression;
                                 int dtMinCardValue = 1;
                                 if (equivClsExpr is OWLDataMinCardinality dtMNC && !int.TryParse(dtMNC.Cardinality, NumberStyles.Integer, CultureInfo.InvariantCulture, out dtMinCardValue))
@@ -404,7 +404,7 @@ namespace OWLSharp.Ontology
             if (ontology != null && clsExpr != null)
             {
                 classIndividuals.AddRange(FindIndividualsOf(clsExpr, new HashSet<long>()));
-  
+
                 //This additional entailment can be quite expensive, so it is on-demand
                 if (enableSameAsEntailment)
                 {
@@ -412,10 +412,10 @@ namespace OWLSharp.Ontology
                     foreach (OWLIndividualExpression classIndividual in classIndividuals.ToList())
                         classIndividuals.AddRange(ontology.GetSameIndividuals(classIndividual));
                 }
-            }                
+            }
             return OWLExpressionHelper.RemoveDuplicates(classIndividuals);
         }
-        
+
         public static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr)
             => CheckIsNegativeIndividualOf(ontology, clsExpr, idvExpr, GetAssertionAxiomsOfType<OWLClassAssertion>(ontology));
         internal static bool CheckIsNegativeIndividualOf(this OWLOntology ontology, OWLClassExpression clsExpr, OWLIndividualExpression idvExpr, List<OWLClassAssertion> clsAsnAxioms)
@@ -430,13 +430,13 @@ namespace OWLSharp.Ontology
                 foreach (OWLClassAssertion idvExprClassAsn in clsAsnAxioms.Where(ax => ax.IndividualExpression.GetIRI().Equals(idvExprIRI)))
                 {
                     //Direct
-                    if (idvExprClassAsn.ClassExpression is OWLObjectComplementOf directObjComplOf 
+                    if (idvExprClassAsn.ClassExpression is OWLObjectComplementOf directObjComplOf
                         && directObjComplOf.ClassExpression.GetIRI().Equals(clsExprIRI))
                     {
                         answer = true;
                         break;
                     }
-    
+
                     //Indirect
                     if (ontology.GetSuperClassesOf(idvExprClassAsn.ClassExpression)
                                 .Union(ontology.GetEquivalentClasses(idvExprClassAsn.ClassExpression))
@@ -450,7 +450,7 @@ namespace OWLSharp.Ontology
 
             return answer;
         }
-        
+
         public static bool CheckIsLiteralOf(this OWLOntology ontology, OWLDataRangeExpression drExpr, OWLLiteral literal)
         {
             if (ontology != null && drExpr != null && literal != null)
@@ -467,7 +467,7 @@ namespace OWLSharp.Ontology
 
                     //Plain literals are instances of rdf:langString when having language,
                     //are instances of rdf:dirLangString when having direction language,
-                    //otherwise they are instances of rdf:PlainLiteral 
+                    //otherwise they are instances of rdf:PlainLiteral
                     if (drExprIRI.Equals(RDFVocabulary.RDF.LANG_STRING))
                         return rdfLiteral is RDFPlainLiteral rdfPlainLiteral && rdfPlainLiteral.HasLanguage();
                     if (drExprIRI.Equals(RDFVocabulary.RDF.DIR_LANG_STRING))
@@ -523,7 +523,7 @@ namespace OWLSharp.Ontology
                              || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_EXCLUSIVE.ToString())
                              || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MIN_INCLUSIVE.ToString())
                              || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_EXCLUSIVE.ToString())
-                             || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString())) 
+                             || string.Equals(dtRestrFacet.FacetIRI, RDFVocabulary.XSD.MAX_INCLUSIVE.ToString()))
                                && dtRestrFacet.Literal.GetLiteral() is RDFTypedLiteral dtRestrFacetTypedLiteralNF
                                && dtRestrFacetTypedLiteralNF.HasDecimalDatatype()
                                && uint.TryParse(dtRestrFacetTypedLiteralNF.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out uint dtRestrFacetTypedLiteralValue))
@@ -552,8 +552,8 @@ namespace OWLSharp.Ontology
                         {
                             drExprDatatype.Facets.Add(new RDFPatternFacet(dtRestrFacetTypedLiteralPF.Value));
                         }
-                    }    
-                
+                    }
+
                     //Then we try validate the given literal against the reconstructed RDF datatype
                     try
                     {

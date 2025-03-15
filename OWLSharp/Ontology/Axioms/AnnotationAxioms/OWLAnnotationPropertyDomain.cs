@@ -37,7 +37,7 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLAnnotationPropertyDomain()
         { }
-        internal OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty) : this() 
+        internal OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty) : this()
             => AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"annotationProperty\" parameter is null");
         public OWLAnnotationPropertyDomain(OWLAnnotationProperty annotationProperty, RDFResource iri) : this(annotationProperty)
             => IRI = iri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationPropertyDomain because given \"iri\" parameter is null");

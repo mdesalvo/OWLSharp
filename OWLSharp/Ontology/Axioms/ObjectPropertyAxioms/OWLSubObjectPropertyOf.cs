@@ -92,14 +92,14 @@ namespace OWLSharp.Ontology
 
             //ObjectPropertyChain
             else
-            {    
+            {
                 RDFCollection chainObjectPropertyExpressions = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource, true);
                 foreach (OWLObjectPropertyExpression chainObjectPropertyExpression in SubObjectPropertyChain.ObjectPropertyExpressions)
                 {
                     RDFResource chainObjectPropertyExpressionIRI = chainObjectPropertyExpression.GetIRI();
                     chainObjectPropertyExpressions.AddItem(chainObjectPropertyExpressionIRI);
                     graph = graph.UnionWith(chainObjectPropertyExpression.ToRDFGraph(chainObjectPropertyExpressionIRI));
-                }    
+                }
                 graph.AddCollection(chainObjectPropertyExpressions);
 
                 //Axiom Triple

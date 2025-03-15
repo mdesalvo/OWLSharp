@@ -30,15 +30,15 @@ namespace OWLSharp.Validator
             //EquivalentDataProperties(DP1,DP2) ^ SubDataPropertyOf(DP2,DP1) -> ERROR
             //EquivalentDataProperties(DP1,DP2) ^ DisjointDataProperties(DP1,DP2) -> ERROR
             foreach (OWLEquivalentDataProperties equivDataProps in ontology.GetDataPropertyAxiomsOfType<OWLEquivalentDataProperties>())
-                if (equivDataProps.DataProperties.Any(outerDP => 
+                if (equivDataProps.DataProperties.Any(outerDP =>
                       equivDataProps.DataProperties.Any(innerDP => !outerDP.GetIRI().Equals(innerDP.GetIRI())
                                                                     && (ontology.CheckIsSubDataPropertyOf(outerDP, innerDP)
                                                                         || ontology.CheckIsSubDataPropertyOf(innerDP, outerDP)
                                                                         || ontology.CheckAreDisjointDataProperties(outerDP, innerDP)))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated EquivalentDataProperties axiom with signature: '{equivDataProps.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated EquivalentDataProperties axiom with signature: '{equivDataProps.GetXML()}'",
                         rulesugg));
 
             return issues;

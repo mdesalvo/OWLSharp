@@ -30,15 +30,15 @@ namespace OWLSharp.Validator
             //EquivalentObjectProperties(OP1,OP2) ^ SubObjectPropertyOf(OP2,OP1) -> ERROR
             //EquivalentObjectProperties(OP1,OP2) ^ DisjointObjectProperties(OP1,OP2) -> ERROR
             foreach (OWLEquivalentObjectProperties equivObjectProps in ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>())
-                if (equivObjectProps.ObjectPropertyExpressions.Any(outerOPEX => 
+                if (equivObjectProps.ObjectPropertyExpressions.Any(outerOPEX =>
                       equivObjectProps.ObjectPropertyExpressions.Any(innerOPEX => !outerOPEX.GetIRI().Equals(innerOPEX.GetIRI())
                                                                                     && (ontology.CheckIsSubObjectPropertyOf(outerOPEX, innerOPEX)
                                                                                         || ontology.CheckIsSubObjectPropertyOf(innerOPEX, outerOPEX)
                                                                                         || ontology.CheckAreDisjointObjectProperties(outerOPEX, innerOPEX)))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated EquivalentObjectProperties axiom with signature: '{equivObjectProps.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated EquivalentObjectProperties axiom with signature: '{equivObjectProps.GetXML()}'",
                         rulesugg));
 
             return issues;

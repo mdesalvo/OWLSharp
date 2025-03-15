@@ -71,7 +71,7 @@ namespace OWLSharp.Ontology
                          .UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
 
             //Axiom Triple
-            RDFTriple axiomTriple = new RDFTriple(objPropExpressionIRI, RDFVocabulary.RDFS.DOMAIN, clsExpressionIRI); 
+            RDFTriple axiomTriple = new RDFTriple(objPropExpressionIRI, RDFVocabulary.RDFS.DOMAIN, clsExpressionIRI);
             graph.AddTriple(axiomTriple);
 
             //Annotations

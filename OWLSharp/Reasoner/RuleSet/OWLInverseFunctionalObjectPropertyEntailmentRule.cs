@@ -48,7 +48,7 @@ namespace OWLSharp.Reasoner
                     //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
                     if (ifopAsn.ObjectPropertyExpression is OWLObjectInverseOf)
                         (fopAsnSourceIdvExpr, fopAsnTargetIdvExpr) = (fopAsnTargetIdvExpr, fopAsnSourceIdvExpr);
-                    
+
                     string idvx = fopAsnTargetIdvExpr.GetIRI().ToString();
                     if (!idvxLookup.ContainsKey(idvx))
                         idvxLookup.Add(idvx, new List<OWLIndividualExpression>());
@@ -59,7 +59,7 @@ namespace OWLSharp.Reasoner
                     OWLSameIndividual inference = new OWLSameIndividual(idvxLookupEntry) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }   
+                }
             }
 
             return inferences;

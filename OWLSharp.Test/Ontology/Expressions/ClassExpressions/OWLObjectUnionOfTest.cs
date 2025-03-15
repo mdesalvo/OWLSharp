@@ -34,9 +34,9 @@ public class OWLObjectUnionOfTest
         Assert.IsNotNull(objectUnionOf);
         Assert.IsNotNull(objectUnionOf.ClassExpressions);
         Assert.AreEqual(2, objectUnionOf.ClassExpressions.Count);
-        Assert.IsTrue(objectUnionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass 
+        Assert.IsTrue(objectUnionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass
                                                                 && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString())));
-        Assert.IsTrue(objectUnionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass 
+        Assert.IsTrue(objectUnionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass
                                                                 && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.AGENT.ToString())));
     }
 

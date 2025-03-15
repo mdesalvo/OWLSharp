@@ -40,14 +40,14 @@ namespace OWLSharp.Reasoner
                         opAsnSourceIdvExpr = objectPropertyAssertion.TargetIndividualExpression;
                         opAsnTargetIdvExpr = objectPropertyAssertion.SourceIndividualExpression;
                     }
-    
+
                     //In case the object property domain works under inverse logic, we must swap source/target of the object assertion
                     if (objectPropertyRange.ObjectPropertyExpression is OWLObjectInverseOf)
                     {
                         OWLClassAssertion inference = new OWLClassAssertion(objectPropertyRange.ClassExpression) { IndividualExpression=opAsnSourceIdvExpr, IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
-                    }                        
+                    }
                     else
                     {
                         OWLClassAssertion inference = new OWLClassAssertion(objectPropertyRange.ClassExpression) { IndividualExpression=opAsnTargetIdvExpr, IsInference=true };

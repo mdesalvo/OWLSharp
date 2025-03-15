@@ -39,10 +39,10 @@ public class SWRLAntecedentTest
     [TestMethod]
     public void ShouldGetStringRepresentationOfSWRLAntecedent()
     {
-        SWRLAntecedent antecedent = new SWRLAntecedent { 
-            Atoms = [ 
+        SWRLAntecedent antecedent = new SWRLAntecedent {
+            Atoms = [
                 new SWRLClassAtom(
-                    new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new SWRLVariableArgument(new RDFVariable("?P"))),
                 new SWRLDataRangeAtom(
                     new OWLDatatype(RDFVocabulary.XSD.INTEGER),
@@ -61,10 +61,10 @@ public class SWRLAntecedentTest
     [TestMethod]
     public void ShouldGetXMLRepresentationOfSWRLAntecedent()
     {
-        SWRLAntecedent antecedent = new SWRLAntecedent { 
-            Atoms = [ 
+        SWRLAntecedent antecedent = new SWRLAntecedent {
+            Atoms = [
                 new SWRLClassAtom(
-                    new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new SWRLVariableArgument(new RDFVariable("?P"))),
                 new SWRLDataRangeAtom(
                     new OWLDatatype(RDFVocabulary.XSD.INTEGER),

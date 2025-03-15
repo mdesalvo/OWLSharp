@@ -41,13 +41,13 @@ public class SWRLDateBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#date", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(5, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2 
+        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2
                       && rlarg2.GetVariable().Equals(new RDFVariable("?Z")));
-        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3 
+        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3
                       && rlarg3.GetVariable().Equals(new RDFVariable("?Q")));
         Assert.IsTrue(builtin.Arguments[4] is SWRLVariableArgument rlarg4
                       && rlarg4.GetVariable().Equals(new RDFVariable("?T")));
@@ -112,10 +112,10 @@ public class SWRLDateBuiltInTest
         antecedentResults.Columns.Add("?Q");
         antecedentResults.Columns.Add("?T");
         antecedentResults.Rows.Add(
-            "2010-05-22Z^^http://www.w3.org/2001/XMLSchema#date", 
-            "2010^^http://www.w3.org/2001/XMLSchema#int", 
-            "5^^http://www.w3.org/2001/XMLSchema#int", 
-            "22^^http://www.w3.org/2001/XMLSchema#int", 
+            "2010-05-22Z^^http://www.w3.org/2001/XMLSchema#date",
+            "2010^^http://www.w3.org/2001/XMLSchema#int",
+            "5^^http://www.w3.org/2001/XMLSchema#int",
+            "22^^http://www.w3.org/2001/XMLSchema#int",
             "UTC");
         antecedentResults.Rows.Add(
             "2010-05-22^^http://www.w3.org/2001/XMLSchema#date",
@@ -160,7 +160,7 @@ public class SWRLDateBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
-            new SWRLVariableArgument(new RDFVariable("?T"))); 
+            new SWRLVariableArgument(new RDFVariable("?T")));
         DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.AreEqual(5, builtinResults2.Columns.Count);
@@ -168,7 +168,7 @@ public class SWRLDateBuiltInTest
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.Date(
             new SWRLVariableArgument(new RDFVariable("?X")),
-            new SWRLVariableArgument(new RDFVariable("?Y")),  
+            new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?T")));

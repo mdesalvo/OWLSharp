@@ -29,13 +29,13 @@ public class OWLObjectPropertyRangeEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLObjectPropertyRange(
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
@@ -62,13 +62,13 @@ public class OWLObjectPropertyRangeEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLObjectPropertyRange(
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
@@ -95,13 +95,13 @@ public class OWLObjectPropertyRangeEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLObjectPropertyRange(
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")),
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
@@ -128,13 +128,13 @@ public class OWLObjectPropertyRangeEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Janine")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLObjectPropertyRange(
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))

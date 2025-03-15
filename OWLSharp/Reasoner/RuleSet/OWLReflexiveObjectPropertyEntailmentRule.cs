@@ -26,7 +26,7 @@ namespace OWLSharp.Reasoner
 
             //Temporary working variables
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-            
+
             //ReflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDVX) -> ObjectPropertyAssertion(OP,IDV1,IDV1)
             foreach (OWLReflexiveObjectProperty refObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>())
             {
@@ -46,20 +46,20 @@ namespace OWLSharp.Reasoner
                     //In case the object assertion works under inverse logic, we must swap source/target of the object assertion
                     if (opAsn.ObjectPropertyExpression is OWLObjectInverseOf)
                         opAsnSourceIdvExpr = opAsnTargetIdvExpr;
-                    
+
                     //Exploit the reflexive object property to emit the "selfswapped-assertion" inference
                     if (refObjProp.ObjectPropertyExpression is OWLObjectInverseOf refObjInvOf)
                     {
                         OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjInvOf.ObjectProperty, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
-                    }                        
+                    }
                     else
                     {
                         OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(refObjProp.ObjectPropertyExpression, opAsnSourceIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
-                    }   
+                    }
                 }
             }
 

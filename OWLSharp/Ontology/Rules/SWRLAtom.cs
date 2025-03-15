@@ -111,7 +111,7 @@ namespace OWLSharp.Ontology
                     sb.Append($"{RDFQueryPrinter.PrintPatternMember(leftArgumentVariable.GetVariable(), RDFNamespaceRegister.Instance.Register)}");
                     break;
             }
-            
+
             //Right Argument
             if (RightArgument != null)
             {

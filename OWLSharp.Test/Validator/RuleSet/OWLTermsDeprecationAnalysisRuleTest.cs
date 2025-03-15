@@ -34,12 +34,12 @@ public class OWLTermsDeprecationAnalysisRuleTest
                     new RDFResource("http://xmlns.com/foaf/0.1/Person"),
                     new OWLLiteral(RDFTypedLiteral.True))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Organization")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -66,12 +66,12 @@ public class OWLTermsDeprecationAnalysisRuleTest
                     RDFVocabulary.XSD.INTEGER,
                     new OWLLiteral(RDFTypedLiteral.True))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.INTEGER)),
                 new OWLDeclaration(new OWLDatatype(RDFVocabulary.XSD.DATETIME))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -98,12 +98,12 @@ public class OWLTermsDeprecationAnalysisRuleTest
                     new RDFResource("http://xmlns.com/foaf/0.1/age"),
                     new OWLLiteral(RDFTypedLiteral.True))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/age"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/name")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -130,12 +130,12 @@ public class OWLTermsDeprecationAnalysisRuleTest
                     new RDFResource("http://xmlns.com/foaf/0.1/knows"),
                     new OWLLiteral(RDFTypedLiteral.True))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/depicts")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -162,12 +162,12 @@ public class OWLTermsDeprecationAnalysisRuleTest
                     new RDFResource("http://xmlns.com/foaf/0.1/author"),
                     new OWLLiteral(RDFTypedLiteral.True))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLAnnotationProperty(new RDFResource("http://xmlns.com/foaf/0.1/author"))),
                 new OWLDeclaration(new OWLAnnotationProperty(new RDFResource("http://xmlns.com/foaf/0.1/lastCommit")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

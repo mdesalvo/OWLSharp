@@ -31,7 +31,7 @@ public class OWLDataComplementOfTest
 
         Assert.IsNotNull(dataComplementOf);
         Assert.IsNotNull(dataComplementOf.DataRangeExpression);
-        Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 
@@ -73,7 +73,7 @@ public class OWLDataComplementOfTest
 
         Assert.IsNotNull(dataComplementOf);
         Assert.IsNotNull(dataComplementOf.DataRangeExpression);
-        Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataComplementOf.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 

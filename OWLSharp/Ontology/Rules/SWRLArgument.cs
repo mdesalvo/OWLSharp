@@ -23,7 +23,7 @@ namespace OWLSharp.Ontology
     //Register here all derived types of SWRLArgument
     [XmlInclude(typeof(SWRLIndividualArgument))]
     [XmlInclude(typeof(SWRLLiteralArgument))]
-    [XmlInclude(typeof(SWRLVariableArgument))]    
+    [XmlInclude(typeof(SWRLVariableArgument))]
     public abstract class SWRLArgument
     {
         #region Ctors
@@ -101,6 +101,7 @@ namespace OWLSharp.Ontology
         {
             if (DatatypeIRI != null)
                 return new RDFTypedLiteral(Value, RDFDatatypeRegister.GetDatatype(DatatypeIRI));
+
             return new RDFPlainLiteral(Value, Language);
         }
         #endregion

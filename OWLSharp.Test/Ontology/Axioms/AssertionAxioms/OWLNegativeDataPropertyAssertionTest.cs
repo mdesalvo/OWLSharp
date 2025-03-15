@@ -100,7 +100,7 @@ public class OWLNegativeDataPropertyAssertionTest
     {
         OWLNegativeDataPropertyAssertion NegativeDataPropertyAssertion = OWLSerializer.DeserializeObject<OWLNegativeDataPropertyAssertion>(
             """<NegativeDataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><NamedIndividual IRI="ex:Bob" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></NegativeDataPropertyAssertion>""");
-        
+
         Assert.IsNotNull(NegativeDataPropertyAssertion);
         Assert.IsNotNull(NegativeDataPropertyAssertion.DataProperty);
         Assert.IsTrue(string.Equals(NegativeDataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
@@ -205,7 +205,7 @@ public class OWLNegativeDataPropertyAssertionTest
     {
         OWLNegativeDataPropertyAssertion NegativeDataPropertyAssertion = OWLSerializer.DeserializeObject<OWLNegativeDataPropertyAssertion>(
             """<NegativeDataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><AnonymousIndividual nodeID="AnonIdv" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></NegativeDataPropertyAssertion>""");
-        
+
         Assert.IsNotNull(NegativeDataPropertyAssertion);
         Assert.IsNotNull(NegativeDataPropertyAssertion.DataProperty);
         Assert.IsTrue(string.Equals(NegativeDataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));

@@ -54,14 +54,14 @@ public class OWLFunctionalDataPropertyAnalysisRuleTest
                 new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:dp2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

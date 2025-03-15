@@ -29,7 +29,7 @@ public class OWLTransitiveObjectPropertyEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
@@ -37,7 +37,7 @@ public class OWLTransitiveObjectPropertyEntailmentRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Jenny"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Helen")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLTransitiveObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows")))
             ],
             AssertionAxioms = [

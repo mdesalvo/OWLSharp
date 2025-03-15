@@ -39,7 +39,7 @@ namespace OWLSharp.Reasoner
                     OWLSubDataPropertyOf inference = new OWLSubDataPropertyOf(declaredDataProperty, superDataProperty) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }   
+                }
 
                 //SubDataPropertyOf(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
                 foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, declaredDataProperty))
@@ -48,7 +48,7 @@ namespace OWLSharp.Reasoner
                         OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(superDataProperty, declaredDataPropertyAsn.Literal) { IndividualExpression = declaredDataPropertyAsn.IndividualExpression, IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
-                    }    
+                    }
             }
 
             return inferences;

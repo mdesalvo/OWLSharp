@@ -102,7 +102,7 @@ public class OWLObjectPropertyAssertionTest
     {
         OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.DeserializeObject<OWLObjectPropertyAssertion>(
             """<ObjectPropertyAssertion><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /></ObjectPropertyAssertion>""");
-        
+
         Assert.IsNotNull(objectPropertyAssertion);
         Assert.IsNotNull(objectPropertyAssertion.ObjectPropertyExpression);
         Assert.IsTrue(objectPropertyAssertion.ObjectPropertyExpression is OWLObjectProperty objProp &&
@@ -192,7 +192,7 @@ public class OWLObjectPropertyAssertionTest
     {
         OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.DeserializeObject<OWLObjectPropertyAssertion>(
             """<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /></ObjectPropertyAssertion>""");
-        
+
         Assert.IsNotNull(objectPropertyAssertion);
         Assert.IsNotNull(objectPropertyAssertion.ObjectPropertyExpression);
         Assert.IsTrue(objectPropertyAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOf &&
@@ -284,7 +284,7 @@ public class OWLObjectPropertyAssertionTest
     {
         OWLObjectPropertyAssertion objectPropertyAssertion = OWLSerializer.DeserializeObject<OWLObjectPropertyAssertion>(
             """<ObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf><AnonymousIndividual nodeID="Alice" /><AnonymousIndividual nodeID="Bob" /></ObjectPropertyAssertion>""");
-        
+
         Assert.IsNotNull(objectPropertyAssertion);
         Assert.IsNotNull(objectPropertyAssertion.ObjectPropertyExpression);
         Assert.IsTrue(objectPropertyAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOf &&

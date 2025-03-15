@@ -33,12 +33,12 @@ namespace OWLSharp.Validator
             {
                 if (classAsnMap.Value.Any(outerClassExpr =>
                      classAsnMap.Value.Any(innerClassExpr => !outerClassExpr.GetIRI().Equals(innerClassExpr.GetIRI())
-                                                               && outerClassExpr is OWLObjectComplementOf objectComplOf 
+                                                               && outerClassExpr is OWLObjectComplementOf objectComplOf
                                                                && objectComplOf.ClassExpression.GetIRI().Equals(innerClassExpr.GetIRI()))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated ClassAssertion axioms for named individual with signature: {classAsnMap.Key}", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated ClassAssertion axioms for named individual with signature: {classAsnMap.Key}",
                         rulesugg));
             }
 

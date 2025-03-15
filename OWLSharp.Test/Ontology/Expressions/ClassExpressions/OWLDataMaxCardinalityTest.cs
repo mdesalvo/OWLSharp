@@ -50,7 +50,7 @@ public class OWLDataMaxCardinalityTest
         Assert.IsNotNull(dataMaxCardinality.DataProperty);
         Assert.IsTrue(string.Equals(dataMaxCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
         Assert.IsNotNull(dataMaxCardinality.DataRangeExpression);
-        Assert.IsTrue(dataMaxCardinality.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataMaxCardinality.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 
@@ -133,7 +133,7 @@ public class OWLDataMaxCardinalityTest
         Assert.IsNotNull(dataMaxCardinality.DataProperty);
         Assert.IsTrue(string.Equals(dataMaxCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
         Assert.IsNotNull(dataMaxCardinality.DataRangeExpression);
-        Assert.IsTrue(dataMaxCardinality.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataMaxCardinality.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 

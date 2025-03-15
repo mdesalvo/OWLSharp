@@ -29,12 +29,12 @@ public class OWLDataPropertyDomainEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Kelly")))
             ],
-            DataPropertyAxioms = [ 
+            DataPropertyAxioms = [
                 new OWLDataPropertyDomain(
                     new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))

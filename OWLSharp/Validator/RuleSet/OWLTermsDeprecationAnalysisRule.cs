@@ -33,44 +33,44 @@ namespace OWLSharp.Validator
             List<string> declaredDataProperties = ontology.GetDeclaredEntitiesOfType<OWLDataProperty>().Select(dtp => dtp.GetIRI().ToString()).Distinct().ToList();
             List<string> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>().Select(obp => obp.GetIRI().ToString()).Distinct().ToList();
             List<string> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct().ToList();
-            
+
             foreach (OWLAnnotationAssertion annAsn in ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
                                                               .Where(asn => asn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
                                                                              && (asn.ValueLiteral?.GetLiteral().Equals(RDFTypedLiteral.True) ?? false)))
             {
                 if (declaredClasses.Any(cls => string.Equals(cls, annAsn.SubjectIRI)))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Warning, 
-                        rulename, 
-                        $"Detected presence of deprecated class with IRI: '{annAsn.SubjectIRI}'", 
+                        OWLEnums.OWLIssueSeverity.Warning,
+                        rulename,
+                        $"Detected presence of deprecated class with IRI: '{annAsn.SubjectIRI}'",
                         rulesugg));
 
                 if (declaredDatatypes.Any(dtt => string.Equals(dtt, annAsn.SubjectIRI)))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Warning, 
-                        rulename, 
-                        $"Detected presence of deprecated datatype with IRI: '{annAsn.SubjectIRI}'", 
+                        OWLEnums.OWLIssueSeverity.Warning,
+                        rulename,
+                        $"Detected presence of deprecated datatype with IRI: '{annAsn.SubjectIRI}'",
                         rulesugg));
 
                 if (declaredDataProperties.Any(dtp => string.Equals(dtp, annAsn.SubjectIRI)))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Warning, 
-                        rulename, 
-                        $"Detected presence of deprecated data property with IRI: '{annAsn.SubjectIRI}'", 
+                        OWLEnums.OWLIssueSeverity.Warning,
+                        rulename,
+                        $"Detected presence of deprecated data property with IRI: '{annAsn.SubjectIRI}'",
                         rulesugg));
 
                 if (declaredObjectProperties.Any(obp => string.Equals(obp, annAsn.SubjectIRI)))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Warning, 
-                        rulename, 
-                        $"Detected presence of deprecated object property with IRI: '{annAsn.SubjectIRI}'", 
+                        OWLEnums.OWLIssueSeverity.Warning,
+                        rulename,
+                        $"Detected presence of deprecated object property with IRI: '{annAsn.SubjectIRI}'",
                         rulesugg));
 
                 if (declaredAnnotationProperties.Any(anp => string.Equals(anp, annAsn.SubjectIRI)))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Warning, 
-                        rulename, 
-                        $"Detected presence of deprecated annotation property with IRI: '{annAsn.SubjectIRI}'", 
+                        OWLEnums.OWLIssueSeverity.Warning,
+                        rulename,
+                        $"Detected presence of deprecated annotation property with IRI: '{annAsn.SubjectIRI}'",
                         rulesugg));
             }
 

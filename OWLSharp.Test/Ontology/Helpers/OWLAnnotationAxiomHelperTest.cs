@@ -53,7 +53,7 @@ public class OWLAnnotationAxiomHelperTest
 
         Assert.AreEqual(0, (null as OWLOntology).GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count);
     }
-        
+
     [TestMethod]
     public void ShouldGetSubAnnotationPropertiesOf()
     {
@@ -91,7 +91,7 @@ public class OWLAnnotationAxiomHelperTest
         Assert.IsFalse((null as OWLOntology).CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
         Assert.AreEqual(0, (null as OWLOntology).GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1"))).Count);
     }
-        
+
     [TestMethod]
     public void ShouldGetSuperAnnotationPropertiesOf()
     {

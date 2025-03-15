@@ -30,7 +30,7 @@ public class SKOSPreferredLabelAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLAnnotationProperty(RDFVocabulary.SKOS.PREF_LABEL)),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:ConceptA"))),
@@ -90,7 +90,7 @@ public class SKOSPreferredLabelAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.SKOSXL.LABEL)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.SKOSXL.PREF_LABEL)),

@@ -30,7 +30,7 @@ public class SKOSNarrowerConceptAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -99,7 +99,7 @@ public class SKOSNarrowerConceptAnalysisRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -162,13 +162,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg1B));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule2A()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -231,13 +231,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg2A));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/associative relations (skos:narrower VS skos:related)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule2B()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -300,13 +300,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg2B));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/associative relations (skos:narrowerTransitive VS skos:related)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule3A()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -369,13 +369,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg3A));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:narrowMatch)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule3B()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -438,13 +438,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg3B));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:narrowMatch)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule4A()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -507,13 +507,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg4A));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:closeMatch)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule4B()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -576,13 +576,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg4B));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:closeMatch)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule5A()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -645,13 +645,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg5A));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:exactMatch)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule5B()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -714,13 +714,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg5B));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/mapping relations (skos:narrowerTransitive VS skos:exactMatch)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule6A()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),
@@ -783,13 +783,13 @@ public class SKOSNarrowerConceptAnalysisRuleTest
         Assert.IsTrue(string.Equals(issues[0].Description, SKOSNarrowerConceptAnalysisRule.rulesugg6A));
         Assert.IsTrue(string.Equals(issues[0].Suggestion, "SKOS concepts 'ex:ConceptA' and 'ex:ConceptB' should be adjusted to not clash on hierarchical/mapping relations (skos:narrower VS skos:relatedMatch)"));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeNarrowerConceptAndViolateRule6B()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.SKOS.CONCEPT)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.SKOS.IN_SCHEME)),

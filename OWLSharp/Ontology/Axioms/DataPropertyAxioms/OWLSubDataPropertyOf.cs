@@ -49,7 +49,7 @@ namespace OWLSharp.Ontology
 
             //Axiom Triple
             RDFTriple axiomTriple = new RDFTriple(SubDataProperty.GetIRI(), RDFVocabulary.RDFS.SUB_PROPERTY_OF, SuperDataProperty.GetIRI());
-            graph.AddTriple(axiomTriple);            
+            graph.AddTriple(axiomTriple);
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)

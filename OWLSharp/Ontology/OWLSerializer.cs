@@ -47,7 +47,7 @@ namespace OWLSharp.Ontology
             IgnoreWhitespace = true,
             IgnoreProcessingInstructions = true
         };
-        
+
         internal static string SerializeOntology(OWLOntology ontology)
         {
             XmlSerializerNamespaces xmlSerializerNamespaces = new XmlSerializerNamespaces();
@@ -60,7 +60,7 @@ namespace OWLSharp.Ontology
             xmlSerializerNamespaces.Add(RDFVocabulary.XSD.PREFIX, RDFVocabulary.XSD.BASE_URI);
             xmlSerializerNamespaces.Add(RDFVocabulary.XML.PREFIX, RDFVocabulary.XML.BASE_URI);
             //Initialize user-declared prefixes
-            ontology.Prefixes.ForEach(pfx => 
+            ontology.Prefixes.ForEach(pfx =>
             {
                 if (!string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX, StringComparison.OrdinalIgnoreCase)
                      && !string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, StringComparison.OrdinalIgnoreCase)
@@ -120,14 +120,14 @@ namespace OWLSharp.Ontology
                 }
             }
         }
-    
+
         internal static string SerializeObject<T>(T objectToSerialize, XmlSerializerNamespaces xmlSerializerNamespaces=null) where T : class
         {
             //Hide hard-coded .NET prefixes (e.g: xsi)
             if (xmlSerializerNamespaces == null)
                 xmlSerializerNamespaces = new XmlSerializerNamespaces();
             xmlSerializerNamespaces.Add(string.Empty, string.Empty);
-            
+
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             using (UTF8StringWriter stringWriter = new UTF8StringWriter())
             {
@@ -152,7 +152,7 @@ namespace OWLSharp.Ontology
         }
     }
 
-    internal class UTF8StringWriter : StringWriter
+    internal sealed class UTF8StringWriter : StringWriter
     {
         public override Encoding Encoding => Encoding.UTF8;
     }

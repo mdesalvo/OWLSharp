@@ -33,9 +33,9 @@ namespace OWLSharp.Validator
                      || ontology.CheckAreEquivalentObjectProperties(subObjectPropertyOf.SubObjectPropertyExpression, subObjectPropertyOf.SuperObjectPropertyExpression)
                      || ontology.CheckAreDisjointObjectProperties(subObjectPropertyOf.SubObjectPropertyExpression, subObjectPropertyOf.SuperObjectPropertyExpression))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated SubObjectPropertyOf axiom with signature: '{subObjectPropertyOf.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated SubObjectPropertyOf axiom with signature: '{subObjectPropertyOf.GetXML()}'",
                         rulesugg));
 
             return issues;

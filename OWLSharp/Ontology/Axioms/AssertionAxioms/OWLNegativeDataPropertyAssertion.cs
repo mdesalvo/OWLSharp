@@ -38,8 +38,8 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLNegativeDataPropertyAssertion()
         { }
-        internal OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this() 
-        { 
+        internal OWLNegativeDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this()
+        {
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"dataProperty\" parameter is null");
             Literal = literal ?? throw new OWLException("Cannot create OWLNegativeDataPropertyAssertion because given \"literal\" parameter is null");
         }
@@ -55,15 +55,15 @@ namespace OWLSharp.Ontology
             RDFGraph graph = new RDFGraph();
 
             RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
-            RDFResource negativeDataPropertyAssertionIRI = new RDFResource();            
+            RDFResource negativeDataPropertyAssertionIRI = new RDFResource();
             graph.AddTriple(new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.OWL.SOURCE_INDIVIDUAL, idvExpressionIRI));
             graph.AddTriple(new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.OWL.ASSERTION_PROPERTY, DataProperty.GetIRI()));
             graph.AddTriple(new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.OWL.TARGET_VALUE, Literal.GetLiteral()));
             graph = graph.UnionWith(DataProperty.ToRDFGraph())
                          .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
-    
+
             //Axiom Triple
-            RDFTriple axiomTriple = new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION); 
+            RDFTriple axiomTriple = new RDFTriple(negativeDataPropertyAssertionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.NEGATIVE_PROPERTY_ASSERTION);
             graph.AddTriple(axiomTriple);
 
             //Annotations

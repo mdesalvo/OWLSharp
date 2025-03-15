@@ -65,7 +65,7 @@ namespace OWLSharp.Reasoner
                     /* SAMEAS ENTAILMENTS */
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I1,I3) -> ObjectPropertyAssertion(OP,I2,I3)
                     //SameIndividual(I1,I2) ^ ObjectPropertyAssertion(OP,I2,I3) -> ObjectPropertyAssertion(OP,I1,I3)
-                    declaredIdvSrcOpAsns.ForEach(idvOpAsn => 
+                    declaredIdvSrcOpAsns.ForEach(idvOpAsn =>
                     {
                         OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(idvOpAsn.ObjectPropertyExpression, sameIdv, idvOpAsn.TargetIndividualExpression) { IsInference=true };
                         inference.GetXML();

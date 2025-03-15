@@ -26,7 +26,7 @@ namespace OWLSharp.Reasoner
 
             //Temporary working variables
             List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
-            
+
             //SymmetricObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ObjectPropertyAssertion(OP,IDV2,IDV1)
             foreach (OWLSymmetricObjectProperty symObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>())
             {
@@ -49,13 +49,13 @@ namespace OWLSharp.Reasoner
                         OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjInvOf.ObjectProperty, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
-                    }                        
+                    }
                     else
                     {
                         OWLObjectPropertyAssertion inference = new OWLObjectPropertyAssertion(symObjProp.ObjectPropertyExpression, opAsnTargetIdvExpr, opAsnSourceIdvExpr) { IsInference=true };
                         inference.GetXML();
                         inferences.Add(new OWLInference(rulename, inference));
-                    }   
+                    }
                 }
             }
 

@@ -35,7 +35,7 @@ namespace OWLSharp.Reasoner
                     OWLEquivalentClasses inference = new OWLEquivalentClasses(new List<OWLClassExpression> { declaredClass, equivalentClass }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }   
+                }
             }
 
             return inferences;

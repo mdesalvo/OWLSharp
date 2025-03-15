@@ -99,13 +99,13 @@ namespace OWLSharp.Ontology
             #endregion
 
             //This is a datetime builtIn, so ensure to have information compatible with "date/datetime" semantic
-            bool isDurationLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit 
+            bool isDurationLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit
                                      && leftPMTLit.HasTimespanDatatype();
-            bool isNumericRightPMYEAR = rightPatternMemberYEAR is RDFTypedLiteral rightPMTLitYEAR 
+            bool isNumericRightPMYEAR = rightPatternMemberYEAR is RDFTypedLiteral rightPMTLitYEAR
                                          && rightPMTLitYEAR.HasDecimalDatatype();
-            bool isNumericRightPMMONTH = rightPatternMemberMONTH is RDFTypedLiteral rightPMTLitMONTH 
+            bool isNumericRightPMMONTH = rightPatternMemberMONTH is RDFTypedLiteral rightPMTLitMONTH
                                           && rightPMTLitMONTH.HasDecimalDatatype();
-            if (isDurationLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH) 
+            if (isDurationLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH)
                 if (XSD_DURATION.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
                 {
                     //Get left duration

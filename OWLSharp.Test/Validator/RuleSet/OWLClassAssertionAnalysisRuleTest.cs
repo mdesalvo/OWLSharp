@@ -45,14 +45,14 @@ public class OWLClassAssertionAnalysisRuleTest
                     new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls2"))),
                     new OWLNamedIndividual(new RDFResource("ex:Stiv")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Stiv")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

@@ -38,8 +38,8 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLDataPropertyAssertion()
         { }
-        internal OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this() 
-        { 
+        internal OWLDataPropertyAssertion(OWLDataProperty dataProperty, OWLLiteral literal) : this()
+        {
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"dataProperty\" parameter is null");
             Literal = literal ?? throw new OWLException("Cannot create OWLDataPropertyAssertion because given \"literal\" parameter is null");
         }
@@ -57,9 +57,9 @@ namespace OWLSharp.Ontology
             RDFResource idvExpressionIRI = IndividualExpression.GetIRI();
             graph = graph.UnionWith(DataProperty.ToRDFGraph())
                          .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
-            
+
             //Axiom Triple
-            RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, DataProperty.GetIRI(), Literal.GetLiteral()); 
+            RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, DataProperty.GetIRI(), Literal.GetLiteral());
             graph.AddTriple(axiomTriple);
 
             //Annotations

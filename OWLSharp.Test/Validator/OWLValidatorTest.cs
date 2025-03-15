@@ -41,13 +41,13 @@ public class OWLValidatorTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLAsymmetricObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/kicks")))
             ],
             AssertionAxioms = [
@@ -80,13 +80,13 @@ public class OWLValidatorTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLIrreflexiveObjectProperty(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/friendOf")))
             ],
             AssertionAxioms = [
@@ -113,7 +113,7 @@ public class OWLValidatorTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLIrreflexiveObjectPropertyAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLIrreflexiveObjectPropertyAnalysisRule.rulesugg2)));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeDeprecatedTermsAsync()
     {
@@ -125,7 +125,7 @@ public class OWLValidatorTest
                     new RDFResource("http://xmlns.com/foaf/0.1/Person"),
                     new OWLLiteral(RDFTypedLiteral.True))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Organization")))
             ]
@@ -140,13 +140,13 @@ public class OWLValidatorTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected presence of deprecated class with IRI: 'http://xmlns.com/foaf/0.1/Person'")));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTermsDeprecationAnalysisRule.rulesugg)));
     }
-        
+
     [TestMethod]
     public async Task ShouldAnalyzeDisjointTermsAsync()
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
                 new OWLDeclaration(new OWLDatatype(new RDFResource("http://xmlns.com/foaf/0.1/Person")))
             ]
@@ -198,7 +198,7 @@ public class OWLValidatorTest
                     new OWLObjectProperty(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY),
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.OWL.TOP_OBJECT_PROPERTY)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ]
@@ -219,7 +219,7 @@ public class OWLValidatorTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Marco")))
@@ -251,7 +251,7 @@ public class OWLValidatorTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv")))
@@ -286,7 +286,7 @@ public class OWLValidatorTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Stiv"))),
@@ -338,7 +338,7 @@ public class OWLValidatorTest
                     new OWLClass(RDFVocabulary.FOAF.AGENT),
                     [ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -364,10 +364,10 @@ public class OWLValidatorTest
                 new OWLDisjointClasses([
                     new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]),
                 new OWLSubClassOf(
-                    new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
             ]
@@ -387,12 +387,12 @@ public class OWLValidatorTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasUncle"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasBrother")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLSubObjectPropertyOf(
                     new OWLObjectPropertyChain([
                         new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFather")),
@@ -420,10 +420,10 @@ public class OWLValidatorTest
                 new OWLEquivalentClasses([
                     new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ]),
                 new OWLSubClassOf(
-                    new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
             ]
@@ -445,13 +445,13 @@ public class OWLValidatorTest
         {
             ClassAxioms = [
                 new OWLSubClassOf(
-                    new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                    new OWLClass(RDFVocabulary.FOAF.PERSON),
                     new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
                 new OWLSubClassOf(
-                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION), 
+                    new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
                     new OWLClass(RDFVocabulary.FOAF.PERSON))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION))
             ]
@@ -499,11 +499,11 @@ public class OWLValidatorTest
             ],
             DataPropertyAxioms = [
                 new OWLDisjointDataProperties([
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
-                    new OWLDataProperty(RDFVocabulary.FOAF.NAME), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
+                    new OWLDataProperty(RDFVocabulary.FOAF.NAME),
                     new OWLDataProperty(new RDFResource("ex:age")) ])
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.NAME)),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age"))),
@@ -552,10 +552,10 @@ public class OWLValidatorTest
             ],
             ObjectPropertyAxioms = [
                 new OWLDisjointObjectProperties([
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(RDFVocabulary.FOAF.AGENT) ])
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.AGENT)),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -581,13 +581,13 @@ public class OWLValidatorTest
         {
             DataPropertyAxioms = [
                 new OWLEquivalentDataProperties([
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ]),
                 new OWLSubDataPropertyOf(
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
@@ -609,13 +609,13 @@ public class OWLValidatorTest
         {
             ObjectPropertyAxioms = [
                 new OWLEquivalentObjectProperties([
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")) ]),
                 new OWLSubObjectPropertyOf(
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
             ]
@@ -637,13 +637,13 @@ public class OWLValidatorTest
         {
             DataPropertyAxioms = [
                 new OWLSubDataPropertyOf(
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ),
                 new OWLSubDataPropertyOf(
-                    new OWLDataProperty(new RDFResource("ex:age")), 
+                    new OWLDataProperty(new RDFResource("ex:age")),
                     new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
@@ -665,13 +665,13 @@ public class OWLValidatorTest
         {
             ObjectPropertyAxioms = [
                 new OWLSubObjectPropertyOf(
-                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+                    new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
                     new OWLObjectProperty(new RDFResource("ex:knows")) ),
                 new OWLSubObjectPropertyOf(
-                    new OWLObjectProperty(new RDFResource("ex:knows")), 
+                    new OWLObjectProperty(new RDFResource("ex:knows")),
                     new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:knows")))
             ]
@@ -691,7 +691,7 @@ public class OWLValidatorTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
@@ -704,7 +704,7 @@ public class OWLValidatorTest
                 new OWLHasKey(
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
                     [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ],
-                    null 
+                    null
                 )
             ],
             AssertionAxioms = [
@@ -777,7 +777,7 @@ public class OWLValidatorTest
                     new OWLObjectComplementOf(new OWLClass(new RDFResource("ex:Cls2"))),
                     new OWLNamedIndividual(new RDFResource("ex:Stiv")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -825,7 +825,7 @@ public class OWLValidatorTest
                 new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLFunctionalDataProperty(new OWLDataProperty(new RDFResource("ex:dp2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -876,7 +876,7 @@ public class OWLValidatorTest
                 new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -928,7 +928,7 @@ public class OWLValidatorTest
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLInverseFunctionalObjectProperty(new OWLObjectProperty(new RDFResource("ex:op2")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -984,7 +984,7 @@ public class OWLValidatorTest
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLClass(new RDFResource("ex:Cls1")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
@@ -1036,7 +1036,7 @@ public class OWLValidatorTest
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLDatatype(RDFVocabulary.XSD.INTEGER))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -1092,7 +1092,7 @@ public class OWLValidatorTest
                     new OWLObjectProperty(new RDFResource("ex:op1")),
                     new OWLClass(new RDFResource("ex:Cls1")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
@@ -1151,7 +1151,7 @@ public class OWLValidatorTest
                     new OWLObjectProperty(new RDFResource("ex:op1")),
                     new OWLClass(new RDFResource("ex:Cls1")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),

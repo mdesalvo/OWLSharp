@@ -51,7 +51,7 @@ public class OWLObjectMinCardinalityTest
         Assert.IsNotNull(objectMinCardinality.ObjectPropertyExpression);
         Assert.IsTrue(objectMinCardinality.ObjectPropertyExpression is OWLObjectProperty objProp
                       && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
-        Assert.IsTrue(objectMinCardinality.ClassExpression is OWLClass cls 
+        Assert.IsTrue(objectMinCardinality.ClassExpression is OWLClass cls
                       && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
     }
 

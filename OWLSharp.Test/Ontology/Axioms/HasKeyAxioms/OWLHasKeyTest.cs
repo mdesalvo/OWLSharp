@@ -35,9 +35,9 @@ public class OWLHasKeyTest
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]);
 
         Assert.IsNotNull(hasKey);
-        Assert.IsTrue(hasKey.ClassExpression is OWLClass cls 
+        Assert.IsTrue(hasKey.ClassExpression is OWLClass cls
                       && string.Equals(cls.IRI, "http://xmlns.com/foaf/0.1/Agent"));
-        Assert.IsTrue(hasKey.ObjectPropertyExpressions.Single() is OWLObjectProperty objProp 
+        Assert.IsTrue(hasKey.ObjectPropertyExpressions.Single() is OWLObjectProperty objProp
                       && string.Equals(objProp.IRI, "http://xmlns.com/foaf/0.1/knows"));
         Assert.IsTrue(hasKey.DataProperties.Single() is { } dtProp
                       && string.Equals(dtProp.IRI, "http://xmlns.com/foaf/0.1/age"));

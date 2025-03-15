@@ -61,7 +61,7 @@ public class OWLDataPropertyDomainAnalysisRuleTest
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLClass(new RDFResource("ex:Cls1")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
@@ -71,7 +71,7 @@ public class OWLDataPropertyDomainAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

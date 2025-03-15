@@ -87,7 +87,7 @@ public class SWRLDataRangeAtomTest
         Assert.IsTrue(atom.LeftArgument is SWRLVariableArgument leftArgVar && leftArgVar.GetVariable().Equals(new RDFVariable("?P")));
         Assert.IsNull(atom.RightArgument);
     }
-        
+
     [TestMethod]
     public void ShouldEvaluateSWRLDataRangeAtomOnAntecedent()
     {

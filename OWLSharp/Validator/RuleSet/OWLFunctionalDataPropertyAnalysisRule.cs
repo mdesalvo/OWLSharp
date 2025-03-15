@@ -36,9 +36,9 @@ namespace OWLSharp.Validator
                                        .ForEach(fdpAsn =>
                                        {
                                            issues.Add(new OWLIssue(
-                                               OWLEnums.OWLIssueSeverity.Error, 
-                                               rulename, 
-                                               $"Violated FunctionalDataProperty axiom with signature: {fdp.GetXML()}", 
+                                               OWLEnums.OWLIssueSeverity.Error,
+                                               rulename,
+                                               $"Violated FunctionalDataProperty axiom with signature: {fdp.GetXML()}",
                                                rulesugg));
                                        });
 

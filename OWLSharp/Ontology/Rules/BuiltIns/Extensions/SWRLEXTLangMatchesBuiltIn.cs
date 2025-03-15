@@ -74,8 +74,9 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            if (leftPatternMember is RDFPlainLiteral leftPMLit && rightPatternMember is RDFPlainLiteral rightPMLit) 
+            if (leftPatternMember is RDFPlainLiteral leftPMLit && rightPatternMember is RDFPlainLiteral rightPMLit)
                 return string.Equals(leftPMLit.Language, rightPMLit.Language);
+
             return false;
         }
         #endregion

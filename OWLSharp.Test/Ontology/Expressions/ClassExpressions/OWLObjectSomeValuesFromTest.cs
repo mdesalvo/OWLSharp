@@ -33,10 +33,10 @@ public class OWLObjectSomeValuesFromTest
 
         Assert.IsNotNull(objectSomeValuesFrom);
         Assert.IsNotNull(objectSomeValuesFrom.ObjectPropertyExpression);
-        Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty 
+        Assert.IsTrue(objectSomeValuesFrom.ObjectPropertyExpression is OWLObjectProperty objectProperty
                       && string.Equals(objectProperty.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         Assert.IsNotNull(objectSomeValuesFrom.ClassExpression);
-        Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass 
+        Assert.IsTrue(objectSomeValuesFrom.ClassExpression is OWLClass owlClass
                       && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
     }
 

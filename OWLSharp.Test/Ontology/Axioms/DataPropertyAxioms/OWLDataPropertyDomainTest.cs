@@ -36,7 +36,7 @@ public class OWLDataPropertyDomainTest
         Assert.IsNotNull(dataPropertyDomain.DataProperty);
         Assert.IsTrue(string.Equals(dataPropertyDomain.DataProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
         Assert.IsNotNull(dataPropertyDomain.ClassExpression);
-        Assert.IsTrue(dataPropertyDomain.ClassExpression is OWLClass cls 
+        Assert.IsTrue(dataPropertyDomain.ClassExpression is OWLClass cls
                       && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
     }
 
@@ -93,7 +93,7 @@ public class OWLDataPropertyDomainTest
         Assert.IsNotNull(dataPropertyDomain.DataProperty);
         Assert.IsTrue(string.Equals(dataPropertyDomain.DataProperty.IRI, RDFVocabulary.RDFS.COMMENT.ToString()));
         Assert.IsNotNull(dataPropertyDomain.ClassExpression);
-        Assert.IsTrue(dataPropertyDomain.ClassExpression is OWLClass cls 
+        Assert.IsTrue(dataPropertyDomain.ClassExpression is OWLClass cls
                       && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
     }
 

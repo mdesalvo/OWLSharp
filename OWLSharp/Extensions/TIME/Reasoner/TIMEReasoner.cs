@@ -21,7 +21,7 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEReasoner
+    public sealed class TIMEReasoner
     {
         #region Properties
         public List<TIMEEnums.TIMEReasonerRules> Rules { get; internal set; } = new List<TIMEEnums.TIMEReasonerRules>();

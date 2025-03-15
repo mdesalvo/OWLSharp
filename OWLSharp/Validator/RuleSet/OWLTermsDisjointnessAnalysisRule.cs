@@ -33,16 +33,16 @@ namespace OWLSharp.Validator
             List<string> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>().Select(obp => obp.GetIRI().ToString()).Distinct().ToList();
             List<string> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>().Select(anp => anp.GetIRI().ToString()).Distinct().ToList();
             List<string> declaredNamedIndividuals = ontology.GetDeclaredEntitiesOfType<OWLNamedIndividual>().Select(idv => idv.GetIRI().ToString()).Distinct().ToList();
-            
+
             foreach (string clashingClass in declaredClasses.Where(cls => declaredDatatypes.Contains(cls)
                                                                             || declaredDataProperties.Contains(cls)
                                                                             || declaredObjectProperties.Contains(cls)
                                                                             || declaredAnnotationProperties.Contains(cls)
                                                                             || declaredNamedIndividuals.Contains(cls)))
                 issues.Add(new OWLIssue(
-                    OWLEnums.OWLIssueSeverity.Warning, 
-                    rulename, 
-                    $"Detected clash on terms disjointness for class with IRI: '{clashingClass}'", 
+                    OWLEnums.OWLIssueSeverity.Warning,
+                    rulename,
+                    $"Detected clash on terms disjointness for class with IRI: '{clashingClass}'",
                     rulesugg));
 
             foreach (string clashingDatatype in declaredDatatypes.Where(dtt => declaredDataProperties.Contains(dtt)
@@ -50,33 +50,33 @@ namespace OWLSharp.Validator
                                                                                 || declaredAnnotationProperties.Contains(dtt)
                                                                                 || declaredNamedIndividuals.Contains(dtt)))
                 issues.Add(new OWLIssue(
-                    OWLEnums.OWLIssueSeverity.Warning, 
-                    rulename, 
-                    $"Detected clash on terms disjointness for datatype with IRI: '{clashingDatatype}'", 
+                    OWLEnums.OWLIssueSeverity.Warning,
+                    rulename,
+                    $"Detected clash on terms disjointness for datatype with IRI: '{clashingDatatype}'",
                     rulesugg));
 
             foreach (string clashingDataProperty in declaredDataProperties.Where(dtp => declaredObjectProperties.Contains(dtp)
                                                                                          || declaredAnnotationProperties.Contains(dtp)
                                                                                          || declaredNamedIndividuals.Contains(dtp)))
                 issues.Add(new OWLIssue(
-                    OWLEnums.OWLIssueSeverity.Warning, 
-                    rulename, 
-                    $"Detected clash on terms disjointness for data property with IRI: '{clashingDataProperty}'", 
+                    OWLEnums.OWLIssueSeverity.Warning,
+                    rulename,
+                    $"Detected clash on terms disjointness for data property with IRI: '{clashingDataProperty}'",
                     rulesugg));
 
             foreach (string clashingObjectProperty in declaredObjectProperties.Where(obp => declaredAnnotationProperties.Contains(obp)
                                                                                               || declaredNamedIndividuals.Contains(obp)))
                 issues.Add(new OWLIssue(
-                    OWLEnums.OWLIssueSeverity.Warning, 
-                    rulename, 
-                    $"Detected clash on terms disjointness for object property with IRI: '{clashingObjectProperty}'", 
+                    OWLEnums.OWLIssueSeverity.Warning,
+                    rulename,
+                    $"Detected clash on terms disjointness for object property with IRI: '{clashingObjectProperty}'",
                     rulesugg));
 
             foreach (string clashingAnnotationProperty in declaredAnnotationProperties.Where(anp => declaredNamedIndividuals.Contains(anp)))
                 issues.Add(new OWLIssue(
-                    OWLEnums.OWLIssueSeverity.Warning, 
-                    rulename, 
-                    $"Detected clash on terms disjointness for annotation property with IRI: '{clashingAnnotationProperty}'", 
+                    OWLEnums.OWLIssueSeverity.Warning,
+                    rulename,
+                    $"Detected clash on terms disjointness for annotation property with IRI: '{clashingAnnotationProperty}'",
                     rulesugg));
 
             return issues;

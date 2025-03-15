@@ -144,7 +144,7 @@ public class OWLDisjointObjectPropertiesTest
     public void ShouldConvert3DisjointObjectPropertiesToGraph()
     {
         OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties(
-        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
             new OWLObjectProperty(RDFVocabulary.FOAF.MEMBER),
             new OWLObjectProperty(RDFVocabulary.FOAF.ACCOUNT)]);
         RDFGraph graph = disjointObjectProperties.ToRDFGraph();
@@ -193,7 +193,7 @@ public class OWLDisjointObjectPropertiesTest
     public void ShouldConvert3DisjointObjectPropertiesWithAnnotationToGraph()
     {
         OWLDisjointObjectProperties disjointObjectProperties = new OWLDisjointObjectProperties(
-        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
             new OWLObjectProperty(RDFVocabulary.FOAF.MEMBER),
             new OWLObjectProperty(RDFVocabulary.FOAF.ACCOUNT)])
         {

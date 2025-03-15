@@ -86,9 +86,9 @@ namespace OWLSharp.Ontology
                 RDFResource objPropExpressionIRI = objectPropertyExpression.GetIRI();
                 keyPropsCollection.AddItem(objPropExpressionIRI);
                 graph = graph.UnionWith(objectPropertyExpression.ToRDFGraph(objPropExpressionIRI));
-            }                
+            }
             foreach (OWLDataProperty dataProperty in DataProperties)
-            { 
+            {
                 keyPropsCollection.AddItem(dataProperty.GetIRI());
                 graph = graph.UnionWith(dataProperty.ToRDFGraph());
             }

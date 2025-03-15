@@ -41,15 +41,15 @@ public class SWRLDayTimeDurationBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#dayTimeDuration", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(5, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2 
+        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2
                       && rlarg2.GetVariable().Equals(new RDFVariable("?Z")));
-        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3 
+        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3
                       && rlarg3.GetVariable().Equals(new RDFVariable("?Q")));
-        Assert.IsTrue(builtin.Arguments[4] is SWRLVariableArgument rlarg4 
+        Assert.IsTrue(builtin.Arguments[4] is SWRLVariableArgument rlarg4
                       && rlarg4.GetVariable().Equals(new RDFVariable("?U")));
         Assert.IsTrue(string.Equals("swrlb:dayTimeDuration(?X,?Y,?Z,?Q,?U)", builtin.ToString()));
         Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.DayTimeDuration(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
@@ -80,15 +80,15 @@ public class SWRLDayTimeDurationBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#dayTimeDuration", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(5, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2 
+        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2
                       && rlarg2.GetVariable().Equals(new RDFVariable("?Z")));
-        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3 
+        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3
                       && rlarg3.GetVariable().Equals(new RDFVariable("?Q")));
-        Assert.IsTrue(builtin.Arguments[4] is SWRLVariableArgument rlarg4 
+        Assert.IsTrue(builtin.Arguments[4] is SWRLVariableArgument rlarg4
                       && rlarg4.GetVariable().Equals(new RDFVariable("?U")));
         Assert.IsTrue(string.Equals("swrlb:dayTimeDuration(?X,?Y,?Z,?Q,?U)", builtin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#dayTimeDuration\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Variable IRI=\"urn:swrl:var#Z\" /><Variable IRI=\"urn:swrl:var#Q\" /><Variable IRI=\"urn:swrl:var#U\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
@@ -112,16 +112,16 @@ public class SWRLDayTimeDurationBuiltInTest
         antecedentResults.Columns.Add("?Q");
         antecedentResults.Columns.Add("?U");
         antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration", 
-            "1^^http://www.w3.org/2001/XMLSchema#int", 
-            "7^^http://www.w3.org/2001/XMLSchema#int", 
-            "6^^http://www.w3.org/2001/XMLSchema#int", 
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "1^^http://www.w3.org/2001/XMLSchema#int",
+            "7^^http://www.w3.org/2001/XMLSchema#int",
+            "6^^http://www.w3.org/2001/XMLSchema#int",
             "12^^http://www.w3.org/2001/XMLSchema#int");
         antecedentResults.Rows.Add(
-            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration", 
-            "1^^http://www.w3.org/2001/XMLSchema#int", 
-            "7^^http://www.w3.org/2001/XMLSchema#int", 
-            "8^^http://www.w3.org/2001/XMLSchema#int", 
+            "P1DT7H6M12S^^http://www.w3.org/2001/XMLSchema#duration",
+            "1^^http://www.w3.org/2001/XMLSchema#int",
+            "7^^http://www.w3.org/2001/XMLSchema#int",
+            "8^^http://www.w3.org/2001/XMLSchema#int",
             "12^^http://www.w3.org/2001/XMLSchema#int");
 
         SWRLBuiltIn builtin = SWRLBuiltIn.DayTimeDuration(
@@ -149,7 +149,7 @@ public class SWRLDayTimeDurationBuiltInTest
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
-            new SWRLVariableArgument(new RDFVariable("?U"))); 
+            new SWRLVariableArgument(new RDFVariable("?U")));
         DataTable builtinResults2 = builtin2.EvaluateOnAntecedent(antecedentResults);
         Assert.IsNotNull(builtinResults2);
         Assert.AreEqual(5, builtinResults2.Columns.Count);
@@ -157,7 +157,7 @@ public class SWRLDayTimeDurationBuiltInTest
 
         SWRLBuiltIn builtin3 = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
-            new SWRLVariableArgument(new RDFVariable("?Y")),  
+            new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?U")));
@@ -168,7 +168,7 @@ public class SWRLDayTimeDurationBuiltInTest
 
         SWRLBuiltIn builtin4 = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
-            new SWRLVariableArgument(new RDFVariable("?Y")),  
+            new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?F")),  //unexisting
             new SWRLVariableArgument(new RDFVariable("?U")));
@@ -179,7 +179,7 @@ public class SWRLDayTimeDurationBuiltInTest
 
         SWRLBuiltIn builtin5 = SWRLBuiltIn.DayTimeDuration(
             new SWRLVariableArgument(new RDFVariable("?X")),
-            new SWRLVariableArgument(new RDFVariable("?Y")),  
+            new SWRLVariableArgument(new RDFVariable("?Y")),
             new SWRLVariableArgument(new RDFVariable("?Z")),
             new SWRLVariableArgument(new RDFVariable("?Q")),
             new SWRLVariableArgument(new RDFVariable("?F"))); //unexisting
@@ -318,7 +318,7 @@ public class SWRLDayTimeDurationBuiltInTest
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?Q"].ToString(), "6^^http://www.w3.org/2001/XMLSchema#int"));
         Assert.IsTrue(string.Equals(builtinResults.Rows[0]["?U"].ToString(), "12^^http://www.w3.org/2001/XMLSchema#int"));
     }
-        
+
     [TestMethod]
     public void ShouldEvaluateDayTimeBuiltInWithRightMinuteLiteral()
     {

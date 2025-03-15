@@ -41,13 +41,13 @@ public class SWRLReplaceBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#replace", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(4, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg1
                       && rlarg1.GetVariable().Equals(new RDFVariable("?Y")));
-        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2 
+        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2
                       && rlarg2.GetVariable().Equals(new RDFVariable("?Z")));
-        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3 
+        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3
                       && rlarg3.GetVariable().Equals(new RDFVariable("?Q")));
         Assert.IsTrue(string.Equals("swrlb:replace(?X,?Y,?Z,?Q)", builtin.ToString()));
         Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.Replace(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
@@ -78,13 +78,13 @@ public class SWRLReplaceBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#replace", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(4, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg1
                       && rlarg1.GetVariable().Equals(new RDFVariable("?Y")));
-        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2 
+        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2
                       && rlarg2.GetVariable().Equals(new RDFVariable("?Z")));
-        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3 
+        Assert.IsTrue(builtin.Arguments[3] is SWRLVariableArgument rlarg3
                       && rlarg3.GetVariable().Equals(new RDFVariable("?Q")));
         Assert.IsTrue(string.Equals("swrlb:replace(?X,?Y,?Z,?Q)", builtin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#replace\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Variable IRI=\"urn:swrl:var#Z\" /><Variable IRI=\"urn:swrl:var#Q\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));

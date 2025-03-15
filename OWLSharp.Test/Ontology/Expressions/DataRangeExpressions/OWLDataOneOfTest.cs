@@ -86,7 +86,7 @@ public class OWLDataOneOfTest
         Assert.IsNotNull(dataOneOf);
         Assert.IsNotNull(dataOneOf.Literals);
         Assert.AreEqual(2, dataOneOf.Literals.Count);
-        Assert.IsTrue(dataOneOf.Literals.Any(lit => string.Equals(lit.Value, "hello") 
+        Assert.IsTrue(dataOneOf.Literals.Any(lit => string.Equals(lit.Value, "hello")
                                                     && string.Equals(lit.Language, "EN")));
         Assert.IsTrue(dataOneOf.Literals.Any(lit => string.Equals(lit.Value, "ciao")
                                                     && string.Equals(lit.Language, "IT")));

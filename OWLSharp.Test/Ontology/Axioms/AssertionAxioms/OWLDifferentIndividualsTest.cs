@@ -89,7 +89,7 @@ public class OWLDifferentIndividualsTest
     {
         OWLDifferentIndividuals differentIndividuals = OWLSerializer.DeserializeObject<OWLDifferentIndividuals>(
             """<DifferentIndividuals><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /><NamedIndividual IRI="ex:Carl" /></DifferentIndividuals>""");
-        
+
         Assert.IsNotNull(differentIndividuals);
         Assert.IsNotNull(differentIndividuals.IndividualExpressions);
         Assert.AreEqual(3, differentIndividuals.IndividualExpressions.Count);
@@ -130,11 +130,11 @@ public class OWLDifferentIndividualsTest
         Assert.AreEqual(1, ontology.AssertionAxioms.Count);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDifferentIndividuals diffAsn
                       && diffAsn.IndividualExpressions.Count == 3
-                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
                                                                   && string.Equals(nidv.IRI, "ex:Alice"))
-                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
                                                                   && string.Equals(nidv.IRI, "ex:Bob"))
-                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv 
+                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv
                                                                   && string.Equals(anonidv.NodeID, "AnonIdv")));
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLDifferentIndividuals diffAsn1
                       && string.Equals(diffAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")

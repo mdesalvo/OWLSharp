@@ -40,7 +40,7 @@ public class OWLDatatypeDefinitionTest
         Assert.IsNotNull(length6to10DT.Datatype);
         Assert.IsTrue(string.Equals(length6to10DT.Datatype.IRI, "ex:length6to10"));
         Assert.IsNotNull(length6to10DT.DataRangeExpression);
-        Assert.IsTrue(length6to10DT.DataRangeExpression is OWLDatatypeRestriction dtRestr 
+        Assert.IsTrue(length6to10DT.DataRangeExpression is OWLDatatypeRestriction dtRestr
                       && string.Equals(dtRestr.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString())
                       && dtRestr.FacetRestrictions.Count == 2
                       && dtRestr.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())

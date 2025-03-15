@@ -31,7 +31,7 @@ public class OWLObjectHasSelfTest
 
         Assert.IsNotNull(objectHasSelf);
         Assert.IsNotNull(objectHasSelf.ObjectPropertyExpression);
-        Assert.IsTrue(objectHasSelf.ObjectPropertyExpression is OWLObjectProperty objProp 
+        Assert.IsTrue(objectHasSelf.ObjectPropertyExpression is OWLObjectProperty objProp
                       && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
     }
 

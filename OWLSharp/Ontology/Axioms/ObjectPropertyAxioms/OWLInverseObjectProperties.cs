@@ -54,8 +54,8 @@ namespace OWLSharp.Ontology
                          .UnionWith(RightObjectPropertyExpression.ToRDFGraph(rightObjPropExpressionIRI));
 
             //Axiom Triple
-            RDFTriple axiomTriple = new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, rightObjPropExpressionIRI); 
-            graph.AddTriple(axiomTriple);            
+            RDFTriple axiomTriple = new RDFTriple(leftObjPropExpressionIRI, RDFVocabulary.OWL.INVERSE_OF, rightObjPropExpressionIRI);
+            graph.AddTriple(axiomTriple);
 
             //Annotations
             foreach (OWLAnnotation annotation in Annotations)

@@ -30,18 +30,18 @@ public class OWLSubDataPropertyOfAnalysisRuleTest
         {
             DataPropertyAxioms = [
                 new OWLSubDataPropertyOf(
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ),
                 new OWLSubDataPropertyOf(
-                    new OWLDataProperty(new RDFResource("ex:age")), 
+                    new OWLDataProperty(new RDFResource("ex:age")),
                     new OWLDataProperty(RDFVocabulary.FOAF.AGE))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -63,18 +63,18 @@ public class OWLSubDataPropertyOfAnalysisRuleTest
         {
             DataPropertyAxioms = [
                 new OWLSubDataPropertyOf(
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ),
                 new OWLEquivalentDataProperties([
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ])
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -96,18 +96,18 @@ public class OWLSubDataPropertyOfAnalysisRuleTest
         {
             DataPropertyAxioms = [
                 new OWLSubDataPropertyOf(
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ),
                 new OWLDisjointDataProperties([
-                    new OWLDataProperty(RDFVocabulary.FOAF.AGE), 
+                    new OWLDataProperty(RDFVocabulary.FOAF.AGE),
                     new OWLDataProperty(new RDFResource("ex:age")) ])
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(RDFVocabulary.FOAF.AGE)),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:age")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

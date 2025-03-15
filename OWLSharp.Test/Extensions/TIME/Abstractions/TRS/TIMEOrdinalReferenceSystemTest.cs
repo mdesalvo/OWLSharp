@@ -70,7 +70,7 @@ public class TIMEOrdinalReferenceSystemTest
         thors.DeclareEra(
             new RDFResource("ex:era"),
             new TIMEInstant(
-                new RDFResource("ex:eraBeginning"), 
+                new RDFResource("ex:eraBeginning"),
                 new TIMEInstantPosition(new RDFResource("ex:eraBeginningPosition"), TIMEPositionReferenceSystem.GeologicTime, 185.5)),
             new TIMEInstant(
                 new RDFResource("ex:eraEnd"),
@@ -348,7 +348,7 @@ public class TIMEOrdinalReferenceSystemTest
             new TIMEInstant(
                 new RDFResource("ex:subEraEnd"),
                 new TIMEInstantPosition(new RDFResource("ex:subEraEndPosition"), TIMEPositionReferenceSystem.GeologicTime, 180.5)));
-            
+
         Assert.IsTrue(thors.CheckHasEra(new RDFResource("ex:era")));
         Assert.IsTrue(thors.CheckHasEra(new RDFResource("ex:subEra")));
         Assert.IsFalse(thors.CheckHasEra(new RDFResource("ex:erazz")));

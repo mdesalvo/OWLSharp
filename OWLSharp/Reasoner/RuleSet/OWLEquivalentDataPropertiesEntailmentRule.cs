@@ -38,7 +38,7 @@ namespace OWLSharp.Reasoner
                     OWLEquivalentDataProperties inference = new OWLEquivalentDataProperties(new List<OWLDataProperty> { declaredDataProperty, equivalentDataProperty }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }   
+                }
 
                 //EquivalentDataProperties(P1,P2) ^ DataPropertyAssertion(P1,I,LIT) -> DataPropertyAssertion(P2,I,LIT)
                 foreach (OWLDataPropertyAssertion declaredDataPropertyAsn in OWLAssertionAxiomHelper.SelectDataAssertionsByDPEX(dpAsns, declaredDataProperty))
@@ -49,7 +49,7 @@ namespace OWLSharp.Reasoner
                         inferences.Add(new OWLInference(rulename, inference));
                     }
             }
-            
+
             return inferences;
         }
     }

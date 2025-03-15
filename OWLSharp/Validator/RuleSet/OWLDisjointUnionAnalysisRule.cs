@@ -29,7 +29,7 @@ namespace OWLSharp.Validator
 
             //Temporary working variables
             Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
-            
+
             //DisjointUnion(CLS,(CLS1,CLS2)) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
             foreach (OWLDisjointUnion disjUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
             {
@@ -46,9 +46,9 @@ namespace OWLSharp.Validator
                 //Analyze individuals cache to detect if there are individuals shared between the class expression members
                 if (idvsCache.Any(idvc => idvc.Value.Count > 1))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated DisjointUnion axiom with signature: '{disjUnion.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated DisjointUnion axiom with signature: '{disjUnion.GetXML()}'",
                         rulesugg));
 
                 //Reset register for next DisjointUnion axiom

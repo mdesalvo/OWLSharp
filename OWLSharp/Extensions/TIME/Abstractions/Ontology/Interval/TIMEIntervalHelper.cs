@@ -19,7 +19,7 @@ namespace OWLSharp.Extensions.TIME
     public static class TIMEIntervalHelper
     {
         #region Methods
-        public static bool CheckAfter(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckAfter(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -27,6 +27,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval is after bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval is after bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -45,7 +46,7 @@ namespace OWLSharp.Extensions.TIME
             return aTimeIntervalBeginningCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 1;
         }
 
-        public static bool CheckBefore(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckBefore(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -53,6 +54,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval is before bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval is before bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -71,7 +73,7 @@ namespace OWLSharp.Extensions.TIME
             return aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalBeginningCoordinate) == -1;
         }
 
-        public static bool CheckContains(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckContains(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
@@ -79,6 +81,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval contains bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval contains bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -108,7 +111,7 @@ namespace OWLSharp.Extensions.TIME
                      && aTimeIntervalEndCoordinate.CompareTo(bTimeIntervalEndCoordinate) == 1;
         }
 
-        public static bool CheckDisjoint(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI, 
+        public static bool CheckDisjoint(OWLOntology timeOntology, RDFResource aTimeIntervalURI, RDFResource bTimeIntervalURI,
             TIMECalendarReferenceSystem calendarTRS=null)
             => CheckBefore(timeOntology, aTimeIntervalURI, bTimeIntervalURI, calendarTRS)
                  || CheckAfter(timeOntology, aTimeIntervalURI, bTimeIntervalURI, calendarTRS);
@@ -121,6 +124,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval during bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval during bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -158,6 +162,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval equals bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval equals bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -195,6 +200,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval finishedBy bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval finishedBy bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -232,6 +238,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval finishes bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval finishes bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -269,6 +276,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval in bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval in bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -307,6 +315,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval meets bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval meets bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -333,6 +342,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval is metBy bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval is metBy bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -359,6 +369,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval overlaps bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval overlaps bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -397,6 +408,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval overlappedBy bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval overlappedBy bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -435,6 +447,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval starts bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval starts bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -472,6 +485,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot check if aInterval startedBy bInterval because given \"aTimeIntervalURI\" parameter is null");
             if (bTimeIntervalURI == null)
                 throw new OWLException("Cannot check if aInterval startedBy bInterval because given \"bTimeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion

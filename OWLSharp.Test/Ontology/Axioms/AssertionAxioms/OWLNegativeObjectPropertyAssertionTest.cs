@@ -102,7 +102,7 @@ public class OWLNegativeNegativeObjectPropertyAssertionTest
     {
         OWLNegativeObjectPropertyAssertion negativeObjectPropertyAssertion = OWLSerializer.DeserializeObject<OWLNegativeObjectPropertyAssertion>(
             """<NegativeObjectPropertyAssertion><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /></NegativeObjectPropertyAssertion>""");
-        
+
         Assert.IsNotNull(negativeObjectPropertyAssertion);
         Assert.IsNotNull(negativeObjectPropertyAssertion.ObjectPropertyExpression);
         Assert.IsTrue(negativeObjectPropertyAssertion.ObjectPropertyExpression is OWLObjectProperty objProp &&
@@ -192,7 +192,7 @@ public class OWLNegativeNegativeObjectPropertyAssertionTest
     {
         OWLNegativeObjectPropertyAssertion negativeObjectPropertyAssertion = OWLSerializer.DeserializeObject<OWLNegativeObjectPropertyAssertion>(
             """<NegativeObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /></NegativeObjectPropertyAssertion>""");
-        
+
         Assert.IsNotNull(negativeObjectPropertyAssertion);
         Assert.IsNotNull(negativeObjectPropertyAssertion.ObjectPropertyExpression);
         Assert.IsTrue(negativeObjectPropertyAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOf &&
@@ -284,7 +284,7 @@ public class OWLNegativeNegativeObjectPropertyAssertionTest
     {
         OWLNegativeObjectPropertyAssertion negativeObjectPropertyAssertion = OWLSerializer.DeserializeObject<OWLNegativeObjectPropertyAssertion>(
             """<NegativeObjectPropertyAssertion><ObjectInverseOf><ObjectProperty IRI="http://xmlns.com/foaf/0.1/knows" /></ObjectInverseOf><AnonymousIndividual nodeID="Alice" /><AnonymousIndividual nodeID="Bob" /></NegativeObjectPropertyAssertion>""");
-        
+
         Assert.IsNotNull(negativeObjectPropertyAssertion);
         Assert.IsNotNull(negativeObjectPropertyAssertion.ObjectPropertyExpression);
         Assert.IsTrue(negativeObjectPropertyAssertion.ObjectPropertyExpression is OWLObjectInverseOf objInvOf &&

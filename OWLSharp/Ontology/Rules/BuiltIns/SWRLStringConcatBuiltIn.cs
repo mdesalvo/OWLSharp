@@ -52,8 +52,8 @@ namespace OWLSharp.Ontology
                 }
 
                 //This is a string builtIn, so ensure to have information compatible with "string" semantic
-                if (patternMember is RDFResource 
-                     || patternMember is RDFPlainLiteral 
+                if (patternMember is RDFResource
+                     || patternMember is RDFPlainLiteral
                      || (patternMember is RDFTypedLiteral pmTLit && pmTLit.HasStringDatatype()))
                 {
                     string argValue = patternMember is RDFLiteral pmLit ? pmLit.Value : patternMember.ToString();

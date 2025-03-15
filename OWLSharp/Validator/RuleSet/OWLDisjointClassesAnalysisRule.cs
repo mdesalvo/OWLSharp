@@ -30,21 +30,21 @@ namespace OWLSharp.Validator
 
             //Temporary working variables
             Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
-            
+
             foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
             {
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS1,CLS2) -> ERROR
                 //DisjointClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
                 //DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
-                if (disjClasses.ClassExpressions.Any(outerClass => 
+                if (disjClasses.ClassExpressions.Any(outerClass =>
                       disjClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())
                                                                           && (ontology.CheckIsSubClassOf(outerClass, innerClass)
                                                                              || ontology.CheckIsSubClassOf(innerClass, outerClass)
                                                                              || ontology.CheckAreEquivalentClasses(outerClass, innerClass)))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated DisjointClasses axiom with signature: '{disjClasses.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated DisjointClasses axiom with signature: '{disjClasses.GetXML()}'",
                         rulesugg));
 
                 //DisjointClasses(CLS1,CLS2) ^ ClassAssertion(CLS1,IDV) ^ ClassAssertion(CLS2,IDV) -> ERROR
@@ -59,10 +59,10 @@ namespace OWLSharp.Validator
                     }
                 if (idvsCache.Any(idvc => idvc.Value.Count > 1))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated DisjointClasses axiom with signature: '{disjClasses.GetXML()}'", 
-                        rulesugg2));                
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated DisjointClasses axiom with signature: '{disjClasses.GetXML()}'",
+                        rulesugg2));
             }
 
             return issues;

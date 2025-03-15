@@ -40,7 +40,7 @@ public class TIMEInstantTest
     [TestMethod]
     public void ShouldCreateInstantFromDescription()
     {
-        TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"), 
+        TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"),
             new TIMEInstantDescription(new RDFResource("ex:instDesc"), DateTime.Parse("2010-05-22T22:45:30Z").ToUniversalTime()));
 
         Assert.IsNotNull(timeInstant);
@@ -57,7 +57,7 @@ public class TIMEInstantTest
     {
         TIMEInstant timeInstant = new TIMEInstant(new RDFResource("ex:inst"),
             new TIMEInstantDescription(
-                new RDFResource("ex:instDesc"), 
+                new RDFResource("ex:instDesc"),
                 new TIMECoordinate(2010, 5, 22, 22, 45, 30,
                     new TIMECoordinateMetadata(
                         TIMECalendarReferenceSystem.Gregorian,

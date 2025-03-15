@@ -48,7 +48,7 @@ namespace OWLSharp.Extensions.GEO
             {
                 await ontology.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
                 await ontology.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.SF.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
-                await ontology.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.GEOF.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);    
+                await ontology.ImportAsync(new Uri(RDFVocabulary.GEOSPARQL.GEOF.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
             }
         }
         #endregion
@@ -224,9 +224,9 @@ namespace OWLSharp.Extensions.GEO
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate minimum distance)
             double? featuresDistance = double.MaxValue;
-            geometriesFrom.ForEach(fromGeom => 
+            geometriesFrom.ForEach(fromGeom =>
             {
-                geometriesTo.ForEach(toGeom => 
+                geometriesTo.ForEach(toGeom =>
                 {
                     double tempDistance = fromGeom.Item2.Distance(toGeom.Item2);
                     if (tempDistance < featuresDistance)
@@ -265,7 +265,7 @@ namespace OWLSharp.Extensions.GEO
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate minimum distance)
             double? featuresDistance = double.MaxValue;
-            geometriesFrom.ForEach(fromGeom => 
+            geometriesFrom.ForEach(fromGeom =>
             {
                 double tempDistance = fromGeom.Item2.Distance(lazGeometryTo);
                 if (tempDistance < featuresDistance)
@@ -324,7 +324,7 @@ namespace OWLSharp.Extensions.GEO
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate maximum length)
             double? featureLength = double.MinValue;
-            geometries.ForEach(geom => 
+            geometries.ForEach(geom =>
             {
                 double tempLength = geom.Item2.Length;
                 if (tempLength > featureLength)
@@ -370,7 +370,7 @@ namespace OWLSharp.Extensions.GEO
 
             //Perform spatial analysis between collected secondaryGeometries (calibrate maximum area)
             double? featureArea = double.MinValue;
-            geometries.ForEach(geom => 
+            geometries.ForEach(geom =>
             {
                 double tempArea = geom.Item2.Area;
                 if (tempArea > featureArea)
@@ -431,7 +431,7 @@ namespace OWLSharp.Extensions.GEO
             return null;
         }
 
-        public static async Task<RDFTypedLiteral> GetCentroidOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        public static Task<RDFTypedLiteral> GetCentroidOfFeatureAsync(RDFTypedLiteral featureLiteral)
         {
             #region Guards
             if (featureLiteral == null)
@@ -449,7 +449,7 @@ namespace OWLSharp.Extensions.GEO
             //Analyze geometry
             Geometry centroidGeometryAZ = lazGeometry.Centroid;
             Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
-            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            return Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
         }
         #endregion
 
@@ -484,7 +484,7 @@ namespace OWLSharp.Extensions.GEO
             return null;
         }
 
-        public static async Task<RDFTypedLiteral> GetBoundaryOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        public static Task<RDFTypedLiteral> GetBoundaryOfFeatureAsync(RDFTypedLiteral featureLiteral)
         {
             #region Guards
             if (featureLiteral == null)
@@ -502,7 +502,7 @@ namespace OWLSharp.Extensions.GEO
             //Analyze geometry
             Geometry boundaryGeometryAZ = lazGeometry.Boundary;
             Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
-            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(boundaryGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            return Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(boundaryGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
         }
         #endregion
 
@@ -537,7 +537,7 @@ namespace OWLSharp.Extensions.GEO
             return null;
         }
 
-        public static async Task<RDFTypedLiteral> GetBufferAroundFeatureAsync(RDFTypedLiteral featureLiteral, double bufferMeters)
+        public static Task<RDFTypedLiteral> GetBufferAroundFeatureAsync(RDFTypedLiteral featureLiteral, double bufferMeters)
         {
             #region Guards
             if (featureLiteral == null)
@@ -555,7 +555,7 @@ namespace OWLSharp.Extensions.GEO
             //Analyze geometry
             Geometry bufferGeometryAZ = lazGeometry.Buffer(bufferMeters);
             Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
-            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            return Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
         }
         #endregion
 
@@ -590,7 +590,7 @@ namespace OWLSharp.Extensions.GEO
             return null;
         }
 
-        public static async Task<RDFTypedLiteral> GetConvexHullOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        public static Task<RDFTypedLiteral> GetConvexHullOfFeatureAsync(RDFTypedLiteral featureLiteral)
         {
             #region Guards
             if (featureLiteral == null)
@@ -608,7 +608,7 @@ namespace OWLSharp.Extensions.GEO
             //Analyze geometry
             Geometry bufferGeometryAZ = lazGeometry.ConvexHull();
             Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
-            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            return Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
         }
         #endregion
 
@@ -643,7 +643,7 @@ namespace OWLSharp.Extensions.GEO
             return null;
         }
 
-        public static async Task<RDFTypedLiteral> GetEnvelopeOfFeatureAsync(RDFTypedLiteral featureLiteral)
+        public static Task<RDFTypedLiteral> GetEnvelopeOfFeatureAsync(RDFTypedLiteral featureLiteral)
         {
             #region Guards
             if (featureLiteral == null)
@@ -661,7 +661,7 @@ namespace OWLSharp.Extensions.GEO
             //Analyze geometry
             Geometry bufferGeometryAZ = lazGeometry.Envelope;
             Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
-            return await Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
+            return Task.FromResult(new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
         }
         #endregion
 
@@ -778,7 +778,7 @@ namespace OWLSharp.Extensions.GEO
                         if (geometryOfFeature.Item2.Coordinates.Any(c1 => defaultGeometry.Item2.Coordinates.Any(c2 => MatchCoordinates(c1, c2, geoDirection))))
                         {
                             featuresDirection.Add(new RDFResource(featureWithGeometry.Key));
-                        }   
+                        }
                 }
 
                 return RDFQueryUtilities.RemoveDuplicates(featuresDirection);
@@ -1270,13 +1270,13 @@ namespace OWLSharp.Extensions.GEO
                     Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
+                            new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
                             new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                            new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
                             new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY), 
+                            new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                             new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLDataPropertyAtom(
@@ -1287,7 +1287,7 @@ namespace OWLSharp.Extensions.GEO
                     BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
-                            new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
+                            new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                             new SWRLIndividualArgument(featureUri))
                     }
                 },
@@ -1314,13 +1314,13 @@ namespace OWLSharp.Extensions.GEO
                         Atoms = new List<SWRLAtom>
                         {
                             new SWRLClassAtom(
-                                new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
+                                new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
                             new SWRLClassAtom(
-                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
                                 new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                             new SWRLObjectPropertyAtom(
-                                new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY), 
+                                new OWLObjectProperty(RDFVocabulary.GEOSPARQL.DEFAULT_GEOMETRY),
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                                 new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                             new SWRLDataPropertyAtom(
@@ -1331,7 +1331,7 @@ namespace OWLSharp.Extensions.GEO
                         BuiltIns = new List<SWRLBuiltIn>
                         {
                             SWRLBuiltIn.Equal(
-                                new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
+                                new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                                 new SWRLIndividualArgument(featureUri))
                         }
                     },
@@ -1403,13 +1403,13 @@ namespace OWLSharp.Extensions.GEO
                     Atoms = new List<SWRLAtom>
                     {
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
+                            new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
                             new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
                         new SWRLClassAtom(
-                            new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                            new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
                             new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLObjectPropertyAtom(
-                            new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY), 
+                            new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
                             new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                             new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                         new SWRLDataPropertyAtom(
@@ -1420,7 +1420,7 @@ namespace OWLSharp.Extensions.GEO
                     BuiltIns = new List<SWRLBuiltIn>
                     {
                         SWRLBuiltIn.Equal(
-                            new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
+                            new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                             new SWRLIndividualArgument(featureUri))
                     }
                 },
@@ -1447,13 +1447,13 @@ namespace OWLSharp.Extensions.GEO
                         Atoms = new List<SWRLAtom>
                         {
                             new SWRLClassAtom(
-                                new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE), 
+                                new OWLClass(RDFVocabulary.GEOSPARQL.FEATURE),
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE"))),
                             new SWRLClassAtom(
-                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY), 
+                                new OWLClass(RDFVocabulary.GEOSPARQL.GEOMETRY),
                                 new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                             new SWRLObjectPropertyAtom(
-                                new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY), 
+                                new OWLObjectProperty(RDFVocabulary.GEOSPARQL.HAS_GEOMETRY),
                                 new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                                 new SWRLVariableArgument(new RDFVariable("?GEOMETRY"))),
                             new SWRLDataPropertyAtom(
@@ -1464,7 +1464,7 @@ namespace OWLSharp.Extensions.GEO
                         BuiltIns = new List<SWRLBuiltIn>
                         {
                             SWRLBuiltIn.Equal(
-                                new SWRLVariableArgument(new RDFVariable("?FEATURE")), 
+                                new SWRLVariableArgument(new RDFVariable("?FEATURE")),
                                 new SWRLIndividualArgument(featureUri))
                         }
                     },
@@ -1481,7 +1481,7 @@ namespace OWLSharp.Extensions.GEO
                 };
                 inferences.AddRange(await defaultGeomAsGML.ApplyToOntologyAsync(ontology));
             }
-            
+
             //Parse retrieved WKT/GML serializations into (WGS84,UTM) result secondaryGeometries
             foreach (OWLInference inference in inferences)
             {

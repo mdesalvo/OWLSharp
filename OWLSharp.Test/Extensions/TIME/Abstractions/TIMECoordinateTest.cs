@@ -51,7 +51,7 @@ public class TIMECoordinateTest
     {
         TIMECoordinate timeCoordinate = new TIMECoordinate(2010, 5, 22, 22, 45, 30,
             new TIMECoordinateMetadata(
-                TIMECalendarReferenceSystem.Gregorian, 
+                TIMECalendarReferenceSystem.Gregorian,
                 RDFVocabulary.TIME.UNIT_SECOND,
                 RDFVocabulary.TIME.GREG.MAY,
                 RDFVocabulary.TIME.SATURDAY,

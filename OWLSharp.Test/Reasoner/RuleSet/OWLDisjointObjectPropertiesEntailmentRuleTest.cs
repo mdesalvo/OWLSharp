@@ -29,12 +29,12 @@ public class OWLDisjointObjectPropertiesEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/avoids"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFriend")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLSubObjectPropertyOf(
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFriend")),
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -47,7 +47,7 @@ public class OWLDisjointObjectPropertiesEntailmentRuleTest
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointObjectProperties inf 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointObjectProperties inf
                                           && string.Equals(inf.ObjectPropertyExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/avoids")
                                           && string.Equals(inf.ObjectPropertyExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")));
     }
@@ -57,12 +57,12 @@ public class OWLDisjointObjectPropertiesEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/avoids"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFriend")))
             ],
-            ObjectPropertyAxioms = [ 
+            ObjectPropertyAxioms = [
                 new OWLSubObjectPropertyOf(
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFriend")),
                     new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/knows"))),
@@ -75,7 +75,7 @@ public class OWLDisjointObjectPropertiesEntailmentRuleTest
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointObjectProperties inf 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLDisjointObjectProperties inf
                                           && inf.ObjectPropertyExpressions[0] is OWLObjectInverseOf objInvOf
                                           && string.Equals(objInvOf.ObjectProperty.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/avoids")
                                           && string.Equals(inf.ObjectPropertyExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/knows")));

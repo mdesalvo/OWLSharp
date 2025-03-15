@@ -89,7 +89,7 @@ public class OWLSameIndividualTest
     {
         OWLSameIndividual SameIndividual = OWLSerializer.DeserializeObject<OWLSameIndividual>(
             """<SameIndividual><NamedIndividual IRI="ex:Alice" /><NamedIndividual IRI="ex:Bob" /><NamedIndividual IRI="ex:Carl" /></SameIndividual>""");
-        
+
         Assert.IsNotNull(SameIndividual);
         Assert.IsNotNull(SameIndividual.IndividualExpressions);
         Assert.AreEqual(3, SameIndividual.IndividualExpressions.Count);
@@ -129,11 +129,11 @@ public class OWLSameIndividualTest
         Assert.AreEqual(1, ontology.AssertionAxioms.Count);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLSameIndividual diffAsn
                       && diffAsn.IndividualExpressions.Count == 3
-                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
                                                                   && string.Equals(nidv.IRI, "ex:Alice"))
-                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv 
+                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
                                                                   && string.Equals(nidv.IRI, "ex:Bob"))
-                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv 
+                      && diffAsn.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonidv
                                                                   && string.Equals(anonidv.NodeID, "AnonIdv")));
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLSameIndividual diffAsn1
                       && string.Equals(diffAsn1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")

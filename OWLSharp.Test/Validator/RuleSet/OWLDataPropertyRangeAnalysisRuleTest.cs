@@ -55,7 +55,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLDatatype(RDFVocabulary.XSD.INTEGER))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -63,7 +63,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -110,14 +110,14 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLDataIntersectionOf([
                         new OWLDataOneOf([
-                            new OWLLiteral(new RDFPlainLiteral("A")), 
+                            new OWLLiteral(new RDFPlainLiteral("A")),
                             new OWLLiteral(new RDFPlainLiteral("B")),
                             new OWLLiteral(new RDFPlainLiteral("C")) ]),
                         new OWLDataOneOf([
-                            new OWLLiteral(new RDFPlainLiteral("A")), 
+                            new OWLLiteral(new RDFPlainLiteral("A")),
                             new OWLLiteral(new RDFPlainLiteral("C")) ])    ]))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -125,7 +125,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -171,10 +171,10 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                 new OWLDataPropertyRange(
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLDataOneOf([
-                        new OWLLiteral(new RDFPlainLiteral("A")), 
+                        new OWLLiteral(new RDFPlainLiteral("A")),
                         new OWLLiteral(new RDFPlainLiteral("B")) ]))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -182,7 +182,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -229,13 +229,13 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLDataUnionOf([
                         new OWLDataOneOf([
-                            new OWLLiteral(new RDFPlainLiteral("A")), 
+                            new OWLLiteral(new RDFPlainLiteral("A")),
                             new OWLLiteral(new RDFPlainLiteral("B")) ]),
                         new OWLDataOneOf([
-                            new OWLLiteral(new RDFPlainLiteral("C")), 
+                            new OWLLiteral(new RDFPlainLiteral("C")),
                             new OWLLiteral(new RDFPlainLiteral("D")) ])    ]))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -243,7 +243,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -290,11 +290,11 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                     new OWLDataProperty(new RDFResource("ex:dp1")),
                     new OWLDataComplementOf(
                         new OWLDataOneOf([
-                            new OWLLiteral(new RDFPlainLiteral("A")), 
+                            new OWLLiteral(new RDFPlainLiteral("A")),
                             new OWLLiteral(new RDFPlainLiteral("B")),
                             new OWLLiteral(new RDFPlainLiteral("C")) ])))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -302,7 +302,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -360,7 +360,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                         [ new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("6", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MIN_LENGTH),
                             new OWLFacetRestriction(new OWLLiteral(new RDFTypedLiteral("10", RDFModelEnums.RDFDatatypes.XSD_INT)), RDFVocabulary.XSD.MAX_LENGTH) ]))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp1"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("ex:dp2"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
@@ -368,7 +368,7 @@ public class OWLDataPropertyRangeAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

@@ -38,7 +38,7 @@ namespace OWLSharp.Validator
             return issues;
         }
 
-        private static List<OWLIssue> AnalyzeKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, 
+        private static List<OWLIssue> AnalyzeKeyValues(OWLOntology ontology, OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs,
             List<OWLObjectPropertyAssertion> opAsns, List<OWLDataPropertyAssertion> dpAsns)
         {
             List<OWLIssue> issues = new List<OWLIssue>();
@@ -74,7 +74,7 @@ namespace OWLSharp.Validator
                             objectKeyValueRegister.Add(objSBValue, new List<OWLIndividualExpression>());
                         objectKeyValueRegister[objSBValue].Add(idvExpr);
                     }
-                }                
+                }
                 #endregion
 
                 #region Data Keys
@@ -109,13 +109,13 @@ namespace OWLSharp.Validator
             foreach (List<OWLIndividualExpression> collisionObjKeyValueRegister in objectKeyValueRegister.Where(kvr => kvr.Value.Count > 1)
                                                                                                          .Select(kv => kv.Value))
             {
-                if (collisionObjKeyValueRegister.Any(outerIDV => 
+                if (collisionObjKeyValueRegister.Any(outerIDV =>
                       collisionObjKeyValueRegister.Any(innerIDV => !outerIDV.GetIRI().Equals(innerIDV.GetIRI())
                                                                      && ontology.CheckAreDifferentIndividuals(outerIDV, innerIDV))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated HasKey axiom with signature: '{hasKeyAxiom.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated HasKey axiom with signature: '{hasKeyAxiom.GetXML()}'",
                         rulesugg));
             }
 
@@ -124,13 +124,13 @@ namespace OWLSharp.Validator
             foreach (List<OWLIndividualExpression> collisionDtKeyValueRegister in dataKeyValueRegister.Where(kvr => kvr.Value.Count > 1)
                                                                                                       .Select(kv => kv.Value))
             {
-                if (collisionDtKeyValueRegister.Any(outerIDV => 
+                if (collisionDtKeyValueRegister.Any(outerIDV =>
                       collisionDtKeyValueRegister.Any(innerIDV => !outerIDV.GetIRI().Equals(innerIDV.GetIRI())
                                                                      && ontology.CheckAreDifferentIndividuals(outerIDV, innerIDV))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated HasKey axiom with signature: '{hasKeyAxiom.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated HasKey axiom with signature: '{hasKeyAxiom.GetXML()}'",
                         rulesugg));
             }
             #endregion

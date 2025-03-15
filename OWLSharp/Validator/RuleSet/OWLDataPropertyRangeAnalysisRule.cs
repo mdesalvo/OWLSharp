@@ -30,9 +30,9 @@ namespace OWLSharp.Validator
                 {
                     if (!ontology.CheckIsLiteralOf(dpRange.DataRangeExpression, dpAsn.Literal))
                         issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error, 
-                            rulename, 
-                            $"Violated DataPropertyRange axiom with signature: {dpRange.GetXML()}", 
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated DataPropertyRange axiom with signature: {dpRange.GetXML()}",
                             rulesugg));
                 }
 

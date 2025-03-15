@@ -193,7 +193,7 @@ namespace OWLSharp.Extensions.TIME
             #endregion
 
             return Ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.TIME.THORS.ERA_BOUNDARY))
-                    .Any(idv => Ontology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT), new OWLNamedIndividual(this), idv)) 
+                    .Any(idv => Ontology.CheckHasAssertionAxiom(new OWLObjectPropertyAssertion(new OWLObjectProperty(RDFVocabulary.TIME.THORS.REFERENCE_POINT), new OWLNamedIndividual(this), idv))
                                  && idv.GetIRI().Equals(referencePoint));
         }
 
@@ -286,7 +286,7 @@ namespace OWLSharp.Extensions.TIME
             {
                 foreach (RDFResource superEra in superEras.ToList())
                     superEras.AddRange(FindSuperErasOf(superEra, thorsMemberObjPropAsns, visitContext, true));
-            }            
+            }
 
             return superEras;
         }
@@ -298,6 +298,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot get coordinates of era because given \"era\" parameter is null");
             if (!CheckHasEra(era))
                 throw new OWLException("Cannot get coordinates of era because given \"era\" parameter is not a component of this ordinal TRS");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -331,6 +332,7 @@ namespace OWLSharp.Extensions.TIME
                 throw new OWLException("Cannot get extent of era because given \"era\" parameter is null");
             if (!CheckHasEra(era))
                 throw new OWLException("Cannot get extent of era because given \"era\" parameter is not a component of this ordinal TRS");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion

@@ -36,7 +36,7 @@ namespace OWLSharp.Reasoner
                       inferences.Add(new OWLInference(rulename, inference));
                   }
             }
-            
+
             return inferences;
         }
     }

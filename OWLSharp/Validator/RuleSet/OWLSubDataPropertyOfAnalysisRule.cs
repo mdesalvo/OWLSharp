@@ -33,9 +33,9 @@ namespace OWLSharp.Validator
                      || ontology.CheckAreEquivalentDataProperties(subDataPropertyOf.SubDataProperty, subDataPropertyOf.SuperDataProperty)
                      || ontology.CheckAreDisjointDataProperties(subDataPropertyOf.SubDataProperty, subDataPropertyOf.SuperDataProperty))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated SubDataPropertyOf axiom with signature: '{subDataPropertyOf.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated SubDataPropertyOf axiom with signature: '{subDataPropertyOf.GetXML()}'",
                         rulesugg));
 
             return issues;

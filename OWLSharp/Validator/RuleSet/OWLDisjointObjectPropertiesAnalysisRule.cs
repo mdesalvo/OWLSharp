@@ -37,34 +37,34 @@ namespace OWLSharp.Validator
                 foreach (OWLObjectPropertyExpression disjObPropExpr in disjObProps.ObjectPropertyExpressions)
                     disjObPropAsns.AddRange(OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(validatorContext.ObjectPropertyAssertions, disjObPropExpr));
 
-                disjObPropAsns.GroupBy(opAsn => new { 
-                                SrcIdv = opAsn.SourceIndividualExpression.GetIRI().ToString(), 
+                disjObPropAsns.GroupBy(opAsn => new {
+                                SrcIdv = opAsn.SourceIndividualExpression.GetIRI().ToString(),
                                 TgtIdv = opAsn.TargetIndividualExpression.GetIRI().ToString() })
                               .Where(g => g.Count() > 1)
                               .ToList()
                               .ForEach(opAsn =>
                               {
                                   issues.Add(new OWLIssue(
-                                      OWLEnums.OWLIssueSeverity.Error, 
-                                      rulename, 
-                                      $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'", 
+                                      OWLEnums.OWLIssueSeverity.Error,
+                                      rulename,
+                                      $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'",
                                       rulesugg));
                               });
 
                 //DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP1,OP2) -> ERROR
                 //DisjointObjectProperties(OP1,OP2) ^ SubDataPropertyOf(OP2,OP1) -> ERROR
                 //DisjointObjectProperties(OP1,OP2) ^ EquivalentDataProperties(OP1,OP2) -> ERROR
-                if (disjObProps.ObjectPropertyExpressions.Any(outerOP => 
+                if (disjObProps.ObjectPropertyExpressions.Any(outerOP =>
                       disjObProps.ObjectPropertyExpressions.Any(innerOP => !outerOP.GetIRI().Equals(innerOP.GetIRI())
                                                                                && (ontology.CheckIsSubObjectPropertyOf(outerOP, innerOP)
                                                                                     || ontology.CheckIsSubObjectPropertyOf(innerOP, outerOP)
                                                                                     || ontology.CheckAreEquivalentObjectProperties(outerOP, innerOP)))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated DisjointObjectProperties axiom with signature: '{disjObProps.GetXML()}'",
                         rulesugg2));
-            }                
+            }
 
             return issues;
         }

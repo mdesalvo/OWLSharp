@@ -41,9 +41,9 @@ namespace OWLSharp.Validator
                            .ForEach(symObjProp =>
                            {
                                issues.Add(new OWLIssue(
-                                   OWLEnums.OWLIssueSeverity.Error, 
-                                   rulename, 
-                                   $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'", 
+                                   OWLEnums.OWLIssueSeverity.Error,
+                                   rulename,
+                                   $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'",
                                    rulesugg1));
                            });
             }
@@ -67,14 +67,14 @@ namespace OWLSharp.Validator
                 asymObjPropAsns = OWLAxiomHelper.RemoveDuplicates(asymObjPropAsns);
                 #endregion
 
-                if (asymObjPropAsns.Any(outerAsn => 
+                if (asymObjPropAsns.Any(outerAsn =>
                         asymObjPropAsns.Any(innerAsn => innerAsn.SourceIndividualExpression.GetIRI().Equals(outerAsn.TargetIndividualExpression.GetIRI())
                                                          && innerAsn.TargetIndividualExpression.GetIRI().Equals(outerAsn.SourceIndividualExpression.GetIRI()))))
                 {
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated AsymmetricObjectProperty axiom with signature: '{asymObjProp.GetXML()}'",
                         rulesugg2));
                 }
             }

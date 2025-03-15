@@ -21,7 +21,7 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.SKOS
 {
-    public class SKOSValidator
+    public sealed class SKOSValidator
     {
         #region Properties
         internal static readonly RDFResource ViolationIRI = new RDFResource("urn:owlsharp:swrl:hasViolations");
@@ -95,11 +95,11 @@ namespace OWLSharp.Extensions.SKOS
                 });
 
                 //Process issues registry
-                await Task.Run(() => 
+                await Task.Run(() =>
                 {
                     issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
                     issueRegistry.Clear();
-                });           
+                });
 
                 OWLEvents.RaiseInfo($"Completed SKOS validator on ontology {ontology.IRI} => {issues.Count} issues");
             }

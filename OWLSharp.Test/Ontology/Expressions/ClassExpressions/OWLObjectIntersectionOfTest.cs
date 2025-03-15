@@ -34,9 +34,9 @@ public class OWLObjectIntersectionOfTest
         Assert.IsNotNull(objectIntersectionOf);
         Assert.IsNotNull(objectIntersectionOf.ClassExpressions);
         Assert.AreEqual(2, objectIntersectionOf.ClassExpressions.Count);
-        Assert.IsTrue(objectIntersectionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass 
+        Assert.IsTrue(objectIntersectionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass
                                                                        && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.PERSON.ToString())));
-        Assert.IsTrue(objectIntersectionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass 
+        Assert.IsTrue(objectIntersectionOf.ClassExpressions.Any(cex => cex is OWLClass owlClass
                                                                        && string.Equals(owlClass.IRI, RDFVocabulary.FOAF.AGENT.ToString())));
     }
 

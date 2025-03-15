@@ -19,7 +19,7 @@ using OWLSharp.Ontology;
 
 namespace OWLSharp.Reasoner
 {
-    public class OWLReasoner
+    public sealed class OWLReasoner
     {
         #region Properties
         public List<OWLEnums.OWLReasonerRules> Rules { get; internal set; } = new List<OWLEnums.OWLReasonerRules>();

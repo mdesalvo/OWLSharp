@@ -29,11 +29,11 @@ public class OWLDisjointDataPropertiesEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")))
             ],
-            DataPropertyAxioms = [ 
+            DataPropertyAxioms = [
                 new OWLDisjointDataProperties([
                     new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasAge")),
                     new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasName"))])

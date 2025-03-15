@@ -53,7 +53,7 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLClassAssertion()
         { }
-        internal OWLClassAssertion(OWLClassExpression classExpression) : this() 
+        internal OWLClassAssertion(OWLClassExpression classExpression) : this()
             => ClassExpression = classExpression ?? throw new OWLException("Cannot create OWLClassAssertion because given \"classExpression\" parameter is null");
         public OWLClassAssertion(OWLClassExpression classExpression, OWLNamedIndividual namedIndividual) : this(classExpression)
             => IndividualExpression = namedIndividual ?? throw new OWLException("Cannot create OWLClassAssertion because given \"namedIndividual\" parameter is null");
@@ -72,7 +72,7 @@ namespace OWLSharp.Ontology
                          .UnionWith(IndividualExpression.ToRDFGraph(idvExpressionIRI));
 
             //Axiom Triple
-            RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, RDFVocabulary.RDF.TYPE, clsExpressionIRI); 
+            RDFTriple axiomTriple = new RDFTriple(idvExpressionIRI, RDFVocabulary.RDF.TYPE, clsExpressionIRI);
             graph.AddTriple(axiomTriple);
 
             //Annotations

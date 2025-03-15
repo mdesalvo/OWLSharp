@@ -87,21 +87,21 @@ public class OWLImportHelperTest
     [TestMethod]
     public async Task ShouldThrowExceptionOnImportingNullOntologyAsync()
     {
-        await Assert.ThrowsExactlyAsync<OWLException>(async () => await (null as OWLOntology).ImportAsync(new Uri("ex:ont"), 5, 5));
+        await Assert.ThrowsExactlyAsync<OWLException>(() => (null as OWLOntology).ImportAsync(new Uri("ex:ont"), 5, 5));
     }
 
     [TestMethod]
     public async Task ShouldThrowExceptionOnImportingNullIRIOntologyAsync()
     {
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-        await Assert.ThrowsExactlyAsync<OWLException>(async () => await ontology.ImportAsync(null, 5, 5));
+        await Assert.ThrowsExactlyAsync<OWLException>(() => ontology.ImportAsync(null, 5, 5));
     }
 
     [TestMethod]
     public async Task ShouldThrowExceptionOnImportingTimeoutOntologyAsync()
     {
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"));
-        await Assert.ThrowsExactlyAsync<OWLException>(async () => await ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
+        await Assert.ThrowsExactlyAsync<OWLException>(() => ontology.ImportAsync(new Uri("ex:ont"), 5, 5));
     }
     #endregion
 }

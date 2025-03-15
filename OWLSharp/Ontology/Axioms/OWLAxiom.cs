@@ -58,7 +58,7 @@ namespace OWLSharp.Ontology
     [XmlInclude(typeof(OWLSubObjectPropertyOf))]
     [XmlInclude(typeof(OWLSymmetricObjectProperty))]
     [XmlInclude(typeof(OWLTransitiveObjectProperty))]
-    public class OWLAxiom 
+    public class OWLAxiom
     {
         #region Properties
         [XmlElement("Annotation", Order=1)]
@@ -75,7 +75,7 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Ctors
-        internal OWLAxiom() 
+        internal OWLAxiom()
             => Annotations = new List<OWLAnnotation>();
         #endregion
 
@@ -94,7 +94,7 @@ namespace OWLSharp.Ontology
     {
         #region Ctors
         internal OWLClassAxiom() { }
-        #endregion    
+        #endregion
     }
 
     public class OWLObjectPropertyAxiom : OWLAxiom

@@ -100,7 +100,7 @@ public class OWLDataPropertyAssertionTest
     {
         OWLDataPropertyAssertion dataPropertyAssertion = OWLSerializer.DeserializeObject<OWLDataPropertyAssertion>(
             """<DataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><NamedIndividual IRI="ex:Bob" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></DataPropertyAssertion>""");
-        
+
         Assert.IsNotNull(dataPropertyAssertion);
         Assert.IsNotNull(dataPropertyAssertion.DataProperty);
         Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));
@@ -205,7 +205,7 @@ public class OWLDataPropertyAssertionTest
     {
         OWLDataPropertyAssertion dataPropertyAssertion = OWLSerializer.DeserializeObject<OWLDataPropertyAssertion>(
             """<DataPropertyAssertion><DataProperty IRI="http://xmlns.com/foaf/0.1/age" /><AnonymousIndividual nodeID="AnonIdv" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#integer">25</Literal></DataPropertyAssertion>""");
-        
+
         Assert.IsNotNull(dataPropertyAssertion);
         Assert.IsNotNull(dataPropertyAssertion.DataProperty);
         Assert.IsTrue(string.Equals(dataPropertyAssertion.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString()));

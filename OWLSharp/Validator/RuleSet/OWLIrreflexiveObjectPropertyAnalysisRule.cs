@@ -41,9 +41,9 @@ namespace OWLSharp.Validator
                     .ForEach(refObjProp =>
                     {
                         issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error, 
-                            rulename, 
-                            $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'", 
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'",
                             rulesugg1));
                     });
             }
@@ -55,9 +55,9 @@ namespace OWLSharp.Validator
                 if (irrefObjPropAsns.Any(asn => asn.SourceIndividualExpression.GetIRI().Equals(asn.TargetIndividualExpression.GetIRI())))
                 {
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated IrreflexiveObjectProperty axiom with signature: '{irrefObjProp.GetXML()}'",
                         rulesugg2));
                 }
             }

@@ -33,7 +33,7 @@ public class TIMEHelperTest : TIMETestOntology
     public void ShouldDeclareInstantByDateTime()
     {
         OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
-        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
+        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"),
             new TIMEInstant(new RDFResource("ex:timeInst"), DateTime.Parse("2023-03-22T10:35:34Z")));
 
         Assert.IsNotNull(timeOntology);
@@ -57,8 +57,8 @@ public class TIMEHelperTest : TIMETestOntology
     public void ShouldDeclareInstantByDescriptionFromCoordinate()
     {
         OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
-        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
-            new TIMEInstant(new RDFResource("ex:timeInst"), 
+        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"),
+            new TIMEInstant(new RDFResource("ex:timeInst"),
                 new TIMEInstantDescription(
                     new RDFResource("ex:timeInstDesc"),
                     new TIMECoordinate(2023d, 3d, 22d, 10d, 35d, 34d,
@@ -142,8 +142,8 @@ public class TIMEHelperTest : TIMETestOntology
     public void ShouldDeclareInstantByDescriptionFromDateTime()
     {
         OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
-        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
-            new TIMEInstant(new RDFResource("ex:timeInst"), 
+        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"),
+            new TIMEInstant(new RDFResource("ex:timeInst"),
                 new TIMEInstantDescription(new RDFResource("ex:timeInstDesc"), DateTime.Parse("2023-03-22T10:35:34Z"))));
 
         Assert.IsNotNull(timeOntology);
@@ -209,7 +209,7 @@ public class TIMEHelperTest : TIMETestOntology
     public void ShouldDeclareInstantByNumericPosition()
     {
         OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
-        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"), 
+        timeOntology.DeclareInstantFeature(new RDFResource("ex:feat"),
             new TIMEInstant(new RDFResource("ex:timeInst"),
                 new TIMEInstantPosition(new RDFResource("ex:timeInstPos"), TIMEPositionReferenceSystem.UnixTime, 1679477734))); //2023-03-22T09:35:34Z
 
@@ -529,7 +529,7 @@ public class TIMEHelperTest : TIMETestOntology
             new OWLObjectProperty(RDFVocabulary.TIME.HAS_TRS),
             new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
             new OWLNamedIndividual(new RDFResource("ex:TRS")))));
-            
+
         Assert.IsTrue(timeOntology.CheckHasAssertionAxiom(new OWLDataPropertyAssertion(
             new OWLDataProperty(RDFVocabulary.TIME.YEARS),
             new OWLNamedIndividual(new RDFResource("ex:timeIntvDesc")),
@@ -727,7 +727,7 @@ public class TIMEHelperTest : TIMETestOntology
             new OWLDataProperty(new RDFResource(timeProperty)),
             new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimension")),
             new OWLLiteral(new RDFTypedLiteral(timeValue, timeDataType))));
-            
+
         List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
         Assert.IsNotNull(timeEntities);
@@ -1807,7 +1807,7 @@ public class TIMEHelperTest : TIMETestOntology
             new OWLDataProperty(RDFVocabulary.TIME.IN_XSD_DATETIMESTAMP),
             new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionEnd")),
             new OWLLiteral(new RDFTypedLiteral("1945-09-02T08:00:00Z", RDFModelEnums.RDFDatatypes.XSD_DATETIMESTAMP))));
-            
+
         List<TIMEEntity> timeEntities = timeOntology.GetTemporalFeature(new RDFResource("ex:WorldWarII"));
 
         Assert.IsNotNull(timeEntities);
@@ -1842,7 +1842,7 @@ public class TIMEHelperTest : TIMETestOntology
     [DataRow("http://www.w3.org/2006/time#inXSDDate", "1939-09-01", RDFModelEnums.RDFDatatypes.XSD_DATE, 1939, 9, 1, 0, 0, 0)]
     [DataRow("http://www.w3.org/2006/time#inXSDgYear", "1939", RDFModelEnums.RDFDatatypes.XSD_GYEAR, 1939, 1, 1, 0, 0, 0)]
     [DataRow("http://www.w3.org/2006/time#inXSDgYearMonth", "1939-09", RDFModelEnums.RDFDatatypes.XSD_GYEARMONTH, 1939, 9, 1, 0, 0, 0)]
-    public void ShouldGetInstantCoordinateByDateTime(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType, 
+    public void ShouldGetInstantCoordinateByDateTime(string timeProperty, string timeValue, RDFModelEnums.RDFDatatypes timeDataType,
         double expectedYear, double expectedMonth, double expectedDay, double expectedHour, double expectedMinute, double expectedSecond)
     {
         OWLOntology timeOntology = new OWLOntology(TestOntology) { IRI = "ex:timeOnt" };
@@ -2036,7 +2036,7 @@ public class TIMEHelperTest : TIMETestOntology
             new OWLDataProperty(RDFVocabulary.TIME.NUMERIC_POSITION),
             new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
             new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
-            
+
         TIMECoordinate timeCoordinate = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension"));
 
         Assert.IsNotNull(timeCoordinate);
@@ -2113,7 +2113,7 @@ public class TIMEHelperTest : TIMETestOntology
             new OWLNamedIndividual(new RDFResource("ex:WorldWarIITemporalDimensionPosition")),
             new OWLLiteral(new RDFTypedLiteral("-957315600", RDFModelEnums.RDFDatatypes.XSD_INTEGER))));
         TIMEReferenceSystemRegistry.AddTRS(new TIMECalendarReferenceSystem(
-            new RDFResource("ex:MyCalendarTRS"), 
+            new RDFResource("ex:MyCalendarTRS"),
             new TIMECalendarReferenceSystemMetrics(100, 100, 50, [20, 20, 12, 18])));
 
         Assert.ThrowsExactly<OWLException>(() => _ = timeOntology.GetCoordinateOfInstant(new RDFResource("ex:WorldWarIITemporalDimension")));
@@ -2631,7 +2631,7 @@ public class TIMEHelperTest : TIMETestOntology
 
         Assert.IsNull(tc);
     }
-        
+
     [TestMethod]
     public void ShouldGetBeginningOfIntervalIndirectlyMeeting()
     {
@@ -2929,7 +2929,7 @@ public class TIMEHelperTest : TIMETestOntology
 
         Assert.IsNull(tc);
     }
-        
+
     [TestMethod]
     public void ShouldGetEndOfIntervalIndirectlyMeeting()
     {

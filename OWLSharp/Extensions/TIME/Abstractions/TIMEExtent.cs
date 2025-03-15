@@ -39,7 +39,7 @@ namespace OWLSharp.Extensions.TIME
         #region Ctors
         internal TIMEExtent() { }
 
-        public TIMEExtent(double? years, double? months, double? weeks, double? days, 
+        public TIMEExtent(double? years, double? months, double? weeks, double? days,
             double? hours, double? minutes, double? seconds, TIMEExtentMetadata metadata = null)
         {
             #region Guards

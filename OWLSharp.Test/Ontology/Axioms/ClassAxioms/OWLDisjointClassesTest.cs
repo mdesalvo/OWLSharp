@@ -144,7 +144,7 @@ public class OWLDisjointClassesTest
     public void ShouldConvert3DisjointClassesToGraph()
     {
         OWLDisjointClasses disjointClasses = new OWLDisjointClasses(
-        [ new OWLClass(RDFVocabulary.FOAF.AGENT), 
+        [ new OWLClass(RDFVocabulary.FOAF.AGENT),
             new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
             new OWLClass(RDFVocabulary.FOAF.PERSON) ]);
         RDFGraph graph = disjointClasses.ToRDFGraph();

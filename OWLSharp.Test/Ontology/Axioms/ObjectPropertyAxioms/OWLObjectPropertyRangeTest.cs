@@ -37,7 +37,7 @@ public class OWLObjectPropertyRangeTest
         Assert.IsTrue(objectPropertyRange.ObjectPropertyExpression is OWLObjectProperty objProp
                       && string.Equals(objProp.IRI, RDFVocabulary.FOAF.KNOWS.ToString()));
         Assert.IsNotNull(objectPropertyRange.ClassExpression);
-        Assert.IsTrue(objectPropertyRange.ClassExpression is OWLClass cls 
+        Assert.IsTrue(objectPropertyRange.ClassExpression is OWLClass cls
                       && string.Equals(cls.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
     }
 

@@ -41,7 +41,7 @@ public class TIMEIntervalDescriptionTest
     public void ShouldCreateIntervalDescriptionFromLength()
     {
         TIMEIntervalDescription timeIntervalDescription = new TIMEIntervalDescription(
-            new RDFResource("ex:intvDesc"), 
+            new RDFResource("ex:intvDesc"),
             new TIMEExtent(0, 0, 0, 0, 5, 7, 0, new TIMEExtentMetadata(TIMECalendarReferenceSystem.Gregorian)));
 
         Assert.IsNotNull(timeIntervalDescription);

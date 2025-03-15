@@ -31,13 +31,13 @@ namespace OWLSharp.Validator
             foreach (OWLDifferentIndividuals diffIdvsAxiom in ontology.GetAssertionAxiomsOfType<OWLDifferentIndividuals>())
             {
                 //DifferentIndividuals(IDV1,IDV2) ^ SameIndividual(IDV2,IDV1) -> ERROR
-                if (diffIdvsAxiom.IndividualExpressions.Any(outerIdv => 
-                        diffIdvsAxiom.IndividualExpressions.Any(innerIdv => !outerIdv.GetIRI().Equals(innerIdv.GetIRI()) 
+                if (diffIdvsAxiom.IndividualExpressions.Any(outerIdv =>
+                        diffIdvsAxiom.IndividualExpressions.Any(innerIdv => !outerIdv.GetIRI().Equals(innerIdv.GetIRI())
                                                                               && ontology.CheckIsSameIndividual(outerIdv, innerIdv))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated DifferentIndividuals axiom with signature: '{diffIdvsAxiom.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated DifferentIndividuals axiom with signature: '{diffIdvsAxiom.GetXML()}'",
                         rulesugg));
 
                 //DifferentIndividuals(IDV1,IDV1) -> ERROR
@@ -49,9 +49,9 @@ namespace OWLSharp.Validator
                         RDFResource innerIdvIRI = diffIdvsAxiom.IndividualExpressions[j].GetIRI();
                         if (outerIdvIRI.Equals(innerIdvIRI))
                             issues.Add(new OWLIssue(
-                                OWLEnums.OWLIssueSeverity.Error, 
-                                rulename, 
-                                $"Violated DifferentIndividuals axiom with signature: '{diffIdvsAxiom.GetXML()}'", 
+                                OWLEnums.OWLIssueSeverity.Error,
+                                rulename,
+                                $"Violated DifferentIndividuals axiom with signature: '{diffIdvsAxiom.GetXML()}'",
                                 rulesugg2));
                     }
                 }

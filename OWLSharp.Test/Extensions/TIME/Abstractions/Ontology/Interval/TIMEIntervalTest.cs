@@ -43,7 +43,7 @@ public class TIMEIntervalTest
     [TestMethod]
     public void ShouldCreateIntervalFromDescription()
     {
-        TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:intv"), 
+        TIMEInterval timeInterval = new TIMEInterval(new RDFResource("ex:intv"),
             new TIMEIntervalDescription(new RDFResource("ex:intvDesc"), XmlConvert.ToTimeSpan("P1Y")));
 
         Assert.IsNotNull(timeInterval);

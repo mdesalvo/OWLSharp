@@ -36,11 +36,11 @@ namespace OWLSharp.Reasoner
                     OWLDisjointClasses inference = new OWLDisjointClasses(new List<OWLClassExpression> { declaredClass, disjointClass }) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }    
+                }
             }
-            
+
             //DisjointUnion(C1,(C2 C3)) -> DisjointClasses(C2,C3)
-            //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)    
+            //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
             foreach (OWLDisjointUnion disjointUnion in ontology.GetClassAxiomsOfType<OWLDisjointUnion>())
             {
                 OWLDisjointClasses inferenceA = new OWLDisjointClasses(disjointUnion.ClassExpressions) { IsInference=true };
@@ -52,7 +52,7 @@ namespace OWLSharp.Reasoner
                     OWLSubClassOf inferenceB = new OWLSubClassOf(disjointUnionClassExpression, disjointUnion.ClassIRI) { IsInference = true };
                     inferenceB.GetXML();
                     inferences.Add(new OWLInference(rulename, inferenceB));
-                }    
+                }
             }
 
             return inferences;

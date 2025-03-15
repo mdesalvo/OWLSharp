@@ -97,8 +97,8 @@ public class OWLNamedIndividualViewTest
                     new OWLClass(new RDFResource("ex:Human")),
                     new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
-        };        
-        
+        };
+
         MarkView = new OWLNamedIndividualView(new OWLNamedIndividual(new RDFResource("ex:Mark")), Ontology);
         JohnView = new OWLNamedIndividualView(new OWLNamedIndividual(new RDFResource("ex:John")), Ontology);
         StivView = new OWLNamedIndividualView(new OWLNamedIndividual(new RDFResource("ex:Stiv")), Ontology);

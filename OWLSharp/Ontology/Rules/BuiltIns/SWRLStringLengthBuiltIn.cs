@@ -82,9 +82,9 @@ namespace OWLSharp.Ontology
             if (leftPatternMember is RDFTypedLiteral leftTypedLiteral
                  && leftTypedLiteral.HasDecimalDatatype()
                  && int.TryParse(leftTypedLiteral.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumber)
-                 && (rightPatternMember is RDFResource 
-                      || rightPatternMember is RDFPlainLiteral 
-                      || (rightPatternMember is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype()))) 
+                 && (rightPatternMember is RDFResource
+                      || rightPatternMember is RDFPlainLiteral
+                      || (rightPatternMember is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype())))
             {
                 string rightPMValue = rightPatternMember is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMember.ToString();
                 return leftNumber == rightPMValue.Length;

@@ -33,7 +33,7 @@ namespace OWLSharp.Extensions.TIME
             {
                 await ontology.ImportAsync(new Uri(RDFVocabulary.TIME.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
                 await ontology.ImportAsync(new Uri(RDFVocabulary.TIME.THORS.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
-                await ontology.ImportAsync(new Uri(RDFVocabulary.TIME.GREG.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);    
+                await ontology.ImportAsync(new Uri(RDFVocabulary.TIME.GREG.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
             }
         }
         #endregion
@@ -559,6 +559,7 @@ namespace OWLSharp.Extensions.TIME
                                      .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (hourPM?.GetLiteral() is RDFTypedLiteral hourTL && hourTL.HasDecimalDatatype())
                     return Convert.ToDouble(hourTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetMinuteOfInstantDescription(RDFResource dateTimeDescriptionURI)
@@ -567,6 +568,7 @@ namespace OWLSharp.Extensions.TIME
                                        .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (minutePM?.GetLiteral() is RDFTypedLiteral minuteTL && minuteTL.HasDecimalDatatype())
                     return Convert.ToDouble(minuteTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetSecondOfInstantDescription(RDFResource dateTimeDescriptionURI)
@@ -575,6 +577,7 @@ namespace OWLSharp.Extensions.TIME
                                        .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(dateTimeDescriptionURI))?.Literal;
                 if (secondPM?.GetLiteral() is RDFTypedLiteral secondTL && secondTL.HasDecimalDatatype())
                     return Convert.ToDouble(secondTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             void FillTextualDecorators(TIMEInstantDescription timeInstantDescription)
@@ -651,6 +654,7 @@ namespace OWLSharp.Extensions.TIME
                                                 .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(temporalExtentURI))?.Literal;
                 if (numericPositionPM?.GetLiteral() is RDFTypedLiteral numericPositionTL && numericPositionTL.HasDecimalDatatype())
                     return Convert.ToDouble(numericPositionTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             RDFResource GetNominalValueOfPosition(RDFResource temporalExtentURI)
@@ -718,7 +722,7 @@ namespace OWLSharp.Extensions.TIME
                             }
 
                             positionsOfTimeInstant.Add(timeInstantPosition);
-                        }   
+                        }
                     }
                 }
             }
@@ -749,6 +753,7 @@ namespace OWLSharp.Extensions.TIME
                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(durationDescriptionURI))?.Literal;
                 if (years?.GetLiteral() is RDFTypedLiteral yearsTL && yearsTL.HasDecimalDatatype())
                     return Convert.ToDouble(yearsTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetMonthsOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -757,6 +762,7 @@ namespace OWLSharp.Extensions.TIME
                                      .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(durationDescriptionURI))?.Literal;
                 if (months?.GetLiteral() is RDFTypedLiteral monthsTL && monthsTL.HasDecimalDatatype())
                     return Convert.ToDouble(monthsTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetWeeksOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -765,6 +771,7 @@ namespace OWLSharp.Extensions.TIME
                                      .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(durationDescriptionURI))?.Literal;
                 if (weeks?.GetLiteral() is RDFTypedLiteral weeksTL && weeksTL.HasDecimalDatatype())
                     return Convert.ToDouble(weeksTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetDaysOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -773,6 +780,7 @@ namespace OWLSharp.Extensions.TIME
                                    .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(durationDescriptionURI))?.Literal;
                 if (days?.GetLiteral() is RDFTypedLiteral daysTL && daysTL.HasDecimalDatatype())
                     return Convert.ToDouble(daysTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetHoursOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -781,6 +789,7 @@ namespace OWLSharp.Extensions.TIME
                                     .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(durationDescriptionURI))?.Literal;
                 if (hours?.GetLiteral() is RDFTypedLiteral hoursTL && hoursTL.HasDecimalDatatype())
                     return Convert.ToDouble(hoursTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetMinutesOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -789,6 +798,7 @@ namespace OWLSharp.Extensions.TIME
                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(durationDescriptionURI))?.Literal;
                 if (minutes?.GetLiteral() is RDFTypedLiteral minutesTL && minutesTL.HasDecimalDatatype())
                     return Convert.ToDouble(minutesTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             double? GetSecondsOfIntervalDescription(RDFResource durationDescriptionURI)
@@ -797,6 +807,7 @@ namespace OWLSharp.Extensions.TIME
                                       .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(durationDescriptionURI))?.Literal;
                 if (seconds?.GetLiteral() is RDFTypedLiteral secondsTL && secondsTL.HasDecimalDatatype())
                     return Convert.ToDouble(secondsTL.Value, CultureInfo.InvariantCulture);
+
                 return null;
             }
             #endregion
@@ -854,6 +865,7 @@ namespace OWLSharp.Extensions.TIME
                                               .FirstOrDefault(asn => asn.IndividualExpression.GetIRI().Equals(temporalExtentURI))?.Literal;
                 if (numericDuration?.GetLiteral() is RDFTypedLiteral numericDurationTL && numericDurationTL.HasDecimalDatatype())
                     return Convert.ToDouble(numericDurationTL.Value, CultureInfo.InvariantCulture);
+
                 return 0;
             }
             #endregion
@@ -967,6 +979,7 @@ namespace OWLSharp.Extensions.TIME
             #region Guards
             if (timeInstantURI == null)
                 throw new OWLException("Cannot get temporal coordinate of instant because given \"timeInstantURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -1026,6 +1039,7 @@ namespace OWLSharp.Extensions.TIME
             #region Guards
             if (timeIntervalURI == null)
                 throw new OWLException("Cannot get temporal extent of interval because given \"timeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -1082,6 +1096,7 @@ namespace OWLSharp.Extensions.TIME
             #region Guards
             if (timeIntervalURI == null)
                 throw new OWLException("Cannot get beginning of interval because given \"timeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -1156,6 +1171,7 @@ namespace OWLSharp.Extensions.TIME
             #region Guards
             if (timeIntervalURI == null)
                 throw new OWLException("Cannot get end of interval because given \"timeIntervalURI\" parameter is null");
+
             if (calendarTRS == null)
                 calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
@@ -1166,7 +1182,7 @@ namespace OWLSharp.Extensions.TIME
 
             return GetEndOfIntervalInternal(ontology, timeIntervalURI, calendarTRS, dtPropAsns, objPropAsns, new Dictionary<long, RDFResource>());
         }
-        internal static TIMECoordinate GetEndOfIntervalInternal(this OWLOntology ontology, RDFResource timeIntervalURI,  TIMECalendarReferenceSystem calendarTRS, 
+        internal static TIMECoordinate GetEndOfIntervalInternal(this OWLOntology ontology, RDFResource timeIntervalURI,  TIMECalendarReferenceSystem calendarTRS,
             List<OWLDataPropertyAssertion> dtPropAsns, List<OWLObjectPropertyAssertion> objPropAsns, Dictionary<long,RDFResource> visitContext)
         {
             #region visitContext

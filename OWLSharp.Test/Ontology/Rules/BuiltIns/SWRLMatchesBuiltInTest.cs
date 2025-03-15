@@ -39,9 +39,9 @@ public class SWRLMatchesBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#matches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(2, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
         Assert.IsTrue(string.Equals("swrlb:matches(?X,?Y)", builtin.ToString()));
         Assert.ThrowsExactly<SWRLException>(() => _ = SWRLBuiltIn.Matches(null, new SWRLVariableArgument(new RDFVariable("?Y"))));
@@ -61,11 +61,11 @@ public class SWRLMatchesBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#matches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(3, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2 
+        Assert.IsTrue(builtin.Arguments[2] is SWRLVariableArgument rlarg2
                       && rlarg2.GetVariable().Equals(new RDFVariable("?Z")));
         Assert.IsTrue(string.Equals("swrlb:matches(?X,?Y,?Z)", builtin.ToString()));
     }
@@ -103,9 +103,9 @@ public class SWRLMatchesBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#matches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(2, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
         Assert.IsTrue(string.Equals("swrlb:matches(?X,?Y)", builtin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
@@ -118,7 +118,7 @@ public class SWRLMatchesBuiltInTest
         Assert.IsTrue(string.Equals(string.Empty, emptyBuiltin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\" />", OWLSerializer.SerializeObject(emptyBuiltin)));
     }
-        
+
     [TestMethod]
     public void ShouldDeserializeMatchesBuiltInWithFlags()
     {
@@ -130,11 +130,11 @@ public class SWRLMatchesBuiltInTest
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#matches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
         Assert.AreEqual(3, builtin.Arguments.Count);
-        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg 
+        Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
-        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg 
+        Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
                       && rlarg.GetVariable().Equals(new RDFVariable("?Y")));
-        Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument rlarg2 
+        Assert.IsTrue(builtin.Arguments[2] is SWRLLiteralArgument rlarg2
                       && rlarg2.GetLiteral().Equals(new RDFPlainLiteral("ismx")));
         Assert.IsTrue(string.Equals("swrlb:matches(?X,?Y,\"ismx\")", builtin.ToString()));
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Literal>ismx</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));

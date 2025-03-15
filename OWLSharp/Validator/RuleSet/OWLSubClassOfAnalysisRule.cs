@@ -40,9 +40,9 @@ namespace OWLSharp.Validator
                      || ontology.CheckAreEquivalentClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression)
                      || ontology.CheckAreDisjointClasses(subClassOf.SubClassExpression, subClassOf.SuperClassExpression))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'",
                         rulesugg1));
 
                 //SubClassOf(CLS,[Object|Data][Exact|Max]Cardinality(P,N)
@@ -55,7 +55,7 @@ namespace OWLSharp.Validator
                     string subClassIRI = subClassOf.SubClassExpression.GetIRI().ToString();
                     if (!individualsCache.ContainsKey(subClassIRI))
                         individualsCache.Add(subClassIRI, ontology.GetIndividualsOf(subClassOf.SubClassExpression, validatorContext.ClassAssertions, false));
-                    
+
                     //Filter assertions of the current individual, depending on the nature of the superclass
                     foreach (OWLIndividualExpression individual in individualsCache[subClassIRI])
                     {
@@ -69,7 +69,7 @@ namespace OWLSharp.Validator
                                 bool isQualified = !string.IsNullOrEmpty(qClassIRI);
                                 if (isQualified)
                                 {
-                                    //Materialize individuals of the qualified class                                
+                                    //Materialize individuals of the qualified class
                                     if (!individualsCache.ContainsKey(qClassIRI))
                                         individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objExactCardinality.ClassExpression, validatorContext.ClassAssertions, false));
                                 }
@@ -91,17 +91,17 @@ namespace OWLSharp.Validator
                                             }
                                     }
 
-                                    if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
-                                         && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinalityIRI) 
-                                         && (!isQualified || opAsnIdvFoundAsQualifiedTarget)) 
+                                    if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
+                                         && opAsn.ObjectPropertyExpression.GetIRI().Equals(objExactCardinalityIRI)
+                                         && (!isQualified || opAsnIdvFoundAsQualifiedTarget))
                                         assertionsCount++;
-                                }   
-                                
+                                }
+
                                 if (assertionsCount > int.Parse(objExactCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
-                                        OWLEnums.OWLIssueSeverity.Error, 
-                                        rulename, 
-                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        OWLEnums.OWLIssueSeverity.Error,
+                                        rulename,
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'",
                                         rulesugg2));
                                 break;
                             }
@@ -112,7 +112,7 @@ namespace OWLSharp.Validator
                                 bool isQualified = !string.IsNullOrEmpty(qClassIRI);
                                 if (isQualified)
                                 {
-                                    //Materialize individuals of the qualified class                                
+                                    //Materialize individuals of the qualified class
                                     if (!individualsCache.ContainsKey(qClassIRI))
                                         individualsCache.Add(qClassIRI, ontology.GetIndividualsOf(objMaxCardinality.ClassExpression, validatorContext.ClassAssertions, false));
                                 }
@@ -121,7 +121,7 @@ namespace OWLSharp.Validator
                                 RDFResource objMaxCardinalityIRI = objMaxCardinality.ObjectPropertyExpression.GetIRI();
                                 int assertionsCount = 0;
                                 foreach (OWLObjectPropertyAssertion opAsn in validatorContext.ObjectPropertyAssertions)
-                                {   
+                                {
                                     bool opAsnIdvFoundAsQualifiedTarget = false;
                                     if (isQualified)
                                     {
@@ -134,17 +134,17 @@ namespace OWLSharp.Validator
                                             }
                                     }
 
-                                    if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI) 
-                                         && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinalityIRI) 
-                                         && (!isQualified || opAsnIdvFoundAsQualifiedTarget)) 
+                                    if (opAsn.SourceIndividualExpression.GetIRI().Equals(individualIRI)
+                                         && opAsn.ObjectPropertyExpression.GetIRI().Equals(objMaxCardinalityIRI)
+                                         && (!isQualified || opAsnIdvFoundAsQualifiedTarget))
                                         assertionsCount++;
                                 }
 
                                 if (assertionsCount > int.Parse(objMaxCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
-                                        OWLEnums.OWLIssueSeverity.Error, 
-                                        rulename, 
-                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        OWLEnums.OWLIssueSeverity.Error,
+                                        rulename,
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'",
                                         rulesugg2));
                                 break;
                             }
@@ -159,17 +159,17 @@ namespace OWLSharp.Validator
                                 int assertionsCount = 0;
                                 foreach (OWLDataPropertyAssertion dpAsn in validatorContext.DataPropertyAssertions)
                                 {
-                                    if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI) 
-                                         && dpAsn.DataProperty.GetIRI().Equals(dtExactCardinalityIRI) 
-                                         && (!isQualified || ontology.CheckIsLiteralOf(dtExactCardinality.DataRangeExpression, dpAsn.Literal))) 
+                                    if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
+                                         && dpAsn.DataProperty.GetIRI().Equals(dtExactCardinalityIRI)
+                                         && (!isQualified || ontology.CheckIsLiteralOf(dtExactCardinality.DataRangeExpression, dpAsn.Literal)))
                                         assertionsCount++;
                                 }
 
                                 if (assertionsCount > int.Parse(dtExactCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
-                                        OWLEnums.OWLIssueSeverity.Error, 
-                                        rulename, 
-                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        OWLEnums.OWLIssueSeverity.Error,
+                                        rulename,
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'",
                                         rulesugg3));
                                 break;
                             }
@@ -184,17 +184,17 @@ namespace OWLSharp.Validator
                                 int assertionsCount = 0;
                                 foreach (OWLDataPropertyAssertion dpAsn in validatorContext.DataPropertyAssertions)
                                 {
-                                    if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI) 
-                                         && dpAsn.DataProperty.GetIRI().Equals(dtMaxCardinalityIRI) 
-                                         && (!isQualified || ontology.CheckIsLiteralOf(dtMaxCardinality.DataRangeExpression, dpAsn.Literal))) 
+                                    if (dpAsn.IndividualExpression.GetIRI().Equals(individualIRI)
+                                         && dpAsn.DataProperty.GetIRI().Equals(dtMaxCardinalityIRI)
+                                         && (!isQualified || ontology.CheckIsLiteralOf(dtMaxCardinality.DataRangeExpression, dpAsn.Literal)))
                                         assertionsCount++;
                                 }
 
                                 if (assertionsCount > int.Parse(dtMaxCardinality.Cardinality))
                                     issues.Add(new OWLIssue(
-                                        OWLEnums.OWLIssueSeverity.Error, 
-                                        rulename, 
-                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'", 
+                                        OWLEnums.OWLIssueSeverity.Error,
+                                        rulename,
+                                        $"Violated SubClassOf axiom with signature: '{subClassOf.GetXML()}'",
                                         rulesugg3));
                                 break;
                             }

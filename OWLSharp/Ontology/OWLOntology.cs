@@ -269,7 +269,6 @@ namespace OWLSharp.Ontology
                         switch (owlFormat)
                         {
                             case OWLEnums.OWLFormats.OWL2XML:
-                            default:
                                 using (StreamWriter streamWriter = new StreamWriter(outputStream, RDFModelUtilities.UTF8_NoBOM))
                                     streamWriter.Write(OWLSerializer.SerializeOntology(exportOntology));
                                 break;
@@ -584,7 +583,7 @@ namespace OWLSharp.Ontology
                                 case "IO":
                                     IOPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?IOPL"].ToString());
                                     #region IOPL Guard
-                                    if (!ioplLookup.Add(IOPL.PatternMemberID)) 
+                                    if (!ioplLookup.Add(IOPL.PatternMemberID))
                                         continue;
                                     #endregion
                                     OPL = (RDFResource)RDFQueryUtilities.ParseRDFPatternMember(resultRow["?OPL"].ToString());
@@ -693,7 +692,7 @@ namespace OWLSharp.Ontology
                             OWLObjectPropertyChain objectPropertyChain = new OWLObjectPropertyChain {
                                 ObjectPropertyExpressions = new List<OWLObjectPropertyExpression>() };
 
-                            //Left                    
+                            //Left
                             RDFCollection chainAxiomMembers = RDFModelUtilities.DeserializeCollectionFromGraph(graph, (RDFResource)propertyChainAxiomTriple.Object, RDFModelEnums.RDFTripleFlavors.SPO, true);
                             foreach (RDFResource chainAxiomMember in chainAxiomMembers.Items.Cast<RDFResource>())
                             {
@@ -1393,8 +1392,8 @@ namespace OWLSharp.Ontology
                                 RDFResource clsIRI = cls.GetIRI();
                                 foreach (RDFTriple clsAnnPropTriple in annPropGraph[clsIRI, null, null, null])
                                 {
-                                    var annAsn = clsAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
-                                        ? new OWLAnnotationAssertion(annProp, clsIRI, (RDFResource)clsAnnPropTriple.Object) 
+                                    var annAsn = clsAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                        ? new OWLAnnotationAssertion(annProp, clsIRI, (RDFResource)clsAnnPropTriple.Object)
                                         : new OWLAnnotationAssertion(annProp, clsIRI, new OWLLiteral((RDFLiteral)clsAnnPropTriple.Object));
 
                                     LoadAxiomAnnotations(ont, clsAnnPropTriple, annAsn, annAxiomsGraph);
@@ -1409,8 +1408,8 @@ namespace OWLSharp.Ontology
                                 RDFResource dtIRI = dt.GetIRI();
                                 foreach (RDFTriple dtAnnPropTriple in annPropGraph[dtIRI, null, null, null])
                                 {
-                                    var annAsn = dtAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
-                                        ? new OWLAnnotationAssertion(annProp, dtIRI, (RDFResource)dtAnnPropTriple.Object) 
+                                    var annAsn = dtAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                        ? new OWLAnnotationAssertion(annProp, dtIRI, (RDFResource)dtAnnPropTriple.Object)
                                         : new OWLAnnotationAssertion(annProp, dtIRI, new OWLLiteral((RDFLiteral)dtAnnPropTriple.Object));
 
                                     LoadAxiomAnnotations(ont, dtAnnPropTriple, annAsn, annAxiomsGraph);
@@ -1425,8 +1424,8 @@ namespace OWLSharp.Ontology
                                 RDFResource opIRI = op.GetIRI();
                                 foreach (RDFTriple opAnnPropTriple in annPropGraph[opIRI, null, null, null])
                                 {
-                                    var annAsn = opAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
-                                        ? new OWLAnnotationAssertion(annProp, opIRI, (RDFResource)opAnnPropTriple.Object) 
+                                    var annAsn = opAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                        ? new OWLAnnotationAssertion(annProp, opIRI, (RDFResource)opAnnPropTriple.Object)
                                         : new OWLAnnotationAssertion(annProp, opIRI, new OWLLiteral((RDFLiteral)opAnnPropTriple.Object));
 
                                     LoadAxiomAnnotations(ont, opAnnPropTriple, annAsn, annAxiomsGraph);
@@ -1441,8 +1440,8 @@ namespace OWLSharp.Ontology
                                 RDFResource dpIRI = dp.GetIRI();
                                 foreach (RDFTriple dpAnnPropTriple in annPropGraph[dpIRI, null, null, null])
                                 {
-                                    var annAsn = dpAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
-                                        ? new OWLAnnotationAssertion(annProp, dpIRI, (RDFResource)dpAnnPropTriple.Object) 
+                                    var annAsn = dpAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                        ? new OWLAnnotationAssertion(annProp, dpIRI, (RDFResource)dpAnnPropTriple.Object)
                                         : new OWLAnnotationAssertion(annProp, dpIRI, new OWLLiteral((RDFLiteral)dpAnnPropTriple.Object));
 
                                     LoadAxiomAnnotations(ont, dpAnnPropTriple, annAsn, annAxiomsGraph);
@@ -1457,8 +1456,8 @@ namespace OWLSharp.Ontology
                                 RDFResource apIRI = ap.GetIRI();
                                 foreach (RDFTriple apAnnPropTriple in annPropGraph[apIRI, null, null, null])
                                 {
-                                    var annAsn = apAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
-                                        ? new OWLAnnotationAssertion(annProp, apIRI, (RDFResource)apAnnPropTriple.Object) 
+                                    var annAsn = apAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                        ? new OWLAnnotationAssertion(annProp, apIRI, (RDFResource)apAnnPropTriple.Object)
                                         : new OWLAnnotationAssertion(annProp, apIRI, new OWLLiteral((RDFLiteral)apAnnPropTriple.Object));
 
                                     LoadAxiomAnnotations(ont, apAnnPropTriple, annAsn, annAxiomsGraph);
@@ -1473,8 +1472,8 @@ namespace OWLSharp.Ontology
                                 RDFResource idvIRI = idv.GetIRI();
                                 foreach (RDFTriple idvAnnPropTriple in annPropGraph[idvIRI, null, null, null])
                                 {
-                                    var annAsn = idvAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO 
-                                        ? new OWLAnnotationAssertion(annProp, idvIRI, (RDFResource)idvAnnPropTriple.Object) 
+                                    var annAsn = idvAnnPropTriple.TripleFlavor == RDFModelEnums.RDFTripleFlavors.SPO
+                                        ? new OWLAnnotationAssertion(annProp, idvIRI, (RDFResource)idvAnnPropTriple.Object)
                                         : new OWLAnnotationAssertion(annProp, idvIRI, new OWLLiteral((RDFLiteral)idvAnnPropTriple.Object));
 
                                     LoadAxiomAnnotations(ont, idvAnnPropTriple, annAsn, annAxiomsGraph);
@@ -1651,7 +1650,7 @@ namespace OWLSharp.Ontology
                                         rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), ruleLabelRes));
                                         break;
                                 }
-                            }                                
+                            }
                             foreach (RDFTriple ruleComment in graph[ruleSubject, RDFVocabulary.RDFS.COMMENT, null, null])
                             {
                                 switch (ruleComment.Object)
@@ -1680,7 +1679,7 @@ namespace OWLSharp.Ontology
                                                 rule.Annotations.Add(new OWLAnnotation(new OWLAnnotationProperty(annPropIRI), ruleCustomAnnotationRes));
                                                 break;
                                         }
-                                } 
+                                }
                             }
 
                             //Load antecedent
@@ -1757,7 +1756,7 @@ namespace OWLSharp.Ontology
                     }
                     bool TryLoadClassAtom(OWLOntology ont, RDFPatternMember antecedentItem, out SWRLClassAtom classAtom)
                     {
-                        if (antecedentItem is RDFResource antecedentItemResource 
+                        if (antecedentItem is RDFResource antecedentItemResource
                              && graph[antecedentItemResource, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.CLASS_ATOM, null].TriplesCount == 1
                              && graph[antecedentItemResource, RDFVocabulary.SWRL.CLASS_PREDICATE, null, null].FirstOrDefault()?.Object is RDFResource classPredicate
                              && graph[antecedentItemResource, RDFVocabulary.SWRL.ARGUMENT1, null, null].FirstOrDefault()?.Object is RDFResource arg1)
@@ -2190,7 +2189,7 @@ namespace OWLSharp.Ontology
                         }
                         #endregion
 
-                        #region Class                
+                        #region Class
                         if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0)
                             clex = new OWLClass(clsIRI);
                         #endregion
@@ -2814,9 +2813,10 @@ namespace OWLSharp.Ontology
                         switch (owlFormat)
                         {
                             case OWLEnums.OWLFormats.OWL2XML:
-                            default:
                                 using (StreamReader streamReader = new StreamReader(inputStream, RDFModelUtilities.UTF8_NoBOM))
                                     return OWLSerializer.DeserializeOntology(streamReader.ReadToEnd());
+
+                            default: throw new NotSupportedException($"{owlFormat} format is not supported");
                         }
                     }
                     catch (Exception ex)

@@ -31,9 +31,9 @@ namespace OWLSharp.Validator
                 {
                     if (ontology.CheckIsNegativeIndividualOf(dpDomain.ClassExpression, dpAsn.IndividualExpression, validatorContext.ClassAssertions))
                         issues.Add(new OWLIssue(
-                            OWLEnums.OWLIssueSeverity.Error, 
-                            rulename, 
-                            $"Violated DataPropertyDomain axiom with signature: {dpDomain.GetXML()}", 
+                            OWLEnums.OWLIssueSeverity.Error,
+                            rulename,
+                            $"Violated DataPropertyDomain axiom with signature: {dpDomain.GetXML()}",
                             rulesugg));
                 }
 

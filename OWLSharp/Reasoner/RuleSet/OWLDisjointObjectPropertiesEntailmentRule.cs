@@ -50,7 +50,7 @@ namespace OWLSharp.Reasoner
                     inferences.Add(new OWLInference(rulename, inferenceB));
                 }
             }
-            
+
             return inferences;
         }
     }

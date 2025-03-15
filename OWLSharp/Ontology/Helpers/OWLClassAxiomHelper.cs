@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace OWLSharp.Ontology
 {
-    public static class OWLClassAxiomHelper 
+    public static class OWLClassAxiomHelper
     {
         #region Methods
         public static List<T> GetClassAxiomsOfType<T>(this OWLOntology ontology) where T : OWLClassAxiom
@@ -132,7 +132,7 @@ namespace OWLSharp.Ontology
                 RDFResource clsExprIRI = classExpr.GetIRI();
                 HashSet<long> visitContext = new HashSet<long>();
                 List<OWLSubClassOf> subClassOfAxs = GetClassAxiomsOfType<OWLSubClassOf>(ontology);
-                
+
                 //SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
                 superClassExprs.AddRange(FindSuperClassesOf(clsExprIRI, subClassOfAxs, visitContext));
 

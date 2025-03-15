@@ -50,7 +50,7 @@ public class OWLDataExactCardinalityTest
         Assert.IsNotNull(dataExactCardinality.DataProperty);
         Assert.IsTrue(string.Equals(dataExactCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
         Assert.IsNotNull(dataExactCardinality.DataRangeExpression);
-        Assert.IsTrue(dataExactCardinality.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataExactCardinality.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 
@@ -133,7 +133,7 @@ public class OWLDataExactCardinalityTest
         Assert.IsNotNull(dataExactCardinality.DataProperty);
         Assert.IsTrue(string.Equals(dataExactCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
         Assert.IsNotNull(dataExactCardinality.DataRangeExpression);
-        Assert.IsTrue(dataExactCardinality.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataExactCardinality.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 

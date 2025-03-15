@@ -50,7 +50,7 @@ public class OWLDataMinCardinalityTest
         Assert.IsNotNull(dataMinCardinality.DataProperty);
         Assert.IsTrue(string.Equals(dataMinCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
         Assert.IsNotNull(dataMinCardinality.DataRangeExpression);
-        Assert.IsTrue(dataMinCardinality.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataMinCardinality.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 
@@ -133,7 +133,7 @@ public class OWLDataMinCardinalityTest
         Assert.IsNotNull(dataMinCardinality.DataProperty);
         Assert.IsTrue(string.Equals(dataMinCardinality.DataProperty.IRI, RDFVocabulary.DC.DESCRIPTION.ToString()));
         Assert.IsNotNull(dataMinCardinality.DataRangeExpression);
-        Assert.IsTrue(dataMinCardinality.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataMinCardinality.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 
@@ -154,7 +154,7 @@ public class OWLDataMinCardinalityTest
     [TestMethod]
     public void ShouldConvertDataMinQualifiedCardinalityToGraph()
     {
-        OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING)); 
+        OWLDataMinCardinality dataMinCardinality = new OWLDataMinCardinality(new OWLDataProperty(RDFVocabulary.DC.DESCRIPTION), 1, new OWLDatatype(RDFVocabulary.XSD.STRING));
         RDFGraph graph = dataMinCardinality.ToRDFGraph();
 
         Assert.IsNotNull(graph);

@@ -35,7 +35,7 @@ public class OWLDataSomeValuesFromTest
         Assert.IsNotNull(dataSomeValuesFrom.DataProperty);
         Assert.IsTrue(string.Equals(dataSomeValuesFrom.DataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
         Assert.IsNotNull(dataSomeValuesFrom.DataRangeExpression);
-        Assert.IsTrue(dataSomeValuesFrom.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataSomeValuesFrom.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 
@@ -87,7 +87,7 @@ public class OWLDataSomeValuesFromTest
         Assert.IsNotNull(dataSomeValuesFrom.DataProperty);
         Assert.IsTrue(string.Equals(dataSomeValuesFrom.DataProperty.IRI, RDFVocabulary.DC.CREATOR.ToString()));
         Assert.IsNotNull(dataSomeValuesFrom.DataRangeExpression);
-        Assert.IsTrue(dataSomeValuesFrom.DataRangeExpression is OWLDatatype datatype 
+        Assert.IsTrue(dataSomeValuesFrom.DataRangeExpression is OWLDatatype datatype
                       && string.Equals(datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
     }
 

@@ -44,14 +44,14 @@ public class OWLDisjointUnionAnalysisRuleTest
                     new OWLClass(RDFVocabulary.FOAF.AGENT),
                     [ new OWLClass(RDFVocabulary.FOAF.PERSON), new OWLClass(RDFVocabulary.FOAF.ORGANIZATION) ])
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.PERSON)),
                 new OWLDeclaration(new OWLClass(RDFVocabulary.FOAF.ORGANIZATION)),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Mark"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

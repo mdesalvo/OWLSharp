@@ -29,12 +29,12 @@ public class OWLEquivalentClassesEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mankind"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Humans"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/EarthMan")))
             ],
-            ClassAxioms = [ 
+            ClassAxioms = [
                 new OWLEquivalentClasses([
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mankind")),
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Humans"))]),
@@ -47,7 +47,7 @@ public class OWLEquivalentClassesEntailmentRuleTest
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf
                                           && string.Equals(inf.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mankind")
                                           && string.Equals(inf.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")));
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf1
@@ -56,7 +56,7 @@ public class OWLEquivalentClassesEntailmentRuleTest
         Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf2
                                           && string.Equals(inf2.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")
                                           && string.Equals(inf2.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Humans")));
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf3 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLEquivalentClasses inf3
                                           && string.Equals(inf3.ClassExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/EarthMan")
                                           && string.Equals(inf3.ClassExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mankind")));
     }

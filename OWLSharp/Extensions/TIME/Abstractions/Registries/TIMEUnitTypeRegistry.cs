@@ -25,7 +25,7 @@ namespace OWLSharp.Extensions.TIME
         #region Properties
         public static TIMEUnitTypeRegistry Instance { get; internal set; }
 
-        public static int UnitTypeCount 
+        public static int UnitTypeCount
             => Instance.UnitTypes.Count;
 
         public static IEnumerator<TIMEUnit> UnitTypeEnumerator
@@ -38,7 +38,7 @@ namespace OWLSharp.Extensions.TIME
         static TIMEUnitTypeRegistry()
         {
             Instance = new TIMEUnitTypeRegistry
-            { 
+            {
                 UnitTypes = new Dictionary<string, TIMEUnit>
                 {
                     //Built-Ins

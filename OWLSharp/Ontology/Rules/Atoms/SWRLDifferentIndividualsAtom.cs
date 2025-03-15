@@ -129,7 +129,7 @@ namespace OWLSharp.Ontology
                 return inferences;
 
             //The antecedent results table MUST have a column corresponding to the atom's right argument (if variable)
-            if (RightArgument is SWRLVariableArgument 
+            if (RightArgument is SWRLVariableArgument
                     && !antecedentResults.Columns.Contains(rightArgumentString))
                 return inferences;
             #endregion
@@ -143,7 +143,7 @@ namespace OWLSharp.Ontology
                     continue;
 
                 //The current row MUST have a BOUND value in the column corresponding to the atom's right argument (if variable)
-                if (RightArgument is SWRLVariableArgument 
+                if (RightArgument is SWRLVariableArgument
                         && currentRow.IsNull(rightArgumentString))
                     continue;
                 #endregion

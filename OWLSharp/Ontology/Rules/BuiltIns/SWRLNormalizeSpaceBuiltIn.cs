@@ -82,13 +82,13 @@ namespace OWLSharp.Ontology
             #endregion
 
             //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource 
-                                   || leftPatternMember is RDFPlainLiteral 
+            bool isStringLeftPM = leftPatternMember is RDFResource
+                                   || leftPatternMember is RDFPlainLiteral
                                    || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPM = rightPatternMember is RDFResource 
-                                    || rightPatternMember is RDFPlainLiteral 
+            bool isStringRightPM = rightPatternMember is RDFResource
+                                    || rightPatternMember is RDFPlainLiteral
                                     || (rightPatternMember is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPM) 
+            if (isStringLeftPM && isStringRightPM)
             {
                 string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
                 string rightPMValue = rightPatternMember is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMember.ToString();

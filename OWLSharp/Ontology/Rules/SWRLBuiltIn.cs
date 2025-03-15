@@ -42,7 +42,7 @@ namespace OWLSharp.Ontology
         internal BuiltinEvaluator EvaluatorFunction { get; set;}
 
         [XmlIgnore]
-        internal bool IsCustom => !string.IsNullOrEmpty(IRI) 
+        internal bool IsCustom => !string.IsNullOrEmpty(IRI)
                                     && !IRI.StartsWith(RDFVocabulary.SWRL.SWRLB.BASE_URI, StringComparison.Ordinal)
                                     && !IRI.StartsWith("https://github.com/mdesalvo/OWLSharp#", StringComparison.Ordinal);
         [XmlIgnore]
@@ -58,7 +58,7 @@ namespace OWLSharp.Ontology
 
         public SWRLBuiltIn(Func<DataRow,bool> evaluator, RDFResource iri, params SWRLArgument[] arguments)
         {
-            EvaluatorFunction = evaluator != null ? new BuiltinEvaluator(evaluator) 
+            EvaluatorFunction = evaluator != null ? new BuiltinEvaluator(evaluator)
                                                   : throw new SWRLException("Cannot create custom SWRL builtIn because: evaluator is null");
             IRI = iri?.ToString() ?? throw new SWRLException("Cannot create custom SWRL builtIn because: iri is null");
             Arguments = arguments?.ToList() ?? Enumerable.Empty<SWRLArgument>().ToList();
@@ -477,7 +477,7 @@ namespace OWLSharp.Ontology
                     IRI = "http://www.w3.org/2003/11/swrlb#yearMonthDuration",
                     Arguments = new List<SWRLArgument> { leftArg ?? throw new SWRLException("Cannot create swrlb:yearMonthDuration builtIn because: left argument is null") }.Concat(rightArgs?.ToList() ?? throw new SWRLException("Cannot create swrlb:yearMonthDuration builtIn because: right arguments are null")).ToList()
                 };
-        
+
         //Extension BuiltIns
 
         public static SWRLBuiltIn EXTLangMatches(SWRLArgument leftArg, SWRLArgument rightArg)
@@ -729,7 +729,7 @@ namespace OWLSharp.Ontology
         public RDFGraph ToRDFGraph(RDFCollection atomsList)
         {
             RDFGraph graph = new RDFGraph();
-            
+
             RDFResource builtinBN = new RDFResource();
             atomsList.AddItem(builtinBN);
 

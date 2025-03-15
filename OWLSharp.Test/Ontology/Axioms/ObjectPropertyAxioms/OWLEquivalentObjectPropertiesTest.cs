@@ -144,7 +144,7 @@ public class OWLEquivalentObjectPropertiesTest
     public void ShouldConvert3EquivalentObjectPropertiesToGraph()
     {
         OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties(
-        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
             new OWLObjectProperty(RDFVocabulary.FOAF.MEMBER),
             new OWLObjectProperty(RDFVocabulary.FOAF.ACCOUNT)]);
         RDFGraph graph = equivalentObjectProperties.ToRDFGraph();
@@ -189,7 +189,7 @@ public class OWLEquivalentObjectPropertiesTest
     public void ShouldConvert3EquivalentObjectPropertiesWithAnnotationToGraph()
     {
         OWLEquivalentObjectProperties equivalentObjectProperties = new OWLEquivalentObjectProperties(
-        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS), 
+        [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
             new OWLObjectProperty(RDFVocabulary.FOAF.MEMBER),
             new OWLObjectProperty(RDFVocabulary.FOAF.ACCOUNT)])
         {

@@ -26,7 +26,7 @@ public class TIMEReasonerTest
     public void ShouldAddRule()
     {
         TIMEReasoner reasoner = new TIMEReasoner();
-            
+
         Assert.IsNotNull(reasoner);
         Assert.IsNotNull(reasoner.Rules);
         Assert.AreEqual(0, reasoner.Rules.Count);

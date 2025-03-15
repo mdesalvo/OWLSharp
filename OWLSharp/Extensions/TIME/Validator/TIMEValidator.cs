@@ -21,7 +21,7 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEValidator
+    public sealed class TIMEValidator
     {
         #region Properties
         internal static readonly RDFResource ViolationIRI = new RDFResource("urn:owlsharp:swrl:hasViolations");
@@ -126,7 +126,7 @@ namespace OWLSharp.Extensions.TIME
                 });
 
                 //Process issues registry
-                await Task.Run(() => 
+                await Task.Run(() =>
                 {
                     issues.AddRange(issueRegistry.SelectMany(ir => ir.Value ?? Enumerable.Empty<OWLIssue>()));
                     issueRegistry.Clear();

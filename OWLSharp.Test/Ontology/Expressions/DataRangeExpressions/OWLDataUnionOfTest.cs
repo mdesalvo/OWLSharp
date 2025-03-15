@@ -34,9 +34,9 @@ public class OWLDataUnionOfTest
         Assert.IsNotNull(dataUnionOf);
         Assert.IsNotNull(dataUnionOf.DataRangeExpressions);
         Assert.AreEqual(2, dataUnionOf.DataRangeExpressions.Count);
-        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
+        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                   && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
-        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
+        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                   && string.Equals(dataType.IRI, RDFVocabulary.XSD.ANY_URI.ToString())));
     }
 
@@ -56,7 +56,7 @@ public class OWLDataUnionOfTest
     public void ShouldGetSWRLRepresentationOfDataUnionOf()
     {
         OWLDataUnionOf dataUnionOf = new OWLDataUnionOf(
-        [new OWLDatatype(RDFVocabulary.XSD.STRING), 
+        [new OWLDatatype(RDFVocabulary.XSD.STRING),
             new OWLDatatype(RDFVocabulary.XSD.ANY_URI),
             new OWLDataOneOf([
                 new OWLLiteral(new RDFPlainLiteral("A")),
@@ -91,9 +91,9 @@ public class OWLDataUnionOfTest
         Assert.IsNotNull(dataUnionOf);
         Assert.IsNotNull(dataUnionOf.DataRangeExpressions);
         Assert.AreEqual(2, dataUnionOf.DataRangeExpressions.Count);
-        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
+        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                   && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
-        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType 
+        Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                   && string.Equals(dataType.IRI, RDFVocabulary.XSD.ANY_URI.ToString())));
     }
 

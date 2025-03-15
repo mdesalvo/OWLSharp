@@ -31,7 +31,7 @@ public class TIMEValidatorTest : TIMETestOntology
     public void ShouldAddRule()
     {
         TIMEValidator validator = new TIMEValidator();
-            
+
         Assert.IsNotNull(validator);
         Assert.IsNotNull(validator.Rules);
         Assert.AreEqual(0, validator.Rules.Count);

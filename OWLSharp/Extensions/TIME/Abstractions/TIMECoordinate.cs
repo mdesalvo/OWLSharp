@@ -40,7 +40,7 @@ namespace OWLSharp.Extensions.TIME
         #region Ctors
         internal TIMECoordinate() { }
 
-        public TIMECoordinate(double? year, double? month, double? day, 
+        public TIMECoordinate(double? year, double? month, double? day,
             double? hour, double? minute, double? second, TIMECoordinateMetadata metadata=null)
         {
             #region Guards
@@ -76,7 +76,7 @@ namespace OWLSharp.Extensions.TIME
             Minute = utcDateTime.Minute;
             Second = utcDateTime.Second;
             Metadata = new TIMECoordinateMetadata(
-                TIMECalendarReferenceSystem.Gregorian, 
+                TIMECalendarReferenceSystem.Gregorian,
                 RDFVocabulary.TIME.UNIT_SECOND,
                 TIMEHelper.GetMonthOfYear(utcDateTime.Month),
                 TIMEHelper.GetDayOfWeek(utcDateTime.DayOfWeek),
@@ -156,7 +156,7 @@ namespace OWLSharp.Extensions.TIME
         #region Ctors
         internal TIMECoordinateMetadata() { }
 
-        public TIMECoordinateMetadata(RDFResource trsUri, RDFResource unitTypeUri, 
+        public TIMECoordinateMetadata(RDFResource trsUri, RDFResource unitTypeUri,
             RDFResource monthOfYear=null, RDFResource dayOfWeek=null, uint? dayOfYear=null)
         {
             TRS = trsUri ?? throw new OWLException("Cannot create coordinate metadata because given \"trsUri\" parameter is null");

@@ -51,7 +51,7 @@ namespace OWLSharp.Reasoner
                     OWLClassAssertion inference = new OWLClassAssertion(inScopeClsExpr) { IndividualExpression=idvExprOfInScopeClsExpr, IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
-                }    
+                }
 
             return inferences;
         }

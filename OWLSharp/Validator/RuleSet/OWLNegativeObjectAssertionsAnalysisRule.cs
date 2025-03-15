@@ -42,9 +42,9 @@ namespace OWLSharp.Validator
                                        .ForEach(opAsn =>
                                        {
                                            issues.Add(new OWLIssue(
-                                               OWLEnums.OWLIssueSeverity.Error, 
-                                               rulename, 
-                                               $"Violated NegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'", 
+                                               OWLEnums.OWLIssueSeverity.Error,
+                                               rulename,
+                                               $"Violated NegativeObjectPropertyAssertion axiom with signature: '{nopAsn.GetXML()}'",
                                                rulesugg));
                                        });
             }

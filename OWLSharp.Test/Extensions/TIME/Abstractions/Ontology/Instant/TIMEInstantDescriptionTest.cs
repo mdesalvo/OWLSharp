@@ -40,10 +40,10 @@ public class TIMEInstantDescriptionTest
     public void ShouldCreateInstantDescriptionFromCoordinate()
     {
         TIMEInstantDescription timeInstantDescription = new TIMEInstantDescription(
-            new RDFResource("ex:instDesc"), 
+            new RDFResource("ex:instDesc"),
             new TIMECoordinate(2010, 5, 22, 22, 45, 30,
                 new TIMECoordinateMetadata(
-                    TIMECalendarReferenceSystem.Gregorian, 
+                    TIMECalendarReferenceSystem.Gregorian,
                     TIMEUnit.Second,
                     RDFVocabulary.TIME.GREG.MAY,
                     RDFVocabulary.TIME.SATURDAY,

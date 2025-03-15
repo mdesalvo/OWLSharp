@@ -125,13 +125,13 @@ namespace OWLSharp.Ontology
             #endregion
 
             //This is a string builtIn, so ensure to have information compatible with "string" semantic
-            bool isStringLeftPM = leftPatternMember is RDFResource 
-                                   || leftPatternMember is RDFPlainLiteral 
+            bool isStringLeftPM = leftPatternMember is RDFResource
+                                   || leftPatternMember is RDFPlainLiteral
                                    || (leftPatternMember is RDFTypedLiteral leftPMTLit && leftPMTLit.HasStringDatatype());
-            bool isStringRightPMSRC = rightPatternMemberSRC is RDFResource 
-                                        || rightPatternMemberSRC is RDFPlainLiteral 
+            bool isStringRightPMSRC = rightPatternMemberSRC is RDFResource
+                                        || rightPatternMemberSRC is RDFPlainLiteral
                                         || (rightPatternMemberSRC is RDFTypedLiteral rightPMTLit && rightPMTLit.HasStringDatatype());
-            if (isStringLeftPM && isStringRightPMSRC) 
+            if (isStringLeftPM && isStringRightPMSRC)
             {
                 string leftPMValue = leftPatternMember is RDFLiteral leftPMLit ? leftPMLit.Value : leftPatternMember.ToString();
                 string rightPMValue = rightPatternMemberSRC is RDFLiteral rightPMLit ? rightPMLit.Value : rightPatternMemberSRC.ToString();
@@ -150,7 +150,7 @@ namespace OWLSharp.Ontology
                         && leftTypedLiteralLEN.HasDecimalDatatype()
                         && int.TryParse(leftTypedLiteralLEN.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int leftNumberLEN))
                         return string.Equals(leftPMValue, rightPMValue.Substring(leftNumberIDX, leftNumberLEN));
-                }                    
+                }
             }
             return false;
         }

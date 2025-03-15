@@ -29,13 +29,13 @@ public class OWLSubClassOfEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Animal"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammal"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammifero"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")))
             ],
-            ClassAxioms = [ 
+            ClassAxioms = [
                 new OWLSubClassOf(
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Human")),
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Mammal"))),
@@ -52,15 +52,15 @@ public class OWLSubClassOfEntailmentRuleTest
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf
                                           && string.Equals(inf.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mammifero")
                                           && string.Equals(inf.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf1 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf1
                                           && string.Equals(inf1.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
                                           && string.Equals(inf1.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Animal")));
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf2 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf2
                                           && string.Equals(inf2.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Human")
-                                          && string.Equals(inf2.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mammifero")));    
+                                          && string.Equals(inf2.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mammifero")));
     }
 
     [TestMethod]

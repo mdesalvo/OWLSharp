@@ -78,7 +78,7 @@ namespace OWLSharp.Ontology
             {
                 sb.Append(' ');
                 sb.Append(ClassExpression.ToSWRLString());
-            }   
+            }
             sb.Append(')');
 
             return sb.ToString();

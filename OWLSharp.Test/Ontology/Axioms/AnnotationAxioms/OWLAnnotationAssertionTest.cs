@@ -267,13 +267,13 @@ public class OWLAnnotationAssertionTest
                 new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
                 new RDFResource("ex:Subj"),
                 new RDFResource("ex:Obj"))
-            { 
+            {
                 Annotations =
                 [
                     new OWLAnnotation(
                         new OWLAnnotationProperty(RDFVocabulary.DC.DESCRIPTION),
-                        new RDFResource("ex:AnnValue")) 
-                    { 
+                        new RDFResource("ex:AnnValue"))
+                    {
                         Annotation = new OWLAnnotation(
                             new OWLAnnotationProperty(RDFVocabulary.DC.CONTRIBUTOR),
                             new OWLLiteral(new RDFPlainLiteral("contributor", "en-us--rtl")))

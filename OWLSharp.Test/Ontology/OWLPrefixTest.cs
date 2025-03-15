@@ -48,7 +48,7 @@ public class OWLPrefixTest
             """<Prefix name="foaf" IRI="http://xmlns.com/foaf/0.1/" />"""));
     }
 
-    [TestMethod] 
+    [TestMethod]
     public void ShouldDeserializePrefix()
     {
         OWLPrefix prefix = OWLSerializer.DeserializeObject<OWLPrefix>(

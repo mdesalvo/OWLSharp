@@ -31,7 +31,7 @@ public class OWLAnonymousIndividualTest
         OWLAnonymousIndividual anonIdv = new OWLAnonymousIndividual();
 
         Assert.IsNotNull(anonIdv);
-        Assert.IsTrue(anonIdv.NodeID.StartsWith("ANON"));
+        Assert.IsTrue(anonIdv.NodeID.StartsWith("ANON", StringComparison.OrdinalIgnoreCase));
         Assert.IsTrue(Guid.TryParse(anonIdv.NodeID[4..], out Guid _));
     }
 

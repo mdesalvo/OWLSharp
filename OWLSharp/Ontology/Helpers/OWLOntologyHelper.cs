@@ -61,7 +61,7 @@ namespace OWLSharp.Ontology
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
 
             //Apply query to graph and return results
-            return await selectQuery.ApplyToGraphAsync(graph); 
+            return await selectQuery.ApplyToGraphAsync(graph);
         }
         #endregion
     }

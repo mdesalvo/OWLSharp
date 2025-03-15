@@ -74,7 +74,7 @@ namespace OWLSharp.Ontology
             //AllDifferent
             else
             {
-                RDFResource allDifferentIRI = new RDFResource(); 
+                RDFResource allDifferentIRI = new RDFResource();
                 RDFCollection differentIndividualsCollection = new RDFCollection(RDFModelEnums.RDFItemTypes.Resource);
                 foreach (OWLIndividualExpression idvExpression in IndividualExpressions)
                 {

@@ -203,13 +203,13 @@ namespace OWLSharp.Ontology
             #endregion
 
             //This is a datetime builtIn, so ensure to have information compatible with "date/datetime" semantic
-            bool isDateTimeLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit 
+            bool isDateTimeLeftPM = leftPatternMember is RDFTypedLiteral leftPMTLit
                                      && leftPMTLit.HasDatetimeDatatype();
-            bool isNumericRightPMYEAR = rightPatternMemberYEAR is RDFTypedLiteral rightPMTLitYEAR 
+            bool isNumericRightPMYEAR = rightPatternMemberYEAR is RDFTypedLiteral rightPMTLitYEAR
                                          && rightPMTLitYEAR.HasDecimalDatatype();
-            bool isNumericRightPMMONTH = rightPatternMemberMONTH is RDFTypedLiteral rightPMTLitMONTH 
+            bool isNumericRightPMMONTH = rightPatternMemberMONTH is RDFTypedLiteral rightPMTLitMONTH
                                           && rightPMTLitMONTH.HasDecimalDatatype();
-            bool isNumericRightPMDAY = rightPatternMemberDAY is RDFTypedLiteral rightPMTLitDAY 
+            bool isNumericRightPMDAY = rightPatternMemberDAY is RDFTypedLiteral rightPMTLitDAY
                                         && rightPMTLitDAY.HasDecimalDatatype();
             bool isNumericRightPMHOUR = rightPatternMemberHOUR is RDFTypedLiteral rightPMTLitHOUR
                                          && rightPMTLitHOUR.HasDecimalDatatype();
@@ -219,7 +219,7 @@ namespace OWLSharp.Ontology
                                         && rightPMTLitSECOND.HasDecimalDatatype();
             bool isStringRightPMTZ = rightPatternMemberTZ is RDFPlainLiteral
                                       || (rightPatternMemberTZ is RDFTypedLiteral rightPMTLitTZ && rightPMTLitTZ.HasStringDatatype());
-            if (isDateTimeLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH && isNumericRightPMDAY && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND && isStringRightPMTZ) 
+            if (isDateTimeLeftPM && isNumericRightPMYEAR && isNumericRightPMMONTH && isNumericRightPMDAY && isNumericRightPMHOUR && isNumericRightPMMINUTE && isNumericRightPMSECOND && isStringRightPMTZ)
                 if (XSD_DATETIME.Validate(((RDFLiteral)leftPatternMember).Value).Item1)
                 {
                     string targetTZ = ((RDFLiteral)rightPatternMemberTZ).Value;

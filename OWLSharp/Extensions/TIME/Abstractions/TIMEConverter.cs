@@ -150,7 +150,7 @@ namespace OWLSharp.Extensions.TIME
                 normalizedMonth = postNormalizedMonth;
 
                 //If normalizedDay exceeds metrics configured for normalizedMonth,
-                //we need an extra iteration to further normalize the situation 
+                //we need an extra iteration to further normalize the situation
                 daysOfNormalizedMonth = metricsMonths[Convert.ToUInt32(normalizedMonth) - 1];
                 if (normalizedDay > daysOfNormalizedMonth)
                 {
@@ -163,11 +163,11 @@ namespace OWLSharp.Extensions.TIME
             double normalizedYear = (timeCoordinate.Year ?? 0) + remainingYears;
 
             return new TIMECoordinate(
-                Math.Truncate(normalizedYear), 
-                Math.Truncate(normalizedMonth), 
+                Math.Truncate(normalizedYear),
+                Math.Truncate(normalizedMonth),
                 Math.Truncate(normalizedDay),
-                Math.Truncate(normalizedHour), 
-                Math.Truncate(normalizedMinute), 
+                Math.Truncate(normalizedHour),
+                Math.Truncate(normalizedMinute),
                 normalizedSecond) { Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_SECOND) };
         }
 
@@ -264,7 +264,7 @@ namespace OWLSharp.Extensions.TIME
             if (normalizedStart.CompareTo(normalizedEnd) > -1)
             {
                 TIMECoordinate swapCoordinate = new TIMECoordinate(normalizedStart.Year, normalizedStart.Month, normalizedStart.Day,
-                    normalizedStart.Hour, normalizedStart.Minute, normalizedStart.Second, new TIMECoordinateMetadata { 
+                    normalizedStart.Hour, normalizedStart.Minute, normalizedStart.Second, new TIMECoordinateMetadata {
                         TRS = normalizedStart.Metadata.TRS, UnitType = normalizedStart.Metadata.UnitType });
                 normalizedStart = normalizedEnd;
                 normalizedEnd = swapCoordinate;
@@ -295,7 +295,7 @@ namespace OWLSharp.Extensions.TIME
         #region Utilities
         internal static void TickForward(double secondsToConsume, TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
         {
-            uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(timeCoordinate.Year ?? 0) 
+            uint[] metricsMonths = calendarTRS.Metrics.LeapYearRule?.Invoke(timeCoordinate.Year ?? 0)
                                     ?? calendarTRS.Metrics.Months;
             while (secondsToConsume >= calendarTRS.Metrics.SecondsInMinute)
             {

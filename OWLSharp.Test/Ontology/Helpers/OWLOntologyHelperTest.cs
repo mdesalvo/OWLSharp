@@ -90,7 +90,7 @@ public class OWLOntologyHelperTest
         };
         OWLReasoner reasoner = new OWLReasoner
         {
-            Rules = [ 
+            Rules = [
                 OWLEnums.OWLReasonerRules.SubClassOfEntailment,
                 OWLEnums.OWLReasonerRules.ClassAssertionEntailment
             ]

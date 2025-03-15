@@ -40,7 +40,7 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal OWLAnnotationAssertion()
         { }
-        internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri) : this() 
+        internal OWLAnnotationAssertion(OWLAnnotationProperty annotationProperty, RDFResource subjectIri) : this()
         {
             AnnotationProperty = annotationProperty ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"annotationProperty\" parameter is null");
             SubjectIRI = subjectIri?.ToString() ?? throw new OWLException("Cannot create OWLAnnotationAssertion because given \"subjectIri\" parameter is null");
@@ -58,8 +58,8 @@ namespace OWLSharp.Ontology
             graph = graph.UnionWith(AnnotationProperty.ToRDFGraph());
 
             //Axiom Triple
-            RDFTriple axiomTriple = !string.IsNullOrEmpty(ValueIRI) 
-                ? new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI)) 
+            RDFTriple axiomTriple = !string.IsNullOrEmpty(ValueIRI)
+                ? new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), new RDFResource(ValueIRI))
                 : new RDFTriple(new RDFResource(SubjectIRI), AnnotationProperty.GetIRI(), ValueLiteral.GetLiteral());
             graph.AddTriple(axiomTriple);
 

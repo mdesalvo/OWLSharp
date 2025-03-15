@@ -31,7 +31,7 @@ namespace OWLSharp.Reasoner
             List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
             List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
             List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
-            
+
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
             {
                 //HasKey(C, OP) ^ ClassAssertion(C, I1) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ClassAssertion(C, I2) ^  ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
@@ -42,7 +42,7 @@ namespace OWLSharp.Reasoner
             return inferences;
         }
 
-        private static List<OWLInference> AnalyzeKeyValues(OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs, 
+        private static List<OWLInference> AnalyzeKeyValues(OWLHasKey hasKeyAxiom, List<OWLIndividualExpression> hasKeyClassIdvs,
             List<OWLObjectPropertyAssertion> opAsns, List<OWLDataPropertyAssertion> dpAsns)
         {
             List<OWLInference> inferences = new List<OWLInference>();
@@ -78,7 +78,7 @@ namespace OWLSharp.Reasoner
                             objectKeyValueRegister.Add(objSBValue, new List<OWLIndividualExpression>());
                         objectKeyValueRegister[objSBValue].Add(idvExpr);
                     }
-                }                
+                }
                 #endregion
 
                 #region Data Keys

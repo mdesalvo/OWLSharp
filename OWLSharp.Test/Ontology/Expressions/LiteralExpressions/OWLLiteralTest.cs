@@ -179,7 +179,7 @@ public class OWLLiteralTest
         RDFLiteral rdfLit = lit.GetLiteral();
 
         Assert.IsNotNull(rdfLit);
-        Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL 
+        Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL
                       && string.Equals(rdfLitPL.ToString(), "hello"));
     }
 
@@ -190,7 +190,7 @@ public class OWLLiteralTest
         RDFLiteral rdfLit = lit.GetLiteral();
 
         Assert.IsNotNull(rdfLit);
-        Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL 
+        Assert.IsTrue(rdfLit is RDFPlainLiteral rdfLitPL
                       && string.Equals(rdfLitPL.ToString(), "hello@EN-US--LTR"));
     }
 
@@ -201,7 +201,7 @@ public class OWLLiteralTest
         RDFLiteral rdfLit = lit.GetLiteral();
 
         Assert.IsNotNull(rdfLit);
-        Assert.IsTrue(rdfLit is RDFTypedLiteral rdfLitTL 
+        Assert.IsTrue(rdfLit is RDFTypedLiteral rdfLitTL
                       && string.Equals(rdfLitTL.ToString(), "hello^^http://www.w3.org/2001/XMLSchema#string"));
     }
     #endregion

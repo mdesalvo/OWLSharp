@@ -52,7 +52,7 @@ namespace OWLSharp.Reasoner
                 List<OWLObjectPropertyAssertion> declaredObjectPropertyAsns = OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, declaredObjectProperty);
                 foreach (OWLObjectPropertyAssertion declaredObjectPropertyAsn in declaredObjectPropertyAsns)
                     if (declaredObjectPropertyAsn.ObjectPropertyExpression is OWLObjectInverseOf objInvOf)
-                    {   
+                    {
                         (declaredObjectPropertyAsn.SourceIndividualExpression, declaredObjectPropertyAsn.TargetIndividualExpression) = (declaredObjectPropertyAsn.TargetIndividualExpression, declaredObjectPropertyAsn.SourceIndividualExpression);
                         declaredObjectPropertyAsn.ObjectPropertyExpression = objInvOf.ObjectProperty;
                     }
@@ -74,7 +74,7 @@ namespace OWLSharp.Reasoner
                         }
                     }
             }
-            
+
             return inferences;
         }
     }

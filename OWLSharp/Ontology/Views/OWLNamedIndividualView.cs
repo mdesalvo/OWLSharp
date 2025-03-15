@@ -48,27 +48,27 @@ namespace OWLSharp.Ontology
         public Task<List<OWLClassAssertion>> ClassAssertionsAsync()
             => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLClassAssertion>()
                                       .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-                                      .ToList()); 
+                                      .ToList());
 
         public Task<List<OWLObjectPropertyAssertion>> ObjectAssertionsAsync()
             => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>()
                                       .Where(ax => string.Equals(ax.SourceIndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-                                      .ToList()); 
-        
+                                      .ToList());
+
         public Task<List<OWLDataPropertyAssertion>> DataAssertionsAsync()
             => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>()
                                       .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-                                      .ToList()); 
+                                      .ToList());
 
         public Task<List<OWLNegativeObjectPropertyAssertion>> NegativeObjectAssertionsAsync()
             => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLNegativeObjectPropertyAssertion>()
                                       .Where(ax => string.Equals(ax.SourceIndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-                                      .ToList()); 
-        
+                                      .ToList());
+
         public Task<List<OWLNegativeDataPropertyAssertion>> NegativeDataAssertionsAsync()
             => Task.Run(() => Ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>()
                                       .Where(ax => string.Equals(ax.IndividualExpression.GetIRI().ToString(), NamedIndividualIRI))
-                                      .ToList()); 
+                                      .ToList());
 
         public Task<List<OWLAnnotationAssertion>> ObjectAnnotationsAsync()
             => Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()

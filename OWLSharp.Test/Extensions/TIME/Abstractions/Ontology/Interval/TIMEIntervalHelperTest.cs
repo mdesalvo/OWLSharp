@@ -40,7 +40,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckAfter()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -63,7 +63,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckAfterBecauseMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -86,7 +86,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckAfterBecauseMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -119,7 +119,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckBefore()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -142,7 +142,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckBeforeBecauseMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-08T20:47:15Z").ToUniversalTime()),
@@ -165,7 +165,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckBeforeBecauseMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -198,7 +198,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckIntervalContainsInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -230,7 +230,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalContainsIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -262,7 +262,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalContainsIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -294,7 +294,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalContainsIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -326,7 +326,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalContainsIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -368,7 +368,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckIntervalIsDisjointWithInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2020-01-01T00:00:00Z").ToUniversalTime()),
@@ -410,7 +410,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckIntervalDuringInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -442,7 +442,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalDuringIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -474,7 +474,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalDuringIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -506,7 +506,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalDuringIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -538,7 +538,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalDuringIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -580,7 +580,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckIntervalEqualsInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -612,7 +612,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalEqualsIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -644,7 +644,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalEqualsIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -676,7 +676,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalEqualsIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -708,7 +708,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalEqualsIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:00:00Z").ToUniversalTime()),
@@ -750,7 +750,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckIntervalFinishedByInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -782,7 +782,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishedByIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -814,7 +814,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishedByIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -846,7 +846,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishedByIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -878,7 +878,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishedByIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()),
@@ -921,7 +921,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckIntervalFinishesInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -953,7 +953,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishesIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -985,7 +985,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishesIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1018,7 +1018,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishesIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1050,7 +1050,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalFinishesIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1092,7 +1092,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckIntervalInInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1124,7 +1124,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalInIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1156,7 +1156,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalInIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1188,7 +1188,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalInIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1220,7 +1220,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalInIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T00:23:59Z").ToUniversalTime()),
@@ -1262,7 +1262,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckMeets()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1285,7 +1285,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckMeetsBecauseMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-08T20:47:15Z").ToUniversalTime()),
@@ -1308,7 +1308,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckMeetsBecauseMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-05T20:47:15Z").ToUniversalTime()),
@@ -1341,7 +1341,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckMetBy()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()),
@@ -1364,7 +1364,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckMetByBecauseMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1387,7 +1387,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckMetByBecauseMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1420,7 +1420,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckOverlaps()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1443,7 +1443,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlapsIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1465,7 +1465,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlapsIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1487,7 +1487,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlapsIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1509,7 +1509,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlapsIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-23T20:47:15Z").ToUniversalTime()),
@@ -1541,7 +1541,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckOverlappedBy()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1564,7 +1564,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlappedByIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1586,7 +1586,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlappedByIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1608,7 +1608,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlappedByIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1630,7 +1630,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalOverlappedByIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()),
@@ -1662,7 +1662,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckStarts()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1684,7 +1684,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartsIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1706,7 +1706,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartsIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1728,7 +1728,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartsIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1750,7 +1750,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartsIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1782,7 +1782,7 @@ public class TIMEIntervalHelperTest
     public void ShouldCheckStartedBy()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1804,7 +1804,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartedByIntervalMissingLeftIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA")),
@@ -1826,7 +1826,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartedByIntervalMissingLeftIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1848,7 +1848,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartedByIntervalMissingRightIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
@@ -1870,7 +1870,7 @@ public class TIMEIntervalHelperTest
     public void ShouldNotCheckIntervalStartedByIntervalMissingRightIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareIntervalFeature(new RDFResource("ex:ft1"),
             new TIMEInterval(new RDFResource("ex:timeIntvA"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningA"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),

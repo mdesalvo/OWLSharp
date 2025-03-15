@@ -151,7 +151,7 @@ public class OWLDataPropertyAxiomHelperTest
         Assert.AreEqual(0, ontology.GetSubDataPropertiesOf(null).Count);
         Assert.AreEqual(0, (null as OWLOntology).GetSubDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1"))).Count);
     }
-        
+
     [TestMethod]
     public void ShouldGetSuperDataPropertiesOf()
     {
@@ -222,7 +222,7 @@ public class OWLDataPropertyAxiomHelperTest
         Assert.AreEqual(0, ontology.GetSuperDataPropertiesOf(null).Count);
         Assert.AreEqual(0, (null as OWLOntology).GetSuperDataPropertiesOf(new OWLDataProperty(new RDFResource("ex:Dtp1"))).Count);
     }
-        
+
     [TestMethod]
     public void ShouldGetEquivalentDataProperties()
     {

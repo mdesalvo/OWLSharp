@@ -130,7 +130,7 @@ public class GEOHelperTest
         List<GEOEntity> geoEntities = await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanFT"));
 
         Assert.IsNotNull(geoEntities);
-        Assert.IsTrue(geoEntities.Single() is GEOPoint geoPoint 
+        Assert.IsTrue(geoEntities.Single() is GEOPoint geoPoint
                       && geoPoint.URI.Equals(new Uri("ex:MilanGM"))
                       && string.Equals(geoPoint.ToWKT(), "POINT (9.18854 45.464664)"));
         Assert.AreEqual(0, (await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanGGGGFT"))).Count);
@@ -144,7 +144,7 @@ public class GEOHelperTest
         List<GEOEntity> geoEntities = await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanFT"));
 
         Assert.IsNotNull(geoEntities);
-        Assert.IsTrue(geoEntities.Single() is GEOLine geoLine 
+        Assert.IsTrue(geoEntities.Single() is GEOLine geoLine
                       && geoLine.URI.Equals(new Uri("ex:MilanGM"))
                       && string.Equals(geoLine.ToWKT(), "LINESTRING (9.18854 45.464664, 9.19854 45.474664)"));
     }
@@ -157,7 +157,7 @@ public class GEOHelperTest
         List<GEOEntity> geoEntities = await ontology.GetSpatialFeatureAsync(new RDFResource("ex:MilanFT"));
 
         Assert.IsNotNull(geoEntities);
-        Assert.IsTrue(geoEntities.Single() is GEOArea geoArea 
+        Assert.IsTrue(geoEntities.Single() is GEOArea geoArea
                       && geoArea.URI.Equals(new Uri("ex:MilanGM"))
                       && string.Equals(geoArea.ToWKT(), "POLYGON ((9.18854 45.464664, 9.19854 45.474664, 9.20854 45.484664, 9.18854 45.464664))"));
     }
@@ -220,11 +220,11 @@ public class GEOHelperTest
                     new OWLLiteral(new RDFTypedLiteral("""<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2"><gml:pos>12.49221871 41.89033014</gml:pos></gml:Point>""", RDFModelEnums.RDFDatatypes.GEOSPARQL_GML)))
             ]
         };
-        double? milanRomeDistance = await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology, 
+        double? milanRomeDistance = await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
             new RDFResource("ex:milanFT"), new RDFResource("ex:romeFT"));
 
         Assert.IsTrue(milanRomeDistance is >= 450000 and <= 4800000); //milan-rome should be between 450km and 480km
-            
+
         //Unexisting features
         Assert.IsNull(await GEOHelper.GetDistanceBetweenFeaturesAsync(geoOntology,
             new RDFResource("ex:milanFT2"), new RDFResource("ex:romeFT")));
@@ -312,7 +312,7 @@ public class GEOHelperTest
             new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING),
             new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT)));
         await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(
-            new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT), 
+            new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT),
             null));
         await Assert.ThrowsExactlyAsync<OWLException>(async () => await GEOHelper.GetDistanceBetweenFeaturesAsync(
             new RDFTypedLiteral("POINT(12.496365 41.902782)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT),
@@ -916,7 +916,7 @@ public class GEOHelperTest
             new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
     }
     #endregion
-    
+
     #region Tests (Analyzer:NearBy)
     [TestMethod]
     public async Task ShouldGetFeaturesNearByAsync()
@@ -1049,7 +1049,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> proximityFeatures = await GEOHelper.GetFeaturesNearBy(geoOntology, new RDFTypedLiteral("POINT(12.79938661 41.96217718)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT), 100000);
-            
+
         Assert.IsNotNull(proximityFeatures);
         Assert.IsTrue(proximityFeatures.Single().URI.Equals(new Uri("ex:romeFT")));
 
@@ -2510,7 +2510,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> crossedByPoRiver = await GEOHelper.GetFeaturesCrossedByAsync(geoOntology, new RDFResource("ex:PoFT"));
-            
+
         Assert.IsNotNull(crossedByPoRiver);
         Assert.AreEqual(2, crossedByPoRiver.Count);
         Assert.IsTrue(crossedByPoRiver.Any(ft => ft.Equals(new RDFResource("ex:MontagnanaCentoFT"))));
@@ -2687,7 +2687,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> touchedByIseoFT = await GEOHelper.GetFeaturesTouchedByAsync(geoOntology, new RDFResource("ex:IseoFT"));
-            
+
         Assert.IsNotNull(touchedByIseoFT);
         Assert.AreEqual(2, touchedByIseoFT.Count);
         Assert.IsTrue(touchedByIseoFT.Any(ft => ft.Equals(new RDFResource("ex:IseoBiennoFT"))));
@@ -2768,7 +2768,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> touchedByIseoFT = await GEOHelper.GetFeaturesTouchedByAsync(geoOntology, new RDFTypedLiteral("POINT(10.090599060058592 45.701863522304734)", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            
+
         Assert.IsNotNull(touchedByIseoFT);
         Assert.AreEqual(2, touchedByIseoFT.Count);
         Assert.IsTrue(touchedByIseoFT.Any(ft => ft.Equals(new RDFResource("ex:IseoBiennoFT"))));
@@ -2864,7 +2864,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesOverlappedByAsync(geoOntology, new RDFResource("ex:BallabioCivateFT"));
-            
+
         Assert.IsNotNull(overlappedByBallabioCivateFT);
         Assert.AreEqual(1, overlappedByBallabioCivateFT.Count);
         Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:LaorcaVercuragoFT"))));
@@ -2944,7 +2944,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesOverlappedByAsync(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.346078615493791 45.828624093492635, 9.455255251235979 45.77932096932273, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            
+
         Assert.IsNotNull(overlappedByBallabioCivateFT);
         Assert.AreEqual(1, overlappedByBallabioCivateFT.Count);
         Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:LaorcaVercuragoFT"))));
@@ -3039,7 +3039,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesWithinAsync(geoOntology, new RDFResource("ex:BallabioCivateFT"));
-            
+
         Assert.IsNotNull(overlappedByBallabioCivateFT);
         Assert.AreEqual(2, overlappedByBallabioCivateFT.Count);
         Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:BallabioPescateFT"))));
@@ -3120,7 +3120,7 @@ public class GEOHelperTest
             ]
         };
         List<RDFResource> overlappedByBallabioCivateFT = await GEOHelper.GetFeaturesWithinAsync(geoOntology, new RDFTypedLiteral("POLYGON((9.425042848892229 45.89413442236222, 9.346078615493791 45.828624093492635, 9.455255251235979 45.77932096932273, 9.425042848892229 45.89413442236222))", RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT));
-            
+
         Assert.IsNotNull(overlappedByBallabioCivateFT);
         Assert.AreEqual(2, overlappedByBallabioCivateFT.Count);
         Assert.IsTrue(overlappedByBallabioCivateFT.Any(ft => ft.Equals(new RDFResource("ex:BallabioPescateFT"))));

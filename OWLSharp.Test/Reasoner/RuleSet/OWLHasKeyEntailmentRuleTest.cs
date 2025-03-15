@@ -29,7 +29,7 @@ public class OWLHasKeyEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
@@ -42,7 +42,7 @@ public class OWLHasKeyEntailmentRuleTest
                 new OWLHasKey(
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Dad")),
                     [ new OWLObjectProperty(new RDFResource("http://xmlns.com/foaf/0.1/isFatherOf")) ],
-                    null 
+                    null
                 )
             ],
             AssertionAxioms = [
@@ -85,7 +85,7 @@ public class OWLHasKeyEntailmentRuleTest
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         Assert.AreEqual(1, inferences.Count);
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                                           && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")
                                           && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Henry")));
     }
@@ -95,7 +95,7 @@ public class OWLHasKeyEntailmentRuleTest
     {
         OWLOntology ontology = new OWLOntology
         {
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person"))),
                 new OWLDeclaration(new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode"))),
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Glener"))),
@@ -106,7 +106,7 @@ public class OWLHasKeyEntailmentRuleTest
                 new OWLHasKey(
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/Person")),
                     null,
-                    [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ] 
+                    [ new OWLDataProperty(new RDFResource("http://xmlns.com/foaf/0.1/hasFiscalCode")) ]
                 )
             ],
             AssertionAxioms = [
@@ -144,7 +144,7 @@ public class OWLHasKeyEntailmentRuleTest
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
         Assert.AreEqual(1, inferences.Count);
-        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf 
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSameIndividual inf
                                           && string.Equals(inf.IndividualExpressions[0].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glen")
                                           && string.Equals(inf.IndividualExpressions[1].GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Glener")));
     }

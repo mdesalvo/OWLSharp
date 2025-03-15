@@ -29,7 +29,7 @@ namespace OWLSharp.Extensions.GEO
         internal GEOEntity(RDFResource geoEntityUri)
             : base(geoEntityUri?.ToString()) { }
         #endregion
-    
+
         #region Methods
         public string ToWKT()
             => GEOHelper.WKTWriter.Write(WGS84Geometry);
@@ -48,7 +48,7 @@ namespace OWLSharp.Extensions.GEO
     public class GEOPoint : GEOEntity
     {
         #region Ctors
-        public GEOPoint(RDFResource geoEntityUri, (double longitude, double latitude) wgs84Coordinate) 
+        public GEOPoint(RDFResource geoEntityUri, (double longitude, double latitude) wgs84Coordinate)
             : base(geoEntityUri)
         {
             #region Guards
@@ -66,7 +66,7 @@ namespace OWLSharp.Extensions.GEO
     public class GEOLine : GEOEntity
     {
         #region Ctors
-        public GEOLine(RDFResource geoEntityUri, (double longitude, double latitude)[] wgs84Coordinates) 
+        public GEOLine(RDFResource geoEntityUri, (double longitude, double latitude)[] wgs84Coordinates)
             : base(geoEntityUri)
         {
             #region Guards
@@ -88,7 +88,7 @@ namespace OWLSharp.Extensions.GEO
     public class GEOArea : GEOEntity
     {
         #region Ctors
-        public GEOArea(RDFResource geoEntityUri, (double longitude, double latitude)[] wgs84Coordinates) 
+        public GEOArea(RDFResource geoEntityUri, (double longitude, double latitude)[] wgs84Coordinates)
             : base(geoEntityUri)
         {
             #region Guards

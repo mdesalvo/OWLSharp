@@ -81,6 +81,7 @@ namespace OWLSharp.Ontology
                  && rightTypedLiteral.HasBooleanDatatype()
                  && bool.TryParse(rightTypedLiteral.Value, out bool rightBool))
                 return leftBool == !rightBool;
+
             return false;
         }
         #endregion

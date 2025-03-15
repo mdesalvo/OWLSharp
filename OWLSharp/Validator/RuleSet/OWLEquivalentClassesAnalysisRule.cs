@@ -30,15 +30,15 @@ namespace OWLSharp.Validator
             //EquivalentClasses(CLS1,CLS2) ^ SubClassOf(CLS2,CLS1) -> ERROR
             //EquivalentClasses(CLS1,CLS2) ^ DisjointClasses(CLS1,CLS2) -> ERROR
             foreach (OWLEquivalentClasses equivClasses in ontology.GetClassAxiomsOfType<OWLEquivalentClasses>())
-                if (equivClasses.ClassExpressions.Any(outerClass => 
+                if (equivClasses.ClassExpressions.Any(outerClass =>
                       equivClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())
                                                                           && (ontology.CheckIsSubClassOf(outerClass, innerClass)
                                                                              || ontology.CheckIsSubClassOf(innerClass, outerClass)
                                                                              || ontology.CheckAreDisjointClasses(outerClass, innerClass)))))
                     issues.Add(new OWLIssue(
-                        OWLEnums.OWLIssueSeverity.Error, 
-                        rulename, 
-                        $"Violated EquivalentClasses axiom with signature: '{equivClasses.GetXML()}'", 
+                        OWLEnums.OWLIssueSeverity.Error,
+                        rulename,
+                        $"Violated EquivalentClasses axiom with signature: '{equivClasses.GetXML()}'",
                         rulesugg));
 
             return issues;

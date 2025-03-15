@@ -118,8 +118,8 @@ public class OWLObjectPropertyViewTest
                     new OWLClass(new RDFResource("ex:Human")),
                     new OWLNamedIndividual(new RDFResource("ex:Valentine")))
             ]
-        };        
-        
+        };
+
         KnowsView = new OWLObjectPropertyView(new OWLObjectProperty(new RDFResource("ex:knows")), Ontology);
         FriendOfView = new OWLObjectPropertyView(new OWLObjectProperty(new RDFResource("ex:friendOf")), Ontology);
         BestFriendOfView = new OWLObjectPropertyView(new OWLObjectProperty(new RDFResource("ex:bestFriendOf")), Ontology);

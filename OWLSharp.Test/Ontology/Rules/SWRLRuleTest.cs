@@ -82,10 +82,10 @@ public class SWRLRuleTest
         SWRLRule rule = new SWRLRule(
             new RDFPlainLiteral("SWRL1"),
             new RDFPlainLiteral("This is a test SWRL rule"),
-            new SWRLAntecedent { 
-                Atoms = [ 
+            new SWRLAntecedent {
+                Atoms = [
                     new SWRLClassAtom(
-                        new OWLClass(RDFVocabulary.FOAF.PERSON), 
+                        new OWLClass(RDFVocabulary.FOAF.PERSON),
                         new SWRLVariableArgument(new RDFVariable("?P")))
                 ],
                 BuiltIns = [
@@ -95,7 +95,7 @@ public class SWRLRuleTest
                         new SWRLLiteralArgument(new RDFTypedLiteral("44.57", RDFModelEnums.RDFDatatypes.XSD_FLOAT))),
                     SWRLBuiltIn.Matches(
                         new SWRLVariableArgument(new RDFVariable("?P")),
-                        new SWRLLiteralArgument(new RDFPlainLiteral("Mark")), 
+                        new SWRLLiteralArgument(new RDFPlainLiteral("Mark")),
                         new SWRLLiteralArgument(new RDFPlainLiteral("i")))
                 ]
             },
@@ -128,7 +128,7 @@ public class SWRLRuleTest
                 ],
                 BuiltIns = [
                     SWRLBuiltIn.ContainsIgnoreCase(
-                        new SWRLVariableArgument(new RDFVariable("?N")), 
+                        new SWRLVariableArgument(new RDFVariable("?N")),
                         new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
                 ]
             },
@@ -199,7 +199,7 @@ public class SWRLRuleTest
                         ],
                         BuiltIns = [
                             SWRLBuiltIn.ContainsIgnoreCase(
-                                new SWRLVariableArgument(new RDFVariable("?N")), 
+                                new SWRLVariableArgument(new RDFVariable("?N")),
                                 new SWRLLiteralArgument(new RDFPlainLiteral("mark")))
                         ]
                     },
@@ -259,7 +259,7 @@ public class SWRLRuleTest
                 ],
                 BuiltIns = [
                     SWRLBuiltIn.ContainsIgnoreCase(
-                        new SWRLVariableArgument(new RDFVariable("?N")), 
+                        new SWRLVariableArgument(new RDFVariable("?N")),
                         new SWRLLiteralArgument(new RDFPlainLiteral("mark"))),
                     SWRLBuiltIn.Matches(
                         new SWRLVariableArgument(new RDFVariable("?N")),

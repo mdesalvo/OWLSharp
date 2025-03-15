@@ -55,7 +55,7 @@ namespace OWLSharp.Ontology
 
             Annotations.Add(
                 new OWLAnnotation(
-                    new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL), 
+                    new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
                     new OWLLiteral(ruleName)));
             Annotations.Add(
                 new OWLAnnotation(
@@ -96,7 +96,7 @@ namespace OWLSharp.Ontology
         }
 
         internal Task<List<OWLInference>> ApplyToOntologyAsync(OWLOntology ontology)
-            => Task.Run(() => Consequent?.Evaluate(Antecedent?.Evaluate(ontology), ontology) 
+            => Task.Run(() => Consequent?.Evaluate(Antecedent?.Evaluate(ontology), ontology)
                                        ?? Enumerable.Empty<OWLInference>().ToList());
         #endregion
 

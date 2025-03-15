@@ -50,7 +50,7 @@ public class TIMEReferenceSystemRegistryTest
         //Test addition of TRS
         TIMEPositionReferenceSystem millenniumTRS = new TIMEPositionReferenceSystem(
             new RDFResource("ex:MillenniumTRS"), new TIMECoordinate(2000, 1, 1, 0, 0, 0), TIMEUnit.Day);
-        Assert.IsFalse(TIMEReferenceSystemRegistry.ContainsTRS(millenniumTRS));            
+        Assert.IsFalse(TIMEReferenceSystemRegistry.ContainsTRS(millenniumTRS));
         TIMEReferenceSystemRegistry.AddTRS(millenniumTRS);
         TIMEReferenceSystemRegistry.AddTRS(millenniumTRS); //Duplicates are avoided
         Assert.IsTrue(TIMEReferenceSystemRegistry.TRSCount >= 4);

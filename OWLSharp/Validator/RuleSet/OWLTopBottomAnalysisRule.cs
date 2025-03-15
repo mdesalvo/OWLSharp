@@ -21,7 +21,7 @@ namespace OWLSharp.Validator
     {
         internal static readonly string rulename = OWLEnums.OWLValidatorRules.TopBottomAnalysis.ToString();
         internal const string rulesuggT1 = "There should not be any direct or indirect SubObjectPropertyOf axioms having reserved owl:topObjectProperty property in position of subproperty: this object property should be the root object property!";
-        internal const string rulesuggT2 = "There should not be any direct or indirect SubDataPropertyOf axioms having reserved owl:topDataProperty property in position of subproperty: this data property should be the root data property!";       
+        internal const string rulesuggT2 = "There should not be any direct or indirect SubDataPropertyOf axioms having reserved owl:topDataProperty property in position of subproperty: this data property should be the root data property!";
         internal const string rulesuggB1 = "There should not be any direct or indirect SubObjectPropertyOf axioms having reserved owl:bottomObjectProperty property in position of superproperty: this object property should be the bottom object property!";
         internal const string rulesuggB2 = "There should not be any direct or indirect SubDataPropertyOf axioms having reserved owl:bottomDataProperty property in position of superproperty: this data property should be the bottom data property!";
 

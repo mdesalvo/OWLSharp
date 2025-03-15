@@ -61,7 +61,7 @@ public class OWLObjectPropertyDomainAnalysisRuleTest
                     new OWLObjectProperty(new RDFResource("ex:op1")),
                     new OWLClass(new RDFResource("ex:Cls1")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
@@ -72,7 +72,7 @@ public class OWLObjectPropertyDomainAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
@@ -125,7 +125,7 @@ public class OWLObjectPropertyDomainAnalysisRuleTest
                     new OWLObjectInverseOf(new OWLObjectProperty(new RDFResource("ex:op1"))),
                     new OWLClass(new RDFResource("ex:Cls1")))
             ],
-            DeclarationAxioms = [ 
+            DeclarationAxioms = [
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls1"))),
                 new OWLDeclaration(new OWLClass(new RDFResource("ex:Cls2"))),
                 new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:op1"))),
@@ -136,7 +136,7 @@ public class OWLObjectPropertyDomainAnalysisRuleTest
                 new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Helen")))
             ]
         };
-        OWLValidatorContext validatorContext = new OWLValidatorContext()
+        OWLValidatorContext validatorContext = new OWLValidatorContext
         {
             ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
             DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),

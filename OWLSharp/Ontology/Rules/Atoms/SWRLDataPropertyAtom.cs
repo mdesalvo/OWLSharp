@@ -30,7 +30,7 @@ namespace OWLSharp.Ontology
         #region Ctors
         internal SWRLDataPropertyAtom() { }
         public SWRLDataPropertyAtom(OWLDataProperty dataProperty, SWRLVariableArgument leftArgument, SWRLVariableArgument rightArgument)
-            : base(dataProperty, leftArgument, rightArgument) 
+            : base(dataProperty, leftArgument, rightArgument)
         {
             #region Guards
             if (rightArgument == null)
@@ -39,7 +39,7 @@ namespace OWLSharp.Ontology
         }
 
         public SWRLDataPropertyAtom(OWLDataProperty dataProperty, SWRLVariableArgument leftArgument, SWRLLiteralArgument rightArgument)
-            : base(dataProperty, leftArgument, rightArgument) 
+            : base(dataProperty, leftArgument, rightArgument)
         {
             #region Guards
             if (rightArgument == null)
@@ -70,7 +70,7 @@ namespace OWLSharp.Ontology
             //Save them into the atom result
             Dictionary<string, string> atomResultBindings = new Dictionary<string, string>();
             foreach (OWLDataPropertyAssertion atomPredicateAssertion in atomPredicateAssertions)
-            {   
+            {
                 atomResultBindings.Add(leftArgumentString, atomPredicateAssertion.IndividualExpression.GetIRI().ToString());
                 if (RightArgument is SWRLVariableArgument)
                     atomResultBindings.Add(rightArgumentString, atomPredicateAssertion.Literal.GetLiteral().ToString());
@@ -97,7 +97,7 @@ namespace OWLSharp.Ontology
                 return inferences;
 
             //The antecedent results table MUST have a column corresponding to the atom's right argument (if variable)
-            if (RightArgument is SWRLVariableArgument 
+            if (RightArgument is SWRLVariableArgument
                     && !antecedentResults.Columns.Contains(rightArgumentString))
                 return inferences;
             #endregion
@@ -111,7 +111,7 @@ namespace OWLSharp.Ontology
                     continue;
 
                 //The current row MUST have a BOUND value in the column corresponding to the atom's right argument (if variable)
-                if (RightArgument is SWRLVariableArgument 
+                if (RightArgument is SWRLVariableArgument
                         && currentRow.IsNull(rightArgumentString))
                     continue;
                 #endregion
@@ -135,11 +135,11 @@ namespace OWLSharp.Ontology
 
                     //Create the inference
                     OWLDataPropertyAssertion inference = new OWLDataPropertyAssertion(
-                        (OWLDataProperty)Predicate, 
-                        new OWLLiteral(rightArgumentValueLiteral)) 
-                        { 
-                            IndividualExpression = dpAsnIdvExpr, 
-                            IsInference = true 
+                        (OWLDataProperty)Predicate,
+                        new OWLLiteral(rightArgumentValueLiteral))
+                        {
+                            IndividualExpression = dpAsnIdvExpr,
+                            IsInference = true
                         };
                     inference.GetXML();
                     inferences.Add(new OWLInference(dataPropertyAtomString, inference));

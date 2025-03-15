@@ -40,7 +40,7 @@ public class TIMEInstantHelperTest
     public void ShouldCheckInside()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -64,7 +64,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckInsideBecauseMissingInstantInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
             new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft3"),
@@ -86,7 +86,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckInsideBecauseMissingIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -110,7 +110,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckInsideBecauseMissingIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -144,7 +144,7 @@ public class TIMEInstantHelperTest
     public void ShouldCheckAfter()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-04T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -163,7 +163,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckAfterBecauseMissingInstantInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA")));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -184,7 +184,7 @@ public class TIMEInstantHelperTest
     public void ShouldCheckAfterInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-04T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -205,7 +205,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckAfterIntervalBecauseMissingInstantInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
             new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft3"),
@@ -224,7 +224,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckAfterIntervalBecauseMissingIntervalEndInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -255,7 +255,7 @@ public class TIMEInstantHelperTest
     public void ShouldCheckBefore()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-04T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -274,7 +274,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckBeforeBecauseMissingInstantInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA")));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -295,7 +295,7 @@ public class TIMEInstantHelperTest
     public void ShouldCheckBeforeInterval()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-04-28T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
@@ -316,7 +316,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckBeforeIntervalBecauseMissingInstantInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),
             new TIMEInstant(new RDFResource("ex:timeInstB"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft3"),
@@ -335,7 +335,7 @@ public class TIMEInstantHelperTest
     public void ShouldNotCheckBeforeIntervalBecauseMissingIntervalBeginningInformation()
     {
         OWLOntology timeOntology = new OWLOntology(new Uri("ex:timeOnt"));
-            
+
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft1"),
             new TIMEInstant(new RDFResource("ex:timeInstA"), DateTime.Parse("2023-05-01T20:47:15Z").ToUniversalTime()));
         timeOntology.DeclareInstantFeature(new RDFResource("ex:ft2"),

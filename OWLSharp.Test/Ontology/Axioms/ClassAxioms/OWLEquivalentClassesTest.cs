@@ -144,7 +144,7 @@ public class OWLEquivalentClassesTest
     public void ShouldConvert3EquivalentClassesToGraph()
     {
         OWLEquivalentClasses equivalentClasses = new OWLEquivalentClasses(
-        [ new OWLClass(RDFVocabulary.FOAF.AGENT), 
+        [ new OWLClass(RDFVocabulary.FOAF.AGENT),
             new OWLClass(RDFVocabulary.FOAF.ORGANIZATION),
             new OWLClass(RDFVocabulary.FOAF.PERSON) ]);
         RDFGraph graph = equivalentClasses.ToRDFGraph();

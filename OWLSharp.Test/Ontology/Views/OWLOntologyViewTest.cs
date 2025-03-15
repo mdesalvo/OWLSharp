@@ -162,7 +162,7 @@ public class OWLOntologyViewTest
                     new OWLClass(new RDFResource("ex:Human")),
                     new OWLNamedIndividual(new RDFResource("ex:John")))
             ]
-        };    
+        };
         OWLOntologyView ontView = new OWLOntologyView(ont);
 
         Assert.AreEqual(4, await ontView.ClassAssertionCountAsync());
@@ -214,7 +214,7 @@ public class OWLOntologyViewTest
         Assert.AreEqual(1, await ontView.EquivalentClassesCountAsync());
         Assert.AreEqual(3, await ontView.SubClassOfCountAsync());
     }
-    
+
     [TestMethod]
     public async Task ShouldCountDataPropertyAxioms()
     {
@@ -265,7 +265,7 @@ public class OWLOntologyViewTest
         Assert.AreEqual(1, await ontView.FunctionalDataPropertyCountAsync());
         Assert.AreEqual(3, await ontView.SubDataPropertyOfCountAsync());
     }
-    
+
     [TestMethod]
     public async Task ShouldCountObjectPropertyAxioms()
     {
