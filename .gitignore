@@ -1,0 +1,6 @@
+OWLSharp/bin/Debug/*
+OWLSharp/bin/Release/*
+OWLSharp.Test/bin/Debug/*
+OWLSharp.Test/bin/Release/*
+OWLSharp/obj/*
+OWLSharp.Test/obj/*
