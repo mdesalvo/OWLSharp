@@ -18,7 +18,7 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEUnit : RDFResource
+    public sealed class TIMEUnit : RDFResource
     {
         #region Built-ins
         public static readonly TIMEUnit Millennium = new TIMEUnit(RDFVocabulary.TIME.UNIT_MILLENIUM, TIMEEnums.TIMEUnitType.Year, 1000);
@@ -40,9 +40,9 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Properties
-        public TIMEEnums.TIMEUnitType UnitType { get; internal set; }
+        public TIMEEnums.TIMEUnitType UnitType { get; }
 
-        public double ScaleFactor { get; internal set; }
+        public double ScaleFactor { get; }
         #endregion
 
         #region Ctors

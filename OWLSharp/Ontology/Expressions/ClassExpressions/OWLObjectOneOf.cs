@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectOneOf")]
-    public class OWLObjectOneOf : OWLClassExpression
+    public sealed class OWLObjectOneOf : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLIndividualExpression

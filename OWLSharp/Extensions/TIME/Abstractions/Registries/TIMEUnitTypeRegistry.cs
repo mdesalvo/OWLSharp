@@ -20,10 +20,10 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEUnitTypeRegistry : IEnumerable<TIMEUnit>
+    public sealed class TIMEUnitTypeRegistry : IEnumerable<TIMEUnit>
     {
         #region Properties
-        public static TIMEUnitTypeRegistry Instance { get; internal set; }
+        public static TIMEUnitTypeRegistry Instance { get; }
 
         public static int UnitTypeCount
             => Instance.UnitTypes.Count;

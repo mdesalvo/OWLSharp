@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("EquivalentClasses")]
-    public class OWLEquivalentClasses : OWLClassAxiom
+    public sealed class OWLEquivalentClasses : OWLClassAxiom
     {
         #region Properties
         //Register here all derived types of OWLClassExpression

@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("AnnotationPropertyAtom")]
-    public class SWRLAnnotationPropertyAtom : SWRLAtom
+    public sealed class SWRLAnnotationPropertyAtom : SWRLAtom
     {
         #region Properties
         internal static RDFResource AnnotationPropertyAtomIRI = new RDFResource($"{RDFVocabulary.SWRL.BASE_URI}AnnotationPropertyAtom");

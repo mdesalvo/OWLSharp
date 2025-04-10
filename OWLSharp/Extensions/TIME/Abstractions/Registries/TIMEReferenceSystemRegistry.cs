@@ -20,10 +20,10 @@ using System.Collections.Generic;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEReferenceSystemRegistry : IEnumerable<TIMEReferenceSystem>
+    public sealed class TIMEReferenceSystemRegistry : IEnumerable<TIMEReferenceSystem>
     {
         #region Properties
-        public static TIMEReferenceSystemRegistry Instance { get; internal set; }
+        public static TIMEReferenceSystemRegistry Instance { get; }
 
         public static int TRSCount
             => Instance.TRS.Count;

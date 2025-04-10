@@ -19,10 +19,10 @@ using System;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEIntervalDescription : RDFResource, IEquatable<TIMEIntervalDescription>, IComparable<TIMEIntervalDescription>
+    public sealed class TIMEIntervalDescription : RDFResource, IEquatable<TIMEIntervalDescription>, IComparable<TIMEIntervalDescription>
     {
         #region Properties
-        public TIMEExtent Extent { get; internal set; }
+        public TIMEExtent Extent { get; }
         #endregion
 
         #region Ctors

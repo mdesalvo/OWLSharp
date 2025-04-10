@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("SubClassOf")]
-    public class OWLSubClassOf : OWLClassAxiom
+    public sealed class OWLSubClassOf : OWLClassAxiom
     {
         #region Properties
         //Register here all derived types of OWLClassExpression

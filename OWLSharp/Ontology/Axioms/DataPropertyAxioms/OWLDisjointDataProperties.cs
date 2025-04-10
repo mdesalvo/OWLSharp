@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DisjointDataProperties")]
-    public class OWLDisjointDataProperties : OWLDataPropertyAxiom
+    public sealed class OWLDisjointDataProperties : OWLDataPropertyAxiom
     {
         #region Properties
         [XmlElement(ElementName="DataProperty", Order=2)]

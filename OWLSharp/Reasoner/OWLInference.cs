@@ -16,11 +16,11 @@ using System;
 
 namespace OWLSharp.Reasoner
 {
-    public class OWLInference : IEquatable<OWLInference>
+    public sealed class OWLInference : IEquatable<OWLInference>
     {
         #region Properties
-        public string RuleName { get; internal set; }
-        public OWLAxiom Axiom { get; internal set; }
+        public string RuleName { get; }
+        public OWLAxiom Axiom { get; }
         #endregion
 
         #region Ctors

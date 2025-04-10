@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("HasKey")]
-    public class OWLHasKey : OWLAxiom
+    public sealed class OWLHasKey : OWLAxiom
     {
         #region Properties
         //Register here all derived types of OWLClassExpression

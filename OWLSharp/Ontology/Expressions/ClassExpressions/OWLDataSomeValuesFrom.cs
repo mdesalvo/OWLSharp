@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DataSomeValuesFrom")]
-    public class OWLDataSomeValuesFrom : OWLClassExpression
+    public sealed class OWLDataSomeValuesFrom : OWLClassExpression
     {
         #region Properties
         [XmlElement(Order=1)]

@@ -23,7 +23,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Head")]
-    public class SWRLConsequent
+    public sealed class SWRLConsequent
     {
         #region Properties
         [XmlElement(typeof(SWRLAnnotationPropertyAtom), ElementName="AnnotationPropertyAtom")]

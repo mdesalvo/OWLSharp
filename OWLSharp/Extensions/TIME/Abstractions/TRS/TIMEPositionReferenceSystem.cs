@@ -18,7 +18,7 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEPositionReferenceSystem : TIMEReferenceSystem
+    public sealed class TIMEPositionReferenceSystem : TIMEReferenceSystem
     {
         #region Built-Ins
         public static readonly TIMEPositionReferenceSystem UnixTime = new TIMEPositionReferenceSystem(
@@ -29,11 +29,11 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Properties
-        public TIMECoordinate Origin { get; internal set; }
+        public TIMECoordinate Origin { get; }
 
-        public TIMEUnit Unit { get; internal set; }
+        public TIMEUnit Unit { get; }
 
-        public bool HasLargeScaleSemantic { get; internal set; }
+        public bool HasLargeScaleSemantic { get; }
         #endregion
 
         #region Ctors

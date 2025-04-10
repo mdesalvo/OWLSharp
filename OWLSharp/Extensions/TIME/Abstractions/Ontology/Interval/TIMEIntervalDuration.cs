@@ -18,7 +18,7 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEIntervalDuration : RDFResource
+    public sealed class TIMEIntervalDuration : RDFResource
     {
         #region Properties
         public RDFResource UnitType { get; set; }

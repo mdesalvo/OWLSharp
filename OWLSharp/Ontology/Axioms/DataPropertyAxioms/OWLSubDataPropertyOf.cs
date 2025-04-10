@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("SubDataPropertyOf")]
-    public class OWLSubDataPropertyOf : OWLDataPropertyAxiom
+    public sealed class OWLSubDataPropertyOf : OWLDataPropertyAxiom
     {
         #region Properties
         [XmlElement(ElementName="DataProperty", Order=2)]

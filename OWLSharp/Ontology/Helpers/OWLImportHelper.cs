@@ -26,7 +26,7 @@ namespace OWLSharp.Ontology
     {
         #region Properties
 
-        internal static Dictionary<string, (OWLOntology Ontology, DateTime ExpireTimestamp)> OntologyCache { get; set; }
+        internal static Dictionary<string, (OWLOntology Ontology, DateTime ExpireTimestamp)> OntologyCache
             = new Dictionary<string, (OWLOntology, DateTime)>();
         #endregion
 

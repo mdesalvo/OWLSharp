@@ -25,7 +25,7 @@ using RDFSharp.Query;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DLSafeRule")]
-    public class SWRLRule
+    public sealed class SWRLRule
     {
         #region Properties
         [XmlElement("Annotation")]
@@ -72,7 +72,7 @@ namespace OWLSharp.Ontology
         #endregion
 
         #region Methods
-        public virtual string GetXML()
+        public string GetXML()
             => OWLSerializer.SerializeObject(this);
 
         public RDFGraph ToRDFGraph()

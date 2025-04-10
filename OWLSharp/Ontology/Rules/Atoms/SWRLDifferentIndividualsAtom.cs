@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DifferentIndividualsAtom")]
-    public class SWRLDifferentIndividualsAtom : SWRLAtom
+    public sealed class SWRLDifferentIndividualsAtom : SWRLAtom
     {
         internal static readonly OWLExpression DifferentFrom = new OWLExpression { ExpressionIRI = RDFVocabulary.OWL.DIFFERENT_FROM };
 

@@ -23,7 +23,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectUnionOf")]
-    public class OWLObjectUnionOf : OWLClassExpression
+    public sealed class OWLObjectUnionOf : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLClassExpression

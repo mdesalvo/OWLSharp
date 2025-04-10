@@ -21,7 +21,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectInverseOf")]
-    public class OWLObjectInverseOf : OWLObjectPropertyExpression
+    public sealed class OWLObjectInverseOf : OWLObjectPropertyExpression
     {
         #region Properties
         [XmlElement]

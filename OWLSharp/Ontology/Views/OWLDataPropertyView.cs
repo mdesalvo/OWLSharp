@@ -21,13 +21,13 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
-    public class OWLDataPropertyView
+    public sealed class OWLDataPropertyView
     {
         #region Properties
-        public OWLDataProperty DataProperty { get; internal set; }
-        internal string DataPropertyIRI { get; set; }
+        public OWLDataProperty DataProperty { get; }
+        internal string DataPropertyIRI { get; }
 
-        public OWLOntology Ontology { get; internal set; }
+        public OWLOntology Ontology { get; }
         #endregion
 
         #region Ctors

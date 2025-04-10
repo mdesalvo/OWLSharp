@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DatatypeRestriction")]
-    public class OWLDatatypeRestriction : OWLDataRangeExpression
+    public sealed class OWLDatatypeRestriction : OWLDataRangeExpression
     {
         #region Properties
         [XmlElement(Order=1)]

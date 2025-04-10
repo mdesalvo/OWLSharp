@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Class")]
-    public class OWLClass : OWLClassExpression, IOWLEntity
+    public sealed class OWLClass : OWLClassExpression, IOWLEntity
     {
         #region Properties
         [XmlAttribute("IRI", DataType="anyURI")]

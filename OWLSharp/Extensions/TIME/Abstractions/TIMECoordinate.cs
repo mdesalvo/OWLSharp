@@ -19,7 +19,7 @@ using System;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMECoordinate : IComparable<TIMECoordinate>, IEquatable<TIMECoordinate>
+    public sealed class TIMECoordinate : IComparable<TIMECoordinate>, IEquatable<TIMECoordinate>
     {
         #region Built-Ins
         public static readonly TIMECoordinate Zero = new TIMECoordinate(0, 0, 0, 0, 0, 0);
@@ -139,7 +139,7 @@ namespace OWLSharp.Extensions.TIME
         #endregion
     }
 
-    public class TIMECoordinateMetadata
+    public sealed class TIMECoordinateMetadata
     {
         #region Properties
         public RDFResource TRS { get; internal set; }

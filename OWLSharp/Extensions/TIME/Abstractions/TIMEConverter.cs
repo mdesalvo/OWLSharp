@@ -239,7 +239,7 @@ namespace OWLSharp.Extensions.TIME
             TIMECalendarReferenceSystem inexactCalendarTRS = new TIMECalendarReferenceSystem(calendarTRS,
                 new TIMECalendarReferenceSystemMetrics(calendarTRS.Metrics.SecondsInMinute, calendarTRS.Metrics.MinutesInHour, calendarTRS.Metrics.HoursInDay, calendarTRS.Metrics.Months))
                 {
-                    Metrics = { HasExactMetric = false }
+                    Metrics = { }
                 };
 
             return ExtentFromDuration(timeExtentSeconds, TIMEUnit.Second, inexactCalendarTRS);

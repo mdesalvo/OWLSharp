@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("AnonymousIndividual")]
-    public class OWLAnonymousIndividual : OWLIndividualExpression
+    public sealed class OWLAnonymousIndividual : OWLIndividualExpression
     {
         #region Properties
         [XmlAttribute("nodeID", DataType="NCName")]

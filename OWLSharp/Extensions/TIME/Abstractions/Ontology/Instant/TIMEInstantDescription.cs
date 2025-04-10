@@ -16,10 +16,10 @@ using System;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEInstantDescription : RDFResource, IEquatable<TIMEInstantDescription>, IComparable<TIMEInstantDescription>
+    public sealed class TIMEInstantDescription : RDFResource, IEquatable<TIMEInstantDescription>, IComparable<TIMEInstantDescription>
     {
         #region Properties
-        public TIMECoordinate Coordinate { get; internal set; }
+        public TIMECoordinate Coordinate { get; }
         #endregion
 
         #region Ctors

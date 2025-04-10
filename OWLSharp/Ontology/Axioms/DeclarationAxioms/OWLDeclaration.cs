@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Declaration")]
-    public class OWLDeclaration : OWLAxiom
+    public sealed class OWLDeclaration : OWLAxiom
     {
         #region Properties
         //Register here all derived types of OWLExpression allowed for declaration

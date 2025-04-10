@@ -18,10 +18,10 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Ontology
 {
-    public class OWLOntologyView
+    public sealed class OWLOntologyView
     {
         #region Properties
-        public OWLOntology Ontology { get; internal set; }
+        public OWLOntology Ontology { get; }
         #endregion
 
         #region Ctors

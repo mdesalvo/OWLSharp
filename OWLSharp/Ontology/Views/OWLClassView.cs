@@ -21,13 +21,13 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
-    public class OWLClassView
+    public sealed class OWLClassView
     {
         #region Properties
-        public OWLClass Class { get; internal set; }
-        internal string ClassIRI { get; set; }
+        public OWLClass Class { get; }
+        internal string ClassIRI { get; }
 
-        public OWLOntology Ontology { get; internal set; }
+        public OWLOntology Ontology { get; }
         #endregion
 
         #region Ctors

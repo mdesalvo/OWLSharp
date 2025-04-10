@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("InverseFunctionalObjectProperty")]
-    public class OWLInverseFunctionalObjectProperty : OWLObjectPropertyAxiom
+    public sealed class OWLInverseFunctionalObjectProperty : OWLObjectPropertyAxiom
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression

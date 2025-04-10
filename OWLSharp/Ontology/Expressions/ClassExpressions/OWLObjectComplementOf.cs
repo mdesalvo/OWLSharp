@@ -21,7 +21,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectComplementOf")]
-    public class OWLObjectComplementOf : OWLClassExpression
+    public sealed class OWLObjectComplementOf : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLClassExpression

@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Body")]
-    public class SWRLAntecedent
+    public sealed class SWRLAntecedent
     {
         #region Properties
         [XmlElement(typeof(SWRLAnnotationPropertyAtom), ElementName="AnnotationPropertyAtom")]

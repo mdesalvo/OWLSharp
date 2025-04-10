@@ -13,13 +13,13 @@
 
 namespace OWLSharp.Validator
 {
-    public class OWLIssue
+    public sealed class OWLIssue
     {
         #region Properties
-        public OWLEnums.OWLIssueSeverity Severity { get; internal set; }
-        public string RuleName { get; internal set; }
-        public string Description { get; internal set; }
-        public string Suggestion { get; internal set; }
+        public OWLEnums.OWLIssueSeverity Severity { get; }
+        public string RuleName { get; }
+        public string Description { get; }
+        public string Suggestion { get; }
         #endregion
 
         #region Ctors

@@ -22,11 +22,11 @@ using System.Linq;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEOrdinalReferenceSystem : TIMEReferenceSystem
+    public sealed class TIMEOrdinalReferenceSystem : TIMEReferenceSystem
     {
         #region Properties
         internal static OWLOntology THORSOntology { get; set; }
-        public OWLOntology Ontology { get; internal set; }
+        public OWLOntology Ontology { get; }
         #endregion
 
         #region Ctors

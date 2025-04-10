@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("SameIndividualAtom")]
-    public class SWRLSameIndividualAtom : SWRLAtom
+    public sealed class SWRLSameIndividualAtom : SWRLAtom
     {
         internal static readonly OWLExpression SameAs = new OWLExpression { ExpressionIRI = RDFVocabulary.OWL.SAME_AS };
 

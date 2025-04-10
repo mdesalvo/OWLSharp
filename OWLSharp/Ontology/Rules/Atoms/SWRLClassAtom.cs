@@ -24,7 +24,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ClassAtom")]
-    public class SWRLClassAtom : SWRLAtom
+    public sealed class SWRLClassAtom : SWRLAtom
     {
         #region Properties
         [XmlIgnore]

@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DisjointClasses")]
-    public class OWLDisjointClasses : OWLClassAxiom
+    public sealed class OWLDisjointClasses : OWLClassAxiom
     {
         #region Properties
         //Register here all derived types of OWLClassExpression

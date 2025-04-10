@@ -45,7 +45,7 @@ namespace OWLSharp.Extensions.GEO
         #endregion
     }
 
-    public class GEOPoint : GEOEntity
+    public sealed class GEOPoint : GEOEntity
     {
         #region Ctors
         public GEOPoint(RDFResource geoEntityUri, (double longitude, double latitude) wgs84Coordinate)
@@ -63,7 +63,7 @@ namespace OWLSharp.Extensions.GEO
         #endregion
     }
 
-    public class GEOLine : GEOEntity
+    public sealed class GEOLine : GEOEntity
     {
         #region Ctors
         public GEOLine(RDFResource geoEntityUri, (double longitude, double latitude)[] wgs84Coordinates)
@@ -85,7 +85,7 @@ namespace OWLSharp.Extensions.GEO
         #endregion
     }
 
-    public class GEOArea : GEOEntity
+    public sealed class GEOArea : GEOEntity
     {
         #region Ctors
         public GEOArea(RDFResource geoEntityUri, (double longitude, double latitude)[] wgs84Coordinates)

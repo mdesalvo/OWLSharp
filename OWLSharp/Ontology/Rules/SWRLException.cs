@@ -18,7 +18,7 @@ using System;
 
 namespace OWLSharp.Ontology
 {
-    public class SWRLException : Exception
+    public sealed class SWRLException : Exception
     {
         #region Ctors
         public SWRLException() { }

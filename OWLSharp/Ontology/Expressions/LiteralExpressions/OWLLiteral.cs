@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Literal")]
-    public class OWLLiteral : OWLLiteralExpression
+    public sealed class OWLLiteral : OWLLiteralExpression
     {
         #region Properties
         [XmlAttribute("datatypeIRI", DataType="anyURI")]

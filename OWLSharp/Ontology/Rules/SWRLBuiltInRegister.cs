@@ -22,12 +22,14 @@ namespace OWLSharp.Ontology
     public sealed class SWRLBuiltInRegister : IEnumerable<SWRLBuiltIn>
     {
         #region Properties
-        public static SWRLBuiltInRegister Instance { get; internal set; }
+        public static SWRLBuiltInRegister Instance { get; }
         internal List<SWRLBuiltIn> Register { get; set; }
 
-        public static int BuiltInsCount => Instance.Register.Count;
+        public static int BuiltInsCount
+            => Instance.Register.Count;
 
-        public static IEnumerator<SWRLBuiltIn> BuiltInsEnumerator => Instance.Register.GetEnumerator();
+        public static IEnumerator<SWRLBuiltIn> BuiltInsEnumerator
+            => Instance.Register.GetEnumerator();
         #endregion
 
         #region Ctors

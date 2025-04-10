@@ -23,7 +23,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DataOneOf")]
-    public class OWLDataOneOf : OWLDataRangeExpression
+    public sealed class OWLDataOneOf : OWLDataRangeExpression
     {
         #region Properties
         [XmlElement(ElementName="Literal")]

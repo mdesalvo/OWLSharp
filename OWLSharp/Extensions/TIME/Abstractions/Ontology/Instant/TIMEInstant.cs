@@ -16,7 +16,7 @@ using System;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEInstant : TIMEEntity
+    public sealed class TIMEInstant : TIMEEntity
     {
         #region Properties
         public DateTime? DateTime { get; internal set; }

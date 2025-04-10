@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("SameIndividual")]
-    public class OWLSameIndividual : OWLAssertionAxiom
+    public sealed class OWLSameIndividual : OWLAssertionAxiom
     {
         #region Properties
         //Register here all derived types of OWLIndividualExpression

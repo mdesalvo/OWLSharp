@@ -20,13 +20,13 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Ontology
 {
-    public class OWLNamedIndividualView
+    public sealed class OWLNamedIndividualView
     {
         #region Properties
-        public OWLNamedIndividual NamedIndividual { get; internal set; }
-        internal string NamedIndividualIRI { get; set; }
+        public OWLNamedIndividual NamedIndividual { get; }
+        internal string NamedIndividualIRI { get; }
 
-        public OWLOntology Ontology { get; internal set; }
+        public OWLOntology Ontology { get; }
         #endregion
 
         #region Ctors

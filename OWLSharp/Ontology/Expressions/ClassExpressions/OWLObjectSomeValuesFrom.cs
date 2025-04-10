@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectSomeValuesFrom")]
-    public class OWLObjectSomeValuesFrom : OWLClassExpression
+    public sealed class OWLObjectSomeValuesFrom : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression

@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DataRangeAtom")]
-    public class SWRLDataRangeAtom : SWRLAtom
+    public sealed class SWRLDataRangeAtom : SWRLAtom
     {
         #region Ctors
         internal SWRLDataRangeAtom() { }

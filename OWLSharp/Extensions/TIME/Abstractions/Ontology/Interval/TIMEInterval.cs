@@ -19,7 +19,7 @@ using System;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEInterval : TIMEEntity
+    public sealed class TIMEInterval : TIMEEntity
     {
         #region Properties
         public TimeSpan? TimeSpan { get; internal set; }

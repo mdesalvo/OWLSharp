@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Prefix")]
-    public class OWLPrefix
+    public sealed class OWLPrefix
     {
         #region Properties
         [XmlAttribute("name", DataType="NCName")]

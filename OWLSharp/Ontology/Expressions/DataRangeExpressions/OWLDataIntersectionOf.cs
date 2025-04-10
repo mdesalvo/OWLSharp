@@ -23,7 +23,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DataIntersectionOf")]
-    public class OWLDataIntersectionOf : OWLDataRangeExpression
+    public sealed class OWLDataIntersectionOf : OWLDataRangeExpression
     {
         #region Properties
         //Register here all derived types of OWLDataRangeExpression

@@ -21,7 +21,7 @@ using RDFSharp.Model;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DataComplementOf")]
-    public class OWLDataComplementOf : OWLDataRangeExpression
+    public sealed class OWLDataComplementOf : OWLDataRangeExpression
     {
         #region Properties
         //Register here all derived types of OWLDataRangeExpression

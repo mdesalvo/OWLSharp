@@ -19,7 +19,7 @@ using System;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEExtent : IComparable<TIMEExtent>, IEquatable<TIMEExtent>
+    public sealed class TIMEExtent : IComparable<TIMEExtent>, IEquatable<TIMEExtent>
     {
         #region Built-Ins
         public static readonly TIMEExtent Zero = new TIMEExtent(0, 0, 0, 0, 0, 0, 0);
@@ -140,10 +140,10 @@ namespace OWLSharp.Extensions.TIME
         #endregion
     }
 
-    public class TIMEExtentMetadata
+    public sealed class TIMEExtentMetadata
     {
         #region Properties
-        public RDFResource TRS { get; internal set; }
+        public RDFResource TRS { get; }
         #endregion
 
         #region Ctors

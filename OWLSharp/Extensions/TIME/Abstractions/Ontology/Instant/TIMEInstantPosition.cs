@@ -15,14 +15,14 @@ using RDFSharp.Model;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMEInstantPosition : RDFResource
+    public sealed class TIMEInstantPosition : RDFResource
     {
         #region Properties
-        public RDFResource TRS { get; set; }
+        public RDFResource TRS { get; }
 
-        public double NumericValue { get; set; }
+        public double NumericValue { get; }
 
-        public RDFResource NominalValue { get; set; }
+        public RDFResource NominalValue { get; }
 
         public TIMEIntervalDuration PositionalUncertainty { get; set; }
 

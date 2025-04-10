@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DataExactCardinality")]
-    public class OWLDataExactCardinality : OWLClassExpression
+    public sealed class OWLDataExactCardinality : OWLClassExpression
     {
         #region Properties
         [XmlElement(ElementName="DataProperty", Order=1)]

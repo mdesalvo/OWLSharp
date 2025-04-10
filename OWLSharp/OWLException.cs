@@ -18,7 +18,7 @@ using System;
 
 namespace OWLSharp
 {
-    public class OWLException : Exception
+    public sealed class OWLException : Exception
     {
         #region Ctors
         public OWLException() { }

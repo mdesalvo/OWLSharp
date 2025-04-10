@@ -34,7 +34,7 @@ namespace OWLSharp.Ontology
     //Derived
 
     [XmlRoot("NamedIndividual")]
-    public class SWRLIndividualArgument : SWRLArgument
+    public sealed class SWRLIndividualArgument : SWRLArgument
     {
         #region Properties
         [XmlAttribute("IRI", DataType="anyURI")]
@@ -68,7 +68,7 @@ namespace OWLSharp.Ontology
     }
 
     [XmlRoot("Literal")]
-    public class SWRLLiteralArgument : SWRLArgument
+    public sealed class SWRLLiteralArgument : SWRLArgument
     {
         #region Properties
         [XmlAttribute("datatypeIRI", DataType="anyURI")]
@@ -108,7 +108,7 @@ namespace OWLSharp.Ontology
     }
 
     [XmlRoot("Variable")]
-    public class SWRLVariableArgument : SWRLArgument
+    public sealed class SWRLVariableArgument : SWRLArgument
     {
         #region Properties
         [XmlAttribute("IRI", DataType="anyURI")]

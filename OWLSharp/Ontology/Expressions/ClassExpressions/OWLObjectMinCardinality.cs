@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectMinCardinality")]
-    public class OWLObjectMinCardinality : OWLClassExpression
+    public sealed class OWLObjectMinCardinality : OWLClassExpression
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression

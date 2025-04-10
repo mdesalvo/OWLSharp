@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("NegativeDataPropertyAssertion")]
-    public class OWLNegativeDataPropertyAssertion : OWLAssertionAxiom
+    public sealed class OWLNegativeDataPropertyAssertion : OWLAssertionAxiom
     {
         #region Properties
         [XmlElement(ElementName="DataProperty", Order=2)]

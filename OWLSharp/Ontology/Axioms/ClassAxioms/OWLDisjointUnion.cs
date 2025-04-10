@@ -22,7 +22,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("DisjointUnion")]
-    public class OWLDisjointUnion : OWLClassAxiom
+    public sealed class OWLDisjointUnion : OWLClassAxiom
     {
         #region Properties
         [XmlElement("Class", Order=2)]

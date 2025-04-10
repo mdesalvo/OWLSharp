@@ -20,7 +20,7 @@ using System.Linq;
 
 namespace OWLSharp.Extensions.TIME
 {
-    public class TIMECalendarReferenceSystem : TIMEReferenceSystem
+    public sealed class TIMECalendarReferenceSystem : TIMEReferenceSystem
     {
         #region Built-Ins
         public static readonly TIMECalendarReferenceSystem Gregorian = new TIMECalendarReferenceSystem(
@@ -34,7 +34,7 @@ namespace OWLSharp.Extensions.TIME
         #endregion
 
         #region Properties
-        public TIMECalendarReferenceSystemMetrics Metrics { get; internal set; }
+        public TIMECalendarReferenceSystemMetrics Metrics { get; }
         #endregion
 
         #region Ctors
@@ -43,24 +43,24 @@ namespace OWLSharp.Extensions.TIME
         #endregion
     }
 
-    public class TIMECalendarReferenceSystemMetrics
+    public sealed class TIMECalendarReferenceSystemMetrics
     {
         #region Properties
-        public uint SecondsInMinute { get; internal set; }
+        public uint SecondsInMinute { get; }
 
-        public uint MinutesInHour { get; internal set; }
+        public uint MinutesInHour { get; }
 
-        public uint HoursInDay { get; internal set; }
+        public uint HoursInDay { get; }
 
-        public uint[] Months { get; internal set; }
+        public uint[] Months { get; }
 
         //Derived
 
-        public uint DaysInYear { get; internal set; }
+        public uint DaysInYear { get; }
 
-        public uint MonthsInYear { get; internal set; }
+        public uint MonthsInYear { get; }
 
-        public bool HasExactMetric { get; internal set; }
+        public bool HasExactMetric { get; }
 
         public Func<double,uint[]> LeapYearRule { get; internal set; }
         #endregion

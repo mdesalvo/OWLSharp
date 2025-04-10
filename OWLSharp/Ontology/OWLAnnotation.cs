@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Annotation")]
-    public class OWLAnnotation
+    public sealed class OWLAnnotation
     {
         #region Properties
         [XmlElement]

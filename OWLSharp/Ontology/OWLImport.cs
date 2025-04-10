@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("Import")]
-    public class OWLImport
+    public sealed class OWLImport
     {
         #region Properties
         [XmlText(DataType="anyURI")]

@@ -20,7 +20,7 @@ using System.Xml.Serialization;
 namespace OWLSharp.Ontology
 {
     [XmlRoot("ObjectPropertyDomain")]
-    public class OWLObjectPropertyDomain : OWLObjectPropertyAxiom
+    public sealed class OWLObjectPropertyDomain : OWLObjectPropertyAxiom
     {
         #region Properties
         //Register here all derived types of OWLObjectPropertyExpression
