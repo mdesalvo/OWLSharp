@@ -19,7 +19,7 @@ namespace OWLSharp.Reasoner
 {
     internal static class OWLDisjointDataPropertiesEntailmentRule
     {
-        internal static readonly string rulename = OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment);
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {

@@ -19,7 +19,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLDisjointDataPropertiesAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis);
         internal const string rulesugg = "There should not be disjoint data properties linking the same individual to the same literal within DataPropertyAssertion axioms!";
         internal const string rulesugg2 = "There should not be data properties belonging at the same time to DisjointDataProperties and SubDataPropertyOf/EquivalentDataProperties axioms!";
 

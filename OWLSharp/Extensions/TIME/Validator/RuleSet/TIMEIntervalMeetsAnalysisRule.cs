@@ -23,7 +23,7 @@ namespace OWLSharp.Extensions.TIME
 {
     internal class TIMEIntervalMeetsAnalysisRule
     {
-        internal static readonly string rulename = TIMEEnums.TIMEValidatorRules.IntervalMeetsAnalysis.ToString();
+        internal static readonly string rulename = nameof(TIMEEnums.TIMEValidatorRules.IntervalMeetsAnalysis);
         internal const string rulesugg = "There should not be OWL-TIME intervals having a clash in temporal relations (time:intervalMeets VS {0}";
 
         internal static async Task<List<OWLIssue>> ExecuteRuleAsync(OWLOntology ontology, Dictionary<string, List<OWLIndividualExpression>> cacheRegistry)

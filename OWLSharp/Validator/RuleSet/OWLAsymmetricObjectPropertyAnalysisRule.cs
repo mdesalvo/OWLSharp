@@ -20,7 +20,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLAsymmetricObjectPropertyAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.AsymmetricObjectPropertyAnalysis);
         internal const string rulesugg1 = "There should not be object properties at the same time asymmetric and symmetric!";
         internal const string rulesugg2 = "There should not be object assertions switching source/target individuals under the same asymmetric object property!";
 

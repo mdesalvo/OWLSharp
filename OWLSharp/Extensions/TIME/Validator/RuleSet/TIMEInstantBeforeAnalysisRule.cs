@@ -23,7 +23,7 @@ namespace OWLSharp.Extensions.TIME
 {
     internal class TIMEInstantBeforeAnalysisRule
     {
-        internal static readonly string rulename = TIMEEnums.TIMEValidatorRules.InstantBeforeAnalysis.ToString();
+        internal static readonly string rulename = nameof(TIMEEnums.TIMEValidatorRules.InstantBeforeAnalysis);
         internal const string rulesugg1 = "There should not be OWL-TIME instants having a clash in temporal relations (time:before VS time:before)";
         internal const string rulesugg2 = "There should not be OWL-TIME instants having a clash in temporal relations (time:before VS time:after)";
 

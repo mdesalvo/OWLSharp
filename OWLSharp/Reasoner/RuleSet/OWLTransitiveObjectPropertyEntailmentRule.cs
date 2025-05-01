@@ -21,7 +21,7 @@ namespace OWLSharp.Reasoner
     internal static class OWLTransitiveObjectPropertyEntailmentRule
     {
         private static readonly List<OWLIndividualExpression> EmptyIdvExprList = Enumerable.Empty<OWLIndividualExpression>().ToList();
-        internal static readonly string rulename = OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.TransitiveObjectPropertyEntailment);
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {
@@ -52,7 +52,7 @@ namespace OWLSharp.Reasoner
 
                 #region Analysis
                 //Iterate object assertions to find inference opportunities (transitive closure)
-                IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression);
+                List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups = trnObjPropAsns.GroupBy(asn => asn.SourceIndividualExpression).ToList();
                 foreach (IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion> trnObjPropAsnGroup in trnObjPropAsnGroups)
                 {
                     RDFResource trnObjPropAsnGroupKeyIRI = trnObjPropAsnGroup.Key.GetIRI();
@@ -70,8 +70,8 @@ namespace OWLSharp.Reasoner
             return inferences;
         }
 
-        internal static List<OWLIndividualExpression> FindTransitiveRelatedIndividuals(RDFResource trnObjPropAsnGroupKeyIRI,
-            IEnumerable<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups, HashSet<long> visitContext)
+        private static List<OWLIndividualExpression> FindTransitiveRelatedIndividuals(RDFResource trnObjPropAsnGroupKeyIRI,
+            List<IGrouping<OWLIndividualExpression, OWLObjectPropertyAssertion>> trnObjPropAsnGroups, HashSet<long> visitContext)
         {
             List<OWLIndividualExpression> transitiveRelatedIdvExprs = new List<OWLIndividualExpression>();
 

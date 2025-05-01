@@ -19,7 +19,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLEquivalentDataPropertiesAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.EquivalentDataPropertiesAnalysis);
         internal const string rulesugg = "There should not be data properties belonging at the same time to EquivalentDataProperties and SubDataPropertyOf/DisjointDataProperties axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)

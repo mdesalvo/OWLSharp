@@ -19,7 +19,7 @@ namespace OWLSharp.Reasoner
 {
     internal static class OWLEquivalentClassesEntailmentRule
     {
-        internal static readonly string rulename = OWLEnums.OWLReasonerRules.EquivalentClassesEntailment.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.EquivalentClassesEntailment);
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {

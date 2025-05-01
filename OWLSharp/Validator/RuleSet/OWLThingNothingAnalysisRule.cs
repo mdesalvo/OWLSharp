@@ -19,7 +19,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLThingNothingAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.ThingNothingAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ThingNothingAnalysis);
         internal const string rulesuggT1 = "There should not be any direct or indirect SubClassOf axioms having reserved owl:Thing class in position of subclass: this class should be the root entity!";
         internal const string rulesuggN1 = "There should not be any direct or indirect SubClassOf axioms having reserved owl:Nothing class in position of superclass: this class should be the bottom entity!";
         internal const string rulesuggN2 = "There should not be any direct or indirect ClassAssertion axioms having reserved owl:Nothing class: this class cannot contain individuals by design!";

@@ -23,7 +23,7 @@ namespace OWLSharp.Extensions.SKOS
 {
     internal class SKOSNarrowerConceptAnalysisRule
     {
-        internal static readonly string rulename = SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis.ToString();
+        internal static readonly string rulename = nameof(SKOSEnums.SKOSValidatorRules.NarrowerConceptAnalysis);
         internal const string rulesugg1A = "There should not be SKOS concepts having a clash in hierarchical relations (skos:narrower VS skos:broader)";
         internal const string rulesugg1B = "There should not be SKOS concepts having a clash in hierarchical relations (skos:narrowerTransitive VS skos:broaderTransitive)";
         internal const string rulesugg2A = "There should not be SKOS concepts having a clash in hierarchical VS associative relations (skos:narrower VS skos:related)";

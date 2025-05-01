@@ -19,7 +19,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLFunctionalDataPropertyAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.FunctionalDataPropertyAnalysis);
         internal const string rulesugg = "There should not be functional data properties linking the same individual to more than one literal within DataPropertyAssertion axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)

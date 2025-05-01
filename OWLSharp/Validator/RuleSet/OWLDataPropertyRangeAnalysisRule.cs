@@ -18,7 +18,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLDataPropertyRangeAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DataPropertyRangeAnalysis);
         internal const string rulesugg = "There should not be literals incompatible with range expression of data properties within DataPropertyAssertion axioms!";
 
         internal static List<OWLIssue> ExecuteRule(OWLOntology ontology, OWLValidatorContext validatorContext)

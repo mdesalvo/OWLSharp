@@ -18,7 +18,7 @@ namespace OWLSharp.Reasoner
 {
     internal static class OWLSymmetricObjectPropertyEntailmentRule
     {
-        internal static readonly string rulename = OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.SymmetricObjectPropertyEntailment);
 
         internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
         {

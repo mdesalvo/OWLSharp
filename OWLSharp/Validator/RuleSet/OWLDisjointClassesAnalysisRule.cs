@@ -20,7 +20,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLDisjointClassesAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.DisjointClassesAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.DisjointClassesAnalysis);
         internal const string rulesugg = "There should not be class expressions belonging at the same time to DisjointClasses and SubClassOf/EquivalentClasses axioms!";
         internal const string rulesugg2 = "There should not be class expressions belonging to a DisjointClasses axiom and having a class assertion on the same individual!";
 

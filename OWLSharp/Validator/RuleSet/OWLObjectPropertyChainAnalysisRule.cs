@@ -19,7 +19,7 @@ namespace OWLSharp.Validator
 {
     internal static class OWLObjectPropertyChainAnalysisRule
     {
-        internal static readonly string rulename = OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis.ToString();
+        internal static readonly string rulename = nameof(OWLEnums.OWLValidatorRules.ObjectPropertyChainAnalysis);
         internal const string rulesugg = "There should not be ObjectPropertyChain definitions related to object property expressions of type: AsymmetricObjectProperty, FunctionalObjectProperty, InverseFunctionalObjectProperty, IrreflexiveObjectProperty!";
         internal const string rulesugg2 = "There should not be ObjectPropertyChain definitions containing object property expressions defined as their super properties (this is a loop!)";
 
