@@ -4,3 +4,4 @@ OWLSharp.Test/bin/Debug/*
 OWLSharp.Test/bin/Release/*
 OWLSharp/obj/*
 OWLSharp.Test/obj/*
+/.vs
