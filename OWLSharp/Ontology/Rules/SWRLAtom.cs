@@ -96,7 +96,7 @@ namespace OWLSharp.Ontology
 
             //Predicate
             sb.Append(Predicate.ToSWRLString());
-            sb.Append("(");
+            sb.Append('(');
 
             switch (LeftArgument)
             {
@@ -129,7 +129,7 @@ namespace OWLSharp.Ontology
                 }
             }
 
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
         #endregion

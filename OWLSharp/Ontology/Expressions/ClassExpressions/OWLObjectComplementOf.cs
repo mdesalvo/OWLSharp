@@ -57,10 +57,10 @@ namespace OWLSharp.Ontology
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("(");
+            sb.Append('(');
             sb.Append("not");
             sb.Append(ClassExpression.ToSWRLString());
-            sb.Append(")");
+            sb.Append(')');
 
             return sb.ToString();
         }

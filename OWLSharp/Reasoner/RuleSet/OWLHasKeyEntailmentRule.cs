@@ -58,7 +58,7 @@ namespace OWLSharp.Reasoner
                 RDFResource idvExprIRI = idvExpr.GetIRI();
 
                 #region Object Keys
-                if (hasKeyAxiom.ObjectPropertyExpressions.Count(opex => opex is OWLObjectProperty) > 0)
+                if (hasKeyAxiom.ObjectPropertyExpressions.Any(opex => opex is OWLObjectProperty))
                 {
                     //Calculate the object key values of the current individual
                     StringBuilder objSB = new StringBuilder();

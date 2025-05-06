@@ -510,7 +510,7 @@ namespace OWLSharp.Ontology
                 sb.Append(IsExtension ? "owlsharp:" : "swrlb:");
                 sb.Append(new Uri(IRI).GetShortUri());
             }
-            sb.Append("(");
+            sb.Append('(');
 
             //Arguments
             for (int i=0; i<Arguments.Count; i++)
@@ -532,7 +532,7 @@ namespace OWLSharp.Ontology
                 }
             }
 
-            sb.Append(")");
+            sb.Append(')');
             return sb.ToString();
         }
         #endregion
