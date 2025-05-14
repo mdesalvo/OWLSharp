@@ -84,7 +84,6 @@ public class SWRLObjectPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-
         Assert.IsTrue(string.Equals("knows(?P,?Q)", atom.ToString()));
     }
 
@@ -95,7 +94,6 @@ public class SWRLObjectPropertyAtomTest
             new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS),
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLIndividualArgument(new RDFResource("ex:Mark")));
-
 
         Assert.IsTrue(string.Equals("knows(?P,ex:Mark)", atom.ToString()));
     }

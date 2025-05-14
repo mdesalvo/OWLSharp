@@ -53,9 +53,7 @@ namespace OWLSharp.Ontology
             expressionIRI = expressionIRI ?? GetIRI();
 
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.INVERSE_OF, ObjectProperty.GetIRI()));
-            graph = graph.UnionWith(ObjectProperty.ToRDFGraph());
-
-            return graph;
+            return graph.UnionWith(ObjectProperty.ToRDFGraph());
         }
         #endregion
     }

@@ -73,9 +73,7 @@ namespace OWLSharp.Ontology
             RDFResource clsExpressionIRI = ClassExpression.GetIRI();
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, clsExpressionIRI));
-            graph = graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
-
-            return graph;
+            return graph.UnionWith(ClassExpression.ToRDFGraph(clsExpressionIRI));
         }
         #endregion
     }

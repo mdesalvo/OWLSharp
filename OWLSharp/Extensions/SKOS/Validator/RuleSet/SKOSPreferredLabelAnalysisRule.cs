@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
-    internal class SKOSPreferredLabelAnalysisRule
+    internal static class SKOSPreferredLabelAnalysisRule
     {
         internal static readonly string rulename = nameof(SKOSEnums.SKOSValidatorRules.PreferredLabelAnalysis);
         internal const string rulesugg1 = "There should not be SKOS concepts having more than one occurrence of the same language tag in values of skos:prefLabel data annotations.";

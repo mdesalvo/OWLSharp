@@ -68,7 +68,7 @@ namespace OWLSharp.Ontology
 
         #region Interfaces
         public override string ToString()
-            => string.Concat(Antecedent, " -> ", Consequent);
+            => $"{Antecedent} -> {Consequent}";
         #endregion
 
         #region Methods

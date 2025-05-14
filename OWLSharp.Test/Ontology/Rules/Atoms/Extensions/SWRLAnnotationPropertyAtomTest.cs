@@ -84,7 +84,6 @@ public class SWRLAnnotationPropertyAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-
         Assert.IsTrue(string.Equals("age(?P,?Q)", atom.ToString()));
     }
 
@@ -95,7 +94,6 @@ public class SWRLAnnotationPropertyAtomTest
             new OWLAnnotationProperty(RDFVocabulary.FOAF.AGE),
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLLiteralArgument(new RDFPlainLiteral("hello","en-US--RTL")));
-
 
         Assert.IsTrue(string.Equals("age(?P,\"hello\"@EN-US--RTL)", atom.ToString()));
     }

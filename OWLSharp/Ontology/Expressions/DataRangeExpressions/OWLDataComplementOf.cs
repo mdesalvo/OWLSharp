@@ -61,9 +61,7 @@ namespace OWLSharp.Ontology
             RDFResource drExpressionIRI = DataRangeExpression.GetIRI();
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATA_RANGE));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.COMPLEMENT_OF, drExpressionIRI));
-            graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
-
-            return graph;
+            return graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
         }
         #endregion
     }

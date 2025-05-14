@@ -69,9 +69,7 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ALL_VALUES_FROM, drExpressionIRI));
             graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
-            graph = graph.UnionWith(DataProperty.ToRDFGraph());
-
-            return graph;
+            return graph.UnionWith(DataProperty.ToRDFGraph());
         }
         #endregion
     }

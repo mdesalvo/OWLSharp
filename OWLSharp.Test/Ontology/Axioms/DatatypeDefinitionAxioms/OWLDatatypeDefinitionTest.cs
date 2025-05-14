@@ -19,7 +19,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Ontology;
 using RDFSharp.Model;
 
-
 namespace OWLSharp.Test.Ontology;
 
 [TestClass]
@@ -180,7 +179,6 @@ public class OWLDatatypeDefinitionTest
                       && string.Equals(dtDef1.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
                       && string.Equals(dtDef1.Annotations.Single().ValueLiteral.Value, "Steve")
                       && string.Equals(dtDef1.Annotations.Single().ValueLiteral.Language, "EN"));
-
     }
 
     [TestMethod]

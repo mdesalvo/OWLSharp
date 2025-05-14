@@ -66,7 +66,6 @@ public class SWRLReplaceBuiltInTest
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#replace\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Variable IRI=\"urn:swrl:var#Z\" /><Variable IRI=\"urn:swrl:var#Q\" /></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
     }
 
-
     [TestMethod]
     public void ShouldDeserializeReplaceBuiltIn()
     {

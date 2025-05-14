@@ -900,7 +900,6 @@ public class TIMEIntervalHelperTest
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningE"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                 new TIMEInstant(new RDFResource("ex:timeIntvEndE"))));
 
-
         Assert.IsFalse(TIMEIntervalHelper.CheckFinishedBy(timeOntology, new RDFResource("ex:timeIntvA"), new RDFResource("ex:timeIntvE")));
         Assert.IsFalse(TIMEIntervalHelper.CheckFinishedBy(timeOntology, new RDFResource("ex:timeIntvB"), new RDFResource("ex:timeIntvE")));
         Assert.IsFalse(TIMEIntervalHelper.CheckFinishedBy(timeOntology, new RDFResource("ex:timeIntvC"), new RDFResource("ex:timeIntvE")));
@@ -1006,7 +1005,6 @@ public class TIMEIntervalHelperTest
             new TIMEInterval(new RDFResource("ex:timeIntvE"),
                 new TIMEInstant(new RDFResource("ex:timeIntvBeginningE"), DateTime.Parse("2023-04-30T20:47:15Z").ToUniversalTime()),
                 new TIMEInstant(new RDFResource("ex:timeIntvEndE"), DateTime.Parse("2023-05-02T20:47:15Z").ToUniversalTime())));
-
 
         Assert.IsFalse(TIMEIntervalHelper.CheckFinishes(timeOntology, new RDFResource("ex:timeIntvA"), new RDFResource("ex:timeIntvE")));
         Assert.IsFalse(TIMEIntervalHelper.CheckFinishes(timeOntology, new RDFResource("ex:timeIntvB"), new RDFResource("ex:timeIntvE")));

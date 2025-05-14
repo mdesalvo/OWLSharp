@@ -80,9 +80,7 @@ namespace OWLSharp.Ontology
                 graph = graph.UnionWith(atom.ToRDFGraph(antecedentElements));
             foreach (SWRLBuiltIn builtIn in BuiltIns)
                 graph = graph.UnionWith(builtIn.ToRDFGraph(antecedentElements));
-            graph = graph.UnionWith(SWRLRule.ReifySWRLCollection(antecedentElements, true));
-
-            return graph;
+            return graph.UnionWith(SWRLRule.ReifySWRLCollection(antecedentElements, true));
         }
         #endregion
     }

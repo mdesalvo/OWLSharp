@@ -41,7 +41,6 @@ namespace OWLSharp.Ontology
         internal OWLDataSomeValuesFrom() { }
         public OWLDataSomeValuesFrom(OWLDataProperty dataProperty, OWLDataRangeExpression datarangeExpression)
         {
-
             DataProperty = dataProperty ?? throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"dataProperty\" parameter is null");
             DataRangeExpression = datarangeExpression ?? throw new OWLException("Cannot create OWLDataSomeValuesFrom because given \"datarangeExpression\" parameter is null");
         }
@@ -71,9 +70,7 @@ namespace OWLSharp.Ontology
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.SOME_VALUES_FROM, drExpressionIRI));
             graph = graph.UnionWith(DataRangeExpression.ToRDFGraph(drExpressionIRI));
             graph.AddTriple(new RDFTriple(expressionIRI, RDFVocabulary.OWL.ON_PROPERTY, DataProperty.GetIRI()));
-            graph = graph.UnionWith(DataProperty.ToRDFGraph());
-
-            return graph;
+            return graph.UnionWith(DataProperty.ToRDFGraph());
         }
         #endregion
     }

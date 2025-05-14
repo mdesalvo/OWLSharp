@@ -72,7 +72,6 @@ public class SWRLArgumentTest
         Assert.IsTrue(string.Equals("hello^^http://www.w3.org/2001/XMLSchema#string", argPLT.ToString()));
         Assert.IsTrue(argPLT.GetLiteral().Equals(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)));
         Assert.IsTrue(string.Equals("<Literal datatypeIRI=\"http://www.w3.org/2001/XMLSchema#string\">hello</Literal>", OWLSerializer.SerializeObject(argPLT)));
-
     }
 
     [TestMethod]

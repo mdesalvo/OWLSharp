@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.TIME
 {
-    internal class TIMEIntervalStartsAnalysisRule
+    internal static class TIMEIntervalStartsAnalysisRule
     {
         internal static readonly string rulename = nameof(TIMEEnums.TIMEValidatorRules.IntervalStartsAnalysis);
         internal const string rulesugg = "There should not be OWL-TIME intervals having a clash in temporal relations (time:intervalStarts VS {0}";

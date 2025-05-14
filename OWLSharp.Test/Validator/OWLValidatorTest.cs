@@ -515,7 +515,6 @@ public class OWLValidatorTest
         OWLValidator validator = new OWLValidator { Rules = [OWLEnums.OWLValidatorRules.DisjointDataPropertiesAnalysis] };
         List<OWLIssue> issues = await validator.ApplyToOntologyAsync(ontology);
 
-
         Assert.IsNotNull(issues);
         Assert.AreEqual(1, issues.Count);
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));

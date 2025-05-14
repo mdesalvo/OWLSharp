@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
-    internal class SKOSRelatedConceptAnalysisRule
+    internal static class SKOSRelatedConceptAnalysisRule
     {
         internal static readonly string rulename = nameof(SKOSEnums.SKOSValidatorRules.RelatedConceptAnalysis);
         internal const string rulesugg1A = "There should not be SKOS concepts having a clash in associative VS hierarchical relations (skos:related VS skos:broader)";

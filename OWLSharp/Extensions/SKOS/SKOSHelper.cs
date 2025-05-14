@@ -164,10 +164,10 @@ namespace OWLSharp.Extensions.SKOS
 
         #region Analyzer
         public static bool CheckHasConceptScheme(this OWLOntology ontology, RDFResource conceptScheme)
-            => conceptScheme != null && ontology != null && ontology.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)).Any(cs => cs.GetIRI().Equals(conceptScheme));
+            => conceptScheme != null && ontology?.GetIndividualsOf(new OWLClass(RDFVocabulary.SKOS.CONCEPT_SCHEME)).Any(cs => cs.GetIRI().Equals(conceptScheme)) == true;
 
         public static bool CheckHasConcept(this OWLOntology ontology, RDFResource conceptScheme, RDFResource concept)
-            => conceptScheme != null && concept != null && ontology != null && ontology.GetConceptsInScheme(conceptScheme).Any(c => c.Equals(concept));
+            => conceptScheme != null && concept != null && ontology?.GetConceptsInScheme(conceptScheme).Any(c => c.Equals(concept)) == true;
         public static List<RDFResource> GetConceptsInScheme(this OWLOntology ontology, RDFResource skosConceptScheme)
         {
             List<RDFResource> conceptsInScheme = new List<RDFResource>();
@@ -196,7 +196,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasCollection(this OWLOntology ontology, RDFResource conceptScheme, RDFResource collection)
-            => conceptScheme != null && collection != null && ontology != null && ontology.GetCollectionsInScheme(conceptScheme).Any(cl => cl.Equals(collection));
+            => conceptScheme != null && collection != null && ontology?.GetCollectionsInScheme(conceptScheme).Any(cl => cl.Equals(collection)) == true;
         public static List<RDFResource> GetCollectionsInScheme(this OWLOntology ontology, RDFResource skosConceptScheme)
         {
             List<RDFResource> collectionsInScheme = new List<RDFResource>();
@@ -219,7 +219,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasBroaderConcept(this OWLOntology ontology, RDFResource childConcept, RDFResource parentConcept)
-            => childConcept != null && parentConcept != null && ontology != null && ontology.GetBroaderConcepts(childConcept).Any(concept => concept.Equals(parentConcept));
+            => childConcept != null && parentConcept != null && ontology?.GetBroaderConcepts(childConcept).Any(concept => concept.Equals(parentConcept)) == true;
         public static List<RDFResource> GetBroaderConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> broaderConcepts = new List<RDFResource>();
@@ -263,7 +263,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasNarrowerConcept(this OWLOntology ontology, RDFResource parentConcept, RDFResource childConcept)
-            => parentConcept != null && childConcept != null && ontology != null && ontology.GetNarrowerConcepts(parentConcept).Any(concept => concept.Equals(childConcept));
+            => parentConcept != null && childConcept != null && ontology?.GetNarrowerConcepts(parentConcept).Any(concept => concept.Equals(childConcept)) == true;
         public static List<RDFResource> GetNarrowerConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> narrowerConcepts = new List<RDFResource>();
@@ -307,7 +307,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasRelatedConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
-            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetRelatedConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+            => leftConcept != null && rightConcept != null && ontology?.GetRelatedConcepts(leftConcept).Any(concept => concept.Equals(rightConcept)) == true;
         public static List<RDFResource> GetRelatedConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> relatedConcepts = new List<RDFResource>();
@@ -329,7 +329,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasBroadMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
-            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetBroadMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+            => leftConcept != null && rightConcept != null && ontology?.GetBroadMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept)) == true;
         public static List<RDFResource> GetBroadMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> broadMatchConcepts = new List<RDFResource>();
@@ -353,7 +353,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasNarrowMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
-            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetNarrowMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+            => leftConcept != null && rightConcept != null && ontology?.GetNarrowMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept)) == true;
         public static List<RDFResource> GetNarrowMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> narrowMatchConcepts = new List<RDFResource>();
@@ -377,7 +377,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasCloseMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
-            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetCloseMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+            => leftConcept != null && rightConcept != null && ontology?.GetCloseMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept)) == true;
         public static List<RDFResource> GetCloseMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> closeMatchConcepts = new List<RDFResource>();
@@ -399,7 +399,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasExactMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
-            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetExactMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+            => leftConcept != null && rightConcept != null && ontology?.GetExactMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept)) == true;
         public static List<RDFResource> GetExactMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> exactMatchConcepts = new List<RDFResource>();
@@ -440,7 +440,7 @@ namespace OWLSharp.Extensions.SKOS
         }
 
         public static bool CheckHasRelatedMatchConcept(this OWLOntology ontology, RDFResource leftConcept, RDFResource rightConcept)
-            => leftConcept != null && rightConcept != null && ontology != null && ontology.GetRelatedMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept));
+            => leftConcept != null && rightConcept != null && ontology?.GetRelatedMatchConcepts(leftConcept).Any(concept => concept.Equals(rightConcept)) == true;
         public static List<RDFResource> GetRelatedMatchConcepts(this OWLOntology ontology, RDFResource skosConcept)
         {
             List<RDFResource> relatedMatchConcepts = new List<RDFResource>();

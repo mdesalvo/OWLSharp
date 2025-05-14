@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
-    internal class SKOSHiddenLabelAnalysisRule
+    internal static class SKOSHiddenLabelAnalysisRule
     {
         internal static readonly string rulename = nameof(SKOSEnums.SKOSValidatorRules.HiddenLabelAnalysis);
         internal const string rulesugg1 = "There should not be SKOS concepts having the same value for skos:hiddenLabel and skos:altLabel data annotations.";

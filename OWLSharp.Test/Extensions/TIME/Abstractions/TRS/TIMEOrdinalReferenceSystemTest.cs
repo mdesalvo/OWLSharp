@@ -29,7 +29,7 @@ public class TIMEOrdinalReferenceSystemTest
     internal static TIMEOrdinalReferenceSystem TestTRS { get; set; }
 
     [TestInitialize]
-    public void InitializeAsync()
+    public void Initialize()
         => TestTRS ??= new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
 
     #region Tests
@@ -326,7 +326,6 @@ public class TIMEOrdinalReferenceSystemTest
     public void ShouldThrowExceptionOnDeclaringReferencePointsBecauseLessThan2ReferencePoints()
         => Assert.ThrowsExactly<OWLException>(() => _ = new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors2"), TestTRS)
             .DeclareReferencePoints([new TIMEInstant(new RDFResource("ex:massExtinctionEvent"))]));
-
 
     [TestMethod]
     public void ShouldCheckHasEra()

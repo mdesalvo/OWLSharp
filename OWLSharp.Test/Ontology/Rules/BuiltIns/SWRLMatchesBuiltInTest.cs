@@ -91,7 +91,6 @@ public class SWRLMatchesBuiltInTest
         Assert.IsTrue(string.Equals("<BuiltInAtom IRI=\"http://www.w3.org/2003/11/swrlb#matches\"><Variable IRI=\"urn:swrl:var#X\" /><Variable IRI=\"urn:swrl:var#Y\" /><Literal>ismx</Literal></BuiltInAtom>", OWLSerializer.SerializeObject(builtin)));
     }
 
-
     [TestMethod]
     public void ShouldDeserializeMatchesBuiltIn()
     {

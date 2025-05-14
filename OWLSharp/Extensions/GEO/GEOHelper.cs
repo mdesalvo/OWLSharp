@@ -423,7 +423,7 @@ namespace OWLSharp.Extensions.GEO
             List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
             if (secondaryGeometries.Count > 0)
             {
-                Geometry centroidGeometryAZ = secondaryGeometries.First().Item2.Centroid;
+                Geometry centroidGeometryAZ = secondaryGeometries[0].Item2.Centroid;
                 Geometry centroidGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(centroidGeometryAZ);
                 return new RDFTypedLiteral(WKTWriter.Write(centroidGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -476,7 +476,7 @@ namespace OWLSharp.Extensions.GEO
             List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
             if (secondaryGeometries.Count > 0)
             {
-                Geometry boundaryGeometryAZ = secondaryGeometries.First().Item2.Boundary;
+                Geometry boundaryGeometryAZ = secondaryGeometries[0].Item2.Boundary;
                 Geometry boundaryGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(boundaryGeometryAZ);
                 return new RDFTypedLiteral(WKTWriter.Write(boundaryGeometryWGS84).Replace("LINEARRING", "LINESTRING"), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -529,7 +529,7 @@ namespace OWLSharp.Extensions.GEO
             List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
             if (secondaryGeometries.Count > 0)
             {
-                Geometry bufferGeometryAZ = secondaryGeometries.First().Item2.Buffer(bufferMeters);
+                Geometry bufferGeometryAZ = secondaryGeometries[0].Item2.Buffer(bufferMeters);
                 Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
                 return new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -582,7 +582,7 @@ namespace OWLSharp.Extensions.GEO
             List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
             if (secondaryGeometries.Count > 0)
             {
-                Geometry bufferGeometryAZ = secondaryGeometries.First().Item2.ConvexHull();
+                Geometry bufferGeometryAZ = secondaryGeometries[0].Item2.ConvexHull();
                 Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
                 return new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }
@@ -635,7 +635,7 @@ namespace OWLSharp.Extensions.GEO
             List<(Geometry, Geometry)> secondaryGeometries = await ontology.GetSecondaryGeometriesOfFeatureAsync(featureUri);
             if (secondaryGeometries.Count > 0)
             {
-                Geometry bufferGeometryAZ = secondaryGeometries.First().Item2.Envelope;
+                Geometry bufferGeometryAZ = secondaryGeometries[0].Item2.Envelope;
                 Geometry bufferGeometryWGS84 = RDFGeoConverter.GetWGS84GeometryFromLambertAzimuthal(bufferGeometryAZ);
                 return new RDFTypedLiteral(WKTWriter.Write(bufferGeometryWGS84), RDFModelEnums.RDFDatatypes.GEOSPARQL_WKT);
             }

@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 
 namespace OWLSharp.Extensions.SKOS
 {
-    internal class SKOSNotationAnalysisRule
+    internal static class SKOSNotationAnalysisRule
     {
         internal static readonly string rulename = nameof(SKOSEnums.SKOSValidatorRules.NotationAnalysis);
         internal const string rulesugg = "There should not be SKOS concepts sharing the same value for skos:Notation data relation under the same schema.";

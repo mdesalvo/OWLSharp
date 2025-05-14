@@ -79,7 +79,6 @@ public class SWRLSameIndividualAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-
         Assert.IsTrue(string.Equals("sameAs(?P,?Q)", atom.ToString()));
     }
 
@@ -89,7 +88,6 @@ public class SWRLSameIndividualAtomTest
         SWRLSameIndividualAtom atom = new SWRLSameIndividualAtom(
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLIndividualArgument(new RDFResource("ex:Mark")));
-
 
         Assert.IsTrue(string.Equals("sameAs(?P,ex:Mark)", atom.ToString()));
     }

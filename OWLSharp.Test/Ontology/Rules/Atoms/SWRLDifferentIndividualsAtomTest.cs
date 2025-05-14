@@ -79,7 +79,6 @@ public class SWRLDifferentIndividualsAtomTest
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLVariableArgument(new RDFVariable("?Q")));
 
-
         Assert.IsTrue(string.Equals("differentFrom(?P,?Q)", atom.ToString()));
     }
 
@@ -89,7 +88,6 @@ public class SWRLDifferentIndividualsAtomTest
         SWRLDifferentIndividualsAtom atom = new SWRLDifferentIndividualsAtom(
             new SWRLVariableArgument(new RDFVariable("?P")),
             new SWRLIndividualArgument(new RDFResource("ex:Mark")));
-
 
         Assert.IsTrue(string.Equals("differentFrom(?P,ex:Mark)", atom.ToString()));
     }

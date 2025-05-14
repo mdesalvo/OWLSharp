@@ -56,7 +56,6 @@ public class SWRLDataRangeAtomTest
                 new OWLLiteral(new RDFTypedLiteral("hello", RDFModelEnums.RDFDatatypes.XSD_STRING)) ]),
             new SWRLVariableArgument(new RDFVariable("?P")));
 
-
         Assert.IsTrue(string.Equals("({\"hello\",\"hello\"@EN-US,\"hello\"^^xsd:string})(?P)", atom.ToString()));
     }
 

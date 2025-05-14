@@ -57,7 +57,7 @@ namespace OWLSharp.Ontology
         #region Methods
         public override RDFResource GetIRI()
         {
-            if (ExpressionIRI == null || ExpressionIRI.IsBlank)
+            if (ExpressionIRI?.IsBlank != false)
             {
                 string iri = IRI;
                 if (string.IsNullOrEmpty(iri))

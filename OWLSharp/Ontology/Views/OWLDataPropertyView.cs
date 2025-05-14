@@ -88,8 +88,7 @@ namespace OWLSharp.Ontology
             => Task.Run(() => Ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>()
                                       .Any(ann => string.Equals(ann.SubjectIRI, DataPropertyIRI)
                                                        && ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.DEPRECATED)
-                                                     && ann.ValueLiteral != null
-                                                     && ann.ValueLiteral.GetLiteral().Equals(RDFTypedLiteral.True)));
+                                                     && ann.ValueLiteral?.GetLiteral().Equals(RDFTypedLiteral.True) == true));
 
         public Task<bool> IsFunctionalAsync()
             => Task.Run(() => Ontology.CheckHasFunctionalDataProperty(DataProperty));

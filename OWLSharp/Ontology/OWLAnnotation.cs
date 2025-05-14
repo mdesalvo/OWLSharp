@@ -74,9 +74,7 @@ namespace OWLSharp.Ontology
                 : new RDFTriple(axiomIRI, RDFVocabulary.OWL.ANNOTATED_TARGET, (RDFResource)axiomTriple.Object));
 
             //Axiom Annotation
-            graph = graph.UnionWith(ToRDFGraphInternal(axiomIRI));
-
-            return graph;
+            return graph.UnionWith(ToRDFGraphInternal(axiomIRI));
         }
         internal RDFGraph ToRDFGraphInternal(RDFResource axiomIRI)
         {

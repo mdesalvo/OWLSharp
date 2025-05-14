@@ -83,7 +83,6 @@ public class OWLDataHasValueTest
         Assert.IsTrue(string.Equals(dataHasValue.Literal.Language, "EN"));
     }
 
-
     [TestMethod]
     public void ShouldConvertDataHasValueToGraph()
     {

@@ -118,7 +118,6 @@ public class SWRLConsequentTest
                       && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
     }
 
-
     [TestMethod]
     public void ShouldExportConsequentToRDFGraph()
     {
