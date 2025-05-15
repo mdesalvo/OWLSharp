@@ -24,6 +24,66 @@ namespace OWLSharp.Ontology
     public static class OWLOntologyHelper
     {
         #region Methods
+        public static async Task<RDFAskQueryResult> ApplyToOntologyAsync(this RDFAskQuery askQuery, OWLOntology ontology, OWLReasoner reasoner=null)
+        {
+            #region Guards
+            if (askQuery == null)
+                throw new OWLException("Cannot apply SPARQL ASK query to ontology because given \"askQuery\" parameter is null");
+            if (ontology == null)
+                throw new OWLException("Cannot apply SPARQL ASK query to ontology because given \"ontology\" parameter is null");
+            #endregion
+
+            //Apply reasoner and integrate inferred axioms
+            if (reasoner != null)
+                await ApplyReasonerToOntologyAsync(ontology, reasoner);
+
+            //Export ontology to graph (with support for inferences and imports)
+            RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
+
+            //Apply query to graph and return results
+            return await askQuery.ApplyToGraphAsync(graph);
+        }
+
+        public static async Task<RDFConstructQueryResult> ApplyToOntologyAsync(this RDFConstructQuery constructQuery, OWLOntology ontology, OWLReasoner reasoner=null)
+        {
+            #region Guards
+            if (constructQuery == null)
+                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"constructQuery\" parameter is null");
+            if (ontology == null)
+                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"ontology\" parameter is null");
+            #endregion
+
+            //Apply reasoner and integrate inferred axioms
+            if (reasoner != null)
+                await ApplyReasonerToOntologyAsync(ontology, reasoner);
+
+            //Export ontology to graph (with support for inferences and imports)
+            RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
+
+            //Apply query to graph and return results
+            return await constructQuery.ApplyToGraphAsync(graph);
+        }
+
+        public static async Task<RDFDescribeQueryResult> ApplyToOntologyAsync(this RDFDescribeQuery describeQuery, OWLOntology ontology, OWLReasoner reasoner=null)
+        {
+            #region Guards
+            if (describeQuery == null)
+                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"describeQuery\" parameter is null");
+            if (ontology == null)
+                throw new OWLException("Cannot apply SPARQL CONSTRUCT query to ontology because given \"ontology\" parameter is null");
+            #endregion
+
+            //Apply reasoner and integrate inferred axioms
+            if (reasoner != null)
+                await ApplyReasonerToOntologyAsync(ontology, reasoner);
+
+            //Export ontology to graph (with support for inferences and imports)
+            RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
+
+            //Apply query to graph and return results
+            return await describeQuery.ApplyToGraphAsync(graph);
+        }
+
         public static async Task<RDFSelectQueryResult> ApplyToOntologyAsync(this RDFSelectQuery selectQuery, OWLOntology ontology, OWLReasoner reasoner=null)
         {
             #region Guards
@@ -35,33 +95,38 @@ namespace OWLSharp.Ontology
 
             //Apply reasoner and integrate inferred axioms
             if (reasoner != null)
-                foreach (OWLInference inference in await reasoner.ApplyToOntologyAsync(ontology))
-                {
-                    switch (inference.Axiom)
-                    {
-                        case OWLAssertionAxiom asnAx:
-                            ontology.DeclareAssertionAxiom(asnAx);
-                            break;
-                        case OWLClassAxiom clsAx:
-                            ontology.DeclareClassAxiom(clsAx);
-                            break;
-                        case OWLDataPropertyAxiom dpAx:
-                            ontology.DeclareDataPropertyAxiom(dpAx);
-                            break;
-                        case OWLObjectPropertyAxiom opAx:
-                            ontology.DeclareObjectPropertyAxiom(opAx);
-                            break;
-                        case OWLAnnotationAxiom annAx:
-                            ontology.DeclareAnnotationAxiom(annAx);
-                            break;
-                    }
-                }
+                await ApplyReasonerToOntologyAsync(ontology, reasoner);
 
             //Export ontology to graph (with support for inferences and imports)
             RDFGraph graph = await ontology.ToRDFGraphAsync(true,true);
 
             //Apply query to graph and return results
             return await selectQuery.ApplyToGraphAsync(graph);
+        }
+        #endregion
+
+        #region Utilities
+        private static async Task ApplyReasonerToOntologyAsync(this OWLOntology ontology, OWLReasoner reasoner)
+        {
+            foreach (OWLInference inference in await reasoner.ApplyToOntologyAsync(ontology))
+                switch (inference.Axiom)
+                {
+                    case OWLAssertionAxiom asnAx:
+                        ontology.DeclareAssertionAxiom(asnAx);
+                        break;
+                    case OWLClassAxiom clsAx:
+                        ontology.DeclareClassAxiom(clsAx);
+                        break;
+                    case OWLDataPropertyAxiom dpAx:
+                        ontology.DeclareDataPropertyAxiom(dpAx);
+                        break;
+                    case OWLObjectPropertyAxiom opAx:
+                        ontology.DeclareObjectPropertyAxiom(opAx);
+                        break;
+                    case OWLAnnotationAxiom annAx:
+                        ontology.DeclareAnnotationAxiom(annAx);
+                        break;
+                }
         }
         #endregion
     }
