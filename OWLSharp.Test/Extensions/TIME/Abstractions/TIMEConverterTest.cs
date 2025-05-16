@@ -27,11 +27,7 @@ public class TIMEConverterTest
     #region Tests
     [TestMethod]
     public void ShouldThrowExceptionOnGettingCalendarFromPositionBecauseNullPositionTRS()
-        => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.CoordinateFromPosition(25226354, null, TIMECalendarReferenceSystem.Gregorian));
-
-    [TestMethod]
-    public void ShouldThrowExceptionOnGettingCalendarFromPositionBecauseNullCalendarTRS()
-        => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.CoordinateFromPosition(25226354, TIMEPositionReferenceSystem.UnixTime, null));
+        => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.CoordinateFromPosition(25226354, null));
 
     [DataTestMethod]
     [DataRow(-413733671.4, 1956, 11, 21, 9, 58, 48)]
@@ -208,10 +204,6 @@ public class TIMEConverterTest
     public void ShouldThrowExceptionOnNormalizingCoordinateBecauseNullCoordinate()
         => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeCoordinate(null, TIMECalendarReferenceSystem.Gregorian));
 
-    [TestMethod]
-    public void ShouldThrowExceptionOnNormalizingCoordinateBecauseNullCalendarTRS()
-        => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeCoordinate(new TIMECoordinate(), null));
-
     [DataTestMethod]
     [DataRow(1983, 2, 10, 15, 30, 30, 1983, 2, 10, 15, 30, 30)]
     [DataRow(1983, 1, 31, 15, 30, 30, 1983, 1, 31, 15, 30, 30)]
@@ -306,10 +298,6 @@ public class TIMEConverterTest
     [TestMethod]
     public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNullUnitType()
         => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.ExtentFromDuration(25226354, null, TIMECalendarReferenceSystem.Gregorian));
-
-    [TestMethod]
-    public void ShouldThrowExceptionOnGettingExtentFromDurationBecauseNullCalendarTRS()
-        => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.ExtentFromDuration(25226354, TIMEUnit.MarsSol, null));
 
     [DataTestMethod]
     //seconds
@@ -545,10 +533,6 @@ public class TIMEConverterTest
     [TestMethod]
     public void ShouldThrowExceptionOnNormalizingExtentBecauseNullExtent()
         => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeExtent(null, TIMECalendarReferenceSystem.Gregorian));
-
-    [TestMethod]
-    public void ShouldThrowExceptionOnNormalizingExtentBecauseNullCalendarTRS()
-        => Assert.ThrowsExactly<OWLException>(() => _ = TIMEConverter.NormalizeExtent(new TIMEExtent(), null));
 
     [DataTestMethod]
     //seconds

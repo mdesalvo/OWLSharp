@@ -22,13 +22,14 @@ namespace OWLSharp.Extensions.TIME
     public static class TIMEConverter
     {
         #region Methods
-        public static TIMECoordinate CoordinateFromPosition(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMECoordinate CoordinateFromPosition(double timePosition, TIMEPositionReferenceSystem positionTRS, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (positionTRS == null)
                 throw new OWLException("Cannot convert position to coordinate because given \"positionTRS\" parameter is null");
+
             if (calendarTRS == null)
-                throw new OWLException("Cannot convert position to coordinate because given \"calendarTRS\" parameter is null");
+                calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
             //Normalize origin of the given positional TRS according to the metrics of the given calendar TRS
@@ -88,13 +89,14 @@ namespace OWLSharp.Extensions.TIME
             return coordinate;
         }
 
-        public static TIMECoordinate NormalizeCoordinate(TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMECoordinate NormalizeCoordinate(TIMECoordinate timeCoordinate, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeCoordinate == null)
                 throw new OWLException("Cannot normalize coordinate because given \"timeExtent\" parameter is null");
+
             if (calendarTRS == null)
-                throw new OWLException("Cannot normalize coordinate because given \"calendarTRS\" parameter is null");
+                calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
             //Normalize second
@@ -171,15 +173,16 @@ namespace OWLSharp.Extensions.TIME
                 normalizedSecond) { Metadata = new TIMECoordinateMetadata(calendarTRS, RDFVocabulary.TIME.UNIT_SECOND) };
         }
 
-        public static TIMEExtent ExtentFromDuration(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMEExtent ExtentFromDuration(double timeDuration, TIMEUnit unitType, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeDuration < 0)
                 throw new OWLException("Cannot convert duration to extent because given \"timeDuration\" parameter must be greater or equal than zero");
             if (unitType == null)
                 throw new OWLException("Cannot convert duration to extent because given \"unitType\" parameter is null");
+
             if (calendarTRS == null)
-                throw new OWLException("Cannot convert duration to extent because given \"calendarTRS\" parameter is null");
+                calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
             TIMEExtent extent = new TIMEExtent { Metadata = new TIMEExtentMetadata(calendarTRS) };
@@ -216,13 +219,14 @@ namespace OWLSharp.Extensions.TIME
             return extent;
         }
 
-        public static TIMEExtent NormalizeExtent(TIMEExtent timeExtent, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMEExtent NormalizeExtent(TIMEExtent timeExtent, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeExtent == null)
                 throw new OWLException("Cannot normalize extent because given \"timeExtent\" parameter is null");
+
             if (calendarTRS == null)
-                throw new OWLException("Cannot normalize extent because given \"calendarTRS\" parameter is null");
+                calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
             //Transform the components to seconds (since duration works at this level of detail)
@@ -245,15 +249,16 @@ namespace OWLSharp.Extensions.TIME
             return ExtentFromDuration(timeExtentSeconds, TIMEUnit.Second, inexactCalendarTRS);
         }
 
-        public static TIMEExtent ExtentBetweenCoordinates(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS)
+        public static TIMEExtent ExtentBetweenCoordinates(TIMECoordinate timeCoordinateStart, TIMECoordinate timeCoordinateEnd, TIMECalendarReferenceSystem calendarTRS=null)
         {
             #region Guards
             if (timeCoordinateStart == null)
                 throw new OWLException("Cannot get extent because given \"timeCoordinateStart\" parameter is null");
             if (timeCoordinateEnd == null)
                 throw new OWLException("Cannot get extent because given \"timeCoordinateEnd\" parameter is null");
+
             if (calendarTRS == null)
-                throw new OWLException("Cannot get extent because given \"calendarTRS\" parameter is null");
+                calendarTRS = TIMECalendarReferenceSystem.Gregorian;
             #endregion
 
             //Normalize the given coordinates according to the metrics of the given calendar TRS
