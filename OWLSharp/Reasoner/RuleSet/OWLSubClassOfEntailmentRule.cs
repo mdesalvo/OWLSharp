@@ -25,18 +25,29 @@ namespace OWLSharp.Reasoner
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
-            //SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
-            //SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
-            //EquivalentClasses(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
-            //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
                                                        .Select(ax => (OWLClass)ax.Expression))
+            {
+                //SubClassOf(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+                //SubClassOf(C1,C2) ^ EquivalentClasses(C2,C3) -> SubClassOf(C1,C3)
+                //EquivalentClasses(C1,C2) ^ SubClassOf(C2,C3) -> SubClassOf(C1,C3)
+                //DisjointUnion(C1,(C2 C3)) -> SubClassOf(C2,C1) ^ SubClassOf(C3,C1)
                 foreach (OWLClassExpression superClass in ontology.GetSuperClassesOf(declaredClass))
                 {
                     OWLSubClassOf inference = new OWLSubClassOf(declaredClass, superClass) { IsInference=true };
                     inference.GetXML();
                     inferences.Add(new OWLInference(rulename, inference));
+
+                    //SubClassOf(C1,ObjectIntersectionOf(C2,C3)) -> SubClassOf(C1,C2) ^ SubClassOf(C1,C3)
+                    if (superClass is OWLObjectIntersectionOf objIntOf)
+                        foreach (OWLClassExpression objIntOfCls in objIntOf.ClassExpressions)
+                        {
+                            OWLSubClassOf inferenceObjIntOf = new OWLSubClassOf(declaredClass, objIntOfCls) { IsInference=true };
+                            inferenceObjIntOf.GetXML();
+                            inferences.Add(new OWLInference(rulename, inferenceObjIntOf));
+                        }
                 }
+            }
 
             return inferences;
         }

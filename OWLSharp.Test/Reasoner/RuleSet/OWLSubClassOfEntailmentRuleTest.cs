@@ -98,5 +98,38 @@ public class OWLSubClassOfEntailmentRuleTest
                                           && string.Equals(inf2.SubClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/Mushroom")
                                           && string.Equals(inf2.SuperClassExpression.GetIRI().ToString(), "http://xmlns.com/foaf/0.1/LivingEntity")));
     }
+
+    [TestMethod]
+    public void ShouldEntailSubClassOfOnObjectIntersectionOfCase()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Husband"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Man"))),
+                new OWLDeclaration(new OWLClass(new RDFResource("ex:Woman"))),
+                new OWLDeclaration(new OWLObjectProperty(new RDFResource("ex:hasWife")))
+            ],
+            ClassAxioms = [
+                new OWLSubClassOf(
+                    new OWLClass(new RDFResource("ex:Husband")),
+                    new OWLObjectIntersectionOf(
+                    [
+                        new OWLClass(new RDFResource("ex:Man")),
+                        new OWLObjectExactCardinality(new OWLObjectProperty(new RDFResource("ex:hasWife")), 1, new OWLClass(new RDFResource("ex:Woman")))
+                    ]))
+            ]
+        };
+        List<OWLInference> inferences = OWLSubClassOfEntailmentRule.ExecuteRule(ontology);
+
+        Assert.IsNotNull(inferences);
+        Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf
+                                          && string.Equals(inf.SubClassExpression.GetIRI().ToString(), "ex:Husband")
+                                          && string.Equals(inf.SuperClassExpression.GetIRI().ToString(), "ex:Man")));
+        Assert.IsTrue(inferences.Any(i => i.Axiom is OWLSubClassOf inf1
+                                          && string.Equals(inf1.SubClassExpression.GetIRI().ToString(), "ex:Husband")
+                                          && inf1.SuperClassExpression.IsObjectRestriction));
+    }
     #endregion
 }
