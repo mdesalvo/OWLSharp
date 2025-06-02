@@ -1529,35 +1529,26 @@ namespace OWLSharp.Extensions.GEO
 
         internal static bool MatchCoordinates(Coordinate c1, Coordinate c2, GEOEnums.GeoDirections geoDirection)
         {
-            bool answer = false;
             switch (geoDirection)
             {
                 case GEOEnums.GeoDirections.North:
-                    answer = c1.Y > c2.Y;
-                    break;
+                    return c1.Y > c2.Y;
                 case GEOEnums.GeoDirections.East:
-                    answer = c1.X > c2.X;
-                    break;
+                    return c1.X > c2.X;
                 case GEOEnums.GeoDirections.South:
-                    answer = c1.Y < c2.Y;
-                    break;
+                    return c1.Y < c2.Y;
                 case GEOEnums.GeoDirections.West:
-                    answer = c1.X < c2.X;
-                    break;
+                    return c1.X < c2.X;
                 case GEOEnums.GeoDirections.NorthEast:
-                    answer = c1.Y > c2.Y && c1.X > c2.X;
-                    break;
+                    return c1.Y > c2.Y && c1.X > c2.X;
                 case GEOEnums.GeoDirections.NorthWest:
-                    answer = c1.Y > c2.Y && c1.X < c2.X;
-                    break;
+                    return c1.Y > c2.Y && c1.X < c2.X;
                 case GEOEnums.GeoDirections.SouthEast:
-                    answer = c1.Y < c2.Y && c1.X > c2.X;
-                    break;
+                    return c1.Y < c2.Y && c1.X > c2.X;
                 case GEOEnums.GeoDirections.SouthWest:
-                    answer = c1.Y < c2.Y && c1.X < c2.X;
-                    break;
+                    return c1.Y < c2.Y && c1.X < c2.X;
             }
-            return answer;
+            return false;
         }
         #endregion
     }
