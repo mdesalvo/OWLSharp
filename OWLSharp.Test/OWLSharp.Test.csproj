@@ -3,18 +3,19 @@
         <AssemblyTitle>OWLSharp.Test</AssemblyTitle>
         <AssemblyName>OWLSharp.Test</AssemblyName>
         <AssemblyVersion>$(Version)</AssemblyVersion>
-        <Version>4.8.0</Version>
+        <Version>4.9.0</Version>
         <Authors>Marco De Salvo</Authors>
         <Copyright>Marco De Salvo</Copyright>
         <TargetFramework>net8.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <Product>OWLSharp</Product>
-        <Description>Official unit test suite of OWLSharp</Description>
+        <Description>OWLSharp unit testing suite</Description>
+        <Title>OWLSharp.Test</Title>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-        <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
-        <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
+        <PackageReference Include="MSTest.TestAdapter" Version="3.9.1" />
+        <PackageReference Include="MSTest.TestFramework" Version="3.9.1" />
         <PackageReference Include="coverlet.collector" Version="6.0.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
