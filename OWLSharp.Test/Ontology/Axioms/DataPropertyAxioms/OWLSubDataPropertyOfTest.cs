@@ -189,7 +189,7 @@ public class OWLSubDataPropertyOfTest
         Assert.AreEqual(2, ontology.DataPropertyAxioms.Count);
         Assert.IsTrue(ontology.DataPropertyAxioms.Any(annAxm => annAxm is OWLSubDataPropertyOf subannOf
                                                                 && string.Equals(subannOf.SubDataProperty.IRI, "http://purl.org/dc/terms/title")
-                                                                && string.Equals(subannOf.SuperDataProperty.IRI.ToLower(), "http://purl.org/dc/elements/1.1/title")
+                                                                && string.Equals(subannOf.SuperDataProperty.IRI, "http://purl.org/dc/elements/1.1/title")
                                                                 && string.Equals(subannOf.Annotations.Single().AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/description")
                                                                 && string.Equals(subannOf.Annotations.Single().ValueIRI, "ex:AnnValue")
                                                                 && string.Equals(subannOf.Annotations.Single().Annotation.AnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/contributor")
