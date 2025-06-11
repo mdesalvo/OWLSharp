@@ -47,7 +47,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NetTopologySuite" Version="2.6.0" />
-    <PackageReference Include="RDFSharp" Version="3.16.2" />
+    <PackageReference Include="RDFSharp" Version="3.18.0" />
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
   </ItemGroup>
 </Project>
