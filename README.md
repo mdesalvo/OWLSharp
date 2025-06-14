@@ -1,4 +1,4 @@
-# OWLSharp <a href="https://github.com/mdesalvo/OWLSharp/releases"><img src="https://img.shields.io/nuget/v/OWLSharp?style=flat-square&color=abcdef&logo=nuget&label=version"/></a> <a href="https://www.nuget.org/packages/OWLSharp"><img src="https://img.shields.io/nuget/dt/OWLSharp?style=flat-square&color=abcdef&logo=nuget&label=downloads"/></a> [![Coverage](https://coveralls.io/repos/github/mdesalvo/OWLSharp/badge.svg?branch=master)](https://coveralls.io/github/mdesalvo/OWLSharp?branch=master)
+# OWLSharp <a href="https://github.com/mdesalvo/OWLSharp/releases"><img src="https://img.shields.io/nuget/v/OWLSharp?style=flat-square&color=abcdef&logo=nuget&label=version"/></a> <a href="https://www.nuget.org/packages/OWLSharp"><img src="https://img.shields.io/nuget/dt/OWLSharp?style=flat-square&color=abcdef&logo=nuget&label=downloads"/></a>
 
 OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSharp">RDFSharp</a> with the goal of enabling **semantic expressivity** for:
 <ul>
