@@ -3,7 +3,7 @@
     <AssemblyTitle>OWLSharp</AssemblyTitle>
     <AssemblyName>OWLSharp</AssemblyName>
     <AssemblyVersion>$(Version)</AssemblyVersion>
-    <Version>4.9.0</Version>
+    <Version>4.8.1</Version>
     <Authors>Marco De Salvo</Authors>
     <Copyright>Marco De Salvo</Copyright>
     <Description>Lightweight and friendly .NET library for working with OWL2 ontologies</Description>
@@ -47,7 +47,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="NetTopologySuite" Version="2.6.0" />
-    <PackageReference Include="RDFSharp" Version="3.18.0" />
+    <PackageReference Include="RDFSharp" Version="3.18.1" />
     <PackageReference Include="AsyncEnumerator" Version="4.0.2" />
   </ItemGroup>
 </Project>

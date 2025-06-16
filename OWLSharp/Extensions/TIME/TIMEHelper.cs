@@ -33,7 +33,6 @@ namespace OWLSharp.Extensions.TIME
             {
                 await ontology.ImportAsync(new Uri(RDFVocabulary.TIME.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
                 await ontology.ImportAsync(new Uri(RDFVocabulary.TIME.THORS.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
-                await ontology.ImportAsync(new Uri(RDFVocabulary.TIME.GREG.DEREFERENCE_URI), timeoutMilliseconds, cacheMilliseconds);
             }
         }
         #endregion
