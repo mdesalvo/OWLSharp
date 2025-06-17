@@ -5538,6 +5538,33 @@ public class OWLOntologyTest
         Assert.IsNull(ontology2.Rules[0].Consequent);
         Assert.IsTrue(string.Equals(ontology2.Rules[0].ToString(), "swrlb:stringConcat(\"hello\"@EN-US,?P,IDV) ^ swrlb:custombuiltin(?P) -> ", StringComparison.Ordinal));
     }
+
+    [TestMethod]
+    public async Task ShouldReadOntologyFromUriAsync()
+    {
+        OWLOntology ontology = await OWLOntology.FromUriAsync(new Uri(RDFVocabulary.FOAF.BASE_URI));
+
+        Assert.IsNotNull(ontology);
+        Assert.AreEqual(RDFVocabulary.FOAF.BASE_URI, ontology.IRI);
+        Assert.IsTrue(ontology.Annotations.Count > 0);
+        Assert.IsTrue(ontology.AnnotationAxioms.Count > 0);
+        Assert.IsTrue(ontology.ClassAxioms.Count > 0);
+        Assert.IsTrue(ontology.DataPropertyAxioms.Count > 0);
+        Assert.IsTrue(ontology.DeclarationAxioms.Count > 0);
+        Assert.IsTrue(ontology.ObjectPropertyAxioms.Count > 0);
+    }
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnReadingOntologyFromUriBecauseNullUriAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromUriAsync(null));
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnReadingOntologyFromUriBecauseNotAbsoluteUriAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromUriAsync(new Uri("example/file.owx", UriKind.Relative)));
+
+    [TestMethod]
+    public async Task ShouldThrowExceptionOnReadingOntologyFromUriBecauseNotOntologyUriAsync()
+        => await Assert.ThrowsExactlyAsync<OWLException>(async () => await OWLOntology.FromUriAsync(new Uri("http://localhost"), 2000));
     #endregion
 
     [TestCleanup]

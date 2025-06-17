@@ -22,6 +22,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -2824,6 +2825,67 @@ namespace OWLSharp.Ontology
                         throw new OWLException($"Cannot read ontology from stream because: {ex.Message}", ex);
                     }
                 });
+
+        public static async Task<OWLOntology> FromUriAsync(Uri uri, int timeoutMilliseconds=20000)
+        {
+            if (uri == null)
+                throw new OWLException("Cannot read ontology from Uri because given \"uri\" parameter is null or empty");
+            if (!uri.IsAbsoluteUri)
+                throw new OWLException("Cannot read ontology from Uri because given \"uri\" parameter does not represent an absolute Uri.");
+
+            try
+            {
+                //Grab eventual dereference Uri
+                Uri remappedUri = RDFModelUtilities.RemapUriForDereference(uri);
+
+                HttpWebRequest webRequest = WebRequest.CreateHttp(remappedUri);
+                webRequest.MaximumAutomaticRedirections = 4;
+                webRequest.AllowAutoRedirect = true;
+                webRequest.Timeout = timeoutMilliseconds;
+                webRequest.Accept = "application/owl+xml,application/rdf+xml,text/turtle,application/turtle,application/x-turtle,application/n-triples,application/trix";
+
+                HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                if (webRequest.HaveResponse)
+                {
+                    //Cascade detection of ContentType from response
+                    string responseContentType = webResponse.ContentType;
+                    if (string.IsNullOrWhiteSpace(responseContentType))
+                    {
+                        responseContentType = webResponse.Headers["ContentType"];
+                        if (string.IsNullOrWhiteSpace(responseContentType))
+                            responseContentType = "application/rdf+xml"; //Fallback to RDF/XML
+                    }
+
+                    //OWL2/XML
+                    if (responseContentType.Contains("application/owl+xml"))
+                        return await FromStreamAsync(OWLEnums.OWLFormats.OWL2XML, webResponse.GetResponseStream());
+
+                    //RDF/XML
+                    if (responseContentType.Contains("application/rdf+xml"))
+                        return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.RdfXml, webResponse.GetResponseStream(), true));
+
+                    //TURTLE
+                    else if (responseContentType.Contains("text/turtle")
+                             || responseContentType.Contains("application/turtle")
+                             || responseContentType.Contains("application/x-turtle"))
+                        return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, webResponse.GetResponseStream(), true));
+
+                    //N-TRIPLES
+                    else if (responseContentType.Contains("application/n-triples"))
+                        return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.NTriples, webResponse.GetResponseStream(), true));
+
+                    //TRIX
+                    else if (responseContentType.Contains("application/trix"))
+                        return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.TriX, webResponse.GetResponseStream(), true));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new OWLException($"Cannot read OWL2 ontology from Uri {uri} because: " + ex.Message);
+            }
+
+            return await Task.FromResult<OWLOntology>(null);
+        }
         #endregion
     }
 }
