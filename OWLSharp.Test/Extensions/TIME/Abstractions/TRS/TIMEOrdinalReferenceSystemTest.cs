@@ -40,7 +40,7 @@ public class TIMEOrdinalReferenceSystemTest
         Assert.IsNotNull(TestTRS);
         Assert.IsNotNull(TestTRS.Ontology);
         Assert.IsTrue(TestTRS.Equals(new RDFResource("ex:Thors")));
-        Assert.AreEqual(2, TestTRS.Ontology.Imports.Count);
+        Assert.AreEqual(3, TestTRS.Ontology.Imports.Count);
         Assert.AreEqual(5, TestTRS.Ontology.Prefixes.Count);
         Assert.IsTrue(TestTRS.Ontology.DeclarationAxioms.Count > 100);
         Assert.IsTrue(TestTRS.Ontology.AssertionAxioms.Count > 60);
@@ -53,7 +53,7 @@ public class TIMEOrdinalReferenceSystemTest
         Assert.IsNotNull(newTRS);
         Assert.IsNotNull(newTRS.Ontology);
         Assert.IsTrue(newTRS.Equals(new RDFResource("ex:Thors2")));
-        Assert.AreEqual(2, newTRS.Ontology.Imports.Count);
+        Assert.AreEqual(3, newTRS.Ontology.Imports.Count);
         Assert.AreEqual(5, newTRS.Ontology.Prefixes.Count);
         Assert.IsTrue(newTRS.Ontology.DeclarationAxioms.Count > 100);
         Assert.IsTrue(newTRS.Ontology.AssertionAxioms.Count > 60);
