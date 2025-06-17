@@ -799,6 +799,11 @@ public class OWLOntologyTest
                     <Variable IRI="urn:swrl:var#P" />
                     <Variable IRI="urn:swrl:var#N" />
                   </DataPropertyAtom>
+                  <AnnotationPropertyAtom>
+                    <DataProperty IRI="http://xmlns.com/foaf/0.1/name" />
+                    <Variable IRI="urn:swrl:var#P" />
+                    <Variable IRI="urn:swrl:var#N" />
+                  </AnnotationPropertyAtom>
                   <BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#containsIgnoreCase">
                     <Variable IRI="urn:swrl:var#N" />
                     <Literal>mark</Literal>
@@ -816,15 +821,16 @@ public class OWLOntologyTest
         RDFGraph graph = await ontology.ToRDFGraphAsync();
 
         Assert.IsNotNull(graph);
-        Assert.AreEqual(48, graph.TriplesCount);
+        Assert.AreEqual(56, graph.TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.IMP, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.SWRL.BODY, null, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.SWRL.HEAD, null, null].TriplesCount);
         Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.CLASS_ATOM, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.DATAVALUED_PROPERTY_ATOM, null].TriplesCount);
+        Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, SWRLAnnotationPropertyAtom.AnnotationPropertyAtomIRI, null].TriplesCount);
         Assert.AreEqual(1, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.BUILTIN_ATOM, null].TriplesCount);
         Assert.AreEqual(2, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.VARIABLE, null].TriplesCount);
-        Assert.AreEqual(4, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount);
+        Assert.AreEqual(5, graph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.SWRL.ATOMLIST, null].TriplesCount);
     }
 
     [TestMethod]

@@ -1714,6 +1714,9 @@ namespace OWLSharp.Ontology
                                         //BuiltinAtom
                                         else if (TryLoadBuiltinAtom(ont, antecedentItem, out SWRLBuiltIn builtin))
                                             antecedent.BuiltIns.Add(builtin);
+                                        //AnnotationPropertyAtom
+                                        else if (TryLoadAnnotationPropertyAtom(ont, antecedentItem, out SWRLAnnotationPropertyAtom annotationpropertyAtom))
+                                            antecedent.Atoms.Add(annotationpropertyAtom);
                                     });
                                     rule.Antecedent = antecedent;
                                 }
@@ -1747,6 +1750,9 @@ namespace OWLSharp.Ontology
                                         //DifferentIndividualsAtom
                                         else if (TryLoadDifferentIndividualsAtom(ont, consequentItem, out SWRLDifferentIndividualsAtom differentindividualAtom))
                                             consequent.Atoms.Add(differentindividualAtom);
+                                        //AnnotationPropertyAtom
+                                        else if (TryLoadAnnotationPropertyAtom(ont, consequentItem, out SWRLAnnotationPropertyAtom annotationpropertyAtom))
+                                            consequent.Atoms.Add(annotationpropertyAtom);
                                     });
                                     rule.Consequent = consequent;
                                 }
@@ -1886,6 +1892,48 @@ namespace OWLSharp.Ontology
                             }
                         }
                         objectpropertyAtom = null;
+                        return false;
+                    }
+                    bool TryLoadAnnotationPropertyAtom(OWLOntology ont, RDFPatternMember antecedentItem, out SWRLAnnotationPropertyAtom annotationpropertyAtom)
+                    {
+                        if (antecedentItem is RDFResource antecedentItemResource
+                             && graph[antecedentItemResource, RDFVocabulary.RDF.TYPE, SWRLAnnotationPropertyAtom.AnnotationPropertyAtomIRI, null].TriplesCount == 1
+                             && graph[antecedentItemResource, RDFVocabulary.SWRL.PROPERTY_PREDICATE, null, null].FirstOrDefault()?.Object is RDFResource propertyPredicate
+                             && graph[antecedentItemResource, RDFVocabulary.SWRL.ARGUMENT1, null, null].FirstOrDefault()?.Object is RDFResource arg1
+                             && graph[antecedentItemResource, RDFVocabulary.SWRL.ARGUMENT2, null, null].FirstOrDefault()?.Object is RDFPatternMember arg2)
+                        {
+                            LoadAnnotationPropertyExpression(ont, propertyPredicate, out OWLAnnotationPropertyExpression annpropExp);
+                            if (annpropExp != null)
+                            {
+                                annotationpropertyAtom = new SWRLAnnotationPropertyAtom { Predicate = annpropExp };
+
+                                //Argument1
+                                string arg1Str = arg1.ToString();
+                                if (arg1Str.StartsWith("urn:swrl:var#", StringComparison.OrdinalIgnoreCase))
+                                    annotationpropertyAtom.LeftArgument = new SWRLVariableArgument(new RDFVariable($"?{arg1Str.Replace("urn:swrl:var#", string.Empty)}"));
+                                else
+                                    annotationpropertyAtom.LeftArgument = new SWRLIndividualArgument(arg1);
+
+                                //Argument2
+                                switch (arg2)
+                                {
+                                    case RDFLiteral arg2Lit:
+                                        annotationpropertyAtom.RightArgument = new SWRLLiteralArgument(arg2Lit);
+                                        return true;
+                                    case RDFResource arg2Res:
+                                        {
+                                            string arg2Str = arg2Res.ToString();
+                                            if (arg2Str.StartsWith("urn:swrl:var#", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                annotationpropertyAtom.RightArgument = new SWRLVariableArgument(new RDFVariable($"?{arg2Str.Replace("urn:swrl:var#", string.Empty)}"));
+                                                return true;
+                                            }
+                                            break;
+                                        }
+                                }
+                            }
+                        }
+                        annotationpropertyAtom = null;
                         return false;
                     }
                     bool TryLoadSameIndividualAtom(OWLOntology ont, RDFPatternMember antecedentItem, out SWRLSameIndividualAtom sameindividualAtom)
