@@ -2140,59 +2140,59 @@ namespace OWLSharp.Ontology
                         }
                         #endregion
 
-                        #region Composite
+                        #region Composite/Enumerate/Class
                         if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
-                            && (clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
+                            || clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.RDFS.CLASS, null].TriplesCount > 0)
+                        {
+                            //COMPOSITE
+                            if (clsGraph[null, RDFVocabulary.OWL.UNION_OF, null, null].TriplesCount > 0
                                 || clsGraph[null, RDFVocabulary.OWL.INTERSECTION_OF, null, null].TriplesCount > 0
-                                || clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0))
-                        {
-                            #region UnionOf
-                            LoadObjectUnionOf(ont, clsIRI, out OWLObjectUnionOf objUNOF);
-                            if (objUNOF != null)
+                                || clsGraph[null, RDFVocabulary.OWL.COMPLEMENT_OF, null, null].TriplesCount > 0)
                             {
-                                clex = objUNOF;
-                                return;
-                            }
-                            #endregion
+                                #region UnionOf
+                                LoadObjectUnionOf(ont, clsIRI, out OWLObjectUnionOf objUNOF);
+                                if (objUNOF != null)
+                                {
+                                    clex = objUNOF;
+                                    return;
+                                }
+                                #endregion
 
-                            #region IntersectionOf
-                            LoadObjectIntersectionOf(ont, clsIRI, out OWLObjectIntersectionOf objINTOF);
-                            if (objINTOF != null)
+                                #region IntersectionOf
+                                LoadObjectIntersectionOf(ont, clsIRI, out OWLObjectIntersectionOf objINTOF);
+                                if (objINTOF != null)
+                                {
+                                    clex = objINTOF;
+                                    return;
+                                }
+                                #endregion
+
+                                #region ComplementOf
+                                LoadObjectComplementOf(ont, clsIRI, out OWLObjectComplementOf objCMPOF);
+                                if (objCMPOF != null)
+                                {
+                                    clex = objCMPOF;
+                                    return;
+                                }
+                                #endregion
+                            }
+
+                            //ENUMERATE
+                            if (clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
                             {
-                                clex = objINTOF;
-                                return;
+                                #region OneOf
+                                LoadObjectOneOf(ont, clsIRI, out OWLObjectOneOf objONEOF);
+                                if (objONEOF != null)
+                                {
+                                    clex = objONEOF;
+                                    return;
+                                }
+                                #endregion
                             }
-                            #endregion
 
-                            #region ComplementOf
-                            LoadObjectComplementOf(ont, clsIRI, out OWLObjectComplementOf objCMPOF);
-                            if (objCMPOF != null)
-                            {
-                                clex = objCMPOF;
-                                return;
-                            }
-                            #endregion
-                        }
-                        #endregion
-
-                        #region Enumerate
-                        if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0
-                            && clsGraph[null, RDFVocabulary.OWL.ONE_OF, null, null].TriplesCount > 0)
-                        {
-                            #region OneOf
-                            LoadObjectOneOf(ont, clsIRI, out OWLObjectOneOf objONEOF);
-                            if (objONEOF != null)
-                            {
-                                clex = objONEOF;
-                                return;
-                            }
-                            #endregion
-                        }
-                        #endregion
-
-                        #region Class
-                        if (clsGraph[null, RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS, null].TriplesCount > 0)
+                            //CLASS (FALLBACK)
                             clex = new OWLClass(clsIRI);
+                        }
                         #endregion
                     }
                     void LoadObjectAllValuesFrom(OWLOntology ont, RDFResource clsIRI, RDFResource allValuesFrom, out OWLObjectAllValuesFrom objAVF)
