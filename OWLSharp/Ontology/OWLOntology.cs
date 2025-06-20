@@ -2913,17 +2913,17 @@ namespace OWLSharp.Ontology
                         return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.RdfXml, webResponse.GetResponseStream(), true));
 
                     //TURTLE
-                    else if (responseContentType.Contains("text/turtle")
-                             || responseContentType.Contains("application/turtle")
-                             || responseContentType.Contains("application/x-turtle"))
+                    if (responseContentType.Contains("text/turtle")
+                        || responseContentType.Contains("application/turtle")
+                        || responseContentType.Contains("application/x-turtle"))
                         return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.Turtle, webResponse.GetResponseStream(), true));
 
                     //N-TRIPLES
-                    else if (responseContentType.Contains("application/n-triples"))
+                    if (responseContentType.Contains("application/n-triples"))
                         return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.NTriples, webResponse.GetResponseStream(), true));
 
                     //TRIX
-                    else if (responseContentType.Contains("application/trix"))
+                    if (responseContentType.Contains("application/trix"))
                         return await FromRDFGraphAsync(await RDFGraph.FromStreamAsync(RDFModelEnums.RDFFormats.TriX, webResponse.GetResponseStream(), true));
                 }
             }
