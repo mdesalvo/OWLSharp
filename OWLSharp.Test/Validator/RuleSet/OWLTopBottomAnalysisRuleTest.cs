@@ -146,5 +146,70 @@ public class OWLTopBottomAnalysisRuleTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected data property axioms causing reserved owl:bottomDataProperty property to not be the bottom data property of the ontology")));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTopBottomAnalysisRule.rulesuggB2)));
     }
+    
+    [TestMethod]
+    public void ShouldAnalyzeTopBottomB3Case()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLObjectPropertyAssertion(
+                    new OWLObjectProperty(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY),
+                    new OWLNamedIndividual(new RDFResource("ex:Idv1")),
+                    new OWLNamedIndividual(new RDFResource("ex:Idv2")))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv1"))),
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv2"))),
+                new OWLDeclaration(new OWLObjectProperty(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY))
+            ]
+        };
+        OWLValidatorContext validatorContext = new OWLValidatorContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected object property assertion having owl:bottomObjectProperty as predicate: this is not allowed")));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTopBottomAnalysisRule.rulesuggB3)));
+    }
+    
+    [TestMethod]
+    public void ShouldAnalyzeTopBottomB4Case()
+    {
+        OWLOntology ontology = new OWLOntology
+        {
+            AssertionAxioms = [
+                new OWLDataPropertyAssertion(
+                    new OWLDataProperty(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY),
+                    new OWLNamedIndividual(new RDFResource("ex:Idv1")),
+                    new OWLLiteral(new RDFPlainLiteral("hello")))
+            ],
+            DeclarationAxioms = [
+                new OWLDeclaration(new OWLNamedIndividual(new RDFResource("ex:Idv1"))),
+                new OWLDeclaration(new OWLDataProperty(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY))
+            ]
+        };
+        OWLValidatorContext validatorContext = new OWLValidatorContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLIssue> issues = OWLTopBottomAnalysisRule.ExecuteRule(ontology, validatorContext);
+
+        Assert.IsNotNull(issues);
+        Assert.AreEqual(1, issues.Count);
+        Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLTopBottomAnalysisRule.rulename)));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected data property assertion having owl:bottomDataProperty as predicate: this is not allowed")));
+        Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTopBottomAnalysisRule.rulesuggB4)));
+    }
     #endregion
 }
