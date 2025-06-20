@@ -14,6 +14,7 @@
    limitations under the License.
 */
 
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OWLSharp.Extensions.TIME;
 using OWLSharp.Ontology;
@@ -30,7 +31,16 @@ public class TIMEOrdinalReferenceSystemTest
 
     [TestInitialize]
     public void Initialize()
-        => TestTRS ??= new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
+    {
+        try
+        {
+            TestTRS ??= new TIMEOrdinalReferenceSystem(new RDFResource("ex:Thors"));
+        }
+        catch (OWLException oex) when (oex.Message.Contains("operation has timed out", StringComparison.OrdinalIgnoreCase))
+        {
+            Assert.Inconclusive("THORS ontology site is not reachable at the moment");
+        }
+    }
 
     #region Tests
     [TestMethod]
