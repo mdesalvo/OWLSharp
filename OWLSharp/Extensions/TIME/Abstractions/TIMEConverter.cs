@@ -292,8 +292,7 @@ namespace OWLSharp.Extensions.TIME
                                              + (normalizedEnd.Year.Value     * calendarTRS.Metrics.SecondsInMinute * calendarTRS.Metrics.MinutesInHour * calendarTRS.Metrics.HoursInDay * calendarTRS.Metrics.DaysInYear);
 
             //Return extent between start/end coordinates
-            TIMEExtent extent = ExtentFromDuration(normalizedEndSeconds - normalizedStartSeconds, TIMEUnit.Second, calendarTRS);
-            return extent;
+            return ExtentFromDuration(normalizedEndSeconds - normalizedStartSeconds, TIMEUnit.Second, calendarTRS);
         }
         #endregion
 
