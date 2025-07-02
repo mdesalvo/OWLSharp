@@ -18,6 +18,7 @@ using System.Data;
 using System.Collections.Generic;
 using System;
 using RDFSharp.Query;
+using RDFSharp.Model;
 
 namespace OWLSharp.Ontology
 {
@@ -79,8 +80,54 @@ namespace OWLSharp.Ontology
             }
             #endregion
 
-            return new RDFComparisonFilter(RDFQueryEnums.RDFComparisonFlavors.EqualTo, leftPatternMember, rightPatternMember)
-                        .ApplyFilter(antecedentResultsRow, false);
+            #region ComparisonExpression
+            RDFComparisonExpression comparisonExpression;
+            switch (leftPatternMember)
+            {
+                case RDFResource leftPatternMemberRes:
+                {
+                    switch (rightPatternMember)
+                    {
+                        case RDFResource rightPatternMemberRes:
+                            comparisonExpression = new RDFComparisonExpression(
+                                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                                    new RDFConstantExpression(leftPatternMemberRes),
+                                                    new RDFConstantExpression(rightPatternMemberRes));
+                            break;
+                        default:
+                            comparisonExpression = new RDFComparisonExpression(
+                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                    new RDFConstantExpression(leftPatternMemberRes),
+                                    new RDFConstantExpression((RDFLiteral)rightPatternMember));
+                            break;
+                    }
+                    break;
+                }
+                default:
+                {
+                    switch (rightPatternMember)
+                    {
+                        case RDFResource rightPatternMemberRes:
+                            comparisonExpression = new RDFComparisonExpression(
+                                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                                    new RDFConstantExpression((RDFLiteral)leftPatternMember),
+                                                    new RDFConstantExpression(rightPatternMemberRes));
+
+                            break;
+                        default:
+                            comparisonExpression = new RDFComparisonExpression(
+                                    RDFQueryEnums.RDFComparisonFlavors.EqualTo,
+                                    new RDFConstantExpression((RDFLiteral)leftPatternMember),
+                                    new RDFConstantExpression((RDFLiteral)rightPatternMember));
+                            break;
+                    }
+                    break;
+                }
+            }
+            #endregion
+
+            return new RDFExpressionFilter(comparisonExpression)
+                    .ApplyFilter(antecedentResultsRow, false);
         }
         #endregion
     }
