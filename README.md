@@ -10,4 +10,4 @@ OWLSharp is a .NET library built atop <a href="https://github.com/mdesalvo/RDFSh
 It also integrates a powerful <b>SWRL engine</b> for modeling, exchanging and executing custom inference rules
 <hr />
 
-Along with core ontology features, it also includes a set of <a href="https://github.com/mdesalvo/OWLSharp.Extensions">extensions</a> providing additional capabilities
+Along with core ontology features, it also includes a set of <a href="https://github.com/mdesalvo/OWLSharp.Extensions">extensions</a> for working with <b>LinkedData ontologies</b>!
