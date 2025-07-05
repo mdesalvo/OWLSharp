@@ -357,8 +357,8 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS).UnionWithNext())
                                 .AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION))
                                 .AddPattern(new RDFPattern(new RDFVariable("?NIDV"), RDFVocabulary.RDF.TYPE, new RDFVariable("?CLS")))
-                                .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?NIDV"), new RDFVariable("?CLS"))))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?NIDV"))))
+                                .AddFilter(new RDFBooleanNotFilter(new RDFExpressionFilter(new RDFSameTermExpression(new RDFVariable("?NIDV"), new RDFVariable("?CLS")))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?NIDV")))))
                             .AddProjectionVariable(new RDFVariable("?NIDV"));
                         RDFSelectQueryResult namedIdvQueryResult = namedIdvQuery.ApplyToGraph(typeGraph);
                         foreach (DataRow nidvRow in namedIdvQueryResult.SelectResults.Rows)
@@ -520,8 +520,8 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPL"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPR"))))
                                 .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("OO")), new RDFVariable("?CASE")))
                                 .UnionWithNext())
                             .AddPatternGroup(new RDFPatternGroup()
@@ -529,10 +529,10 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?IOPL"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
-                                .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPL")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
-                                .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?OPL"), new RDFVariable("?OPR"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsBlankExpression(new RDFVariable("?IOPL"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPL"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPR"))))
+                                .AddFilter(new RDFBooleanNotFilter(new RDFExpressionFilter(new RDFSameTermExpression(new RDFVariable("?OPL"), new RDFVariable("?OPR")))))
                                 .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("IO")), new RDFVariable("?CASE")))
                                 .UnionWithNext())
                             .AddPatternGroup(new RDFPatternGroup()
@@ -540,10 +540,10 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?IOPR"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
-                                .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPR")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
-                                .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?OPL"), new RDFVariable("?OPR"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsBlankExpression(new RDFVariable("?IOPR"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPL"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPR"))))
+                                .AddFilter(new RDFBooleanNotFilter(new RDFExpressionFilter(new RDFSameTermExpression(new RDFVariable("?OPL"), new RDFVariable("?OPR")))))
                                 .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("OI")), new RDFVariable("?CASE")))
                                 .UnionWithNext())
                             .AddPatternGroup(new RDFPatternGroup()
@@ -552,11 +552,11 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?IOPR"), RDFVocabulary.OWL.INVERSE_OF, new RDFVariable("?OPR")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPL"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OPR"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
-                                .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPL")))
-                                .AddFilter(new RDFIsBlankFilter(new RDFVariable("?IOPR")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPL")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OPR")))
-                                .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?OPL"), new RDFVariable("?OPR"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsBlankExpression(new RDFVariable("?IOPL"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsBlankExpression(new RDFVariable("?IOPR"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPL"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OPR"))))
+                                .AddFilter(new RDFBooleanNotFilter(new RDFExpressionFilter(new RDFSameTermExpression(new RDFVariable("?OPL"), new RDFVariable("?OPR")))))
                                 .AddBind(new RDFBind(new RDFConstantExpression(new RDFPlainLiteral("II")), new RDFVariable("?CASE"))))
                             .AddProjectionVariable(new RDFVariable("?IOPL"))
                             .AddProjectionVariable(new RDFVariable("?OPL"))
@@ -1224,9 +1224,9 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.ASSERTION_PROPERTY, new RDFVariable("?OBJP")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.TARGET_INDIVIDUAL, new RDFVariable("?TIDV")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?OBJP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.OBJECT_PROPERTY))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?SIDV")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?OBJP")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?TIDV"))));
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?SIDV"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?OBJP"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?TIDV")))));
                         RDFSelectQueryResult result = query.ApplyToGraph(graph);
                         foreach (DataRow resultRow in result.SelectResults.Rows)
                         {
@@ -1292,11 +1292,11 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.CLASS).UnionWithNext())
                                 .AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DEPRECATED_CLASS).UnionWithNext())
                                 .AddPattern(new RDFPattern(new RDFVariable("?CLS"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.RESTRICTION))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?IDV")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?CLS")))
-                                .AddFilter(new RDFBooleanNotFilter(new RDFSameTermFilter(new RDFVariable("?IDV"), new RDFVariable("?CLS"))))
-                                .AddFilter(new RDFBooleanNotFilter(new RDFInFilter(new RDFVariable("?CLS"), new List<RDFPatternMember> {
-                                    RDFVocabulary.RDF.LIST, RDFVocabulary.RDFS.CLASS, RDFVocabulary.OWL.CLASS, RDFVocabulary.OWL.DEPRECATED_CLASS, RDFVocabulary.OWL.RESTRICTION }))));
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?IDV"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?CLS"))))
+                                .AddFilter(new RDFBooleanNotFilter(new RDFExpressionFilter(new RDFSameTermExpression(new RDFVariable("?IDV"), new RDFVariable("?CLS")))))
+                                .AddFilter(new RDFBooleanNotFilter(new RDFExpressionFilter(new RDFInExpression(new RDFVariable("?CLS"), new List<RDFPatternMember> {
+                                    RDFVocabulary.RDF.LIST, RDFVocabulary.RDFS.CLASS, RDFVocabulary.OWL.CLASS, RDFVocabulary.OWL.DEPRECATED_CLASS, RDFVocabulary.OWL.RESTRICTION })))));
                         RDFSelectQueryResult result = query.ApplyToGraph(typeGraph);
                         foreach (DataRow resultRow in result.SelectResults.Rows)
                         {
@@ -1325,9 +1325,9 @@ namespace OWLSharp.Ontology
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.ASSERTION_PROPERTY, new RDFVariable("?DTP")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?NASN"), RDFVocabulary.OWL.TARGET_VALUE, new RDFVariable("?TVAL")))
                                 .AddPattern(new RDFPattern(new RDFVariable("?DTP"), RDFVocabulary.RDF.TYPE, RDFVocabulary.OWL.DATATYPE_PROPERTY))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?SIDV")))
-                                .AddFilter(new RDFIsUriFilter(new RDFVariable("?DTP")))
-                                .AddFilter(new RDFIsLiteralFilter(new RDFVariable("?TVAL"))));
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?SIDV"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsUriExpression(new RDFVariable("?DTP"))))
+                                .AddFilter(new RDFExpressionFilter(new RDFIsLiteralExpression(new RDFVariable("?TVAL")))));
                         RDFSelectQueryResult result = query.ApplyToGraph(graph);
                         foreach (DataRow resultRow in result.SelectResults.Rows)
                         {
