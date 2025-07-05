@@ -19,3 +19,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: Guid("10E8013A-CE1C-4641-B1BF-27AB111A54D6")]
 [assembly: InternalsVisibleTo("OWLSharp.Test")]
+[assembly: InternalsVisibleTo("OWLSharp.Extensions")]
