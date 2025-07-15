@@ -58,20 +58,20 @@ namespace OWLSharp.Validator
                     "Detected data property axioms causing reserved owl:bottomDataProperty property to not be the bottom data property of the ontology",
                     rulesuggB2));
 
-            issues.AddRange(from opAsn 
+            issues.AddRange(from opAsn
                             in validatorContext.ObjectPropertyAssertions
                             where opAsn.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.OWL.BOTTOM_OBJECT_PROPERTY)
                             select new OWLIssue(
                                 OWLEnums.OWLIssueSeverity.Error,
-                                rulename, 
+                                rulename,
                                 "Detected object property assertion having owl:bottomObjectProperty as predicate: this is not allowed",
                                 rulesuggB3));
-            issues.AddRange(from dpAsn 
+            issues.AddRange(from dpAsn
                             in validatorContext.DataPropertyAssertions
                             where dpAsn.DataProperty.GetIRI().Equals(RDFVocabulary.OWL.BOTTOM_DATA_PROPERTY)
                             select new OWLIssue(
                                 OWLEnums.OWLIssueSeverity.Error,
-                                rulename, 
+                                rulename,
                                 "Detected data property assertion having owl:bottomDataProperty as predicate: this is not allowed",
                                 rulesuggB4));
 

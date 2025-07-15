@@ -146,7 +146,7 @@ public class OWLTopBottomAnalysisRuleTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected data property axioms causing reserved owl:bottomDataProperty property to not be the bottom data property of the ontology")));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTopBottomAnalysisRule.rulesuggB2)));
     }
-    
+
     [TestMethod]
     public void ShouldAnalyzeTopBottomB3Case()
     {
@@ -179,7 +179,7 @@ public class OWLTopBottomAnalysisRuleTest
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Description, "Detected object property assertion having owl:bottomObjectProperty as predicate: this is not allowed")));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLTopBottomAnalysisRule.rulesuggB3)));
     }
-    
+
     [TestMethod]
     public void ShouldAnalyzeTopBottomB4Case()
     {
