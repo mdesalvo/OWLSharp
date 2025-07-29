@@ -1623,10 +1623,9 @@ namespace OWLSharp.Ontology
                             RDFTriple nestedAnnotationTriple = annVal is RDFResource annValRes
                                 ? new RDFTriple((RDFResource)axiom, (RDFResource)annProp, annValRes)
                                 : new RDFTriple((RDFResource)axiom, (RDFResource)annProp, (RDFLiteral)annVal);
-                            OWLAnnotation nestedAnnotation = annVal is RDFResource annValRes2
+                            annotation.Annotation = annVal is RDFResource annValRes2
                                 ? new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), annValRes2)
                                 : new OWLAnnotation(new OWLAnnotationProperty((RDFResource)annProp), new OWLLiteral((RDFLiteral)annVal));
-                            annotation.Annotation = nestedAnnotation;
 
                             LoadNestedAnnotation(ont, nestedAnnotationTriple, annotation.Annotation, annAxiomsGraph);
                         }

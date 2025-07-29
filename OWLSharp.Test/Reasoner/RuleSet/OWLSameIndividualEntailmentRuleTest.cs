@@ -43,7 +43,13 @@ public class OWLSameIndividualEntailmentRuleTest
                 ])
             ]
         };
-        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -71,7 +77,13 @@ public class OWLSameIndividualEntailmentRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/John")))
             ]
         };
-        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -104,7 +116,13 @@ public class OWLSameIndividualEntailmentRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -137,7 +155,13 @@ public class OWLSameIndividualEntailmentRuleTest
                     new OWLNamedIndividual(new RDFResource("http://xmlns.com/foaf/0.1/Mark")))
             ]
         };
-        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -169,7 +193,13 @@ public class OWLSameIndividualEntailmentRuleTest
                     new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
             ]
         };
-        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));
@@ -199,7 +229,13 @@ public class OWLSameIndividualEntailmentRuleTest
                     new OWLLiteral(new RDFTypedLiteral("32", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
             ]
         };
-        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLSameIndividualEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));

@@ -21,7 +21,7 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DisjointObjectPropertiesEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 

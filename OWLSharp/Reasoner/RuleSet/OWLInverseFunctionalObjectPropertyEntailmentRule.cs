@@ -21,19 +21,18 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.InverseFunctionalObjectPropertyEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
             Dictionary<string, List<OWLIndividualExpression>> idvxLookup = new Dictionary<string, List<OWLIndividualExpression>>();
 
             //InverseFunctionalObjectProperty(IFOP) ^ ObjectPropertyAssertion(IFOP,IDV1,IDVX) ^ ObjectPropertyAssertion(FOP,IDV2,IDVX) -> SameIndividual(IDV1,IDV2)
             foreach (OWLInverseFunctionalObjectProperty ifop in ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>())
             {
                 idvxLookup.Clear();
-                foreach (OWLObjectPropertyAssertion ifopAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, ifop.ObjectPropertyExpression))
+                foreach (OWLObjectPropertyAssertion ifopAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(reasonerContext.ObjectPropertyAssertions, ifop.ObjectPropertyExpression))
                 {
                     OWLIndividualExpression fopAsnSourceIdvExpr = ifopAsn.SourceIndividualExpression;
                     OWLIndividualExpression fopAsnTargetIdvExpr = ifopAsn.TargetIndividualExpression;

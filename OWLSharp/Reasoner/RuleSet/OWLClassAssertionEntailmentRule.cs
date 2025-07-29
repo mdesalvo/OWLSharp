@@ -21,18 +21,17 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.ClassAssertionEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
             //Temporary working variables
-            List<OWLClassAssertion> classAssertionAxioms = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
             List<OWLEquivalentClasses> equivalentClassesAxioms = ontology.GetClassAxiomsOfType<OWLEquivalentClasses>();
             List<OWLDisjointClasses> disjointClassesAxioms = ontology.GetClassAxiomsOfType<OWLDisjointClasses>();
             List<OWLDisjointUnion> disjointUnionAxioms = ontology.GetClassAxiomsOfType<OWLDisjointUnion>();
             List<OWLClassExpression> inScopeClsExprs = new List<OWLClassExpression>(ontology.GetDeclarationAxiomsOfType<OWLClass>()
-                                                                                             .Select(ax => (OWLClass)ax.Expression));
-            inScopeClsExprs.AddRange(classAssertionAxioms.Select(ax => ax.ClassExpression));
+                                                                                            .Select(ax => (OWLClass)ax.Expression));
+            inScopeClsExprs.AddRange(reasonerContext.ClassAssertions.Select(ax => ax.ClassExpression));
             inScopeClsExprs.AddRange(equivalentClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
             inScopeClsExprs.AddRange(disjointClassesAxioms.SelectMany(ax => ax.ClassExpressions.Select(cls => cls)));
             inScopeClsExprs.AddRange(disjointUnionAxioms.Select(ax => ax.ClassIRI));
@@ -46,7 +45,7 @@ namespace OWLSharp.Reasoner
             //ClassAssertion(C1,I) ^ SubClassOf(C1,C2) -> ClassAssertion(C2,I)
             //ClassAssertion(C1,I) ^ EquivalentClasses(C1,C2) -> ClassAssertion(C2,I)
             foreach (OWLClassExpression inScopeClsExpr in OWLExpressionHelper.RemoveDuplicates(inScopeClsExprs))
-                foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr, classAssertionAxioms, false))
+                foreach (OWLIndividualExpression idvExprOfInScopeClsExpr in ontology.GetIndividualsOf(inScopeClsExpr, reasonerContext.ClassAssertions, false))
                 {
                     OWLClassAssertion inference = new OWLClassAssertion(inScopeClsExpr) { IndividualExpression=idvExprOfInScopeClsExpr, IsInference=true };
                     inference.GetXML();

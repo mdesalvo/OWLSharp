@@ -21,7 +21,7 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DisjointClassesEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
@@ -30,8 +30,7 @@ namespace OWLSharp.Reasoner
             foreach (OWLClass declaredClass in ontology.GetDeclarationAxiomsOfType<OWLClass>()
                                                        .Select(ax => (OWLClass)ax.Expression))
             {
-                List<OWLClassExpression> disjointClasses = ontology.GetDisjointClasses(declaredClass);
-                foreach (OWLClassExpression disjointClass in disjointClasses)
+                foreach (OWLClassExpression disjointClass in ontology.GetDisjointClasses(declaredClass))
                 {
                     OWLDisjointClasses inference = new OWLDisjointClasses(new List<OWLClassExpression> { declaredClass, disjointClass }) { IsInference=true };
                     inference.GetXML();

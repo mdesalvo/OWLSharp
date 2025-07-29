@@ -28,10 +28,10 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            List<OWLNegativeObjectPropertyAssertion> nopAsns = OWLAssertionAxiomHelper.CalibrateNegativeObjectAssertions(ontology);
+            
 
             //NegativeObjectPropertyAssertion(OP,IDV1,IDV2) ^ ObjectPropertyAssertion(OP,IDV1,IDV2) -> ERROR
-            foreach (OWLNegativeObjectPropertyAssertion nopAsn in nopAsns)
+            foreach (OWLNegativeObjectPropertyAssertion nopAsn in OWLAssertionAxiomHelper.CalibrateNegativeObjectAssertions(ontology))
             {
                 RDFResource ndpAsnSourceIndividualIRI = nopAsn.SourceIndividualExpression.GetIRI();
                 RDFResource ndpAsnTargetIndividualIRI = nopAsn.TargetIndividualExpression.GetIRI();

@@ -54,7 +54,13 @@ public class OWLSubDataPropertyOfEntailmentRuleTest
                     new OWLLiteral(new RDFTypedLiteral("26", RDFModelEnums.RDFDatatypes.XSD_INTEGER)))
             ]
         };
-        List<OWLInference> inferences = OWLSubDataPropertyOfEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLSubDataPropertyOfEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));

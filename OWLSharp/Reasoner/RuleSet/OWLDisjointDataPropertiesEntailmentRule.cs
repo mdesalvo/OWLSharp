@@ -21,15 +21,14 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.DisjointDataPropertiesEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
             foreach (OWLDataProperty declaredDataProperty in ontology.GetDeclarationAxiomsOfType<OWLDataProperty>()
                                                                      .Select(ax => (OWLDataProperty)ax.Expression))
             {
-                List<OWLDataProperty> disjointDataProperties = ontology.GetDisjointDataProperties(declaredDataProperty);
-                foreach (OWLDataProperty disjointDataProperty in disjointDataProperties)
+                foreach (OWLDataProperty disjointDataProperty in ontology.GetDisjointDataProperties(declaredDataProperty))
                 {
                     OWLDisjointDataProperties inference = new OWLDisjointDataProperties(new List<OWLDataProperty> { declaredDataProperty, disjointDataProperty }) { IsInference=true };
                     inference.GetXML();

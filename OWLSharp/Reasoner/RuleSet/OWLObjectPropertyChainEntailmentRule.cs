@@ -24,7 +24,7 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.ObjectPropertyChainEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
 
@@ -33,8 +33,10 @@ namespace OWLSharp.Reasoner
             {
                 RDFGraph opAsnsGraph = new RDFGraph();
                 foreach (OWLObjectPropertyAssertion opAsn in ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>())
+                {
                     foreach (RDFTriple opAsnTriple in opAsn.ToRDFGraph())
                         opAsnsGraph.AddTriple(opAsnTriple);
+                }
                 return opAsnsGraph;
             });
 

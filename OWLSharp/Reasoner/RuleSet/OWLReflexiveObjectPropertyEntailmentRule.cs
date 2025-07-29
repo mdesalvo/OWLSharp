@@ -20,18 +20,15 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.ReflexiveObjectPropertyEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
-
-            //Temporary working variables
-            List<OWLObjectPropertyAssertion> opAsns = ontology.GetAssertionAxiomsOfType<OWLObjectPropertyAssertion>();
 
             //ReflexiveObjectProperty(OP) ^ ObjectPropertyAssertion(OP,IDV1,IDVX) -> ObjectPropertyAssertion(OP,IDV1,IDV1)
             foreach (OWLReflexiveObjectProperty refObjProp in ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>())
             {
                 //Extract object assertions of the current reflexive property
-                foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(opAsns, refObjProp.ObjectPropertyExpression))
+                foreach (OWLObjectPropertyAssertion opAsn in OWLAssertionAxiomHelper.SelectObjectAssertionsByOPEX(reasonerContext.ObjectPropertyAssertions, refObjProp.ObjectPropertyExpression))
                 {
                     OWLIndividualExpression opAsnSourceIdvExpr = opAsn.SourceIndividualExpression;
                     OWLIndividualExpression opAsnTargetIdvExpr = opAsn.TargetIndividualExpression;

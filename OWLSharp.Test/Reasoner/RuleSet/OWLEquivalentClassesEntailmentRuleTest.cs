@@ -43,7 +43,13 @@ public class OWLEquivalentClassesEntailmentRuleTest
                     new OWLClass(new RDFResource("http://xmlns.com/foaf/0.1/EarthMan"))])
             ]
         };
-        List<OWLInference> inferences = OWLEquivalentClassesEntailmentRule.ExecuteRule(ontology);
+        OWLReasonerContext reasonerContext = new OWLReasonerContext
+        {
+            ClassAssertions = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>(),
+            DataPropertyAssertions = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>(),
+            ObjectPropertyAssertions = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology)
+        };
+        List<OWLInference> inferences = OWLEquivalentClassesEntailmentRule.ExecuteRule(ontology, reasonerContext);
 
         Assert.IsNotNull(inferences);
         Assert.IsTrue(inferences.TrueForAll(inf => inf.Axiom.IsInference));

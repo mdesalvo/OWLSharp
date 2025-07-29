@@ -23,20 +23,15 @@ namespace OWLSharp.Reasoner
     {
         internal static readonly string rulename = nameof(OWLEnums.OWLReasonerRules.HasKeyEntailment);
 
-        internal static List<OWLInference> ExecuteRule(OWLOntology ontology)
+        internal static List<OWLInference> ExecuteRule(OWLOntology ontology, OWLReasonerContext reasonerContext)
         {
             List<OWLInference> inferences = new List<OWLInference>();
-
-            //Temporary working variables
-            List<OWLObjectPropertyAssertion> opAsns = OWLAssertionAxiomHelper.CalibrateObjectAssertions(ontology);
-            List<OWLDataPropertyAssertion> dpAsns = ontology.GetAssertionAxiomsOfType<OWLDataPropertyAssertion>();
-            List<OWLClassAssertion> clsAsns = ontology.GetAssertionAxiomsOfType<OWLClassAssertion>();
 
             foreach (OWLHasKey hasKeyAxiom in ontology.KeyAxioms)
             {
                 //HasKey(C, OP) ^ ClassAssertion(C, I1) ^ ObjectPropertyAssertion(OP, I1, IX) ^ ClassAssertion(C, I2) ^  ObjectPropertyAssertion(OP, I2, IX) -> SameIndividual(I1,I2)
                 //HasKey(C, DP) ^ ClassAssertion(C, I1) ^ DataPropertyAssertion(DP, I1, LIT)  ^ ClassAssertion(C, I2) ^  DataPropertyAssertion(DP, I2, LIT)  -> SameIndividual(I1,I2)
-                inferences.AddRange(AnalyzeKeyValues(hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, clsAsns), opAsns, dpAsns));
+                inferences.AddRange(AnalyzeKeyValues(hasKeyAxiom, ontology.GetIndividualsOf(hasKeyAxiom.ClassExpression, reasonerContext.ClassAssertions), reasonerContext.ObjectPropertyAssertions, reasonerContext.DataPropertyAssertions));
             }
 
             return inferences;

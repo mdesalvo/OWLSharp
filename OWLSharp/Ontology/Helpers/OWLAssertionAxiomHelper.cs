@@ -207,10 +207,10 @@ namespace OWLSharp.Ontology
 
                                 //Compute object property assertions in scope of OHV restriction
                                 bool shouldSwitchObjPropIdvs = objHasValue.ObjectPropertyExpression is OWLObjectInverseOf;
-                                List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasValue.ObjectPropertyExpression);
+                                
 
                                 //Compute individuals satisfying OHV restriction
-                                foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
+                                foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasValue.ObjectPropertyExpression))
                                 {
                                     OWLIndividualExpression inScopeObjPropAsnSourceIdvExpr = inScopeObjPropAssertion.SourceIndividualExpression;
                                     OWLIndividualExpression inScopeObjPropAsnTargetIdvExpr = inScopeObjPropAssertion.TargetIndividualExpression;
@@ -236,10 +236,10 @@ namespace OWLSharp.Ontology
                             case OWLObjectHasSelf objHasSelf:
                             {
                                 //Compute object property assertions in scope of OHS restriction
-                                List<OWLObjectPropertyAssertion> inScopeObjPropAssertions = SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasSelf.ObjectPropertyExpression);
+                                
 
                                 //Compute individuals satisfying OHS restriction
-                                foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in inScopeObjPropAssertions)
+                                foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasSelf.ObjectPropertyExpression))
                                 {
                                     if (inScopeObjPropAssertion.SourceIndividualExpression.GetIRI().Equals(inScopeObjPropAssertion.TargetIndividualExpression.GetIRI()))
                                         foundVisitingClsExprIndividuals.Add(inScopeObjPropAssertion.SourceIndividualExpression);
@@ -327,10 +327,10 @@ namespace OWLSharp.Ontology
                                 RDFLiteral dtHasValueLiteral = dtHasValue.Literal.GetLiteral();
 
                                 //Compute object property assertions in scope of OHV restriction
-                                List<OWLDataPropertyAssertion> inScopeDtPropAssertions = SelectDataAssertionsByDPEX(dataPropertyAssertions, dtHasValue.DataProperty);
+                                
 
                                 //Compute individuals satisfying OHV restriction
-                                foreach (OWLDataPropertyAssertion inScopeDtPropAssertion in inScopeDtPropAssertions)
+                                foreach (OWLDataPropertyAssertion inScopeDtPropAssertion in SelectDataAssertionsByDPEX(dataPropertyAssertions, dtHasValue.DataProperty))
                                 {
                                     if (inScopeDtPropAssertion.Literal.GetLiteral().Equals(dtHasValueLiteral))
                                         foundVisitingClsExprIndividuals.Add(inScopeDtPropAssertion.IndividualExpression);
