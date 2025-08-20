@@ -121,7 +121,7 @@ public class OWLDataPropertyRangeTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.DataPropertyAxioms);
         Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDataPropertyRange dtPropRng
                       && string.Equals(dtPropRng.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString())
                       && string.Equals(((OWLDatatype)dtPropRng.DataRangeExpression).IRI, RDFVocabulary.XSD.INTEGER.ToString()));

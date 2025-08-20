@@ -39,18 +39,18 @@ public class OWLAnnotationAxiomHelperTest
         };
 
         List<OWLAnnotationAssertion> annotationAssertion = ontology.GetAnnotationAxiomsOfType<OWLAnnotationAssertion>();
-        Assert.AreEqual(1, annotationAssertion.Count);
+        Assert.HasCount(1, annotationAssertion);
 
         List<OWLAnnotationPropertyDomain> annotationPropertyDomain = ontology.GetAnnotationAxiomsOfType<OWLAnnotationPropertyDomain>();
-        Assert.AreEqual(1, annotationPropertyDomain.Count);
+        Assert.HasCount(1, annotationPropertyDomain);
 
         List<OWLAnnotationPropertyRange> annotationPropertyRange = ontology.GetAnnotationAxiomsOfType<OWLAnnotationPropertyRange>();
-        Assert.AreEqual(1, annotationPropertyRange.Count);
+        Assert.HasCount(1, annotationPropertyRange);
 
         List<OWLSubAnnotationPropertyOf> subAnnotationProperty = ontology.GetAnnotationAxiomsOfType<OWLSubAnnotationPropertyOf>();
-        Assert.AreEqual(1, subAnnotationProperty.Count);
+        Assert.HasCount(1, subAnnotationProperty);
 
-        Assert.AreEqual(0, (null as OWLOntology).GetAnnotationAxiomsOfType<OWLAnnotationAssertion>().Count);
+        Assert.IsEmpty((null as OWLOntology).GetAnnotationAxiomsOfType<OWLAnnotationAssertion>());
     }
 
     [TestMethod]
@@ -66,29 +66,29 @@ public class OWLAnnotationAxiomHelperTest
         };
 
         List<OWLAnnotationProperty> subAnnotationPropertiesOfAnp1 = ontology.GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1")));
-        Assert.AreEqual(3, subAnnotationPropertiesOfAnp1.Count);
+        Assert.HasCount(3, subAnnotationPropertiesOfAnp1);
         Assert.IsTrue(ontology.CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
         Assert.IsTrue(ontology.CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp3")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
         Assert.IsTrue(ontology.CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp4")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
 
         List<OWLAnnotationProperty> subAnnotationPropertiesOfAnp2 = ontology.GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")));
-        Assert.AreEqual(2, subAnnotationPropertiesOfAnp2.Count);
+        Assert.HasCount(2, subAnnotationPropertiesOfAnp2);
         Assert.IsTrue(ontology.CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp3")), new OWLAnnotationProperty(new RDFResource("ex:Anp2"))));
         Assert.IsTrue(ontology.CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp4")), new OWLAnnotationProperty(new RDFResource("ex:Anp2"))));
 
         List<OWLAnnotationProperty> subAnnotationPropertiesOfAnp3 = ontology.GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp3")));
-        Assert.AreEqual(1, subAnnotationPropertiesOfAnp3.Count);
+        Assert.HasCount(1, subAnnotationPropertiesOfAnp3);
         Assert.IsTrue(ontology.CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp4")), new OWLAnnotationProperty(new RDFResource("ex:Anp3"))));
 
         List<OWLAnnotationProperty> subAnnotationPropertiesOfAnp4 = ontology.GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp4")));
-        Assert.AreEqual(0, subAnnotationPropertiesOfAnp4.Count);
+        Assert.IsEmpty(subAnnotationPropertiesOfAnp4);
 
-        Assert.AreEqual(0, ontology.GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp5"))).Count);
-        Assert.AreEqual(0, ontology.GetSubAnnotationPropertiesOf(null).Count);
+        Assert.IsEmpty(ontology.GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp5"))));
+        Assert.IsEmpty(ontology.GetSubAnnotationPropertiesOf(null));
         Assert.IsFalse(ontology.CheckIsSubAnnotationPropertyOf(null, new OWLAnnotationProperty(new RDFResource("ex:Anp2"))));
         Assert.IsFalse(ontology.CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), null));
         Assert.IsFalse((null as OWLOntology).CheckIsSubAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
-        Assert.AreEqual(0, (null as OWLOntology).GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1"))).Count);
+        Assert.IsEmpty((null as OWLOntology).GetSubAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
     }
 
     [TestMethod]
@@ -104,29 +104,29 @@ public class OWLAnnotationAxiomHelperTest
         };
 
         List<OWLAnnotationProperty> superAnnotationPropertiesOfAnp1 = ontology.GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1")));
-        Assert.AreEqual(0, superAnnotationPropertiesOfAnp1.Count);
+        Assert.IsEmpty(superAnnotationPropertiesOfAnp1);
 
         List<OWLAnnotationProperty> superAnnotationPropertiesOfAnp2 = ontology.GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")));
-        Assert.AreEqual(1, superAnnotationPropertiesOfAnp2.Count);
+        Assert.HasCount(1, superAnnotationPropertiesOfAnp2);
         Assert.IsTrue(ontology.CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1")), new OWLAnnotationProperty(new RDFResource("ex:Anp2"))));
 
         List<OWLAnnotationProperty> superAnnotationPropertiesOfAnp3 = ontology.GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp3")));
-        Assert.AreEqual(2, superAnnotationPropertiesOfAnp3.Count);
+        Assert.HasCount(2, superAnnotationPropertiesOfAnp3);
         Assert.IsTrue(ontology.CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1")), new OWLAnnotationProperty(new RDFResource("ex:Anp3"))));
         Assert.IsTrue(ontology.CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp3"))));
 
         List<OWLAnnotationProperty> superAnnotationPropertiesOfAnp4 = ontology.GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp4")));
-        Assert.AreEqual(3, superAnnotationPropertiesOfAnp4.Count);
+        Assert.HasCount(3, superAnnotationPropertiesOfAnp4);
         Assert.IsTrue(ontology.CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1")), new OWLAnnotationProperty(new RDFResource("ex:Anp4"))));
         Assert.IsTrue(ontology.CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp4"))));
         Assert.IsTrue(ontology.CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp3")), new OWLAnnotationProperty(new RDFResource("ex:Anp4"))));
 
-        Assert.AreEqual(0, ontology.GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp5"))).Count);
-        Assert.AreEqual(0, ontology.GetSuperAnnotationPropertiesOf(null).Count);
+        Assert.IsEmpty(ontology.GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp5"))));
+        Assert.IsEmpty(ontology.GetSuperAnnotationPropertiesOf(null));
         Assert.IsFalse(ontology.CheckIsSuperAnnotationPropertyOf(null, new OWLAnnotationProperty(new RDFResource("ex:Anp2"))));
         Assert.IsFalse(ontology.CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), null));
         Assert.IsFalse((null as OWLOntology).CheckIsSuperAnnotationPropertyOf(new OWLAnnotationProperty(new RDFResource("ex:Anp2")), new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
-        Assert.AreEqual(0, (null as OWLOntology).GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1"))).Count);
+        Assert.IsEmpty((null as OWLOntology).GetSuperAnnotationPropertiesOf(new OWLAnnotationProperty(new RDFResource("ex:Anp1"))));
     }
 
     [TestMethod]
@@ -138,7 +138,7 @@ public class OWLAnnotationAxiomHelperTest
             RDFVocabulary.FOAF.PERSON,
             new OWLLiteral(new RDFPlainLiteral("Person", "en-US"))));
 
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.CheckHasAnnotationAxiom(new OWLAnnotationAssertion(
             new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
             RDFVocabulary.FOAF.PERSON,
@@ -149,7 +149,7 @@ public class OWLAnnotationAxiomHelperTest
             new OWLAnnotationProperty(RDFVocabulary.RDFS.LABEL),
             RDFVocabulary.FOAF.PERSON,
             new OWLLiteral(new RDFPlainLiteral("Person", "en-US")))); //will be discarded, since duplicates are not allowed
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
     }
     #endregion
 }

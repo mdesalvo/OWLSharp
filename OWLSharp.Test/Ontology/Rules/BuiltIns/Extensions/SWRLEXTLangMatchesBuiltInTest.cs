@@ -37,7 +37,7 @@ public class SWRLEXTLangMatchesBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals("https://github.com/mdesalvo/OWLSharp#langMatches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(2, builtin.Arguments.Count);
+        Assert.HasCount(2, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
@@ -67,7 +67,7 @@ public class SWRLEXTLangMatchesBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals("https://github.com/mdesalvo/OWLSharp#langMatches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(2, builtin.Arguments.Count);
+        Assert.HasCount(2, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
@@ -94,7 +94,7 @@ public class SWRLEXTLangMatchesBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals("https://github.com/mdesalvo/OWLSharp#langMatches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(2, builtin.Arguments.Count);
+        Assert.HasCount(2, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLLiteralArgument tlarg
                       && tlarg.GetLiteral().Equals(new RDFTypedLiteral("5", RDFModelEnums.RDFDatatypes.XSD_INTEGER)));
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
@@ -113,7 +113,7 @@ public class SWRLEXTLangMatchesBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals("https://github.com/mdesalvo/OWLSharp#langMatches", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(2, builtin.Arguments.Count);
+        Assert.HasCount(2, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
         Assert.IsTrue(builtin.Arguments[1] is SWRLLiteralArgument trarg

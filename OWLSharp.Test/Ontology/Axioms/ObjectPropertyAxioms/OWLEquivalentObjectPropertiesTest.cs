@@ -116,7 +116,7 @@ public class OWLEquivalentObjectPropertiesTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLEquivalentObjectProperties djObjProps
                       && string.Equals(((OWLObjectProperty)djObjProps.ObjectPropertyExpressions[0]).IRI, "http://xmlns.com/foaf/0.1/knows")
                       && string.Equals(((OWLObjectProperty)djObjProps.ObjectPropertyExpressions[1]).IRI, "http://xmlns.com/foaf/0.1/member"));

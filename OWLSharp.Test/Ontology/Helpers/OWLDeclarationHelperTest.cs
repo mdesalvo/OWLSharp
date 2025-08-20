@@ -45,41 +45,41 @@ public class OWLDeclarationHelperTest
         };
 
         List<OWLDeclaration> classDeclarations = ontology.GetDeclarationAxiomsOfType<OWLClass>();
-        Assert.AreEqual(3, classDeclarations.Count);
+        Assert.HasCount(3, classDeclarations);
         List<OWLClass> declaredClasses = ontology.GetDeclaredEntitiesOfType<OWLClass>();
-        Assert.AreEqual(3, declaredClasses.Count);
+        Assert.HasCount(3, declaredClasses);
         Assert.IsTrue(ontology.CheckHasEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)));
         Assert.IsFalse(ontology.CheckHasEntity(new OWLClass(RDFVocabulary.FOAF.DOCUMENT)));
         Assert.IsFalse(ontology.CheckHasEntity<OWLClass>(null));
         Assert.IsFalse((null as OWLOntology).CheckHasEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)));
 
         List<OWLDeclaration> datatypeDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDatatype>();
-        Assert.AreEqual(2, datatypeDeclarations.Count);
+        Assert.HasCount(2, datatypeDeclarations);
         List<OWLDatatype> declaredDatatypes = ontology.GetDeclaredEntitiesOfType<OWLDatatype>();
-        Assert.AreEqual(2, declaredDatatypes.Count);
+        Assert.HasCount(2, declaredDatatypes);
 
         List<OWLDeclaration> objectPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>();
-        Assert.AreEqual(1, objectPropertyDeclarations.Count);
+        Assert.HasCount(1, objectPropertyDeclarations);
         List<OWLObjectProperty> declaredObjectProperties = ontology.GetDeclaredEntitiesOfType<OWLObjectProperty>();
-        Assert.AreEqual(1, declaredObjectProperties.Count);
+        Assert.HasCount(1, declaredObjectProperties);
 
         List<OWLDeclaration> dataPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLDataProperty>();
-        Assert.AreEqual(1, dataPropertyDeclarations.Count);
+        Assert.HasCount(1, dataPropertyDeclarations);
         List<OWLDataProperty> declaredDataProperties = ontology.GetDeclaredEntitiesOfType<OWLDataProperty>();
-        Assert.AreEqual(1, declaredDataProperties.Count);
+        Assert.HasCount(1, declaredDataProperties);
 
         List<OWLDeclaration> annotationPropertyDeclarations = ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>();
-        Assert.AreEqual(1, annotationPropertyDeclarations.Count);
+        Assert.HasCount(1, annotationPropertyDeclarations);
         List<OWLAnnotationProperty> declaredAnnotationProperties = ontology.GetDeclaredEntitiesOfType<OWLAnnotationProperty>();
-        Assert.AreEqual(1, declaredAnnotationProperties.Count);
+        Assert.HasCount(1, declaredAnnotationProperties);
 
         List<OWLDeclaration> individualDeclarations = ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>();
-        Assert.AreEqual(1, individualDeclarations.Count);
+        Assert.HasCount(1, individualDeclarations);
         List<OWLNamedIndividual> declaredIndividuals = ontology.GetDeclaredEntitiesOfType<OWLNamedIndividual>();
-        Assert.AreEqual(1, declaredIndividuals.Count);
+        Assert.HasCount(1, declaredIndividuals);
 
-        Assert.AreEqual(0, (null as OWLOntology).GetDeclarationAxiomsOfType<OWLClass>().Count);
-        Assert.AreEqual(0, (null as OWLOntology).GetDeclaredEntitiesOfType<OWLClass>().Count);
+        Assert.IsEmpty((null as OWLOntology).GetDeclarationAxiomsOfType<OWLClass>());
+        Assert.IsEmpty((null as OWLOntology).GetDeclaredEntitiesOfType<OWLClass>());
     }
 
     [TestMethod]
@@ -95,12 +95,12 @@ public class OWLDeclarationHelperTest
         ontology.DeclareEntity(new OWLNamedIndividual(RDFVocabulary.FOAF.SHA1));
         (null as OWLOntology).DeclareEntity(new OWLClass(RDFVocabulary.FOAF.AGENT)); //will be discarded, since null ontology
 
-        Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLClass>().Count);
-        Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLDatatype>().Count);
-        Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>().Count);
-        Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLDataProperty>().Count);
-        Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>().Count);
-        Assert.AreEqual(1, ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>().Count);
+        Assert.HasCount(1, ontology.GetDeclarationAxiomsOfType<OWLClass>());
+        Assert.HasCount(1, ontology.GetDeclarationAxiomsOfType<OWLDatatype>());
+        Assert.HasCount(1, ontology.GetDeclarationAxiomsOfType<OWLObjectProperty>());
+        Assert.HasCount(1, ontology.GetDeclarationAxiomsOfType<OWLDataProperty>());
+        Assert.HasCount(1, ontology.GetDeclarationAxiomsOfType<OWLAnnotationProperty>());
+        Assert.HasCount(1, ontology.GetDeclarationAxiomsOfType<OWLNamedIndividual>());
         Assert.ThrowsExactly<OWLException>(() => new OWLOntology().DeclareEntity<OWLClass>(null));
     }
     #endregion

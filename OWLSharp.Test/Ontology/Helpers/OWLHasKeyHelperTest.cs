@@ -33,7 +33,7 @@ public class OWLHasKeyHelperTest
             [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)]));
 
-        Assert.AreEqual(1, ontology.KeyAxioms.Count);
+        Assert.HasCount(1, ontology.KeyAxioms);
         Assert.IsTrue(ontology.CheckHasKey(new OWLHasKey(
             new OWLClass(RDFVocabulary.FOAF.AGENT),
             [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
@@ -44,7 +44,7 @@ public class OWLHasKeyHelperTest
             new OWLClass(RDFVocabulary.FOAF.AGENT),
             [new OWLObjectProperty(RDFVocabulary.FOAF.KNOWS)],
             [new OWLDataProperty(RDFVocabulary.FOAF.AGE)])); //will be discarded, since duplicates are not allowed
-        Assert.AreEqual(1, ontology.KeyAxioms.Count);
+        Assert.HasCount(1, ontology.KeyAxioms);
     }
     #endregion
 }

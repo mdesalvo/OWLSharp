@@ -105,7 +105,7 @@ public class OWLSubObjectPropertyOfTest
         Assert.IsNotNull(subObjectPropertyOf);
         Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
         Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyChain);
-        Assert.AreEqual(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions.Count);
+        Assert.HasCount(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions);
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[0]
             is OWLObjectProperty firstChainProp && string.Equals(firstChainProp.IRI, "ex:hasFather"));
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[1]
@@ -127,7 +127,7 @@ public class OWLSubObjectPropertyOfTest
         Assert.IsNotNull(subObjectPropertyOf);
         Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
         Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyChain);
-        Assert.AreEqual(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions.Count);
+        Assert.HasCount(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions);
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[0]
             is OWLObjectProperty firstChainProp && string.Equals(firstChainProp.IRI, "ex:hasFather"));
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[1]
@@ -412,7 +412,7 @@ public class OWLSubObjectPropertyOfTest
         Assert.IsNotNull(subObjectPropertyOf);
         Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
         Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyChain);
-        Assert.AreEqual(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions.Count);
+        Assert.HasCount(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions);
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[0]
             is OWLObjectProperty firstChainProp && string.Equals(firstChainProp.IRI, "ex:hasFather"));
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[1]
@@ -441,7 +441,7 @@ public class OWLSubObjectPropertyOfTest
         Assert.IsNotNull(subObjectPropertyOf);
         Assert.IsNull(subObjectPropertyOf.SubObjectPropertyExpression);
         Assert.IsNotNull(subObjectPropertyOf.SubObjectPropertyChain);
-        Assert.AreEqual(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions.Count);
+        Assert.HasCount(2, subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions);
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[0]
             is OWLObjectProperty firstChainProp && string.Equals(firstChainProp.IRI, "ex:hasFather"));
         Assert.IsTrue(subObjectPropertyOf.SubObjectPropertyChain.ObjectPropertyExpressions[1]
@@ -475,7 +475,7 @@ public class OWLSubObjectPropertyOfTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf
                       {
                           SubObjectPropertyExpression: OWLObjectProperty subObjProp
@@ -516,7 +516,7 @@ public class OWLSubObjectPropertyOfTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLSubObjectPropertyOf subObjPropOf
                       && subObjPropOf.SubObjectPropertyChain.ObjectPropertyExpressions[0] is OWLObjectProperty firstChainProp
                       && string.Equals(firstChainProp.IRI, "ex:hasFather")

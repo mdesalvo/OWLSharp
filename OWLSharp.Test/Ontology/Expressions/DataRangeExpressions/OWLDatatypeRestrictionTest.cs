@@ -37,7 +37,7 @@ public class OWLDatatypeRestrictionTest
         Assert.IsNotNull(length6to10Facet.Datatype);
         Assert.IsTrue(string.Equals(length6to10Facet.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
         Assert.IsNotNull(length6to10Facet.FacetRestrictions);
-        Assert.AreEqual(2, length6to10Facet.FacetRestrictions.Count);
+        Assert.HasCount(2, length6to10Facet.FacetRestrictions);
         Assert.IsTrue(length6to10Facet.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
                                                                    && string.Equals(fr.Literal.Value, "6")
                                                                    && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));
@@ -129,7 +129,7 @@ public class OWLDatatypeRestrictionTest
         Assert.IsNotNull(length6to10Facet.Datatype);
         Assert.IsTrue(string.Equals(length6to10Facet.Datatype.IRI, RDFVocabulary.XSD.STRING.ToString()));
         Assert.IsNotNull(length6to10Facet.FacetRestrictions);
-        Assert.AreEqual(2, length6to10Facet.FacetRestrictions.Count);
+        Assert.HasCount(2, length6to10Facet.FacetRestrictions);
         Assert.IsTrue(length6to10Facet.FacetRestrictions.Any(fr => string.Equals(fr.FacetIRI, RDFVocabulary.XSD.MIN_LENGTH.ToString())
                                                                    && string.Equals(fr.Literal.Value, "6")
                                                                    && string.Equals(fr.Literal.DatatypeIRI, RDFVocabulary.XSD.INT.ToString())));

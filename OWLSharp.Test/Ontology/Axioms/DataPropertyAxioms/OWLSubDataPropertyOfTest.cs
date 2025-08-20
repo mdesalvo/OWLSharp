@@ -115,7 +115,7 @@ public class OWLSubDataPropertyOfTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.DataPropertyAxioms);
         Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLSubDataPropertyOf annPropDom
                       && string.Equals(annPropDom.SubDataProperty.IRI, RDFVocabulary.DC.DCTERMS.TITLE.ToString())
                       && string.Equals(annPropDom.SuperDataProperty.IRI, RDFVocabulary.DC.TITLE.ToString()));
@@ -186,7 +186,7 @@ public class OWLSubDataPropertyOfTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(2, ontology.DataPropertyAxioms.Count);
+        Assert.HasCount(2, ontology.DataPropertyAxioms);
         Assert.IsTrue(ontology.DataPropertyAxioms.Any(annAxm => annAxm is OWLSubDataPropertyOf subannOf
                                                                 && string.Equals(subannOf.SubDataProperty.IRI, "http://purl.org/dc/terms/title")
                                                                 && string.Equals(subannOf.SuperDataProperty.IRI, "http://purl.org/dc/elements/1.1/title")

@@ -153,7 +153,7 @@ public class OWLInverseObjectPropertiesTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLInverseObjectProperties invObjProp
                       && string.Equals(((OWLObjectProperty)invObjProp.LeftObjectPropertyExpression).IRI, "ex:hasWife")
                       && string.Equals(((OWLObjectProperty)invObjProp.RightObjectPropertyExpression).IRI, "ex:isWifeOf"));

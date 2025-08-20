@@ -39,7 +39,7 @@ public class SWRLRuleTest
 
         Assert.IsNotNull(rule);
         Assert.IsNotNull(rule.Annotations);
-        Assert.AreEqual(2, rule.Annotations.Count);
+        Assert.HasCount(2, rule.Annotations);
         Assert.IsNotNull(rule.Antecedent);
         Assert.IsNotNull(rule.Consequent);
     }
@@ -153,12 +153,12 @@ public class SWRLRuleTest
 
         Assert.IsNotNull(rule);
         Assert.IsNotNull(rule.Annotations);
-        Assert.AreEqual(2, rule.Annotations.Count);
+        Assert.HasCount(2, rule.Annotations);
         Assert.IsNotNull(rule.Antecedent);
-        Assert.AreEqual(2, rule.Antecedent.Atoms.Count);
-        Assert.AreEqual(1, rule.Antecedent.BuiltIns.Count);
+        Assert.HasCount(2, rule.Antecedent.Atoms);
+        Assert.HasCount(1, rule.Antecedent.BuiltIns);
         Assert.IsNotNull(rule.Consequent);
-        Assert.AreEqual(1, rule.Consequent.Atoms.Count);
+        Assert.HasCount(1, rule.Consequent.Atoms);
         Assert.IsTrue(string.Equals("Person(?P) ^ name(?P,?N) ^ swrlb:containsIgnoreCase(?N,\"mark\") -> Agent(?P)", rule.ToString()));
     }
 
@@ -216,7 +216,7 @@ public class SWRLRuleTest
         List<OWLInference> inferences = await ontology.Rules[0].ApplyToOntologyAsync(ontology);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion clsAsnInf
                       && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                       && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
@@ -228,7 +228,7 @@ public class SWRLRuleTest
         List<OWLInference> inferences = await new SWRLRule { Consequent = new SWRLConsequent() }.ApplyToOntologyAsync(new OWLOntology());
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(0, inferences.Count);
+        Assert.IsEmpty(inferences);
     }
 
     [TestMethod]
@@ -237,7 +237,7 @@ public class SWRLRuleTest
         List<OWLInference> inferences = await new SWRLRule { Antecedent = new SWRLAntecedent() }.ApplyToOntologyAsync(new OWLOntology());
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(0, inferences.Count);
+        Assert.IsEmpty(inferences);
     }
 
     [TestMethod]

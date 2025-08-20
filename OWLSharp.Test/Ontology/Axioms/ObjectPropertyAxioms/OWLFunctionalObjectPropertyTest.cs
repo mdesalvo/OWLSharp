@@ -162,7 +162,7 @@ public class OWLFunctionalObjectPropertyTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty
         {
             ObjectPropertyExpression: OWLObjectProperty objProp
@@ -198,7 +198,7 @@ public class OWLFunctionalObjectPropertyTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLFunctionalObjectProperty
         {
             ObjectPropertyExpression: OWLObjectInverseOf objInvOf

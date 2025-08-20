@@ -111,73 +111,73 @@ public class OWLClassViewTest
     [TestMethod]
     public async Task ShouldGetSubClassesAsync()
     {
-        Assert.AreEqual(4, (await LivingEntityView.SubClassesAsync()).Count);
-        Assert.AreEqual(3, (await AnimalView.SubClassesAsync()).Count);
-        Assert.AreEqual(0, (await CatView.SubClassesAsync()).Count);
+        Assert.HasCount(4, await LivingEntityView.SubClassesAsync());
+        Assert.HasCount(3, await AnimalView.SubClassesAsync());
+        Assert.IsEmpty(await CatView.SubClassesAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetSuperClassesAsync()
     {
-        Assert.AreEqual(0, (await LivingEntityView.SuperClassesAsync()).Count);
-        Assert.AreEqual(1, (await AnimalView.SuperClassesAsync()).Count);
-        Assert.AreEqual(2, (await CatView.SuperClassesAsync()).Count);
+        Assert.IsEmpty(await LivingEntityView.SuperClassesAsync());
+        Assert.HasCount(1, await AnimalView.SuperClassesAsync());
+        Assert.HasCount(2, await CatView.SuperClassesAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetEquivalentClassesAsync()
     {
-        Assert.AreEqual(0, (await LivingEntityView.EquivalentClassesAsync()).Count);
-        Assert.AreEqual(0, (await AnimalView.EquivalentClassesAsync()).Count);
-        Assert.AreEqual(1, (await CatView.EquivalentClassesAsync()).Count);
+        Assert.IsEmpty(await LivingEntityView.EquivalentClassesAsync());
+        Assert.IsEmpty(await AnimalView.EquivalentClassesAsync());
+        Assert.HasCount(1, await CatView.EquivalentClassesAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetDisjointClassesAsync()
     {
-        Assert.AreEqual(0, (await LivingEntityView.DisjointClassesAsync()).Count);
-        Assert.AreEqual(0, (await AnimalView.DisjointClassesAsync()).Count);
-        Assert.AreEqual(1, (await CatView.DisjointClassesAsync()).Count);
+        Assert.IsEmpty(await LivingEntityView.DisjointClassesAsync());
+        Assert.IsEmpty(await AnimalView.DisjointClassesAsync());
+        Assert.HasCount(1, await CatView.DisjointClassesAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetIndividualsAsync()
     {
-        Assert.AreEqual(2, (await LivingEntityView.IndividualsAsync()).Count);
-        Assert.AreEqual(2, (await AnimalView.IndividualsAsync()).Count);
-        Assert.AreEqual(1, (await CatView.IndividualsAsync()).Count);
+        Assert.HasCount(2, await LivingEntityView.IndividualsAsync());
+        Assert.HasCount(2, await AnimalView.IndividualsAsync());
+        Assert.HasCount(1, await CatView.IndividualsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetNegativeIndividualsAsync()
     {
-        Assert.AreEqual(0, (await LivingEntityView.NegativeIndividualsAsync()).Count);
-        Assert.AreEqual(0, (await AnimalView.NegativeIndividualsAsync()).Count);
-        Assert.AreEqual(1, (await CatView.NegativeIndividualsAsync()).Count);
+        Assert.IsEmpty(await LivingEntityView.NegativeIndividualsAsync());
+        Assert.IsEmpty(await AnimalView.NegativeIndividualsAsync());
+        Assert.HasCount(1, await CatView.NegativeIndividualsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetKeysAsync()
     {
-        Assert.AreEqual(1, (await LivingEntityView.KeysAsync()).Count);
-        Assert.AreEqual(0, (await AnimalView.KeysAsync()).Count);
-        Assert.AreEqual(0, (await CatView.KeysAsync()).Count);
+        Assert.HasCount(1, await LivingEntityView.KeysAsync());
+        Assert.IsEmpty(await AnimalView.KeysAsync());
+        Assert.IsEmpty(await CatView.KeysAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetDataAnnotationsAsync()
     {
-        Assert.AreEqual(0, (await LivingEntityView.DataAnnotationsAsync()).Count);
-        Assert.AreEqual(0, (await AnimalView.DataAnnotationsAsync()).Count);
-        Assert.AreEqual(2, (await CatView.DataAnnotationsAsync()).Count);
+        Assert.IsEmpty(await LivingEntityView.DataAnnotationsAsync());
+        Assert.IsEmpty(await AnimalView.DataAnnotationsAsync());
+        Assert.HasCount(2, await CatView.DataAnnotationsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetObjectAnnotationsAsync()
     {
-        Assert.AreEqual(0, (await LivingEntityView.ObjectAnnotationsAsync()).Count);
-        Assert.AreEqual(0, (await AnimalView.ObjectAnnotationsAsync()).Count);
-        Assert.AreEqual(1, (await CatView.ObjectAnnotationsAsync()).Count);
+        Assert.IsEmpty(await LivingEntityView.ObjectAnnotationsAsync());
+        Assert.IsEmpty(await AnimalView.ObjectAnnotationsAsync());
+        Assert.HasCount(1, await CatView.ObjectAnnotationsAsync());
     }
 
     [TestMethod]

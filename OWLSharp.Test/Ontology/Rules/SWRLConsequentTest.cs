@@ -35,7 +35,7 @@ public class SWRLConsequentTest
 
         Assert.IsNotNull(consequent);
         Assert.IsNotNull(consequent.Atoms);
-        Assert.AreEqual(0, consequent.Atoms.Count);
+        Assert.IsEmpty(consequent.Atoms);
     }
 
     [TestMethod]
@@ -112,7 +112,7 @@ public class SWRLConsequentTest
         List<OWLInference> consequentResult = ontology.Rules[0].Consequent.Evaluate(antecedentResult, ontology);
 
         Assert.IsNotNull(consequentResult);
-        Assert.AreEqual(1, consequentResult.Count);
+        Assert.HasCount(1, consequentResult);
         Assert.IsTrue(consequentResult[0].Axiom is OWLClassAssertion clsAsnInf
                       && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                       && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));

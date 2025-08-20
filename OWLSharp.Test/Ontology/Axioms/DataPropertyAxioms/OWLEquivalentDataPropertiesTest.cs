@@ -117,7 +117,7 @@ public class OWLEquivalentDataPropertiesTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.DataPropertyAxioms);
         Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLEquivalentDataProperties djDtProps
                       && string.Equals(djDtProps.DataProperties[0].IRI, "http://xmlns.com/foaf/0.1/age")
                       && string.Equals(djDtProps.DataProperties[1].AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:title"));

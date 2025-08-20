@@ -33,7 +33,7 @@ public class OWLDataUnionOfTest
 
         Assert.IsNotNull(dataUnionOf);
         Assert.IsNotNull(dataUnionOf.DataRangeExpressions);
-        Assert.AreEqual(2, dataUnionOf.DataRangeExpressions.Count);
+        Assert.HasCount(2, dataUnionOf.DataRangeExpressions);
         Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                   && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
         Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
@@ -90,7 +90,7 @@ public class OWLDataUnionOfTest
 
         Assert.IsNotNull(dataUnionOf);
         Assert.IsNotNull(dataUnionOf.DataRangeExpressions);
-        Assert.AreEqual(2, dataUnionOf.DataRangeExpressions.Count);
+        Assert.HasCount(2, dataUnionOf.DataRangeExpressions);
         Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                   && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
         Assert.IsTrue(dataUnionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType

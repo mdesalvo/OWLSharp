@@ -39,7 +39,7 @@ public class SWRLSubstringBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#substring", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(4, builtin.Arguments.Count);
+        Assert.HasCount(4, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg
@@ -75,7 +75,7 @@ public class SWRLSubstringBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals("http://www.w3.org/2003/11/swrlb#substring", builtin.IRI));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(4, builtin.Arguments.Count);
+        Assert.HasCount(4, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument vlarg
                       && vlarg.GetVariable().Equals(new RDFVariable("?X")));
         Assert.IsTrue(builtin.Arguments[1] is SWRLVariableArgument rlarg

@@ -207,7 +207,6 @@ namespace OWLSharp.Ontology
 
                                 //Compute object property assertions in scope of OHV restriction
                                 bool shouldSwitchObjPropIdvs = objHasValue.ObjectPropertyExpression is OWLObjectInverseOf;
-                                
 
                                 //Compute individuals satisfying OHV restriction
                                 foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasValue.ObjectPropertyExpression))
@@ -236,7 +235,7 @@ namespace OWLSharp.Ontology
                             case OWLObjectHasSelf objHasSelf:
                             {
                                 //Compute object property assertions in scope of OHS restriction
-                                
+
 
                                 //Compute individuals satisfying OHS restriction
                                 foreach (OWLObjectPropertyAssertion inScopeObjPropAssertion in SelectObjectAssertionsByOPEX(objectPropertyAssertions, objHasSelf.ObjectPropertyExpression))
@@ -327,7 +326,7 @@ namespace OWLSharp.Ontology
                                 RDFLiteral dtHasValueLiteral = dtHasValue.Literal.GetLiteral();
 
                                 //Compute object property assertions in scope of OHV restriction
-                                
+
 
                                 //Compute individuals satisfying OHV restriction
                                 foreach (OWLDataPropertyAssertion inScopeDtPropAssertion in SelectDataAssertionsByDPEX(dataPropertyAssertions, dtHasValue.DataProperty))

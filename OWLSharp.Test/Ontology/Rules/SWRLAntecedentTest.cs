@@ -33,7 +33,7 @@ public class SWRLAntecedentTest
 
         Assert.IsNotNull(antecedent);
         Assert.IsNotNull(antecedent.Atoms);
-        Assert.AreEqual(0, antecedent.Atoms.Count);
+        Assert.IsEmpty(antecedent.Atoms);
     }
 
     [TestMethod]
@@ -92,8 +92,8 @@ public class SWRLAntecedentTest
             """<Body><ClassAtom><Class IRI="http://xmlns.com/foaf/0.1/Person" /><Variable IRI="urn:swrl:var#P" /></ClassAtom><DataRangeAtom><Datatype IRI="http://www.w3.org/2001/XMLSchema#integer" /><Variable IRI="urn:swrl:var#X" /></DataRangeAtom><BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#divide"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /><Literal datatypeIRI="http://www.w3.org/2001/XMLSchema#double">3.141592</Literal></BuiltInAtom><BuiltInAtom IRI="http://www.w3.org/2003/11/swrlb#tan"><Variable IRI="urn:swrl:var#X" /><Variable IRI="urn:swrl:var#Y" /></BuiltInAtom></Body>""");
 
         Assert.IsNotNull(antecedent);
-        Assert.AreEqual(2, antecedent.Atoms.Count);
-        Assert.AreEqual(2, antecedent.BuiltIns.Count);
+        Assert.HasCount(2, antecedent.Atoms);
+        Assert.HasCount(2, antecedent.BuiltIns);
         Assert.IsTrue(string.Equals("Person(?P) ^ integer(?X) ^ swrlb:divide(?X,?Y,\"3.141592\"^^xsd:double) ^ swrlb:tan(?X,?Y)", antecedent.ToString()));
     }
 

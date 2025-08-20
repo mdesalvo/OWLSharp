@@ -39,29 +39,29 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology.Prefixes);
-        Assert.AreEqual(5, ontology.Prefixes.Count);
+        Assert.HasCount(5, ontology.Prefixes);
         Assert.IsNotNull(ontology.Imports);
-        Assert.AreEqual(0, ontology.Imports.Count);
+        Assert.IsEmpty(ontology.Imports);
         Assert.IsNotNull(ontology.Annotations);
-        Assert.AreEqual(0, ontology.Annotations.Count);
+        Assert.IsEmpty(ontology.Annotations);
         Assert.IsNotNull(ontology.DeclarationAxioms);
-        Assert.AreEqual(0, ontology.DeclarationAxioms.Count);
+        Assert.IsEmpty(ontology.DeclarationAxioms);
         Assert.IsNotNull(ontology.ClassAxioms);
-        Assert.AreEqual(0, ontology.ClassAxioms.Count);
+        Assert.IsEmpty(ontology.ClassAxioms);
         Assert.IsNotNull(ontology.ObjectPropertyAxioms);
-        Assert.AreEqual(0, ontology.ObjectPropertyAxioms.Count);
+        Assert.IsEmpty(ontology.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology.DataPropertyAxioms);
-        Assert.AreEqual(0, ontology.DataPropertyAxioms.Count);
+        Assert.IsEmpty(ontology.DataPropertyAxioms);
         Assert.IsNotNull(ontology.DatatypeDefinitionAxioms);
-        Assert.AreEqual(0, ontology.DatatypeDefinitionAxioms.Count);
+        Assert.IsEmpty(ontology.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology.KeyAxioms);
-        Assert.AreEqual(0, ontology.KeyAxioms.Count);
+        Assert.IsEmpty(ontology.KeyAxioms);
         Assert.IsNotNull(ontology.AssertionAxioms);
-        Assert.AreEqual(0, ontology.AssertionAxioms.Count);
+        Assert.IsEmpty(ontology.AssertionAxioms);
         Assert.IsNotNull(ontology.AnnotationAxioms);
-        Assert.AreEqual(0, ontology.AnnotationAxioms.Count);
+        Assert.IsEmpty(ontology.AnnotationAxioms);
         Assert.IsNotNull(ontology.Rules);
-        Assert.AreEqual(0, ontology.Rules.Count);
+        Assert.IsEmpty(ontology.Rules);
     }
 
     [TestMethod]
@@ -116,29 +116,29 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(clonedOntology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(clonedOntology.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(clonedOntology.Prefixes);
-        Assert.AreEqual(6, clonedOntology.Prefixes.Count);
+        Assert.HasCount(6, clonedOntology.Prefixes);
         Assert.IsNotNull(clonedOntology.Imports);
-        Assert.AreEqual(1, clonedOntology.Imports.Count);
+        Assert.HasCount(1, clonedOntology.Imports);
         Assert.IsNotNull(clonedOntology.Annotations);
-        Assert.AreEqual(1, clonedOntology.Annotations.Count);
+        Assert.HasCount(1, clonedOntology.Annotations);
         Assert.IsNotNull(clonedOntology.DeclarationAxioms);
-        Assert.AreEqual(8, clonedOntology.DeclarationAxioms.Count);
+        Assert.HasCount(8, clonedOntology.DeclarationAxioms);
         Assert.IsNotNull(clonedOntology.ClassAxioms);
-        Assert.AreEqual(1, clonedOntology.ClassAxioms.Count);
+        Assert.HasCount(1, clonedOntology.ClassAxioms);
         Assert.IsNotNull(clonedOntology.ObjectPropertyAxioms);
-        Assert.AreEqual(1, clonedOntology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, clonedOntology.ObjectPropertyAxioms);
         Assert.IsNotNull(clonedOntology.DataPropertyAxioms);
-        Assert.AreEqual(1, clonedOntology.DataPropertyAxioms.Count);
+        Assert.HasCount(1, clonedOntology.DataPropertyAxioms);
         Assert.IsNotNull(clonedOntology.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, clonedOntology.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, clonedOntology.DatatypeDefinitionAxioms);
         Assert.IsNotNull(clonedOntology.KeyAxioms);
-        Assert.AreEqual(1, clonedOntology.KeyAxioms.Count);
+        Assert.HasCount(1, clonedOntology.KeyAxioms);
         Assert.IsNotNull(clonedOntology.AssertionAxioms);
-        Assert.AreEqual(1, clonedOntology.AssertionAxioms.Count);
+        Assert.HasCount(1, clonedOntology.AssertionAxioms);
         Assert.IsNotNull(clonedOntology.AnnotationAxioms);
-        Assert.AreEqual(1, clonedOntology.AnnotationAxioms.Count);
+        Assert.HasCount(1, clonedOntology.AnnotationAxioms);
         Assert.IsNotNull(clonedOntology.Rules);
-        Assert.AreEqual(1, clonedOntology.Rules.Count);
+        Assert.HasCount(1, clonedOntology.Rules);
 
         //Test cloning a null ontology
         OWLOntology clonedEmptyOntology = new OWLOntology(null);
@@ -146,29 +146,29 @@ public class OWLOntologyTest
         Assert.IsNull(clonedEmptyOntology.IRI);
         Assert.IsNull(clonedEmptyOntology.VersionIRI);
         Assert.IsNotNull(clonedEmptyOntology.Prefixes);
-        Assert.AreEqual(5, clonedEmptyOntology.Prefixes.Count);
+        Assert.HasCount(5, clonedEmptyOntology.Prefixes);
         Assert.IsNotNull(clonedEmptyOntology.Imports);
-        Assert.AreEqual(0, clonedEmptyOntology.Imports.Count);
+        Assert.IsEmpty(clonedEmptyOntology.Imports);
         Assert.IsNotNull(clonedEmptyOntology.Annotations);
-        Assert.AreEqual(0, clonedEmptyOntology.Annotations.Count);
+        Assert.IsEmpty(clonedEmptyOntology.Annotations);
         Assert.IsNotNull(clonedEmptyOntology.DeclarationAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.DeclarationAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.DeclarationAxioms);
         Assert.IsNotNull(clonedEmptyOntology.ClassAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.ClassAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.ClassAxioms);
         Assert.IsNotNull(clonedEmptyOntology.ObjectPropertyAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.ObjectPropertyAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.ObjectPropertyAxioms);
         Assert.IsNotNull(clonedEmptyOntology.DataPropertyAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.DataPropertyAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.DataPropertyAxioms);
         Assert.IsNotNull(clonedEmptyOntology.DatatypeDefinitionAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.DatatypeDefinitionAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.DatatypeDefinitionAxioms);
         Assert.IsNotNull(clonedEmptyOntology.KeyAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.KeyAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.KeyAxioms);
         Assert.IsNotNull(clonedEmptyOntology.AssertionAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.AssertionAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.AssertionAxioms);
         Assert.IsNotNull(clonedEmptyOntology.AnnotationAxioms);
-        Assert.AreEqual(0, clonedEmptyOntology.AnnotationAxioms.Count);
+        Assert.IsEmpty(clonedEmptyOntology.AnnotationAxioms);
         Assert.IsNotNull(clonedEmptyOntology.Rules);
-        Assert.AreEqual(0, clonedEmptyOntology.Rules.Count);
+        Assert.IsEmpty(clonedEmptyOntology.Rules);
     }
 
     [TestMethod]
@@ -179,7 +179,7 @@ public class OWLOntologyTest
             new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
             new OWLLiteral(new RDFPlainLiteral("This is a test ontology"))));
 
-        Assert.AreEqual(1, ontology.Annotations.Count);
+        Assert.HasCount(1, ontology.Annotations);
         Assert.ThrowsExactly<OWLException>(() => ontology.Annotate(null));
     }
 
@@ -189,7 +189,7 @@ public class OWLOntologyTest
         OWLOntology ontology = new OWLOntology(new Uri("ex:ont"), new Uri("ex:ont/v1"));
         ontology.Prefix(new OWLPrefix(RDFNamespaceRegister.GetByPrefix(RDFVocabulary.FOAF.PREFIX)));
 
-        Assert.AreEqual(6, ontology.Prefixes.Count);
+        Assert.HasCount(6, ontology.Prefixes);
         Assert.ThrowsExactly<OWLException>(() => ontology.Prefix(null));
     }
 
@@ -480,29 +480,29 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology.Prefixes);
-        Assert.AreEqual(6, ontology.Prefixes.Count);
+        Assert.HasCount(6, ontology.Prefixes);
         Assert.IsNotNull(ontology.Imports);
-        Assert.AreEqual(1, ontology.Imports.Count);
+        Assert.HasCount(1, ontology.Imports);
         Assert.IsNotNull(ontology.Annotations);
-        Assert.AreEqual(1, ontology.Annotations.Count);
+        Assert.HasCount(1, ontology.Annotations);
         Assert.IsNotNull(ontology.DeclarationAxioms);
-        Assert.AreEqual(8, ontology.DeclarationAxioms.Count);
+        Assert.HasCount(8, ontology.DeclarationAxioms);
         Assert.IsNotNull(ontology.ClassAxioms);
-        Assert.AreEqual(1, ontology.ClassAxioms.Count);
+        Assert.HasCount(1, ontology.ClassAxioms);
         Assert.IsNotNull(ontology.ObjectPropertyAxioms);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology.DataPropertyAxioms);
-        Assert.AreEqual(1, ontology.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.DataPropertyAxioms);
         Assert.IsNotNull(ontology.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology.KeyAxioms);
-        Assert.AreEqual(1, ontology.KeyAxioms.Count);
+        Assert.HasCount(1, ontology.KeyAxioms);
         Assert.IsNotNull(ontology.AssertionAxioms);
-        Assert.AreEqual(1, ontology.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology.AssertionAxioms);
         Assert.IsNotNull(ontology.AnnotationAxioms);
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
         Assert.IsNotNull(ontology.Rules);
-        Assert.AreEqual(1, ontology.Rules.Count);
+        Assert.HasCount(1, ontology.Rules);
     }
 
     [TestMethod]
@@ -1077,7 +1077,7 @@ public class OWLOntologyTest
         MemoryStream stream = new MemoryStream();
         await ontology.ToStreamAsync(OWLEnums.OWLFormats.OWL2XML, stream, false);
         using StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray()));
-        Assert.IsTrue(string.Equals(await reader.ReadToEndAsync(),
+        Assert.IsTrue(string.Equals(await reader.ReadToEndAsync(TestContext.CancellationTokenSource.Token),
             """
             <?xml version="1.0" encoding="utf-8"?>
             <Ontology xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:foaf="http://xmlns.com/foaf/0.1/" ontologyIRI="ex:ont" ontologyVersion="ex:ont/v1">
@@ -1232,33 +1232,33 @@ public class OWLOntologyTest
 
         //Read from file and deserialize to test content
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(
-            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx")));
+            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileAsync.owx"), TestContext.CancellationTokenSource.Token));
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology2.Prefixes);
-        Assert.AreEqual(6, ontology2.Prefixes.Count);
+        Assert.HasCount(6, ontology2.Prefixes);
         Assert.IsNotNull(ontology2.Imports);
-        Assert.AreEqual(1, ontology2.Imports.Count);
+        Assert.HasCount(1, ontology2.Imports);
         Assert.IsNotNull(ontology2.Annotations);
-        Assert.AreEqual(1, ontology2.Annotations.Count);
+        Assert.HasCount(1, ontology2.Annotations);
         Assert.IsNotNull(ontology2.DeclarationAxioms);
-        Assert.AreEqual(8, ontology2.DeclarationAxioms.Count);
+        Assert.HasCount(8, ontology2.DeclarationAxioms);
         Assert.IsNotNull(ontology2.ClassAxioms);
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-        Assert.AreEqual(1, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology2.DataPropertyAxioms);
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, ontology2.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology2.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology2.KeyAxioms);
-        Assert.AreEqual(1, ontology2.KeyAxioms.Count);
+        Assert.HasCount(1, ontology2.KeyAxioms);
         Assert.IsNotNull(ontology2.AssertionAxioms);
-        Assert.AreEqual(1, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology2.AssertionAxioms);
         Assert.IsNotNull(ontology2.AnnotationAxioms);
-        Assert.AreEqual(1, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology2.AnnotationAxioms);
     }
 
     [TestMethod]
@@ -1312,33 +1312,33 @@ public class OWLOntologyTest
 
         //Read from file and deserialize to test content
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(
-            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredImportKnwoledgeAsync.owx")));
+            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredImportKnwoledgeAsync.owx"), TestContext.CancellationTokenSource.Token));
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology2.Prefixes);
-        Assert.AreEqual(6, ontology2.Prefixes.Count);
+        Assert.HasCount(6, ontology2.Prefixes);
         Assert.IsNotNull(ontology2.Imports);
-        Assert.AreEqual(1, ontology2.Imports.Count);
+        Assert.HasCount(1, ontology2.Imports);
         Assert.IsNotNull(ontology2.Annotations);
-        Assert.AreEqual(1, ontology2.Annotations.Count);
+        Assert.HasCount(1, ontology2.Annotations);
         Assert.IsNotNull(ontology2.DeclarationAxioms);
-        Assert.AreEqual(7, ontology2.DeclarationAxioms.Count);
+        Assert.HasCount(7, ontology2.DeclarationAxioms);
         Assert.IsNotNull(ontology2.ClassAxioms);
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-        Assert.AreEqual(1, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology2.DataPropertyAxioms);
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, ontology2.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology2.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology2.KeyAxioms);
-        Assert.AreEqual(1, ontology2.KeyAxioms.Count);
+        Assert.HasCount(1, ontology2.KeyAxioms);
         Assert.IsNotNull(ontology2.AssertionAxioms);
-        Assert.AreEqual(1, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology2.AssertionAxioms);
         Assert.IsNotNull(ontology2.AnnotationAxioms);
-        Assert.AreEqual(1, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology2.AnnotationAxioms);
     }
 
     [TestMethod]
@@ -1392,33 +1392,33 @@ public class OWLOntologyTest
 
         //Read from file and deserialize to test content
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(
-            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredInferredKnwoledgeAsync.owx")));
+            await File.ReadAllTextAsync(Path.Combine(Environment.CurrentDirectory, "OWLOntologyTest_ShouldWriteOntologyToFileWithIgnoredInferredKnwoledgeAsync.owx"), TestContext.CancellationTokenSource.Token));
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology2.Prefixes);
-        Assert.AreEqual(6, ontology2.Prefixes.Count);
+        Assert.HasCount(6, ontology2.Prefixes);
         Assert.IsNotNull(ontology2.Imports);
-        Assert.AreEqual(1, ontology2.Imports.Count);
+        Assert.HasCount(1, ontology2.Imports);
         Assert.IsNotNull(ontology2.Annotations);
-        Assert.AreEqual(1, ontology2.Annotations.Count);
+        Assert.HasCount(1, ontology2.Annotations);
         Assert.IsNotNull(ontology2.DeclarationAxioms);
-        Assert.AreEqual(7, ontology2.DeclarationAxioms.Count);
+        Assert.HasCount(7, ontology2.DeclarationAxioms);
         Assert.IsNotNull(ontology2.ClassAxioms);
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-        Assert.AreEqual(1, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology2.DataPropertyAxioms);
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, ontology2.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology2.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology2.KeyAxioms);
-        Assert.AreEqual(1, ontology2.KeyAxioms.Count);
+        Assert.HasCount(1, ontology2.KeyAxioms);
         Assert.IsNotNull(ontology2.AssertionAxioms);
-        Assert.AreEqual(1, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology2.AssertionAxioms);
         Assert.IsNotNull(ontology2.AnnotationAxioms);
-        Assert.AreEqual(1, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology2.AnnotationAxioms);
     }
 
     [TestMethod]
@@ -1477,34 +1477,34 @@ public class OWLOntologyTest
         //Read from stream and deserialize to test content
         string fileContent;
         using (StreamReader reader = new StreamReader(new MemoryStream(stream.ToArray())))
-            fileContent = await reader.ReadToEndAsync();
+            fileContent = await reader.ReadToEndAsync(TestContext.CancellationTokenSource.Token);
         OWLOntology ontology2 = OWLSerializer.DeserializeOntology(fileContent);
 
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology2.Prefixes);
-        Assert.AreEqual(6, ontology2.Prefixes.Count);
+        Assert.HasCount(6, ontology2.Prefixes);
         Assert.IsNotNull(ontology2.Imports);
-        Assert.AreEqual(1, ontology2.Imports.Count);
+        Assert.HasCount(1, ontology2.Imports);
         Assert.IsNotNull(ontology2.Annotations);
-        Assert.AreEqual(1, ontology2.Annotations.Count);
+        Assert.HasCount(1, ontology2.Annotations);
         Assert.IsNotNull(ontology2.DeclarationAxioms);
-        Assert.AreEqual(8, ontology2.DeclarationAxioms.Count);
+        Assert.HasCount(8, ontology2.DeclarationAxioms);
         Assert.IsNotNull(ontology2.ClassAxioms);
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-        Assert.AreEqual(1, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology2.DataPropertyAxioms);
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, ontology2.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology2.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology2.KeyAxioms);
-        Assert.AreEqual(1, ontology2.KeyAxioms.Count);
+        Assert.HasCount(1, ontology2.KeyAxioms);
         Assert.IsNotNull(ontology2.AssertionAxioms);
-        Assert.AreEqual(1, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology2.AssertionAxioms);
         Assert.IsNotNull(ontology2.AnnotationAxioms);
-        Assert.AreEqual(1, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology2.AnnotationAxioms);
     }
 
     [TestMethod]
@@ -1566,27 +1566,27 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology2.Prefixes);
-        Assert.AreEqual(6, ontology2.Prefixes.Count);
+        Assert.HasCount(6, ontology2.Prefixes);
         Assert.IsNotNull(ontology2.Imports);
-        Assert.AreEqual(1, ontology2.Imports.Count);
+        Assert.HasCount(1, ontology2.Imports);
         Assert.IsNotNull(ontology2.Annotations);
-        Assert.AreEqual(1, ontology2.Annotations.Count);
+        Assert.HasCount(1, ontology2.Annotations);
         Assert.IsNotNull(ontology2.DeclarationAxioms);
-        Assert.AreEqual(8, ontology2.DeclarationAxioms.Count);
+        Assert.HasCount(8, ontology2.DeclarationAxioms);
         Assert.IsNotNull(ontology2.ClassAxioms);
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-        Assert.AreEqual(1, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology2.DataPropertyAxioms);
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, ontology2.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology2.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology2.KeyAxioms);
-        Assert.AreEqual(1, ontology2.KeyAxioms.Count);
+        Assert.HasCount(1, ontology2.KeyAxioms);
         Assert.IsNotNull(ontology2.AssertionAxioms);
-        Assert.AreEqual(1, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology2.AssertionAxioms);
         Assert.IsNotNull(ontology2.AnnotationAxioms);
-        Assert.AreEqual(1, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology2.AnnotationAxioms);
     }
 
     [TestMethod]
@@ -1653,27 +1653,27 @@ public class OWLOntologyTest
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
         Assert.IsNotNull(ontology2.Prefixes);
-        Assert.AreEqual(6, ontology2.Prefixes.Count);
+        Assert.HasCount(6, ontology2.Prefixes);
         Assert.IsNotNull(ontology2.Imports);
-        Assert.AreEqual(1, ontology2.Imports.Count);
+        Assert.HasCount(1, ontology2.Imports);
         Assert.IsNotNull(ontology2.Annotations);
-        Assert.AreEqual(1, ontology2.Annotations.Count);
+        Assert.HasCount(1, ontology2.Annotations);
         Assert.IsNotNull(ontology2.DeclarationAxioms);
-        Assert.AreEqual(8, ontology2.DeclarationAxioms.Count);
+        Assert.HasCount(8, ontology2.DeclarationAxioms);
         Assert.IsNotNull(ontology2.ClassAxioms);
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsNotNull(ontology2.ObjectPropertyAxioms);
-        Assert.AreEqual(1, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.ObjectPropertyAxioms);
         Assert.IsNotNull(ontology2.DataPropertyAxioms);
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsNotNull(ontology2.DatatypeDefinitionAxioms);
-        Assert.AreEqual(1, ontology2.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology2.DatatypeDefinitionAxioms);
         Assert.IsNotNull(ontology2.KeyAxioms);
-        Assert.AreEqual(1, ontology2.KeyAxioms.Count);
+        Assert.HasCount(1, ontology2.KeyAxioms);
         Assert.IsNotNull(ontology2.AssertionAxioms);
-        Assert.AreEqual(1, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology2.AssertionAxioms);
         Assert.IsNotNull(ontology2.AnnotationAxioms);
-        Assert.AreEqual(1, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology2.AnnotationAxioms);
     }
 
     [TestMethod]
@@ -1729,7 +1729,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology);
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsNull(ontology.VersionIRI);
-        Assert.AreEqual(1, ontology.Imports.Count);
+        Assert.HasCount(1, ontology.Imports);
         Assert.AreEqual(1, ontology.Imports.Count(imp => string.Equals(imp.IRI, "ex:ont2", StringComparison.Ordinal)));
     }
 
@@ -1744,7 +1744,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology);
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsNull(ontology.VersionIRI);
-        Assert.AreEqual(5, ontology.Prefixes.Count);
+        Assert.HasCount(5, ontology.Prefixes);
         Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.OWL.PREFIX, StringComparison.Ordinal)));
         Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDFS.PREFIX, StringComparison.Ordinal)));
         Assert.AreEqual(1, ontology.Prefixes.Count(pfx => string.Equals(pfx.Name, RDFVocabulary.RDF.PREFIX, StringComparison.Ordinal)));
@@ -1769,7 +1769,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology);
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsNull(ontology.VersionIRI);
-        Assert.AreEqual(7, ontology.DeclarationAxioms.Count);
+        Assert.HasCount(7, ontology.DeclarationAxioms);
         Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLClass daxCls
                                                                    && daxCls.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)));
         Assert.AreEqual(1, ontology.DeclarationAxioms.Count(dax => dax.Expression is OWLClass daxCls
@@ -1808,7 +1808,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology);
         Assert.IsTrue(string.Equals(ontology.IRI, "ex:ont2", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology.VersionIRI, "ex:ont/v2", StringComparison.Ordinal));
-        Assert.AreEqual(10, ontology.Annotations.Count);
+        Assert.HasCount(10, ontology.Annotations);
         Assert.AreEqual(1, ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.BACKWARD_COMPATIBLE_WITH)));
         Assert.AreEqual(1, ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.INCOMPATIBLE_WITH)));
         Assert.AreEqual(1, ontology.Annotations.Count(ann => ann.AnnotationProperty.GetIRI().Equals(RDFVocabulary.OWL.PRIOR_VERSION)));
@@ -1839,7 +1839,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.Annotations.Count);
+        Assert.HasCount(1, ontology2.Annotations);
         Assert.IsTrue(ontology2.Annotations.Single().AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DESCRIPTION)
                       && ontology2.Annotations.Single().ValueLiteral.GetLiteral().Equals(new RDFPlainLiteral("annotation")));
         Assert.IsTrue(ontology2.Annotations.Single().Annotation.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DESCRIPTION)
@@ -1884,7 +1884,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLAsymmetricObjectProperty
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -1947,7 +1947,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLSymmetricObjectProperty
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -2010,7 +2010,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLIrreflexiveObjectProperty
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -2073,7 +2073,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLReflexiveObjectProperty
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -2136,7 +2136,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLTransitiveObjectProperty
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -2199,7 +2199,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLInverseFunctionalObjectProperty
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -2262,7 +2262,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLFunctionalObjectProperty
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -2350,7 +2350,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(4, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(4, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLInverseObjectProperties
                       {
                           LeftObjectPropertyExpression: OWLObjectProperty objPropA1
@@ -2462,7 +2462,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(4, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(4, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLEquivalentObjectProperties equivObjProps
                       && equivObjProps.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA1
                       && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
@@ -2593,7 +2593,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(5, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(5, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLDisjointObjectProperties disjObjProps
                       && disjObjProps.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA1
                       && objPropA1.GetIRI().Equals(new RDFResource("ex:objPropA1"))
@@ -2762,7 +2762,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(6, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(6, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLSubObjectPropertyOf subObjProps
                       && subObjProps.SubObjectPropertyChain.ObjectPropertyExpressions[0] is OWLObjectProperty objPropA5
                       && objPropA5.GetIRI().Equals(new RDFResource("ex:objPropA5"))
@@ -2945,7 +2945,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(5, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(5, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLObjectPropertyDomain { ObjectPropertyExpression: OWLObjectProperty foafKnows } objPropDom
                       && foafKnows.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && objPropDom.ClassExpression is OWLClass foafPerson
@@ -3117,7 +3117,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(5, ontology2.ObjectPropertyAxioms.Count);
+        Assert.HasCount(5, ontology2.ObjectPropertyAxioms);
         Assert.IsTrue(ontology2.ObjectPropertyAxioms[0] is OWLObjectPropertyRange { ObjectPropertyExpression: OWLObjectProperty foafKnows } objPropRng
                       && foafKnows.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && objPropRng.ClassExpression is OWLClass foafPerson
@@ -3234,7 +3234,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.DataPropertyAxioms);
         Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLFunctionalDataProperty funcDtProp
                       && funcDtProp.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && funcDtProp.Annotations.Count == 1
@@ -3291,7 +3291,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.VersionIRI, "ex:ont/v1", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.DataPropertyAxioms);
         Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLEquivalentDataProperties equivDtProps
                       && equivDtProps.DataProperties[0] is { } dtPropA1
                       && dtPropA1.GetIRI().Equals(new RDFResource("ex:dtPropA1"))
@@ -3357,7 +3357,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.DataPropertyAxioms);
         Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLDisjointDataProperties disjDtProps
                       && disjDtProps.DataProperties[0].GetIRI().Equals(new RDFResource("ex:dtPropA1"))
                       && disjDtProps.DataProperties[1].GetIRI().Equals(new RDFResource("ex:dtPropB1"))
@@ -3419,7 +3419,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(2, ontology2.DataPropertyAxioms);
         Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLSubDataPropertyOf subdtProps
                       && subdtProps.SubDataProperty.GetIRI().Equals(new RDFResource("ex:dtPropA1"))
                       && subdtProps.SuperDataProperty.GetIRI().Equals(new RDFResource("ex:dtPropB1"))
@@ -3464,7 +3464,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsTrue(ontology2.ClassAxioms[0] is OWLSubClassOf subClsOf
                       && subClsOf.SubClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
                       && subClsOf.SuperClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
@@ -3497,7 +3497,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsTrue(ontology2.ClassAxioms[0] is OWLEquivalentClasses equivCls
                       && equivCls.ClassExpressions[0].GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
                       && equivCls.ClassExpressions[1].GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
@@ -3543,7 +3543,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.ClassAxioms.Count);
+        Assert.HasCount(2, ontology2.ClassAxioms);
         Assert.IsTrue(ontology2.ClassAxioms[0] is OWLDisjointClasses disjCls
                       && disjCls.ClassExpressions[0] is OWLClass clsA1
                       && clsA1.GetIRI().Equals(new RDFResource("ex:clsA1"))
@@ -3590,7 +3590,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.ClassAxioms.Count);
+        Assert.HasCount(1, ontology2.ClassAxioms);
         Assert.IsTrue(ontology2.ClassAxioms[0] is OWLDisjointUnion disjUnion
                       && disjUnion.ClassIRI.GetIRI().Equals(new RDFResource("ex:clsA"))
                       && disjUnion.ClassExpressions[0] is OWLClass exClsB
@@ -3627,7 +3627,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.KeyAxioms.Count);
+        Assert.HasCount(1, ontology2.KeyAxioms);
         Assert.IsTrue(ontology2.KeyAxioms[0].ClassExpression is OWLClass clsA && clsA.GetIRI().Equals(new RDFResource("ex:clsA"))
                                                                               && ontology2.KeyAxioms[0].ObjectPropertyExpressions.Count == 2
                                                                               && ontology2.KeyAxioms[0].ObjectPropertyExpressions[0] is OWLObjectProperty op1 && op1.GetIRI().Equals(new RDFResource("ex:op1"))
@@ -3679,7 +3679,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(2, ontology2.DatatypeDefinitionAxioms);
         Assert.IsTrue(ontology2.DatatypeDefinitionAxioms[0].Datatype.GetIRI().Equals(new RDFResource("ex:length6to10"))
                       && ontology2.DatatypeDefinitionAxioms[0].DataRangeExpression is OWLDatatypeRestriction dtRest
                       && dtRest.Datatype.GetIRI().Equals(RDFVocabulary.XSD.STRING)
@@ -3772,7 +3772,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(4, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(4, ontology2.AssertionAxioms);
         Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLSameIndividual sameIdvs
                       && sameIdvs.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:IDVA"))
                       && sameIdvs.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:IDVB"))
@@ -3903,7 +3903,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(5, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(5, ontology2.AssertionAxioms);
         Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLDifferentIndividuals diffIdvs
                       && diffIdvs.IndividualExpressions[0] is OWLNamedIndividual idvA
                       && idvA.GetIRI().Equals(new RDFResource("ex:IDVA"))
@@ -4046,7 +4046,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(4, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(4, ontology2.AssertionAxioms);
         Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLObjectPropertyAssertion { ObjectPropertyExpression: OWLObjectProperty foafKnows } objPropAsn
                       && foafKnows.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && objPropAsn.SourceIndividualExpression is OWLNamedIndividual exIdv1
@@ -4133,7 +4133,7 @@ public class OWLOntologyTest
         ]);
         OWLOntology ontology = await OWLOntology.FromRDFGraphAsync(graph);
 
-        Assert.AreEqual(10, ontology.AssertionAxioms.Count);
+        Assert.HasCount(10, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.Any(asn => asn is OWLObjectPropertyAssertion
                                                           {
                                                               ObjectPropertyExpression: OWLObjectProperty skosMember
@@ -4245,7 +4245,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(4, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(4, ontology2.AssertionAxioms);
         Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLNegativeObjectPropertyAssertion
                       {
                           ObjectPropertyExpression: OWLObjectProperty foafKnows
@@ -4356,7 +4356,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(2, ontology2.AssertionAxioms);
         Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLDataPropertyAssertion dtPropAsn
                       && dtPropAsn.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && dtPropAsn.IndividualExpression is OWLNamedIndividual exIdv1
@@ -4423,7 +4423,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(2, ontology2.AssertionAxioms);
         Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLNegativeDataPropertyAssertion dtPropAsn
                       && dtPropAsn.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && dtPropAsn.IndividualExpression is OWLNamedIndividual exIdv1
@@ -4472,7 +4472,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLDataPropertyDomain dtPropDom
                       && dtPropDom.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && dtPropDom.ClassExpression is OWLClass foafPerson
@@ -4506,7 +4506,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology2.DataPropertyAxioms);
         Assert.IsTrue(ontology2.DataPropertyAxioms[0] is OWLDataPropertyRange dtPropRng
                       && dtPropRng.DataProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && dtPropRng.DataRangeExpression is OWLDatatype xsdInteger
@@ -4571,7 +4571,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(3, ontology2.AssertionAxioms.Count);
+        Assert.HasCount(3, ontology2.AssertionAxioms);
         Assert.IsTrue(ontology2.AssertionAxioms[0] is OWLClassAssertion clsAsn
                       && clsAsn.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.PERSON)
                       && clsAsn.IndividualExpression is OWLNamedIndividual exIdv1
@@ -4641,7 +4641,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(1, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLSubAnnotationPropertyOf subanProps
                       && subanProps.SubAnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && subanProps.SuperAnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.TITLE)
@@ -4686,7 +4686,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationPropertyDomain anPropDom
                       && anPropDom.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && string.Equals(anPropDom.IRI, RDFVocabulary.FOAF.PERSON.ToString(), StringComparison.Ordinal)
@@ -4739,7 +4739,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationPropertyRange anPropRng
                       && anPropRng.AnnotationProperty.GetIRI().Equals(RDFVocabulary.DC.DCTERMS.TITLE)
                       && string.Equals(anPropRng.IRI, RDFVocabulary.FOAF.PERSON.ToString(), StringComparison.Ordinal)
@@ -4795,7 +4795,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
                       && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.SEE_ALSO)
                       && string.Equals(annAsn.SubjectIRI, RDFVocabulary.FOAF.PERSON.ToString(), StringComparison.Ordinal)
@@ -4853,7 +4853,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
                       && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && string.Equals(annAsn.SubjectIRI, RDFVocabulary.XSD.INTEGER.ToString(), StringComparison.Ordinal)
@@ -4911,7 +4911,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
                       && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && string.Equals(annAsn.SubjectIRI, RDFVocabulary.FOAF.KNOWS.ToString(), StringComparison.Ordinal)
@@ -4969,7 +4969,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
                       && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && string.Equals(annAsn.SubjectIRI, RDFVocabulary.FOAF.AGE.ToString(), StringComparison.Ordinal)
@@ -5027,7 +5027,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
                       && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.COMMENT)
                       && string.Equals(annAsn.SubjectIRI, RDFVocabulary.RDFS.COMMENT.ToString(), StringComparison.Ordinal)
@@ -5085,7 +5085,7 @@ public class OWLOntologyTest
         Assert.IsNotNull(ontology2);
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
         Assert.IsTrue(string.Equals(ontology2.IRI, "ex:ont", StringComparison.Ordinal));
-        Assert.AreEqual(2, ontology2.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology2.AnnotationAxioms);
         Assert.IsTrue(ontology2.AnnotationAxioms[0] is OWLAnnotationAssertion annAsn
                       && annAsn.AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.SEE_ALSO)
                       && string.Equals(annAsn.SubjectIRI, "ex:Idv1", StringComparison.Ordinal)
@@ -5152,8 +5152,8 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
-        Assert.AreEqual(6, ontology2.Rules[0].Annotations.Count);
+        Assert.HasCount(1, ontology2.Rules);
+        Assert.HasCount(6, ontology2.Rules[0].Annotations);
         Assert.IsTrue(ontology2.Rules[0].Annotations[0].AnnotationProperty.GetIRI().Equals(RDFVocabulary.RDFS.LABEL)
                       && string.Equals(ontology2.Rules[0].Annotations[0].ValueLiteral.Value, "SWRL1", StringComparison.Ordinal)
                       && string.Equals(ontology2.Rules[0].Annotations[0].ValueLiteral.Language, "EN-US", StringComparison.Ordinal));
@@ -5204,16 +5204,16 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
+        Assert.HasCount(1, ontology2.Rules);
         Assert.IsNotNull(ontology2.Rules[0].Antecedent);
-        Assert.AreEqual(1, ontology2.Rules[0].Antecedent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Antecedent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLClassAtom classAtomAnt
                       && classAtomAnt.Predicate.GetIRI().Equals(new RDFResource("http://example.org/CLS1"))
                       && classAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
                       && leftArgVarAnt.GetVariable().Equals(new RDFVariable("?P"))
                       && classAtomAnt.RightArgument == null);
         Assert.IsNotNull(ontology2.Rules[0].Consequent);
-        Assert.AreEqual(1, ontology2.Rules[0].Consequent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Consequent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLClassAtom classAtomCons
                       && classAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://example.org/CLS2"))
                       && classAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
@@ -5256,16 +5256,16 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
+        Assert.HasCount(1, ontology2.Rules);
         Assert.IsNotNull(ontology2.Rules[0].Antecedent);
-        Assert.AreEqual(1, ontology2.Rules[0].Antecedent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Antecedent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLDataRangeAtom datarangeAtomAnt
                       && datarangeAtomAnt.Predicate.GetIRI().Equals(new RDFResource("http://www.w3.org/2001/XMLSchema#string"))
                       && datarangeAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
                       && leftArgVarAnt.GetVariable().Equals(new RDFVariable("?P"))
                       && datarangeAtomAnt.RightArgument == null);
         Assert.IsNotNull(ontology2.Rules[0].Consequent);
-        Assert.AreEqual(1, ontology2.Rules[0].Consequent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Consequent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLDataRangeAtom datarangeAtomCons
                       && datarangeAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://www.w3.org/2000/01/rdf-schema#Literal"))
                       && datarangeAtomCons.LeftArgument is SWRLLiteralArgument leftArgLitCons
@@ -5310,9 +5310,9 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
+        Assert.HasCount(1, ontology2.Rules);
         Assert.IsNotNull(ontology2.Rules[0].Antecedent);
-        Assert.AreEqual(1, ontology2.Rules[0].Antecedent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Antecedent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLDataPropertyAtom datapropertyAtomAnt
                       && datapropertyAtomAnt.Predicate.GetIRI().Equals(new RDFResource("http://example.org/dp"))
                       && datapropertyAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
@@ -5320,7 +5320,7 @@ public class OWLOntologyTest
                       && datapropertyAtomAnt.RightArgument is SWRLVariableArgument rightArgVarAnt
                       && rightArgVarAnt.GetVariable().Equals(new RDFVariable("?Q")));
         Assert.IsNotNull(ontology2.Rules[0].Consequent);
-        Assert.AreEqual(1, ontology2.Rules[0].Consequent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Consequent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLDataPropertyAtom datapropertyAtomCons
                       && datapropertyAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://example.org/dp"))
                       && datapropertyAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
@@ -5369,9 +5369,9 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
+        Assert.HasCount(1, ontology2.Rules);
         Assert.IsNotNull(ontology2.Rules[0].Antecedent);
-        Assert.AreEqual(1, ontology2.Rules[0].Antecedent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Antecedent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLObjectPropertyAtom objectpropertyAtomAnt
                       && objectpropertyAtomAnt.Predicate.GetIRI().Equals(new RDFResource("http://example.org/op"))
                       && objectpropertyAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
@@ -5379,7 +5379,7 @@ public class OWLOntologyTest
                       && objectpropertyAtomAnt.RightArgument is SWRLVariableArgument rightArgVarAnt
                       && rightArgVarAnt.GetVariable().Equals(new RDFVariable("?Q")));
         Assert.IsNotNull(ontology2.Rules[0].Consequent);
-        Assert.AreEqual(1, ontology2.Rules[0].Consequent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Consequent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLObjectPropertyAtom objectpropertyAtomCons
                       && objectpropertyAtomCons.Predicate.GetIRI().Equals(new RDFResource("http://example.org/op"))
                       && objectpropertyAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
@@ -5423,9 +5423,9 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
+        Assert.HasCount(1, ontology2.Rules);
         Assert.IsNotNull(ontology2.Rules[0].Antecedent);
-        Assert.AreEqual(1, ontology2.Rules[0].Antecedent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Antecedent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLSameIndividualAtom sameindividualAtomAnt
                       && sameindividualAtomAnt.Predicate.GetIRI().Equals(RDFVocabulary.OWL.SAME_AS)
                       && sameindividualAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
@@ -5433,7 +5433,7 @@ public class OWLOntologyTest
                       && sameindividualAtomAnt.RightArgument is SWRLVariableArgument rightArgVarAnt
                       && rightArgVarAnt.GetVariable().Equals(new RDFVariable("?Q")));
         Assert.IsNotNull(ontology2.Rules[0].Consequent);
-        Assert.AreEqual(1, ontology2.Rules[0].Consequent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Consequent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLSameIndividualAtom sameindividualAtomCons
                       && sameindividualAtomCons.Predicate.GetIRI().Equals(RDFVocabulary.OWL.SAME_AS)
                       && sameindividualAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
@@ -5477,9 +5477,9 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
+        Assert.HasCount(1, ontology2.Rules);
         Assert.IsNotNull(ontology2.Rules[0].Antecedent);
-        Assert.AreEqual(1, ontology2.Rules[0].Antecedent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Antecedent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Antecedent.Atoms[0] is SWRLDifferentIndividualsAtom differentindividualsAtomAnt
                       && differentindividualsAtomAnt.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM)
                       && differentindividualsAtomAnt.LeftArgument is SWRLVariableArgument leftArgVarAnt
@@ -5487,7 +5487,7 @@ public class OWLOntologyTest
                       && differentindividualsAtomAnt.RightArgument is SWRLVariableArgument rightArgVarAnt
                       && rightArgVarAnt.GetVariable().Equals(new RDFVariable("?Q")));
         Assert.IsNotNull(ontology2.Rules[0].Consequent);
-        Assert.AreEqual(1, ontology2.Rules[0].Consequent.Atoms.Count);
+        Assert.HasCount(1, ontology2.Rules[0].Consequent.Atoms);
         Assert.IsTrue(ontology2.Rules[0].Consequent.Atoms[0] is SWRLDifferentIndividualsAtom differentindividualsAtomCons
                       && differentindividualsAtomCons.Predicate.GetIRI().Equals(RDFVocabulary.OWL.DIFFERENT_FROM)
                       && differentindividualsAtomCons.LeftArgument is SWRLIndividualArgument leftArgIdvCons
@@ -5523,10 +5523,10 @@ public class OWLOntologyTest
         OWLOntology ontology2 = await OWLOntology.FromRDFGraphAsync(graph);
 
         Assert.IsNotNull(ontology2);
-        Assert.AreEqual(1, ontology2.Rules.Count);
+        Assert.HasCount(1, ontology2.Rules);
         Assert.IsNotNull(ontology2.Rules[0].Antecedent);
-        Assert.AreEqual(0, ontology2.Rules[0].Antecedent.Atoms.Count);
-        Assert.AreEqual(2, ontology2.Rules[0].Antecedent.BuiltIns.Count);
+        Assert.IsEmpty(ontology2.Rules[0].Antecedent.Atoms);
+        Assert.HasCount(2, ontology2.Rules[0].Antecedent.BuiltIns);
         Assert.IsTrue(ontology2.Rules[0].Antecedent.BuiltIns[0] is { } builtinAtom
                       && string.Equals(builtinAtom.IRI, "http://www.w3.org/2003/11/swrlb#stringConcat", StringComparison.Ordinal)
                       && builtinAtom.Arguments.Count == 3
@@ -5552,12 +5552,12 @@ public class OWLOntologyTest
 
         Assert.IsNotNull(ontology);
         Assert.AreEqual(RDFVocabulary.FOAF.BASE_URI, ontology.IRI);
-        Assert.IsTrue(ontology.Annotations.Count > 0);
-        Assert.IsTrue(ontology.AnnotationAxioms.Count > 0);
-        Assert.IsTrue(ontology.ClassAxioms.Count > 0);
-        Assert.IsTrue(ontology.DataPropertyAxioms.Count > 0);
-        Assert.IsTrue(ontology.DeclarationAxioms.Count > 0);
-        Assert.IsTrue(ontology.ObjectPropertyAxioms.Count > 0);
+        Assert.IsGreaterThan(0, ontology.Annotations.Count);
+        Assert.IsGreaterThan(0, ontology.AnnotationAxioms.Count);
+        Assert.IsGreaterThan(0, ontology.ClassAxioms.Count);
+        Assert.IsGreaterThan(0, ontology.DataPropertyAxioms.Count);
+        Assert.IsGreaterThan(0, ontology.DeclarationAxioms.Count);
+        Assert.IsGreaterThan(0, ontology.ObjectPropertyAxioms.Count);
     }
 
     [TestMethod]
@@ -5579,4 +5579,6 @@ public class OWLOntologyTest
         foreach (string file in Directory.EnumerateFiles(Environment.CurrentDirectory, "OWLOntologyTest_Should*"))
             File.Delete(file);
     }
+
+    public TestContext TestContext { get; set; }
 }

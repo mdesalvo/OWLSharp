@@ -35,7 +35,7 @@ public class OWLSameIndividualTest
 
         Assert.IsNotNull(SameIndividual);
         Assert.IsNotNull(SameIndividual.IndividualExpressions);
-        Assert.AreEqual(3, SameIndividual.IndividualExpressions.Count);
+        Assert.HasCount(3, SameIndividual.IndividualExpressions);
         Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
                                                                       && string.Equals(nidv.IRI, "ex:Alice")));
         Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
@@ -92,7 +92,7 @@ public class OWLSameIndividualTest
 
         Assert.IsNotNull(SameIndividual);
         Assert.IsNotNull(SameIndividual.IndividualExpressions);
-        Assert.AreEqual(3, SameIndividual.IndividualExpressions.Count);
+        Assert.HasCount(3, SameIndividual.IndividualExpressions);
         Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
                                                                       && string.Equals(nidv.IRI, "ex:Alice")));
         Assert.IsTrue(SameIndividual.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv
@@ -126,7 +126,7 @@ public class OWLSameIndividualTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLSameIndividual diffAsn
                       && diffAsn.IndividualExpressions.Count == 3
                       && diffAsn.IndividualExpressions.Any(iex => iex is OWLNamedIndividual nidv

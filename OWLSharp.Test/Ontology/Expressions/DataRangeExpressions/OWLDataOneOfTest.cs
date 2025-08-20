@@ -32,7 +32,7 @@ public class OWLDataOneOfTest
 
         Assert.IsNotNull(dataOneOf);
         Assert.IsNotNull(dataOneOf.Literals);
-        Assert.AreEqual(1, dataOneOf.Literals.Count);
+        Assert.HasCount(1, dataOneOf.Literals);
         Assert.IsTrue(string.Equals(dataOneOf.Literals.Single().Value, "hello"));
         Assert.IsTrue(string.Equals(dataOneOf.Literals.Single().Language, "EN"));
     }
@@ -85,7 +85,7 @@ public class OWLDataOneOfTest
 
         Assert.IsNotNull(dataOneOf);
         Assert.IsNotNull(dataOneOf.Literals);
-        Assert.AreEqual(2, dataOneOf.Literals.Count);
+        Assert.HasCount(2, dataOneOf.Literals);
         Assert.IsTrue(dataOneOf.Literals.Any(lit => string.Equals(lit.Value, "hello")
                                                     && string.Equals(lit.Language, "EN")));
         Assert.IsTrue(dataOneOf.Literals.Any(lit => string.Equals(lit.Value, "ciao")

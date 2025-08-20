@@ -214,7 +214,7 @@ public class SWRLDifferentIndividualsAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLDifferentIndividuals { IsInference: true } diffIdvsInf
                       && diffIdvsInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:Mark"))
                       && diffIdvsInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:John")));
@@ -234,7 +234,7 @@ public class SWRLDifferentIndividualsAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLDifferentIndividuals { IsInference: true } diffIdvsInf
                       && diffIdvsInf.IndividualExpressions[0].GetIRI().Equals(new RDFResource("ex:John"))
                       && diffIdvsInf.IndividualExpressions[1].GetIRI().Equals(new RDFResource("ex:Mark")));

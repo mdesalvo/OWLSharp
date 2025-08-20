@@ -33,7 +33,7 @@ public class OWLObjectOneOfTest
 
         Assert.IsNotNull(ObjectOneOf);
         Assert.IsNotNull(ObjectOneOf.IndividualExpressions);
-        Assert.AreEqual(2, ObjectOneOf.IndividualExpressions.Count);
+        Assert.HasCount(2, ObjectOneOf.IndividualExpressions);
         Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
                                                                    && string.Equals(namedIdv.IRI, "ex:Bob")));
         Assert.IsTrue(ObjectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv
@@ -86,7 +86,7 @@ public class OWLObjectOneOfTest
 
         Assert.IsNotNull(objectOneOf);
         Assert.IsNotNull(objectOneOf.IndividualExpressions);
-        Assert.AreEqual(2, objectOneOf.IndividualExpressions.Count);
+        Assert.HasCount(2, objectOneOf.IndividualExpressions);
         Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLNamedIndividual namedIdv
                                                                    && string.Equals(namedIdv.IRI, "ex:Bob")));
         Assert.IsTrue(objectOneOf.IndividualExpressions.Any(iex => iex is OWLAnonymousIndividual anonIdv

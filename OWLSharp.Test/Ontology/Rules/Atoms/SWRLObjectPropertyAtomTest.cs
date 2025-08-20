@@ -260,7 +260,7 @@ public class SWRLObjectPropertyAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLObjectPropertyAssertion { IsInference: true } opAsnInf
                       && opAsnInf.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && opAsnInf.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))
@@ -282,7 +282,7 @@ public class SWRLObjectPropertyAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLObjectPropertyAssertion { IsInference: true } opAsnInf
                       && opAsnInf.ObjectPropertyExpression.GetIRI().Equals(RDFVocabulary.FOAF.KNOWS)
                       && opAsnInf.SourceIndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark"))

@@ -163,7 +163,7 @@ public class OWLDatatypeDefinitionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.DatatypeDefinitionAxioms.Count);
+        Assert.HasCount(1, ontology.DatatypeDefinitionAxioms);
         Assert.IsTrue(ontology.DatatypeDefinitionAxioms.Single() is { } dtDef
                       && string.Equals(dtDef.Datatype.IRI, "ex:length6to10")
                       && dtDef.DataRangeExpression is OWLDatatypeRestriction dtRestr

@@ -74,7 +74,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
         List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
-        Assert.AreEqual(1, issues.Count);
+        Assert.HasCount(1, issues);
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLInverseFunctionalObjectPropertyAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLInverseFunctionalObjectPropertyAnalysisRule.rulesugg)));
@@ -131,7 +131,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
         List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
-        Assert.AreEqual(1, issues.Count);
+        Assert.HasCount(1, issues);
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLInverseFunctionalObjectPropertyAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLInverseFunctionalObjectPropertyAnalysisRule.rulesugg)));
@@ -188,7 +188,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
         List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
-        Assert.AreEqual(1, issues.Count);
+        Assert.HasCount(1, issues);
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLInverseFunctionalObjectPropertyAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLInverseFunctionalObjectPropertyAnalysisRule.rulesugg)));
@@ -216,7 +216,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
         List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
-        Assert.AreEqual(1, issues.Count);
+        Assert.HasCount(1, issues);
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLInverseFunctionalObjectPropertyAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLInverseFunctionalObjectPropertyAnalysisRule.rulesugg2)));
@@ -252,7 +252,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
         List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
-        Assert.AreEqual(1, issues.Count);
+        Assert.HasCount(1, issues);
         Assert.IsTrue(issues.TrueForAll(iss => iss.Severity == OWLEnums.OWLIssueSeverity.Error));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.RuleName, OWLInverseFunctionalObjectPropertyAnalysisRule.rulename)));
         Assert.IsTrue(issues.TrueForAll(iss => string.Equals(iss.Suggestion, OWLInverseFunctionalObjectPropertyAnalysisRule.rulesugg2)));
@@ -306,7 +306,7 @@ public class OWLInverseFunctionalObjectPropertyAnalysisRuleTest
         List<OWLIssue> issues = OWLInverseFunctionalObjectPropertyAnalysisRule.ExecuteRule(ontology, validatorContext);
 
         Assert.IsNotNull(issues);
-        Assert.AreEqual(0, issues.Count);
+        Assert.IsEmpty(issues);
     }
     #endregion
 }

@@ -115,7 +115,7 @@ public class OWLSubClassOfTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ClassAxioms.Count);
+        Assert.HasCount(1, ontology.ClassAxioms);
         Assert.IsTrue(ontology.ClassAxioms.Single() is OWLSubClassOf subcAsn
                       && string.Equals(((OWLClass)subcAsn.SubClassExpression).IRI, RDFVocabulary.FOAF.PERSON.ToString())
                       && string.Equals(((OWLClass)subcAsn.SuperClassExpression).IRI, RDFVocabulary.FOAF.AGENT.ToString()));

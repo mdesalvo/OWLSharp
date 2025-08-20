@@ -162,7 +162,7 @@ public class OWLAsymmetricObjectPropertyTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLAsymmetricObjectProperty
         {
             ObjectPropertyExpression: OWLObjectProperty objProp
@@ -198,7 +198,7 @@ public class OWLAsymmetricObjectPropertyTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.ObjectPropertyAxioms.Single() is OWLAsymmetricObjectProperty
         {
             ObjectPropertyExpression: OWLObjectInverseOf objInvOf

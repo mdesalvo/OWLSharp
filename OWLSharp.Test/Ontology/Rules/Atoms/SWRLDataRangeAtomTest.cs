@@ -130,7 +130,7 @@ public class SWRLDataRangeAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(null, null); //This kind of atom does not evaluate on consequent
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(0, inferences.Count);
+        Assert.IsEmpty(inferences);
     }
 
     [TestMethod]

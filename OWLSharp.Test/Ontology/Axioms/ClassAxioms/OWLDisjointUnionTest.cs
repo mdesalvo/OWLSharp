@@ -129,7 +129,7 @@ public class OWLDisjointUnionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.ClassAxioms.Count);
+        Assert.HasCount(1, ontology.ClassAxioms);
         Assert.IsTrue(ontology.ClassAxioms.Single() is OWLDisjointUnion djUnAsn
                       && string.Equals(djUnAsn.ClassIRI.IRI, "http://xmlns.com/foaf/0.1/Agent")
                       && string.Equals(((OWLClass)djUnAsn.ClassExpressions[0]).IRI, "http://xmlns.com/foaf/0.1/Person")

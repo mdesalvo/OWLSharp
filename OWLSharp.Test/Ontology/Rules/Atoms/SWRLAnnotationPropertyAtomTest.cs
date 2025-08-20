@@ -227,7 +227,7 @@ public class SWRLAnnotationPropertyAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLAnnotationAssertion { IsInference: true } annAsnInf
                       && annAsnInf.AnnotationProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && string.Equals(annAsnInf.SubjectIRI, "ex:Mark")
@@ -249,7 +249,7 @@ public class SWRLAnnotationPropertyAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLAnnotationAssertion { IsInference: true } annAsnInf
                       && annAsnInf.AnnotationProperty.GetIRI().Equals(RDFVocabulary.FOAF.AGE)
                       && string.Equals(annAsnInf.SubjectIRI, "ex:Mark")

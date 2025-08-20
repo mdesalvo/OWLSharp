@@ -48,45 +48,45 @@ public class OWLObjectPropertyAxiomHelperTest
         };
 
         List<OWLSubObjectPropertyOf> subObjectPropertyOf = ontology.GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>();
-        Assert.AreEqual(1, subObjectPropertyOf.Count);
+        Assert.HasCount(1, subObjectPropertyOf);
 
         List<OWLTransitiveObjectProperty> transitiveObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLTransitiveObjectProperty>();
-        Assert.AreEqual(1, transitiveObjectProperty.Count);
+        Assert.HasCount(1, transitiveObjectProperty);
 
         List<OWLSymmetricObjectProperty> symmetricObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLSymmetricObjectProperty>();
-        Assert.AreEqual(1, symmetricObjectProperty.Count);
+        Assert.HasCount(1, symmetricObjectProperty);
 
         List<OWLReflexiveObjectProperty> reflexiveObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLReflexiveObjectProperty>();
-        Assert.AreEqual(1, reflexiveObjectProperty.Count);
+        Assert.HasCount(1, reflexiveObjectProperty);
 
         List<OWLObjectPropertyRange> objectPropertyRange = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyRange>();
-        Assert.AreEqual(1, objectPropertyRange.Count);
+        Assert.HasCount(1, objectPropertyRange);
 
         List<OWLObjectPropertyDomain> objectPropertyDomain = ontology.GetObjectPropertyAxiomsOfType<OWLObjectPropertyDomain>();
-        Assert.AreEqual(1, objectPropertyDomain.Count);
+        Assert.HasCount(1, objectPropertyDomain);
 
         List<OWLIrreflexiveObjectProperty> irreflexiveObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLIrreflexiveObjectProperty>();
-        Assert.AreEqual(1, irreflexiveObjectProperty.Count);
+        Assert.HasCount(1, irreflexiveObjectProperty);
 
         List<OWLInverseObjectProperties> inverseObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLInverseObjectProperties>();
-        Assert.AreEqual(1, inverseObjectProperty.Count);
+        Assert.HasCount(1, inverseObjectProperty);
 
         List<OWLInverseFunctionalObjectProperty> inverseFunctionalObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLInverseFunctionalObjectProperty>();
-        Assert.AreEqual(1, inverseFunctionalObjectProperty.Count);
+        Assert.HasCount(1, inverseFunctionalObjectProperty);
 
         List<OWLFunctionalObjectProperty> functionalObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLFunctionalObjectProperty>();
-        Assert.AreEqual(1, functionalObjectProperty.Count);
+        Assert.HasCount(1, functionalObjectProperty);
 
         List<OWLEquivalentObjectProperties> equivalentObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLEquivalentObjectProperties>();
-        Assert.AreEqual(1, equivalentObjectProperty.Count);
+        Assert.HasCount(1, equivalentObjectProperty);
 
         List<OWLDisjointObjectProperties> disjointObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLDisjointObjectProperties>();
-        Assert.AreEqual(1, disjointObjectProperty.Count);
+        Assert.HasCount(1, disjointObjectProperty);
 
         List<OWLAsymmetricObjectProperty> asymmetricObjectProperty = ontology.GetObjectPropertyAxiomsOfType<OWLAsymmetricObjectProperty>();
-        Assert.AreEqual(1, asymmetricObjectProperty.Count);
+        Assert.HasCount(1, asymmetricObjectProperty);
 
-        Assert.AreEqual(0, (null as OWLOntology).GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>().Count);
+        Assert.IsEmpty((null as OWLOntology).GetObjectPropertyAxiomsOfType<OWLSubObjectPropertyOf>());
     }
 
     [TestMethod]
@@ -97,7 +97,7 @@ public class OWLObjectPropertyAxiomHelperTest
             new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),
             new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE))));
 
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
         Assert.IsTrue(ontology.CheckHasObjectPropertyAxiom(new OWLSubObjectPropertyOf(
             new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),
             new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE)))));
@@ -106,7 +106,7 @@ public class OWLObjectPropertyAxiomHelperTest
         ontology.DeclareObjectPropertyAxiom(new OWLSubObjectPropertyOf(
             new OWLObjectProperty(RDFVocabulary.FOAF.SHA1),
             new OWLObjectInverseOf(new OWLObjectProperty(RDFVocabulary.FOAF.TITLE)))); //will be discarded, since duplicates are not allowed
-        Assert.AreEqual(1, ontology.ObjectPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.ObjectPropertyAxioms);
     }
 
     [TestMethod]
@@ -122,29 +122,29 @@ public class OWLObjectPropertyAxiomHelperTest
         };
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp1 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-        Assert.AreEqual(3, subObjectPropertiesOfObp1.Count);
+        Assert.HasCount(3, subObjectPropertiesOfObp1);
         Assert.IsTrue(ontology.CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
         Assert.IsTrue(ontology.CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp3")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
         Assert.IsTrue(ontology.CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp4")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp2 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-        Assert.AreEqual(2, subObjectPropertiesOfObp2.Count);
+        Assert.HasCount(2, subObjectPropertiesOfObp2);
         Assert.IsTrue(ontology.CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp3")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
         Assert.IsTrue(ontology.CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp4")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp3 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-        Assert.AreEqual(1, subObjectPropertiesOfObp3.Count);
+        Assert.HasCount(1, subObjectPropertiesOfObp3);
         Assert.IsTrue(ontology.CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp4")), new OWLObjectProperty(new RDFResource("ex:Obp3"))));
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp4 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-        Assert.AreEqual(0, subObjectPropertiesOfObp4.Count);
+        Assert.IsEmpty(subObjectPropertiesOfObp4);
 
-        Assert.AreEqual(0, ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5"))).Count);
-        Assert.AreEqual(0, ontology.GetSubObjectPropertiesOf(null).Count);
+        Assert.IsEmpty(ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5"))));
+        Assert.IsEmpty(ontology.GetSubObjectPropertiesOf(null));
         Assert.IsFalse(ontology.CheckIsSubObjectPropertyOf(null, new OWLObjectProperty(new RDFResource("ex:Obp2"))));
         Assert.IsFalse(ontology.CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), null));
         Assert.IsFalse((null as OWLOntology).CheckIsSubObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
-        Assert.AreEqual(0, (null as OWLOntology).GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count);
+        Assert.IsEmpty((null as OWLOntology).GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))));
     }
 
     [TestMethod]
@@ -162,22 +162,22 @@ public class OWLObjectPropertyAxiomHelperTest
         };
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp1 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-        Assert.AreEqual(5, subObjectPropertiesOfObp1.Count);
+        Assert.HasCount(5, subObjectPropertiesOfObp1);
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp2 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-        Assert.AreEqual(4, subObjectPropertiesOfObp2.Count);
+        Assert.HasCount(4, subObjectPropertiesOfObp2);
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp3 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-        Assert.AreEqual(2, subObjectPropertiesOfObp3.Count);
+        Assert.HasCount(2, subObjectPropertiesOfObp3);
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp4 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-        Assert.AreEqual(0, subObjectPropertiesOfObp4.Count);
+        Assert.IsEmpty(subObjectPropertiesOfObp4);
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp5 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5")));
-        Assert.AreEqual(2, subObjectPropertiesOfObp5.Count);
+        Assert.HasCount(2, subObjectPropertiesOfObp5);
 
-        Assert.AreEqual(0, ontology.GetSubObjectPropertiesOf(null).Count);
-        Assert.AreEqual(0, (null as OWLOntology).GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count);
+        Assert.IsEmpty(ontology.GetSubObjectPropertiesOf(null));
+        Assert.IsEmpty((null as OWLOntology).GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))));
     }
 
     [TestMethod]
@@ -193,29 +193,29 @@ public class OWLObjectPropertyAxiomHelperTest
         };
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp1 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-        Assert.AreEqual(0, superObjectPropertiesOfObp1.Count);
+        Assert.IsEmpty(superObjectPropertiesOfObp1);
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp2 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-        Assert.AreEqual(1, superObjectPropertiesOfObp2.Count);
+        Assert.HasCount(1, superObjectPropertiesOfObp2);
         Assert.IsTrue(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp3 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-        Assert.AreEqual(2, superObjectPropertiesOfObp3.Count);
+        Assert.HasCount(2, superObjectPropertiesOfObp3);
         Assert.IsTrue(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp3"))));
         Assert.IsTrue(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp3"))));
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp4 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-        Assert.AreEqual(3, superObjectPropertiesOfObp4.Count);
+        Assert.HasCount(3, superObjectPropertiesOfObp4);
         Assert.IsTrue(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4"))));
         Assert.IsTrue(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp4"))));
         Assert.IsTrue(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp3")), new OWLObjectProperty(new RDFResource("ex:Obp4"))));
 
-        Assert.AreEqual(0, ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5"))).Count);
-        Assert.AreEqual(0, ontology.GetSuperObjectPropertiesOf(null).Count);
+        Assert.IsEmpty(ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5"))));
+        Assert.IsEmpty(ontology.GetSuperObjectPropertiesOf(null));
         Assert.IsFalse(ontology.CheckIsSuperObjectPropertyOf(null, new OWLObjectProperty(new RDFResource("ex:Obp2"))));
         Assert.IsFalse(ontology.CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), null));
         Assert.IsFalse((null as OWLOntology).CheckIsSuperObjectPropertyOf(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
-        Assert.AreEqual(0, (null as OWLOntology).GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count);
+        Assert.IsEmpty((null as OWLOntology).GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))));
     }
 
     [TestMethod]
@@ -233,22 +233,22 @@ public class OWLObjectPropertyAxiomHelperTest
         };
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp1 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-        Assert.AreEqual(0, superObjectPropertiesOfObp1.Count);
+        Assert.IsEmpty(superObjectPropertiesOfObp1);
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp2 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-        Assert.AreEqual(1, superObjectPropertiesOfObp2.Count);
+        Assert.HasCount(1, superObjectPropertiesOfObp2);
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp3 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-        Assert.AreEqual(2, superObjectPropertiesOfObp3.Count);
+        Assert.HasCount(2, superObjectPropertiesOfObp3);
 
         List<OWLObjectPropertyExpression> superObjectPropertiesOfObp4 = ontology.GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-        Assert.AreEqual(4, superObjectPropertiesOfObp4.Count);
+        Assert.HasCount(4, superObjectPropertiesOfObp4);
 
         List<OWLObjectPropertyExpression> subObjectPropertiesOfObp5 = ontology.GetSubObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp5")));
-        Assert.AreEqual(2, subObjectPropertiesOfObp5.Count);
+        Assert.HasCount(2, subObjectPropertiesOfObp5);
 
-        Assert.AreEqual(0, ontology.GetSuperObjectPropertiesOf(null).Count);
-        Assert.AreEqual(0, (null as OWLOntology).GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count);
+        Assert.IsEmpty(ontology.GetSuperObjectPropertiesOf(null));
+        Assert.IsEmpty((null as OWLOntology).GetSuperObjectPropertiesOf(new OWLObjectProperty(new RDFResource("ex:Obp1"))));
     }
 
     [TestMethod]
@@ -264,7 +264,7 @@ public class OWLObjectPropertyAxiomHelperTest
         };
 
         List<OWLObjectPropertyExpression> equivalentObjectPropertiesOfObp1 = ontology.GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-        Assert.AreEqual(4, equivalentObjectPropertiesOfObp1.Count);
+        Assert.HasCount(4, equivalentObjectPropertiesOfObp1);
         Assert.IsTrue(ontology.CheckAreEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
         Assert.IsTrue(ontology.CheckAreEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
         Assert.IsTrue(ontology.CheckAreEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp4"))));
@@ -279,20 +279,20 @@ public class OWLObjectPropertyAxiomHelperTest
         Assert.IsTrue(ontology.CheckAreEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp5")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
 
         List<OWLObjectPropertyExpression> equivalentObjectPropertiesOfObp2 = ontology.GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-        Assert.AreEqual(4, equivalentObjectPropertiesOfObp2.Count);
+        Assert.HasCount(4, equivalentObjectPropertiesOfObp2);
 
         List<OWLObjectPropertyExpression> equivalentObjectPropertiesOfObp3 = ontology.GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-        Assert.AreEqual(4, equivalentObjectPropertiesOfObp3.Count);
+        Assert.HasCount(4, equivalentObjectPropertiesOfObp3);
 
         List<OWLObjectPropertyExpression> equivalentObjectPropertiesOfObp4 = ontology.GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-        Assert.AreEqual(4, equivalentObjectPropertiesOfObp4.Count);
+        Assert.HasCount(4, equivalentObjectPropertiesOfObp4);
 
-        Assert.AreEqual(0, ontology.GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp6"))).Count);
-        Assert.AreEqual(0, ontology.GetEquivalentObjectProperties(null).Count);
+        Assert.IsEmpty(ontology.GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp6"))));
+        Assert.IsEmpty(ontology.GetEquivalentObjectProperties(null));
         Assert.IsFalse(ontology.CheckAreEquivalentObjectProperties(null, new OWLObjectProperty(new RDFResource("ex:Obp1"))));
         Assert.IsFalse(ontology.CheckAreEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), null));
         Assert.IsFalse((null as OWLOntology).CheckAreEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
-        Assert.AreEqual(0, (null as OWLOntology).GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count);
+        Assert.IsEmpty((null as OWLOntology).GetEquivalentObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1"))));
     }
 
     [TestMethod]
@@ -308,7 +308,7 @@ public class OWLObjectPropertyAxiomHelperTest
         };
 
         List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp1 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")));
-        Assert.AreEqual(3, disjointObjectPropertiesOfObp1.Count);
+        Assert.HasCount(3, disjointObjectPropertiesOfObp1);
         Assert.IsTrue(ontology.CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
         Assert.IsTrue(ontology.CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp2")), new OWLObjectProperty(new RDFResource("ex:Obp1"))));
         Assert.IsTrue(ontology.CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp3"))));
@@ -321,20 +321,20 @@ public class OWLObjectPropertyAxiomHelperTest
         Assert.IsTrue(ontology.CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp5")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
 
         List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp2 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp2")));
-        Assert.AreEqual(3, disjointObjectPropertiesOfObp2.Count);
+        Assert.HasCount(3, disjointObjectPropertiesOfObp2);
 
         List<OWLObjectPropertyExpression> disjointObjectPropertiesOfObp3 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp3")));
-        Assert.AreEqual(2, disjointObjectPropertiesOfObp3.Count);
+        Assert.HasCount(2, disjointObjectPropertiesOfObp3);
 
         List<OWLObjectPropertyExpression> disjointOfObp4 = ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp4")));
-        Assert.AreEqual(1, disjointOfObp4.Count);
+        Assert.HasCount(1, disjointOfObp4);
 
-        Assert.AreEqual(0, ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp6"))).Count);
-        Assert.AreEqual(0, ontology.GetDisjointObjectProperties(null).Count);
+        Assert.IsEmpty(ontology.GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp6"))));
+        Assert.IsEmpty(ontology.GetDisjointObjectProperties(null));
         Assert.IsFalse(ontology.CheckAreDisjointObjectProperties(null, new OWLObjectProperty(new RDFResource("ex:Obp1"))));
         Assert.IsFalse(ontology.CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), null));
         Assert.IsFalse((null as OWLOntology).CheckAreDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1")), new OWLObjectProperty(new RDFResource("ex:Obp2"))));
-        Assert.AreEqual(0, (null as OWLOntology).GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1"))).Count);
+        Assert.IsEmpty((null as OWLOntology).GetDisjointObjectProperties(new OWLObjectProperty(new RDFResource("ex:Obp1"))));
     }
 
     [TestMethod]

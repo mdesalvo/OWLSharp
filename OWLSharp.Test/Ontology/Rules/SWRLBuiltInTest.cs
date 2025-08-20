@@ -43,7 +43,7 @@ public class SWRLBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals(builtin.IRI, "http://example.org/testBuiltIn"));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(3, builtin.Arguments.Count);
+        Assert.HasCount(3, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument varArg
                       && string.Equals(varArg.IRI,"urn:swrl:var#VAR")
                       && varArg.GetVariable().Equals(new RDFVariable("?VAR")));
@@ -71,7 +71,7 @@ public class SWRLBuiltInTest
         Assert.IsNotNull(builtin.IRI);
         Assert.IsTrue(string.Equals(builtin.IRI, "http://example.org/testBuiltIn"));
         Assert.IsNotNull(builtin.Arguments);
-        Assert.AreEqual(3, builtin.Arguments.Count);
+        Assert.HasCount(3, builtin.Arguments);
         Assert.IsTrue(builtin.Arguments[0] is SWRLVariableArgument varArg
                       && string.Equals(varArg.IRI,"urn:swrl:var#VAR")
                       && varArg.GetVariable().Equals(new RDFVariable("?VAR")));

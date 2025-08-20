@@ -121,7 +121,7 @@ public class OWLDataPropertyDomainTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.DataPropertyAxioms.Count);
+        Assert.HasCount(1, ontology.DataPropertyAxioms);
         Assert.IsTrue(ontology.DataPropertyAxioms.Single() is OWLDataPropertyDomain dtPropDom
                       && string.Equals(dtPropDom.DataProperty.IRI, RDFVocabulary.FOAF.AGE.ToString())
                       && string.Equals(((OWLClass)dtPropDom.ClassExpression).IRI, RDFVocabulary.FOAF.PERSON.ToString()));

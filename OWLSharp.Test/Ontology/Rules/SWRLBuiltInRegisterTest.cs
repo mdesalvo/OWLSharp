@@ -41,7 +41,7 @@ public class SWRLBuiltInRegisterTest
         SWRLBuiltInRegister.AddBuiltIn(builtIn); //This will not be added again, since we avoid duplicates
         SWRLBuiltInRegister.AddBuiltIn(null); //This will not be added, since we avoid nulls
 
-        Assert.IsTrue(SWRLBuiltInRegister.BuiltInsCount >= 1);
+        Assert.IsGreaterThanOrEqualTo(1, SWRLBuiltInRegister.BuiltInsCount);
         Assert.IsNotNull(SWRLBuiltInRegister.GetBuiltIn("http://www.w3.org/2003/11/swrl#exampleRegistered2"));
         Assert.IsNull(SWRLBuiltInRegister.GetBuiltIn("http://www.w3.org/2003/11/swrl#exampleGTDFFR"));
         Assert.IsNull(SWRLBuiltInRegister.GetBuiltIn(null));
@@ -50,7 +50,7 @@ public class SWRLBuiltInRegisterTest
         IEnumerator<SWRLBuiltIn> builtins = SWRLBuiltInRegister.BuiltInsEnumerator;
         while(builtins.MoveNext())
             i++;
-        Assert.IsTrue(i >= 1);
+        Assert.IsGreaterThanOrEqualTo(1, i);
         return;
 
         bool Evaluator(DataRow datarow) => string.Equals(datarow["?VAR"].ToString(), "value");

@@ -118,7 +118,7 @@ public class OWLAnnotationPropertyRangeTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationPropertyRange annPropDom
                       && string.Equals(annPropDom.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString())
                       && string.Equals(annPropDom.IRI, RDFVocabulary.FOAF.PERSON.ToString()));
@@ -218,7 +218,7 @@ public class OWLAnnotationPropertyRangeTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationPropertyRange annPropRng
                       && string.Equals(annPropRng.AnnotationProperty.IRI, RDFVocabulary.FOAF.AGENT.ToString())
                       && string.Equals(annPropRng.AbbreviatedIRI.ToString(), "http://xmlns.com/foaf/0.1/:Person"));
@@ -289,7 +289,7 @@ public class OWLAnnotationPropertyRangeTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(2, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationPropertyRange annPropRng
                                                               && string.Equals(annPropRng.AnnotationProperty.IRI, "http://xmlns.com/foaf/0.1/Agent")
                                                               && string.Equals(annPropRng.IRI, "http://xmlns.com/foaf/0.1/Person")

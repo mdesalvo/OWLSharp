@@ -28,7 +28,7 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            
+
 
             //NegativeDataPropertyAssertion(OP,IDV,LIT) ^ DataPropertyAssertion(OP,IDV,LIT) -> ERROR
             foreach (OWLNegativeDataPropertyAssertion ndpAsn in ontology.GetAssertionAxiomsOfType<OWLNegativeDataPropertyAssertion>())

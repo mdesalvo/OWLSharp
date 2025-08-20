@@ -136,7 +136,7 @@ public class OWLNegativeDataPropertyAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLNegativeDataPropertyAssertion ndpAsn
                       && string.Equals(ndpAsn.DataProperty.IRI, "http://xmlns.com/foaf/0.1/age")
                       && string.Equals(((OWLNamedIndividual)ndpAsn.IndividualExpression).IRI, "ex:Bob")

@@ -38,7 +38,7 @@ public class OWLAxiomHelperTest
             new OWLAnnotationProperty(RDFVocabulary.RDFS.COMMENT),
             new OWLLiteral(new RDFPlainLiteral("Since the axiom is null, this annotation will be discarded"))));
 
-        Assert.AreEqual(1, axiom.Annotations.Count);
+        Assert.HasCount(1, axiom.Annotations);
         Assert.ThrowsExactly<OWLException>(() => axiom.Annotate(null));
     }
 
@@ -82,9 +82,9 @@ public class OWLAxiomHelperTest
                 new RDFResource("ex:Obj"))
         ];
 
-        Assert.AreEqual(5, OWLAxiomHelper.RemoveDuplicates(axioms).Count);
-        Assert.AreEqual(0, OWLAxiomHelper.RemoveDuplicates(new List<OWLAxiom>()).Count);
-        Assert.AreEqual(0, OWLAxiomHelper.RemoveDuplicates<OWLAxiom>(null).Count);
+        Assert.HasCount(5, OWLAxiomHelper.RemoveDuplicates(axioms));
+        Assert.IsEmpty(OWLAxiomHelper.RemoveDuplicates(new List<OWLAxiom>()));
+        Assert.IsEmpty(OWLAxiomHelper.RemoveDuplicates<OWLAxiom>(null));
     }
     #endregion
 }

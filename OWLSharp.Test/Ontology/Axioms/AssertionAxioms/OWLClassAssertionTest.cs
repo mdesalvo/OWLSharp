@@ -155,7 +155,7 @@ public class OWLClassAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLClassAssertion clsAsn
                       && string.Equals(((OWLClass)clsAsn.ClassExpression).IRI, "http://xmlns.com/foaf/0.1/Agent")
                       && string.Equals(((OWLNamedIndividual)clsAsn.IndividualExpression).IRI, "ex:Bob"));

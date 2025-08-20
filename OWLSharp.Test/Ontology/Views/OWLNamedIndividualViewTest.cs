@@ -107,72 +107,72 @@ public class OWLNamedIndividualViewTest
     [TestMethod]
     public async Task ShouldGetSameIndividualsAsync()
     {
-        Assert.AreEqual(1, (await MarkView.SameIndividualsAsync()).Count);
-        Assert.AreEqual(0, (await JohnView.SameIndividualsAsync()).Count);
-        Assert.AreEqual(0, (await StivView.SameIndividualsAsync()).Count);
+        Assert.HasCount(1, await MarkView.SameIndividualsAsync());
+        Assert.IsEmpty(await JohnView.SameIndividualsAsync());
+        Assert.IsEmpty(await StivView.SameIndividualsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetDifferentIndividualsAsync()
     {
-        Assert.AreEqual(2, (await MarkView.DifferentIndividualsAsync()).Count);
-        Assert.AreEqual(1, (await JohnView.DifferentIndividualsAsync()).Count);
-        Assert.AreEqual(1, (await StivView.DifferentIndividualsAsync()).Count);
+        Assert.HasCount(2, await MarkView.DifferentIndividualsAsync());
+        Assert.HasCount(1, await JohnView.DifferentIndividualsAsync());
+        Assert.HasCount(1, await StivView.DifferentIndividualsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetClassAssertionsAsync()
     {
-        Assert.AreEqual(2, (await MarkView.ClassAssertionsAsync()).Count);
-        Assert.AreEqual(1, (await JohnView.ClassAssertionsAsync()).Count);
-        Assert.AreEqual(1, (await StivView.ClassAssertionsAsync()).Count);
+        Assert.HasCount(2, await MarkView.ClassAssertionsAsync());
+        Assert.HasCount(1, await JohnView.ClassAssertionsAsync());
+        Assert.HasCount(1, await StivView.ClassAssertionsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetDataAssertionsAsync()
     {
-        Assert.AreEqual(1, (await MarkView.DataAssertionsAsync()).Count);
-        Assert.AreEqual(0, (await JohnView.DataAssertionsAsync()).Count);
-        Assert.AreEqual(0, (await StivView.DataAssertionsAsync()).Count);
+        Assert.HasCount(1, await MarkView.DataAssertionsAsync());
+        Assert.IsEmpty(await JohnView.DataAssertionsAsync());
+        Assert.IsEmpty(await StivView.DataAssertionsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetObjectAssertionsAsync()
     {
-        Assert.AreEqual(1, (await MarkView.ObjectAssertionsAsync()).Count);
-        Assert.AreEqual(0, (await JohnView.ObjectAssertionsAsync()).Count);
-        Assert.AreEqual(1, (await StivView.ObjectAssertionsAsync()).Count);
+        Assert.HasCount(1, await MarkView.ObjectAssertionsAsync());
+        Assert.IsEmpty(await JohnView.ObjectAssertionsAsync());
+        Assert.HasCount(1, await StivView.ObjectAssertionsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetNegativeDataAssertionsAsync()
     {
-        Assert.AreEqual(1, (await MarkView.NegativeDataAssertionsAsync()).Count);
-        Assert.AreEqual(0, (await JohnView.NegativeDataAssertionsAsync()).Count);
-        Assert.AreEqual(0, (await StivView.NegativeDataAssertionsAsync()).Count);
+        Assert.HasCount(1, await MarkView.NegativeDataAssertionsAsync());
+        Assert.IsEmpty(await JohnView.NegativeDataAssertionsAsync());
+        Assert.IsEmpty(await StivView.NegativeDataAssertionsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetNegativeObjectAssertionsAsync()
     {
-        Assert.AreEqual(1, (await MarkView.NegativeObjectAssertionsAsync()).Count);
-        Assert.AreEqual(0, (await JohnView.NegativeObjectAssertionsAsync()).Count);
-        Assert.AreEqual(0, (await StivView.NegativeObjectAssertionsAsync()).Count);
+        Assert.HasCount(1, await MarkView.NegativeObjectAssertionsAsync());
+        Assert.IsEmpty(await JohnView.NegativeObjectAssertionsAsync());
+        Assert.IsEmpty(await StivView.NegativeObjectAssertionsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetDataAnnotationsAsync()
     {
-        Assert.AreEqual(1, (await MarkView.DataAnnotationsAsync()).Count);
-        Assert.AreEqual(0, (await JohnView.DataAnnotationsAsync()).Count);
-        Assert.AreEqual(0, (await StivView.DataAnnotationsAsync()).Count);
+        Assert.HasCount(1, await MarkView.DataAnnotationsAsync());
+        Assert.IsEmpty(await JohnView.DataAnnotationsAsync());
+        Assert.IsEmpty(await StivView.DataAnnotationsAsync());
     }
 
     [TestMethod]
     public async Task ShouldGetObjectAnnotationsAsync()
     {
-        Assert.AreEqual(1, (await MarkView.ObjectAnnotationsAsync()).Count);
-        Assert.AreEqual(0, (await JohnView.ObjectAnnotationsAsync()).Count);
-        Assert.AreEqual(0, (await StivView.ObjectAnnotationsAsync()).Count);
+        Assert.HasCount(1, await MarkView.ObjectAnnotationsAsync());
+        Assert.IsEmpty(await JohnView.ObjectAnnotationsAsync());
+        Assert.IsEmpty(await StivView.ObjectAnnotationsAsync());
     }
 }

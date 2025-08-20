@@ -133,7 +133,7 @@ public class OWLAnnotationAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationAssertion annAsn
                       && string.Equals(annAsn.SubjectIRI, "ex:Subj")
                       && string.Equals(annAsn.ValueIRI, "ex:Obj")
@@ -250,7 +250,7 @@ public class OWLAnnotationAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLAnnotationAssertion annAsn
                       && string.Equals(annAsn.SubjectIRI, "ex:Subj")
                       && string.Equals(annAsn.ValueLiteral.Value, "hello")
@@ -325,7 +325,7 @@ public class OWLAnnotationAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(2, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLAnnotationAssertion annAsn
                                                               && string.Equals(annAsn.SubjectIRI, "ex:Subj")
                                                               && string.Equals(annAsn.ValueIRI, "ex:Obj")

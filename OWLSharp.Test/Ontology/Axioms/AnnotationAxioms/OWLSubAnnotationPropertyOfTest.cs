@@ -115,7 +115,7 @@ public class OWLSubAnnotationPropertyOfTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(1, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Single() is OWLSubAnnotationPropertyOf annPropDom
                       && string.Equals(annPropDom.SubAnnotationProperty.IRI, RDFVocabulary.DC.DCTERMS.TITLE.ToString())
                       && string.Equals(annPropDom.SuperAnnotationProperty.IRI, RDFVocabulary.DC.TITLE.ToString()));
@@ -186,7 +186,7 @@ public class OWLSubAnnotationPropertyOfTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(2, ontology.AnnotationAxioms.Count);
+        Assert.HasCount(2, ontology.AnnotationAxioms);
         Assert.IsTrue(ontology.AnnotationAxioms.Any(annAxm => annAxm is OWLSubAnnotationPropertyOf subannOf
                                                               && string.Equals(subannOf.SubAnnotationProperty.IRI, "http://purl.org/dc/terms/title")
                                                               && string.Equals(subannOf.SuperAnnotationProperty.IRI, "http://purl.org/dc/elements/1.1/title")

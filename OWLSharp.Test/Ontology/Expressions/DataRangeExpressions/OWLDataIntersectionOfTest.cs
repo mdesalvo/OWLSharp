@@ -33,7 +33,7 @@ public class OWLDataIntersectionOfTest
 
         Assert.IsNotNull(dataIntersectionOf);
         Assert.IsNotNull(dataIntersectionOf.DataRangeExpressions);
-        Assert.AreEqual(2, dataIntersectionOf.DataRangeExpressions.Count);
+        Assert.HasCount(2, dataIntersectionOf.DataRangeExpressions);
         Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                          && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
         Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
@@ -86,7 +86,7 @@ public class OWLDataIntersectionOfTest
 
         Assert.IsNotNull(dataIntersectionOf);
         Assert.IsNotNull(dataIntersectionOf.DataRangeExpressions);
-        Assert.AreEqual(2, dataIntersectionOf.DataRangeExpressions.Count);
+        Assert.HasCount(2, dataIntersectionOf.DataRangeExpressions);
         Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType
                                                                          && string.Equals(dataType.IRI, RDFVocabulary.XSD.STRING.ToString())));
         Assert.IsTrue(dataIntersectionOf.DataRangeExpressions.Any(dre => dre is OWLDatatype dataType

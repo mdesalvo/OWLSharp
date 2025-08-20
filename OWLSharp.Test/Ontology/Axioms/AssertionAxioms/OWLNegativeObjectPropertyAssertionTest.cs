@@ -140,7 +140,7 @@ public class OWLNegativeNegativeObjectPropertyAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLNegativeObjectPropertyAssertion
                       {
                           ObjectPropertyExpression: OWLObjectProperty objProp
@@ -232,7 +232,7 @@ public class OWLNegativeNegativeObjectPropertyAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLNegativeObjectPropertyAssertion
                       {
                           ObjectPropertyExpression: OWLObjectInverseOf objInvOf
@@ -324,7 +324,7 @@ public class OWLNegativeNegativeObjectPropertyAssertionTest
             """);
 
         Assert.IsNotNull(ontology);
-        Assert.AreEqual(1, ontology.AssertionAxioms.Count);
+        Assert.HasCount(1, ontology.AssertionAxioms);
         Assert.IsTrue(ontology.AssertionAxioms.Single() is OWLNegativeObjectPropertyAssertion
                       {
                           ObjectPropertyExpression: OWLObjectInverseOf objInvOf

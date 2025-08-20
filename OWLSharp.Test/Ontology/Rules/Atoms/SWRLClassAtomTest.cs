@@ -137,7 +137,7 @@ public class SWRLClassAtomTest
         List<OWLInference> inferences = atom.EvaluateOnConsequent(antecedentResult, null);
 
         Assert.IsNotNull(inferences);
-        Assert.AreEqual(1, inferences.Count);
+        Assert.HasCount(1, inferences);
         Assert.IsTrue(inferences[0].Axiom is OWLClassAssertion { IsInference: true } clsAsnInf
                       && clsAsnInf.ClassExpression.GetIRI().Equals(RDFVocabulary.FOAF.AGENT)
                       && clsAsnInf.IndividualExpression.GetIRI().Equals(new RDFResource("ex:Mark")));
