@@ -235,12 +235,9 @@ namespace OWLSharp.Ontology
                 });
 
         public Task ToFileAsync(OWLEnums.OWLFormats owlFormat, string outputFile, bool includeInferences=true)
-        {
-            if (string.IsNullOrWhiteSpace(outputFile))
-                throw new OWLException("Cannot write ontology to file because given \"outputFile\" parameter is null or empty");
-
-            return ToStreamAsync(owlFormat, new FileStream(outputFile, FileMode.Create), includeInferences);
-        }
+            => string.IsNullOrWhiteSpace(outputFile)
+                ? throw new OWLException("Cannot write ontology to file because given \"outputFile\" parameter is null or empty")
+                : ToStreamAsync(owlFormat, new FileStream(outputFile, FileMode.Create), includeInferences);
 
         public Task ToStreamAsync(OWLEnums.OWLFormats owlFormat, Stream outputStream, bool includeInferences=true)
             => Task.Run(() =>

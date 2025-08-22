@@ -13,7 +13,6 @@
 
 using Dasync.Collections;
 using OWLSharp.Ontology;
-using OWLSharp.Validator;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
