@@ -42,7 +42,7 @@ namespace OWLSharp.Reasoner
                 Rules = Rules.Distinct().ToList();
 
                 //Initialize inference registry
-                Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>();
+                Dictionary<string, List<OWLInference>> inferenceRegistry = new Dictionary<string, List<OWLInference>>(Rules.Count + ontology.Rules.Count);
                 Rules.ForEach(owl2Rule => inferenceRegistry.Add(owl2Rule.ToString(), null));
                 ontology.Rules.ForEach(swrlRule => inferenceRegistry.Add(swrlRule.ToString(), null));
 
