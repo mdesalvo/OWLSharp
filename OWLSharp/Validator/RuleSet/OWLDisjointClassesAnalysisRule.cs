@@ -29,7 +29,7 @@ namespace OWLSharp.Validator
             List<OWLIssue> issues = new List<OWLIssue>();
 
             //Temporary working variables
-            Dictionary<long, HashSet<long>> idvsCache = new Dictionary<long, HashSet<long>>();
+            Dictionary<long, long> idvsCache = new Dictionary<long, long>();
 
             foreach (OWLDisjointClasses disjClasses in ontology.GetClassAxiomsOfType<OWLDisjointClasses>())
             {
@@ -38,9 +38,9 @@ namespace OWLSharp.Validator
                 //DisjointClasses(CLS1,CLS2) ^ EquivalentClasses(CLS1,CLS2) -> ERROR
                 if (disjClasses.ClassExpressions.Any(outerClass =>
                       disjClasses.ClassExpressions.Any(innerClass => !outerClass.GetIRI().Equals(innerClass.GetIRI())
-                                                                          && (ontology.CheckIsSubClassOf(outerClass, innerClass)
-                                                                             || ontology.CheckIsSubClassOf(innerClass, outerClass)
-                                                                             || ontology.CheckAreEquivalentClasses(outerClass, innerClass)))))
+                                                                       && (ontology.CheckIsSubClassOf(outerClass, innerClass)
+                                                                            || ontology.CheckIsSubClassOf(innerClass, outerClass)
+                                                                            || ontology.CheckAreEquivalentClasses(outerClass, innerClass)))))
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Error,
                         rulename,
@@ -54,10 +54,10 @@ namespace OWLSharp.Validator
                     {
                         RDFResource disjClassIdvIRI = disjClassIdv.GetIRI();
                         if (!idvsCache.ContainsKey(disjClassIdvIRI.PatternMemberID))
-                            idvsCache.Add(disjClassIdvIRI.PatternMemberID, new HashSet<long>());
-                        idvsCache[disjClassIdvIRI.PatternMemberID].Add(disjClass.GetIRI().PatternMemberID);
+                            idvsCache.Add(disjClassIdvIRI.PatternMemberID, 0);
+                        idvsCache[disjClassIdvIRI.PatternMemberID]++;
                     }
-                if (idvsCache.Any(idvc => idvc.Value.Count > 1))
+                if (idvsCache.Any(idvc => idvc.Value > 1))
                     issues.Add(new OWLIssue(
                         OWLEnums.OWLIssueSeverity.Error,
                         rulename,
